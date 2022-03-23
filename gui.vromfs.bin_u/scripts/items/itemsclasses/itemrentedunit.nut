@@ -1,6 +1,6 @@
-local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-class ::items_classes.RentedUnit extends ItemCouponBase {
+::items_classes.RentedUnit <- class extends ItemCouponBase {
   static iType = itemType.RENTED_UNIT
   static typeIcon = "#ui/gameuiskin#item_type_rent"
 
@@ -9,8 +9,8 @@ class ::items_classes.RentedUnit extends ItemCouponBase {
     if (!isInventoryItem)
       return false
 
-    local unitId = getRentedUnitId()
-    local unit = ::getAircraftByName(unitId)
+    let unitId = getRentedUnitId()
+    let unit = ::getAircraftByName(unitId)
     return unit != null && !unit.isBought()
       && (unit.isVisibleInShop() || unit.showOnlyWhenBought)
   }

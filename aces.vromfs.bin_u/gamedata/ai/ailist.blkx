@@ -4352,6 +4352,98 @@
   {
     "selector": [
       {
+        "name": "missionAssaultTutorial"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "reaction": {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      },
+      {
+        "sequencer": {
+          "clearTargetList": {
+            "listName": "targets"
+          },
+          "ifThenElse": [
+            {
+              "isRandomTargets": []
+            },
+            {
+              "getFromListBTB": {
+                "listName": "targets",
+                "varName": "currentTarget",
+                "indexType": "random"
+              }
+            },
+            {
+              "getFromListBTB": {
+                "listName": "targets",
+                "varName": "currentTarget",
+                "indexType": "first"
+              }
+            }
+          ],
+          "setAsTarget": {
+            "varName": "currentTarget"
+          },
+          "selector": {
+            "selectStrategy": "ordered",
+            "diveBombTarget": {
+              "dropAlt": 350.0,
+              "diveSpeed": 700.0
+            },
+            "sequencer": {
+              "isTargetDist": {
+                "dist": 750.0,
+                "op": "greater"
+              },
+              "clearTargetList": {
+                "listName": "targets"
+              },
+              "restore": {
+                "rearm": true
+              }
+            },
+            "spiralUp": []
+          }
+        }
+      }
+    ]
+  },
+  {
+    "selector": [
+      {
         "name": "cutsceneFighterVsFighter"
       },
       {
@@ -6292,6 +6384,612 @@
             }
           }
         }
+      }
+    ]
+  },
+  {
+    "selector": [
+      {
+        "name": "carrierFighter"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "reaction": {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": [],
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      },
+      {
+        "selector": [
+          {
+            "selectStrategy": "ordered"
+          },
+          {
+            "name": "taxi_and_takeoff"
+          },
+          {
+            "reaction": {
+              "event": "groundAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField"
+            }
+          },
+          {
+            "sequencer": {
+              "isOnAirfield": [],
+              "findClosestAirfield": [],
+              "waitForAirfieldClearance": [],
+              "taxiOnAirfield": [],
+              "takeoff": []
+            }
+          },
+          {
+            "waitOnLand": []
+          }
+        ]
+      },
+      {
+        "sequencer": {
+          "repeat": true,
+          "reaction": {
+            "event": "regularCheck",
+            "recalculateTree": []
+          },
+          "updateHostThreat": {
+            "targetType": "airplane",
+            "targetToAnchorDist": [3000.0,4000.0],
+            "targetToAnchorMeetDist": [0.0,0.0]
+          },
+          "selector": [
+            {
+              "selectStrategy": "ordered"
+            },
+            {
+              "sequencer": {
+                "isTargetType": {
+                  "type": "fighter"
+                },
+                "fighterAttackFighter": []
+              }
+            },
+            {
+              "sequencer": {
+                "isTargetType": {
+                  "type": "bomber"
+                },
+                "fighterAttackBomber": []
+              }
+            }
+          ]
+        }
+      },
+      {
+        "sequencer": {
+          "reaction": {
+            "event": "regularCheck",
+            "recalculateTree": []
+          },
+          "ifThenElse": {
+            "findLeader": [],
+            "followTarget": {
+              "offsetFromBot": false,
+              "useTarget": false,
+              "offset": [0.0,600.0,0.0]
+            },
+            "sequencer": {
+              "setControls": {
+                "controls": "flaps",
+                "setTo": 0.0,
+                "timeTo": 0.0
+              },
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "selector": [
+      {
+        "name": "carrierBomber"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "selector": [
+          {
+            "selectStrategy": "ordered"
+          },
+          {
+            "name": "taxi_and_takeoff"
+          },
+          {
+            "reaction": {
+              "event": "groundAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField"
+            }
+          },
+          {
+            "sequencer": {
+              "isOnAirfield": [],
+              "findClosestAirfield": [],
+              "waitForAirfieldClearance": [],
+              "taxiOnAirfield": [],
+              "takeoff": []
+            }
+          },
+          {
+            "waitOnLand": []
+          }
+        ]
+      },
+      {
+        "sequencer": [
+          {
+            "repeat": true
+          },
+          {
+            "reaction": {
+              "event": "groundAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField",
+              "flyToPos": {
+                "speed": 550.0,
+                "dist": -1.0,
+                "minAlt": 100.0,
+                "destType": "battleField"
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "regularCheck",
+              "recalculateTree": []
+            }
+          },
+          {
+            "selector": [
+              {
+                "selectStrategy": "ordered"
+              },
+              {
+                "selectOnSuccess": true
+              },
+              {
+                "sequencer": {
+                  "hasWeaponTypes": {
+                    "weaponType": "bombs"
+                  },
+                  "updateHostThreat": {
+                    "targetType": "ship",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
+                  }
+                }
+              },
+              {
+                "sequencer": {
+                  "hasWeaponTypes": [
+                    {
+                      "weaponType": "cannons"
+                    },
+                    {
+                      "weaponType": "rockets"
+                    }
+                  ],
+                  "updateHostThreat": {
+                    "targetType": "boat",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "selector": [
+              {
+                "selectStrategy": "ordered"
+              },
+              {
+                "sequencer": {
+                  "isTargetType": {
+                    "type": "bigShip"
+                  },
+                  "selector": {
+                    "selectStrategy": "ordered",
+                    "torpedoTarget": {
+                      "fireMode": "salvo"
+                    },
+                    "bombTarget": {
+                      "fireMode": "salvo"
+                    }
+                  }
+                }
+              },
+              {
+                "sequencer": {
+                  "isTargetType": {
+                    "type": "smallShip"
+                  },
+                  "selector": {
+                    "selectStrategy": "ordered",
+                    "bombTarget": {
+                      "fireMode": "salvo"
+                    },
+                    "fighterAttackGround": {
+                      "fireMode": "salvo"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sequencer": [
+          {
+            "reaction": {
+              "event": "groundAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField",
+              "flyToPos": {
+                "speed": 550.0,
+                "dist": -1.0,
+                "minAlt": 100.0,
+                "destType": "battleField"
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "regularCheck",
+              "recalculateTree": []
+            }
+          },
+          {
+            "ifThenElse": {
+              "findLeader": [],
+              "followTarget": {
+                "offsetFromBot": false,
+                "useTarget": false,
+                "offset": [0.0,600.0,0.0]
+              },
+              "sequencer": {
+                "setControls": {
+                  "controls": "flaps",
+                  "setTo": 0.0,
+                  "timeTo": 0.0
+                },
+                "orbitHere": {
+                  "speed": 250.0,
+                  "alt": 600.0
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "selector": [
+      {
+        "name": "carrierDiveBomber"
+      },
+      {
+        "selectStrategy": "ordered"
+      },
+      {
+        "selector": [
+          {
+            "selectStrategy": "ordered"
+          },
+          {
+            "name": "taxi_and_takeoff"
+          },
+          {
+            "reaction": {
+              "event": "groundAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead"
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField"
+            }
+          },
+          {
+            "sequencer": {
+              "isOnAirfield": [],
+              "findClosestAirfield": [],
+              "waitForAirfieldClearance": [],
+              "taxiOnAirfield": [],
+              "takeoff": []
+            }
+          },
+          {
+            "waitOnLand": []
+          }
+        ]
+      },
+      {
+        "sequencer": [
+          {
+            "repeat": true
+          },
+          {
+            "reaction": {
+              "event": "groundAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField",
+              "flyToPos": {
+                "speed": 550.0,
+                "dist": -1.0,
+                "minAlt": 100.0,
+                "destType": "battleField"
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "regularCheck",
+              "recalculateTree": []
+            }
+          },
+          {
+            "selector": [
+              {
+                "selectStrategy": "ordered"
+              },
+              {
+                "selectOnSuccess": true
+              },
+              {
+                "sequencer": {
+                  "hasWeaponTypes": {
+                    "weaponType": "bombs"
+                  },
+                  "updateHostThreat": {
+                    "targetType": "ship",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
+                  }
+                }
+              },
+              {
+                "sequencer": {
+                  "hasWeaponTypes": [
+                    {
+                      "weaponType": "cannons"
+                    },
+                    {
+                      "weaponType": "rockets"
+                    }
+                  ],
+                  "updateHostThreat": {
+                    "targetType": "boat",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "selector": [
+              {
+                "selectStrategy": "ordered"
+              },
+              {
+                "sequencer": {
+                  "isTargetType": {
+                    "type": "bigShip"
+                  },
+                  "diveBombTarget": {
+                    "fireMode": "salvo"
+                  }
+                }
+              },
+              {
+                "sequencer": {
+                  "isTargetType": {
+                    "type": "smallShip"
+                  },
+                  "selector": {
+                    "selectStrategy": "ordered",
+                    "diveBombTarget": {
+                      "fireMode": "salvo"
+                    },
+                    "fighterAttackGround": {
+                      "fireMode": "salvo"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sequencer": [
+          {
+            "reaction": {
+              "event": "groundAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "collisionAhead",
+              "parallel": {
+                "turnToEvasiveDir": [],
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "outsideBattleField",
+              "flyToPos": {
+                "speed": 550.0,
+                "dist": -1.0,
+                "minAlt": 100.0,
+                "destType": "battleField"
+              }
+            }
+          },
+          {
+            "reaction": {
+              "event": "regularCheck",
+              "recalculateTree": []
+            }
+          },
+          {
+            "ifThenElse": {
+              "findLeader": [],
+              "followTarget": {
+                "offsetFromBot": false,
+                "useTarget": false,
+                "offset": [0.0,600.0,0.0]
+              },
+              "sequencer": {
+                "setControls": {
+                  "controls": "flaps",
+                  "setTo": 0.0,
+                  "timeTo": 0.0
+                },
+                "orbitHere": {
+                  "speed": 250.0,
+                  "alt": 600.0
+                }
+              }
+            }
+          }
+        ]
       }
     ]
   }

@@ -1,4 +1,4 @@
-local isExperimentalCameraTrack = @() ::get_settings_blk()?.debug?.experimentalCameraTrack ?? false
+let isExperimentalCameraTrack = @() ::get_settings_blk()?.debug?.experimentalCameraTrack ?? false
 
 return [
   {

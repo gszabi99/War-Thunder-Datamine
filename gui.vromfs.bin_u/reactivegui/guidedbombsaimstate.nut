@@ -1,6 +1,6 @@
-local interopGen = require("interopGen.nut")
+let interopGen = require("interopGen.nut")
 
-local guidedBombsAimState = {
+let guidedBombsAimState = {
   TrackerX = Watched(0.0)
   TrackerY = Watched(0.0)
   TrackerSize = Watched(0.0)

@@ -1,12 +1,12 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local time = require("scripts/time.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
 
 
-class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.MRoomMembersWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = null
-  sceneTplName = "gui/mpLobby/mRoomMembersWnd"
+  sceneTplName = "%gui/mpLobby/mRoomMembersWnd"
 
   room = null
 
@@ -21,11 +21,11 @@ class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSceneTplView()
   {
-    local view = {
+    let view = {
       maxRows = getMaxTeamSize()
     }
 
-    local mgm = ::SessionLobby.getMGameMode(room)
+    let mgm = ::SessionLobby.getMGameMode(room)
     if (mgm)
       view.headerData <- {
         difficultyImage = ::events.getDifficultyImg(mgm.name)
@@ -71,25 +71,25 @@ class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTeamsHeader()
   {
-    local headerNest = scene.findObject("teams_header")
+    let headerNest = scene.findObject("teams_header")
 
-    local countTbl = ::SessionLobby.getMembersCountByTeams(room)
-    local countTblReady = ::SessionLobby.getMembersCountByTeams(room, true)
+    let countTbl = ::SessionLobby.getMembersCountByTeams(room)
+    let countTblReady = ::SessionLobby.getMembersCountByTeams(room, true)
     foreach(team in teams)
     {
-      local teamObj = headerNest.findObject("num_team" + team.id)
+      let teamObj = headerNest.findObject("num_team" + team.id)
       if (!::check_obj(teamObj))
         continue
 
       local locId = "multiplayer/teamPlayers"
-      local locParams = {
+      let locParams = {
         players = countTblReady[team.code]
         maxPlayers = getMaxTeamSize()
         unready = countTbl[team.code] - countTblReady[team.code]
       }
       if (locParams.unready)
         locId = "multiplayer/teamPlayers/hasUnready"
-      local text = ::loc(locId, locParams)
+      let text = ::loc(locId, locParams)
       teamObj.setValue(text)
     }
 
@@ -98,20 +98,20 @@ class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMaxTeamSize()
   {
-    local mgm = ::SessionLobby.getMGameMode(room)
+    let mgm = ::SessionLobby.getMGameMode(room)
     return mgm ? ::events.getMaxTeamSize(mgm) : ::SessionLobby.getMaxMembersCount(room) / 2
   }
 
   function initRoomTimer()
   {
-    local timerObj = scene.findObject("event_time")
+    let timerObj = scene.findObject("event_time")
     SecondsUpdater(timerObj, ::Callback(function(obj, params)
     {
       local text = ""
-      local startTime = ::SessionLobby.getRoomSessionStartTime(room)
+      let startTime = ::SessionLobby.getRoomSessionStartTime(room)
       if (startTime > 0)
       {
-        local secToStart = startTime - ::get_matching_server_time()
+        let secToStart = startTime - ::get_matching_server_time()
         if (secToStart <= 0)
           text = ::loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
         else
@@ -123,11 +123,11 @@ class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function setFullRoomInfo()
   {
-    local roomInfo = ::g_mroom_info.get(room.roomId)
+    let roomInfo = ::g_mroom_info.get(room.roomId)
     if (roomInfo.isRoomDestroyed)
       return goBack()
 
-    local fullRoom = roomInfo.getFullRoomData()
+    let fullRoom = roomInfo.getFullRoomData()
     if (fullRoom)
       room = fullRoom
   }
@@ -157,8 +157,8 @@ class ::gui_handlers.MRoomMembersWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!playersListWidgetWeak)
       return
 
-    local player = playersListWidgetWeak.getSelectedPlayer()
-    local pos = playersListWidgetWeak.getSelectedRowPos()
+    let player = playersListWidgetWeak.getSelectedPlayer()
+    let pos = playersListWidgetWeak.getSelectedRowPos()
     ::session_player_rmenu(this, player, null, pos)
   }
 

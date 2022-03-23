@@ -1,6 +1,6 @@
-local controlsOperations = require("scripts/controls/controlsOperations.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let controlsOperations = require("%scripts/controls/controlsOperations.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 return [
   {
@@ -269,6 +269,20 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ship_sensor_cue_x"
+    type = CONTROL_TYPE.AXIS
+    checkGroup = ctrlGroups.SHIP
+    checkAssign = false
+    showFunc = @() ::has_feature("RadarTargetCue")
+  }
+  {
+    id = "ship_sensor_cue_y"
+    type = CONTROL_TYPE.AXIS
+    checkGroup = ctrlGroups.SHIP
+    checkAssign = false
+    showFunc = @() ::has_feature("RadarTargetCue")
+  }
+  {
     id = "ship_zoom"
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.SHIP
@@ -447,6 +461,18 @@ return [
   }
   {
     id = "ID_START_SUPPORT_PLANE_SHIP"
+    checkGroup = ctrlGroups.SHIP
+    checkAssign = false
+  }
+  //
+
+
+
+
+
+
+  {
+    id = "ID_CANCEL_SUPPORT_PLANE_FUSE"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
   }

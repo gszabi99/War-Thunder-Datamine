@@ -1,14 +1,14 @@
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 
-class ::gui_handlers.wwObjective extends ::BaseGuiHandler
+::gui_handlers.wwObjective <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "gui/worldWar/worldWarObjectivesInfo"
+  sceneTplName = "%gui/worldWar/worldWarObjectivesInfo"
   sceneBlkName = null
-  objectiveItemTpl = "gui/worldWar/worldWarObjectiveItem"
-  singleOperationTplName = "gui/worldWar/operationString"
+  objectiveItemTpl = "%gui/worldWar/worldWarObjectiveItem"
+  singleOperationTplName = "%gui/worldWar/operationString"
 
   staticBlk = null
   dynamicBlk = null
@@ -46,24 +46,24 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function update()
   {
-    local placeObj = scene.findObject("ww_mission_objectives")
+    let placeObj = scene.findObject("ww_mission_objectives")
     if (!::check_obj(placeObj))
       return
 
     updateObjectivesData()
 
-    local curOperation = getOperationById(::ww_get_operation_id())
-    local unseenIcon = curOperation
+    let curOperation = getOperationById(::ww_get_operation_id())
+    let unseenIcon = curOperation
       ? bhvUnseen.makeConfigStr(SEEN.WW_MAPS_OBJECTIVE, curOperation.getMapId()) : null
-    local objectivesList = getObjectivesList(getObjectivesCount(false))
-    local view = {
+    let objectivesList = getObjectivesList(getObjectivesCount(false))
+    let view = {
       unseenIcon = unseenIcon
       objectiveBlock = getObjectiveBlocksArray()
       reqFullMissionObjectsButton = reqFullMissionObjectsButton
       hiddenObjectives = ::max(objectivesList.primaryCount - getShowMaxObjectivesCount().x, 0)
       hasObjectiveDesc = hasObjectiveDesc
     }
-    local data = ::handyman.renderCached(objectiveItemTpl, view)
+    let data = ::handyman.renderCached(objectiveItemTpl, view)
     guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
@@ -72,9 +72,9 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
     timersArray = []
     foreach (id, dataBlk in staticBlk)
     {
-      local statusBlk = getStatusBlock(dataBlk)
-      local oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
-      local handler = this
+      let statusBlk = getStatusBlock(dataBlk)
+      let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
+      let handler = this
       foreach (param, func in oType.timersArrayByParamName)
         timersArray.extend(func(handler, scene, param, dataBlk, statusBlk, oType, side))
     }
@@ -82,7 +82,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function updateObjectivesData()
   {
-    local objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
@@ -100,8 +100,8 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
     if (checkType)
     {
-      local oType = ::g_ww_objective_type.getTypeByTypeName(objBlock?.type)
-      local isDefender = oType.isDefender(objBlock, ::ww_side_val_to_name(side))
+      let oType = ::g_ww_objective_type.getTypeByTypeName(objBlock?.type)
+      let isDefender = oType.isDefender(objBlock, ::ww_side_val_to_name(side))
 
       if (objBlock?.showOnlyForDefenders)
         return isDefender
@@ -118,36 +118,36 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function getShowMaxObjectivesCount()
   {
-    local winner = ::ww_get_operation_winner()
+    let winner = ::ww_get_operation_winner()
     if (restrictShownObjectives && winner != ::SIDE_NONE)
       return ::Point2(1, 0)
 
-    local objectivesCount = getObjectivesCount()
+    let objectivesCount = getObjectivesCount()
 
     if (!restrictShownObjectives || ::g_world_war.isDebugModeEnabled())
       return objectivesCount
 
-    local guiScene = scene.getScene()
+    let guiScene = scene.getScene()
 
-    local panelObj = guiScene["content_block_1"]
-    local holderObj = panelObj.getParent()
+    let panelObj = guiScene["content_block_1"]
+    let holderObj = panelObj.getParent()
 
-    local busyHeight = holderObj.findObject("operation_info").getSize()[1]
+    let busyHeight = holderObj.findObject("operation_info").getSize()[1]
 
-    local content1BlockHeight = guiScene["ww-right-panel"].getSize()[1]
+    let content1BlockHeight = guiScene["ww-right-panel"].getSize()[1]
       - guiScene.calcString("1@content2BlockHeight + 1@content3BlockHeight + 2@framePadding", null)
-    local blockHeight = content1BlockHeight - busyHeight
+    let blockHeight = content1BlockHeight - busyHeight
 
     local headers = 0
     if (objectivesCount.x > 0) headers++
     if (objectivesCount.y > 0) headers++
-    local reservedHeight = guiScene.calcString("1@frameHeaderHeight + " + headers + "@objectiveBlockHeaderHeight", null)
+    let reservedHeight = guiScene.calcString("1@frameHeaderHeight + " + headers + "@objectiveBlockHeaderHeight", null)
 
-    local availObjectivesHeight = blockHeight - reservedHeight
+    let availObjectivesHeight = blockHeight - reservedHeight
 
-    local singleObjectiveHeight = guiScene.calcString("1@objectiveHeight", null)
-    local allowObjectives = availObjectivesHeight / singleObjectiveHeight
-    local res = ::Point2(0, 0)
+    let singleObjectiveHeight = guiScene.calcString("1@objectiveHeight", null)
+    let allowObjectives = availObjectivesHeight / singleObjectiveHeight
+    let res = ::Point2(0, 0)
     res.x = ::max(1, ::min(objectivesCount.x, allowObjectives))
     if (allowObjectives > res.x)
       res.y = ::max(1, ::min(objectivesCount.y, allowObjectives))
@@ -156,7 +156,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function getObjectivesCount(checkType = true)
   {
-    local objectivesCount = ::Point2(0,0)
+    let objectivesCount = ::Point2(0,0)
     foreach (block in staticBlk)
       if (canShowObjective(block, checkType))
       {
@@ -184,41 +184,41 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
     if (!restrictShownObjectives)
       return
 
-    local guiScene = scene.getScene()
-    local content1BlockHeight = guiScene["ww-right-panel"].getSize()[1]
+    let guiScene = scene.getScene()
+    let content1BlockHeight = guiScene["ww-right-panel"].getSize()[1]
       - guiScene.calcString("1@content2BlockHeight + 1@content3BlockHeight + 2@framePadding", null)
 
-    local busyHeight = guiScene["operation_info"].getSize()[1]
+    let busyHeight = guiScene["operation_info"].getSize()[1]
 
     local headers = 0
     if (objectivesCount.x > 0) headers++
     if (objectivesCount.y > 0) headers++
 
-    local reservedHeight = guiScene.calcString("1@frameHeaderHeight + "
+    let reservedHeight = guiScene.calcString("1@frameHeaderHeight + "
       + headers + "@objectiveBlockHeaderHeight", null)
-    local objectivesHeight = guiScene.calcString(
+    let objectivesHeight = guiScene.calcString(
       (objectivesCount.x + objectivesCount.y + addRow) + "@objectiveHeight", null)
 
-    local panelObj = guiScene["content_block_1"]
+    let panelObj = guiScene["content_block_1"]
     panelObj.top = content1BlockHeight - busyHeight - reservedHeight - objectivesHeight
   }
 
   function getObjectiveBlocksArray()
   {
-    local availableObjectiveSlots = getShowMaxObjectivesCount()
+    let availableObjectiveSlots = getShowMaxObjectivesCount()
     setTopPosition(availableObjectiveSlots)
 
-    local objectivesList = getObjectivesList(availableObjectiveSlots)
+    let objectivesList = getObjectivesList(availableObjectiveSlots)
 
     local countryIcon = ""
-    local groups = ::g_world_war.getArmyGroupsBySide(side)
+    let groups = ::g_world_war.getArmyGroupsBySide(side)
     if (groups.len() > 0)
       countryIcon = groups[0].getCountryIcon()
 
-    local objectiveBlocks = []
+    let objectiveBlocks = []
     foreach (name in ["primary", "secondary"])
     {
-      local arr = objectivesList[name]
+      let arr = objectivesList[name]
       objectiveBlocks.append({
           id = name,
           isPrimary = name == "primary"
@@ -249,16 +249,16 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
       primaryCount = 0
     }
 
-    local statusBlk = getAFKStatusBlock()
+    let statusBlk = getAFKStatusBlock()
     list.primary = statusBlk ? [statusBlk] : []
     list.primaryCount = list.primary.len()
     if(list.primaryCount)
       return list
 
-    local usedObjectiveSlots = ::Point2(0,0)
+    let usedObjectiveSlots = ::Point2(0,0)
     for (local i = 0; i < staticBlk.blockCount(); i++)
     {
-      local objBlock = staticBlk.getBlock(i)
+      let objBlock = staticBlk.getBlock(i)
       if (!canShowObjective(objBlock, checkType, true))
         continue
 
@@ -306,7 +306,7 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function onEventWWLoadOperation(params)
   {
-    local objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
@@ -344,9 +344,9 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
     foreach (objectiveBlk in staticBlk)
       if (canShowObjective(objectiveBlk, true))
       {
-        local statusBlock = getStatusBlock(objectiveBlk)
-        local oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
-        local sideEnumVal = ::ww_side_val_to_name(side)
+        let statusBlock = getStatusBlock(objectiveBlk)
+        let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
+        let sideEnumVal = ::ww_side_val_to_name(side)
 
         reinforcementSpeedup += oType.getReinforcementSpeedupPercent(objectiveBlk, statusBlock, sideEnumVal)
       }
@@ -356,26 +356,26 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function updateDynamicDataBlock(objectiveBlk)
   {
-    local objectiveBlockId = objectiveBlk.getBlockName()
-    local statusBlock = getStatusBlock(objectiveBlk)
+    let objectiveBlockId = objectiveBlk.getBlockName()
+    let statusBlock = getStatusBlock(objectiveBlk)
 
-    local oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
-    local sideEnumVal = ::ww_side_val_to_name(side)
-    local result = oType.getUpdatableParamsArray(objectiveBlk, statusBlock, sideEnumVal)
-    local zones = oType.getUpdatableZonesParams(objectiveBlk, statusBlock, sideEnumVal)
+    let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
+    let sideEnumVal = ::ww_side_val_to_name(side)
+    let result = oType.getUpdatableParamsArray(objectiveBlk, statusBlock, sideEnumVal)
+    let zones = oType.getUpdatableZonesParams(objectiveBlk, statusBlock, sideEnumVal)
 
-    local objectiveObj = scene.findObject(objectiveBlockId)
+    let objectiveObj = scene.findObject(objectiveBlockId)
     if (!::checkObj(objectiveObj))
       return
 
-    local statusType = oType.getObjectiveStatus(statusBlock?.winner, sideEnumVal)
+    let statusType = oType.getObjectiveStatus(statusBlock?.winner, sideEnumVal)
     objectiveObj.status = statusType.name
 
-    local imageObj = objectiveObj.findObject("statusImg")
+    let imageObj = objectiveObj.findObject("statusImg")
     if (::checkObj(imageObj))
       imageObj["background-image"] = statusType.wwMissionObjImg
 
-    local titleObj = objectiveObj.findObject(oType.getNameId(objectiveBlk, side))
+    let titleObj = objectiveObj.findObject(oType.getNameId(objectiveBlk, side))
     if (::checkObj(titleObj))
       titleObj.setValue(oType.getName(objectiveBlk, statusBlock, sideEnumVal))
 
@@ -384,14 +384,14 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
       if (!("id" in block))
         continue
 
-      local updatableParamObj = objectiveObj.findObject(block.id)
+      let updatableParamObj = objectiveObj.findObject(block.id)
       if (!::checkObj(updatableParamObj))
         continue
 
       foreach (textId in ["pName", "pValue"])
         if (textId in block)
         {
-          local nameObj = updatableParamObj.findObject(textId)
+          let nameObj = updatableParamObj.findObject(textId)
           if (::checkObj(nameObj))
             nameObj.setValue(block[textId])
         }
@@ -403,15 +403,15 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
     if (zones.len())
       foreach(zone in zones)
       {
-        local zoneObj = objectiveObj.findObject(zone.id)
+        let zoneObj = objectiveObj.findObject(zone.id)
         if (::checkObj(zoneObj))
           zoneObj.team = zone.team
       }
 
-    local descObj = objectiveObj.findObject("updatable_data_text")
+    let descObj = objectiveObj.findObject("updatable_data_text")
     if (::check_obj(descObj))
     {
-      local text = oType.getUpdatableParamsDescriptionText(objectiveBlk, statusBlock, sideEnumVal)
+      let text = oType.getUpdatableParamsDescriptionText(objectiveBlk, statusBlock, sideEnumVal)
       descObj.setValue(text)
     }
   }
@@ -428,10 +428,10 @@ class ::gui_handlers.wwObjective extends ::BaseGuiHandler
 
   function onHoverName(obj)
   {
-    local zonesList = []
+    let zonesList = []
     for (local i = 0; i < obj.childrenCount(); i++)
     {
-      local zoneObj = obj.getChild(i)
+      let zoneObj = obj.getChild(i)
       if (!::checkObj(zoneObj))
         continue
 

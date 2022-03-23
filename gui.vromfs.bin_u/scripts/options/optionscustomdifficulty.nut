@@ -1,10 +1,10 @@
-local { isGameModeCoop, isGameModeVersus } = require("scripts/matchingRooms/matchingGameModesUtils.nut")
+let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
-class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.GenericOptionsModal
+::gui_handlers.OptionsCustomDifficultyModal <- class extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/options/genericOptionsModal.blk"
+  sceneBlkName = "%gui/options/genericOptionsModal.blk"
   titleText = ::loc("profile/difficulty")
 
   options = null
@@ -24,7 +24,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
 
   function reinitScreen()
   {
-    local optListObj = scene.findObject(currentContainerName)
+    let optListObj = scene.findObject(currentContainerName)
     if (!::checkObj(optListObj))
       return
     options = ::get_custom_difficulty_options()
@@ -32,8 +32,8 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
     ignoreUiCallbacks = true
     foreach (o in options)
     {
-      local option = ::get_option(o[0])
-      local obj = optListObj.findObject(option.id)
+      let option = ::get_option(o[0])
+      let obj = optListObj.findObject(option.id)
       if (option.controlType == optionControlType.LIST && option.values[option.value] != getCdOption(option.type))
         ::dagor.assertf(false, "[ERROR] Custom difficulty param " + option.type + " (" + option.id + ") value '" + getCdOption(option.type) + "' is out of range.")
       if (::checkObj(obj))
@@ -83,10 +83,10 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
   {
     curBaseDifficulty = getCdBaseDifficulty()
 
-    local obj = scene.findObject("info_text_top")
+    let obj = scene.findObject("info_text_top")
     if (!::checkObj(obj))
       return
-    local text = ::loc("customdiff/value") + ::loc("difficulty" + curBaseDifficulty)
+    let text = ::loc("customdiff/value") + ::loc("difficulty" + curBaseDifficulty)
     obj.setValue(text)
   }
 
@@ -108,7 +108,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
   {
     if (ignoreUiCallbacks)
       return
-    local option = get_option_by_id(obj.id)
+    let option = get_option_by_id(obj.id)
     if (!option)
       return
     ::set_option(option.type, obj.getValue(), option)
@@ -126,14 +126,14 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
       return
     }
 
-    local option = ::get_option(::USEROPT_DIFFICULTY)
-    local menu = { handler = this, actions = [] }
+    let option = ::get_option(::USEROPT_DIFFICULTY)
+    let menu = { handler = this, actions = [] }
     for (local i = 0; i < option.items.len(); i++)
     {
       if (option.diffCode[i] == ::DIFFICULTY_CUSTOM)
         continue
-      local difficulty = ::g_difficulty.getDifficultyByDiffCode(option.diffCode[i])
-      local cdPresetValue = difficulty.cdPresetValue
+      let difficulty = ::g_difficulty.getDifficultyByDiffCode(option.diffCode[i])
+      let cdPresetValue = difficulty.cdPresetValue
       menu.actions.append({
         actionName  = option.values[i]
         text        = option.items[i]
@@ -158,8 +158,8 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
 
 ::get_custom_difficulty_options <- function get_custom_difficulty_options()
 {
-  local gm = ::get_game_mode()
-  local canChangeTpsViews = isGameModeCoop(gm) || isGameModeVersus(gm) || gm == ::GM_TEST_FLIGHT
+  let gm = ::get_game_mode()
+  let canChangeTpsViews = isGameModeCoop(gm) || isGameModeVersus(gm) || gm == ::GM_TEST_FLIGHT
 
   return [
       [::USEROPT_CD_ENGINE],
@@ -201,7 +201,7 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
   dagor.debug("gui_start_cd_options called")
   if (::SessionLobby.isInRoom())
   {
-    local curDiff = ::SessionLobby.getMissionParam("custDifficulty", null)
+    let curDiff = ::SessionLobby.getMissionParam("custDifficulty", null)
     if (curDiff)
       ::set_cd_preset(curDiff)
   }
@@ -214,15 +214,15 @@ class ::gui_handlers.OptionsCustomDifficultyModal extends ::gui_handlers.Generic
 
 ::get_custom_difficulty_tooltip_text <- function get_custom_difficulty_tooltip_text(custDifficulty)
 {
-  local wasDiff = ::get_cd_preset(::DIFFICULTY_CUSTOM)
+  let wasDiff = ::get_cd_preset(::DIFFICULTY_CUSTOM)
   ::set_cd_preset(custDifficulty)
 
   local text = ""
-  local options = ::get_custom_difficulty_options()
+  let options = ::get_custom_difficulty_options()
   foreach(o in options)
   {
-    local opt = get_option(o[0])
-    local valueText = opt.items ?
+    let opt = get_option(o[0])
+    let valueText = opt.items ?
       ::loc(opt.items[opt.value]) :
       ::loc(opt.value ? "options/yes" : "options/no")
     text += (text!="")? "\n" : ""

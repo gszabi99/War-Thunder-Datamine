@@ -1,10 +1,10 @@
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwCommanders <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "gui/worldWar/worldWarCommandersInfo"
+  sceneTplName = "%gui/worldWar/worldWarCommandersInfo"
   sceneBlkName = null
 
   groupsHandlers = null
@@ -31,31 +31,31 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
 
   function getGroupsArray()
   {
-    local groupsView = []
+    let groupsView = []
     local useSwitchMode = false
-    local view = { items = [] }
-    local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+    let view = { items = [] }
+    let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
     groupsHandlers = []
     foreach(side in ::g_world_war.getSidesOrder())
     {
-      local groups = ::g_world_war.getArmyGroupsBySide(side)
+      let groups = ::g_world_war.getArmyGroupsBySide(side)
       if (groups.len() == 0)
         continue
 
       local myClanGroupView = null
-      local sideGroupsView = []
-      local armyCountry = []
-      local myClanId = ::clan_get_my_clan_id()
+      let sideGroupsView = []
+      let armyCountry = []
+      let myClanId = ::clan_get_my_clan_id()
       foreach (idx, group in groups)
       {
-        local country = group.getArmyCountry()
+        let country = group.getArmyCountry()
         if (!::isInArray(country, armyCountry))
           armyCountry.append(country)
 
-        local groupHandler = ::WwArmyGroupHandler(scene, group)
+        let groupHandler = ::WwArmyGroupHandler(scene, group)
         groupsHandlers.append(groupHandler)
 
-        local groupView = group.getView()
+        let groupView = group.getView()
         if (group.getClanId() == myClanId)
           myClanGroupView = groupView
         else
@@ -65,17 +65,17 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
       if (myClanGroupView)
         sideGroupsView.insert(0, myClanGroupView)
 
-      local selected = ::ww_get_player_side() == side
+      let selected = ::ww_get_player_side() == side
       useSwitchMode = useSwitchMode || sideGroupsView.len() > groupsInColumnMax
 
-      local countryFlagsList = armyCountry.map(@(country) {
+      let countryFlagsList = armyCountry.map(@(country) {
         image = getCustomViewCountryData(country, mapName).icon
       })
 
       local teamText = ::loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
       if (armyCountry.len() > 1)
       {
-        local postfix = ::ww_get_player_side() == side? "allies" : "enemies"
+        let postfix = ::ww_get_player_side() == side? "allies" : "enemies"
         teamText = ::loc("worldWar/side/" + postfix)
       }
 
@@ -102,7 +102,7 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
       checkMyArmy = true
       groupsNum = groupsView.len()
       useSwitchMode = useSwitchMode
-      switchBoxItems = ::handyman.renderCached("gui/commonParts/shopFilter", view)
+      switchBoxItems = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
     }
   }
 
@@ -111,14 +111,14 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(obj))
       return
 
-    local placeObj = getObj("switch_mode_items_place")
+    let placeObj = getObj("switch_mode_items_place")
     if (!::checkObj(placeObj))
       return
 
-    local side = obj.getValue() + 1
+    let side = obj.getValue() + 1
     foreach (groupHandler in groupsHandlers)
     {
-      local viewObj = placeObj.findObject(groupHandler.group.getView().getId())
+      let viewObj = placeObj.findObject(groupHandler.group.getView().getId())
       if (!::checkObj(viewObj))
         return
 
@@ -128,9 +128,9 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
 
   function onHoverArmyItem(obj)
   {
-    local clanId = obj.clanId
-    local groups = ::g_world_war.getArmyGroups((@(clanId) function(group) { return group.clanId == clanId })(clanId))
-    local groupArmyNames = []
+    let clanId = obj.clanId
+    let groups = ::g_world_war.getArmyGroups((@(clanId) function(group) { return group.clanId == clanId })(clanId))
+    let groupArmyNames = []
     foreach (group in groups)
       groupArmyNames.extend(::ww_get_armies_names_of_armygroup({
         side         = ::ww_side_val_to_name(group.owner.side)
@@ -152,8 +152,8 @@ class ::gui_handlers.WwCommanders extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventWWArmyManagersInfoUpdated(p)
   {
-    local view = getSceneTplView()
-    local data = ::handyman.renderCached(sceneTplName, view)
+    let view = getSceneTplView()
+    let data = ::handyman.renderCached(sceneTplName, view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
   }
 }

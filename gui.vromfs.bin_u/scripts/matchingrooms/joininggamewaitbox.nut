@@ -1,9 +1,9 @@
-local lobbyStates = require("scripts/matchingRooms/lobbyStates.nut")
+let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
-class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/msgBox.blk"
+  sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 30
   timer = -1
 
@@ -32,7 +32,7 @@ class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
     resetTimer() //statusChanged
     checkGameMode()
 
-    local misData = ::SessionLobby.getMissionParams()
+    let misData = ::SessionLobby.getMissionParams()
     local msg = ::loc("wait/sessionJoin")
     if (::SessionLobby.status == lobbyStates.UPLOAD_CONTENT)
       msg = ::loc("wait/sessionUpload")
@@ -48,7 +48,7 @@ class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
     local gameModeName = ::get_cur_game_mode_name()
     if (gameModeName == "domination")
     {
-      local event = ::SessionLobby.getRoomEvent()
+      let event = ::SessionLobby.getRoomEvent()
       if (event == null)
         return ""
 
@@ -62,13 +62,13 @@ class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (::get_game_mode() == ::GM_DOMINATION)
     {
-      local event = ::SessionLobby.getRoomEvent()
+      let event = ::SessionLobby.getRoomEvent()
       if (event)
         return ::events.getEventNameText(event)
     }
     else
     {
-      local misName = ::SessionLobby.getMissionNameLoc()
+      let misName = ::SessionLobby.getMissionNameLoc()
       if (misName != "")
         return misName
     }
@@ -77,8 +77,8 @@ class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkGameMode()
   {
-    local gm = ::SessionLobby.getGameMode()
-    local curGm = ::get_game_mode()
+    let gm = ::SessionLobby.getGameMode()
+    let curGm = ::get_game_mode()
     if (gm < 0 || curGm==gm)
       return
 
@@ -89,7 +89,7 @@ class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
 
   function showCancelButton(show)
   {
-    local btnId = "btn_cancel"
+    let btnId = "btn_cancel"
     local obj = scene.findObject(btnId)
     if (obj)
     {
@@ -102,10 +102,10 @@ class ::gui_handlers.JoiningGameWaitBox extends ::gui_handlers.BaseGuiHandlerWT
     if (!show)
       return
 
-    local data = format(
+    let data = format(
       "Button_text{id:t='%s'; btnName:t='AB'; text:t='#msgbox/btn_cancel'; on_click:t='onCancel'}",
       btnId)
-    local holderObj = scene.findObject("buttons_holder")
+    let holderObj = scene.findObject("buttons_holder")
     if (!holderObj)
       return
 

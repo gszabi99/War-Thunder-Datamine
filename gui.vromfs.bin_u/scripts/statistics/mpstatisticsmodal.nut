@@ -1,9 +1,9 @@
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 {
-  sceneBlkName = "gui/mpStatistics.blk"
-  sceneNavBlkName = "gui/navMpStat.blk"
+  sceneBlkName = "%gui/mpStatistics.blk"
+  sceneNavBlkName = "%gui/navMpStat.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   keepLoaded = true
 
@@ -24,7 +24,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     isSpectate = false
     isTeam  = true
 
-    local tblObj1 = scene.findObject("table_kills_team1")
+    let tblObj1 = scene.findObject("table_kills_team1")
     if (tblObj1.childrenCount() == 0)
       initStats()
 
@@ -52,7 +52,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     updateStats()
 
     showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
-    local ordersButton = scene.findObject("btn_activateorder")
+    let ordersButton = scene.findObject("btn_activateorder")
     if (::checkObj(ordersButton))
     {
       ordersButton.setUserData(this)
@@ -80,7 +80,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
   function onUpdate(obj, dt)
   {
-    local timeLeft = ::get_multiplayer_time_left()
+    let timeLeft = ::get_multiplayer_time_left()
     local timeDif = wasTimeLeft - timeLeft
     if (timeDif < 0)
       timeDif = -timeDif
@@ -119,7 +119,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
       return
     }
 
-    local text = ::loc("flightmenu/questionQuitMission")
+    let text = ::loc("flightmenu/questionQuitMission")
     msgBox("question_quit_mission", text,
       [
         ["yes", function()
@@ -145,25 +145,25 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
   }
 
   function updateMissionResultText(eventData = null) {
-    local resultIdx = ::get_mission_status()
+    let resultIdx = ::get_mission_status()
     if (resultIdx != ::MISSION_STATUS_SUCCESS && resultIdx != ::MISSION_STATUS_FAIL)
       return
 
-    local view = {
+    let view = {
       text = ::loc(resultIdx == ::MISSION_STATUS_SUCCESS ? "MISSION_SUCCESS" : "MISSION_FAIL")
       resultIdx = resultIdx
       useMoveOut = true
     }
 
-    local nest = scene.findObject("mission_result_nest")
-    local needShowAnimation = !nest.isVisible()
+    let nest = scene.findObject("mission_result_nest")
+    let needShowAnimation = !nest.isVisible()
     nest.show(true)
     if (!needShowAnimation)
       return
 
-    local blk = ::handyman.renderCached("gui/hud/messageStack/missionResultMessage", view)
+    let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage", view)
     guiScene.replaceContentFromText(nest, blk, blk.len(), this)
-    local objTarget = nest.findObject("mission_result_box")
+    let objTarget = nest.findObject("mission_result_box")
     objTarget.show(true)
     ::create_ObjMoveToOBj(scene, scene.findObject("mission_result_box_start"),
       objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
@@ -171,3 +171,11 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 }
 
 ::gui_handlers.MPStatisticsModal <- MPStatisticsModal
+
+::is_mpstatscreen_active <- function is_mpstatscreen_active() // used from native code
+{
+  if (!::g_login.isLoggedIn())
+    return false
+  let curHandler = ::handlersManager.getActiveBaseHandler()
+  return curHandler != null && (curHandler instanceof ::gui_handlers.MPStatisticsModal)
+}

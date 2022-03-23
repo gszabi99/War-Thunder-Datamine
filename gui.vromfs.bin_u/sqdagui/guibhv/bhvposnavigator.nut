@@ -1,5 +1,5 @@
-local { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
-} = require("sqDagui/guiBhv/guiBhvUtils.nut")
+let { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
+} = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
 const DEF_HOLD_DELAY = 700 //same with bhvButton
 
@@ -7,7 +7,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 //  value
 //  moveX, moveY  =  "linear", "closest"  (default = "closest")
 
-class gui_bhv.posNavigator
+::gui_bhv.posNavigator <- class
 {
   bhvId = "posNavigator"
   eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_DBL_CLICK
@@ -62,7 +62,7 @@ class gui_bhv.posNavigator
       resetFixedCoord(obj)
     }
 
-    local selObj = getChildObj(obj, getSelectedValue(obj))
+    let selObj = getChildObj(obj, getSelectedValue(obj))
     if (selObj && selObj.isValid())
       selObj.markObjChanged()
 
@@ -104,15 +104,15 @@ class gui_bhv.posNavigator
 
   function getMiddleCoords(obj)
   {
-    local pos = obj.getPos()
-    local size = obj.getSize()
+    let pos = obj.getPos()
+    let size = obj.getSize()
     return [pos[0] + 0.5*size[0], pos[1] + 0.5*size[1]]
   }
 
   function getClosestCoords(obj, point)
   {
-    local pos = obj.getPos()
-    local size = obj.getSize()
+    let pos = obj.getPos()
+    let size = obj.getSize()
     return [clamp(point[0], pos[0], pos[0] + (size[0] < 0 ? 0 : size[0]))
             clamp(point[1], pos[1], pos[1] + (size[1] < 0 ? 0 : size[1]))
            ]
@@ -120,17 +120,17 @@ class gui_bhv.posNavigator
 
   function selectCurItem(obj)
   {
-    local byHover = isOnlyHover(obj)
-    local value = byHover ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)
-    local valObj = getChildObj(obj, value)
+    let byHover = isOnlyHover(obj)
+    let value = byHover ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)
+    let valObj = getChildObj(obj, value)
     if (valObj && isSelectable(valObj) && selectItem(obj, value, valObj, false, true))
       return
 
-    local coords = valObj? getMiddleCoords(valObj)
+    let coords = valObj? getMiddleCoords(valObj)
       : byHover ? ::get_dagui_mouse_cursor_pos_RC()
       : obj.getPos()
 
-    local { foundObj, foundIdx } = getClosestItem(obj, coords)
+    let { foundObj, foundIdx } = getClosestItem(obj, coords)
     if (foundObj)
       selectItem(obj, foundIdx, foundObj, false, true)
   }
@@ -143,7 +143,7 @@ class gui_bhv.posNavigator
   function eachSelectable(obj, handler) {
     for(local i = 0; i < obj.childrenCount(); i++)
     {
-      local cObj = obj.getChild(i)
+      let cObj = obj.getChild(i)
       if (isSelectable(cObj))
         if (handler(cObj, i))
           break
@@ -156,8 +156,8 @@ class gui_bhv.posNavigator
     local foundIdx = -1
     local sqDist = -1
     eachSelectable(obj, function(cObj, i) {
-      local coords2 = getClosestCoords(cObj, coords)
-      local cSqDist = (coords[0]-coords2[0])*(coords[0]-coords2[0]) + (coords[1]-coords2[1])*(coords[1]-coords2[1])
+      let coords2 = getClosestCoords(cObj, coords)
+      let cSqDist = (coords[0]-coords2[0])*(coords[0]-coords2[0]) + (coords[1]-coords2[1])*(coords[1]-coords2[1])
       if (sqDist < 0 || cSqDist < sqDist)
       {
         foundObj = cObj
@@ -171,7 +171,7 @@ class gui_bhv.posNavigator
 
   function selectItem(obj, idx, idxObj = null, needSound = true, needSetMouse = false)
   {
-    local canSelectNone = getCanSelectNone(obj)
+    let canSelectNone = getCanSelectNone(obj)
 
     if (!idxObj)
       idxObj = getChildObj(obj, idx)
@@ -179,7 +179,7 @@ class gui_bhv.posNavigator
       return false
 
     local needNotify = false
-    local prevIdx = getSelectedValue(obj)
+    let prevIdx = getSelectedValue(obj)
 
     if(canSelectNone && prevIdx==idx)
     {
@@ -192,7 +192,7 @@ class gui_bhv.posNavigator
     if (prevIdx!=idx || canSelectNone)
     {
       needNotify = true
-      local prevObj = getChildObj(obj, prevIdx)
+      let prevObj = getChildObj(obj, prevIdx)
       setChildSelected(obj, prevObj, false)
     }
 
@@ -242,10 +242,10 @@ class gui_bhv.posNavigator
       return ::RETCODE_HALT
     }
 
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
+    let wasHoldStarted = onActivateUnpushed(obj)
     if ((!wasHoldStarted || needActionAfterHold(obj)) && getValue(obj) == pushedIdx)
       activateAction(obj)
     return ::RETCODE_HALT
@@ -255,8 +255,8 @@ class gui_bhv.posNavigator
   {
     local res = null
     eachSelectable(obj, function(iObj, i) {
-      local pos = iObj.getPos()
-      local size = iObj.getSize()
+      let pos = iObj.getPos()
+      let size = iObj.getSize()
       if (mx >= pos[0] && mx <= pos[0]+size[0] && my >= pos[1] && my <= pos[1]+size[1])
         res = { idx = i, obj = iObj }
       return res != null
@@ -265,7 +265,7 @@ class gui_bhv.posNavigator
   }
 
   function selectItemByClick(obj, mx, my) {
-    local clicked = findClickedObj(obj, mx, my)
+    let clicked = findClickedObj(obj, mx, my)
     if (!clicked)
       return -1
 
@@ -279,10 +279,10 @@ class gui_bhv.posNavigator
 
   function onLMouse(obj, mx, my, is_up, bits) {
     if (!is_up) {
-      local isOnObj = !(bits & (is_up ? ::BITS_MOUSE_OUTSIDE : ::BITS_MOUSE_NOT_ON_OBJ))
+      let isOnObj = !(bits & (is_up ? ::BITS_MOUSE_OUTSIDE : ::BITS_MOUSE_NOT_ON_OBJ))
       if (!isOnObj)
         return ::RETCODE_NOTHING
-      local { idx = -1 } = findClickedObj(obj, mx, my)
+      let { idx = -1 } = findClickedObj(obj, mx, my)
       if (idx < 0)
         return ::RETCODE_NOTHING
 
@@ -295,14 +295,14 @@ class gui_bhv.posNavigator
     if (obj.isMouseCaptured())
       obj.getScene().setProtectedMouseCapture(null)
 
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return ::RETCODE_NOTHING
 
-    local wasHoldStarted = onActivateUnpushed(obj)
+    let wasHoldStarted = onActivateUnpushed(obj)
     if (wasHoldStarted && !needActionAfterHold(obj))
       return ::RETCODE_HALT
-    local { idx = -1 } = findClickedObj(obj, mx, my)
+    let { idx = -1 } = findClickedObj(obj, mx, my)
     if (idx != pushedIdx)
       return ::RETCODE_HALT
 
@@ -371,7 +371,7 @@ class gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    local { hoveredObj, hoveredIdx } = getHoveredChild(obj)
+    let { hoveredObj, hoveredIdx } = getHoveredChild(obj)
     if (is_down) {
       if (hoveredIdx == null)
         return ::RETCODE_NOTHING
@@ -380,10 +380,10 @@ class gui_bhv.posNavigator
       return ::RETCODE_HALT
     }
 
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
+    let wasHoldStarted = onActivateUnpushed(obj)
     if (pushedIdx != hoveredIdx)
       return ::RETCODE_HALT
 
@@ -397,9 +397,9 @@ class gui_bhv.posNavigator
 
   function moveSelect(obj, axis, dir)
   {
-    local valueObj = getHoveredChild(obj).hoveredObj ?? getChildObj(obj, getSelectedValue(obj))
-    local moveType = obj?[axis ? "moveY" : "moveX"]
-    local { foundObj, foundIdx } = moveType == "linear"
+    let valueObj = getHoveredChild(obj).hoveredObj ?? getChildObj(obj, getSelectedValue(obj))
+    let moveType = obj?[axis ? "moveY" : "moveX"]
+    let { foundObj, foundIdx } = moveType == "linear"
       ? moveSelectLinear(obj, valueObj, axis, dir)
       : moveSelectClosest(obj, valueObj, axis, dir)
 
@@ -417,7 +417,7 @@ class gui_bhv.posNavigator
   {
     obj.setIntProp(lastMoveTimeMsecPID, 0)
 
-    local wrapDir = ::g_wrap_dir.getWrapDir(axis == 1, dir > 0)
+    let wrapDir = ::g_wrap_dir.getWrapDir(axis == 1, dir > 0)
     if (!obj.sendSceneEvent(wrapDir.notifyId))
       ::set_dirpad_event_processed(false)
   }
@@ -433,13 +433,13 @@ class gui_bhv.posNavigator
       return newPos
 
     local fixedAxis = -1
-    local timeMsec = ::dagor.getCurTime()
+    let timeMsec = ::dagor.getCurTime()
     if (timeMsec - obj.getIntProp(lastMoveTimeMsecPID, 0) < fixedCoordTimeoutMsec)
       fixedAxis = obj.getIntProp(fixedAxisPID, -1)
     obj.setIntProp(lastMoveTimeMsecPID, timeMsec)
 
-    local objPos = obj.getPos()
-    local coord = obj.getIntProp(fixedCoordPID)
+    let objPos = obj.getPos()
+    let coord = obj.getIntProp(fixedCoordPID)
     if (fixedAxis==axis && coord!=null)
       newPos[1-axis] = coord + objPos[1-axis]
     else
@@ -468,16 +468,16 @@ class gui_bhv.posNavigator
     eachSelectable(obj, function(cObj, i) {
       if (valueObj?.isEqual(cObj))
         return
-      local pos2 = getClosestCoords(cObj, pos)
+      let pos2 = getClosestCoords(cObj, pos)
       if ((pos2[axis] - pos[axis]) * dir <= 0)
         return
 
-      local primOffsetSq = (pos[axis] - pos2[axis]) * (pos[axis] - pos2[axis])
-      local secOffsetSq = (pos[1-axis] - pos2[1-axis]) * (pos[1-axis] - pos2[1-axis])
+      let primOffsetSq = (pos[axis] - pos2[axis]) * (pos[axis] - pos2[axis])
+      let secOffsetSq = (pos[1-axis] - pos2[1-axis]) * (pos[1-axis] - pos2[1-axis])
       if (4 * primOffsetSq < secOffsetSq)  // 60 degrees
         return
 
-      local cSqDist = primOffsetSq + secOffsetSq
+      let cSqDist = primOffsetSq + secOffsetSq
       if (sqDist < 0 || cSqDist < sqDist)
       {
         foundObj = cObj
@@ -490,8 +490,8 @@ class gui_bhv.posNavigator
 
   function getClosestCoordsByAxis(obj, point, axis)
   {
-    local pos = obj.getPos()
-    local size = obj.getSize().map(@(v) max(0, v))
+    let pos = obj.getPos()
+    let size = obj.getSize().map(@(v) max(0, v))
     return getObjCentering(obj)
       .map(@(pointerMul, a) a == axis
         ? clamp(point[a], pos[a], pos[a] + min(1.0, 0.5 + pointerMul) * size[a])
@@ -504,7 +504,7 @@ class gui_bhv.posNavigator
       ? ::get_dagui_mouse_cursor_pos_RC()
       : getMiddleCoords(valueObj)
     pos = checkFixedCoord(obj, axis, pos)
-    local posDiv = valueObj == null
+    let posDiv = valueObj == null
       ? getScreenSizeByAxis(axis)
       : 0.4 * valueObj.getSize()[1-axis]
 
@@ -514,15 +514,15 @@ class gui_bhv.posNavigator
     eachSelectable(obj, function(cObj, i) {
       if (valueObj?.isEqual(cObj))
         return
-      local pos2 = getClosestCoordsByAxis(cObj, pos, 1-axis)
-      local distSubAxis = ::abs(pos[1-axis] - pos2[1-axis])
+      let pos2 = getClosestCoordsByAxis(cObj, pos, 1-axis)
+      let distSubAxis = ::abs(pos[1-axis] - pos2[1-axis])
       if ((pos2[axis] - pos[axis]) * dir <= 0
           || distSubAxis > posDiv)
         return
 
       //we trying to keep choosen line, so distance in other line has much lower priority
-      local distAxis = abs(pos[axis] - pos2[axis])
-      local cDistRating = distAxis + 100 * distSubAxis
+      let distAxis = abs(pos[axis] - pos2[axis])
+      let cDistRating = distAxis + 100 * distSubAxis
       if (distRating < 0 || cDistRating < distRating)
       {
         foundObj = cObj
@@ -549,7 +549,7 @@ class gui_bhv.posNavigator
 
   function clearSelect(obj)
   {
-    local valueObj = getChildObj(obj, getSelectedValue(obj))
+    let valueObj = getChildObj(obj, getSelectedValue(obj))
     setChildSelected(obj, valueObj, false)
   }
 
@@ -576,7 +576,7 @@ class gui_bhv.posNavigator
   function onGamepadMouseFinishMove(obj) {
     if (isOnlyHover(obj))
       return true;
-    local { hoveredObj, hoveredIdx } = getHoveredChild(obj)
+    let { hoveredObj, hoveredIdx } = getHoveredChild(obj)
     if (hoveredObj && getSelectedValue(obj) != hoveredIdx)
       selectItem(obj, hoveredIdx, hoveredObj)
     return true;
@@ -596,7 +596,7 @@ class gui_bhv.posNavigator
     obj.setIntProp(activatePushedIdxPID, -1)
     ::del_script_gui_behaviour_events(bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
 
-    local isHoldFulfilled = obj.sendSceneEvent("hold_stop")
+    let isHoldFulfilled = obj.sendSceneEvent("hold_stop")
     return isHoldFulfilled && obj.getFloatProp(holdTimePID, 0.0) >= getHoldStartDelay(obj)
   }
 
@@ -607,13 +607,13 @@ class gui_bhv.posNavigator
   }
 
   function onTimer(obj, dt) {
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return
 
     local holdTime = obj.getFloatProp(holdTimePID, 0.0)
-    local holdDelay = getHoldStartDelay(obj)
-    local needEvent = holdTime < holdDelay
+    let holdDelay = getHoldStartDelay(obj)
+    let needEvent = holdTime < holdDelay
     holdTime += dt
     obj.setFloatProp(holdTimePID, holdTime)
     if (needEvent && holdTime >= holdDelay)

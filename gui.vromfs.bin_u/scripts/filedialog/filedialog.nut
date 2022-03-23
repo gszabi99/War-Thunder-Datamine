@@ -1,15 +1,15 @@
-local time = require("scripts/time.nut")
-local stdpath = require("std/path.nut")
+let time = require("%scripts/time.nut")
+let stdpath = require("%sqstd/path.nut")
 
-class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   static wndType = handlerType.MODAL
-  static sceneBlkName = "gui/fileDialog/fileDialog.blk"
+  static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 
-  static dirPathPartTemplate    = "gui/fileDialog/dirPath"
-  static fileTableTemplate      = "gui/fileDialog/fileTable"
-  static navItemListTemplate    = "gui/fileDialog/navItemList"
-  static filterSelectTemplate   = "gui/fileDialog/filterSelect"
+  static dirPathPartTemplate    = "%gui/fileDialog/dirPath"
+  static fileTableTemplate      = "%gui/fileDialog/fileTable"
+  static navItemListTemplate    = "%gui/fileDialog/navItemList"
+  static filterSelectTemplate   = "%gui/fileDialog/filterSelect"
 
   static FILEDIALOG_PATH_SETTING_ID = "fileDialog"
 
@@ -133,7 +133,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
       }
       width = "fw"
       getView = function(value) {
-        local text = value != null ? value : ""
+        let text = value != null ? value : ""
         return {
           text = text
           tooltip = text
@@ -178,8 +178,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
       }
       width = "h"
       getView = function(value) {
-        local fileImage = "#ui/gameuiskin#btn_clear_all.svg"
-        local dirImage = "#ui/gameuiskin#btn_load_from_file.svg"
+        let fileImage = "#ui/gameuiskin#btn_clear_all.svg"
+        let dirImage = "#ui/gameuiskin#btn_load_from_file.svg"
         return {
           text = ""
           tooltip = ""
@@ -196,8 +196,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
         if (::getTblValue("isDirectory", file, false))
           return "."
 
-        local filename = file?.name ?? ""
-        local fileExtIdx = ::g_string.lastIndexOf(filename, ".")
+        let filename = file?.name ?? ""
+        let fileExtIdx = ::g_string.lastIndexOf(filename, ".")
         if (fileExtIdx == ::g_string.INVALID_INDEX)
           return null
 
@@ -284,7 +284,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!validatePath(path))
         return []
-      local files = ::find_files_ex(stdpath.join(path, allFilesFilter), maxFiles)
+      let files = ::find_files_ex(stdpath.join(path, allFilesFilter), maxFiles)
       foreach(file in files)
         if ("name" in file)
           file.fullPath <- stdpath.join(path, file.name)
@@ -295,7 +295,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!validatePath(path))
         return null
-      local basename = stdpath.fileName(path)
+      let basename = stdpath.fileName(path)
       local files = ::find_files_ex(path, 1)
       if (files.len() > 0 && ::getTblValue("name", files[0]) == basename)
         return files[0]
@@ -326,7 +326,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     getNavElements = function()
     {
       // Filtering non-existent elements is performed when filling navigation bar
-      local favorites = []
+      let favorites = []
       favorites.append({
         name = "#filesystem/gamePaths"
         childs = [
@@ -339,10 +339,10 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
       if (::is_platform_windows)
       {
-        local disks = {name = "#filesystem/winDiskDrives", childs = []}
+        let disks = {name = "#filesystem/winDiskDrives", childs = []}
         for (local diskChar = 'C' ; diskChar <= 'Z'; diskChar++)
         {
-          local path = diskChar.tochar() + ":"
+          let path = diskChar.tochar() + ":"
           disks.childs.append({path = path})
         }
         favorites.append(disks)
@@ -501,7 +501,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUp()
   {
-    local parentPath = stdpath.parentPath(dirPath)
+    let parentPath = stdpath.parentPath(dirPath)
     if (parentPath != null)
       openDirectory(parentPath)
   }
@@ -515,8 +515,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onOpen()
   {
-    local dirPathObj = getObj("dir_path")
-    local fileNameObj = getObj("file_name")
+    let dirPathObj = getObj("dir_path")
+    let fileNameObj = getObj("file_name")
 
     if (dirPathObj.isFocused())
       onDirPathEditBoxActivate()
@@ -526,7 +526,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     {
       updateSelectedFileName()
 
-      local fullPath = ::getTblValue(fileName, cachedFileFullPathByFileName) ||
+      let fullPath = ::getTblValue(fileName, cachedFileFullPathByFileName) ||
         stdpath.join(dirPath, fileName)
       if (fullPath != "")
         openFileOrDir(fullPath)
@@ -542,8 +542,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onRefresh()
   {
-    local dirPathObj = getObj("dir_path")
-    local path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
+    let dirPathObj = getObj("dir_path")
+    let path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
     openDirectory(path)
     ::move_mouse_on_child_by_value(getObj("file_table"))
   }
@@ -551,8 +551,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDirPathEditBoxActivate()
   {
-    local dirPathObj = getObj("dir_path")
-    local path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
+    let dirPathObj = getObj("dir_path")
+    let path = dirPathObj.isFocused() ? dirPathObj.getValue() : dirPath
     openFileOrDir(path)
     ::move_mouse_on_child_by_value(getObj("file_table"))
   }
@@ -580,8 +580,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onToggleFocusFileName()
   {
-    local fileTableObj = getObj("file_table")
-    local fileNameObj = getObj("file_name")
+    let fileTableObj = getObj("file_table")
+    let fileNameObj = getObj("file_name")
     if (fileNameObj.isHovered())
       ::move_mouse_on_child_by_value(fileTableObj)
     else
@@ -590,8 +590,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onToggleFocusDirPath()
   {
-    local fileTableObj = getObj("file_table")
-    local dirPathObj = getObj("dir_path")
+    let fileTableObj = getObj("file_table")
+    let dirPathObj = getObj("dir_path")
     if (dirPathObj.isHovered())
       ::move_mouse_on_child_by_value(fileTableObj)
     else
@@ -607,15 +607,15 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onNavListSelect(obj)
   {
-    local idx = obj.getValue()
+    let idx = obj.getValue()
     if (idx < 0 || idx >= obj.childrenCount())
       return
 
-    local item = obj.getChild(idx)
+    let item = obj.getChild(idx)
     if (!(item.id in cachedPathByNavItemId))
       return
 
-   local path = cachedPathByNavItemId[item.id]
+   let path = cachedPathByNavItemId[item.id]
    if (path != dirPath)
       openDirectory(path)
   }
@@ -636,8 +636,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFileTableColumnClick(obj)
   {
-    local objId = obj.id
-    local columnName = cachedColumnNameByTableColumnId[objId]
+    let objId = obj.id
+    let columnName = cachedColumnNameByTableColumnId[objId]
     foreach (column in columns)
     {
       if (column.name != columnName)
@@ -661,7 +661,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFilterChange(obj)
   {
-    local idx = obj.getValue()
+    let idx = obj.getValue()
     if (idx < 0 || idx >= obj.childrenCount() || idx >= filters.len())
       return
 
@@ -682,18 +682,21 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     // Add columns used for show and sort
     foreach (columnSourceInfo in columnSources)
     {
-      local source = this[columnSourceInfo.sourceName]
-      foreach (idx, columnInfo in source)
+      let source = this[columnSourceInfo.sourceName]
+      foreach (idx, columnInfoSrc in source)
       {
-        if (::u.isString(columnInfo))
+        local columnInfo
+        if (::u.isString(columnInfoSrc))
         {
-          columnInfo = {column = columnInfo}
+          columnInfo = {column = columnInfoSrc}
           source[idx] = columnInfo
         }
+        else
+          columnInfo = columnInfoSrc
 
         if (::u.isString(columnInfo.column))
         {
-          local columnName = columnInfo.column
+          let columnName = columnInfo.column
           columns[columnName] <- ::getTblValue(columnName, columns, {})
           columnInfo.column = columns[columnName]
         }
@@ -707,7 +710,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
       if (!(columnName in defaultColumns))
         continue
 
-      local defaultColumn = defaultColumns[columnName]
+      let defaultColumn = defaultColumns[columnName]
       if (column == defaultColumn)
         continue
 
@@ -724,11 +727,11 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     // Check required attributes
     foreach (columnSourceInfo in columnSources)
     {
-      local source = this[columnSourceInfo.sourceName]
-      local requiredAttributes = columnSourceInfo.requiredAttributes
+      let source = this[columnSourceInfo.sourceName]
+      let requiredAttributes = columnSourceInfo.requiredAttributes
       foreach (idx, columnInfo in source)
       {
-        local column = columnInfo.column
+        let column = columnInfo.column
         foreach (attr in requiredAttributes)
           if (!(attr in column))
           {
@@ -749,22 +752,22 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSelectedFileName()
   {
-    local fileTableObj = getObj("file_table")
+    let fileTableObj = getObj("file_table")
     if (!fileTableObj)
       return
 
-    local selectedRowIdx = fileTableObj.getValue()
+    let selectedRowIdx = fileTableObj.getValue()
     if (selectedRowIdx < 0 || selectedRowIdx >= fileTableObj.childrenCount())
       return
 
-    local childObj = fileTableObj.getChild(selectedRowIdx)
+    let childObj = fileTableObj.getChild(selectedRowIdx)
     if (!::check_obj(childObj) ||
       !(childObj?.id in cachedFileNameByTableRowId))
       return
 
     fileName = cachedFileNameByTableRowId[childObj.id]
     guiScene.performDelayed(this, updateButtons)
-    local file = readFileInfo(stdpath.join(dirPath, fileName))
+    let file = readFileInfo(stdpath.join(dirPath, fileName))
     if (file && !isDirectory(file))
       fillFileNameObj()
   }
@@ -775,14 +778,14 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (!pathTag)
       return
 
-    local settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
-    local loadBlk = ::load_local_account_settings(settingName)
+    let settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
+    let loadBlk = ::load_local_account_settings(settingName)
     dirPath  = ::getTblValue("dirPath",  loadBlk, dirPath)
     fileName = ::getTblValue("fileName", loadBlk, fileName)
 
     while (!isDirectory(readFileInfo(dirPath)))
     {
-      local parentPath = stdpath.parentPath(dirPath)
+      let parentPath = stdpath.parentPath(dirPath)
       if (!parentPath)
         return
       dirPath = parentPath
@@ -795,8 +798,8 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (!pathTag || dirPath == "")
       return
 
-    local settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
-    local saveBlk = ::DataBlock()
+    let settingName = FILEDIALOG_PATH_SETTING_ID + "/" + pathTag
+    let saveBlk = ::DataBlock()
     saveBlk.dirPath = stdpath.parentPath(path)
     saveBlk.fileName = stdpath.fileName(path)
     ::save_local_account_settings(settingName, saveBlk)
@@ -811,7 +814,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     local shouldUseSaveButton = isSaveFile
     if (shouldUseSaveButton && fileName in cachedFileFullPathByFileName)
     {
-      local file = readFileInfo(cachedFileFullPathByFileName[fileName])
+      let file = readFileInfo(cachedFileFullPathByFileName[fileName])
       shouldUseSaveButton = !isDirectory(file)
     }
     getObj("btn_open").setValue(
@@ -826,11 +829,11 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (shift == 0)
       return
 
-    local isForward = shift > 0
-    local numSteps = ::abs(shift)
+    let isForward = shift > 0
+    let numSteps = ::abs(shift)
 
-    local sourceList = isForward ? dirHistoryAfter : dirHistoryBefore
-    local targetList = isForward ? dirHistoryBefore : dirHistoryAfter
+    let sourceList = isForward ? dirHistoryAfter : dirHistoryBefore
+    let targetList = isForward ? dirHistoryBefore : dirHistoryAfter
 
     rememberSelectedFile()
     for (local stepIdx = 0; stepIdx < numSteps; stepIdx++)
@@ -857,7 +860,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   function openDirectory(path)
   {
     path = stdpath.normalize(path)
-    local file = readFileInfo(path)
+    let file = readFileInfo(path)
     if (isDirectory(file))
     {
       rememberSelectedFile()
@@ -881,7 +884,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   function openFileOrDir(path)
   {
     path = stdpath.normalize(path)
-    local file = readFileInfo(path)
+    let file = readFileInfo(path)
     if (isDirectory(file))
       openDirectory(path)
     else
@@ -889,7 +892,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
       finallySelectedPath = path
       if (isSaveFile)
       {
-        local folderPath = stdpath.parentPath(path)
+        let folderPath = stdpath.parentPath(path)
         if (shouldAskOnRewrite && isExists(file))
           ::scene_msg_box("filesystem_rewrite_msg_box", null,
             ::loc("filesystem/askRewriteFile", {path = path}),
@@ -918,7 +921,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   function rememberSelectedFile()
   {
     local path = ""
-    local pathSegments = stdpath.splitToArray(stdpath.join(dirPath, fileName))
+    let pathSegments = stdpath.splitToArray(stdpath.join(dirPath, fileName))
     for (local j = 0; j < pathSegments.len() - 1; j++)
     {
       path = stdpath.join(path, pathSegments[j])
@@ -929,14 +932,14 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function restoreLastSelectedFile()
   {
-    local fileTableObj = getObj("file_table")
+    let fileTableObj = getObj("file_table")
     if (!fileTableObj)
       return
 
-    local selectedFile = ::getTblValue(dirPath, lastSelectedFileByPath, fileName)
+    let selectedFile = ::getTblValue(dirPath, lastSelectedFileByPath, fileName)
     if (selectedFile in cachedTableRowIdxByFileName)
     {
-      local rowIdx = cachedTableRowIdxByFileName[selectedFile]
+      let rowIdx = cachedTableRowIdxByFileName[selectedFile]
       if (rowIdx >= 0 && rowIdx < fileTableObj.childrenCount())
         fileTableObj.setValue(rowIdx)
       return
@@ -946,7 +949,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function restoreFileName()
   {
-    local fileNameObj = getObj("file_name")
+    let fileNameObj = getObj("file_name")
     if (fileNameObj && fileName == "")
       fileName = fileNameObj.getValue()
   }
@@ -974,11 +977,11 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   isDirPathObjFocused = null
   function fillDirPathObj(forceUpdate = false)
   {
-    local dirPathObj = getObj("dir_path")
+    let dirPathObj = getObj("dir_path")
     if (!dirPathObj)
       return
 
-    local isFocused = dirPathObj.isFocused()
+    let isFocused = dirPathObj.isFocused()
     if (isDirPathObjFilled != null && isDirPathObjFilled == dirPath &&
       isDirPathObjFocused == isFocused && !forceUpdate)
       return
@@ -1001,10 +1004,10 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     else
     {
       dirPathObj.setValue("")
-      local pathParts = stdpath.splitToArray(dirPath)
+      let pathParts = stdpath.splitToArray(dirPath)
 
       cachedPathByPathPartId.clear()
-      local view = {items = []}
+      let view = {items = []}
       local combinedPath = ""
       foreach (idx, pathPart in pathParts)
       {
@@ -1012,7 +1015,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
         if (pathPart == "")
           continue
 
-        local id = "dir_path_part_" + idx
+        let id = "dir_path_part_" + idx
         cachedPathByPathPartId[id] <- combinedPath
         view.items.append({
           id = id
@@ -1022,7 +1025,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
         })
       }
 
-      local data = ::handyman.renderCached(dirPathPartTemplate, view)
+      let data = ::handyman.renderCached(dirPathPartTemplate, view)
       guiScene.replaceContentFromText(dirPathObj, data, data.len(), this)
     }
   }
@@ -1030,7 +1033,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillFileNameObj()
   {
-    local fileNameObj = getObj("file_name")
+    let fileNameObj = getObj("file_name")
     if (fileNameObj)
       fileNameObj.setValue(fileName)
   }
@@ -1040,7 +1043,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   fileTableObjFilledFilter = null
   function fillFileTableObj(forceUpdate = false)
   {
-    local fileTableObj = getObj("file_table")
+    let fileTableObj = getObj("file_table")
     if (!fileTableObj)
       return
 
@@ -1054,16 +1057,16 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     local filesList = readDirFiles(dirPath, maximumFilesToLoad)
     if (filesList.len() > maximumFilesToLoad)
       filesList = filesList.slice(0, maximumFilesToLoad)
-    local filesTableData = []
+    let filesTableData = []
 
     cachedFileFullPathByFileName.clear()
-    local fileNameMetaAttr = {}
+    let fileNameMetaAttr = {}
     foreach (file in filesList)
     {
-      local fileData = {}
+      let fileData = {}
       foreach (columnName, column in columns)
         fileData[columnName] <- column.getValue(file, this)
-      local filename = getFileName(file)
+      let filename = getFileName(file)
       if (!isDirectory(file) && currentFilter != allFilesFilter &&
         !::g_string.endsWith(filename, currentFilter))
         continue
@@ -1076,9 +1079,9 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     // when read directories with large files number
     filesTableData.sort(fileDataComporator.bindenv(this))
 
-    local view = {rows = []}
+    let view = {rows = []}
 
-    local headerRowView = {
+    let headerRowView = {
       row_id = "file_header_row"
       isHeaderRow = true
       cells = []
@@ -1086,7 +1089,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     cachedColumnNameByTableColumnId.clear()
     foreach (visibleColumn in visibleColumns)
     {
-      local id = "file_col_" + visibleColumn.column.name
+      let id = "file_col_" + visibleColumn.column.name
       cachedColumnNameByTableColumnId[id] <- visibleColumn.column.name
       headerRowView.cells.append({
         id = id
@@ -1102,27 +1105,27 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     cachedTableRowIdxByFileName.clear()
     foreach (idx, fileData in filesTableData)
     {
-      local rowId = "file_row_" + idx
-      local filename = fileData[fileNameMetaAttr]
+      let rowId = "file_row_" + idx
+      let filename = fileData[fileNameMetaAttr]
       cachedFileNameByTableRowId[rowId] <- filename
       cachedTableRowIdxByFileName[filename] <- idx + 1
-      local rowView = {
+      let rowView = {
         row_id = rowId
         even = isEven
         cells = []
       }
       foreach (visibleColumn in visibleColumns)
       {
-        local column = visibleColumn.column
-        local value = fileData[column.name]
-        local cellView = column.getView(value)
+        let column = visibleColumn.column
+        let value = fileData[column.name]
+        let cellView = column.getView(value)
         rowView.cells.append(cellView)
       }
       view.rows.append(rowView)
       isEven = !isEven
     }
 
-    local data = ::handyman.renderCached(fileTableTemplate, view)
+    let data = ::handyman.renderCached(fileTableTemplate, view)
     guiScene.replaceContentFromText(fileTableObj, data, data.len(), this)
     guiScene.performDelayed(this, restoreLastSelectedFile)
   }
@@ -1132,7 +1135,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   {
     for (local k = navList.len() - 1; k >= 0; k--)
     {
-      local element = navList[k]
+      let element = navList[k]
       if ("childs" in element && "name" in element)
       {
         filterNavElements(element.childs)
@@ -1181,14 +1184,14 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("nav_list", isNavigationVisible)
     showSceneBtn("nav_seperator", isNavigationVisible)
 
-    local navListObj = getObj("nav_list")
+    let navListObj = getObj("nav_list")
     if (!navListObj || (isNavListObjFilled && !forceUpdate))
       return
 
     isNavListObjFilled = true
 
-    local navList = getNavElements()
-    local navListData = []
+    let navList = getNavElements()
+    let navListData = []
     filterNavElements(navList)
     fillNavListData(navListData, navList)
 
@@ -1201,11 +1204,11 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     }
     showSceneBtn("btn_navigation", isNavigationToggleAllowed)
 
-    local view = {items = []}
+    let view = {items = []}
     cachedPathByNavItemId.clear()
     foreach (idx, navData in navListData)
     {
-      local id = "nav_item_" + idx
+      let id = "nav_item_" + idx
       if ("path" in navData)
         cachedPathByNavItemId[id] <- navData.path
       view.items.append({
@@ -1217,7 +1220,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    local data = ::handyman.renderCached(navItemListTemplate, view)
+    let data = ::handyman.renderCached(navItemListTemplate, view)
     guiScene.replaceContentFromText(navListObj, data, data.len(), this)
   }
 
@@ -1225,14 +1228,14 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
   isFiltersObjFilled = false
   function fillFiltersObj(forceUpdate = false)
   {
-    local shouldUseFilters = filters.len() > 1
-    local fileFilterObj = showSceneBtn("file_filter", shouldUseFilters)
+    let shouldUseFilters = filters.len() > 1
+    let fileFilterObj = showSceneBtn("file_filter", shouldUseFilters)
     if (!fileFilterObj || !shouldUseFilters || (isFiltersObjFilled && !forceUpdate))
       return
 
     isNavListObjFilled = true
 
-    local view = {items = []}
+    let view = {items = []}
     local selectedIdx = 0
     foreach (idx, filter in filters)
     {
@@ -1246,7 +1249,7 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
         selectedIdx = idx
     }
 
-    local data = ::handyman.renderCached(filterSelectTemplate, view)
+    let data = ::handyman.renderCached(filterSelectTemplate, view)
     guiScene.replaceContentFromText(fileFilterObj, data, data.len(), this)
     fileFilterObj.setValue(selectedIdx)
   }
@@ -1261,10 +1264,10 @@ class ::gui_handlers.FileDialog extends ::gui_handlers.BaseGuiHandlerWT
     foreach (columnSource in [columnSortOrder, visibleColumns])
       foreach (sortInfo in columnSource)
       {
-        local column = sortInfo.column
-        local lhsValue = ::getTblValue(column.name, lhs, null)
-        local rhsValue = ::getTblValue(column.name, rhs, null)
-        local result = column.comparator(lhsValue, rhsValue)
+        let column = sortInfo.column
+        let lhsValue = ::getTblValue(column.name, lhs, null)
+        let rhsValue = ::getTblValue(column.name, rhs, null)
+        let result = column.comparator(lhsValue, rhsValue)
         if (result != 0)
           return result * (::getTblValue("reverse", sortInfo, false) ? -1 : 1)
       }

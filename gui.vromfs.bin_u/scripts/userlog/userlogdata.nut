@@ -1,20 +1,20 @@
-local time = require("scripts/time.nut")
-local workshop = require("scripts/items/workshop/workshop.nut")
-local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
-local { disableSeenUserlogs, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
-local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
-local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
-local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
+let time = require("%scripts/time.nut")
+let workshop = require("%scripts/items/workshop/workshop.nut")
+let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
+let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
+let { showUnlock } = require("%scripts/unlocks/unlockRewardWnd.nut")
+let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatRewardTitleLocId, userstatItemsListLocId
-} = require("scripts/userstat/userstatItemsRewards.nut")
-local { getMissionLocName } = require("scripts/missions/missionsUtilsModule.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+} = require("%scripts/userstat/userstatItemsRewards.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::shown_userlog_notifications <- []
 
 ::g_script_reloader.registerPersistentData("UserlogDataGlobals", ::getroottable(), ["shown_userlog_notifications"])
 
-local function checkPopupUserLog(user_log_blk)
+let function checkPopupUserLog(user_log_blk)
 {
   if (user_log_blk == null)
     return false
@@ -24,8 +24,8 @@ local function checkPopupUserLog(user_log_blk)
     {
       if (popupItem.type != user_log_blk?.type)
         continue
-      local rewardType = user_log_blk?.body.rewardType
-      local rewardTypeFilter = popupItem.rewardType
+      let rewardType = user_log_blk?.body.rewardType
+      let rewardTypeFilter = popupItem.rewardType
       if (typeof(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
         return true
       if (typeof(rewardTypeFilter) == "array" && ::isInArray(rewardType, rewardTypeFilter))
@@ -39,7 +39,7 @@ local function checkPopupUserLog(user_log_blk)
 
 local function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = [])
 {
-  local body = newUserLog?.body
+  let body = newUserLog?.body
   if (!body)
     return
 
@@ -54,7 +54,7 @@ local function combineUserLogs(currentData, newUserLog, combineKey = null, sumPa
 
   foreach(param, value in body)
   {
-    local haveParam = ::getTblValue(param, currentData[combineKey])
+    let haveParam = ::getTblValue(param, currentData[combineKey])
     if (!haveParam)
       currentData[combineKey][param] <- [value]
     else if (::isInArray(param, sumParamsArray))
@@ -129,7 +129,7 @@ local logNameByType = {
 
 ::get_userlog_image_item <- function get_userlog_image_item(item, params = {})
 {
-  local defaultParams = {
+  let defaultParams = {
     enableBackground = false,
     showAction = false,
     showPrice = false,
@@ -140,21 +140,21 @@ local logNameByType = {
   }
 
   params = defaultParams.__merge(params)
-  return item ? ::handyman.renderCached(("gui/items/item"), { items = item.getViewData(params)}) : ""
+  return item ? ::handyman.renderCached(("%gui/items/item"), { items = item.getViewData(params)}) : ""
 }
 
 ::check_new_user_logs <- function check_new_user_logs()
 {
-  local total = ::get_user_logs_count()
-  local newUserlogsArray = []
+  let total = ::get_user_logs_count()
+  let newUserlogsArray = []
   for(local i=0; i<total; i++)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
     if (blk?.disabled || ::isInArray(blk?.type, ::hidden_userlogs))
       continue
 
-    local unlockId = blk?.body.unlockId
+    let unlockId = blk?.body.unlockId
     if (unlockId != null && !::is_unlock_visible(::g_unlocks.getUnlockById(unlockId)))
     {
       ::disable_user_log_entry(i)
@@ -168,10 +168,10 @@ local logNameByType = {
 
 ::collectOldNotifications <- function collectOldNotifications()
 {
-  local total = ::get_user_logs_count()
+  let total = ::get_user_logs_count()
   for(local i = 0; i < total; i++)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
     if (!blk?.disabled && checkPopupUserLog(blk)
         && !::isInArray(blk.id, ::shown_userlog_notifications))
@@ -190,26 +190,26 @@ local logNameByType = {
     return
   if (!::g_login.isLoggedIn())
     return
-  local handler = ::handlersManager.getActiveBaseHandler()
+  let handler = ::handlersManager.getActiveBaseHandler()
   if (!handler)
     return //no need to try do something when no one base handler loaded
 
-  local seenIdsArray = []
+  let seenIdsArray = []
 
-  local combinedUnitTiersUserLogs = {}
-  local trophyRewardsTable = {}
-  local entitlementRewards = {}
-  local unlocksRewards = {}
-  local rentsTable = {}
-  local specialOffers = {}
-  local ignoreRentItems = []
-  local total = ::get_user_logs_count()
+  let combinedUnitTiersUserLogs = {}
+  let trophyRewardsTable = {}
+  let entitlementRewards = {}
+  let unlocksRewards = {}
+  let rentsTable = {}
+  let specialOffers = {}
+  let ignoreRentItems = []
+  let total = ::get_user_logs_count()
   local unlocksNeedsPopupWnd = false
-  local popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
+  let popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
 
   for (local i = 0; i < total; i++)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
 
     if (blk?.disabled || ::isInArray(blk?.id, ::shown_userlog_notifications))
@@ -221,9 +221,9 @@ local logNameByType = {
       if (onStartAwards)
         continue
 
-      local title = ""
+      let title = ""
       local msg = ""
-      local logName = getLogNameByType(blk?.type)
+      let logName = getLogNameByType(blk?.type)
       if (blk?.type == ::EULT_SESSION_RESULT)
       {
         local mission = ""
@@ -231,7 +231,7 @@ local logNameByType = {
           mission = getMissionLocName(blk?.body, "locName")
         else
           mission = ::loc("missions/" + (blk?.body.mission ?? ""))
-        local nameLoc = "userlog/"+logName + (blk?.body.win? "/win":"/lose")
+        let nameLoc = "userlog/"+logName + (blk?.body.win? "/win":"/lose")
         msg = format(::loc(nameLoc), mission) //need more info in log, maybe title.
         ::my_stats.markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
@@ -240,14 +240,14 @@ local logNameByType = {
       }
       else if (blk?.type == ::EULT_CHARD_AWARD)
       {
-        local rewardType = blk?.body.rewardType
+        let rewardType = blk?.body.rewardType
         if (rewardType == "WagerWin" ||
             rewardType == "WagerFail" ||
             rewardType == "WagerStageWin" ||
             rewardType == "WagerStageFail")
         {
-          local itemId = blk?.body.id
-          local item = ::ItemsManager.findItemById(itemId)
+          let itemId = blk?.body.id
+          let item = ::ItemsManager.findItemById(itemId)
           if (item != null)
           {
             msg = ::isInArray(rewardType, ["WagerStageWin", "WagerStageFail"])
@@ -260,11 +260,11 @@ local logNameByType = {
       }
       else if (blk?.type == ::EULT_EXCHANGE_WARBONDS)
       {
-        local awardBlk = blk?.body.award
+        let awardBlk = blk?.body.award
         if (awardBlk)
         {
-          local priceText = ::g_warbonds.getWarbondPriceText(awardBlk?.cost ?? 0)
-          local awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
+          let priceText = ::g_warbonds.getWarbondPriceText(awardBlk?.cost ?? 0)
+          let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
           msg = awardType.getUserlogBuyText(awardBlk, priceText)
           if (awardType.id == ::EWBAT_BATTLE_TASK && !::warbonds_has_active_battle_task(awardBlk?.name))
             ::broadcastEvent("BattleTasksIncomeUpdate")
@@ -286,7 +286,7 @@ local logNameByType = {
       if (!blk?.body.unlockId)
         continue
 
-      local unlockType = blk?.body.unlockType
+      let unlockType = blk?.body.unlockType
       if (unlockType == ::UNLOCKABLE_TITLE && !onStartAwards)
         ::my_stats.markStatsReset()
 
@@ -323,11 +323,11 @@ local logNameByType = {
         continue
       }
 
-      local unlock = {}
+      let unlock = {}
       foreach(name, value in blk.body)
         unlock[name] <- value
 
-      local config = ::build_log_unlock_data(unlock)
+      let config = ::build_log_unlock_data(unlock)
       config.disableLogId <- blk.id
       ::showUnlockWnd(config)
       ::shown_userlog_notifications.append(blk.id)
@@ -335,11 +335,11 @@ local logNameByType = {
     }
     else if (blk?.type == ::EULT_RENT_UNIT || blk?.type == ::EULT_RENT_UNIT_EXPIRED)
     {
-      local logTypeName = ::getLogNameByType(blk.type)
-      local logName = ::getTblValue("rentContinue", blk.body, false)? "rent_unit_extended" : logTypeName
-      local unitName = ::getTblValue("unit", blk.body)
-      local unit = ::getAircraftByName(unitName)
-      local config = {
+      let logTypeName = ::getLogNameByType(blk.type)
+      let logName = ::getTblValue("rentContinue", blk.body, false)? "rent_unit_extended" : logTypeName
+      let unitName = ::getTblValue("unit", blk.body)
+      let unit = ::getAircraftByName(unitName)
+      let config = {
         unitName = unitName
         name = ::loc("mainmenu/rent/" + logName)
         desc = ::loc("userlog/" + logName, {unitName = ::getUnitName(unit, false)})
@@ -352,8 +352,8 @@ local logNameByType = {
       {
         config.desc += "\n"
 
-        local rentTimeHours = time.secondsToHours(::getTblValue("rentTimeLeftSec", blk.body, 0))
-        local timeText = ::colorize("userlogColoredText", time.hoursToString(rentTimeHours))
+        let rentTimeHours = time.secondsToHours(::getTblValue("rentTimeLeftSec", blk.body, 0))
+        let timeText = ::colorize("userlogColoredText", time.hoursToString(rentTimeHours))
         config.desc += ::loc("mainmenu/rent/rentTimeSec", {time = timeText})
 
         config.desc = ::colorize("activeTextColor", config.desc)
@@ -378,15 +378,15 @@ local logNameByType = {
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
 
-      local key = blk.body.id + "" + ::getTblValue("parentTrophyRandId", blk.body, "")
-      local itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
-      local item = ::ItemsManager.findItemById(itemId)
-      local userstatItemRewardData = getUserstatItemRewardData(itemId)
-      local isUserstatRewards = userstatItemRewardData != null
+      let key = blk.body.id + "" + ::getTblValue("parentTrophyRandId", blk.body, "")
+      let itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
+      let item = ::ItemsManager.findItemById(itemId)
+      let userstatItemRewardData = getUserstatItemRewardData(itemId)
+      let isUserstatRewards = userstatItemRewardData != null
       if (item != null && (!item?.shouldAutoConsume || isUserstatRewards) &&
         (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy"))
       {
-        local trophyRewardTable = buildTableFromBlk(blk.body)
+        let trophyRewardTable = buildTableFromBlk(blk.body)
         if (isUserstatRewards) {
           trophyRewardTable.__update({
             rewardTitle = ::loc(userstatRewardTitleLocId)
@@ -413,14 +413,14 @@ local logNameByType = {
     }
     else if (blk?.type == ::EULT_INVENTORY_ADD_ITEM)
     {
-      local item = ::ItemsManager.getInventoryItemById(blk.body?.itemDefId)
+      let item = ::ItemsManager.getInventoryItemById(blk.body?.itemDefId)
       if (item)
       {
         if (!item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
         {
-          local locId = "userlog/" + ::getLogNameByType(blk.type)
-          local numItems = blk.body?.quantity ?? 1
-          local name = ::loc(locId, {
+          let locId = "userlog/" + ::getLogNameByType(blk.type)
+          let numItems = blk.body?.quantity ?? 1
+          let name = ::loc(locId, {
             numItemsColored = numItems
             numItems = numItems
             numItemsAdd = numItems
@@ -428,7 +428,7 @@ local logNameByType = {
           })
 
           local button = null
-          local wSet = workshop.getSetByItemId(item.id)
+          let wSet = workshop.getSetByItemId(item.id)
           if (wSet)
             button = [{
               id = "workshop_button",
@@ -447,8 +447,8 @@ local logNameByType = {
     }
     else if (blk?.type == ::EULT_TICKETS_REMINDER)
     {
-      local name = ::loc("userlog/" + ::getLogNameByType(blk.type))
-      local desc = [::colorize("userlogColoredText", ::events.getNameByEconomicName(blk?.body.name))]
+      let name = ::loc("userlog/" + ::getLogNameByType(blk.type))
+      let desc = [::colorize("userlogColoredText", ::events.getNameByEconomicName(blk?.body.name))]
       if (::getTblValue("battleLimitReminder", blk.body))
         desc.append(::loc("userlog/battleLimitReminder") + ::loc("ui/colon") + (blk?.body.battleLimitReminder ?? ""))
       if (::getTblValue("defeatCountReminder", blk.body))
@@ -461,19 +461,19 @@ local logNameByType = {
     }
     else if (blk?.type == ::EULT_ACTIVATE_ITEM)
     {
-      local uid = blk?.body.uid
-      local item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
+      let uid = blk?.body.uid
+      let item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
       if (item?.isSpecialOffer ?? false) {
-        local locParams = item.getSpecialOfferLocParams()
-        local unit = locParams?.unit
+        let locParams = item.getSpecialOfferLocParams()
+        let unit = locParams?.unit
         if (unit != null) {
-          local unitName = unit.name
-          local desc = [::loc("specialOffer/unitDiscount", {
+          let unitName = unit.name
+          let desc = [::loc("specialOffer/unitDiscount", {
             unitName = ::colorize("userlogColoredText", ::getUnitName(unit, false))
             discount = locParams.discount
           })]
 
-          local expireTimeText = item.getExpireTimeTextShort()
+          let expireTimeText = item.getExpireTimeTextShort()
           if (expireTimeText != "")
             desc.append(::loc("specialOffer/TimeSec", {
               time = ::colorize("userlogColoredText", expireTimeText)
@@ -494,12 +494,12 @@ local logNameByType = {
     }
     else if (blk?.type == ::EULT_REMOVE_ITEM)
     {
-      local reason = ::getTblValue("reason", blk.body, "unknown")
+      let reason = ::getTblValue("reason", blk.body, "unknown")
       if (reason == "unknown" || reason == "consumed")
       {
-        local locId = "userlog/" + ::getLogNameByType(blk.type) + "/" + reason
-        local itemId = ::getTblValue("id", blk.body, "")
-        local item = ::ItemsManager.findItemById(itemId)
+        let locId = "userlog/" + ::getLogNameByType(blk.type) + "/" + reason
+        let itemId = ::getTblValue("id", blk.body, "")
+        let item = ::ItemsManager.findItemById(itemId)
         if (item && item.iType == itemType.TICKET)
           ::g_popups.add("", ::loc(locId, {itemName = ::colorize("userlogColoredText", item.getName())}))
       }
@@ -571,7 +571,7 @@ local logNameByType = {
  *   filters (table) - any custom key -> value pairs to filter userlogs
  *   disableVisible (boolean) - marks all related userlogs as seen
  */
-local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHiddenItem()
+let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHiddenItem()
 
 ::isUserlogVisible <- function isUserlogVisible(blk, filter, idx)
 {
@@ -592,14 +592,14 @@ local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHi
 
 ::getUserLogsList <- function getUserLogsList(filter)
 {
-  local logs = [];
-  local total = ::get_user_logs_count()
+  let logs = [];
+  let total = ::get_user_logs_count()
   local needSave = false
 
   /**
    * If statick tournament reward exist in log, writes it to logs root
    */
-  local grabStatickReward = function (reward, log)
+  let grabStatickReward = function (reward, log)
   {
     if (reward.awardType == "base_win_award")
     {
@@ -612,24 +612,24 @@ local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHi
 
   for(local i = total - 1; i >= 0; i--)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_user_log_blk_body(i, blk)
 
     if (!::isUserlogVisible(blk, filter, i))
       continue
 
-    local isUnlockTypeNotSuitable = ("unlockType" in blk.body)
+    let isUnlockTypeNotSuitable = ("unlockType" in blk.body)
       && (blk.body.unlockType == ::UNLOCKABLE_TROPHY_PSN
         || blk.body.unlockType == ::UNLOCKABLE_TROPHY_XBOXONE
         || (("unlocks" in filter) && !::isInArray(blk.body.unlockType, filter.unlocks)))
 
-    local unlock = ::g_unlocks.getUnlockById(::getTblValue("unlockId", blk.body))
-    local hideUnlockById = unlock != null && !::is_unlock_visible(unlock)
+    let unlock = ::g_unlocks.getUnlockById(::getTblValue("unlockId", blk.body))
+    let hideUnlockById = unlock != null && !::is_unlock_visible(unlock)
 
     if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != ::EULT_BUYING_UNLOCK))
       continue
 
-    local log = {
+    let log = {
       idx = i
       type = blk?.type
       time = ::get_user_log_time_sec(i)
@@ -647,8 +647,8 @@ local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHi
     }
     for (local j = 0, c = blk.body.blockCount(); j < c; j++)
     {
-      local block = blk.body.getBlock(j)
-      local name = block.getBlockName()
+      let block = blk.body.getBlock(j)
+      let name = block.getBlockName()
 
       //can be 2 aircrafts with the same name (cant foreach)
       //trophyMultiAward logs have spare in body too. they no need strange format hacks.
@@ -663,7 +663,7 @@ local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHi
       }
       else if (name == "rewardTS")
       {
-        local reward = ::buildTableFromBlk(block)
+        let reward = ::buildTableFromBlk(block)
         if (!grabStatickReward(reward, log))
         {
           if (!(name in log))
@@ -691,14 +691,14 @@ local haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHi
     if (skip)
       continue
 
-    local dubIdx = (log.type == ::EULT_OPEN_TROPHY  && log?.parentTrophyRandId)
+    let dubIdx = (log.type == ::EULT_OPEN_TROPHY  && log?.parentTrophyRandId)
       ? logs.findindex(@(inst) inst.type == ::EULT_OPEN_TROPHY
         && inst?.parentTrophyRandId == log.parentTrophyRandId
           && inst?.id == log?.id && inst.time == log.time)
       : null
     if (dubIdx != null)
     {
-      local curLog = logs[dubIdx]
+      let curLog = logs[dubIdx]
       // Stack all trophy rewards
       if (curLog?.item && log?.item)
         curLog.item = typeof(curLog.item) == "array" ? curLog.item.append(log.item)

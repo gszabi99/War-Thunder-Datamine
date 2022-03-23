@@ -1,11 +1,11 @@
-local statsd = require("statsd")
-local { animBgLoad } = require("scripts/loading/animBg.nut")
-local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
+let statsd = require("statsd")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
-class ::gui_handlers.LoginWndHandlerEpic extends ::gui_handlers.LoginWndHandler
+::gui_handlers.LoginWndHandlerEpic <- class extends ::gui_handlers.LoginWndHandler
 {
-  sceneBlkName = "gui/loginBoxSimple.blk"
+  sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen()
   {
@@ -20,7 +20,7 @@ class ::gui_handlers.LoginWndHandlerEpic extends ::gui_handlers.LoginWndHandler
   {
     ::dagor.debug("Epic login: check_login_pass")
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "epic"})
-    local ret = ::check_login_pass("", "", "epic", "epic", false, false)
+    let ret = ::check_login_pass("", "", "epic", "epic", false, false)
     proceedAuthorizationResult(ret)
   }
 

@@ -1,8 +1,8 @@
-local psn = require("sonyLib/webApi.nut")
-local statsd = require("statsd")
-local { GUI } = require("scripts/utils/configs.nut")
+let psn = require("%sonyLib/webApi.nut")
+let statsd = require("statsd")
+let { GUI } = require("%scripts/utils/configs.nut")
 
-local requestsTable = {
+let requestsTable = {
   player = "$USER_NAME_OR_ID",
   count = "$STORY_COUNT",
   onlineUserId = "$ONLINE_ID",
@@ -13,9 +13,9 @@ local requestsTable = {
 }
 
 // specialization getters below expect valid data, validated by the caller
-local function getActivityFeedImageByParam(feed, imagesConfig)
+let function getActivityFeedImageByParam(feed, imagesConfig)
 {
-  local config = imagesConfig.other?[feed.blkParamName]
+  let config = imagesConfig.other?[feed.blkParamName]
 
   if (u.isString(config))
     return imagesConfig.mainPart + config
@@ -33,13 +33,13 @@ local function getActivityFeedImageByParam(feed, imagesConfig)
   return ""
 }
 
-local function getActivityFeedImageByCountry(feed, imagesConfig) {
-  local aircraft = ::getAircraftByName(feed.unitNameId)
-  local esUnitType = ::get_es_unit_type(aircraft)
-  local unit = ::getUnitTypeText(esUnitType)
-  local country = feed.country
+let function getActivityFeedImageByCountry(feed, imagesConfig) {
+  let aircraft = ::getAircraftByName(feed.unitNameId)
+  let esUnitType = ::get_es_unit_type(aircraft)
+  let unit = ::getUnitTypeText(esUnitType)
+  let country = feed.country
 
-  local variants = imagesConfig?[country]?[unit]
+  let variants = imagesConfig?[country]?[unit]
   if (u.isDataBlock(variants))
     return imagesConfig.mainPart + variants.getParamValue(::math.rnd() % variants.paramCount())
 
@@ -48,17 +48,17 @@ local function getActivityFeedImageByCountry(feed, imagesConfig) {
   return ""
 }
 
-local function getActivityFeedImages(feed) {
-  local guiBlk = GUI.get()
-  local imagesConfig = guiBlk?.activity_feed_image_url
+let function getActivityFeedImages(feed) {
+  let guiBlk = GUI.get()
+  let imagesConfig = guiBlk?.activity_feed_image_url
   if (u.isEmpty(imagesConfig))
   {
     ::dagor.debug("getActivityFeedImages: empty or missing activity_feed_image_url block in gui.blk")
     return null
   }
 
-  local feedUrl = imagesConfig?.mainPart
-  local imgExt = imagesConfig?.fileExtension
+  let feedUrl = imagesConfig?.mainPart
+  let imgExt = imagesConfig?.fileExtension
   if (!feedUrl || !imgExt)
   {
     ::dagor.debug("getActivityFeedImages: invalid feed config, url base '"+feedUrl+"', image extension '"+imgExt)
@@ -66,9 +66,9 @@ local function getActivityFeedImages(feed) {
     return null
   }
 
-  local logo = imagesConfig?.logoEnd || ""
-  local big = imagesConfig?.bigLogoEnd || ""
-  local ext = imagesConfig.fileExtension
+  let logo = imagesConfig?.logoEnd || ""
+  let big = imagesConfig?.bigLogoEnd || ""
+  let ext = imagesConfig.fileExtension
   local url = ""
   if (!u.isEmpty(feed?.blkParamName) && !u.isEmpty(imagesConfig?.other))
     url = getActivityFeedImageByParam(feed, imagesConfig)
@@ -87,13 +87,13 @@ local function getActivityFeedImages(feed) {
 }
 
 return function(config, customFeedParams) {
-  local sendStat = function(tags) {
-    local qualifiedNameParts = split(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
+  let sendStat = function(tags) {
+    let qualifiedNameParts = split(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
     tags["type"] <- qualifiedNameParts[1]
     statsd.send_counter("sq.activityfeed", 1, tags)
   }
 
-  local locId = ::getTblValue("locId", config, "")
+  let locId = ::getTblValue("locId", config, "")
   if (locId == "" && u.isEmpty(customFeedParams?.captions))
   {
     sendStat({action = "abort", reason = "no_loc_id"})
@@ -102,20 +102,20 @@ return function(config, customFeedParams) {
     return
   }
 
-  local localizedKeyWords = {}
+  let localizedKeyWords = {}
   if ("requireLocalization" in customFeedParams)
     foreach(name in customFeedParams.requireLocalization)
       localizedKeyWords[name] <- ::g_localization.getLocalizedTextWithAbbreviation(customFeedParams[name])
 
-  local activityFeed_config = customFeedParams.__merge(requestsTable)
+  let activityFeed_config = customFeedParams.__merge(requestsTable)
 
-  local getFilledFeedTextByLang = function(key) {
-    local captions = {}
-    local localizedTable = ::g_localization.getLocalizedTextWithAbbreviation(key)
+  let getFilledFeedTextByLang = function(key) {
+    let captions = {}
+    let localizedTable = ::g_localization.getLocalizedTextWithAbbreviation(key)
 
     foreach(lang, string in localizedTable)
     {
-      local localizationTable = {}
+      let localizationTable = {}
       foreach(name, value in activityFeed_config)
         localizationTable[name] <- localizedKeyWords?[name][lang] ?? value
 
@@ -125,11 +125,11 @@ return function(config, customFeedParams) {
     return captions
   }
 
-  local images = getActivityFeedImages(customFeedParams)
-  local largeImage = customFeedParams?.images?.large || images?.large
-  local smallImage = customFeedParams?.images?.small || images?.small
+  let images = getActivityFeedImages(customFeedParams)
+  let largeImage = customFeedParams?.images?.large || images?.large
+  let smallImage = customFeedParams?.images?.small || images?.small
 
-  local body = {
+  let body = {
     captions = customFeedParams?.captions || getFilledFeedTextByLang("activityFeed/" + locId)
     condensedCaptions = customFeedParams?.condensedCaptions || getFilledFeedTextByLang("activityFeed/" + locId + "/condensed")
     storyType = "IN_GAME_POST"
@@ -142,7 +142,7 @@ return function(config, customFeedParams) {
     body.targets.append({meta=smallImage, type="SMALL_IMAGE_URL", aspectRatio="2.08:1"})
 
   psn.send(psn.feed.post(body), function(_, err) {
-      local tags = { action = "post", result = err ? "fail" : "success" }
+      let tags = { action = "post", result = err ? "fail" : "success" }
       if (err != null)
         tags["reason"] <- err.code.tostring()
       sendStat(tags)

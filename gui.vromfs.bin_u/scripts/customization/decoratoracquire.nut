@@ -1,19 +1,19 @@
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
-local function askPurchaseDecorator(decorator, onSuccessCb)
+let function askPurchaseDecorator(decorator, onSuccessCb)
 {
   if (!(decorator?.canBuyUnlock(null) ?? false))
     return
 
-  local cost = decorator.getCost()
-  local decoratorType = decorator.decoratorType
+  let cost = decorator.getCost()
+  let decoratorType = decorator.decoratorType
   local unitName = ""
   local decoratorId = decorator.id
   if (decoratorType == ::g_decorator_type.SKINS) {
     unitName = ::g_unlocks.getPlaneBySkinId(decoratorId)
     decoratorId = ::g_unlocks.getSkinNameBySkinId(decoratorId)
   }
-  local msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_purchaseDecal",
+  let msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_purchaseDecal",
     { purchase = decorator.getName(),
       cost = cost.getTextAccordingToBalance()
     }), cost)
@@ -26,33 +26,33 @@ local function askPurchaseDecorator(decorator, onSuccessCb)
         ["cancel"]], "ok", { cancel_fn = @() null })
 }
 
-local function askConsumeDecoratorCoupon(decorator, onSuccessCb)
+let function askConsumeDecoratorCoupon(decorator, onSuccessCb)
 {
   if (!(decorator?.canGetFromCoupon(null) ?? false))
     return
 
-  local inventoryItem = ::ItemsManager.getInventoryItemById(decorator?.getCouponItemdefId())
+  let inventoryItem = ::ItemsManager.getInventoryItemById(decorator?.getCouponItemdefId())
   inventoryItem.consume(::Callback(function(result) {
     if (result?.success ?? false)
       onSuccessCb?()
   }, this), null)
 }
 
-local function findDecoratorCouponOnMarketplace(decorator)
+let function findDecoratorCouponOnMarketplace(decorator)
 {
-  local item = ::ItemsManager.findItemById(decorator?.getCouponItemdefId())
+  let item = ::ItemsManager.findItemById(decorator?.getCouponItemdefId())
   if (!(item?.hasLink() ?? false))
     return
   item.openLink()
 }
 
-local function askFindDecoratorCouponOnMarketplace(decorator)
+let function askFindDecoratorCouponOnMarketplace(decorator)
 {
   if (!(decorator?.canBuyCouponOnMarketplace(null) ?? false))
     return
 
-  local item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
-  local itemName = ::colorize("activeTextColor", item.getName())
+  let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+  let itemName = ::colorize("activeTextColor", item.getName())
   msgBox("find_on_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = itemName }), [
       [ "find_on_marketplace", @() findDecoratorCouponOnMarketplace(decorator) ],
       [ "cancel" ]
@@ -60,7 +60,7 @@ local function askFindDecoratorCouponOnMarketplace(decorator)
 }
 
 // Pass unit=null to skip unit check
-local function canAcquireDecorator(decorator, unit = null)
+let function canAcquireDecorator(decorator, unit = null)
 {
   if (decorator == null || decorator.isUnlocked())
     return false
@@ -69,7 +69,7 @@ local function canAcquireDecorator(decorator, unit = null)
     || decorator.canBuyCouponOnMarketplace(unit)
 }
 
-local function askAcquireDecorator(decorator, onSuccessCb)
+let function askAcquireDecorator(decorator, onSuccessCb)
 {
   if (!canAcquireDecorator(decorator, null))
     return

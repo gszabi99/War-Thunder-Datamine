@@ -1,7 +1,7 @@
-local globalEnv = require("globalEnv")
-local avatars = require("scripts/user/avatars.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let globalEnv = require("globalEnv")
+let avatars = require("%scripts/user/avatars.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
@@ -11,10 +11,10 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   ::gui_start_modal_wnd(::gui_handlers.ControlType, {onlyDevicesChoice = onlyDevicesChoice})
 }
 
-class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ControlType <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/controlTypeChoice.blk"
+  sceneBlkName = "%gui/controlTypeChoice.blk"
 
   controlsOptionsMode = 0
   onlyDevicesChoice = true
@@ -25,7 +25,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    local txt = scene.findObject("txt_icon")
+    let txt = scene.findObject("txt_icon")
     txt.show(!onlyDevicesChoice)
     showBtn("btn_pref_img", !onlyDevicesChoice)
     showBtn("btn_back", onlyDevicesChoice)
@@ -54,7 +54,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(scene))
       return
 
-    local obj = scene.findObject("prefIcon")
+    let obj = scene.findObject("prefIcon")
     if (::check_obj(obj))
     {
       obj.setValue(::get_profile_info().icon)
@@ -75,10 +75,10 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
   function onControlTypeApply()
   {
     local ct_id = "ct_mouse"
-    local obj = scene.findObject("controlType")
+    let obj = scene.findObject("controlType")
     if (::check_obj(obj))
     {
-      local value = obj.getValue()
+      let value = obj.getValue()
       if (value>=0 && value<obj.childrenCount())
         ct_id = obj.getChild(value).id
     }
@@ -89,8 +89,8 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local text = ::loc("msgbox/controlPresetApply")
-    local onOk = ::Callback(@() doControlTypeApply(ct_id), this)
+    let text = ::loc("msgbox/controlPresetApply")
+    let onOk = ::Callback(@() doControlTypeApply(ct_id), this)
     msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
   }
 
@@ -109,7 +109,7 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id)
 {
-  local mainOptionsMode = getGuiOptionsMode()
+  let mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
   local ct_preset = ""
@@ -146,20 +146,24 @@ class ::gui_handlers.ControlType extends ::gui_handlers.BaseGuiHandlerWT
       preset = ::g_controls_presets.parsePresetName("dualshock4")
     else if (::is_platform_xbox)
       preset = ::g_controls_presets.parsePresetName("xboxone_ma")
+    else if (isPlatformSteamDeck)
+      preset = ::g_controls_presets.parsePresetName("steamdeck_ma")
     else
       preset = ::g_controls_presets.parsePresetName("keyboard_shooter")
   }
   preset = ::g_controls_presets.getHighestVersionPreset(preset)
   ::apply_joy_preset_xchange(preset.fileName)
 
-  if (isPlatformSony || isPlatformXboxOne)
+  if (isPlatformSony || isPlatformXboxOne || isPlatformSteamDeck)
   {
-    local presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
+    let presetMode = ::get_option(::USEROPT_CONTROLS_PRESET)
     ct_preset = ::g_controls_presets.parsePresetName(presetMode.values[presetMode.value])
     //TODO: is it obsolete?
-    if (ct_preset.name == "default" || ct_preset.name == "xboxone_simulator")
+    local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]
+    local mouseAimPresetNames = ["dualshock4", "xboxone_ma", "stimdeck_ma"]
+    if (ct_preset.name in realisticPresetNames)
       set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
-    else if (ct_preset.name == "dualshock4" || ct_preset.name == "xboxone_ma")
+    else if (ct_preset.name in mouseAimPresetNames)
       set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
   }
 

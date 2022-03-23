@@ -1,4 +1,4 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 return [
 //-------------------------------------------------------
@@ -9,7 +9,7 @@ return [
   }
   {
     id = "ID_ZOOM_TOGGLE"
-    checkGroup = ctrlGroups.NO_GROUP
+    checkGroup = ctrlGroups.COMMON
     needShowInHelp = true
   }
   {
@@ -29,7 +29,7 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     value = @(joyParams) joyParams.useTouchpadAiming
     setValue = function(joyParams, objValue) {
-      local old = joyParams.useTouchpadAiming
+      let old = joyParams.useTouchpadAiming
       joyParams.useTouchpadAiming = objValue
       if (objValue != old)
         ::set_controls_preset("")

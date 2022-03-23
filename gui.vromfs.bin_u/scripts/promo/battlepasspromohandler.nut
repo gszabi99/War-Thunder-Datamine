@@ -1,12 +1,12 @@
-local { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj
-} = require("scripts/battlePass/watchObjInfoConfig.nut")
-local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+let { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj
+} = require("%scripts/battlePass/watchObjInfoConfig.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
-local BattlePassPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
+let BattlePassPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "gui/promo/promoBattlePass"
+  sceneTplName = "%gui/promo/promoBattlePass"
 
   function getSceneTplView() {
     return {
@@ -15,12 +15,12 @@ local BattlePassPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
       seasonLvlValue = stashBhvValueConfig(seasonLvlWatchObj)
       rewards = [{
           rewardText = "#mainmenu/fulfilledChallenges"
-          rewardIcon = "#ui/gameuiskin#new_reward_icon"
+          rewardIcon = "#ui/gameuiskin#new_reward_icon.svg"
           hasRewardValue = stashBhvValueConfig(hasChallengesRewardWatchObj)
         },
         {
           rewardText = "#mainmenu/rewardsNotCollected"
-          rewardIcon = "#ui/gameuiskin#new_icon"
+          rewardIcon = "#ui/gameuiskin#new_icon.svg"
           hasRewardValue = stashBhvValueConfig(hasBattlePassRewardWatchObj)
         }
       ]
@@ -32,19 +32,19 @@ local BattlePassPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.BattlePassPromoHandler <- BattlePassPromoHandler
 
-local function openBattlePassPromoHandler(params) {
+let function openBattlePassPromoHandler(params) {
   ::handlersManager.loadHandler(BattlePassPromoHandler, params)
 }
 
-local promoButtonId = "battle_pass_mainmenu_button"
+let promoButtonId = "battle_pass_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "battlePass"
   updateFunctionInHandler = function() {
-    local id = promoButtonId
-    local show = ::g_promo.getVisibilityById(id)
-    local buttonObj = ::showBtn(id, show, scene)
+    let id = promoButtonId
+    let show = ::g_promo.getVisibilityById(id)
+    let buttonObj = ::showBtn(id, show, scene)
     if (!show || !(buttonObj?.isValid() ?? false))
       return
 

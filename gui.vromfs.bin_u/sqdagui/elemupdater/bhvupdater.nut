@@ -1,11 +1,11 @@
-local u = require("sqStdLibs/helpers/u.nut")
-local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-local elemEvents = require("sqDagui/elemUpdater/elemUpdaterEvents.nut")
-local Callback = require("sqStdLibs/helpers/callback.nut").Callback
+let u = require("%sqStdLibs/helpers/u.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemEvents = require("%sqDagui/elemUpdater/elemUpdaterEvents.nut")
+let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 
 local assertOnce = function(uniqId, errorText) { throw(errorText) }
 
-local BhvUpdater = class
+let BhvUpdater = class
 {
   eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
@@ -42,7 +42,7 @@ local BhvUpdater = class
                             //So destroy object, or change user data invalidate old subscriptions.
     if (config)
     {
-      local subscriptions = config.viewType.model.makeFullPath(config.subscriptions)
+      let subscriptions = config.viewType.model.makeFullPath(config.subscriptions)
       elemEvents.subscribe(subscriptions, Callback(getOnChangedCb(obj), config))
       config.lastEventId <- -1
     }
@@ -51,13 +51,13 @@ local BhvUpdater = class
 
   function getOnChangedCb(obj)
   {
-    local bhvClass = this
+    let bhvClass = this
     return @(eventId) ::check_obj(obj) && bhvClass.updateView(obj, eventId)
   }
 
   function updateView(obj, eventId = -2)
   {
-    local config = obj.getUserData()
+    let config = obj.getUserData()
     if (!config || config.lastEventId == eventId)
       return
 

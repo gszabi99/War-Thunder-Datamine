@@ -1,7 +1,7 @@
-local controlsOperations = require("scripts/controls/controlsOperations.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let controlsOperations = require("%scripts/controls/controlsOperations.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 return [
   {

@@ -1,4 +1,4 @@
-local log_ = require("std/log.nut")(
+let log_ = require("%sqstd/log.nut")(
   [{
     compare = @(val) type(val)=="instance" && "formatAsString" in val
     tostring = @(val) val.formatAsString()
@@ -28,10 +28,10 @@ global const INVALID_ENTITY_ID = 0//::ecs.INVALID_ENTITY_ID
   }
 
   function _call(self, ...) {
-    local args = [this]
+    let args = [this]
     args.append(path)
     args.extend(vargv)
-    local result = ::perform_cross_call.acall(args)
+    let result = ::perform_cross_call.acall(args)
     path.clear()
     return result
   }

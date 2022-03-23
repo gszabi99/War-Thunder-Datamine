@@ -1,15 +1,15 @@
-local { toggleShortcut, setShortcutOn, setShortcutOff } = require("globalScripts/controls/shortcutActions.nut")
+let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 
-local touchButtonSize        = shHud(10)
-local bigTouchButtonSize     = shHud(14)
-local touchButtonMargin      = shHud(2)
-local menuTouchButtonWidth   = shHud(10)
-local menuTouchButtonHeight  = shHud(5.7)
+let touchButtonSize        = shHud(10)
+let bigTouchButtonSize     = shHud(14)
+let touchButtonMargin      = shHud(2)
+let menuTouchButtonWidth   = shHud(10)
+let menuTouchButtonHeight  = shHud(5.7)
 
-local iconColor         = Color(200, 209, 219, 170)
-local iconColorPushed   = Color(239, 231, 164)
+let iconColor         = Color(200, 209, 219, 170)
+let iconColorPushed   = Color(239, 231, 164)
 
-local touchButtonsConfigs = {
+let touchButtonsConfigs = {
   ["ID_FLIGHTMENU_SETUP"] = {
     image = ::Picture("!ui/gameuiskin#menu_1")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
@@ -61,12 +61,12 @@ local touchButtonsConfigs = {
   },
 }
 
-local function mkTouchButton(id, overrideParams = {}) {
+let function mkTouchButton(id, overrideParams = {}) {
   if (id not in touchButtonsConfigs)
     return null
 
-  local buttonConfig = touchButtonsConfigs[id]
-  local stateFlags = Watched(0)
+  let buttonConfig = touchButtonsConfigs[id]
+  let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button

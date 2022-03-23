@@ -1,8 +1,9 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 
 const BULLETS_SETS_QUANTITY_SHORT = 4
 
-local crewUnitTypeConfig = {
+let crewUnitTypeConfig = {
   [::CUT_INVALID] = {
     crewTag = ""
   },
@@ -27,6 +28,7 @@ local unitTypes = {
     esUnitType = ::ES_UNIT_TYPE_INVALID
     bit = 0      //unitType bit for it mask. filled by esUnitType  (bit = 1 << esUnitType)
     bitCrewType = 0 //crewUnitType bit for it mask
+    visualSortOrder = -1
     uiSkin = "!#ui/unitskin#"
     uiClassSkin = "#ui/gameuiskin#"
     fontIcon = ""
@@ -63,7 +65,7 @@ local unitTypes = {
     canSpendGold = @() isAvailable()
     canShowProtectionAnalysis = @() false
     canShowVisualEffectInProtectionAnalysis = @() false
-    haveAnyUnitInCountry = @(countryName) ::isCountryHaveUnitType(countryName, esUnitType)
+    haveAnyUnitInCountry = @(countryName) isCountryHaveUnitType(countryName, esUnitType)
     isAvailableByMissionSettings = function(misBlk, useKillStreaks = null)
     {
       if (useKillStreaks == null)
@@ -93,7 +95,7 @@ local unitTypes = {
 
   function getArrayBybitMask(bitMask)
   {
-    local typesArray = []
+    let typesArray = []
     foreach (t in types)
     {
       if ((t.bit & bitMask) != 0)
@@ -109,7 +111,7 @@ local unitTypes = {
 
   function getByName(typeName, caseSensitive = true)
   {
-    local cacheTbl = caseSensitive ? cache.byName : cache.byNameNoCase
+    let cacheTbl = caseSensitive ? cache.byName : cache.byNameNoCase
     return enums.getCachedType("name", typeName, cacheTbl, this, INVALID, caseSensitive)
   }
 
@@ -125,14 +127,14 @@ local unitTypes = {
 
   function getByUnitName(unitId)
   {
-    local unit = ::getAircraftByName(unitId)
+    let unit = ::getAircraftByName(unitId)
     return unit ? unit.unitType : INVALID
   }
 
   function getTypeMaskByTagsString(listStr, separator = "; ", bitMaskName = "bit")
   {
     local res = 0
-    local list = ::split(listStr, separator)
+    let list = ::split(listStr, separator)
     foreach(tag in list)
       res = res | getByTag(tag)[bitMaskName]
     return res
@@ -154,7 +156,7 @@ local unitTypes = {
     //1) Too many calls such as unitType.AIRCRAFT, i.e. directly to table;
     //2) To keep setted order, because table don't have order
     local sortOrder = 0
-    local typesTable = {}
+    let typesTable = {}
     list.each(function(t) {
       t.sortOrder <- sortOrder++
       typesTable[t.name.toupper()] <- t

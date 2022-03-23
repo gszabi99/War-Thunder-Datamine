@@ -1,16 +1,16 @@
-local getShopBlkData = require("scripts/shop/getShopBlkData.nut")
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-local shopCountriesList = persist("shopCountriesList", @() [])
+let shopCountriesList = persist("shopCountriesList", @() [])
 
 local shopVisibleCountries = null
 
-local function invalidateVisibleCountriesCache() {
+let function invalidateVisibleCountriesCache() {
   shopVisibleCountries = null
   ::broadcastEvent("VisibleCountriesCacheInvalidate")
 }
 
-local function getShopVisibleCountries() {
+let function getShopVisibleCountries() {
   if (shopVisibleCountries != null)
     return shopVisibleCountries
 
@@ -18,9 +18,9 @@ local function getShopVisibleCountries() {
   return shopVisibleCountries
 }
 
-local function updateShopCountriesList() {
+let function updateShopCountriesList() {
   invalidateVisibleCountriesCache()
-  local shopBlk = ::get_shop_blk()
+  let shopBlk = ::get_shop_blk()
   shopCountriesList.clear()
   for (local tree = 0; tree < shopBlk.blockCount(); tree++)
     shopCountriesList.append(shopBlk.getBlock(tree).getBlockName())

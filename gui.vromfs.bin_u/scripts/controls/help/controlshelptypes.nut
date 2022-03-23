@@ -1,18 +1,18 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { is_keyboard_connected, is_mouse_connected } = require("controllerState")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_SMOKE_GRENADE,
   EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT } = ::require_native("hudActionBarConst")
 
-local isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
+let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
-local result = {
+let result = {
   types = []
 
   template = {
@@ -34,12 +34,12 @@ local result = {
   }
 }
 
-local function isUnitWithRadarOrRwr(unit)
+let function isUnitWithRadarOrRwr(unit)
 {
   if (!unit)
     return false
-  local unitBlk = ::get_full_unit_blk(unit?.name ?? "")
-  local sensorTypes = [ "radar", "rwr" ]
+  let unitBlk = ::get_full_unit_blk(unit?.name ?? "")
+  let sensorTypes = [ "radar", "rwr" ]
   if (unitBlk?.sensors)
     foreach (sensor in (unitBlk.sensors % "sensor"))
       if (sensorTypes.indexof(blkOptFromPath(sensor?.blk)?.type) != null)
@@ -53,8 +53,8 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.MISSION
 
     showByUnit = function(unit, unitTag) {
-      local difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
-      local isAdvanced = difficulty == ::DIFFICULTY_HARDCORE
+      let difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+      let isAdvanced = difficulty == ::DIFFICULTY_HARDCORE
       return !::is_me_newbie() && unitTag == null && !isAdvanced
     }
 
@@ -73,7 +73,7 @@ enums.addTypes(result, {
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageFillfuncName = "fillHotas4Image"
-    pageBlkName = "gui/help/internalHelp.blk"
+    pageBlkName = "%gui/help/internalHelp.blk"
   }
   IMAGE_AIRCRAFT = {
     subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
@@ -84,7 +84,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.AIRCRAFT.isAvailable
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
-    pageBlkName = "gui/help/controlsAircraft.blk"
+    pageBlkName = "%gui/help/controlsAircraft.blk"
     imagePattern = "#ui/images/country_%s_controls_help.jpg?P1"
     defaultValues = { country = "ussr" }
     hasImageByCountries = [ "ussr", "usa", "britain", "germany", "japan", "china", "italy",
@@ -143,7 +143,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.TANK.isAvailable
     pageUnitTypeBit = unitTypes.TANK.bit
 
-    pageBlkName = "gui/help/controlsTank.blk"
+    pageBlkName = "%gui/help/controlsTank.blk"
 
     imagePattern = "#ui/images/country_%s_tank_controls_help.jpg?P1"
     defaultValues = { country = "ussr" }
@@ -261,7 +261,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.SHIP.isAvailable
     pageUnitTypeBit = unitTypes.SHIP.bit | unitTypes.BOAT.bit
 
-    pageBlkName = "gui/help/controlsShip.blk"
+    pageBlkName = "%gui/help/controlsShip.blk"
 
     imagePattern = "#ui/images/country_%s_ship_controls_help.jpg?P1"
     defaultValues = { country = "usa" }
@@ -344,7 +344,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.HELICOPTER.isAvailable
     pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
-    pageBlkName = "gui/help/controlsHelicopter.blk"
+    pageBlkName = "%gui/help/controlsHelicopter.blk"
 
     imagePattern = "#ui/images/country_%s_helicopter_controls_help.jpg?P1"
     defaultValues = { country = "ussr" }
@@ -386,7 +386,7 @@ enums.addTypes(result, {
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
 
-    pageBlkName = "gui/help/controlsSubmarine.blk"
+    pageBlkName = "%gui/help/controlsSubmarine.blk"
 
     defaultValues = { country = "ussr" }
     imagePattern = "#ui/images/country_%s_submarine_controls_help.jpg?P1"
@@ -423,7 +423,7 @@ enums.addTypes(result, {
     showByUnit = @(unit, unitTag)
       [ "sdi_minotaur", "sdi_harpy", "sdi_hydra", "ucav_assault", "ucav_scout" ].contains(unit?.name)
 
-    pageBlkName = "gui/help/controlsWarfare2077.blk"
+    pageBlkName = "%gui/help/controlsWarfare2077.blk"
 
     defaultValues = { country = "usa" }
     imagePattern = "#ui/images/help/help_warfare2077.jpg?P1"
@@ -513,7 +513,7 @@ enums.addTypes(result, {
     specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
-    pageBlkName = "gui/help/controllerKeyboard.blk"
+    pageBlkName = "%gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
   }
   KEYBOARD_TANK = {
@@ -526,7 +526,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.TANK.isAvailable
     pageUnitTypeBit = unitTypes.TANK.bit
 
-    pageBlkName = "gui/help/controllerKeyboard.blk"
+    pageBlkName = "%gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
   }
   KEYBOARD_SHIP = {
@@ -539,7 +539,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.SHIP.isAvailable
     pageUnitTypeBit = unitTypes.SHIP.bit
 
-    pageBlkName = "gui/help/controllerKeyboard.blk"
+    pageBlkName = "%gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
   }
   KEYBOARD_HELICOPTER = {
@@ -552,7 +552,7 @@ enums.addTypes(result, {
     checkFeature = unitTypes.HELICOPTER.isAvailable
     pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
-    pageBlkName = "gui/help/controllerKeyboard.blk"
+    pageBlkName = "%gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
   }
   KEYBOARD_SUBMARINE = {
@@ -566,7 +566,7 @@ enums.addTypes(result, {
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"
 
-    pageBlkName = "gui/help/controllerKeyboard.blk"
+    pageBlkName = "%gui/help/controllerKeyboard.blk"
     pageFillfuncName = "fillAllTexts"
   }
   RADAR_AIRBORNE = {
@@ -579,7 +579,7 @@ enums.addTypes(result, {
     checkFeature = @() unitTypes.AIRCRAFT.isAvailable && ::has_feature("Sensors")
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
-    pageBlkName = "gui/help/radarAircraft.blk"
+    pageBlkName = "%gui/help/radarAircraft.blk"
     imagePattern = "#ui/images/help/help_radar_air_%s.jpg?P1"
     defaultValues = { country = "usa" }
     hasImageByCountries = [ "usa" ]
@@ -626,7 +626,7 @@ enums.addTypes(result, {
     checkFeature = @() unitTypes.TANK.isAvailable && ::has_feature("Sensors")
     pageUnitTypeBit = unitTypes.TANK.bit
 
-    pageBlkName = "gui/help/radarTank.blk"
+    pageBlkName = "%gui/help/radarTank.blk"
     imagePattern = "#ui/images/help/help_radar_tank_%s.jpg?P1"
     defaultValues = { country = "ussr" }
     hasImageByCountries = [ "ussr" ]

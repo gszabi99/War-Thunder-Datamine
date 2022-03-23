@@ -1,12 +1,12 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local time = require("scripts/time.nut")
-local { is_stereo_mode } = ::require_native("vr")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let { is_stereo_mode } = ::require_native("vr")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
 
-local animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
+let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
 
 enum MISSION_HINT_TYPE {
   STANDARD   = "standard"
@@ -41,15 +41,15 @@ g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hin
   }
 }
 
-local getRawShortcutsArray = function(shortcuts)
+let getRawShortcutsArray = function(shortcuts)
 {
   if(!shortcuts)
     return []
   local rawShortcutsArray = ::u.isArray(shortcuts) ? shortcuts : [shortcuts]
-  local shouldPickOne = ::g_hud_hints.shouldPickFirstValid(rawShortcutsArray)
+  let shouldPickOne = ::g_hud_hints.shouldPickFirstValid(rawShortcutsArray)
   if (shouldPickOne)
   {
-    local rawShortcut = ::g_hud_hints.pickFirstValidShortcut(rawShortcutsArray)
+    let rawShortcut = ::g_hud_hints.pickFirstValidShortcut(rawShortcutsArray)
     rawShortcutsArray = rawShortcut != null ? [rawShortcut] : []
   }
   else
@@ -59,7 +59,7 @@ local getRawShortcutsArray = function(shortcuts)
 
 g_hud_hints._buildText <- function _buildText(data)
 {
-  local shortcuts = getShortcuts(data)
+  let shortcuts = getShortcuts(data)
   if (shortcuts == null)
   {
     local res = ::loc(getLocId(data), getLocParams(data))
@@ -68,18 +68,18 @@ g_hud_hints._buildText <- function _buildText(data)
     return res
   }
 
-  local rawShortcutsArray = getRawShortcutsArray(shortcuts)
-  local assigned = rawShortcutsArray.len() > 0
+  let rawShortcutsArray = getRawShortcutsArray(shortcuts)
+  let assigned = rawShortcutsArray.len() > 0
   if (!assigned)
   {
-    local noKeyLocId = getNoKeyLocId()
+    let noKeyLocId = getNoKeyLocId()
     if (noKeyLocId != "")
       return ::loc(noKeyLocId)
   }
 
-  local expandedShortcutArray = ::g_shortcut_type.expandShortcuts(rawShortcutsArray)
-  local shortcutTag = ::g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
-  local locParams = getLocParams(data).__update({shortcut = shortcutTag})
+  let expandedShortcutArray = ::g_shortcut_type.expandShortcuts(rawShortcutsArray)
+  let shortcutTag = ::g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
+  let locParams = getLocParams(data).__update({shortcut = shortcutTag})
   local result = ::loc(getLocId(data), locParams)
 
   //If shortcut not specified in localization string it should
@@ -108,7 +108,7 @@ g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutAr
     local localShortcutId = shortcutId //to avoid changes in original array
     if (::g_string.startsWith(localShortcutId, "@"))
       localShortcutId = localShortcutId.slice(1)
-    local shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(localShortcutId)
+    let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(localShortcutId)
     if (shortcutType.isAssigned(localShortcutId))
       return localShortcutId
   }
@@ -120,7 +120,7 @@ g_hud_hints.removeUnmappedShortcuts <- function removeUnmappedShortcuts(shortcut
 {
   for (local i = shortcutArray.len() - 1; i >= 0; --i)
   {
-    local shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutArray[i])
+    let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutArray[i])
     if (!shortcutType.isAssigned(shortcutArray[i]))
       shortcutArray.remove(i)
   }
@@ -151,7 +151,7 @@ g_hud_hints._getShortcuts <- function _getShortcuts(data)
 g_hud_hints._wrapShortsCutIdWithTags <- function _wrapShortsCutIdWithTags(shortNamesArray)
 {
   local result = ""
-  local separator = ::loc("hints/shortcut_separator")
+  let separator = ::loc("hints/shortcut_separator")
   foreach (shortcutName in shortNamesArray)
   {
     if (result.len())
@@ -173,7 +173,7 @@ g_hud_hints._getHintStyle <- function _getHintStyle()
 }
 
 //all obsolette hinttype names must work as standard mission hint
-local isStandardMissionHint = @(hintTypeName)
+let isStandardMissionHint = @(hintTypeName)
   hintTypeName != MISSION_HINT_TYPE.TUTORIAL && hintTypeName != MISSION_HINT_TYPE.BOTTOM
 
 local genMissionHint = @(hintType, checkHintTypeNameFunc)
@@ -189,7 +189,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   updateCbs = {
     ["mission:timer:start"] = function(hintData, eventData)
     {
-      local totalSec = ::getTblValue("totalTime", eventData)
+      let totalSec = ::getTblValue("totalTime", eventData)
       if (!totalSec)
         return false
 
@@ -225,10 +225,10 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
     local varValue = ::getTblValue("variable_value", hintData)
     if (varValue != null)
     {
-      local varStyle = ::getTblValue("variable_style", hintData)
+      let varStyle = ::getTblValue("variable_style", hintData)
       if (varStyle == "playerId")
       {
-        local player = ::get_mplayer_by_id(varValue)
+        let player = ::get_mplayer_by_id(varValue)
         varValue = ::build_mplayer_name(player)
       }
       res = ::loc(res, {var = varValue})
@@ -241,7 +241,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
 
   getHintMarkupParams = function(eventData, hintObjId)
   {
-    local res = ::g_hud_hints._getHintMarkupParams.call(this, eventData, hintObjId)
+    let res = ::g_hud_hints._getHintMarkupParams.call(this, eventData, hintObjId)
     res.hideWhenStopped <- true
     res.timerOffsetX <- "-w" //to timer do not affect message position.
     res.isOrderPopup <- ::getTblValue("isOverFade", eventData, false)
@@ -363,7 +363,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
       return HINT_INTERVAL.ALWAYS_VISIBLE
 
     local interval = HINT_INTERVAL.HIDDEN
-    local count = ::get_hint_seen_count(maskId)
+    let count = ::get_hint_seen_count(maskId)
     foreach(countInterval in countIntervals)
       if (!countInterval?.count || count < countInterval.count)
       {
@@ -382,13 +382,13 @@ enums.addTypesByGlobalName("g_hud_hints", {
   OFFER_BAILOUT = {
     getLocId = function(hintData)
     {
-      local curUnit = getPlayerCurUnit()
+      let curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/ready_to_bailout_helicopter"
       : "hints/ready_to_bailout"
     }
     getNoKeyLocId = function()
     {
-      local curUnit = getPlayerCurUnit()
+      let curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/ready_to_bailout_helicopter_nokey"
       : "hints/ready_to_bailout_nokey"
     }
@@ -404,7 +404,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
     getLocId = function (hintData)
     {
-      local curUnit = getPlayerCurUnit()
+      let curUnit = getPlayerCurUnit()
       return curUnit?.isHelicopter?() ? "hints/bailout_helicopter_in_progress"
         : curUnit?.isAir?() ? "hints/bailout_in_progress"
         : "hints/leaving_the_tank_in_progress" //this localization is more general, then the "air" one
@@ -417,10 +417,10 @@ enums.addTypesByGlobalName("g_hud_hints", {
     buildText = function (data) {
       local res = ::g_hud_hints._buildText.call(this, data)
       res += " " + ::g_hint_tag.TIMER.makeFullTag()
-      local leaveKill = ::getTblValue("leaveKill", data, false)
+      let leaveKill = ::getTblValue("leaveKill", data, false)
       if (leaveKill)
         res +=  "\n" + ::loc(nearestOffenderLocId)
-      local offenderName = ::getTblValue("offenderName", data, "")
+      let offenderName = ::getTblValue("offenderName", data, "")
       if (offenderName != "")
         res +=  "\n" + ::loc(awardGiveForLocId) + offenderName
       return res
@@ -900,7 +900,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     buildText = function(eventData)
     {
       local res = ::g_hud_hints._buildText.call(this, eventData)
-      local timer = eventData?.timer
+      let timer = eventData?.timer
       if (timer)
         res += " (" + timer + ")"
       return res
@@ -932,8 +932,8 @@ enums.addTypesByGlobalName("g_hud_hints", {
     buildText = function(eventData)
     {
       local res = ::g_hud_hints._buildText.call(this, eventData)
-      local rawShortcutsArray = getRawShortcutsArray(getShortcuts(eventData))
-      local player = "playerId" in eventData ? ::get_mplayer_by_id(eventData.playerId) : null
+      let rawShortcutsArray = getRawShortcutsArray(getShortcuts(eventData))
+      let player = "playerId" in eventData ? ::get_mplayer_by_id(eventData.playerId) : null
       local locId = eventData?.locId ?? ""
       if (!rawShortcutsArray.len())
         locId = eventData?.noKeyLocId ?? locId
@@ -947,23 +947,23 @@ enums.addTypesByGlobalName("g_hud_hints", {
       local participantsBStr = ""
       local reservedSlotsCountA = 0
       local reservedSlotsCountB = 0
-      local totalSlotsPerCommand = eventData?.slotsCount ?? 0
-      local spaceStr = "          "
+      let totalSlotsPerCommand = eventData?.slotsCount ?? 0
+      let spaceStr = "          "
 
       local participantList = []
       if(eventData?.participant)
         participantList = ::u.isArray(eventData.participant) ? eventData.participant : [eventData.participant]
 
-      local playerTeam = ::get_local_team_for_mpstats()
+      let playerTeam = ::get_local_team_for_mpstats()
       foreach (participant in participantList)
       {
-        local  participantPlayer = (participant?.participantId ?? -1) >= 0 ? ::get_mplayer_by_id(participant.participantId) : null
+        let  participantPlayer = (participant?.participantId ?? -1) >= 0 ? ::get_mplayer_by_id(participant.participantId) : null
         if (!(participant?.image && participantPlayer))
           continue
 
-        local icon = "#ui/gameuiskin#" + participant.image
-        local color = "@" + ::get_mplayer_color(participantPlayer)
-        local pStr = makeSmallImageStr(icon, color)
+        let icon = "#ui/gameuiskin#" + participant.image
+        let color = "@" + ::get_mplayer_color(participantPlayer)
+        let pStr = makeSmallImageStr(icon, color)
         if (playerTeam == participantPlayer.team)
         {
           participantsAStr += pStr + " "
@@ -976,9 +976,9 @@ enums.addTypesByGlobalName("g_hud_hints", {
         }
       }
 
-      local freeSlotIconName = "#ui/gameuiskin#btn_help.svg"
-      local freeSlotIconColor = "@minorTextColor"
-      local freeSlotIconStr = makeSmallImageStr(freeSlotIconName, freeSlotIconColor, "small")
+      let freeSlotIconName = "#ui/gameuiskin#btn_help.svg"
+      let freeSlotIconColor = "@minorTextColor"
+      let freeSlotIconStr = makeSmallImageStr(freeSlotIconName, freeSlotIconColor, "small")
       for(local i = 0; i < totalSlotsPerCommand - reservedSlotsCountA; ++i)
         participantsAStr += freeSlotIconStr + " "
 
@@ -1149,7 +1149,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = "hint:drowning:hide"
     buildText = function(eventData)
     {
-      local res = ::loc("hints/drowning_in") + " "
+      let res = ::loc("hints/drowning_in") + " "
       + time.secondsToString(eventData?.timeTo ?? 0, false)
       return res
     }
@@ -1224,7 +1224,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
     getLocId = function(hintData)
     {
-      local objType = ::getTblValue("objectiveType", hintData, ::OBJECTIVE_TYPE_SECONDARY)
+      let objType = ::getTblValue("objectiveType", hintData, ::OBJECTIVE_TYPE_SECONDARY)
       local result = ""
       if (objType == ::OBJECTIVE_TYPE_PRIMARY)
         result = "hints/objective_success"
@@ -1251,7 +1251,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
     getLocId = function(hintData)
     {
-      local objType = ::getTblValue("objectiveType", hintData, ::OBJECTIVE_TYPE_PRIMARY)
+      let objType = ::getTblValue("objectiveType", hintData, ::OBJECTIVE_TYPE_PRIMARY)
       local result = ""
       if (objType == ::OBJECTIVE_TYPE_PRIMARY)
         result = "hints/objective_fail"
@@ -1268,7 +1268,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   OFFER_REPAIR = {
     hintType = ::g_hud_hint_types.REPAIR
     getLocId = function (data) {
-      local unitType = ::get_es_unit_type(getPlayerCurUnit())
+      let unitType = ::get_es_unit_type(getPlayerCurUnit())
       if (::getTblValue("assist", data, false))
       {
         if (unitType == ::ES_UNIT_TYPE_TANK)
@@ -1292,7 +1292,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     noKeyLocId = "hints/ready_to_bailout_nokey"
     getShortcuts =  function(data)
     {
-      local curUnit = getPlayerCurUnit()
+      let curUnit = getPlayerCurUnit()
       return curUnit?.isShipOrBoat() ?
         ::g_hud_action_bar_type.TOOLKIT.getVisualShortcut()
         //
@@ -1635,6 +1635,26 @@ enums.addTypesByGlobalName("g_hud_hints", {
       minAlt = hintData.minAlt
       maxAlt = hintData.maxAlt
     }
+  }
+
+  SAY_THANKS_OFFER = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/say_thanks_offer"
+    noKeyLocId = "hints/say_thanks_offer_nokey"
+    showEvent = "hint:say_thanks_offer:show"
+    hideEvent = "hint:say_thanks_offer:hide"
+    shortcuts = "ID_SHOW_VOICE_MESSAGE_LIST"
+    lifeTime = 5.0
+  }
+
+  SAY_SORRY_OFFER = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId     = "hints/say_sorry_offer"
+    noKeyLocId = "hints/say_sorry_offer_nokey"
+    showEvent = "hint:say_sorry_offer:show"
+    hideEvent = "hint:say_sorry_offer:hide"
+    shortcuts = "ID_SHOW_VOICE_MESSAGE_LIST"
+    lifeTime = 5.0
   }
 },
 function() {

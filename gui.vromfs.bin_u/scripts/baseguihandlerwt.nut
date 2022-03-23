@@ -1,27 +1,27 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local penalties = require("scripts/penitentiary/penalties.nut")
-local callback = require("sqStdLibs/helpers/callback.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
-local { updateContacts } = require("scripts/contacts/contactsManager.nut")
-local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
-local { isChatEnabled } = require("scripts/chat/chatStates.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local { get_time_msec } = require("dagor.time")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let callback = require("%sqStdLibs/helpers/callback.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let { updateContacts } = require("%scripts/contacts/contactsManager.nut")
+let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
+let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { get_time_msec } = require("dagor.time")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 local stickedDropDown = null
-local defaultSlotbarActions = [
+let defaultSlotbarActions = [
   "autorefill", "aircraft", "sec_weapons", "weapons", "showroom",
   "testflight", "crew", "goto_unlock", "info", "repair"
 ]
-local timerPID = ::dagui_propid.add_name_id("_size-timer")
-local forceTimePID = ::dagui_propid.add_name_id("force-time")
+let timerPID = ::dagui_propid.add_name_id("_size-timer")
+let forceTimePID = ::dagui_propid.add_name_id("force-time")
 
-local function moveToFirstEnabled(obj) {
-  local total = obj.childrenCount()
+let function moveToFirstEnabled(obj) {
+  let total = obj.childrenCount()
   for(local i = 0; i < total; i++) {
-    local child = obj.getChild(i)
+    let child = obj.getChild(i)
     if (!child.isValid() || !child.isEnabled())
       continue
     ::move_mouse_on_obj(child)
@@ -29,7 +29,7 @@ local function moveToFirstEnabled(obj) {
   }
 }
 
-local function setForceMove(obj, value) {
+let function setForceMove(obj, value) {
   obj.forceMove = value
   obj.setIntProp(forceTimePID, get_time_msec())
 }
@@ -97,10 +97,10 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function getNavbarMarkup()
   {
-    local tplView = getNavbarTplView()
+    let tplView = getNavbarTplView()
     if (!tplView)
       return null
-    return ::handyman.renderCached("gui/commonParts/navBar", tplView)
+    return ::handyman.renderCached("%gui/commonParts/navBar", tplView)
   }
 
   function getNavbarTplView() { return null }
@@ -124,7 +124,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (squadWidgetHandlerWeak)
       return
 
-    local nestObj = scene.findObject(squadWidgetNestObjId)
+    let nestObj = scene.findObject(squadWidgetNestObjId)
     if (!::checkObj(nestObj))
       return
 
@@ -162,14 +162,14 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
    */
   function getModesTabsView(selectedDiffCode, filterFunc)
   {
-    local tabsView = []
+    let tabsView = []
     local isFoundSelected = false
     foreach(diff in ::g_difficulty.types)
     {
       if (!diff.isAvailable() || (filterFunc && !filterFunc(diff)))
         continue
 
-      local isSelected = selectedDiffCode == diff.diffCode
+      let isSelected = selectedDiffCode == diff.diffCode
       isFoundSelected = isFoundSelected || isSelected
       tabsView.append({
         tabName = diff.getLocName(),
@@ -185,10 +185,10 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function updateModesTabsContent(modesObj, view)
   {
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
 
-    local selectCb = modesObj?.on_select
+    let selectCb = modesObj?.on_select
     if (selectCb && (selectCb in this))
       this[selectCb](modesObj)
   }
@@ -198,7 +198,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!::check_obj(nest))
       return
 
-    local modesObj = nest.findObject("modes_list")
+    let modesObj = nest.findObject("modes_list")
     if (!::check_obj(modesObj))
       return
 
@@ -221,7 +221,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function save(onlineSave = true)
   {
-    local handler = this
+    let handler = this
     dagor.debug("save")
     if (::is_save_device_selected())
     {
@@ -293,11 +293,11 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       goForward(start_func)
     else
     {
-      local taskOptions = {
+      let taskOptions = {
         showProgressBox = true
         progressBoxText = ::loc("charServer/checking")
       }
-      local taskSuccessCallback = ::Callback(function ()
+      let taskSuccessCallback = ::Callback(function ()
         {
           if (::checkAllowed.bindenv(this)(task))
             goForward(startFunc)
@@ -322,10 +322,10 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       return
     }
 
-    local successCb = ::Callback((@(start_func, start_without_forward) function() {
+    let successCb = ::Callback((@(start_func, start_without_forward) function() {
       goForwardOrJustStart(start_func, start_without_forward)
     })(start_func, start_without_forward), this)
-    local errorCb = skippable ? successCb : null
+    let errorCb = skippable ? successCb : null
 
     ::g_matching_connect.connect(successCb, errorCb)
   }
@@ -358,7 +358,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function startOnlineShop(chapter = null, afterCloseShop = null, metric = "unknown")
   {
-    local handler = this
+    let handler = this
     goForwardIfOnline(function() {
         local closeFunc = null
         if (afterCloseShop)
@@ -459,7 +459,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function getCurSlotUnit()
   {
-    local slotbar = getSlotbar()
+    let slotbar = getSlotbar()
     return slotbar && slotbar.getCurSlotUnit()
   }
 
@@ -470,7 +470,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function getCurCrew()
   {
-    local slotbar = getSlotbar()
+    let slotbar = getSlotbar()
     return slotbar && slotbar.getCurCrew()
   }
 
@@ -493,7 +493,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   {
     if ((slotbarWeak?.slotbarOninit ?? false) || hasAutoRefillChangeInProcess)
       return
-    local mode = obj.id == "slots-autorepair" ? 0
+    let mode = obj.id == "slots-autorepair" ? 0
       : obj.id == "slots-autoweapon" ? 1
       : -1
 
@@ -523,7 +523,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     params.scene <- nest
     params.ownerWeak <- this.weakref()
 
-    local slotbar = createSlotbarHandler(params)
+    let slotbar = createSlotbarHandler(params)
     if (!slotbar)
       return
 
@@ -538,7 +538,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function reinitSlotbar() //!!FIX ME: Better to not use it.
   {
-    local slotbar = getSlotbar()
+    let slotbar = getSlotbar()
     if (slotbar)
       slotbar.fullUpdate()
   }
@@ -565,7 +565,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   {
     if (!::checkObj(unitObj) || (!ignoreHover && !unitObj.isHovered()))
       return
-    local parentObj = unitObj.getParent()
+    let parentObj = unitObj.getParent()
     if (!::checkObj(parentObj)
       || (!ignoreSelect && (parentObj?.chosen ?? parentObj?.selected) != "yes"))
       return
@@ -622,14 +622,14 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
     if (result != 0)
     {
-      local handler = this
+      let handler = this
       local text = ::loc("charServer/updateError/"+result.tostring())
 
       if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
         && ("get_char_extended_error" in getroottable()))
         if (result == ::EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
         {
-          local notAllowedChars = ::get_char_extended_error()
+          let notAllowedChars = ::get_char_extended_error()
           text = ::format(text, notAllowedChars)
         }
 
@@ -674,7 +674,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onContactTooltipOpen(obj)
   {
-    local uid = obj?.uid
+    let uid = obj?.uid
     local canShow = false
     local contact = null
     if (uid)
@@ -695,7 +695,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onQueuesTooltipOpen(obj)
   {
-    guiScene.replaceContent(obj, "gui/queue/queueInfoTooltip.blk", this)
+    guiScene.replaceContent(obj, "%gui/queue/queueInfoTooltip.blk", this)
     SecondsUpdater(obj.findObject("queue_tooltip_root"), function(obj, params)
     {
       obj.findObject("text").setValue(::queues.getQueuesInfoText())
@@ -705,16 +705,16 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function onProjectawardTooltipOpen(obj)
   {
     if (!::checkObj(obj)) return
-    local img = obj?.img ?? ""
-    local title = obj?.title ?? ""
-    local desc = obj?.desc ?? ""
+    let img = obj?.img ?? ""
+    let title = obj?.title ?? ""
+    let desc = obj?.desc ?? ""
 
-    guiScene.replaceContent(obj, "gui/customization/decalTooltip.blk", this)
+    guiScene.replaceContent(obj, "%gui/customization/decalTooltip.blk", this)
     obj.findObject("header").setValue(title)
     obj.findObject("description").setValue(desc)
-    local imgObj = obj.findObject("image")
+    let imgObj = obj.findObject("image")
     imgObj["background-image"] = img
-    local picDiv = imgObj.getParent()
+    let picDiv = imgObj.getParent()
     picDiv["size"] = "128*@sf/@pf_outdated, 128*@sf/@pf_outdated"
     picDiv.show(true)
   }
@@ -749,7 +749,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   }
 
   function forceCloseDropDown(obj) {
-    local rootObj = getDropDownRootObj(obj)
+    let rootObj = getDropDownRootObj(obj)
     if (rootObj != null)
       setForceMove(rootObj, "close")
   }
@@ -760,7 +760,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!obj)
       return
 
-    local needStick = obj?.forceMove != "open"
+    let needStick = obj?.forceMove != "open"
     setForceMove(obj, needStick ? "open" : "no")
     unstickLastDropDown(obj, needStick ? "close" : "no")
 
@@ -780,13 +780,13 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function onGCDropdown(obj)
   {
     local id = obj?.id
-    local ending = "_panel"
+    let ending = "_panel"
     if (id && id.len() > ending.len() && id.slice(id.len()-ending.len())==ending)
       id = id.slice(0, id.len()-ending.len())
     if (!::isInArray(id, GCDropdownsList))
       return
 
-    local btnObj = obj.findObject(id + "_btn")
+    let btnObj = obj.findObject(id + "_btn")
     if (::checkObj(btnObj))
       onDropDownToggle(btnObj)
   }
@@ -796,7 +796,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (!::checkObj(obj))
       return
 
-    local id = obj?.id
+    let id = obj?.id
     if (!show || !::isInArray(id, GCDropdownsList))
     {
       curGCDropdown = null
@@ -810,9 +810,9 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onDropdownAnimFinish(obj) {
     //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
-    local isOpened = obj.getFloatProp(timerPID, 0.0) == 1
+    let isOpened = obj.getFloatProp(timerPID, 0.0) == 1
     if (!isOpened) {
-      local rootObj = getDropDownRootObj(obj)
+      let rootObj = getDropDownRootObj(obj)
       guiScene.performDelayed({}, function() {
         if (rootObj?.isValid())
           setForceMove(rootObj, "no") //need to remove flag on the next frame, after hover will be removed
@@ -822,10 +822,10 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
     if (::is_mouse_last_time_used() || !stickedDropDown?.isValid())
       return
-    local rootObj = getDropDownRootObj(obj)
+    let rootObj = getDropDownRootObj(obj)
     if (!rootObj || !stickedDropDown.isEqual(rootObj))
       return
-    local menuObj = getCurGCDropdownMenu()
+    let menuObj = getCurGCDropdownMenu()
     if (!menuObj?.isValid())
       return
     moveToFirstEnabled(menuObj)
@@ -843,7 +843,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     // see func onDropdownAnimFinish
     if (!::show_console_buttons || !::check_obj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
-    local btn = getCurGCDropdownBtn()
+    let btn = getCurGCDropdownBtn()
     if (btn && (getDropDownRootObj(btn)?.getIntProp(forceTimePID, 0) ?? 0) > get_time_msec() + 100)
       unstickLastDropDown()
   }
@@ -860,7 +860,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (text == null || !::check_obj(placeObj))
       return
 
-    local textObj = placeObj.findObject(name)
+    let textObj = placeObj.findObject(name)
     if (::check_obj(textObj))
       textObj.setValue(text.tostring())
   }
@@ -985,7 +985,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function getWidgetsList()
   {
-    local result = []
+    let result = []
     if (widgetsList)
       foreach (widgetDesc in widgetsList)
       {
@@ -998,7 +998,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function getWidgetParams(placeholderId)
   {
-    local placeholderObj = scene.findObject(placeholderId)
+    let placeholderObj = scene.findObject(placeholderId)
     if (!::checkObj(placeholderObj))
       return null
 

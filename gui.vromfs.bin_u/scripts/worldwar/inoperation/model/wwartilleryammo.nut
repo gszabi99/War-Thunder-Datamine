@@ -1,5 +1,5 @@
-local time = require("scripts/time.nut")
-class ::WwArtilleryAmmo
+let time = require("%scripts/time.nut")
+::WwArtilleryAmmo <- class
 {
   hasArtilleryStrike = false
   strikesDone = null
@@ -27,10 +27,10 @@ class ::WwArtilleryAmmo
     nextStrikeTimeMillis = 0
     strikesDone = null
 
-    local strikesBlk = ::DataBlock()
+    let strikesBlk = ::DataBlock()
     ::ww_get_artillery_strikes(strikesBlk)
 
-    local strikeBlk = strikesBlk?.artilleryStrikes?[armyName]
+    let strikeBlk = strikesBlk?.artilleryStrikes?[armyName]
     if (!strikeBlk)
       return
 
@@ -51,7 +51,7 @@ class ::WwArtilleryAmmo
 
   function getNextAmmoRefillTime()
   {
-    local millisec = nextAmmoRefillMillisec - ::ww_get_operation_time_millisec()
+    let millisec = nextAmmoRefillMillisec - ::ww_get_operation_time_millisec()
     return time.millisecondsToSeconds(millisec).tointeger()
   }
 
@@ -75,7 +75,7 @@ class ::WwArtilleryAmmo
     if (!hasStrike())
       return 0
 
-    local millisec = nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
+    let millisec = nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
     return ::max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 

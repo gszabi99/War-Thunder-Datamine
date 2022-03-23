@@ -1,14 +1,14 @@
-local { is_seen_nuclear_event,
+let { is_seen_nuclear_event,
         is_seen_main_nuclear_event,
         need_show_after_streak } = require("hangarEventCommand")
-local airRaidWndScene = require("scripts/wndLib/airRaidWnd.nut")
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-local newClientVersionEvent = persist("newClientVersionEvent ", @() {
+let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
 })
 
-local function onNewClientVersion(params) {
+let function onNewClientVersion(params) {
   newClientVersionEvent.hasMessage = true
   if (!::is_in_flight())
     ::broadcastEvent("NewClientVersion", params)
@@ -16,20 +16,20 @@ local function onNewClientVersion(params) {
   return { result = "ok" }
 }
 
-local function checkNuclearEvent(params = {}) {
-  local needShowNuclearEventAfterStreak = need_show_after_streak()
+let function checkNuclearEvent(params = {}) {
+  let needShowNuclearEventAfterStreak = need_show_after_streak()
   if (needShowNuclearEventAfterStreak) {
     airRaidWndScene({hasVisibleNuclearTimer = false})
     return
   }
 
-  local isSeenMainNuclearEvent = is_seen_main_nuclear_event()
+  let isSeenMainNuclearEvent = is_seen_main_nuclear_event()
   if (isSeenMainNuclearEvent)
     return
 
-  local isSeenNuclearEvent = is_seen_nuclear_event()
-  local isNewClient = ::is_version_equals_or_newer("2.0.0.0")
-  local isForceNewClientVersionEvent = isSeenNuclearEvent && isNewClient
+  let isSeenNuclearEvent = is_seen_nuclear_event()
+  let isNewClient = ::is_version_equals_or_newer("2.0.0.0")
+  let isForceNewClientVersionEvent = isSeenNuclearEvent && isNewClient
   if (!isForceNewClientVersionEvent && !newClientVersionEvent.hasMessage)
     return
 
@@ -40,11 +40,11 @@ local function checkNuclearEvent(params = {}) {
   airRaidWndScene({hasVisibleNuclearTimer = params?.showTimer ?? !isNewClient})
 }
 
-local function bigQuerryForNuclearEvent() {
+let function bigQuerryForNuclearEvent() {
   if (!::g_login.isProfileReceived())
     return
 
-  local needSendStatistic = ::load_local_account_settings("sendNuclearStatistic", true)
+  let needSendStatistic = ::load_local_account_settings("sendNuclearStatistic", true)
   if (!needSendStatistic)
     return
 

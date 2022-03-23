@@ -1855,15 +1855,6 @@
             "defaultPitch": 0.0
           },
           {
-            "speedYaw": 60.0
-          },
-          {
-            "speedPitch": 45.0
-          },
-          {
-            "bullets": 200
-          },
-          {
             "allowableDelta": 2.0
           },
           {
@@ -1910,6 +1901,21 @@
           },
           {
             "errExplTime": 0.0
+          },
+          {
+            "speedYaw": 60.0
+          },
+          {
+            "speedPitch": 45.0
+          },
+          {
+            "bullets": 200
+          },
+          {
+            "useGunnerTargetingQuality": false
+          },
+          {
+            "fireConeAngle": 1.0
           },
           {
             "turret": {
@@ -1977,15 +1983,6 @@
             "defaultPitch": 0.0
           },
           {
-            "speedYaw": 60.0
-          },
-          {
-            "speedPitch": 55.0
-          },
-          {
-            "bullets": 2000
-          },
-          {
             "allowableDelta": 2.0
           },
           {
@@ -2032,6 +2029,15 @@
           },
           {
             "errExplTime": 0.0
+          },
+          {
+            "speedYaw": 70.0
+          },
+          {
+            "speedPitch": 65.0
+          },
+          {
+            "bullets": 2000
           },
           {
             "useGunnerTargetingQuality": false
@@ -2121,15 +2127,6 @@
             "defaultPitch": 0.0
           },
           {
-            "speedYaw": 60.0
-          },
-          {
-            "speedPitch": 55.0
-          },
-          {
-            "bullets": 2000
-          },
-          {
             "allowableDelta": 2.0
           },
           {
@@ -2176,6 +2173,15 @@
           },
           {
             "errExplTime": 0.0
+          },
+          {
+            "speedYaw": 70.0
+          },
+          {
+            "speedPitch": 65.0
+          },
+          {
+            "bullets": 2000
           },
           {
             "useGunnerTargetingQuality": false
@@ -2323,11 +2329,11 @@
   },
   {
     "breaches": {
-      "repairSpeed": 20.0,
-      "waterMassVel": -14000.0,
-      "waterMassMult": 40.0,
+      "repairSpeed": 15.0,
+      "waterMassVel": -3500.0,
+      "waterMassMult": 100.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
-      "additionalWaterDeathThreshold": 200000.0,
+      "additionalWaterDeathThreshold": 100000.0,
       "additionalWaterShouldDiePercent": 0.45,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 35.0,
@@ -2335,7 +2341,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.35
     }
   },
   {
@@ -2343,7 +2349,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.94,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -2362,13 +2368,13 @@
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.4
               }
             },
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.7
+                "critWaterLevel": 0.8
               }
             }
           ]

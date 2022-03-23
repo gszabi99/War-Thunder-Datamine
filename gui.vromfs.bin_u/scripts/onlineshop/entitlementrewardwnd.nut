@@ -1,7 +1,7 @@
-local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
-local { getEntitlementView, getEntitlementLayerIcons } = require("scripts/onlineShop/entitlementView.nut")
+let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
 
-class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
+::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
 {
   wndType = handlerType.MODAL
 
@@ -25,13 +25,13 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
   }
 
   function checkConfigsArray() {
-    local unitNames = entitlementConfig?.aircraftGift ?? []
+    let unitNames = entitlementConfig?.aircraftGift ?? []
     if (unitNames.len())
       unit = ::getAircraftByName(unitNames[0])
 
-    local decalsNames = entitlementConfig?.decalGift ?? []
-    local attachablesNames = entitlementConfig?.attachableGift ?? []
-    local skinsNames = entitlementConfig?.skinGift ?? []
+    let decalsNames = entitlementConfig?.decalGift ?? []
+    let attachablesNames = entitlementConfig?.attachableGift ?? []
+    let skinsNames = entitlementConfig?.skinGift ?? []
     local resourceType = ""
     local resource = ""
     if (decalsNames.len())
@@ -68,11 +68,11 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!opened)
       return
 
-    local obj = scene.findObject("prize_desc_div")
+    let obj = scene.findObject("prize_desc_div")
     if (!::checkObj(obj))
       return
 
-    local data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
+    let data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
@@ -89,7 +89,7 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
 
 return {
   showEntitlement = function(entitlementId, params = {}) {
-    local config = getEntitlementConfig(entitlementId)
+    let config = getEntitlementConfig(entitlementId)
     if (!config)
     {
       ::dagor.logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")

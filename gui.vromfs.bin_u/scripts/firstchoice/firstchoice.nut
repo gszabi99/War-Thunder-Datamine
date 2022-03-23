@@ -1,7 +1,7 @@
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getPlayerName, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
-local getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
+let getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
 {
   foreach(unitType in unitTypes.types)
     if (unitType.isFirstChosen())
@@ -9,26 +9,26 @@ local getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
   return defValue
 }
 
-local isNeedFirstCountryChoice = function()
+let isNeedFirstCountryChoice = function()
 {
   return getFirstChosenUnitType() == ::ES_UNIT_TYPE_INVALID
          && !::stat_get_value_respawns(0, 1)
          && !::disable_network()
 }
 
-local fillUserNick = function (nestObj, headerLocId = null) {
+let fillUserNick = function (nestObj, headerLocId = null) {
   if (!isPlatformXboxOne)
     return
 
   if (!nestObj?.isValid())
     return
 
-  local guiScene = nestObj.getScene()
+  let guiScene = nestObj.getScene()
   if (!guiScene)
     return
 
-  local cfg = ::get_profile_info()
-  local data =  ::handyman.renderCached("gui/firstChoice/userNick", {
+  let cfg = ::get_profile_info()
+  let data =  ::handyman.renderCached("%gui/firstChoice/userNick", {
       userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}" : ""
       userName = ::colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
     })

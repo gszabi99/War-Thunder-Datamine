@@ -1,22 +1,22 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local time = require("scripts/time.nut")
-local unitStatus = require("scripts/unit/unitStatus.nut")
-local { getUnitRole,
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { getUnitRole,
         getUnitRoleIcon,
         getUnitItemStatusText,
-        getUnitRarity } = require("scripts/unit/unitInfoTexts.nut")
-local { getLastWeapon,
+        getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
+let { getLastWeapon,
         checkUnitWeapons,
-        getWeaponsStatusName } = require("scripts/weaponry/weaponryInfo.nut")
-local { getUnitLastBullets } = require("scripts/weaponry/bulletsInfo.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getUnitShopPriceText } = require("scripts/shop/unitCardPkg.nut")
-local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
-local { isDiffUnlocked } = require("scripts/tutorials/tutorialsData.nut")
-local { RANDOM_UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-local { getShowedUnitName } = require("scripts/slotbar/playerCurUnit.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
-local { isNeedFirstCountryChoice } = require("scripts/firstChoice/firstChoice.nut")
+        getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsData.nut")
+let { RANDOM_UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 
 /*
 if need - put commented in array above
@@ -51,7 +51,7 @@ if need - put commented in array above
 
 //=============================  module functions  =============================
 
-local function isCountrySlotbarHasUnits(countryId) {
+let function isCountrySlotbarHasUnits(countryId) {
   return ::get_crews_list_by_country(countryId).findvalue(@(crew) (crew?.aircraft ?? "") != "") != null
 }
 
@@ -65,43 +65,43 @@ local function isCountrySlotbarHasUnits(countryId) {
 ::build_aircraft_item <- function build_aircraft_item(id, air, params = {})
 {
   local res = ""
-  local defaultStatus = "none"
+  let defaultStatus = "none"
 
-  local showBR = ::getTblValue("showBR", params, ::has_feature("GlobalShowBattleRating"))
-  local curEdiff = ("getEdiffFunc" in params) ?  params.getEdiffFunc() : ::get_current_ediff()
+  let showBR = ::getTblValue("showBR", params, ::has_feature("GlobalShowBattleRating"))
+  let curEdiff = ("getEdiffFunc" in params) ?  params.getEdiffFunc() : ::get_current_ediff()
 
   if (air && !::isUnitGroup(air) && !air?.isFakeUnit)
   {
-    local isLocalState        = params?.isLocalState ?? true
-    local forceNotInResearch  = params?.forceNotInResearch ?? false
+    let isLocalState        = params?.isLocalState ?? true
+    let forceNotInResearch  = params?.forceNotInResearch ?? false
     local inactive            = params?.inactive ?? false
-    local shopResearchMode    = params?.shopResearchMode ?? false
-    local hasActions          = params?.hasActions ?? false
+    let shopResearchMode    = params?.shopResearchMode ?? false
+    let hasActions          = params?.hasActions ?? false
 
-    local isOwn               = ::isUnitBought(air)
-    local isUsable            = ::isUnitUsable(air)
-    local isMounted           = ::isUnitInSlotbar(air)
-    local canResearch         = ::canResearchUnit(air)
-    local special             = ::isUnitSpecial(air)
-    local isVehicleInResearch = ::isUnitInResearch(air) && !forceNotInResearch
-    local isSquadronVehicle   = air.isSquadronVehicle()
-    local isMarketableVehicle = ::canBuyUnitOnMarketplace(air)
-    local unitReqExp          = ::getUnitReqExp(air)
+    let isOwn               = ::isUnitBought(air)
+    let isUsable            = ::isUnitUsable(air)
+    let isMounted           = ::isUnitInSlotbar(air)
+    let canResearch         = ::canResearchUnit(air)
+    let special             = ::isUnitSpecial(air)
+    let isVehicleInResearch = ::isUnitInResearch(air) && !forceNotInResearch
+    let isSquadronVehicle   = air.isSquadronVehicle()
+    let isMarketableVehicle = ::canBuyUnitOnMarketplace(air)
+    let unitReqExp          = ::getUnitReqExp(air)
     local unitExpGranted      = ::getUnitExp(air)
-    local diffExp = isSquadronVehicle
+    let diffExp = isSquadronVehicle
       ? ::min(::clan_get_exp(), unitReqExp - unitExpGranted)
       : (params?.diffExp ?? 0)
     if (isSquadronVehicle && isVehicleInResearch)
       unitExpGranted += diffExp
 
-    local isBroken            = ::isUnitBroken(air)
-    local unitRarity          = getUnitRarity(air)
-    local isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
+    let isBroken            = ::isUnitBroken(air)
+    let unitRarity          = getUnitRarity(air)
+    let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
 
     local status = params?.status ?? defaultStatus
     if (status == defaultStatus)
     {
-      local bitStatus = unitStatus.getBitStatus(air, params)
+      let bitStatus = unitStatus.getBitStatus(air, params)
       if (bit_unit_status.locked & bitStatus)
         inactive = shopResearchMode
       else if (bit_unit_status.disabled & bitStatus)
@@ -114,12 +114,12 @@ local function isCountrySlotbarHasUnits(countryId) {
     // Bottom button view
     //
 
-    local mainButtonAction = ::show_console_buttons ? "onOpenActionsList" : (params?.mainActionFunc ?? "")
-    local mainButtonText = ::show_console_buttons ? "" : (params?.mainActionText ?? "")
-    local mainButtonIcon = ::show_console_buttons ? "#ui/gameuiskin#slot_menu.svg" : (params?.mainActionIcon ?? "")
-    local checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
-    local checkButton = !isVehicleInResearch || ::has_feature("SpendGold")
-    local bottomButtonView = {
+    let mainButtonAction = ::show_console_buttons ? "onOpenActionsList" : (params?.mainActionFunc ?? "")
+    let mainButtonText = ::show_console_buttons ? "" : (params?.mainActionText ?? "")
+    let mainButtonIcon = ::show_console_buttons ? "#ui/gameuiskin#slot_menu.svg" : (params?.mainActionIcon ?? "")
+    let checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
+    let checkButton = !isVehicleInResearch || ::has_feature("SpendGold")
+    let bottomButtonView = {
       holderId            = id
       hasButton           = hasActions && checkTexts && checkButton
       mainButtonText      = mainButtonText
@@ -132,23 +132,23 @@ local function isCountrySlotbarHasUnits(countryId) {
     // Item buttons view
     //
 
-    local crewId = params?.crewId ?? -1
-    local showWarningIcon = params?.showWarningIcon ?? false
-    local specType = params?.specType
-    local rentInfo = ::get_unit_item_rent_info(air, params)
-    local spareCount = isLocalState ? ::get_spare_aircrafts_count(air.name) : 0
+    let crewId = params?.crewId ?? -1
+    let showWarningIcon = params?.showWarningIcon ?? false
+    let specType = params?.specType
+    let rentInfo = ::get_unit_item_rent_info(air, params)
+    let spareCount = isLocalState ? ::get_spare_aircrafts_count(air.name) : 0
 
-    local hasCrewInfo = ::has_feature("CrewInfo") && crewId >= 0
-    local crew = hasCrewInfo ? ::get_crew_by_id(crewId) : null
+    let hasCrewInfo = ::has_feature("CrewInfo") && crewId >= 0
+    let crew = hasCrewInfo ? ::get_crew_by_id(crewId) : null
 
-    local forceCrewInfoUnit = params?.forceCrewInfoUnit
-    local unitForCrewInfo = forceCrewInfoUnit || air
-    local crewLevelText = crew && unitForCrewInfo
+    let forceCrewInfoUnit = params?.forceCrewInfoUnit
+    let unitForCrewInfo = forceCrewInfoUnit || air
+    let crewLevelText = crew && unitForCrewInfo
       ? ::g_crew.getCrewLevel(crew, unitForCrewInfo, unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
       : ""
-    local crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
+    let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
 
-    local itemButtonsView = {
+    let itemButtonsView = {
       itemButtons = {
         hasToBattleButton       = params?.toBattle ?? false
         toBattleButtonAction    = params?.toBattleButtonAction ?? "onSlotBattle"
@@ -163,7 +163,7 @@ local function isCountrySlotbarHasUnits(countryId) {
       }
     }
 
-    local extraInfoView = {
+    let extraInfoView = {
       hasExtraInfoBlock         = params?.hasExtraInfoBlock ?? false
       hasCrewInfo               = hasCrewInfo
       crewLevel                 = hasCrewInfo ? crewLevelText : ""
@@ -183,9 +183,9 @@ local function isCountrySlotbarHasUnits(countryId) {
     // Air research progress view
     //
 
-    local showProgress = isLocalState && !isOwn && canResearch && !::is_in_flight()
+    let showProgress = isLocalState && !isOwn && canResearch && !::is_in_flight()
       && (!isLockedSquadronVehicle || unitExpGranted > 0)
-    local airResearchProgressView = {
+    let airResearchProgressView = {
       airResearchProgress = []
     }
     if (showProgress)
@@ -215,11 +215,11 @@ local function isCountrySlotbarHasUnits(countryId) {
     // Res view
     //
 
-    local priceText = ::get_unit_item_price_text(air, params)
-    local progressText = showProgress ? ::get_unit_item_research_progress_text(air, params, priceText) : ""
-    local checkNotification = ::g_discount.getEntitlementUnitDiscount(air.name)
+    let priceText = ::get_unit_item_price_text(air, params)
+    let progressText = showProgress ? ::get_unit_item_research_progress_text(air, params, priceText) : ""
+    let checkNotification = ::g_discount.getEntitlementUnitDiscount(air.name)
 
-    local resView = params.__merge({
+    let resView = params.__merge({
       slotId              = "td_" + id
       bonusId             = id
       slotInactive        = inactive
@@ -242,7 +242,7 @@ local function isCountrySlotbarHasUnits(countryId) {
       shopItemText        = ::get_slot_unit_name_text(air, params)
       progressText        = progressText
       progressStatus      = showProgress? ::get_unit_item_progress_status(air, params) : ""
-      progressBlk         = ::handyman.renderCached("gui/slotbar/airResearchProgress", airResearchProgressView)
+      progressBlk         = ::handyman.renderCached("%gui/slotbar/airResearchProgress", airResearchProgressView)
       showInService       = (params?.showInService ?? false) && isUsable
       isMounted           = isMounted
       priceText           = priceText
@@ -252,16 +252,16 @@ local function isCountrySlotbarHasUnits(countryId) {
       bottomLineText      = params?.bottomLineText
       isItemLocked        = isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !::isUnitsEraUnlocked(air)
       hasTalismanIcon     = isLocalState && (special || ::shop_is_modification_enabled(air.name, "premExpMul"))
-      itemButtons         = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", itemButtonsView)
+      itemButtons         = ::handyman.renderCached("%gui/slotbar/slotbarItemButtons", itemButtonsView)
       tooltipId           = ::g_tooltip.getIdUnit(air.name, params?.tooltipParams)
       isTooltipByHold     = ::show_console_buttons
-      bottomButton        = ::handyman.renderCached("gui/slotbar/slotbarItemBottomButton", bottomButtonView)
-      extraInfoBlock      = ::handyman.renderCached("gui/slotbar/slotExtraInfoBlock", extraInfoView)
+      bottomButton        = ::handyman.renderCached("%gui/slotbar/slotbarItemBottomButton", bottomButtonView)
+      extraInfoBlock      = ::handyman.renderCached("%gui/slotbar/slotExtraInfoBlock", extraInfoView)
       refuseOpenHoverMenu = !hasActions
     })
-    local missionRules = params?.missionRules
-    local groupName = missionRules ? missionRules.getRandomUnitsGroupName(air.name) : null
-    local isShowAsRandomUnit = groupName
+    let missionRules = params?.missionRules
+    let groupName = missionRules ? missionRules.getRandomUnitsGroupName(air.name) : null
+    let isShowAsRandomUnit = groupName
       && (::is_respawn_screen()
         || !::is_player_unit_alive()
         || ::get_player_unit_name() != air.name)
@@ -276,24 +276,24 @@ local function isCountrySlotbarHasUnits(countryId) {
       resView.tooltipId = RANDOM_UNIT.getTooltipId(air.name, {groupName = groupName})
     }
 
-    res = ::handyman.renderCached("gui/slotbar/slotbarSlotSingle", resView)
+    res = ::handyman.renderCached("%gui/slotbar/slotbarSlotSingle", resView)
   }
   else if (air && ::isUnitGroup(air)) //group of aircrafts
   {
-    local groupStatus         = params?.status ?? defaultStatus
-    local forceNotInResearch  = params?.forceNotInResearch ?? false
-    local shopResearchMode    = params?.shopResearchMode ?? false
-    local showInService       = params?.showInService ?? false
+    let groupStatus         = params?.status ?? defaultStatus
+    let forceNotInResearch  = params?.forceNotInResearch ?? false
+    let shopResearchMode    = params?.shopResearchMode ?? false
+    let showInService       = params?.showInService ?? false
     local inactive            = params?.inactive ?? false
 
     local special           = false
 
     local nextAir = air.airsGroup[0]
-    local country = nextAir.shopCountry
-    local esUnitType = ::get_es_unit_type(nextAir)
+    let country = nextAir.shopCountry
+    let esUnitType = ::get_es_unit_type(nextAir)
     local forceUnitNameOnPlate = false
 
-    local era = nextAir?.rank ?? -1
+    let era = nextAir?.rank ?? -1
 
     local isGroupUsable     = false
     local isGroupInResearch = false
@@ -310,12 +310,12 @@ local function isCountrySlotbarHasUnits(countryId) {
     local unitRole          = null
     local bitStatus         = 0
 
-    local isSquadronResearchMode = params?.isSquadronResearchMode ?? false
+    let isSquadronResearchMode = params?.isSquadronResearchMode ?? false
 
     foreach(a in air.airsGroup)
     {
-      local isInResearch = !forceNotInResearch && ::isUnitInResearch(a)
-      local isUsable = ::isUnitUsable(a)
+      let isInResearch = !forceNotInResearch && ::isUnitInResearch(a)
+      let isUsable = ::isUnitUsable(a)
 
       if (isInResearch || (::canResearchUnit(a) && !researchingUnit))
       {
@@ -348,7 +348,7 @@ local function isCountrySlotbarHasUnits(countryId) {
       isPkgDev = isPkgDev || a.isPkgDev
       isRecentlyReleased = isRecentlyReleased || a.isRecentlyReleased()
 
-      local hasTalisman = special || ::shop_is_modification_enabled(a.name, "premExpMul")
+      let hasTalisman = special || ::shop_is_modification_enabled(a.name, "premExpMul")
       hasTalismanIcon = hasTalismanIcon || hasTalisman
       talismanIncomplete = talismanIncomplete || !hasTalisman
 
@@ -374,13 +374,13 @@ local function isCountrySlotbarHasUnits(countryId) {
       || firstUnboughtUnit || lastBoughtUnit || nextAir
     forceUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
       || (isGroupInResearch && researchingUnit != null) || firstUnboughtUnit != null
-    local unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || air
+    let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || air
 
     //
     // Bottom button view
     //
 
-    local bottomButtonView = {
+    let bottomButtonView = {
       holderId            = id
       hasButton           = ::show_console_buttons
       mainButtonAction    = "onAircraftClick"
@@ -393,9 +393,9 @@ local function isCountrySlotbarHasUnits(countryId) {
     // Item buttons view
     //
 
-    local rentInfo = ::get_unit_item_rent_info(rentedUnit, params)
+    let rentInfo = ::get_unit_item_rent_info(rentedUnit, params)
 
-    local itemButtonsView = {
+    let itemButtonsView = {
       itemButtons = {
         hasRentIcon             = rentInfo.hasIcon
         hasRentProgress         = rentInfo.hasProgress
@@ -412,12 +412,12 @@ local function isCountrySlotbarHasUnits(countryId) {
     if (researchingUnit)
     {
       showProgress = true
-      local unitExpGranted = ::getUnitExp(researchingUnit)
-      local unitReqExp = ::getUnitReqExp(researchingUnit)
+      let unitExpGranted = ::getUnitExp(researchingUnit)
+      let unitReqExp = ::getUnitReqExp(researchingUnit)
       unitExpProgressValue = unitReqExp > 0 ? unitExpGranted.tofloat() / unitReqExp.tofloat() * 1000 : 0
     }
 
-    local airResearchProgressView = {
+    let airResearchProgressView = {
       airResearchProgress = [{
         airResearchProgressValue            = unitExpProgressValue.tostring()
         airResearchProgressType             = ""
@@ -440,7 +440,7 @@ local function isCountrySlotbarHasUnits(countryId) {
       else
         shopAirImage = "!" + (::getTblValue("image", air) || ("#ui/unitskin#planes_group"))
 
-    local groupSlotView = params.__merge({
+    let groupSlotView = params.__merge({
       slotId              = id
       unitRole            = unitRole
       unitClassIcon       = getUnitRoleIcon(nextAir)
@@ -455,7 +455,7 @@ local function isCountrySlotbarHasUnits(countryId) {
       shopItemText        = forceUnitNameOnPlate ? "#" + nextAir.name + "_shop" : "#shop/group/" + air.name
       progressText        = showProgress ? ::get_unit_item_research_progress_text(researchingUnit, params) : ""
       progressStatus      = showProgress ? ::get_unit_item_progress_status(researchingUnit, params) : ""
-      progressBlk         = ::handyman.renderCached("gui/slotbar/airResearchProgress", airResearchProgressView)
+      progressBlk         = ::handyman.renderCached("%gui/slotbar/airResearchProgress", airResearchProgressView)
       showInService       = isGroupUsable
       priceText           = !showProgress && firstUnboughtUnit ? ::get_unit_item_price_text(firstUnboughtUnit, params) : ""
       isMounted           = mountedUnit != null
@@ -464,29 +464,29 @@ local function isCountrySlotbarHasUnits(countryId) {
       isItemLocked        = !::is_era_available(country, era, esUnitType)
       hasTalismanIcon     = hasTalismanIcon
       talismanIncomplete  = talismanIncomplete
-      itemButtons         = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", itemButtonsView)
+      itemButtons         = ::handyman.renderCached("%gui/slotbar/slotbarItemButtons", itemButtonsView)
       bonusId             = id
       primaryUnitId       = nextAir.name
       tooltipId           = ::g_tooltip.getIdUnit(nextAir.name, params?.tooltipParams)
       isTooltipByHold     = ::show_console_buttons
-      bottomButton        = ::handyman.renderCached("gui/slotbar/slotbarItemBottomButton", bottomButtonView)
+      bottomButton        = ::handyman.renderCached("%gui/slotbar/slotbarItemBottomButton", bottomButtonView)
       hasFullGroupBlock   = params?.fullGroupBlock ?? true
       fullGroupBlockId    = "td_" + id
       isGroupInactive     = inactive
     })
-    res = ::handyman.renderCached("gui/slotbar/slotbarSlotGroup", groupSlotView)
+    res = ::handyman.renderCached("%gui/slotbar/slotbarSlotGroup", groupSlotView)
   }
   else if (air?.isFakeUnit)  //fake unit slot
   {
-    local isReqForFakeUnit  = air?.isReqForFakeUnit ?? false
-    local isLocalState      = params?.isLocalState ?? true
-    local isFakeAirRankOpen = isLocalState && get_units_count_at_rank(air?.rank,
+    let isReqForFakeUnit  = air?.isReqForFakeUnit ?? false
+    let isLocalState      = params?.isLocalState ?? true
+    let isFakeAirRankOpen = isLocalState && get_units_count_at_rank(air?.rank,
       unitTypes.getByName(air.name, false).esUnitType, air?.country, true)
-    local bitStatus = isReqForFakeUnit ? bit_unit_status.disabled
+    let bitStatus = isReqForFakeUnit ? bit_unit_status.disabled
       : (isFakeAirRankOpen || !isLocalState ? bit_unit_status.owned
         : bit_unit_status.locked)
-    local nameForLoc = isReqForFakeUnit ? ::split(air.name, "_")?[0] : air.name
-    local fakeSlotView = params.__merge({
+    let nameForLoc = isReqForFakeUnit ? ::split(air.name, "_")?[0] : air.name
+    let fakeSlotView = params.__merge({
       slotId              = "td_" + id
       slotInactive        = true
       isSlotbarItem       = false
@@ -503,12 +503,12 @@ local function isCountrySlotbarHasUnits(countryId) {
       isTooltipByHold     = ::show_console_buttons
       bottomLineText      = params?.bottomLineText
     })
-    res = ::handyman.renderCached("gui/slotbar/slotbarSlotFake", fakeSlotView)
+    res = ::handyman.renderCached("%gui/slotbar/slotbarSlotFake", fakeSlotView)
   }
   else //empty air slot
   {
-    local specType = params?.specType
-    local itemButtonsView = { itemButtons = {
+    let specType = params?.specType
+    let itemButtonsView = { itemButtons = {
       specIconBlock = specType != null
     }}
 
@@ -519,30 +519,30 @@ local function isCountrySlotbarHasUnits(countryId) {
     }
 
     local crewLevelInfoData = ""
-    local unitForCrewInfo = params?.forceCrewInfoUnit
+    let unitForCrewInfo = params?.forceCrewInfoUnit
     if (unitForCrewInfo)
     {
-      local crewId = params?.crewId ?? -1
-      local crew = crewId >= 0 ? ::get_crew_by_id(crewId) : null
+      let crewId = params?.crewId ?? -1
+      let crew = crewId >= 0 ? ::get_crew_by_id(crewId) : null
       if (crew)
       {
-        local crewLevelText = ::g_crew.getCrewLevel(crew, unitForCrewInfo,
+        let crewLevelText = ::g_crew.getCrewLevel(crew, unitForCrewInfo,
           unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
-        local crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
+        let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
 
-        local crewLevelInfoView = {
+        let crewLevelInfoView = {
           hasExtraInfoBlock = true
           hasCrewInfo       = ::has_feature("CrewInfo")
           crewLevel         = crewLevelText
           crewSpecIcon      = crewSpecIcon
         }
-        crewLevelInfoData = ::handyman.renderCached("gui/slotbar/slotExtraInfoBlock", crewLevelInfoView)
+        crewLevelInfoData = ::handyman.renderCached("%gui/slotbar/slotExtraInfoBlock", crewLevelInfoView)
       }
     }
 
-    local emptyCost = params?.emptyCost
-    local priceText = emptyCost ? emptyCost.getTextAccordingToBalance() : ""
-    local emptySlotView = params.__merge({
+    let emptyCost = params?.emptyCost
+    let priceText = emptyCost ? emptyCost.getTextAccordingToBalance() : ""
+    let emptySlotView = params.__merge({
       slotId = "td_" + id,
       shopItemId = id,
       shopItemTextId = id + "_txt",
@@ -551,11 +551,11 @@ local function isCountrySlotbarHasUnits(countryId) {
       shopItemPriceText = priceText,
       crewImage = params?.crewImage
       isCrewRecruit = params?.isCrewRecruit ?? false
-      itemButtons = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", itemButtonsView)
+      itemButtons = ::handyman.renderCached("%gui/slotbar/slotbarItemButtons", itemButtonsView)
       isSlotbarItem = params?.isSlotbarItem ?? false
       extraInfoBlock = crewLevelInfoData
     })
-    res = ::handyman.renderCached("gui/slotbar/slotbarSlotEmpty", emptySlotView)
+    res = ::handyman.renderCached("%gui/slotbar/slotbarSlotEmpty", emptySlotView)
   }
 
   if (params?.fullBlock ?? true)
@@ -590,14 +590,14 @@ local function isCountrySlotbarHasUnits(countryId) {
     local isActive = false
 
     // Unit rent time
-    local isRented = rentedUnit.isRented()
+    let isRented = rentedUnit.isRented()
     if (isRented)
     {
-      local objRentProgress = obj.findObject("rent_progress")
+      let objRentProgress = obj.findObject("rent_progress")
       if (::checkObj(objRentProgress))
       {
-        local totalRentTimeSec = ::rented_units_get_last_max_full_rent_time(rentedUnit.name) || -1
-        local progress = 360 - ::round(360.0 * rentedUnit.getRentTimeleft() / totalRentTimeSec).tointeger()
+        let totalRentTimeSec = ::rented_units_get_last_max_full_rent_time(rentedUnit.name) || -1
+        let progress = 360 - ::round(360.0 * rentedUnit.getRentTimeleft() / totalRentTimeSec).tointeger()
         if (objRentProgress["sector-angle-1"] != progress)
           objRentProgress["sector-angle-1"] = progress
 
@@ -606,12 +606,12 @@ local function isCountrySlotbarHasUnits(countryId) {
     }
     else // at rent time over
     {
-      local rentInfo = ::get_unit_item_rent_info(rentedUnit, params)
+      let rentInfo = ::get_unit_item_rent_info(rentedUnit, params)
 
-      local objRentIcon = obj.findObject("rent_icon")
+      let objRentIcon = obj.findObject("rent_icon")
       if (::checkObj(objRentIcon))
         objRentIcon.show(rentInfo.hasIcon)
-      local objRentProgress = obj.findObject("rent_progress")
+      let objRentProgress = obj.findObject("rent_progress")
       if (::checkObj(objRentProgress))
         objRentProgress.show(rentInfo.hasProgress)
     }
@@ -634,13 +634,13 @@ local function isCountrySlotbarHasUnits(countryId) {
 {
   if (!::checkObj(slotbarObj))
     return null
-  local slotObj = slotbarObj.findObject(get_slot_obj_id(countryId, idInCountry))
+  let slotObj = slotbarObj.findObject(get_slot_obj_id(countryId, idInCountry))
   return ::checkObj(slotObj) ? slotObj : null
 }
 
 ::get_unit_item_rent_info <- function get_unit_item_rent_info(unit, params)
 {
-  local info = {
+  let info = {
     hasIcon     = false
     hasProgress = false
     progress    = 0
@@ -648,15 +648,15 @@ local function isCountrySlotbarHasUnits(countryId) {
 
   if (unit)
   {
-    local showAsTrophyContent = ::getTblValue("showAsTrophyContent", params, false)
-    local offerRentTimeHours  = ::getTblValue("offerRentTimeHours", params, 0)
-    local hasProgress = unit.isRented() && !showAsTrophyContent
-    local isRentOffer = showAsTrophyContent && offerRentTimeHours > 0
+    let showAsTrophyContent = ::getTblValue("showAsTrophyContent", params, false)
+    let offerRentTimeHours  = ::getTblValue("offerRentTimeHours", params, 0)
+    let hasProgress = unit.isRented() && !showAsTrophyContent
+    let isRentOffer = showAsTrophyContent && offerRentTimeHours > 0
 
     info.hasIcon = hasProgress || isRentOffer
     info.hasProgress = hasProgress
 
-    local totalRentTimeSec = hasProgress ?
+    let totalRentTimeSec = hasProgress ?
       (::rented_units_get_last_max_full_rent_time(unit.name) || -1)
       : 3600
     info.progress = hasProgress ?
@@ -670,16 +670,16 @@ local function isCountrySlotbarHasUnits(countryId) {
 ::get_slot_unit_name_text <- function get_slot_unit_name_text(unit, params)
 {
   local res = ::getUnitName(unit)
-  local missionRules = ::getTblValue("missionRules", params)
-  local groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
+  let missionRules = ::getTblValue("missionRules", params)
+  let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   if (groupName)
     res = missionRules.getRandomUnitsGroupLocName(groupName)
   if (missionRules && missionRules.isWorldWarUnit(unit.name))
     res = ::loc("icon/worldWar/colored") + res
   if (missionRules && missionRules.needLeftRespawnOnSlots)
   {
-    local leftRespawns = missionRules.getUnitLeftRespawns(unit)
-    local leftWeaponPresetsText = missionRules.getUnitLeftWeaponShortText(unit)
+    let leftRespawns = missionRules.getUnitLeftRespawns(unit)
+    let leftWeaponPresetsText = missionRules.getUnitLeftWeaponShortText(unit)
     local text = leftRespawns != ::RESPAWNS_UNLIMITED
       ? missionRules.isUnitAvailableBySpawnScore(unit)
         ? ::loc("icon/star/white")
@@ -699,11 +699,11 @@ local function isCountrySlotbarHasUnits(countryId) {
 
 ::get_unit_item_price_text <- function get_unit_item_price_text(unit, params)
 {
-  local isLocalState        = ::getTblValue("isLocalState", params, true)
-  local haveRespawnCost     = ::getTblValue("haveRespawnCost", params, false)
-  local haveSpawnDelay      = ::getTblValue("haveSpawnDelay", params, false)
-  local curSlotIdInCountry  = ::getTblValue("curSlotIdInCountry", params, -1)
-  local slotDelayData       = ::getTblValue("slotDelayData", params, null)
+  let isLocalState        = ::getTblValue("isLocalState", params, true)
+  let haveRespawnCost     = ::getTblValue("haveRespawnCost", params, false)
+  let haveSpawnDelay      = ::getTblValue("haveSpawnDelay", params, false)
+  let curSlotIdInCountry  = ::getTblValue("curSlotIdInCountry", params, -1)
+  let slotDelayData       = ::getTblValue("slotDelayData", params, null)
 
   local priceText = ""
 
@@ -712,25 +712,25 @@ local function isCountrySlotbarHasUnits(countryId) {
 
   if ((haveRespawnCost || haveSpawnDelay) && ::getTblValue("unlocked", params, true))
   {
-    local spawnDelay = slotDelayData != null
+    let spawnDelay = slotDelayData != null
       ? slotDelayData.slotDelay - ((::dagor.getCurTime() - slotDelayData.updateTime)/1000).tointeger()
       : ::get_slot_delay(unit.name)
     if (haveSpawnDelay && spawnDelay > 0)
       priceText += time.secondsToString(spawnDelay)
     else
     {
-      local txtList = []
+      let txtList = []
       local wpToRespawn = ::get_unit_wp_to_respawn(unit.name)
       if (wpToRespawn > 0 && ::is_crew_available_in_session(curSlotIdInCountry, false))
       {
-        local sessionWpBalance = ::getTblValue("sessionWpBalance", params, 0)
+        let sessionWpBalance = ::getTblValue("sessionWpBalance", params, 0)
         wpToRespawn += ::getTblValue("weaponPrice", params, 0)
         txtList.append(::colorTextByValues(::Cost(wpToRespawn).toStringWithParams({isWpAlwaysShown = true}),
           sessionWpBalance, wpToRespawn, true, false))
       }
 
-      local reqUnitSpawnScore = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
-      local totalSpawnScore = ::getTblValue("totalSpawnScore", params, -1)
+      let reqUnitSpawnScore = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
+      let totalSpawnScore = ::getTblValue("totalSpawnScore", params, -1)
       if (reqUnitSpawnScore > 0 && totalSpawnScore > -1)
       {
         local spawnScoreText = reqUnitSpawnScore
@@ -751,14 +751,14 @@ local function isCountrySlotbarHasUnits(countryId) {
 
   if (::is_in_flight())
   {
-    local maxSpawns = ::get_max_spawns_unit_count(unit.name)
+    let maxSpawns = ::get_max_spawns_unit_count(unit.name)
     if (curSlotIdInCountry >= 0 && maxSpawns > 1)
     {
-      local leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
+      let leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
       priceText += ::format("(%s/%s)", leftSpawns.tostring(), maxSpawns.tostring())
     }
   } else if (isLocalState && priceText == "") {
-    local { overlayPrice = -1, showAsTrophyContent = false, isReceivedPrizes = false } = params
+    let { overlayPrice = -1, showAsTrophyContent = false, isReceivedPrizes = false } = params
     priceText = overlayPrice >= 0 ? ::getPriceAccordingToPlayersCurrency(overlayPrice, 0, true)
       : getUnitShopPriceText(unit)
 
@@ -776,12 +776,12 @@ local function isCountrySlotbarHasUnits(countryId) {
   if (!::canResearchUnit(unit))
     return ""
 
-  local unitExpReq  = ::getUnitReqExp(unit)
-  local unitExpCur  = ::getUnitExp(unit)
+  let unitExpReq  = ::getUnitReqExp(unit)
+  let unitExpCur  = ::getUnitExp(unit)
   if (unitExpReq <= 0 || unitExpReq <= unitExpCur)
     return ""
 
-  local isSquadronVehicle = unit?.isSquadronVehicle?() ?? false
+  let isSquadronVehicle = unit?.isSquadronVehicle?() ?? false
   if (isSquadronVehicle && !::is_in_clan()
     && min(::clan_get_exp(), unitExpReq - unitExpCur) <= 0)
     return ""
@@ -793,18 +793,18 @@ local function isCountrySlotbarHasUnits(countryId) {
 
 ::get_unit_item_progress_status <- function get_unit_item_progress_status(unit, params)
 {
-  local isSquadronVehicle   = unit?.isSquadronVehicle?()
-  local unitExpReq          = ::getUnitReqExp(unit)
-  local unitExpGranted      = ::getUnitExp(unit)
-  local diffSquadronExp     = isSquadronVehicle
+  let isSquadronVehicle   = unit?.isSquadronVehicle?()
+  let unitExpReq          = ::getUnitReqExp(unit)
+  let unitExpGranted      = ::getUnitExp(unit)
+  let diffSquadronExp     = isSquadronVehicle
      ? ::min(::clan_get_exp(), unitExpReq - unitExpGranted)
      : 0
-  local flushExp = ::getTblValue("flushExp", params, 0)
-  local isFull = (flushExp > 0 && flushExp >= unitExpReq)
+  let flushExp = ::getTblValue("flushExp", params, 0)
+  let isFull = (flushExp > 0 && flushExp >= unitExpReq)
     || (diffSquadronExp > 0 && diffSquadronExp >= unitExpReq)
 
-  local forceNotInResearch  = ::getTblValue("forceNotInResearch", params, false)
-  local isVehicleInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
+  let forceNotInResearch  = ::getTblValue("forceNotInResearch", params, false)
+  let isVehicleInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
     && (!isSquadronVehicle || ::is_in_clan() || diffSquadronExp > 0)
 
   return isFull ? "researched"
@@ -814,12 +814,12 @@ local function isCountrySlotbarHasUnits(countryId) {
 
 ::get_unit_rank_text <- function get_unit_rank_text(unit, crew = null, showBR = false, ediff = -1)
 {
-  local isInFlight = ::is_in_flight()
+  let isInFlight = ::is_in_flight()
   if ((unit?.hideBrForVehicle ?? false) ||
       (isInFlight && ::g_mis_custom_state.getCurMissionRules().isWorldWar))
     return ""
 
-  local reserveText = ::g_string.stripTags(::loc("shop/reserve"))
+  let reserveText = ::g_string.stripTags(::loc("shop/reserve"))
   if (::isUnitGroup(unit))
   {
     local isReserve = false
@@ -830,7 +830,7 @@ local function isCountrySlotbarHasUnits(countryId) {
     {
       isReserve = isReserve || ::isUnitDefault(u)
       rank = rank || u.rank
-      local br = u.getBattleRating(ediff)
+      let br = u.getBattleRating(ediff)
       minBR = !minBR ? br : ::min(minBR, br)
       maxBR = !maxBR ? br : ::max(maxBR, br)
     }
@@ -844,10 +844,10 @@ local function isCountrySlotbarHasUnits(countryId) {
       ? ""
       : ::format(::loc("events/rank"), ::get_roman_numeral(unit.rank))
 
-  local isReserve = ::isUnitDefault(unit)
-  local isSpare = crew && isInFlight ? ::is_spare_aircraft_in_slot(crew.idInCountry) : false
-  local battleRatingStr = ::format("%.1f", unit.getBattleRating(ediff))
-  local reserveToShowStr = (battleRatingStr == "1.0") ? reserveText :
+  let isReserve = ::isUnitDefault(unit)
+  let isSpare = crew && isInFlight ? ::is_spare_aircraft_in_slot(crew.idInCountry) : false
+  let battleRatingStr = ::format("%.1f", unit.getBattleRating(ediff))
+  let reserveToShowStr = (battleRatingStr == "1.0") ? reserveText :
     "".join([reserveText, ::loc("ui/parentheses/space", { text = battleRatingStr })])
 
   return isReserve ?
@@ -862,7 +862,7 @@ local function isCountrySlotbarHasUnits(countryId) {
 
 ::isUnitUnlocked <- function isUnitUnlocked(unit, curSlotCountryId, curSlotIdInCountry, country, missionRules, needDbg = false)
 {
-  local crew = ::g_crews_list.get()[curSlotCountryId].crews[curSlotIdInCountry]
+  let crew = ::g_crews_list.get()[curSlotCountryId].crews[curSlotIdInCountry]
   local unlocked = !::is_crew_locked_by_prev_battle(crew)
   if (unit)
   {
@@ -896,7 +896,7 @@ local function isCountrySlotbarHasUnits(countryId) {
       foreach(crew in c.crews)
         if (("aircraft" in crew) && crew.aircraft!="")
         {
-          local hp = shop_get_aircraft_hp(crew.aircraft)
+          let hp = shop_get_aircraft_hp(crew.aircraft)
           if (hp >= 0 && hp < 1)
             count++
         }
@@ -911,9 +911,9 @@ local function isCountrySlotbarHasUnits(countryId) {
 
 ::getSlotAircraft <- function getSlotAircraft(countryId, idInCountry)
 {
-  local crew = getSlotItem(countryId, idInCountry)
-  local airName = ("aircraft" in crew)? crew.aircraft : ""
-  local air = getAircraftByName(airName)
+  let crew = getSlotItem(countryId, idInCountry)
+  let airName = ("aircraft" in crew)? crew.aircraft : ""
+  let air = getAircraftByName(airName)
   return air
 }
 
@@ -944,13 +944,13 @@ local function isCountrySlotbarHasUnits(countryId) {
 
 ::getSlotbarUnitTypes <- function getSlotbarUnitTypes(country)
 {
-  local res = []
+  let res = []
   foreach(countryData in ::g_crews_list.get())
     if (countryData.country == country)
       foreach(crew in countryData.crews)
         if (("aircraft" in crew) && crew.aircraft != "")
         {
-          local unit = ::getAircraftByName(crew.aircraft)
+          let unit = ::getAircraftByName(crew.aircraft)
           if (unit)
             ::u.appendOnce(::get_es_unit_type(unit), res)
         }
@@ -965,14 +965,14 @@ local function isCountrySlotbarHasUnits(countryId) {
   return []
 }
 
-local function getAvailableCrewId(countryId)
+let function getAvailableCrewId(countryId)
 {
   local id=-1
-  local curUnitId = getShowedUnitName()
+  let curUnitId = getShowedUnitName()
   if ((countryId in ::g_crews_list.get()) && ("crews" in ::g_crews_list.get()[countryId]))
     for(local i=0; i<::g_crews_list.get()[countryId].crews.len(); i++)
     {
-      local crew = ::g_crews_list.get()[countryId].crews[i]
+      let crew = ::g_crews_list.get()[countryId].crews[i]
       if (("aircraft" in crew) && crew.aircraft!="")
       {
         if (id<0) id=i
@@ -986,7 +986,7 @@ local function getAvailableCrewId(countryId)
   return id
 }
 
-local function selectAvailableCrew(countryId)
+let function selectAvailableCrew(countryId)
 {
   local isAnyUnitInSlotbar = false
   if ((countryId in ::g_crews_list.get()) && (countryId in ::selected_crews))
@@ -1007,7 +1007,7 @@ local function selectAvailableCrew(countryId)
   if (!::g_login.isLoggedIn())
     return
 
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   foreach(cIdx, country in ::g_crews_list.get())
     blk[country.country] = ::getTblValue(cIdx, ::selected_crews, 0)
   ::saveLocalByAccount("selected_crews", blk)
@@ -1018,13 +1018,13 @@ local function selectAvailableCrew(countryId)
   if (!forceReload && (!::g_crews_list.get().len() || ::selected_crews.len() == ::g_crews_list.get().len()))
     return
 
-  local selCrewsBlk = ::loadLocalByAccount("selected_crews", null)
+  let selCrewsBlk = ::loadLocalByAccount("selected_crews", null)
   local needSave = false
 
   ::selected_crews = array(::g_crews_list.get().len(), 0)
   foreach(cIdx, country in ::g_crews_list.get())
   {
-    local crewIdx = selCrewsBlk?[country.country] ?? 0
+    let crewIdx = selCrewsBlk?[country.country] ?? 0
     if (("crews" in country)
         && (crewIdx in country.crews)
         && ("aircraft" in country.crews[crewIdx])
@@ -1034,7 +1034,7 @@ local function selectAvailableCrew(countryId)
     {
       if (!selectAvailableCrew(cIdx))
       {
-        local unitId = ::getReserveAircraftName({ country = country.country })
+        let unitId = ::getReserveAircraftName({ country = country.country })
         if (unitId != "")
           batchTrainCrew([{
             crewId = country.crews[0].id
@@ -1092,7 +1092,7 @@ local function selectAvailableCrew(countryId)
   if (params?.eventId)
   {
     res = false
-    local event = ::events.getEvent(params.eventId)
+    let event = ::events.getEvent(params.eventId)
     if (event)
       res = ::events.isUnitAllowedForEventRoom(event, ::getTblValue("room", params), unit)
   }
@@ -1106,13 +1106,13 @@ local function selectAvailableCrew(countryId)
   if (res && params?.mainMenuSlotbar)
     res = ::game_mode_manager.isUnitAllowedForGameMode(unit)
 
-  local missionRules = params?.missionRules
+  let missionRules = params?.missionRules
   if (res && missionRules)
   {
-    local isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
+    let isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
       || missionRules.isUnitAvailableBySpawnScore(unit))
       && missionRules.isUnitEnabledByRandomGroups(unit.name)
-    local isControlledUnit = !::is_respawn_screen()
+    let isControlledUnit = !::is_respawn_screen()
       && ::is_player_unit_alive()
       && ::get_player_unit_name() == unit.name
 
@@ -1133,10 +1133,10 @@ local function selectAvailableCrew(countryId)
 ::getSelSlotsTable <- function getSelSlotsTable()
 {
   init_selected_crews()
-  local slots = {}
+  let slots = {}
   foreach(cIdx, country in ::g_crews_list.get())
   {
-    local unit = getSlotAircraft(cIdx, ::selected_crews[cIdx])
+    let unit = getSlotAircraft(cIdx, ::selected_crews[cIdx])
     if (unit == null && isCountrySlotbarHasUnits(country.country))
     {
       dagor.debug("selected crews = ")
@@ -1154,10 +1154,10 @@ local function selectAvailableCrew(countryId)
 ::getSelAirsTable <- function getSelAirsTable()
 {
   init_selected_crews()
-  local airs = {}
+  let airs = {}
   foreach(cIdx, country in ::g_crews_list.get())
   {
-    local air = getSlotAircraft(cIdx, ::selected_crews[cIdx])
+    let air = getSlotAircraft(cIdx, ::selected_crews[cIdx])
     airs[country.country] <- air? air.name : ""
   }
   return airs
@@ -1168,8 +1168,8 @@ local function selectAvailableCrew(countryId)
   if (!::checkObj(slotbarObj))
     return
 
-  local containerObj = slotbarObj.findObject("slotbar_buttons_place")
-  local mainObj = slotbarObj.findObject("autorefill-settings")
+  let containerObj = slotbarObj.findObject("slotbar_buttons_place")
+  let mainObj = slotbarObj.findObject("autorefill-settings")
   if (!::check_obj(containerObj) || !::check_obj(mainObj))
     return
 
@@ -1206,12 +1206,12 @@ local function selectAvailableCrew(countryId)
 
 ::checkUnlockedCountries <- function checkUnlockedCountries()
 {
-  local curUnlocked = []
+  let curUnlocked = []
   if (isNeedFirstCountryChoice())
     return curUnlocked
 
-  local unlockAll = ::disable_network() || ::has_feature("UnlockAllCountries") || isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT)
-  local wasInList = ::unlocked_countries.len()
+  let unlockAll = ::disable_network() || ::has_feature("UnlockAllCountries") || isDiffUnlocked(1, ::ES_UNIT_TYPE_AIRCRAFT)
+  let wasInList = ::unlocked_countries.len()
   foreach(i, country in shopCountriesList)
     if (::is_country_available(country))
     {

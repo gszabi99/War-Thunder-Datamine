@@ -1,4 +1,4 @@
-local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
 {
@@ -8,7 +8,7 @@ local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPo
       config[param] = value[0]
   }
 
-  local unit = ::getAircraftByName(::getTblValue("unit", config))
+  let unit = ::getAircraftByName(::getTblValue("unit", config))
   if (!unit)
     return
 
@@ -21,10 +21,10 @@ local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPo
   ::gui_start_modal_wnd(::gui_handlers.ModificationsTierResearched, wndParams)
 }
 
-class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ModificationsTierResearched <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/showUnlock.blk"
+  sceneBlkName = "%gui/showUnlock.blk"
 
   unit = null
   tier = null
@@ -42,16 +42,16 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
     if (::u.isArray(unitInResearch))  //fix crash, but need to fix combine function to correct show multiple researched units
       unitInResearch = unitInResearch[0] //but this is a really reare case, maybe no need to care about
 
-    local isLastResearchedModule = ::shop_get_researchable_module_name(unit.name) == ""
+    let isLastResearchedModule = ::shop_get_researchable_module_name(unit.name) == ""
     local locTextId = "modifications/full_tier_researched"
     if (isLastResearchedModule)
       locTextId = "modifications/full_unit_researched"
 
-    local nameObj = scene.findObject("award_name")
+    let nameObj = scene.findObject("award_name")
     if (::checkObj(nameObj))
       nameObj.setValue(::loc(locTextId + "/header"))
 
-    local imgObj = scene.findObject("award_image")
+    let imgObj = scene.findObject("award_image")
     if (::checkObj(imgObj))
     {
       local imageId = ::getUnitCountry(unit) + "_" + ::getUnitTypeTextByUnit(unit).tolower()
@@ -98,7 +98,7 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
                         })
     }
 
-    local descObj = scene.findObject("award_desc")
+    let descObj = scene.findObject("award_desc")
     if (::checkObj(descObj))
     {
       descObj["text-align"] = "center"

@@ -1,19 +1,19 @@
-local { addTooltipTypes } = require("scripts/utils/genericTooltipTypes.nut")
-local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { getFakeBulletsModByName, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-local { getSingleBulletParamToDesc } = require("scripts/weaponry/bulletsVisual.nut")
-local { updateModType, getTierDescTbl, updateSpareType, updateWeaponTooltip
-} = require("scripts/weaponry/weaponryTooltipPkg.nut")
+let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { getFakeBulletsModByName, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
+let { updateModType, getTierDescTbl, updateSpareType, updateWeaponTooltip
+} = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
 local infoUnit = null
 local infoMod = null
 local infoHandler = null
 local infoParams = null
-local infoShownTiers = {}
+let infoShownTiers = {}
 local infoTooltipTime = 0.0
 
-local lockedTimerHandler = {
+let lockedTimerHandler = {
   function onUpdateWeaponTooltip(obj, dt) {
     if (infoTooltipTime <= 0 || infoMod == null)
       return
@@ -21,7 +21,7 @@ local lockedTimerHandler = {
     if (infoTooltipTime > 0)
       return
 
-    local tooltipObj = obj.getParent()
+    let tooltipObj = obj.getParent()
     infoShownTiers[infoMod?.tier ?? 1] <- true
     updateWeaponTooltip(tooltipObj, infoUnit, infoMod, infoHandler, infoParams)
     infoMod = null
@@ -29,25 +29,25 @@ local lockedTimerHandler = {
   }
 }
 
-local tooltipTypes = {
+let tooltipTypes = {
   SINGLE_BULLET = {
     getTooltipId = function(unitName, bulletName = "", params = null, p3 = null)
     {
-      local p = params ? clone params : {}
+      let p = params ? clone params : {}
       p.bulletName <- bulletName
       return _buildId(unitName, p)
     }
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      local unit = getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      local { modName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
+      let { modName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
 
-      local locName =" ".concat(::format(::loc("caliber/mm"), bSet.caliber),
+      let locName =" ".concat(::format(::loc("caliber/mm"), bSet.caliber),
         getModificationName(unit, modName), ::loc($"{bulletName}/name/short"))
-      local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
+      let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
         getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
@@ -56,18 +56,18 @@ local tooltipTypes = {
   MODIFICATION = { //by unitName, modName
     getTooltipId = function(unitName, modName = "", params = null, p3 = null)
     {
-      local p = params ? clone params : {}
+      let p = params ? clone params : {}
       p.modName <- modName
       return _buildId(unitName, p)
     }
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      local unit = getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      local { modName = "" } = params
-      local mod = getModificationByName(unit, modName) ?? getFakeBulletsModByName(unit, modName)
+      let { modName = "" } = params
+      let mod = getModificationByName(unit, modName) ?? getFakeBulletsModByName(unit, modName)
       if (!mod)
         return false
 
@@ -83,12 +83,12 @@ local tooltipTypes = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, params)
     {
-      local unit = getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      local { modName = "" } = params
-      local mod = modName == "" ? null : getModificationByName(unit, modName)
-      local weaponMod = {
+      let { modName = "" } = params
+      let mod = modName == "" ? null : getModificationByName(unit, modName)
+      let weaponMod = {
         name = modName,
         type = weaponsItem.primaryWeapon,
         weaponUpgrades = mod == null ? unit.weaponUpgrades : mod?.weaponUpgrades
@@ -101,7 +101,7 @@ local tooltipTypes = {
   WEAPON = { //by unitName, weaponName
     getTooltipId = function(unitName, weaponName = "", params = null, p3 = null)
     {
-      local p = params ? clone params : {}
+      let p = params ? clone params : {}
       p.weaponName <- weaponName
       return _buildId(unitName, p)
     }
@@ -111,14 +111,14 @@ local tooltipTypes = {
       if (!::checkObj(obj))
         return false
 
-      local unit = getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
 
-      local weaponName = ::getTblValue("weaponName", params, "")
-      local { hasPlayerInfo = true, curEdiff = null } = params
-      local effect = hasPlayerInfo ? null : {}
-      local weapon = ::u.search(unit.weapons, (@(weaponName) function(w) { return w.name == weaponName })(weaponName))
+      let weaponName = ::getTblValue("weaponName", params, "")
+      let { hasPlayerInfo = true, curEdiff = null } = params
+      let effect = hasPlayerInfo ? null : {}
+      let weapon = unit.getWeapons().findvalue(@(w) w.name == weaponName)
       if (!weapon)
         return false
 
@@ -138,8 +138,8 @@ local tooltipTypes = {
       if (!::checkObj(obj))
         return false
 
-      local unit = getAircraftByName(unitName)
-      local spare = ::getTblValue("spare", unit)
+      let unit = getAircraftByName(unitName)
+      let spare = ::getTblValue("spare", unit)
       if (!spare)
         return false
 
@@ -159,10 +159,10 @@ local tooltipTypes = {
       if (!::check_obj(obj))
         return false
 
-      local unit = getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
+      let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
         getTierDescTbl(unit, params))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 
@@ -176,20 +176,20 @@ local tooltipTypes = {
     isCustomTooltipFill = true
 
     function fillTooltip(obj, handler, unitName, params) {
-      local unit = getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      local { modName = "" } = params
-      local mod = getModificationByName(unit, modName)
+      let { modName = "" } = params
+      let mod = getModificationByName(unit, modName)
       if (!mod)
         return false
 
-      local { tier = 1 } = mod
+      let { tier = 1 } = mod
       if (unit != infoUnit) {
         infoUnit = unit
         infoShownTiers.clear()
       }
-      local canDisplayInfo = tier <= 1 || (infoShownTiers?[tier] ?? false)
+      let canDisplayInfo = tier <= 1 || (infoShownTiers?[tier] ?? false)
       updateModType(unit, mod)
       updateWeaponTooltip(obj, unit, mod, handler, (params ?? {}).__merge({ canDisplayInfo }))
 

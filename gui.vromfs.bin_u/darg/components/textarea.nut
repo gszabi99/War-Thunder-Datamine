@@ -1,6 +1,6 @@
 from "daRg" import *
 
-local function textarea(txt, params={}) {
+let function textarea(txt, params={}) {
   if (type(txt)=="table")
     txt = params?.text ?? ""
   return {

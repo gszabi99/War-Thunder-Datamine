@@ -1,9 +1,9 @@
-local time = require("scripts/time.nut")
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let time = require("%scripts/time.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-class ::WwBattleView
+::WwBattleView <- class
 {
   id = ""
   battle = null
@@ -20,7 +20,7 @@ class ::WwBattleView
   showBattleStatus = false
   hideDesc = false
 
-  sceneTplArmyViewsName = "gui/worldWar/worldWarMapArmyItem"
+  sceneTplArmyViewsName = "%gui/worldWar/worldWarMapArmyItem"
 
   isControlHelpCentered = true
   controlHelpDesc = @() hasControlTooltip()
@@ -104,35 +104,35 @@ class ::WwBattleView
 
   function getTeamsData(sides, iconSize, isInBattlePanel, param)
   {
-    local teams = []
+    let teams = []
     local maxSideArmiesNumber = 0
     local isVersusTextAdded = false
-    local hasArmyInfo = ::getTblValue("hasArmyInfo", param, true)
-    local hasVersusText = ::getTblValue("hasVersusText", param)
-    local canAlignRight = ::getTblValue("canAlignRight", param, true)
+    let hasArmyInfo = ::getTblValue("hasArmyInfo", param, true)
+    let hasVersusText = ::getTblValue("hasVersusText", param)
+    let canAlignRight = ::getTblValue("canAlignRight", param, true)
     foreach(sideIdx, side in sides)
     {
-      local team = battle.getTeamBySide(side)
+      let team = battle.getTeamBySide(side)
       if (!team)
         continue
 
-      local armies = {
+      let armies = {
         countryIcon = ""
         countryIconBig = ""
         armyViews = ""
         maxSideArmiesNumber = 0
       }
 
-      local mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
-      local armyViews = []
+      let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
+      let armyViews = []
       foreach (country, armiesArray in team.countries)
       {
-        local countryIcon = getCustomViewCountryData(country, mapName).icon
+        let countryIcon = getCustomViewCountryData(country, mapName).icon
         armies.countryIcon = countryIcon
         armies.countryIconBig = countryIcon
         foreach(army in armiesArray)
         {
-          local armyView = army.getView()
+          let armyView = army.getView()
           armyView.setSelectedSide(playerSide)
           armyViews.append(armyView)
         }
@@ -151,7 +151,7 @@ class ::WwBattleView
 
       maxSideArmiesNumber = ::max(maxSideArmiesNumber, armyViews.len())
 
-      local view = {
+      let view = {
         army = armyViews
         delimetrRightPadding = hasArmyInfo ? "8*@sf/@pf_outdated" : 0
         reqUnitTypeIcon = true
@@ -165,10 +165,10 @@ class ::WwBattleView
       }
 
       armies.armyViews = ::handyman.renderCached(sceneTplArmyViewsName, view)
-      local invert = sideIdx != 0
+      let invert = sideIdx != 0
 
-      local avaliableUnits = []
-      local aiUnits = []
+      let avaliableUnits = []
+      let aiUnits = []
       foreach (unit in team.unitsRemain)
         if (unit.isControlledByAI())
           aiUnits.append(unit)
@@ -198,12 +198,12 @@ class ::WwBattleView
     if (battle.isAutoBattle())
       return ::loc("worldWar/unavailable_for_team")
 
-    local maxPlayers = ::getTblValue("maxPlayers", team)
+    let maxPlayers = ::getTblValue("maxPlayers", team)
     if (!maxPlayers)
       return ::loc("worldWar/unavailable_for_team")
 
-    local minPlayers = ::getTblValue("minPlayers", team)
-    local curPlayers = ::getTblValue("players", team)
+    let minPlayers = ::getTblValue("minPlayers", team)
+    let curPlayers = ::getTblValue("players", team)
     return battle.isConfirmed() && battle.getMyAssignCountry() ?
       ::loc("worldwar/battle/playersCurMax", { cur = curPlayers, max = maxPlayers }) :
       ::loc("worldwar/battle/playersMinMax", { min = minPlayers, max = maxPlayers })
@@ -211,7 +211,7 @@ class ::WwBattleView
 
   function unitsList(wwUnits, isReflected, hasLineSpacing)
   {
-    local view = { infoSections = [{
+    let view = { infoSections = [{
       columns = [{unitString = wwActionsWithUnitsList.getUnitsListViewParams({
         wwUnits = wwUnits
         params = { needShopInfo = true }
@@ -221,7 +221,7 @@ class ::WwBattleView
       isShowTotalCount = true
       hasSpaceBetweenUnits = hasLineSpacing
     }]}
-    return ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfoUnitsList", view)
+    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList", view)
   }
 
   function isStarted()
@@ -241,7 +241,7 @@ class ::WwBattleView
 
   function getBattleDurationTime()
   {
-    local durationTime = battle.getBattleDurationTime()
+    let durationTime = battle.getBattleDurationTime()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
 
@@ -250,7 +250,7 @@ class ::WwBattleView
 
   function getBattleActivateLeftTime()
   {
-    local durationTime = battle.getBattleActivateLeftTime()
+    let durationTime = battle.getBattleActivateLeftTime()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
 
@@ -285,7 +285,7 @@ class ::WwBattleView
 
   function getAutoBattleWinChancePercentText()
   {
-    local percent = battle.getTeamBySide(playerSide)?.autoBattleWinChancePercent
+    let percent = battle.getTeamBySide(playerSide)?.autoBattleWinChancePercent
     return percent != null ? percent + ::loc("measureUnits/percent") : ""
   }
 
@@ -309,13 +309,13 @@ class ::WwBattleView
     if (playerSide == ::SIDE_NONE || ::g_squad_manager.isSquadMember())
       return ""
 
-    local currentBattleQueue = ::queues.findQueueByName(battle.getQueueId(), true)
+    let currentBattleQueue = ::queues.findQueueByName(battle.getQueueId(), true)
     local canJoinLocKey = ""
     if (currentBattleQueue != null)
       canJoinLocKey = "worldWar/canJoinStatus/in_queue"
     else if (battle.isStarted())
     {
-      local cantJoinReasonData = battle.getCantJoinReasonData(playerSide, false)
+      let cantJoinReasonData = battle.getCantJoinReasonData(playerSide, false)
       if (cantJoinReasonData.canJoin)
         canJoinLocKey = battle.isPlayerTeamFull()
           ? "worldWar/canJoinStatus/no_free_places"
@@ -330,7 +330,7 @@ class ::WwBattleView
   function getBattleStatusWithTimeText()
   {
     local text = getBattleStatusText()
-    local durationText = getBattleDurationTime()
+    let durationText = getBattleDurationTime()
     if (!::u.isEmpty(durationText))
       text += ::loc("ui/colon") + durationText
 
@@ -343,7 +343,7 @@ class ::WwBattleView
       return ""
 
     local text = getBattleStatusText()
-    local canJoinText = getCanJoinText()
+    let canJoinText = getCanJoinText()
     if (!::u.isEmpty(canJoinText))
       text += ::loc("ui/dot") + " " + canJoinText
 
@@ -374,7 +374,7 @@ class ::WwBattleView
   {
     if (battle.isStillInOperation())
     {
-      local status = getStatus()
+      let status = getStatus()
       if (status == "Active" || status == "Full")
         return true
     }
@@ -422,7 +422,7 @@ class ::WwBattleView
     if (!battle.isWaiting())
       return ""
 
-    local durationTime = battle.getTimeStartAutoBattle()
+    let durationTime = battle.getTimeStartAutoBattle()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
 

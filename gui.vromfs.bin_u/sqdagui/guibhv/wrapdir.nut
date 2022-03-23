@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_wrap_dir <- {
   types = []

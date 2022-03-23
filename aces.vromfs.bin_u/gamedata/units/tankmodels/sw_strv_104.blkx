@@ -180,7 +180,7 @@
           "armorThickness": 29.0
         },
         "turret_01_back_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 10.0
         },
         "turret_02_back_dm": {
           "armorThickness": 29.0
@@ -207,9 +207,6 @@
         "hp": 10000.0,
         "turret_side_dm": {
           "armorThickness": 89.0
-        },
-        "turret_01_side_dm": {
-          "armorThickness": 50.8
         },
         "turret_03_side_dm": {
           "armorThickness": 29.0
@@ -276,6 +273,14 @@
         "ex_decor_l_07_dm": [],
         "ex_decor_l_13_dm": [],
         "turret_03_front_dm": []
+      },
+      "body_side_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 100.0,
+        "hidableInViewer": true,
+        "armorThickness": 10.0,
+        "createSecondaryShatters": false,
+        "turret_01_side_dm": []
       },
       "body_shields_armor": {
         "armorClass": "RHA_tank",
@@ -449,6 +454,7 @@
           "armorThickness": 20.0,
           "hp": 200.0,
           "ex_armor_l_01_dm": [],
+          "ex_armor_r_01_dm": [],
           "ex_armor_07_dm": [],
           "ex_armor_08_dm": []
         }
@@ -609,7 +615,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -640,7 +646,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -865,7 +871,12 @@
   {
     "attachables": {
       "ex_decor_l_07_dm": true,
-      "ex_decor_r_07_dm": true
+      "ex_decor_r_07_dm": true,
+      "ex_armor_15_dm": true,
+      "ex_armor_16_dm": true,
+      "ex_decor_l_06_dm": true,
+      "ex_armor_01_dm": true,
+      "ex_armor_02_dm": true
     }
   },
   {
@@ -1923,10 +1934,17 @@
         "role": "loader",
         "substitute": "commander"
       },
-      "commander": {
-        "dmPart": "commander_dm",
-        "role": "commander"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "role": "commander"
+        }
+      ]
     }
   },
   {
@@ -2516,16 +2534,20 @@
           "turret": {
             "head": "bone_turret",
             "gun": "bone_gun",
-            "barrel": "bone_gun_barrel"
+            "barrel": "bone_gun_barrel",
+            "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm"
           },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-10.0,15.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-140.0,-0.0,15.0],
-            "lim2": [-140.0,140.0,-10.0,15.0],
-            "lim3": [140.0,180.0,-0.0,15.0]
+            "lim1": [-180.0,-160.0,-0.0,15.0],
+            "lim2": [-160.0,-140.0,-2.0,15.0],
+            "lim3": [-140.0,140.0,-10.0,15.0],
+            "lim4": [140.0,160.0,-2.0,15.0],
+            "lim5": [160.0,180.0,-0.0,15.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2583,7 +2605,8 @@
           "turret": {
             "head": "bone_mg_twin",
             "gun": "bone_mg_twin",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm"
           },
           "limits": {
             "yaw": [-0.0,0.0],
@@ -2596,8 +2619,9 @@
           "trigger": "gunner2",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_39_Strv_user_machinegun.blk",
-          "emitter": "bone_mg_aa_v_01",
+          "emitter": "emtr_mg_flame_01",
           "flash": "emtr_mg_flame_01",
+          "useEmitter": true,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_01_dm",
@@ -2618,6 +2642,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -3340,11 +3365,11 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 15.0,
-      "zoomInFov": 12.3,
-      "sightFov": 7.5,
-      "sightName": "no43",
-      "headPos": [0.0,4.2,-8.0],
+      "zoomOutFov": 10.0,
+      "zoomInFov": 9.21,
+      "sightFov": 5.0,
+      "sightName": "telescope_m105c",
+      "headPos": [0.0,4.2,-9.5],
       "headPosOnShooting": [-0.3,3.6,0.4],
       "detectionHeight": 2.94
     }
@@ -3413,16 +3438,20 @@
                 "turret": {
                   "head": "bone_turret",
                   "gun": "bone_gun",
-                  "barrel": "bone_gun_barrel"
+                  "barrel": "bone_gun_barrel",
+                  "gunnerDm": "gunner_dm",
+                  "secondGunnerDm": "commander_dm"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-10.0,15.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-140.0,-0.0,15.0],
-                  "lim2": [-140.0,140.0,-10.0,15.0],
-                  "lim3": [140.0,180.0,-0.0,15.0]
+                  "lim1": [-180.0,-160.0,-0.0,15.0],
+                  "lim2": [-160.0,-140.0,-2.0,15.0],
+                  "lim3": [-140.0,140.0,-10.0,15.0],
+                  "lim4": [140.0,160.0,-2.0,15.0],
+                  "lim5": [160.0,180.0,-0.0,15.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -3480,7 +3509,8 @@
                 "turret": {
                   "head": "bone_mg_twin",
                   "gun": "bone_mg_twin",
-                  "gunnerDm": "gunner_dm"
+                  "gunnerDm": "gunner_dm",
+                  "secondGunnerDm": "commander_dm"
                 },
                 "limits": {
                   "yaw": [-0.0,0.0],
@@ -3493,8 +3523,9 @@
                 "trigger": "gunner2",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_39_Strv_user_machinegun.blk",
-                "emitter": "bone_mg_aa_v_01",
+                "emitter": "emtr_mg_flame_01",
                 "flash": "emtr_mg_flame_01",
+                "useEmitter": true,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_01_dm",
@@ -3515,6 +3546,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",

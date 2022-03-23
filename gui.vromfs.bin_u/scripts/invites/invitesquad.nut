@@ -1,8 +1,6 @@
-local platformModule = require("scripts/clientState/platform.nut")
-local { checkAndShowMultiplayerPrivilegeWarning,
-        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
-class ::g_invites_classes.Squad extends ::BaseInvite
+::g_invites_classes.Squad <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite
   squadId = 0
@@ -33,7 +31,7 @@ class ::g_invites_classes.Squad extends ::BaseInvite
     else
     {
       setDelayed(true)
-      local cb = ::Callback(function(r)
+      let cb = ::Callback(function(r)
                             {
                               updateInviterContact()
                               ::dagor.debug("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(inviterName))
@@ -105,7 +103,7 @@ class ::g_invites_classes.Squad extends ::BaseInvite
   }
 
   function checkAutoAcceptInvite() {
-    local invite = this
+    let invite = this
     ::queues.leaveAllQueues(null, function() {
       if (!invite.isValid())
         return
@@ -140,8 +138,6 @@ class ::g_invites_classes.Squad extends ::BaseInvite
 
   function getRestrictionText()
   {
-    if (!isMultiplayerPrivilegeAvailable())
-      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
     if (!isAvailableByChatRestriction())
@@ -156,7 +152,6 @@ class ::g_invites_classes.Squad extends ::BaseInvite
     return !::g_squad_manager.canManageSquad()
     || !isAvailableByCrossPlay()
     || !isAvailableByChatRestriction()
-    || !isMultiplayerPrivilegeAvailable()
   }
 
   function getIcon()
@@ -174,13 +169,10 @@ class ::g_invites_classes.Squad extends ::BaseInvite
 
   function accept()
   {
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
+    let acceptCallback = ::Callback(_implAccept, this)
+    let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
 
-    local acceptCallback = ::Callback(_implAccept, this)
-    local callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
-
-    local canJoin = ::g_squad_utils.canJoinFlightMsgBox(
+    let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },
       callback
     )

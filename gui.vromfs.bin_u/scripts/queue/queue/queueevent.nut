@@ -1,6 +1,6 @@
-local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
+let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
-class ::queue_classes.Event extends ::queue_classes.Base
+::queue_classes.Event <- class extends ::queue_classes.Base
 {
   shouldQueueCustomMode = false
 
@@ -25,7 +25,7 @@ class ::queue_classes.Event extends ::queue_classes.Base
     if (!("cluster" in qParams))
       return false
 
-    local cluster = qParams.cluster
+    let cluster = qParams.cluster
     local isClusterAdded = false
     if (!::isInArray(cluster, params.clusters))
     {
@@ -39,7 +39,7 @@ class ::queue_classes.Event extends ::queue_classes.Base
 
   function removeQueueByParams(leaveData)
   {
-    local queueUid = ::getTblValue("queueId", leaveData)
+    let queueUid = ::getTblValue("queueId", leaveData)
     if (queueUid == null || (queueUid in queueUidsList && queueUidsList.len() == 1)) //leave all queues
     {
       clearAllQueues()
@@ -55,10 +55,10 @@ class ::queue_classes.Event extends ::queue_classes.Base
 
   function removeQueueByUid(queueUid)
   {
-    local cluster = queueUidsList[queueUid].cluster
+    let cluster = queueUidsList[queueUid].cluster
     if (::u.filter(queueUidsList, @(q) q.cluster == cluster).len() <= 1)
     {
-      local idx = params.clusters.indexof(cluster)
+      let idx = params.clusters.indexof(cluster)
       if (idx != null)
         params.clusters.remove(idx)
     }
@@ -167,7 +167,7 @@ class ::queue_classes.Event extends ::queue_classes.Base
 
   function getQueryParams(isForJoining, customMgm = null)
   {
-    local qp = {}
+    let qp = {}
     if (customMgm)
       qp.game_mode_id <- customMgm.gameModeId
     else
@@ -180,16 +180,17 @@ class ::queue_classes.Event extends ::queue_classes.Base
 
     qp.clusters <- params.clusters
 
-    local prefParams =  mapPreferencesParams.getParams(::events.getEvent(name))
+    let prefParams =  mapPreferencesParams.getParams(::events.getEvent(name))
     qp.players <- {
       [::my_user_id_str] = {
         country = ::queues.getQueueCountry(this)  //FIX ME: move it out of manager
         slots = ::queues.getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions
+        fakeName = ::get_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY).value != ""
       }
     }
-    local members = ::getTblValue("members", params)
+    let members = ::getTblValue("members", params)
     if (members)
       foreach(uid, m in members)
       {
@@ -197,6 +198,7 @@ class ::queue_classes.Event extends ::queue_classes.Base
           country = ("country" in m)? m.country : ::queues.getQueueCountry(this)
           dislikedMissions = m?.dislikedMissions ?? []
           bannedMissions = m?.bannedMissions ?? []
+          fakeName = m?.fakeName ?? false
         }
         if ("slots" in m)
           qp.players[uid].slots <- m.slots
@@ -222,7 +224,7 @@ class ::queue_classes.Event extends ::queue_classes.Base
 
   function getBattleName()
   {
-    local event = ::events.getEvent(name)
+    let event = ::events.getEvent(name)
     if (!event)
       return ""
 
@@ -236,7 +238,7 @@ class ::queue_classes.Event extends ::queue_classes.Base
 
   function isCustomModeQUeued()
   {
-    local customMgm = getCustomMgm(name)
+    let customMgm = getCustomMgm(name)
     if (!customMgm)
       return false
     return !!::u.search(queueUidsList, @(q) q.gameModeId == customMgm.gameModeId )
@@ -259,8 +261,8 @@ class ::queue_classes.Event extends ::queue_classes.Base
     if (isCustomModeInTransition)
       return
 
-    local queue = this
-    local cb = function(res)
+    let queue = this
+    let cb = function(res)
     {
       queue.isCustomModeInTransition = false
       queue.afterCustomModeQueueChanged(shouldQueue)

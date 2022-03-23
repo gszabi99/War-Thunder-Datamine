@@ -1,7 +1,7 @@
-local { UNIT_GROUP } = require("scripts/utils/genericTooltipTypes.nut")
+let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
 
 local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
-  local params = {
+  let params = {
     status = "owned"
     inactive = true
     isLocalState = false

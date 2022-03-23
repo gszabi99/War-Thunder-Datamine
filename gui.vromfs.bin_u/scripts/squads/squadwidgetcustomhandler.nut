@@ -1,7 +1,7 @@
-local platformModule = require("scripts/clientState/platform.nut")
-local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
-local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
+let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -12,11 +12,11 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
   return ::handlersManager.loadCustomHandler(::gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
 }
 
-class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.SquadWidgetCustomHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
-  sceneTplName = "gui/squads/squadWidget"
+  sceneTplName = "%gui/squads/squadWidget"
 
   squadStateToString = {
     [squadMemberState.SQUAD_LEADER] = "leader",
@@ -27,16 +27,16 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function getSceneTplView()
   {
-    local readyText = ::loc("mainmenu/btnReady")
-    local notReadyText = ::loc("multiplayer/btnNotReady")
-    local readyTextWidth = daguiFonts.getStringWidthPx(readyText, "fontNormal", guiScene)
-    local notReadyTextWidth = daguiFonts.getStringWidthPx(notReadyText, "fontNormal", guiScene)
-    local view = {
+    let readyText = ::loc("mainmenu/btnReady")
+    let notReadyText = ::loc("multiplayer/btnNotReady")
+    let readyTextWidth = daguiFonts.getStringWidthPx(readyText, "fontNormal", guiScene)
+    let notReadyTextWidth = daguiFonts.getStringWidthPx(notReadyText, "fontNormal", guiScene)
+    let view = {
       readyBtnHiddenText = readyTextWidth > notReadyTextWidth ? readyText : notReadyText
       members = []
     }
 
-    local showCrossplayIcon = crossplayModule.needShowCrossPlayInfo()
+    let showCrossplayIcon = crossplayModule.needShowCrossPlayInfo()
     for (local i = 0; i < ::g_squad_manager.MAX_SQUAD_SIZE; i++)
       view.members.append({
         id = i.tostring()
@@ -53,10 +53,10 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function updateView()
   {
-    local leader = ::g_squad_manager.getSquadLeaderData()
+    let leader = ::g_squad_manager.getSquadLeaderData()
     updateMemberView(0, leader)
     local memberViewIndex = 1
-    local members = ::g_squad_manager.getMembers()
+    let members = ::g_squad_manager.getMembers()
     foreach(uid, member in members)
     {
       if (member == leader)
@@ -73,9 +73,9 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function updateMemberView(mebmerObjIndex, member)
   {
-    local indexStr = mebmerObjIndex.tostring()
-    local isVisible = member != null
-    local memberObj = showSceneBtn("member_" + indexStr, isVisible)
+    let indexStr = mebmerObjIndex.tostring()
+    let isVisible = member != null
+    let memberObj = showSceneBtn("member_" + indexStr, isVisible)
     if (!isVisible || !::checkObj(memberObj))
       return
 
@@ -90,36 +90,36 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
     if (member.isActualData())
     {
-      local contact = ::getContact(member.uid)
+      let contact = ::getContact(member.uid)
       local countryIcon = ""
       if (checkCountry(member.country, "squad member data ( uid = " + member.uid + ")", true))
         countryIcon = ::get_country_icon(member.country)
 
-      local status = ::g_squad_manager.getPlayerStatusInMySquad(member.uid)
+      let status = ::g_squad_manager.getPlayerStatusInMySquad(member.uid)
       memberObj["status"] = ::getTblValue(status, squadStateToString, "")
       memberObj.findObject("member_country_" + indexStr)["background-image"] = countryIcon
 
-      local memberVoipObj = memberObj.findObject("member_voip_" + indexStr)
+      let memberVoipObj = memberObj.findObject("member_voip_" + indexStr)
       memberVoipObj["isVoipActive"] = contact.voiceStatus == voiceChatStats.talking ? "yes" : "no"
-      local needShowVoice = chatStatesCanUseVoice()
+      let needShowVoice = chatStatesCanUseVoice()
         && ::get_option_voicechat()
         && !platformModule.isXBoxPlayerName(member.name)
       memberVoipObj.show(needShowVoice)
 
-      local memberCrossPlayObj = memberObj.findObject("member_crossplay_active_" + indexStr)
+      let memberCrossPlayObj = memberObj.findObject("member_crossplay_active_" + indexStr)
       memberCrossPlayObj["isEnabledCrossPlay"] = member.crossplay ? "yes" : "no"
 
-      local speakingMemberNickTextObj = memberObj.findObject("speaking_member_nick_text_" + indexStr)
+      let speakingMemberNickTextObj = memberObj.findObject("speaking_member_nick_text_" + indexStr)
       speakingMemberNickTextObj.setValue(platformModule.getPlayerName(member.name))
     }
   }
 
   function updateVisibles()
   {
-    local canInvite = ::g_squad_manager.canInviteMember()
-    local isInTransition = ::g_squad_manager.isStateInTransition()
+    let canInvite = ::g_squad_manager.canInviteMember()
+    let isInTransition = ::g_squad_manager.isStateInTransition()
 
-    local plusButtonObj = showSceneBtn("btn_squadPlus", canInvite)
+    let plusButtonObj = showSceneBtn("btn_squadPlus", canInvite)
     if (plusButtonObj && canInvite)
       plusButtonObj.enable(::ps4_is_ugc_enabled() && ::ps4_is_chat_enabled())
 
@@ -127,14 +127,14 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
     showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
       && ::g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE)
-    local btnSquadReady = showSceneBtn("btn_squad_ready", ::g_squad_manager.canSwitchReadyness())
+    let btnSquadReady = showSceneBtn("btn_squad_ready", ::g_squad_manager.canSwitchReadyness())
     btnSquadReady.findObject("text").setValue(
       ::loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
 
     showSceneBtn("btn_squadInvites", ::gui_handlers.squadInviteListWnd.canOpen())
     updateVisibleNewApplications()
 
-    local btnSquadLeave = showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
+    let btnSquadLeave = showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
     btnSquadLeave.tooltip = ::loc("squadAction/leave")
 
     scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
@@ -189,7 +189,7 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function updateVisibleNewApplications()
   {
-    local objGlow = scene.findObject("iconGlow")
+    let objGlow = scene.findObject("iconGlow")
     if (::check_obj(objGlow))
       objGlow.wink = (::gui_handlers.squadInviteListWnd.canOpen() &&
         ::g_squad_manager.hasNewApplication) ? "yes" : "no"
@@ -228,7 +228,7 @@ class ::gui_handlers.SquadWidgetCustomHandler extends ::gui_handlers.BaseGuiHand
 
   function onEventVoiceChatStatusUpdated(params)
   {
-    local uid = ::getTblValue("uid", params, "")
+    let uid = ::getTblValue("uid", params, "")
     if (::g_squad_manager.getMemberData(uid) == null)
       return
 

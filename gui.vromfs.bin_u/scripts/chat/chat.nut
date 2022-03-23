@@ -1,8 +1,8 @@
-local penalties = require("scripts/penitentiary/penalties.nut")
-local systemMsg = require("scripts/utils/systemMsg.nut")
-local playerContextMenu = require("scripts/user/playerContextMenu.nut")
-local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-local { clearBorderSymbolsMultiline } = require("std/string.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let systemMsg = require("%scripts/utils/systemMsg.nut")
+let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -96,7 +96,7 @@ g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg)
 
 g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link)
 {
-  local prefixLen = 6 // Prefix is "BL_NN_", where NN are digits.
+  let prefixLen = 6 // Prefix is "BL_NN_", where NN are digits.
   return ::stringReplace(link.slice(prefixLen), ::nbsp, " ")
 }
 
@@ -120,7 +120,7 @@ g_chat.checkBlockedLink <- function checkBlockedLink(link)
 
 g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link)
 {
-  local start = text.indexof("<Link=" + link)
+  let start = text.indexof("<Link=" + link)
   if (start == null)
     return text
 
@@ -130,7 +130,7 @@ g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link)
 
   end += "</Link>".len()
 
-  local msg = convertLinkToBlockedMsg(link)
+  let msg = convertLinkToBlockedMsg(link)
   text = text.slice(0, start) + msg + text.slice(end)
   return text
 }
@@ -165,7 +165,7 @@ g_chat.getRoomById <- function getRoomById(id)
 
 g_chat.isRoomJoined <- function isRoomJoined(roomId)
 {
-  local room = getRoomById(roomId)
+  let room = getRoomById(roomId)
   return room != null && room.joined
 }
 
@@ -213,11 +213,11 @@ g_chat.openPrivateRoom <- function openPrivateRoom(name, ownerHandler)
 
 g_chat.joinSquadRoom <- function joinSquadRoom(callback)
 {
-  local name = getMySquadRoomId()
+  let name = getMySquadRoomId()
   if (::u.isEmpty(name))
     return
 
-  local password = ::g_squad_manager.getSquadRoomPassword()
+  let password = ::g_squad_manager.getSquadRoomPassword()
   if (::u.isEmpty(password))
     return
 
@@ -238,7 +238,7 @@ g_chat.isRoomSquad <- function isRoomSquad(roomId)
 
 g_chat.isSquadRoomJoined <- function isSquadRoomJoined()
 {
-  local roomId = getMySquadRoomId()
+  let roomId = getMySquadRoomId()
   if (roomId == null)
     return false
 
@@ -250,7 +250,7 @@ g_chat.getMySquadRoomId <- function getMySquadRoomId()
   if (!::g_squad_manager.isInSquad())
     return null
 
-  local squadRoomName = ::g_squad_manager.getSquadRoomName()
+  let squadRoomName = ::g_squad_manager.getSquadRoomName()
   if (::u.isEmpty(squadRoomName))
     return null
 
@@ -264,7 +264,7 @@ g_chat.isRoomClan <- function isRoomClan(roomId)
 
 g_chat.getMyClanRoomId <- function getMyClanRoomId()
 {
-  local myClanId = ::clan_get_my_clan_id()
+  let myClanId = ::clan_get_my_clan_id()
   if (myClanId != "-1")
     return ::g_chat_room_type.CLAN.getRoomId(myClanId)
   return ""
@@ -286,13 +286,13 @@ g_chat._checkCleanThreadsList <- function _checkCleanThreadsList()
   foreach(room in rooms)
     if (room.type == ::g_chat_room_type.THREAD)
     {
-      local threadInfo = getThreadInfo(room.id)
+      let threadInfo = getThreadInfo(room.id)
       if (threadInfo)
         threadInfo.markUpdated()
     }
 
   //clear outdated threads
-  local outdatedArr = []
+  let outdatedArr = []
   foreach(id, thread in threadsInfo)
     if (thread.isOutdated())
       outdatedArr.append(id)
@@ -319,11 +319,11 @@ g_chat.addThreadInfoById <- function addThreadInfoById(roomId)
 g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk)
 {
   _checkCleanThreadsList()
-  local roomId = dataBlk?.thread
+  let roomId = dataBlk?.thread
   if (!roomId)
     return
 
-  local curThread = getThreadInfo(roomId)
+  let curThread = getThreadInfo(roomId)
   if (curThread)
     curThread.updateInfo(dataBlk)
   else
@@ -347,7 +347,7 @@ g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk)
 
   if ((dataBlk?.caps ?? "") != "")
   {
-    local capsList = ::split(dataBlk.caps, ",");
+    let capsList = ::split(dataBlk.caps, ",");
     foreach(idx, prop in capsList)
     {
       if (prop in userCaps)
@@ -367,8 +367,8 @@ g_chat.createThread <- function createThread(title, categoryName, langTags = nul
 
   if (!langTags)
     langTags = ::g_chat_thread_tag.LANG.prefix + ::g_language.getCurLangInfo().chatId
-  local categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
-  local tagsList = ::g_string.implode([langTags, categoryTag], ",")
+  let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
+  let tagsList = ::g_string.implode([langTags, categoryTag], ",")
   ::gchat_raw_command("xtjoin " + tagsList + " :" + prepareThreadTitleToSend(title))
   ::broadcastEvent("ChatThreadCreateRequested")
 }
@@ -411,7 +411,7 @@ g_chat.validateThreadTitle <- function validateThreadTitle(title)
 
 g_chat.prepareThreadTitleToSend <- function prepareThreadTitleToSend(title)
 {
-  local res = validateThreadTitle(title)
+  let res = validateThreadTitle(title)
   return ::stringReplace(res, "\n", "<br>")
 }
 
@@ -426,14 +426,14 @@ g_chat.restoreReceivedThreadTitle <- function restoreReceivedThreadTitle(title)
 
 g_chat.checkThreadTitleLen <- function checkThreadTitleLen(title)
 {
-  local checkLenTitle = prepareThreadTitleToSend(title)
-  local titleLen = utf8(checkLenTitle).charCount()
+  let checkLenTitle = prepareThreadTitleToSend(title)
+  let titleLen = utf8(checkLenTitle).charCount()
   return threadTitleLenMin <= titleLen && titleLen <= threadTitleLenMax
 }
 
 g_chat.openRoomCreationWnd <- function openRoomCreationWnd()
 {
-  local devoiceMsg = penalties.getDevoiceMessage("activeTextColor")
+  let devoiceMsg = penalties.getDevoiceMessage("activeTextColor")
   if (devoiceMsg)
     return ::showInfoMsgBox(devoiceMsg)
 
@@ -457,7 +457,7 @@ g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo)
 
 g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId)
 {
-  local threadInfo = getThreadInfo(roomId)
+  let threadInfo = getThreadInfo(roomId)
   if (threadInfo)
     openModifyThreadWnd(threadInfo)
 }
@@ -466,16 +466,16 @@ g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable)
 {
   if ("title" in modifyTable)
   {
-    local title = modifyTable.title
+    let title = modifyTable.title
     if (!checkThreadTitleLen(title))
       return false
 
     modifyTable.title = validateThreadTitle(title)
   }
 
-  local curTitle = threadInfo.title
-  local curTagsString = threadInfo.getFullTagsString()
-  local curTimeStamp = threadInfo.timeStamp
+  let curTitle = threadInfo.title
+  let curTagsString = threadInfo.getFullTagsString()
+  let curTimeStamp = threadInfo.timeStamp
 
   foreach(key, value in modifyTable)
     if (key in threadInfo)
@@ -484,12 +484,12 @@ g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable)
   local isChanged = false
   if (threadInfo.title != curTitle)
   {
-    local title = ::g_chat.prepareThreadTitleToSend(threadInfo.title)
+    let title = ::g_chat.prepareThreadTitleToSend(threadInfo.title)
     ::gchat_raw_command("xtmeta " + threadInfo.roomId + " topic :" + title)
     isChanged = true
   }
 
-  local newTagsString = threadInfo.getFullTagsString()
+  let newTagsString = threadInfo.getFullTagsString()
   if (newTagsString != curTagsString)
   {
     ::gchat_raw_command("xtmeta " + threadInfo.roomId + " tags " + newTagsString)
@@ -535,7 +535,7 @@ g_chat.isImRoomOwner <- function isImRoomOwner(roomData)
 
 g_chat.generateInviteMenu <- function generateInviteMenu(playerName)
 {
-  local menu = []
+  let menu = []
   if(::my_user_name == playerName)
     return menu
   foreach(room in rooms)
@@ -590,7 +590,7 @@ g_chat.generatePlayerLink <- function generatePlayerLink(name, uid = null)
 
 g_chat.onEventInitConfigs <- function onEventInitConfigs(p)
 {
-  local blk = ::get_game_settings_blk()
+  let blk = ::get_game_settings_blk()
   if (!::u.isDataBlock(blk?.chat))
     return
 
@@ -616,8 +616,8 @@ g_chat.haveNewMessages <- function haveNewMessages()
 
 g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, needAssert = true)
 {
-  local message = systemMsg.configToJsonString(langConfig, validateChatMessage)
-  local messageLen = message.len() //to be visible in assert callstack
+  let message = systemMsg.configToJsonString(langConfig, validateChatMessage)
+  let messageLen = message.len() //to be visible in assert callstack
   if (messageLen > MAX_MSG_LEN)
   {
     local res = false
@@ -625,14 +625,14 @@ g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig,
     {
       needAssert = false
       //do not allow to separate more than on 2 messages because of chat server restrictions.
-      local sliceIdx = (langConfig.len() + 1) / 2
+      let sliceIdx = (langConfig.len() + 1) / 2
       res = sendLocalizedMessage(roomId, langConfig.slice(0, sliceIdx), false)
       res = res && sendLocalizedMessage(roomId, langConfig.slice(sliceIdx), false)
     }
 
     if (!res && needAssert)
     {
-      local partsAmount = ::u.isArray(langConfig) ? langConfig.len() : 1
+      let partsAmount = ::u.isArray(langConfig) ? langConfig.len() : 1
       ::script_net_assert_once("too long json message", "Too long json message to chat. partsAmount = " + partsAmount)
     }
     return res
@@ -644,11 +644,11 @@ g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig,
 
 g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message)
 {
-  local jsonString = ::g_string.cutPrefix(message, LOCALIZED_MESSAGE_PREFIX)
+  let jsonString = ::g_string.cutPrefix(message, LOCALIZED_MESSAGE_PREFIX)
   if (!jsonString)
     return message
 
-  local res = systemMsg.jsonStringToLang(jsonString, null, "\n   ")
+  let res = systemMsg.jsonStringToLang(jsonString, null, "\n   ")
   if (!res)
     dagor.debug("Chat: failed to localize json message: " + message)
   return res || ""
@@ -656,7 +656,7 @@ g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message)
 
 g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRoom(langConfig)
 {
-  local squadRoomId = getMySquadRoomId()
+  let squadRoomId = getMySquadRoomId()
   if (!::u.isEmpty(squadRoomId))
     sendLocalizedMessage(squadRoomId, langConfig)
 }

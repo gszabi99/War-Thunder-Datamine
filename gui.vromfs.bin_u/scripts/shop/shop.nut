@@ -1,23 +1,23 @@
-local shopTree = require("scripts/shop/shopTree.nut")
-local shopSearchBox = require("scripts/shop/shopSearchBox.nut")
-local slotActions = require("scripts/slotbar/slotActions.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
-local { topMenuHandler, topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell
+let shopTree = require("%scripts/shop/shopTree.nut")
+let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
+let slotActions = require("%scripts/slotbar/slotActions.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell
 } = require("shopUnitCellFill.nut")
-local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
-local { hideWaitIcon } = require("scripts/utils/delayedTooltip.nut")
-local { findChildIndex } = require("sqDagui/daguiUtil.nut")
-local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
-local getShopBlkData = require("scripts/shop/getShopBlkData.nut")
-local { hasMarkerByUnitName, getUnlockIdByUnitName,
-  getUnlockIdsByArmyId } = require("scripts/unlocks/unlockMarkers.nut")
-local { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
-} = require("scripts/shop/shopDifficulty.nut")
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
+let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
+let { hasMarkerByUnitName, getUnlockIdByUnitName,
+  getUnlockIdsByArmyId } = require("%scripts/unlocks/unlockMarkers.nut")
+let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
+} = require("%scripts/shop/shopDifficulty.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 
 local lastUnitType = null
 
@@ -49,11 +49,11 @@ shopData = [
   ::gui_start_modal_wnd(::gui_handlers.ShopCheckResearch, config)
 }
 
-class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
+::gui_handlers.ShopMenuHandler <- class extends ::gui_handlers.GenericOptions
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/shop/shopInclude.blk"
-  sceneNavBlkName = "gui/shop/shopNav.blk"
+  sceneBlkName = "%gui/shop/shopInclude.blk"
+  sceneNavBlkName = "%gui/shop/shopNav.blk"
   shouldBlurSceneBg = false
   needVoiceChat = false
   keepLoaded = true
@@ -103,7 +103,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!curAirName.len())
     {
       curCountry = ::get_profile_country_sq()
-      local unit = ::getAircraftByName(::hangar_get_current_unit_name())
+      let unit = ::getAircraftByName(::hangar_get_current_unit_name())
       if (unit && unit.shopCountry == curCountry)
         curAirName = unit.name
     }
@@ -131,7 +131,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function loadFullAircraftsTable(selAirName = "")
   {
-    local shopBlkData = getShopBlkData(selAirName)
+    let shopBlkData = getShopBlkData(selAirName)
     shopData = shopBlkData.shopData
     curCountry = shopBlkData.curCountry ?? curCountry
     curPage = shopBlkData.curPage ?? curPage
@@ -164,12 +164,12 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       if (cData.name == curCountry)
         foreach(pageData in cData.pages)
         {
-          local treeData = shopTree.generateTreeData(pageData)
+          let treeData = shopTree.generateTreeData(pageData)
           foreach(rowArr in treeData.tree)
             for(local col = 0; col < rowArr.len(); col++)
               if (rowArr[col])
               {
-                local air = rowArr[col]
+                let air = rowArr[col]
                 if (air?.isFakeUnit)
                   continue
 
@@ -187,7 +187,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getItemStatusData(item, checkAir="")
   {
-    local res = {
+    let res = {
       shopReq = checkAirShopReq(item)
       own = true
       partOwn = false
@@ -198,7 +198,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     {
       foreach(air in item.airsGroup)
       {
-        local isOwn = ::isUnitBought(air)
+        let isOwn = ::isUnitBought(air)
         res.own = res.own && isOwn
         res.partOwn = res.partOwn || isOwn
         res.broken = res.broken || ::isUnitBroken(air)
@@ -220,16 +220,16 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function initUnitCells(tableObj, cellsList) {
     local count = tableObj.childrenCount()
-    local needCount = cellsList.len()
+    let needCount = cellsList.len()
     if (needCount > count)
-      guiScene.createMultiElementsByObject(tableObj, "gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
+      guiScene.createMultiElementsByObject(tableObj, "%gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
 
     count = ::max(count, needCount)
     if (count != tableObj.childrenCount())
       return //prevent crash on error, but anyway we will get assert in such case on update
 
     for(local i = 0; i < count; i++) {
-      local cellObj = tableObj.getChild(i)
+      let cellObj = tableObj.getChild(i)
       if (i not in cellsList) {
         cellObj.show(false)
         cellObj.enable(false)
@@ -240,7 +240,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   function onUnitMarkerClick(obj) {
-    local unitName = obj.holderId
+    let unitName = obj.holderId
     ::gui_start_profile({
       initialSheet = "UnlockAchievement"
       curUnlockId = getUnlockIdByUnitName(unitName, getCurrentEdiff())
@@ -248,14 +248,14 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   function updateUnitCell(cellObj, unit) {
-    local params = getUnitItemParams(unit)
+    let params = getUnitItemParams(unit)
     updateCellStatus(cellObj, getStatusTbl(unit, params))
     updateCellTimedStatus(cellObj, @() getTimedStatusTbl(unit, params))
   }
 
   function updateCurUnitsList() {
-    local tableObj = scene.findObject("shop_items_list")
-    local total = tableObj.childrenCount()
+    let tableObj = scene.findObject("shop_items_list")
+    let total = tableObj.childrenCount()
     foreach(idx, unit in curUnitsList)
       if (idx < total)
         updateUnitCell(tableObj.getChild(idx), unit)
@@ -267,7 +267,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (!::checkObj(scene))
       return
-    local tableObj = scene.findObject("shop_items_list")
+    let tableObj = scene.findObject("shop_items_list")
     if (!::checkObj(tableObj))
       return
 
@@ -277,19 +277,19 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (curName=="")
       curName = getResearchingSquadronVehicle()?.name ?? curAirName
 
-    local treeData = getCurTreeData()
+    let treeData = getCurTreeData()
     brokenList = []
 
     fillBGLines(treeData)
     guiScene.setUpdatesEnabled(false, false);
 
-    local cellsList = []
+    let cellsList = []
     local maxCols = -1
     foreach(row, rowArr in treeData.tree)
       for(local col = 0; col < rowArr.len(); col++)
         if (rowArr[col]) {
           maxCols = ::max(maxCols, col)
-          local unitOrGroup = rowArr[col]
+          let unitOrGroup = rowArr[col]
           cellsList.append({ unitOrGroup, id = unitOrGroup.name, posX = col, posY = row, position = "absolute" })
         }
 
@@ -301,7 +301,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     local curIdx = -1
     foreach(idx, unit in curUnitsList) {
-      local config = getItemStatusData(unit, curName)
+      let config = getItemStatusData(unit, curName)
       if (config.checkAir || ((curIdx < 0) && !unit?.isFakeUnit))
         curIdx = idx
       if (config.broken)
@@ -343,12 +343,12 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (brokenList.len() > 0)
       countFullRepairCost()
 
-    local show = brokenList.len() > 0 && repairAllCost > 0
+    let show = brokenList.len() > 0 && repairAllCost > 0
     showNavButton("btn_repairall", show)
     if (!show)
       return
 
-    local locText = ::loc("mainmenu/btnRepairAll")
+    let locText = ::loc("mainmenu/btnRepairAll")
     placePriceTextToButton(navBarObj, "btn_repairall", locText, repairAllCost)
     placePriceTextToButton(navBarGroupObj, "btn_repairall", locText, repairAllCost)
   }
@@ -392,7 +392,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       if (i >= brokenList.len()) //update unit item is not instant, so broken list can change at that time by other events
         continue
 
-      local unit = brokenList[i]
+      let unit = brokenList[i]
       if (checkBrokenListStatus(unit))
         checkUnitItemAndUpdate(unit)
     }
@@ -400,8 +400,8 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getLineStatus(lc)
   {
-    local config = getItemStatusData(lc.air)
-    local configReq = getItemStatusData(lc.reqAir)
+    let config = getItemStatusData(lc.air)
+    let configReq = getItemStatusData(lc.reqAir)
 
     if (config.own || config.partOwn)
       return "owned"
@@ -422,17 +422,17 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function createLine(r0, c0, r1, c1, status, params = {})
   {
-    local isFakeUnitReq = params?.isFakeUnitReq ?? false
-    local isMultipleArrow = params?.isMultipleArrow ?? false
+    let isFakeUnitReq = params?.isFakeUnitReq ?? false
+    let isMultipleArrow = params?.isMultipleArrow ?? false
 
     local lines = ""
-    local arrowFormat = "shopArrow { type:t='%s'; size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s' shopStat:t='" + status + "' } "
-    local lineFormat = "shopLine { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s'; shopStat:t='" + status + "' } "
-    local angleFormat = "shopAngle { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s'; shopStat:t='" + status + "' } "
-    local pad1 = "1@lines_pad"
-    local pad2 = "1@lines_pad"
-    local interval1 = "1@lines_shop_interval"
-    local interval2 = "1@lines_shop_interval"
+    let arrowFormat = "shopArrow { type:t='%s'; size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s' shopStat:t='" + status + "' } "
+    let lineFormat = "shopLine { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s'; shopStat:t='" + status + "' } "
+    let angleFormat = "shopAngle { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s'; shopStat:t='" + status + "' } "
+    let pad1 = "1@lines_pad"
+    let pad2 = "1@lines_pad"
+    let interval1 = "1@lines_shop_interval"
+    let interval2 = "1@lines_shop_interval"
 
     if (c0 == c1)
     {//vertical
@@ -478,9 +478,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     }
     else
     {//double
-      local lh = 0
-      local offset = isMultipleArrow ? 0.1 : 0
-      local arrowOffset = c0 > c1 ? -offset : offset
+      let lh = 0
+      let offset = isMultipleArrow ? 0.1 : 0
+      let arrowOffset = c0 > c1 ? -offset : offset
 
       lines += format(lineFormat,
                        pad1 + " + " + lh + "@shop_height",//height
@@ -528,15 +528,15 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     generateAirAddictiveArrows(treeData)
     guiScene.setUpdatesEnabled(true, true)
 
-    local contentWidth = scene.findObject("shopTable_air_rows").getSize()[0]
-    local containerWidth = scene.findObject("shop_useful_width").getSize()[0]
-    local pos = (contentWidth >= containerWidth)? "0" : "(pw-w)/2"
+    let contentWidth = scene.findObject("shopTable_air_rows").getSize()[0]
+    let containerWidth = scene.findObject("shop_useful_width").getSize()[0]
+    let pos = (contentWidth >= containerWidth)? "0" : "(pw-w)/2"
     scene.findObject("shop_items_pos_div").left = pos
   }
 
   function generateAirAddictiveArrows(treeData)
   {
-    local tblBgObj = scene.findObject("shopTable_air_rows")
+    let tblBgObj = scene.findObject("shopTable_air_rows")
     local data = ""
     foreach(lc in treeData.lines)
     {
@@ -561,47 +561,47 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function generateHeaders(treeData)
   {
-    local obj = scene.findObject("tree_header_div")
-    local view = {
+    let obj = scene.findObject("tree_header_div")
+    let view = {
       plates = [],
       separators = [],
     }
 
-    local sectionsTotal = treeData.sectionsPos.len() - 1
-    local widthStr = isSmallScreen
+    let sectionsTotal = treeData.sectionsPos.len() - 1
+    let widthStr = isSmallScreen
       ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
       : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
-    local totalWidth = guiScene.calcString(widthStr, null)
-    local itemWidth = guiScene.calcString("@shop_width", null)
+    let totalWidth = guiScene.calcString(widthStr, null)
+    let itemWidth = guiScene.calcString("@shop_width", null)
 
-    local extraWidth = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
-    local extraLeft = extraWidth + "+1@modBlockTierNumHeight"
-    local extraRight = extraWidth + "+1@scrollBarSize - 2@frameHeaderPad"
+    let extraWidth = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
+    let extraLeft = extraWidth + "+1@modBlockTierNumHeight"
+    let extraRight = extraWidth + "+1@scrollBarSize - 2@frameHeaderPad"
 
     for (local s = 0; s < sectionsTotal; s++)
     {
-      local isLeft = s == 0
-      local isRight = s == sectionsTotal - 1
+      let isLeft = s == 0
+      let isRight = s == sectionsTotal - 1
 
-      local x = treeData.sectionsPos[s] + "@shop_width" + (isLeft ? "" : extraLeft)
-      local w = (treeData.sectionsPos[s + 1] - treeData.sectionsPos[s]) + "@shop_width" + (isLeft ? extraLeft : "") + (isRight ? extraRight : "")
+      let x = treeData.sectionsPos[s] + "@shop_width" + (isLeft ? "" : extraLeft)
+      let w = (treeData.sectionsPos[s + 1] - treeData.sectionsPos[s]) + "@shop_width" + (isLeft ? extraLeft : "") + (isRight ? extraRight : "")
 
-      local isResearchable = ::getTblValue(s, treeData.sectionsResearchable)
-      local title = isResearchable ? "#shop/section/researchable" : "#shop/section/premium"
+      let isResearchable = ::getTblValue(s, treeData.sectionsResearchable)
+      let title = isResearchable ? "#shop/section/researchable" : "#shop/section/premium"
 
       view.plates.append({ title = title, x = x, w = w })
       if (!isLeft)
         view.separators.append({ x = x })
     }
 
-    local data = ::handyman.renderCached("gui/shop/treeHeadPlates", view)
+    let data = ::handyman.renderCached("%gui/shop/treeHeadPlates", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
   function generateBGPlates(treeData)
   {
-    local tblBgObj = scene.findObject("shopTable_air_plates")
-    local view = {
+    let tblBgObj = scene.findObject("shopTable_air_plates")
+    let view = {
       plates = [],
       vertSeparators = [],
       horSeparators = [],
@@ -615,52 +615,52 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       tiersTotal = i
     }
 
-    local sectionsTotal = treeData.sectionsPos.len() - 1
+    let sectionsTotal = treeData.sectionsPos.len() - 1
 
-    local widthStr = isSmallScreen
+    let widthStr = isSmallScreen
       ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
       : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
-    local totalWidth = guiScene.calcString(widthStr, null)
-    local itemWidth = guiScene.calcString("@shop_width", null)
+    let totalWidth = guiScene.calcString(widthStr, null)
+    let itemWidth = guiScene.calcString("@shop_width", null)
 
-    local extraRight = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
-    local extraLeft = extraRight + "+1@modBlockTierNumHeight"
-    local extraTop = "+1@shop_h_extra_first"
-    local extraBottom = "+1@shop_h_extra_last"
+    let extraRight = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
+    let extraLeft = extraRight + "+1@modBlockTierNumHeight"
+    let extraTop = "+1@shop_h_extra_first"
+    let extraBottom = "+1@shop_h_extra_last"
 
     for(local i = 0; i < tiersTotal; i++)
     {
-      local tierNum = (i+1).tostring()
-      local tierUnlocked = ::is_era_available(curCountry, i + 1, getCurPageEsUnitType())
-      local fakeRowsCount = treeData.fakeRanksRowsCount[i + 1]
+      let tierNum = (i+1).tostring()
+      let tierUnlocked = ::is_era_available(curCountry, i + 1, getCurPageEsUnitType())
+      let fakeRowsCount = treeData.fakeRanksRowsCount[i + 1]
 
-      local pY = treeData.ranksHeight[i] + fakeRowsCount
-      local pH = treeData.ranksHeight[i + 1] - pY
+      let pY = treeData.ranksHeight[i] + fakeRowsCount
+      let pH = treeData.ranksHeight[i + 1] - pY
 
-      local isTop = pY == 0
-      local isBottom = i == tiersTotal - 1
+      let isTop = pY == 0
+      let isBottom = i == tiersTotal - 1
 
       for(local s = 0; s < sectionsTotal; s++)
       {
-        local isLeft = s == 0
-        local isRight = s == sectionsTotal - 1
-        local isResearchable = ::getTblValue(s, treeData.sectionsResearchable)
-        local tierType = tierUnlocked || !isResearchable ? "unlocked" : "locked"
+        let isLeft = s == 0
+        let isRight = s == sectionsTotal - 1
+        let isResearchable = ::getTblValue(s, treeData.sectionsResearchable)
+        let tierType = tierUnlocked || !isResearchable ? "unlocked" : "locked"
 
-        local pX = treeData.sectionsPos[s]
-        local pW = treeData.sectionsPos[s + 1] - pX
+        let pX = treeData.sectionsPos[s]
+        let pW = treeData.sectionsPos[s + 1] - pX
 
-        local x = "".concat($"{pX}@shop_width", isLeft ? "" : extraLeft)
-        local y = "".concat($"{pY}@shop_height", isTop ? "" : extraTop)
-        local w = "".concat($"{pW}@shop_width", isLeft ? extraLeft : "", isRight ? extraRight : "")
-        local h = "".concat($"{pH}@shop_height", isTop ? extraTop : "", isBottom ? extraBottom : "")
+        let x = "".concat($"{pX}@shop_width", isLeft ? "" : extraLeft)
+        let y = "".concat($"{pY}@shop_height", isTop ? "" : extraTop)
+        let w = "".concat($"{pW}@shop_width", isLeft ? extraLeft : "", isRight ? extraRight : "")
+        let h = "".concat($"{pH}@shop_height", isTop ? extraTop : "", isBottom ? extraBottom : "")
 
         if (fakeRowsCount > 0)
         {
-          local fakePY = treeData.ranksHeight[i]
-          local isFakeTop = fakePY == 0
-          local fakeRowY = "".concat($"{fakePY}@shop_height", isFakeTop ? "" : extraTop)
-          local fakeRowH = "".concat($"{fakeRowsCount}@shop_height", isFakeTop ? extraTop : "", isBottom ? extraBottom : "")
+          let fakePY = treeData.ranksHeight[i]
+          let isFakeTop = fakePY == 0
+          let fakeRowY = "".concat($"{fakePY}@shop_height", isFakeTop ? "" : extraTop)
+          let fakeRowH = "".concat($"{fakeRowsCount}@shop_height", isFakeTop ? extraTop : "", isBottom ? extraBottom : "")
 
           view.plates.append({ tierNum = tierNum, tierType = "unlocked", x = x, y = fakeRowY, w = w, h = fakeRowH })
           if (!isLeft)
@@ -678,7 +678,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       }
     }
 
-    local data = ::handyman.renderCached("gui/shop/treeBgPlates", view)
+    local data = ::handyman.renderCached("%gui/shop/treeBgPlates", view)
     guiScene.replaceContentFromText(tblBgObj, data, data.len(), this)
   }
 
@@ -687,7 +687,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!ranksBlk)
       ranksBlk = ::get_ranks_blk()
 
-    local isEraAvailable = !isTreeReserchable || ::is_era_available(curCountry, rank, getCurPageEsUnitType())
+    let isEraAvailable = !isTreeReserchable || ::is_era_available(curCountry, rank, getCurPageEsUnitType())
     local tooltipPlate = ""
     local tooltipRank = ""
     local tooltipReqCounter = ""
@@ -695,33 +695,33 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     if (isEraAvailable)
     {
-      local unitsCount = boughtVehiclesCount[rank]
-      local unitsTotal = totalVehiclesCount[rank]
+      let unitsCount = boughtVehiclesCount[rank]
+      let unitsTotal = totalVehiclesCount[rank]
       tooltipRank = ::loc("shop/age/tooltip") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::get_roman_numeral(rank))
         + "\n" + ::loc("shop/tier/unitsBought") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::format("%d/%d", unitsCount, unitsTotal))
     }
     else
     {
-      local unitType = getCurPageEsUnitType()
+      let unitType = getCurPageEsUnitType()
       for (local prevRank = rank - 1; prevRank > 0; prevRank--)
       {
-        local unitsCount = boughtVehiclesCount[prevRank]
-        local unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(curCountry, unitType, prevRank, ranksBlk)
-        local unitsLeft = max(0, unitsNeed - unitsCount)
+        let unitsCount = boughtVehiclesCount[prevRank]
+        let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(curCountry, unitType, prevRank, ranksBlk)
+        let unitsLeft = max(0, unitsNeed - unitsCount)
 
         if (unitsLeft > 0)
         {
-          local txtThisRank = ::colorize("userlogColoredText", ::get_roman_numeral(rank))
-          local txtPrevRank = ::colorize("userlogColoredText", ::get_roman_numeral(prevRank))
-          local txtUnitsNeed = ::colorize("badTextColor", unitsNeed)
-          local txtUnitsLeft = ::colorize("badTextColor", unitsLeft)
-          local txtCounter = ::format("%d/%d", unitsCount, unitsNeed)
-          local txtCounterColored = ::colorize("badTextColor", txtCounter)
+          let txtThisRank = ::colorize("userlogColoredText", ::get_roman_numeral(rank))
+          let txtPrevRank = ::colorize("userlogColoredText", ::get_roman_numeral(prevRank))
+          let txtUnitsNeed = ::colorize("badTextColor", unitsNeed)
+          let txtUnitsLeft = ::colorize("badTextColor", unitsLeft)
+          let txtCounter = ::format("%d/%d", unitsCount, unitsNeed)
+          let txtCounterColored = ::colorize("badTextColor", txtCounter)
 
-          local txtRankIsLocked = ::loc("shop/unlockTier/locked", { rank = txtThisRank })
-          local txtNeedUnits = ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = txtPrevRank, amount = txtUnitsLeft })
-          local txtRankLockedDesc = ::loc("shop/unlockTier/desc", { rank = txtThisRank, prevRank = txtPrevRank, amount = txtUnitsNeed })
-          local txtRankProgress = ::loc("shop/unlockTier/progress", { rank = txtThisRank }) + ::loc("ui/colon") + txtCounterColored
+          let txtRankIsLocked = ::loc("shop/unlockTier/locked", { rank = txtThisRank })
+          let txtNeedUnits = ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = txtPrevRank, amount = txtUnitsLeft })
+          let txtRankLockedDesc = ::loc("shop/unlockTier/desc", { rank = txtThisRank, prevRank = txtPrevRank, amount = txtUnitsNeed })
+          let txtRankProgress = ::loc("shop/unlockTier/progress", { rank = txtThisRank }) + ::loc("ui/colon") + txtCounterColored
 
           if (prevRank == rank - 1)
           {
@@ -743,26 +743,26 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   function generateTierArrows(treeData)
   {
     local data = ""
-    local blk = ::get_ranks_blk()
-    local pageUnitsType = getCurPageEsUnitType()
+    let blk = ::get_ranks_blk()
+    let pageUnitsType = getCurPageEsUnitType()
 
-    local isTreeReserchable = treeData.sectionsResearchable.contains(true)
+    let isTreeReserchable = treeData.sectionsResearchable.contains(true)
 
     for(local i = 1; i <= ::max_country_rank; i++)
     {
-      local curEraPos = treeData.ranksHeight[i]
-      local prevEraPos = treeData.ranksHeight[i-1]
-      local curFakeRowRankCount = treeData.fakeRanksRowsCount[i]
+      let curEraPos = treeData.ranksHeight[i]
+      let prevEraPos = treeData.ranksHeight[i-1]
+      let curFakeRowRankCount = treeData.fakeRanksRowsCount[i]
 
       if (curEraPos == prevEraPos || ((curEraPos - curFakeRowRankCount) == prevEraPos ))
         continue
 
-      local prevFakeRowRankCount = treeData.fakeRanksRowsCount[i-1]
-      local drawArrow = i > 1 && prevEraPos != (treeData.ranksHeight[i-2] + prevFakeRowRankCount)
-      local isRankAvailable = !isTreeReserchable || ::is_era_available(curCountry, i, pageUnitsType)
-      local status =  isRankAvailable ?  "owned" : "locked"
+      let prevFakeRowRankCount = treeData.fakeRanksRowsCount[i-1]
+      let drawArrow = i > 1 && prevEraPos != (treeData.ranksHeight[i-2] + prevFakeRowRankCount)
+      let isRankAvailable = !isTreeReserchable || ::is_era_available(curCountry, i, pageUnitsType)
+      let status =  isRankAvailable ?  "owned" : "locked"
 
-      local texts = getRankProgressTexts(i, blk, isTreeReserchable)
+      let texts = getRankProgressTexts(i, blk, isTreeReserchable)
 
       local arrowData = ""
       if (drawArrow)
@@ -777,7 +777,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
                     ::g_string.stripTags(texts.tooltipReqCounter)
                     )
       }
-      local modBlockFormat = "modBlockTierNum { class:t='vehicleRanks' status:t='%s'; pos:t='0, %s@shop_height - 0.5h'; text:t='%s'; tooltip:t='%s'}"
+      let modBlockFormat = "modBlockTierNum { class:t='vehicleRanks' status:t='%s'; pos:t='0, %s@shop_height - 0.5h'; text:t='%s'; tooltip:t='%s'}"
 
       if (curFakeRowRankCount > 0)
         data += ::format(modBlockFormat,
@@ -794,13 +794,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
       data += arrowData
 
-      local tierObj = scene.findObject("shop_tier_" + i.tostring())
+      let tierObj = scene.findObject("shop_tier_" + i.tostring())
       if (::checkObj(tierObj))
         tierObj.tooltip = texts.tooltipPlate
     }
 
-    local height = treeData.ranksHeight[treeData.ranksHeight.len()-1] + "@shop_height"
-    local tierObj = scene.findObject("tier_arrows_div")
+    let height = treeData.ranksHeight[treeData.ranksHeight.len()-1] + "@shop_height"
+    let tierObj = scene.findObject("tier_arrows_div")
     tierObj.height = height
     guiScene.replaceContentFromText(tierObj, data, data.len(), this)
 
@@ -809,14 +809,14 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function updateBoughtVehiclesCount()
   {
-    local bought = array(::max_country_rank + 1, 0)
-    local total = array(::max_country_rank + 1, 0)
-    local pageUnitsType = getCurPageEsUnitType()
+    let bought = array(::max_country_rank + 1, 0)
+    let total = array(::max_country_rank + 1, 0)
+    let pageUnitsType = getCurPageEsUnitType()
 
     foreach(unit in ::all_units)
       if (unit.shopCountry == curCountry && pageUnitsType == ::get_es_unit_type(unit))
       {
-        local isOwn = ::isUnitBought(unit)
+        let isOwn = ::isUnitBought(unit)
         if (isOwn)
           bought[unit.rank]++
         if (isOwn || unit.isVisibleInShop())
@@ -891,7 +891,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getAirObj(unitName)
   {
-    local airObj = findUnitInGroupTableById(unitName)
+    let airObj = findUnitInGroupTableById(unitName)
     if (::checkObj(airObj))
       return airObj
 
@@ -900,7 +900,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getUnitCellObj(unitName)
   {
-    local cellObj = findUnitInGroupTableById($"unitCell_{unitName}")
+    let cellObj = findUnitInGroupTableById($"unitCell_{unitName}")
     if (::checkObj(cellObj))
       return cellObj
 
@@ -908,7 +908,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   function getCellObjByValue(value) {
-    local tableObj = scene.findObject("shop_items_list")
+    let tableObj = scene.findObject("shop_items_list")
     return value < tableObj.childrenCount() ? tableObj.getChild(value) : null
   }
 
@@ -917,7 +917,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!unit || unit?.isFakeUnit)
       return
 
-    local unitObj = getUnitCellObj(unit.name)
+    let unitObj = getUnitCellObj(unit.name)
     if ((unitObj?.isValid() ?? false) && unitObj.isVisible()) //need update only visible cell
       updateUnitItem(unit, unitObj)
 
@@ -935,7 +935,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function updateGroupItem(groupName)
   {
-    local block = getItemBlockFromShopTree(groupName)
+    let block = getItemBlockFromShopTree(groupName)
     if (!block)
       return
 
@@ -948,7 +948,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!unit)
       return false
 
-    local posNum = ::find_in_array(brokenList, unit)
+    let posNum = ::find_in_array(brokenList, unit)
     if (!getItemStatusData(unit).broken && posNum >= 0)
     {
       brokenList.remove(posNum)
@@ -963,12 +963,12 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!unit)
       return {}
 
-    local is_unit = !::isUnitGroup(unit) && !unit?.isFakeUnit
-    local params = {
+    let is_unit = !::isUnitGroup(unit) && !unit?.isFakeUnit
+    let params = {
       availableFlushExp = availableFlushExp
       setResearchManually = setResearchManually
     }
-    local mainActionLocId = is_unit ? slotActions.getSlotActionFunctionName(unit, params) : ""
+    let mainActionLocId = is_unit ? slotActions.getSlotActionFunctionName(unit, params) : ""
     return {
       mainActionText = mainActionLocId != "" ? ::loc(mainActionLocId) : ""
       shopResearchMode = shopResearchMode
@@ -981,7 +981,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   function findUnitInTree(isFits) {
-    local tree = getCurTreeData().tree
+    let tree = getCurTreeData().tree
     local idx = -1
     foreach(row, rowArr in tree)
       foreach(col, unit in rowArr)
@@ -998,17 +998,17 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return null
 
     local tableObj = scene.findObject("shop_items_list")
-    local curIdx = tableObj.getValue()
+    let curIdx = tableObj.getValue()
     if (curIdx < 0)
       return null
-    local mainTblUnit = getUnitByIdx(curIdx).unit
+    let mainTblUnit = getUnitByIdx(curIdx).unit
     if (!::isUnitGroup(mainTblUnit))
       return mainTblUnit
 
     if (checkGroups && ::checkObj(groupChooseObj))
     {
       tableObj = groupChooseObj.findObject("airs_table")
-      local idx = tableObj.getValue()
+      let idx = tableObj.getValue()
       if (idx in mainTblUnit.airsGroup)
         return mainTblUnit.airsGroup[idx]
     }
@@ -1021,17 +1021,17 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function getDefaultUnitInGroup(unitGroup)
   {
-    local airsList = ::getTblValue("airsGroup", unitGroup)
+    let airsList = ::getTblValue("airsGroup", unitGroup)
     return ::getTblValue(0, airsList)
   }
 
   function getItemBlockFromShopTree(itemName)
   {
-    local tree = getCurTreeData().tree
+    let tree = getCurTreeData().tree
     for(local i = 0; i < tree.len(); ++i)
       for(local j = 0; j < tree[i].len(); ++j)
       {
-        local name = ::getTblValue("name", tree[i][j])
+        let name = ::getTblValue("name", tree[i][j])
         if (!name)
           continue
 
@@ -1044,10 +1044,10 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onAircraftsPage()
   {
-    local pagesObj = scene.findObject("shop_pages_list")
+    let pagesObj = scene.findObject("shop_pages_list")
     if (pagesObj)
     {
-      local pageIdx = pagesObj.getValue()
+      let pageIdx = pagesObj.getValue()
       if (pageIdx < 0 || pageIdx >= pagesObj.childrenCount())
         return
       curPage = pagesObj.getChild(pageIdx).id
@@ -1076,11 +1076,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return
     }
 
-    local pagesObj = scene.findObject("shop_pages_list")
+    let pagesObj = scene.findObject("shop_pages_list")
     if (!::checkObj(pagesObj))
       return
 
-    local unitType = forceUnitType
+    let unitType = forceUnitType
       ?? lastUnitType
       ?? ::getAircraftByName(curAirName)?.unitType
       ?? unitTypes.INVALID
@@ -1089,14 +1089,14 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     local data = ""
     local curIdx = 0
-    local countryData = ::u.search(shopData, (@(curCountry) function(country) { return country.name == curCountry})(curCountry))
+    let countryData = ::u.search(shopData, (@(curCountry) function(country) { return country.name == curCountry})(curCountry))
     if (countryData)
     {
-      local ediff = getCurrentEdiff()
-      local view = { tabs = [] }
+      let ediff = getCurrentEdiff()
+      let view = { tabs = [] }
       foreach(idx, page in countryData.pages)
       {
-        local name = page.name
+        let name = page.name
         view.tabs.append({
           id = name
           tabName = "#mainmenu/" + name
@@ -1113,11 +1113,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
           curIdx = view.tabs.len() - 1
       }
 
-      local tabCount = view.tabs.len()
+      let tabCount = view.tabs.len()
       foreach(idx, tab in view.tabs)
         tab.navImagesText = ::get_navigation_images_text(idx, tabCount)
 
-      data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+      data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     }
     guiScene.replaceContentFromText(pagesObj, data, data.len(), this)
 
@@ -1133,7 +1133,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function updateDiscountIconsOnTabs()
   {
-    local pagesObj = scene.findObject("shop_pages_list")
+    let pagesObj = scene.findObject("shop_pages_list")
     if (!::checkObj(pagesObj))
       return
 
@@ -1144,18 +1144,18 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
       foreach(idx, page in country.pages)
       {
-        local tabObj = pagesObj.findObject(page.name)
+        let tabObj = pagesObj.findObject(page.name)
         if (!::checkObj(tabObj))
           continue
 
-        local discountObj = tabObj.findObject(getDiscountIconTabId(curCountry, page.name))
+        let discountObj = tabObj.findObject(getDiscountIconTabId(curCountry, page.name))
         if (!::checkObj(discountObj))
           continue
 
-        local discountData = getDiscountByCountryAndArmyId(curCountry, page.name)
+        let discountData = getDiscountByCountryAndArmyId(curCountry, page.name)
 
-        local maxDiscount = discountData?.maxDiscount ?? 0
-        local discountTooltip = ::getTblValue("discountTooltip", discountData, "")
+        let maxDiscount = discountData?.maxDiscount ?? 0
+        let discountTooltip = ::getTblValue("discountTooltip", discountData, "")
         tabObj.tooltip = discountTooltip
         discountObj.setValue(maxDiscount > 0? ("-" + maxDiscount + "%") : "")
         discountObj.tooltip = discountTooltip
@@ -1169,13 +1169,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::g_discount.haveAnyUnitDiscount())
       return null
 
-    local unitType = unitTypes.getByArmyId(armyId)
-    local discountsList = {}
+    let unitType = unitTypes.getByArmyId(armyId)
+    let discountsList = {}
     foreach(unit in ::all_units)
       if (unit.unitType == unitType
           && unit.shopCountry == country)
       {
-        local discount = ::g_discount.getUnitDiscount(unit)
+        let discount = ::g_discount.getUnitDiscount(unit)
         if (discount > 0)
           discountsList[unit.name + "_shop"] <- discount
       }
@@ -1187,7 +1187,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (shopResearchMode || !::has_feature("UnitsSearchBoxInShop"))
       return
-    local handler = shopSearchBox.init({
+    let handler = shopSearchBox.init({
       scene = scene.findObject("shop_search_box")
       curCountry = curCountry
       curEsUnitType = getCurPageEsUnitType()
@@ -1205,13 +1205,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (isClear)
       return highlightUnitsClear()
-    local slots = highlightUnitsInTree(units.map(@(unit) unit.name))
-    local tableObj = scene.findObject("shop_items_list")
+    let slots = highlightUnitsInTree(units.map(@(unit) unit.name))
+    let tableObj = scene.findObject("shop_items_list")
     if (!::check_obj(tableObj))
       return
     foreach (value in [ slots.valueLast, slots.valueFirst ])
     {
-      local cellObj = value != null ? getCellObjByValue(value) : null
+      let cellObj = value != null ? getCellObjByValue(value) : null
       if (::check_obj(cellObj))
         cellObj.scrollToView()
     }
@@ -1220,14 +1220,14 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function highlightUnitsInTree(units)
   {
-    local shadingObj = scene.findObject("shop_dark_screen")
+    let shadingObj = scene.findObject("shop_dark_screen")
     shadingObj.show(true)
     guiScene.applyPendingChanges(true)
 
-    local res = { valueFirst = null, valueLast = null }
-    local highlightList = []
-    local tree = getCurTreeData().tree
-    local tableObj = scene.findObject("shop_items_list")
+    let res = { valueFirst = null, valueLast = null }
+    let highlightList = []
+    let tree = getCurTreeData().tree
+    let tableObj = scene.findObject("shop_items_list")
     local slotIdx = -1
     foreach(row, rowArr in tree)
       foreach(col, cell in rowArr)
@@ -1235,7 +1235,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
         if (!cell)
           continue
         slotIdx++
-        local isGroup = ::isUnitGroup(cell)
+        let isGroup = ::isUnitGroup(cell)
         local isHighlight = !cell?.isFakeUnit && !isGroup && ::isInArray(cell?.name, units)
         if (isGroup)
           foreach (unit in cell.airsGroup)
@@ -1244,7 +1244,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
           continue
         res.valueFirst = res.valueFirst ?? slotIdx
         res.valueLast  = slotIdx
-        local objData  = {
+        let objData  = {
           obj = getCellObjByValue(slotIdx)
           id = $"high_{slotIdx}"
           onClick = "onHighlightedCellClick"
@@ -1269,7 +1269,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
     if (selCellOnSearchQuit != null)
     {
-      local tableObj = scene.findObject("shop_items_list")
+      let tableObj = scene.findObject("shop_items_list")
       if (::check_obj(tableObj))
       {
         skipOpenGroup = true
@@ -1283,14 +1283,14 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function highlightUnitsClear()
   {
-    local shadingObj = scene.findObject("shop_dark_screen")
+    let shadingObj = scene.findObject("shop_dark_screen")
     if (::check_obj(shadingObj))
       shadingObj.show(false)
   }
 
   function onHighlightedCellClick(obj)
   {
-    local value = ::to_integer_safe(::g_string.cutPrefix(obj?.id, "high_") ?? "-1", -1, false)
+    let value = ::to_integer_safe(::g_string.cutPrefix(obj?.id, "high_") ?? "-1", -1, false)
     if (value >= 0)
       selCellOnSearchQuit = value
     guiScene.performDelayed(this, function() {
@@ -1317,9 +1317,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   function selectCell(obj) {
-    local holderId = obj?.holderId
-    local listObj = getCurListObj()
-    local idx = findChildIndex(listObj, holderId == null
+    let holderId = obj?.holderId
+    let listObj = getCurListObj()
+    let idx = findChildIndex(listObj, holderId == null
       ? @(c) c.isHovered()
       : @(c) c?.holderId == holderId)
 
@@ -1349,7 +1349,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   function onAircraftClick(obj, ignoreMenuHover = false)
   {
     selectCell(obj)
-    local unit = getCurAircraft()
+    let unit = getCurAircraft()
     checkSelectAirGroup(unit)
     openMenuForUnit(unit, ignoreMenuHover)
   }
@@ -1376,39 +1376,39 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (skipOpenGroup || groupChooseObj || !item || !::isUnitGroup(item))
       return
-    local silObj = scene.findObject("shop_items_list")
+    let silObj = scene.findObject("shop_items_list")
     if (!::checkObj(silObj))
       return
-    local grObj = silObj.findObject(item.name)
+    let grObj = silObj.findObject(item.name)
     if (!::checkObj(grObj))
       return
 
     skipOpenGroup = true
     //choose aircraft from group window
-    local tdObj = grObj.getParent()
-    local tdPos = tdObj.getPosRC()
-    local tdSize = tdObj.getSize()
-    local leftPos = (tdPos[0] + tdSize[0] / 2) + " -50%w"
+    let tdObj = grObj.getParent()
+    let tdPos = tdObj.getPosRC()
+    let tdSize = tdObj.getSize()
+    let leftPos = (tdPos[0] + tdSize[0] / 2) + " -50%w"
 
-    local cellHeight = tdSize[1] || 86 // To avoid division by zero
-    local screenHeight = ::screen_height()
-    local safeareaHeight = guiScene.calcString("@rh", null)
-    local safeareaBorderHeight = ::floor((screenHeight - safeareaHeight) / 2)
-    local containerHeight = item.airsGroup.len() * cellHeight
+    let cellHeight = tdSize[1] || 86 // To avoid division by zero
+    let screenHeight = ::screen_height()
+    let safeareaHeight = guiScene.calcString("@rh", null)
+    let safeareaBorderHeight = ::floor((screenHeight - safeareaHeight) / 2)
+    let containerHeight = item.airsGroup.len() * cellHeight
 
     local topPos = tdPos[1]
-    local heightOutOfSafearea = (topPos + containerHeight) - (safeareaBorderHeight + safeareaHeight)
+    let heightOutOfSafearea = (topPos + containerHeight) - (safeareaBorderHeight + safeareaHeight)
     if (heightOutOfSafearea > 0)
       topPos -= ::ceil(heightOutOfSafearea / cellHeight) * cellHeight
     topPos = ::max(topPos, safeareaBorderHeight)
 
-    groupChooseObj = guiScene.loadModal("", "gui/shop/shopGroup.blk", "massTransp", this)
-    local placeObj = groupChooseObj.findObject("tablePlace")
+    groupChooseObj = guiScene.loadModal("", "%gui/shop/shopGroup.blk", "massTransp", this)
+    let placeObj = groupChooseObj.findObject("tablePlace")
     placeObj.left = leftPos.tostring()
     placeObj.top = topPos.tostring()
 
     groupChooseObj.group = item.name
-    local tableDiv = groupChooseObj.findObject("slots_scroll_div")
+    let tableDiv = groupChooseObj.findObject("slots_scroll_div")
     tableDiv.pos = "0,0"
 
     fillGroupObj(selectUnitName)
@@ -1420,10 +1420,10 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function fillGroupObjAnimParams(tdSize, tdPos)
   {
-    local animObj = groupChooseObj.findObject("tablePlace")
+    let animObj = groupChooseObj.findObject("tablePlace")
     if (!animObj)
       return
-    local size = animObj.getSize()
+    let size = animObj.getSize()
     if (!size[1])
       return
 
@@ -1431,13 +1431,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     animObj["height-end"] = size[1].tostring()
 
     //update anim fixed position
-    local heightDiff = size[1] - tdSize[1]
+    let heightDiff = size[1] - tdSize[1]
     if (heightDiff <= 0)
       return
 
-    local pos = animObj.getPosRC()
-    local topPart = (tdPos[1] - pos[1]).tofloat() / heightDiff
-    local animFixedY = tdPos[1] + topPart * tdSize[1]
+    let pos = animObj.getPosRC()
+    let topPart = (tdPos[1] - pos[1]).tofloat() / heightDiff
+    let animFixedY = tdPos[1] + topPart * tdSize[1]
     animObj.top = format("%d - %fh", animFixedY.tointeger(), topPart)
   }
 
@@ -1458,7 +1458,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     {
       if (!unit)
         continue
-      local reqUnit = ::getPrevUnit(unit)
+      let reqUnit = ::getPrevUnit(unit)
       if (reqUnit  && prevGroupUnit
           && reqUnit.name == prevGroupUnit.name)
       {
@@ -1478,23 +1478,23 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(scene) || !::checkObj(groupChooseObj))
       return
 
-    local item = getCurAircraft(false)
+    let item = getCurAircraft(false)
     if (!item || !::isUnitGroup(item))
       return
 
-    local gTblObj = groupChooseObj.findObject("airs_table")
+    let gTblObj = groupChooseObj.findObject("airs_table")
     if (!::checkObj(gTblObj))
       return
 
     if (selectUnitName == "")
     {
-      local groupUnit = getDefaultUnitInGroup(item)
+      let groupUnit = getDefaultUnitInGroup(item)
       if (groupUnit)
         selectUnitName = groupUnit.name
     }
     fillUnitsInGroup(gTblObj, item.airsGroup, selectUnitName)
 
-    local lines = fillGroupObjArrows(item.airsGroup)
+    let lines = fillGroupObjArrows(item.airsGroup)
     guiScene.appendWithBlk(groupChooseObj.findObject("arrows_nest"), lines, this)
 
     foreach(unit in item.airsGroup)
@@ -1504,7 +1504,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function fillUnitsInGroup(tblObj, unitList, selectUnitName = "")
   {
-    local selected = unitList.findindex(@(u) selectUnitName == u.name) ?? tblObj.getValue()
+    let selected = unitList.findindex(@(u) selectUnitName == u.name) ?? tblObj.getValue()
     initUnitCells(tblObj, unitList.map(@(u) { id = u.name, position = "relative" }))
     foreach(idx, unit in unitList)
       updateUnitCell(tblObj.getChild(idx), unit)
@@ -1553,7 +1553,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onRepairAll(obj)
   {
-    local cost = ::Cost()
+    let cost = ::Cost()
     cost.wp = repairAllCost
 
     if (!::check_balance_msgBox(cost))
@@ -1570,7 +1570,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     {
       showTaskProgressBox()
       checkBrokenUnitsAndUpdateThem()
-      local curAir = getCurAircraft()
+      let curAir = getCurAircraft()
       lastPurchase = curAir
       needUpdateSlotbar = true
       needUpdateSquadInfo = true
@@ -1580,7 +1580,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onEventUnitRepaired(params)
   {
-    local unit = ::getTblValue("unit", params)
+    let unit = ::getTblValue("unit", params)
 
     if (checkBrokenListStatus(unit))
       checkUnitItemAndUpdate(unit)
@@ -1611,7 +1611,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onEventUpdateResearchingUnit(params)
   {
-    local unitName = ::getTblValue("unitName", params, ::shop_get_researchable_unit_name(curCountry, getCurPageEsUnitType()))
+    let unitName = ::getTblValue("unitName", params, ::shop_get_researchable_unit_name(curCountry, getCurPageEsUnitType()))
     checkUnitItemAndUpdate(::getAircraftByName(unitName))
   }
 
@@ -1627,7 +1627,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onResearch(obj)
   {
-    local unit = getCurAircraft()
+    let unit = getCurAircraft()
     if (!unit || ::isUnitGroup(unit) || unit?.isFakeUnit || !::checkForResearch(unit))
       return
 
@@ -1636,11 +1636,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onConvert(obj)
   {
-    local unit = getCurAircraft()
+    let unit = getCurAircraft()
     if (!unit || !::can_spend_gold_on_unit_with_popup(unit))
       return
 
-    local unitName = unit.name
+    let unitName = unit.name
     selectCellByUnitName(unitName)
     ::gui_modal_convertExp(unit)
   }
@@ -1657,13 +1657,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(scene))
       return
 
-    local prevUnitName = ::getTblValue("prevUnitName", params)
-    local unitName = ::getTblValue("unitName", params)
+    let prevUnitName = ::getTblValue("prevUnitName", params)
+    let unitName = ::getTblValue("unitName", params)
 
     if (prevUnitName && prevUnitName != unitName)
       checkUnitItemAndUpdate(::getAircraftByName(prevUnitName))
 
-    local unit = ::getAircraftByName(unitName)
+    let unit = ::getAircraftByName(unitName)
     updateResearchVariables()
     checkUnitItemAndUpdate(unit)
 
@@ -1678,8 +1678,8 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onEventUnitBought(params)
   {
-    local unitName = ::getTblValue("unitName", params)
-    local unit = unitName ? ::getAircraftByName(unitName) : null
+    let unitName = ::getTblValue("unitName", params)
+    let unit = unitName ? ::getAircraftByName(unitName) : null
     if (!unit)
       return
 
@@ -1723,7 +1723,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (unitId == null)
       return
 
-    local unit = ::getAircraftByName(unitId)
+    let unit = ::getAircraftByName(unitId)
     if (!unit || !unit.isVisibleInShop() || unitId == curAirName)
       return
 
@@ -1741,11 +1741,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(scene))
       return false
 
-    local tableObj = scene.findObject("shop_items_list")
+    let tableObj = scene.findObject("shop_items_list")
     if (!::checkObj(tableObj))
       return false
 
-    local tree = getCurTreeData().tree
+    let tree = getCurTreeData().tree
     local idx = -1
     foreach(rowIdx, row in tree)
       foreach(colIdx, item in row) {
@@ -1757,7 +1757,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
           foreach(groupItemIdx, groupItem in item.airsGroup)
             if (groupItem.name == unitName)
             {
-              local obj = getCellObjByValue(idx)
+              let obj = getCellObjByValue(idx)
               if (!obj?.isValid())
                 return false
 
@@ -1770,7 +1770,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
             }
         }
         else if (item.name == unitName) {
-          local obj = getCellObjByValue(idx)
+          let obj = getCellObjByValue(idx)
           if (!obj?.isValid())
             return false
 
@@ -1803,7 +1803,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     foreach(param in ["unit", "prevUnit"])
     {
-      local unit = ::getTblValue(param, params)
+      let unit = ::getTblValue(param, params)
       if (!unit)
         continue
 
@@ -1830,7 +1830,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     }
 
     selectCell(obj)
-    local unit = ::getAircraftByName(obj?.holderId) ?? getCurAircraft()
+    let unit = ::getAircraftByName(obj?.holderId) ?? getCurAircraft()
     if (!unit)
       return
 
@@ -1852,11 +1852,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::show_console_buttons)
       return
 
-    local unitObj = unitContextMenuState.value?.unitObj
+    let unitObj = unitContextMenuState.value?.unitObj
     if (!unitObj?.isValid())
       return
 
-    local actionListObj = unitObj.findObject("actions_list")
+    let actionListObj = unitObj.findObject("actions_list")
     if (actionListObj?.isValid())
       actionListObj.closeOnUnhover = "yes"
   }
@@ -1883,7 +1883,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onEventCountryChanged(p)
   {
-    local country = ::get_profile_country_sq()
+    let country = ::get_profile_country_sq()
     if (country == curCountry)
       return
 
@@ -1895,11 +1895,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function initShowMode(tgtNavBar)
   {
-    local obj = tgtNavBar.findObject("show_mode")
+    let obj = tgtNavBar.findObject("show_mode")
     if (!::g_login.isProfileReceived() || !::checkObj(obj))
       return
 
-    local storedMode = getShopDiffMode()
+    let storedMode = getShopDiffMode()
     local curMode = -1
     showModeList = []
     foreach(diff in ::g_difficulty.types)
@@ -1926,13 +1926,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     foreach (item in showModeList)
       item.selected <- item.diffCode == curMode
 
-    local view = {
+    let view = {
       id = "show_mode"
       optionTag = "option"
       cb = "onChangeShowMode"
       options= showModeList
     }
-    local data = ::handyman.renderCached("gui/options/spinnerOptions", view)
+    let data = ::handyman.renderCached("%gui/options/spinnerOptions", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     updateShowModeTooltip(obj)
   }
@@ -1954,13 +1954,13 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (!::checkObj(obj))
       return
 
-    local value = obj.getValue()
-    local item = ::getTblValue(value, showModeList)
+    let value = obj.getValue()
+    let item = ::getTblValue(value, showModeList)
     if (!item)
       return
 
     _isShowModeInChange = true
-    local prevEdiff = getCurrentEdiff()
+    let prevEdiff = getCurrentEdiff()
     storeShopDiffMode(item.diffCode)
 
     foreach(tgtNavBar in [navBarObj, navBarGroupObj])
@@ -1968,7 +1968,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       if (!::check_obj(tgtNavBar))
         continue
 
-      local listObj = tgtNavBar.findObject("show_mode")
+      let listObj = tgtNavBar.findObject("show_mode")
       if (!::check_obj(listObj))
         continue
 
@@ -1994,7 +1994,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   function updateSlotbarDifficulty()
   {
 
-    local slotbar = topMenuHandler.value?.getSlotbar()
+    let slotbar = topMenuHandler.value?.getSlotbar()
     if (slotbar)
       slotbar.updateDifficulty()
   }
@@ -2003,20 +2003,20 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   {
     if (!::has_feature("GlobalShowBattleRating"))
       return
-    local curEdiff = getCurrentEdiff()
-    local tree = getCurTreeData().tree
+    let curEdiff = getCurrentEdiff()
+    let tree = getCurTreeData().tree
     foreach(row in tree)
       foreach(unit in row)
       {
-        local unitObj = unit ? getUnitCellObj(unit.name) : null
+        let unitObj = unit ? getUnitCellObj(unit.name) : null
         if (::checkObj(unitObj))
         {
-          local obj = unitObj.findObject("rankText")
+          let obj = unitObj.findObject("rankText")
           if (::checkObj(obj))
             obj.setValue(::get_unit_rank_text(unit, null, true, curEdiff))
 
           if (!shopResearchMode) {
-            local hasObjective = ::isUnitGroup(unit)
+            let hasObjective = ::isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(u) hasMarkerByUnitName(u.name, curEdiff))) != null
               : ::u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
             show_obj(unitObj.findObject("unlockMarker"), hasObjective)
@@ -2076,7 +2076,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (::clan_get_exp() <= 0)
       return null
 
-    local unit = ::getAircraftByName(::clan_get_researching_unit())
+    let unit = ::getAircraftByName(::clan_get_researching_unit())
     if(!unit)
       return null
 

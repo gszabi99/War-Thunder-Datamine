@@ -1941,7 +1941,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.1,
+              "fire": 0.05,
               "damage": 200.0,
               "fHitCritical": false
             }
@@ -1949,7 +1949,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.15,
+              "fire": 0.1,
               "damage": 250.0,
               "fHitCritical": false
             }
@@ -1957,7 +1957,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.25,
+              "fire": 0.15,
               "damage": 300.0,
               "fHitCritical": false
             }
@@ -1997,31 +1997,18 @@
             "name": "compartment_10_dm"
           },
           {
-            "name": "bridge_dm"
-          },
-          {
-            "name": "radio_station_dm"
-          },
-          {
-            "name": "radio_station_01_dm"
-          },
-          {
-            "name": "radio_station_02_dm"
-          },
-          {
-            "name": "radio_station_03_dm"
-          },
-          {
-            "name": "radio_station_04_dm"
-          },
-          {
-            "name": "radio_station_05_dm"
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 0.05,
+              "damage": 250.0,
+              "fHitCritical": false
+            }
           },
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.05,
-              "damage": 270.0,
+              "fire": 0.1,
+              "damage": 400.0,
               "fHitCritical": false
             }
           },
@@ -2029,7 +2016,7 @@
             "onHit": {
               "damageType": "shatter",
               "fire": 0.001,
-              "damage": 19.0,
+              "damage": 24.0,
               "fHitCritical": false
             }
           }
@@ -2058,7 +2045,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.08,
+              "fire": 0.05,
               "damage": 250.0,
               "fHitCritical": false
             }
@@ -2066,16 +2053,16 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.25,
+              "fire": 0.15,
               "damage": 400.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
-              "damageType": "shatter",
-              "fire": 0.001,
-              "damage": 15.0,
+              "damageType": "explosion",
+              "fire": 0.3,
+              "damage": 900.0,
               "fHitCritical": false
             }
           }
@@ -2130,8 +2117,8 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.31
+              "fire": 0.15,
+              "nothing": 0.85
             }
           }
         ]
@@ -2230,8 +2217,8 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.31
+              "fire": 0.1,
+              "nothing": 0.9
             }
           }
         ]
@@ -2301,9 +2288,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2312,7 +2299,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2323,9 +2310,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -2334,9 +2321,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -2345,9 +2332,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -2356,7 +2343,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2367,9 +2354,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2378,9 +2365,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2726,6 +2713,12 @@
           },
           {
             "fireConeAngle": 1.0
+          },
+          {
+            "turretLongSalvo": true
+          },
+          {
+            "salvoRndK": 0.06
           },
           {
             "allowableDelta": 2.0
@@ -4557,18 +4550,35 @@
     ]
   },
   {
+    "breaches": {
+      "repairSpeed": 21.0,
+      "waterMassVel": -29000.0,
+      "waterMassMult": 300.0,
+      "sizeToRepair": [0.01,3.0,10.0,370.0],
+      "additionalWaterDeathThreshold": 2200000.0,
+      "additionalWaterShouldDiePercent": 0.35,
+      "fatalBreachDrownTime": 35.0,
+      "maxHeelingAngle": 37.0,
+      "maxHeelingTime": 9.0,
+      "criticalHeelingAnglePercent": 0.5,
+      "maxCriticalHeelingTime": 2.0,
+      "heelingDeathHeightOffsetMult": 1.0,
+      "sideCenterOfMassOffsetPercent": 0.25
+    }
+  },
+  {
     "shipCover": [
       {
         "cover": {
           "part": "cover_01_dm",
-          "weight": 0.65,
+          "weight": 0.4,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "cover_02_dm",
-          "weight": 1.0,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -4589,7 +4599,7 @@
       {
         "cover": {
           "part": "cover_03_dm",
-          "weight": 0.88,
+          "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4602,7 +4612,7 @@
       {
         "cover": {
           "part": "cover_04_dm",
-          "weight": 0.7,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -4623,7 +4633,7 @@
       {
         "cover": {
           "part": "cover_05_dm",
-          "weight": 0.65,
+          "weight": 0.7,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -4636,28 +4646,11 @@
       {
         "cover": {
           "part": "cover_06_dm",
-          "weight": 0.45,
+          "weight": 0.4,
           "maxWaterAlive": 1.0
         }
       }
     ]
-  },
-  {
-    "breaches": {
-      "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
-      "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 3600000.0,
-      "additionalWaterShouldDiePercent": 0.45,
-      "fatalBreachDrownTime": 35.0,
-      "maxHeelingAngle": 37.0,
-      "maxHeelingTime": 9.0,
-      "criticalHeelingAnglePercent": 0.5,
-      "maxCriticalHeelingTime": 2.0,
-      "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
-    }
   },
   {
     "winch": {

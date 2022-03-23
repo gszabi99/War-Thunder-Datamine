@@ -178,10 +178,6 @@
         },
         "turret_02_back_dm": {
           "armorThickness": 57.0
-        },
-        "turret_08_top_dm": {
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 5.0
         }
       },
       "hull_RHA": {
@@ -199,7 +195,7 @@
           "armorThickness": 12.7
         },
         "turret_02_bottom_dm": {
-          "armorThickness": 4.0
+          "armorThickness": 5.0
         },
         "ex_armor_08_dm": {
           "armorThickness": 12.7
@@ -215,6 +211,9 @@
         },
         "ex_armor_14_dm": {
           "armorThickness": 12.7
+        },
+        "turret_08_top_dm": {
+          "armorThickness": 10.0
         }
       },
       "turret": {
@@ -566,7 +565,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -597,7 +596,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2518,6 +2517,9 @@
             "errExplTime": 0.0
           },
           {
+            "forestallTime": 0.1
+          },
+          {
             "turret": {
               "head": "bone_turret",
               "gun": "bone_gun",
@@ -2617,6 +2619,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "reuseYawTrigger": 10,
           "reusePitchTrigger": 10,
           "turret": {
@@ -2755,9 +2758,18 @@
         "trackMass": 2500.0
       },
       "tracks": {
-        "animationMultiplier": 0.6381,
-        "height": 0.06,
-        "width": 0.5
+        "animationMultiplier": 0.71,
+        "height": 0.095,
+        "width": 0.55,
+        "tracksTensionK": [6.5,10.0,3.0],
+        "trackMesh": "us_t142_phys_track_line",
+        "trackLen": 0.176,
+        "trackCount": 81,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.55,
+        "trackStartOffset": 0.82
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2798,11 +2810,13 @@
       "suspension": {
         "suspensionOffsets": [-0.16,-0.12,0.1],
         "defaultGearRadius": 0.37,
-        "frontBackGearRadius": 0.24,
+        "frontBackGearRadius": 0.27,
         "topGearRadius": 0.13,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.3,
+        "wheel_l_drive": 0.3
       }
     }
   },
@@ -3589,6 +3603,9 @@
                   "errExplTime": 0.0
                 },
                 {
+                  "forestallTime": 0.1
+                },
+                {
                   "turret": {
                     "head": "bone_turret",
                     "gun": "bone_gun",
@@ -3688,6 +3705,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "reuseYawTrigger": 10,
                 "reusePitchTrigger": 10,
                 "turret": {

@@ -1,13 +1,13 @@
-local stdMath = require("std/math.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { doesLocTextExist = @(k) true } = require("dagor.localize")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let stdMath = require("%sqstd/math.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { doesLocTextExist = @(k) true } = require("dagor.localize")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
 const TIP_LOC_KEY_PREFIX = "loading/"
 
-::g_script_reloader.loadOnce("scripts/loading/bhvLoadingTip.nut")
+::g_script_reloader.loadOnce("%scripts/loading/bhvLoadingTip.nut")
 
 ::g_tips <- {
   TIP_LIFE_TIME_MSEC = 10000
@@ -24,25 +24,25 @@ const TIP_LOC_KEY_PREFIX = "loading/"
   isTipsValid = false
 
   function getAllTips() {
-    local tipsKeysByUnitType = {}
+    let tipsKeysByUnitType = {}
     tipsKeysByUnitType[GLOBAL_LOADING_TIP_BIT] <- loadTipsKeysByUnitType(null, false)
 
     foreach(unitType in unitTypes.types)
     {
       if (unitType == unitTypes.INVALID)
         continue
-      local keys = loadTipsKeysByUnitType(unitType, false)
+      let keys = loadTipsKeysByUnitType(unitType, false)
       if (!keys.len())
         continue
       tipsKeysByUnitType[unitType.bit] <- keys
     }
 
-    local tipsArray = []
+    let tipsArray = []
     foreach(unitTypeBit, keys in tipsKeysByUnitType) {
       tipsArray.extend(keys.map(function(tipKey) {
         local tip = ::loc($"{TIP_LOC_KEY_PREFIX}{tipKey}")
         if (unitTypeBit != GLOBAL_LOADING_TIP_BIT) {
-          local icon = unitTypes.getByBit(unitTypeBit).fontIcon
+          let icon = unitTypes.getByBit(unitTypeBit).fontIcon
           tip = $"{::colorize("fadedTextColor", icon)} {tip}"
         }
         return tip
@@ -82,7 +82,7 @@ g_tips.validate <- function validate()
   {
     if (unitType == unitTypes.INVALID)
       continue
-    local isMeNewbie = isMeNewbieOnUnitType(unitType.esUnitType)
+    let isMeNewbie = isMeNewbieOnUnitType(unitType.esUnitType)
     local keys = loadTipsKeysByUnitType(unitType, isMeNewbie)
     if (!keys.len() && isMeNewbie)
       keys = loadTipsKeysByUnitType(unitType, false)
@@ -96,7 +96,7 @@ g_tips.validate <- function validate()
 //for global tips typeName = null
 g_tips.getKeyFormat <- function getKeyFormat(typeName, isNewbie)
 {
-  local path = typeName ? [ typeName.tolower() ] : []
+  let path = typeName ? [ typeName.tolower() ] : []
   if (isNewbie)
     path.append("newbie")
   path.append("tip%d")
@@ -106,9 +106,9 @@ g_tips.getKeyFormat <- function getKeyFormat(typeName, isNewbie)
 //for global tips unitType = null
 g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNeedOnlyNewbieTips)
 {
-  local res = []
+  let res = []
 
-  local configs = []
+  let configs = []
   foreach (isNewbieTip in [ true, false ])
     configs.append({
       isNewbieTip = isNewbieTip
@@ -126,7 +126,7 @@ g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNee
     {
       isShow = cfg.isShow
       key = ::format(cfg.keyFormat, idx)
-      local locId = $"{TIP_LOC_KEY_PREFIX}{key}"
+      let locId = $"{TIP_LOC_KEY_PREFIX}{key}"
       tip = doesLocTextExist(locId) ? ::loc(locId, "") : "" // Using doesLocTextExist() to avoid warnings spam in log.
       if (tip != "")
         break
@@ -169,7 +169,7 @@ g_tips.getDefaultUnitTypeMask <- function getDefaultUnitTypeMask()
     return existTipsMask
 
   local res = 0
-  local gm = ::get_game_mode()
+  let gm = ::get_game_mode()
   if (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH)
     res = ::SessionLobby.getRequiredUnitTypesMask() || ::SessionLobby.getUnitTypesMask()
   else if (gm == ::GM_TEST_FLIGHT)
@@ -245,7 +245,7 @@ g_tips.genNewTip <- function genNewTip(unitTypeMask = 0)
     //add unit type icon if needed
     if (unitTypeBit != GLOBAL_LOADING_TIP_BIT && stdMath.number_of_set_bits(unitTypeMask) > 1)
     {
-      local icon = unitTypes.getByBit(unitTypeBit).fontIcon
+      let icon = unitTypes.getByBit(unitTypeBit).fontIcon
       curTip = ::colorize("fadedTextColor", icon) + " " + curTip
     }
 

@@ -1,5 +1,5 @@
-local { is_stereo_mode } = ::require_native("vr")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { is_stereo_mode } = ::require_native("vr")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::joystickInterface <- {
   maxAbsoluteAxisValue = 1.0
@@ -7,7 +7,7 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
   function getAxisWatch(isForWheelmenu = false, isForArtillery = false)
   {
-    local res = []
+    let res = []
     if (isForWheelmenu) {
       if (::is_xinput_device() || is_stereo_mode())
         res.append(getPlayerCurUnit()?.unitType.wheelmenuAxis ?? [])
@@ -22,8 +22,8 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
   function getAxisStuck(watchAxis = [])
   {
-    local axisData = getAxisData(watchAxis, null)
-    local res = {}
+    let axisData = getAxisData(watchAxis, null)
+    let res = {}
     foreach (idxPair, axisPair in watchAxis)
     {
       if (!(idxPair in axisData))
@@ -42,24 +42,24 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
   function getAxisData(watchAxis = [], stuckAxis = {})
   {
-    local device = ::joystick_get_default()
-    local settings = ::joystick_get_cur_settings()
+    let device = ::joystick_get_default()
+    let settings = ::joystick_get_cur_settings()
     if (!device || !settings)
       return null
 
-    local res = []
+    let res = []
     foreach(axisPair in watchAxis)
     {
-      local pos = [0, 0]
+      let pos = [0, 0]
 
       foreach(idx, axisName in axisPair)
       {
-        local axisIndex = ::get_axis_index(axisName)
+        let axisIndex = ::get_axis_index(axisName)
         if (axisIndex != -1)
         {
           local value = ::get_axis_value(axisIndex)
 
-          local stuckValue = stuckAxis?[axisName]
+          let stuckValue = stuckAxis?[axisName]
           if (value == stuckValue)
             value = 0
           else if (stuckValue != null)
@@ -76,7 +76,7 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
 
   function getMaxDeviatedAxisInfo(axisData = null, deadzone = 0.0652)
   {
-    local result = {
+    let result = {
       x = 0,
       y = 0,
       angle = 0,
@@ -92,7 +92,7 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
     local maxDeviationSq=0, rawX=0, rawY=0
     foreach(idx, data in axisData)
     {
-      local deviationSq = ::pow(data[0], 2) + ::pow(data[1], 2)
+      let deviationSq = ::pow(data[0], 2) + ::pow(data[1], 2)
       if (deviationSq > maxDeviationSq)
       {
         maxDeviationSq = deviationSq
@@ -104,10 +104,10 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
     if (::sqrt(maxDeviationSq) <= deadzone)
       return result
 
-    local signX = rawX >= 0 ? 1 : -1
-    local signY = rawY >= 0 ? 1 : -1
-    local denominator = maxAbsoluteAxisValue - deadzone //to normalize
-    local rawSide = ::sqrt(::pow(rawX, 2) + ::pow(rawY, 2))
+    let signX = rawX >= 0 ? 1 : -1
+    let signY = rawY >= 0 ? 1 : -1
+    let denominator = maxAbsoluteAxisValue - deadzone //to normalize
+    let rawSide = ::sqrt(::pow(rawX, 2) + ::pow(rawY, 2))
 
     result.x = rawX
     result.y = rawY
@@ -131,9 +131,9 @@ local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
    */
   function getPositionDelta(dt, nonlinearityPower, axisValues)
   {
-    local distance = ::pow(axisValues.normLength, nonlinearityPower) * dt
-    local dx =   distance * ::cos(axisValues.angle)
-    local dy = - distance * ::sin(axisValues.angle)
+    let distance = ::pow(axisValues.normLength, nonlinearityPower) * dt
+    let dx =   distance * ::cos(axisValues.angle)
+    let dy = - distance * ::sin(axisValues.angle)
     return [dx, dy]
   }
 

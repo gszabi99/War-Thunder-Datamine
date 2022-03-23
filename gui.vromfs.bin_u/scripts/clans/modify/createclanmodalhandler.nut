@@ -1,13 +1,13 @@
-class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanModalHandler
+::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
   function createView()
   {
-    local clanTypeItems = []
+    let clanTypeItems = []
     foreach (clanType in ::g_clan_type.types)
     {
       if (clanType == ::g_clan_type.UNKNOWN)
         continue
-      local typeName = clanType.getTypeName()
+      let typeName = clanType.getTypeName()
       clanTypeItems.append({
         numItems = ::g_clan_type.types.len() - 1
         itemTooltip = ::format("#clan/clan_type/%s/tooltip", typeName)
@@ -40,8 +40,8 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
     {
       if (clanType == ::g_clan_type.UNKNOWN)
         continue
-      local typeTextId = getTypeTextId(clanType)
-      local typeTextObj = scene.findObject(typeTextId)
+      let typeTextId = getTypeTextId(clanType)
+      let typeTextObj = scene.findObject(typeTextId)
       if (::checkObj(typeTextObj))
         typeTextObj.setValue(clanType.getCreateCost().getTextAccordingToBalance())
     }
@@ -83,7 +83,7 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
   // Override.
   function updateSubmitButtonText()
   {
-    local createCost = newClanType.getCreateCost()
+    let createCost = newClanType.getCreateCost()
     setSubmitButtonText(::loc("clan/create_clan_submit_button"), createCost)
   }
 
@@ -92,7 +92,7 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
     if (isObsceneWord())
       return
 
-    local createParams = ::g_clans.prepareCreateRequest(
+    let createParams = ::g_clans.prepareCreateRequest(
       newClanType,
       newClanName,
       newClanTag,
@@ -110,12 +110,12 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
   {
     if(!prepareClanData())
       return
-    local createCost = newClanType.getCreateCost()
+    let createCost = newClanType.getCreateCost()
     if (createCost <= ::zero_money)
       createClan(createCost)
     else if (::check_balance_msgBox(createCost))
     {
-      local msgText = warningIfGold(format(::loc("clan/needMoneyQuestion_createClan"),
+      let msgText = warningIfGold(format(::loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
       msgBox("need_money", msgText, [["ok", function() { createClan(createCost) } ],

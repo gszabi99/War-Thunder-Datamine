@@ -3,8 +3,9 @@
 newIconWidget {
   height:1@newWidgetIconHeight;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#new_icon_bg;
+  background-image:#ui/gameuiskin#new_icon_bg.svg;
   background-position:5, 5, 5, 5;
+  background-svg-size: 1@newWidgetIconHeight, 1@newWidgetIconHeight;
   input-transparent:yes;
   css-hier-invalidate:yes;
 }
@@ -25,6 +26,7 @@ newIconWidgetText[text=""] {
 newIconWidgetImg {
   size:ph, ph;
   background-color:@white;
+  background-svg-size: ph, ph;
   input-transparent:yes;
 }
 
@@ -55,10 +57,15 @@ unseenIcon {
   padding:0.5h, 0, 0, 0;
   re-type:fgPict;
   foreground-color:@white;
-  foreground-image:#ui/gameuiskin#new_icon;
+  foreground-image:#ui/gameuiskin#new_icon.svg;
+  foreground-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
   foreground-repeat:aspect-ratio;
   foreground-align:left;
   display:hide;
+}
+
+unseenIcon[isAlarm=yes] {
+  foreground-image:#ui/gameuiskin#alarmclock_icon.svg;
 }
 
 unseenIcon[valign=center] {
@@ -88,7 +95,8 @@ unseenText {
   re-type:text;
   padding:0.5h + 3@sf/@pf, 3@dp + 3@sf/@pf, 6@dp + 3@sf/@pf, 3@dp;
   background-color:@white;
-  background-image:#ui/gameuiskin#new_icon_bg;
+  background-image:#ui/gameuiskin#new_icon_bg.svg;
+  background-svg-size: ph, ph;
   background-repeat:expand;
   background-position:5;
 
@@ -108,7 +116,8 @@ ComboBox > option > unseenIcon {
 
 warningIcon[type=warning] {
   size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
-  background-image:#ui/gameuiskin#new_icon_not_colored;
+  background-image:#ui/gameuiskin#new_icon_not_colored.svg;
+  background-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
   background-color:@warningIconColor;
   background-repeat:expand;
   input-transparent:yes;

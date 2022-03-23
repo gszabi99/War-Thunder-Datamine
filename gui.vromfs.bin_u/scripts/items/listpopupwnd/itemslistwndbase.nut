@@ -1,9 +1,9 @@
-local stdMath = require("std/math.nut")
+let stdMath = require("%sqstd/math.nut")
 
-class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ItemsListWndBase <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/items/universalSpareApplyWnd"
+  sceneTplName = "%gui/items/universalSpareApplyWnd"
 
   itemsList = null
   alignObj = null
@@ -14,7 +14,7 @@ class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
   function getSceneTplView()
   {
     return {
-      items = ::handyman.renderCached("gui/items/item", { items = ::u.map(itemsList, @(i) i.getViewData()) })
+      items = ::handyman.renderCached("%gui/items/item", { items = ::u.map(itemsList, @(i) i.getViewData()) })
       columns = stdMath.calc_golden_ratio_columns(itemsList.len())
 
       align = align
@@ -47,7 +47,7 @@ class ::gui_handlers.ItemsListWndBase extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelect(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value in itemsList)
       setCurItem(itemsList[value])
   }

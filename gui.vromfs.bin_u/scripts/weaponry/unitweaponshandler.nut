@@ -1,13 +1,13 @@
-local { updateModItem,
+let { updateModItem,
         createModItemLayout,
-        updateItemBulletsSlider } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon,
+        updateItemBulletsSlider } = require("%scripts/weaponry/weaponryVisual.nut")
+let { getLastWeapon,
         setLastWeapon,
         isWeaponEnabled,
-        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
-local { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
+        isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
-class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.unitWeaponsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
 
@@ -39,7 +39,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!needRecountWidth || !scene.isVisible() || scene.getSize()[0] <= 0)
       return
 
-    local sizes = ::g_dagui_utils.countSizeInItems(scene, "@modCellWidth", "@modCellHeight", 0, 0)
+    let sizes = ::g_dagui_utils.countSizeInItems(scene, "@modCellWidth", "@modCellHeight", 0, 0)
     modsInRow = sizes.itemsCountX
     scene.width = modsInRow + "@modCellWidth"
     needRecountWidth = false
@@ -67,7 +67,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     bulletsManager.setUnit(unit)
 
     local columnsConfig = null
-    local unitType = ::get_es_unit_type(unit)
+    let unitType = ::get_es_unit_type(unit)
     if (::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]))
       columnsConfig = getColumnsAircraft()
     else if (unitType == ::ES_UNIT_TYPE_TANK || unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
@@ -113,13 +113,13 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   */
   function fillWeaponryByColumnsConfig(config)
   {
-    local view = {
+    let view = {
       bgBlocks = []
       weaponryList = ""
     }
 
-    local itemWidth = config.itemWidth
-    local columns = config.columns
+    let itemWidth = config.itemWidth
+    let columns = config.columns
 
     local isLineEmpty = false
     local lineOffset = 0.0
@@ -131,10 +131,10 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
       local needHeader = false
       local bgBlock = getBgBlockBaseTemplate(itemWidth * columns.len())
 
-      local cellsRow = array(columns.len(), null)
+      let cellsRow = array(columns.len(), null)
       foreach(idx, column in columns)
       {
-        local cell = ::getTblValue(line, column)
+        let cell = ::getTblValue(line, column)
         if ((!cell || !cell.header) && bgBlock.columnsList.len())
           bgBlock.columnsList[bgBlock.columnsList.len() - 1].width += itemWidth
 
@@ -179,7 +179,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     scene.height = (lineOffset + line) + "@modCellHeight"
     if (!needRecountWidth)
       scene.width = (itemWidth * columns.len()) + "@modCellWidth"
-    local data = ::handyman.renderCached("gui/weaponry/weaponry", view)
+    let data = ::handyman.renderCached("%gui/weaponry/weaponry", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
   }
 
@@ -209,7 +209,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function addItemsByCellsRow(cellsRow, offsetY, itemWidth = 1)
   {
     local res = ""
-    local params = {
+    let params = {
       posX = 0
       posY = offsetY
       itemWidth = itemWidth
@@ -259,19 +259,19 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getColumnsAircraft()
   {
-    local res = getEmptyColumnsConfig()
+    let res = getEmptyColumnsConfig()
     if (isUnitHaveSecondaryWeapons(unit))
       res.columns.append([getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)])
 
-    local groups = getBulletsGroups()
-    local offset = res.columns.len() < modsInRow ? res.columns.len() : 0
-    local totalColumns = ::min(offset + groups.len(), modsInRow)
+    let groups = getBulletsGroups()
+    let offset = res.columns.len() < modsInRow ? res.columns.len() : 0
+    let totalColumns = ::min(offset + groups.len(), modsInRow)
     for(local i = res.columns.len(); i < totalColumns; i++)
       res.columns.append([])
 
     foreach(gIdx, bulGroup in groups)
     {
-      local col = offset + (gIdx % (totalColumns - offset))
+      let col = offset + (gIdx % (totalColumns - offset))
       res.columns[col].append(getCellConfig(getBulletsItemId(gIdx), bulGroup.getHeader(), weaponsItem.modification, gIdx))
     }
 
@@ -280,22 +280,22 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getColumnsTank()
   {
-    local groups = getBulletsGroups()
-    local gunsCount = bulletsManager.getGunTypesCount()
+    let groups = getBulletsGroups()
+    let gunsCount = bulletsManager.getGunTypesCount()
     if (!gunsCount)
       return null
 
-    local res = getEmptyColumnsConfig()
+    let res = getEmptyColumnsConfig()
     if (canChangeBulletsAmount)
       res.itemWidth = 1.5
     if (gunsCount == 1)
     {
-      local totalMods = bulletsManager.getActiveBulGroupsAmount()
+      let totalMods = bulletsManager.getActiveBulGroupsAmount()
       local totalColumns = 0
 
       if (totalMods > 0)
       {
-        local totalRows = ::ceil(totalMods.tofloat() / modsInRow * res.itemWidth).tointeger()
+        let totalRows = ::ceil(totalMods.tofloat() / modsInRow * res.itemWidth).tointeger()
         totalColumns = ::ceil(totalMods.tofloat() / totalRows).tointeger()
       }
 
@@ -305,8 +305,8 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
       {
         if (!bulGroup.active || bulGroup.shouldHideBullet())
           continue
-        local col = gIdx % totalColumns
-        local header = !gIdx ? bulGroup.getHeader() : null
+        let col = gIdx % totalColumns
+        let header = !gIdx ? bulGroup.getHeader() : null
         res.columns[col].append(getCellConfig(getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
       }
       return addSecondaryWeaponToTankColumns(res)
@@ -319,15 +319,15 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!bulGroup.active || bulGroup.shouldHideBullet())
         continue
-      local col = bulGroup.getGunIdx()
-      local header = !res.columns[col].len() ? bulGroup.getHeader() : null
+      let col = bulGroup.getGunIdx()
+      let header = !res.columns[col].len() ? bulGroup.getHeader() : null
       res.columns[col].append(getCellConfig(getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
     }
 
-    local maxColumns = (modsInRow / res.itemWidth) || 1
+    let maxColumns = (modsInRow / res.itemWidth) || 1
     if (gunsCount == 3 && maxColumns == 2)
     {
-      local newColumns = [[], []]
+      let newColumns = [[], []]
       local singleItemIdx = -1
       foreach(idx, column in res.columns)
       {
@@ -362,8 +362,8 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isUnitHaveSecondaryWeapons(unit))
       return colData
 
-    local weaponCell = getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)
-    local maxColumns = (modsInRow / colData.itemWidth) || 1
+    let weaponCell = getCellConfig(weaponItemId, ::g_weaponry_types.WEAPON.getHeader(unit), weaponsItem.weapon)
+    let maxColumns = (modsInRow / colData.itemWidth) || 1
     if (colData.columns.len() < maxColumns)
       colData.columns.insert(0, [weaponCell])
     else
@@ -381,10 +381,10 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function getCurWeapon()
   {
     local defWeapon = null
-    local weaponName = getLastWeapon(unit.name)
-    foreach(weapon in unit.weapons)
+    let weaponName = getLastWeapon(unit.name)
+    foreach(weapon in unit.getWeapons())
     {
-      local found = weapon.name == weaponName
+      let found = weapon.name == weaponName
       //no point to check all weapons visibility and counts when we need only one
       if (!found && defWeapon)
         continue
@@ -411,8 +411,8 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function hasWeaponsToChooseFrom()
   {
     local count = 0
-    local hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
-    foreach(weapon in unit.weapons)
+    let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+    foreach(weapon in unit.getWeapons())
     {
       if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
         continue
@@ -429,7 +429,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurBullet(groupIdx)
   {
-    local bulGroup = getBulletGroupByIndex(groupIdx)
+    let bulGroup = getBulletGroupByIndex(groupIdx)
     return bulGroup && bulGroup.getSelBullet()
   }
 
@@ -438,12 +438,12 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isUnitHaveSecondaryWeapons(unit))
       return
 
-    local itemObj = scene.findObject(weaponItemId)
+    let itemObj = scene.findObject(weaponItemId)
     if (!::checkObj(itemObj))
       return
 
     showItemParams.hasMenu <- canChangeWeaponry && hasWeaponsToChooseFrom()
-    local curWeapon = getCurWeapon()
+    let curWeapon = getCurWeapon()
     itemObj.show(curWeapon)
     if (!curWeapon)
       return
@@ -454,10 +454,10 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBullets()
   {
-    local groups = getBulletsGroups()
+    let groups = getBulletsGroups()
     foreach(gIdx, bulGroup in groups)
     {
-      local itemObj = scene.findObject(getBulletsItemId(gIdx))
+      let itemObj = scene.findObject(getBulletsItemId(gIdx))
       if (!::checkObj(itemObj))
         continue
 
@@ -471,7 +471,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBulletCountSlider(bulGroup, groupIdx)
   {
-    local itemObj = scene.findObject(getBulletsItemId(groupIdx))
+    let itemObj = scene.findObject(getBulletsItemId(groupIdx))
     if (::checkObj(itemObj))
       updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
   }
@@ -479,7 +479,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   //included to updateBullets but much faster than full bullets update
   function updateAllBulletCountSliders()
   {
-    local groups = getBulletsGroups()
+    let groups = getBulletsGroups()
     foreach(gIdx, bulGroup in groups)
       updateBulletCountSlider(bulGroup, gIdx)
   }
@@ -507,14 +507,14 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectionItemParams()
   {
-    local res = clone showItemParams
+    let res = clone showItemParams
     delete res.selectBulletsByManager
     return res
   }
 
   function getBulletGroupByItemId(id)
   {
-    local idxStr = ::g_string.cutPrefix(id, bulletsIdPrefix, -1)
+    let idxStr = ::g_string.cutPrefix(id, bulletsIdPrefix, -1)
     return getBulletGroupByIndex(::to_integer_safe(idxStr, -1))
   }
 
@@ -523,7 +523,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!canChangeWeaponry || !::checkObj(obj))
       return
 
-    local id = obj.holderId
+    let id = obj.holderId
     if (id == weaponItemId)
     {
       if (hasWeaponsToChooseFrom())
@@ -535,7 +535,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local group = getBulletGroupByItemId(id)
+    let group = getBulletGroupByItemId(id)
     if (!group)
       return
 
@@ -554,7 +554,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onWeaponryActivate(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (0 <= value && value < obj.childrenCount())
       openChangeWeaponryMenu(obj.getChild(value).findObject("centralBlock"))
   }
@@ -563,8 +563,8 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(obj))
       return
-    local groupIndex = ::to_integer_safe(obj?.groupIdx ?? "", -1)
-    local bulGroup= getBulletGroupByIndex(groupIndex)
+    let groupIndex = ::to_integer_safe(obj?.groupIdx ?? "", -1)
+    let bulGroup= getBulletGroupByIndex(groupIndex)
     if (!bulGroup)
       return
 
@@ -576,21 +576,21 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!bulletsManager.canChangeBulletsCount())
       return
-    local listObj = scene.findObject("weaponry_list")
+    let listObj = scene.findObject("weaponry_list")
     if (!::checkObj(listObj) || !listObj.isFocused())
       return
-    local idx = listObj.getValue()
+    let idx = listObj.getValue()
     if (idx < 0 || listObj.childrenCount() <= idx)
       return
 
-    local itemObj = listObj.getChild(idx)
-    local id = ::g_string.cutPrefix(itemObj.id, bulletsIdPrefix, -1)
-    local groupIdx = ::to_integer_safe(id, -1)
-    local group = getBulletGroupByIndex(groupIdx)
+    let itemObj = listObj.getChild(idx)
+    let id = ::g_string.cutPrefix(itemObj.id, bulletsIdPrefix, -1)
+    let groupIdx = ::to_integer_safe(id, -1)
+    let group = getBulletGroupByIndex(groupIdx)
     if (!group)
       return
 
-    local step = ::max(group.getGunMaxBullets() / 20, 1).tointeger()
+    let step = ::max(group.getGunMaxBullets() / 20, 1).tointeger()
     bulletsManager.changeBulletsCount(group, group.bulletsCount + diff * step)
   }
 
@@ -599,7 +599,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onModChangeBullets(obj, diff = 1) //real button, can be called not for selected mod, but have holderId
   {
-    local group = getBulletGroupByItemId(obj.holderId)
+    let group = getBulletGroupByItemId(obj.holderId)
     if (group)
       bulletsManager.changeBulletsCount(group, group.bulletsCount + diff)
   }

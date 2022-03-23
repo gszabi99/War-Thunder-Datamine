@@ -1,24 +1,24 @@
-local globalState = require("globalState.nut")
-local widgetsState = require("widgetsState.nut")
-local hudState = require("hudState.nut")
-local hudUnitType = require("hudUnitType.nut")
-local shipHud = require("shipHud.nut")
-local shipHudTouch = require("reactiveGui/hud/shipHudTouch.nut")
-local shipExHud = require("shipExHud.nut")
-local tankExHud = require("tankExHud.nut")
-local shipObstacleRf = require("shipObstacleRangefinder.nut")
-local shipDeathTimer = require("shipDeathTimer.nut")
-local scoreboard = require("hud/scoreboard/scoreboard.nut")
-local aircraftHud = require("aircraftHud.nut")
-local helicopterHud = require("helicopterHud.nut")
-local tankHud = require("tankHud.nut")
-local mfdHud = require("mfd.nut")
-local planeMfd = require("planeMfd.nut")
-local heliIlsHud = require("heliIls.nut")
-local planeIls = require("planeIls.nut")
-local changelog = require("changelog/changelog.ui.nut")
+let globalState = require("globalState.nut")
+let widgetsState = require("widgetsState.nut")
+let hudState = require("hudState.nut")
+let hudUnitType = require("hudUnitType.nut")
+let shipHud = require("shipHud.nut")
+let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
+let shipExHud = require("shipExHud.nut")
+let tankExHud = require("tankExHud.nut")
+let shipObstacleRf = require("shipObstacleRangefinder.nut")
+let shipDeathTimer = require("shipDeathTimer.nut")
+let scoreboard = require("hud/scoreboard/scoreboard.nut")
+let aircraftHud = require("aircraftHud.nut")
+let helicopterHud = require("helicopterHud.nut")
+let tankHud = require("tankHud.nut")
+let mfdHud = require("mfd.nut")
+let planeMfd = require("planeMfd.nut")
+let heliIlsHud = require("heliIls.nut")
+let planeIls = require("planeIls.nut")
+let changelog = require("changelog/changelog.ui.nut")
 
-local widgetsMap = {
+let widgetsMap = {
   [DargWidgets.HUD] = function() {
     if (!globalState.isInFlight.value)
       return null
@@ -78,11 +78,11 @@ local widgetsMap = {
     children = changelog
   },
 
-  [DargWidgets.DAMAGE_PANEL] = tankHud.tankDmgIndicator
+  [DargWidgets.DAMAGE_PANEL] = @() tankHud.tankDmgIndicator
 }
 
 
-local widgets = @() {
+let widgets = @() {
   watch = [
     globalState.isInFlight
     hudState.unitType

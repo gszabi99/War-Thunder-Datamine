@@ -1,15 +1,15 @@
-local { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
-local { getBulletSetNameByBulletName } = require("scripts/weaponry/bulletsInfo.nut")
-local { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = ::require_native("hudActionBarConst")
+let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = ::require_native("hudActionBarConst")
 
 local cachedUnitId = ""
-local cache = {}
+let cache = {}
 
-local LONG_ACTIONBAR_TEXT_LEN = 6;
+let LONG_ACTIONBAR_TEXT_LEN = 6;
 
-local cacheActionDescs = function(unitId) {
-  local unit = ::getAircraftByName(unitId)
-  local ediff = ::get_mission_difficulty_int()
+let cacheActionDescs = function(unitId) {
+  let unit = ::getAircraftByName(unitId)
+  let ediff = ::get_mission_difficulty_int()
   cachedUnitId = unitId
   cache.clear()
   if (unit == null ||
@@ -20,14 +20,14 @@ local cacheActionDescs = function(unitId) {
     cache[triggerGroup] <- getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 }
 
-local getActionDesc = function(unitId, triggerGroup) {
+let getActionDesc = function(unitId, triggerGroup) {
   if (unitId != cachedUnitId)
     cacheActionDescs(unitId)
   return cache?[triggerGroup] ?? ""
 }
 
-local function getActionItemAmountText(modData, isFull = false) {
-  local count = modData?.count ?? 0
+let function getActionItemAmountText(modData, isFull = false) {
+  let count = modData?.count ?? 0
   if (count < 0)
     return ""
 
@@ -36,8 +36,8 @@ local function getActionItemAmountText(modData, isFull = false) {
     text = $"{modData.salvo}/{modData.count}"
   else
   {
-    local countEx = modData?.countEx ?? 0
-    local countStr = count.tostring()
+    let countEx = modData?.countEx ?? 0
+    let countStr = count.tostring()
     local countExText = modData?.isStreakEx ? ::loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
     if (countExText.len() > 0 && countExText.len() > (LONG_ACTIONBAR_TEXT_LEN - countStr.len()))
       countExText = ::loc("weapon/bigAmountNumberIcon")
@@ -47,7 +47,7 @@ local function getActionItemAmountText(modData, isFull = false) {
   return isFull ? $"{::loc("options/count")}{::loc("ui/colon")}{text}" : text
 }
 
-local function getActionItemModificationName(item, unit) {
+let function getActionItemModificationName(item, unit) {
   if (!unit)
     return null
 

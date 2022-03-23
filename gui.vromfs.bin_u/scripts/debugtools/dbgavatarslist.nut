@@ -1,9 +1,9 @@
-local bhvAvatar = require("scripts/user/bhvAvatar.nut")
-local u = require("sqStdLibs/helpers/u.nut")
-local stdPath = require("std/path.nut")
-local avatars = require("scripts/user/avatars.nut")
-local dagor_fs = require("dagor.fs")
-local stdMath = require("std/math.nut")
+let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let stdPath = require("%sqstd/path.nut")
+let avatars = require("%scripts/user/avatars.nut")
+let dagor_fs = require("dagor.fs")
+let stdMath = require("%sqstd/math.nut")
 
 enum avatarPlace { //higher index has more priority to show icon when same icons in the different places
   IN_GAME         = 0x01
@@ -13,7 +13,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
 
 ::debug_avatars <- function debug_avatars(filePath = "../develop/gameBase/config/avatars.blk")
 {
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   if (!blk.tryLoad(filePath))
     return "Failed to load avatars config from " + filePath
 
@@ -21,10 +21,10 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
   return "Done"
 }
 
-class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
+::gui_handlers.DbgAvatars <- class extends ::BaseGuiHandler
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "gui/debugTools/dbgAvatars"
+  sceneTplName = "%gui/debugTools/dbgAvatars"
 
   savePath = ""
   configBlk = null
@@ -88,20 +88,20 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
     fullIconsList = []
     iconsMap = {}
 
-    local mainList = ["cardicon_default", "cardicon_bot"]
+    let mainList = ["cardicon_default", "cardicon_bot"]
     mainList.extend(avatars.getIcons())
     foreach(name in mainList)
       addAvatarConfig(name, avatarPlace.IN_GAME, mainAvatarConfig.getIconPath(name))
 
-    local fileMask = "*.png"
-    local guiPath = "../develop/gui/"
-    local dirs = {
+    let fileMask = "*.png"
+    let guiPath = "../develop/gui/"
+    let dirs = {
       ["menu/images/images/avatars"] = avatarPlace.IN_MAIN_FOLDER,
       ["menu/pkg_dev/images/images/avatars"] = avatarPlace.IN_PKG_DEV,
     }
     foreach(dirPath, place in dirs)
     {
-      local filePaths = dagor_fs.scan_folder({root=guiPath + dirPath, vromfs = false, realfs = true, recursive = true, files_suffix=fileMask})
+      let filePaths = dagor_fs.scan_folder({root=guiPath + dirPath, vromfs = false, realfs = true, recursive = true, files_suffix=fileMask})
       foreach(path in filePaths)
         addAvatarConfig(stdPath.fileName(path).slice(0, -4), place, path)
     }
@@ -187,7 +187,7 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
   function onSelAvatarSizeChange()
   {
     bhvAvatar.forceUpdateView(scene.findObject("sel_small_icon"))
-    local listObj = scene.findObject("avatars_list")
+    let listObj = scene.findObject("avatars_list")
     foreach(idx, avatar in fullIconsList)
       if (avatar.name == selectedAvatar)
         bhvAvatar.forceUpdateView(listObj.getChild(idx).findObject("small_icon"))
@@ -196,18 +196,18 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function updateEditControls()
   {
-    local avatarBlk = getSelAvatarBlk()
+    let avatarBlk = getSelAvatarBlk()
     foreach(s in sliders)
     {
-      local value = s.getValue.call(this)
+      let value = s.getValue.call(this)
       scene.findObject(s.id + "_text").setValue(value.tostring())
     }
 
     if (shouldUpdateBorder)
     {
-      local editBorder = showSceneBtn("edit_border", isInEditMode)
-      local mainBorder = showSceneBtn("main_border", !isInEditMode && avatarBlk.size < 1)
-      local curBorder = isInEditMode ? editBorder : mainBorder
+      let editBorder = showSceneBtn("edit_border", isInEditMode)
+      let mainBorder = showSceneBtn("main_border", !isInEditMode && avatarBlk.size < 1)
+      let curBorder = isInEditMode ? editBorder : mainBorder
       curBorder.pos = format("%.2fpw, %.2fph", avatarBlk.pos.x, avatarBlk.pos.y)
       curBorder.size = format("%.2fpw,%.2fph", avatarBlk.size, avatarBlk.size)
     }
@@ -217,7 +217,7 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
   {
     if (!(selectedAvatar in configBlk))
     {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       blk.pos = ::Point2(0, 0)
       blk.size = 1.0
       configBlk[selectedAvatar] <- blk
@@ -229,10 +229,10 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function getMousePosPart()
   {
-    local obj = scene.findObject("sel_big_icon")
-    local coords = ::get_dagui_mouse_cursor_pos()
-    local objPos = obj.getPosRC()
-    local objSize = obj.getSize()
+    let obj = scene.findObject("sel_big_icon")
+    let coords = ::get_dagui_mouse_cursor_pos()
+    let objPos = obj.getPosRC()
+    let objSize = obj.getSize()
     return ::Point2(roundVal((coords[0] - objPos[0]).tofloat() / (objSize[0] || 1)),
                     roundVal((coords[1] - objPos[1]).tofloat() / (objSize[1] || 1)))
   }
@@ -242,7 +242,7 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
     foreach(key in ["x", "y"])
       if (pos1[key] > pos2[key])
       {
-        local t = pos1[key]
+        let t = pos1[key]
         pos1[key] = pos2[key]
         pos2[key] = t
       }
@@ -250,7 +250,7 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function onEditStart(obj)
   {
-    local avatarBlk = getSelAvatarBlk()
+    let avatarBlk = getSelAvatarBlk()
     editStartPos = getMousePosPart()
     avatarBlk.pos = editStartPos
     avatarBlk.size = 0.0
@@ -260,9 +260,9 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function updateEditSize()
   {
-    local avatarBlk = getSelAvatarBlk()
-    local pos1 = ::Point2(editStartPos.x, editStartPos.y)
-    local pos2 = getMousePosPart()
+    let avatarBlk = getSelAvatarBlk()
+    let pos1 = ::Point2(editStartPos.x, editStartPos.y)
+    let pos2 = getMousePosPart()
     validateCorners(pos1, pos2)
     avatarBlk.pos = pos1
     avatarBlk.size = ::max(pos2.x - pos1.x, pos2.y - pos1.y)
@@ -289,12 +289,12 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function checkMainFrameMovement()
   {
-    local mainBorder = scene.findObject("main_border")
+    let mainBorder = scene.findObject("main_border")
     if (!mainBorder.isVisible())
       return
 
-    local size = mainBorder.getSize()
-    local pos = mainBorder.getPosRC()
+    let size = mainBorder.getSize()
+    let pos = mainBorder.getPosRC()
     if (size[0] <= 0 || size[1] <= 0)
       return
 
@@ -302,12 +302,12 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
     if (!u.isEqual(size, lastMainBorderSize)
       || !u.isEqual(pos, lastMainBorderPos))
     {
-      local avatarBlk = getSelAvatarBlk()
-      local obj = scene.findObject("sel_big_icon")
-      local objPos = obj.getPos()
-      local objSize = obj.getSize()
+      let avatarBlk = getSelAvatarBlk()
+      let obj = scene.findObject("sel_big_icon")
+      let objPos = obj.getPos()
+      let objSize = obj.getSize()
 
-      local realPos = ::Point2(roundVal((pos[0] - objPos[0]).tofloat() / objSize[0]),
+      let realPos = ::Point2(roundVal((pos[0] - objPos[0]).tofloat() / objSize[0]),
                                roundVal((pos[1] - objPos[1]).tofloat() / objSize[1]))
       if ( fabs(avatarBlk.pos.x - realPos.x) > 0.001
         || fabs(avatarBlk.pos.y - realPos.y) > 0.001)
@@ -316,7 +316,7 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
         hasChanges = true
       }
 
-      local realSize = roundVal(::max(size[0], size[1]).tofloat() / objSize[0])
+      let realSize = roundVal(::max(size[0], size[1]).tofloat() / objSize[0])
       if (fabs(avatarBlk.size - realSize) > 0.001)
       {
         avatarBlk.size = realSize
@@ -328,8 +328,8 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
     lastMainBorderPos = pos
     if (hasChanges)
     {
-      local avatarBlk = getSelAvatarBlk()
-      local maxSize = ::min(1.0 - avatarBlk.pos.x, 1.0 - avatarBlk.pos.y)
+      let avatarBlk = getSelAvatarBlk()
+      let maxSize = ::min(1.0 - avatarBlk.pos.x, 1.0 - avatarBlk.pos.y)
       if (avatarBlk.size > maxSize)
         avatarBlk.size = roundVal(maxSize)
       shouldUpdateBorder = false
@@ -346,7 +346,7 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function onReset()
   {
-    local avatarBlk = getSelAvatarBlk()
+    let avatarBlk = getSelAvatarBlk()
     avatarBlk.size = 1.0
     avatarBlk.pos = ::Point2()
     onSelAvatarSizeChange()
@@ -354,8 +354,8 @@ class ::gui_handlers.DbgAvatars extends ::BaseGuiHandler
 
   function onRestore()
   {
-    local avatarBlk = getSelAvatarBlk()
-    local prevAvatarBlk = configBlkOriginal?[selectedAvatar]
+    let avatarBlk = getSelAvatarBlk()
+    let prevAvatarBlk = configBlkOriginal?[selectedAvatar]
     if (!prevAvatarBlk)
     {
       onReset()

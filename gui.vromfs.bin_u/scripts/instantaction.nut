@@ -1,14 +1,14 @@
-local time = require("scripts/time.nut")
-local unitStatus = require("scripts/unit/unitStatus.nut")
-local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { AMMO,
+let time = require("%scripts/time.nut")
+let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { AMMO,
         getAmmoCost,
-        getUnitNotReadyAmmoList } = require("scripts/weaponry/ammoInfo.nut")
-local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
+        getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
+let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null)
 {
-  local res = {
+  let res = {
           canFlyout = true
           canFlyoutIfRepair = true
           canFlyoutIfRefill = true
@@ -26,26 +26,26 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
         }
 
   local readyWeaponsFound = false
-  local unreadyAmmo = []
+  let unreadyAmmo = []
   if (!respawn)
   {
-    local selList = getSelAirsTable()
+    let selList = getSelAirsTable()
     foreach(c, airName in selList)
       if ((::isInArray(c, countries)) && airName!="")
       {
-        local repairCost = ::wp_get_repair_cost(airName)
+        let repairCost = ::wp_get_repair_cost(airName)
         if (repairCost > 0)
         {
           res.repairCost += repairCost
           res.broken_countries.append({ country = c, airs = [airName] })
           res.canFlyout = false
         }
-        local air = getAircraftByName(airName)
-        local crew = air && getCrewByAir(air)
+        let air = getAircraftByName(airName)
+        let crew = air && getCrewByAir(air)
         if (!crew || ::is_crew_locked_by_prev_battle(crew))
           res.canFlyoutIfRepair = false
 
-        local ammoList = getUnitNotReadyAmmoList(
+        let ammoList = getUnitNotReadyAmmoList(
           air, getLastWeapon(air.name), UNIT_WEAPONS_WARNING)
         if (ammoList.len())
           unreadyAmmo.extend(ammoList)
@@ -62,14 +62,14 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
       {
         local have_repaired_in_country = false
         local have_unlocked_in_country = false
-        local brokenList = []
+        let brokenList = []
         foreach (crew in cc.crews)
         {
-          local unit = ::g_crew.getCrewUnit(crew)
+          let unit = ::g_crew.getCrewUnit(crew)
           if (!unit || (checkAvailFunc && !checkAvailFunc(unit)))
             continue
 
-          local repairCost = ::wp_get_repair_cost(unit.name)
+          let repairCost = ::wp_get_repair_cost(unit.name)
           if (repairCost > 0)
           {
             brokenList.append(unit.name)
@@ -81,7 +81,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
           if (!::is_crew_locked_by_prev_battle(crew))
             have_unlocked_in_country = true
 
-          local ammoList = getUnitNotReadyAmmoList(
+          let ammoList = getUnitNotReadyAmmoList(
             unit, getLastWeapon(unit.name), UNIT_WEAPONS_WARNING)
           if (ammoList.len())
             unreadyAmmo.extend(ammoList)
@@ -98,7 +98,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
       }
   res.canFlyout = res.canFlyout && res.canFlyoutIfRepair
 
-  local allUnitsMustBeReady = countries.len() > 1
+  let allUnitsMustBeReady = countries.len() > 1
   if (unreadyAmmo.len() && (allUnitsMustBeReady || (!allUnitsMustBeReady && !readyWeaponsFound)))
   {
     res.weaponWarning = true
@@ -109,7 +109,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
     res.unreadyAmmoList = unreadyAmmo
     foreach(ammo in unreadyAmmo)
     {
-      local cost = getAmmoCost(::getAircraftByName(ammo.airName), ammo.ammoName, ammo.ammoType)
+      let cost = getAmmoCost(::getAircraftByName(ammo.airName), ammo.ammoName, ammo.ammoType)
       res.unreadyAmmoCost     += ammo.buyAmount * cost.wp
       res.unreadyAmmoCostGold += ammo.buyAmount * cost.gold
     }
@@ -121,7 +121,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
 {
   if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !::get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))
   {
-    local price = ::Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
+    let price = ::Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
     local msg = ::loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
     msg += "\n\n" + ::format(::loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
 
@@ -148,18 +148,18 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
     return
   }
 
-  local repairAll = function()
+  let repairAll = function()
   {
-    local rCost = ::Cost(repairInfo.repairCost)
+    let rCost = ::Cost(repairInfo.repairCost)
     ::repairAllAirsAndApply(handler, repairInfo.broken_countries, startFunc, cancelFunc, canRepairWholeCountry, rCost)
   }
 
-  local onCancel = function() { ::call_for_handler(handler, cancelFunc) }
+  let onCancel = function() { ::call_for_handler(handler, cancelFunc) }
 
   if (!repairInfo.canFlyout)
   {
     local msgText = ""
-    local respawns = repairInfo.haveRespawns
+    let respawns = repairInfo.haveRespawns
     if (respawns)
       msgText = repairInfo.randomCountry ? "msgbox/no_%s_aircrafts_random" : "msgbox/no_%s_aircrafts"
     else
@@ -171,11 +171,11 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
       msgText = ::format(::loc(::format(msgText, "available")),
         time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
-    local repairBtnName = respawns ? "RepairAll" : "Repair"
-    local buttons = repairInfo.canFlyoutIfRepair ?
+    let repairBtnName = respawns ? "RepairAll" : "Repair"
+    let buttons = repairInfo.canFlyoutIfRepair ?
                       [[repairBtnName, repairAll], ["cancel", onCancel]] :
                       [["ok", onCancel]]
-    local defButton = repairInfo.canFlyoutIfRepair ? repairBtnName : "ok"
+    let defButton = repairInfo.canFlyoutIfRepair ? repairBtnName : "ok"
     handler.msgBox("no_aircrafts", msgText, buttons, defButton)
     return
   }
@@ -232,7 +232,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
 
   if (totalRCost)
   {
-    local afterCheckFunc = function() {
+    let afterCheckFunc = function() {
       if (::check_balance_msgBox(totalRCost, null, true))
         ::repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
       else if (onCancelFunc)
@@ -256,7 +256,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
 
   if (taskId >= 0)
   {
-    local progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
+    let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
     ::add_bg_task_cb(taskId, function()
     {
       ::destroyMsgBox(progressBox)
@@ -279,7 +279,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
   if (!::check_balance_msgBox(totalCost))
     return
 
-  local ammo = unreadyAmmoList[0]
+  let ammo = unreadyAmmoList[0]
   local taskId = -1
 
   if (ammo.ammoType==AMMO.WEAPON)
@@ -291,7 +291,7 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
 
   if (taskId >= 0)
   {
-    local progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
+    let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/purchase0"), null, null)
     ::add_bg_task_cb(taskId, (@(handler, unreadyAmmoList, afterDoneFunc, progressBox) function() {
       ::destroyMsgBox(progressBox)
       ::buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc)

@@ -7,17 +7,17 @@ from "math" import PI, sin, cos
     View
       back as robj blur mask (need procuderal images)
 */
-local function place_by_circle(params) {
-  local objs = params?.objects ?? []
-  local radius = params?.radius ?? hdpx(100)
-  local offset = params?.offset ?? (3.0/4)
-  local seg_angle = 2.0*PI/objs.len()
+let function place_by_circle(params) {
+  let objs = params?.objects ?? []
+  let radius = params?.radius ?? hdpx(100)
+  let offset = params?.offset ?? (3.0/4)
+  let seg_angle = 2.0*PI/objs.len()
 
   return objs.map(function(o,i) {
-    local angle = seg_angle*i-PI/2
-    local pos = [cos(angle)*radius*offset+radius, sin(angle)*radius*offset+radius]
+    let angle = seg_angle*i-PI/2
+    let pos = [cos(angle)*radius*offset+radius, sin(angle)*radius*offset+radius]
     return {
-      pos=pos
+      pos
       halign = ALIGN_CENTER
       valign=ALIGN_CENTER
       size=[0,0]
@@ -28,11 +28,11 @@ local function place_by_circle(params) {
   })
 }
 
-local selectedBorderColor = Color(85, 85, 85, 100)
-local selectedBgColor = Color(0, 0, 0, 120)
-local sectorWidth = 1.0/2
+let selectedBorderColor = Color(85, 85, 85, 100)
+let selectedBgColor = Color(0, 0, 0, 120)
+let sectorWidth = 1.0/2
 
-local function mDefCtor(text) {
+let function mDefCtor(text) {
   return function (curIdx, idx) {
     return watchElemState(function(sf) {
       return {
@@ -44,7 +44,7 @@ local function mDefCtor(text) {
   }
 }
 
-local defParams = {
+let defParams = {
   objs=[], radius=hdpx(250) back=null, axisXY=[],
   sectorCtor = null, nullSectorCtor = null,
   eventHandlers= null, hotkeys = null
@@ -52,7 +52,7 @@ local defParams = {
 }
 
 
-local function makeDefaultBack(radius, size) {
+let function makeDefaultBack(radius, size) {
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     color = selectedBgColor
@@ -70,7 +70,7 @@ local function makeDefaultBack(radius, size) {
   }
 }
 
-local function makeDefaultSector(size, radius, sangle) {
+let function makeDefaultSector(size, radius, sangle) {
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     color = selectedBgColor
@@ -89,26 +89,26 @@ local function makeDefaultSector(size, radius, sangle) {
 }
 
 
-local function mkPieMenu(params=defParams){
-  local radius = params?.radius ?? hdpx(250)
-  local objs = params?.objs ?? []
-  local objsnum = objs.len()
-  local size = [radius*2, radius*2]
-  local back = params?.back?() ?? makeDefaultBack(radius, size)
+let function mkPieMenu(params=defParams){
+  let radius = params?.radius ?? hdpx(250)
+  let objs = params?.objs ?? []
+  let objsnum = objs.len()
+  let size = [radius*2, radius*2]
+  let back = params?.back?() ?? makeDefaultBack(radius, size)
   if (objsnum==0)
     return back
-  local sangle = 360.0 / objsnum/2
+  let sangle = 360.0 / objsnum/2
 
-  local internalIdx = Watched(null)
-  local curIdx = params?.curIdx ?? Watched(null)
-  local curAngle = Watched(null)
+  let internalIdx = Watched(null)
+  let curIdx = params?.curIdx ?? Watched(null)
+  let curAngle = Watched(null)
   internalIdx.subscribe(function(v) { if (v != null) curIdx(v)})
-  local children = place_by_circle({
+  let children = place_by_circle({
     radius=radius, objects=objs.map(@(v, i) v?.ctor?(curIdx, i) ?? mDefCtor(v?.text)(curIdx, i) ), offset=3.0/4
   })
-  local sector = params?.sectorCtor?() ?? makeDefaultSector(size, radius, sangle)
+  let sector = params?.sectorCtor?() ?? makeDefaultSector(size, radius, sangle)
 
-  local function angle() {
+  let function angle() {
     return {
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(0,0,0,180)
@@ -116,7 +116,7 @@ local function mkPieMenu(params=defParams){
         pivot = [0.5,0.5]
         rotate = (curAngle.value ?? 0.0)*180.0/PI
       }
-      size = size
+      size
       watch = curAngle
       commands = curAngle.value!=null
       ? [
@@ -129,21 +129,21 @@ local function mkPieMenu(params=defParams){
     }
   }
 
-  local nullSector = params?.nullSectorCtor?() ?? {
+  let nullSector = params?.nullSectorCtor?() ?? {
     rendObj = ROBJ_VECTOR_CANVAS
     color = selectedBorderColor
     fillColor = Color(0,0,0,50)
-    size = size
+    size
     commands = [
       [VECTOR_WIDTH, hdpx(5)],
       [VECTOR_ELLIPSE, 50, 50, 50*(1-sectorWidth), 50*(1-sectorWidth)]
     ]
   }
 
-  local function activeSector() {
+  let function activeSector() {
     return {
       watch = [curIdx]
-      size = size
+      size
       children = [
         objs?[curIdx.value] != null ? sector : null,
         curIdx.value != null ? nullSector : null,
@@ -155,16 +155,16 @@ local function mkPieMenu(params=defParams){
     }
   }
 
-  local function pieMenu() {
+  let function pieMenu() {
     return {
-      size = size
+      size
       watch = curIdx
       behavior = Behaviors.PieMenu
       skipDirPadNav = true
       devId = params?.devId ?? defParams.devId
       stickNo = params?.stickNo ?? defParams.stickNo
       curSector = internalIdx
-      curAngle = curAngle
+      curAngle
       sectorsCount = objsnum
       onClick = @(idx) params?.onClick?(idx)
       onDetach = params?.onDetach
@@ -176,19 +176,19 @@ local function mkPieMenu(params=defParams){
 }
 
 
-local function mkPieMenuActivator(params = defParams){
+let function mkPieMenuActivator(params = defParams){
   params = defParams.__merge(params)
   local hotkeys = params?.hotkeys
-  local showPieMenu = params?.showPieMenu ?? Watched(hotkeys==null)
-  local pieMenu = mkPieMenu(params)
-  local eventHandlers = params?.eventHandlers
+  let showPieMenu = params?.showPieMenu ?? Watched(hotkeys==null)
+  let pieMenu = mkPieMenu(params)
+  let eventHandlers = params?.eventHandlers
   if (type(hotkeys)=="string")
     hotkeys = [[hotkeys, @() showPieMenu(!showPieMenu.value)]]
 
   return function() {
     return {
-      hotkeys = hotkeys
-      eventHandlers = eventHandlers
+      hotkeys
+      eventHandlers
       children = showPieMenu.value ? pieMenu : null
       watch = showPieMenu
     }

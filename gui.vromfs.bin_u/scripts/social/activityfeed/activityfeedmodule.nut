@@ -1,25 +1,25 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
-local facebookPostWallMessage = persist("facebookPostWallMessage", @() ::Watched(false))
+let facebookPostWallMessage = persist("facebookPostWallMessage", @() ::Watched(false))
 
 subscriptions.addListenersWithoutEnv({
   FacebookFeedPostValueChange = function(p) {
     facebookPostWallMessage(p?.value ?? false)
   }
   UnitBought = function(p) {
-    local unit = ::getAircraftByName(p?.unitName)
+    let unit = ::getAircraftByName(p?.unitName)
     if (!unit)
       return
 
-    local config = {
+    let config = {
       locId = "purchase_unit"
       subType = ps4_activity_feed.PURCHASE_UNIT
       backgroundPost = true
     }
 
-    local customFeedParams = {
+    let customFeedParams = {
       requireLocalization = ["unitName", "country"]
       unitNameId = unit.name
       unitName = unit.name + "_shop"

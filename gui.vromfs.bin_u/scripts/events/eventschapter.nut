@@ -39,7 +39,7 @@
     sortPriority = 0
     foreach (eventName in getEvents())
     {
-      local event = ::events.getEvent(eventName)
+      let event = ::events.getEvent(eventName)
       if (event)
         sortPriority = ::max(sortPriority, ::events.getEventUiSortPriority(event))
     }
@@ -62,8 +62,8 @@
 
   function sortChapterEvents(eventId1, eventId2) // warning disable: -return-different-types
   {
-    local event1 = ::events.getEvent(eventId1)
-    local event2 = ::events.getEvent(eventId2)
+    let event1 = ::events.getEvent(eventId1)
+    let event2 = ::events.getEvent(eventId2)
     if (event1 == null && event2 == null)
       return 0
     return (!!event1 <=> !!event2)
@@ -95,14 +95,14 @@
   */
   function updateChapters()
   {
-    local eventsList = ::events.getEventsList(EVENT_TYPE.ANY, ::events.isEventVisibleInEventsWindow)
+    let eventsList = ::events.getEventsList(EVENT_TYPE.ANY, ::events.isEventVisibleInEventsWindow)
 
     foreach (eventName in eventsList)
     {
-      local event = ::events.getEvent(eventName)
+      let event = ::events.getEvent(eventName)
       if (event == null)
         continue
-      local chapterId = ::events.getEventsChapter(event)
+      let chapterId = ::events.getEventsChapter(event)
       if (!getChapter(chapterId))
         addChapter(chapterId)
     }
@@ -119,7 +119,7 @@
 
   function getChapter(chapter_name)
   {
-    local chapterIndex = ::getTblValue(chapter_name, chapterIndexByName, -1)
+    let chapterIndex = ::getTblValue(chapter_name, chapterIndexByName, -1)
     return chapterIndex < 0 ? null : chapters[chapterIndex]
   }
 

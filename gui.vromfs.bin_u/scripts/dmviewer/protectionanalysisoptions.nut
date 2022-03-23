@@ -1,20 +1,22 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local enums = require("sqStdLibs/helpers/enums.nut")
-local stdMath = require("std/math.nut")
-local { WEAPON_TYPE,
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let stdMath = require("%sqstd/math.nut")
+let { WEAPON_TYPE,
         getLinkedGunIdx,
-        getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
-local { getBulletsList,
+        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getBulletsList,
         getBulletsSetData,
         getBulletsSearchName,
         getBulletsGroupCount,
         getLastFakeBulletsIndex,
-        getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-local { WEAPON, MODIFICATION, SINGLE_BULLET } = require("scripts/weaponry/weaponryTooltips.nut")
-local { hasUnitAtRank } = require("scripts/airInfo.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+        getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { hasUnitAtRank } = require("%scripts/airInfo.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 local options = {
   types = []
@@ -28,7 +30,7 @@ local options = {
   setParams = @(unit) targetUnit = unit
 }
 
-local targetTypeToThreatTypes = {
+let targetTypeToThreatTypes = {
   [::ES_UNIT_TYPE_AIRCRAFT]   = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
   [::ES_UNIT_TYPE_HELICOPTER] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
   [::ES_UNIT_TYPE_TANK] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
@@ -36,30 +38,30 @@ local targetTypeToThreatTypes = {
   [::ES_UNIT_TYPE_BOAT] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
 }
 
-local function getThreatEsUnitTypes()
+let function getThreatEsUnitTypes()
 {
-  local targetUnitType = options.targetUnit.esUnitType
-  local res = targetTypeToThreatTypes?[targetUnitType] ?? [ targetUnitType ]
+  let targetUnitType = options.targetUnit.esUnitType
+  let res = targetTypeToThreatTypes?[targetUnitType] ?? [ targetUnitType ]
   return res.filter(@(e) unitTypes.getByEsUnitType(e).isAvailable())
 }
 
-local function updateDistanceNativeUnitsText(obj) {
-  local descObj = obj.findObject("distanceNativeUnitsText")
+let function updateDistanceNativeUnitsText(obj) {
+  let descObj = obj.findObject("distanceNativeUnitsText")
   if (!::check_obj(descObj))
     return
-  local distance = options.DISTANCE.value
-  local desc = ::g_measure_type.DISTANCE.getMeasureUnitsText(distance)
+  let distance = options.DISTANCE.value
+  let desc = ::g_measure_type.DISTANCE.getMeasureUnitsText(distance)
   descObj.setValue(desc)
 }
 
-local function updateArmorPiercingText(obj) {
-  local descObj = obj.findObject("armorPiercingText")
+let function updateArmorPiercingText(obj) {
+  let descObj = obj.findObject("armorPiercingText")
   if (!::check_obj(descObj))
     return
   local desc = ::loc("ui/mdash")
 
-  local bullet   = options.BULLET.value
-  local distance = options.DISTANCE.value
+  let bullet   = options.BULLET.value
+  let distance = options.DISTANCE.value
 
   if (bullet?.bulletParams?.armorPiercing)
   {
@@ -68,7 +70,7 @@ local function updateArmorPiercingText(obj) {
 
     for (local i = 0; i < bullet.bulletParams.armorPiercing.len(); i++)
     {
-      local v = {
+      let v = {
         armor = bullet.bulletParams.armorPiercing[i]?[0] ?? 0,
         dist  = bullet.bulletParams.armorPiercingDist[i],
       }
@@ -87,7 +89,7 @@ local function updateArmorPiercingText(obj) {
 
     if (pMin && pMax)
     {
-      local armor = stdMath.lerp(pMin.dist, pMax.dist, pMin.armor, pMax.armor, distance)
+      let armor = stdMath.lerp(pMin.dist, pMax.dist, pMin.armor, pMax.armor, distance)
       desc = stdMath.round(armor).tointeger() + " " + ::loc("measureUnits/mm")
     }
   }
@@ -129,7 +131,7 @@ options.template <- {
   updateDependentOptions = function(handler, scene) {
     handler.guiScene.setUpdatesEnabled(false, false)
     for (local i = sortId + 1;; i++) {
-      local option = options.getBySortId(i)
+      let option = options.getBySortId(i)
       if (option == options.UNKNOWN)
         break
       option.update(handler, scene)
@@ -140,9 +142,9 @@ options.template <- {
   updateParams = @(handler, scene) null
 
   updateView = function(handler, scene) {
-    local idx = values.indexof(value) ?? -1
-    local markup = ::create_option_combobox(null, items, idx, null, false)
-    local obj = scene.findObject(id)
+    let idx = values.indexof(value) ?? -1
+    let markup = ::create_option_combobox(null, items, idx, null, false)
+    let obj = scene.findObject(id)
     if (::check_obj(obj))
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
   }
@@ -174,11 +176,11 @@ options.addTypes({
 
     updateParams = function(handler, scene)
     {
-      local esUnitTypes = getThreatEsUnitTypes()
-      local types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
+      let esUnitTypes = getThreatEsUnitTypes()
+      let types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
       values = esUnitTypes
       items  = ::u.map(types, @(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
-      local preferredEsUnitType = value ?? options.targetUnit.esUnitType
+      let preferredEsUnitType = value ?? options.targetUnit.esUnitType
       value = values.indexof(preferredEsUnitType) != null ? preferredEsUnitType
         : (values?[0] ?? ::ES_UNIT_TYPE_INVALID)
     }
@@ -190,10 +192,10 @@ options.addTypes({
 
     updateParams = function(handler, scene)
     {
-      local unitType = options.UNITTYPE.value
-      values = ::u.filter(shopCountriesList, @(c) ::isCountryHaveUnitType(c, unitType))
+      let unitType = options.UNITTYPE.value
+      values = ::u.filter(shopCountriesList, @(c) isCountryHaveUnitType(c, unitType))
       items  = ::u.map(values, @(c) { text = ::loc(c), image = ::get_country_icon(c) })
-      local preferredCountry = value ?? options.targetUnit.shopCountry
+      let preferredCountry = value ?? options.targetUnit.shopCountry
       value = values.indexof(preferredCountry) != null ? preferredCountry
         : (values?[0] ?? "")
     }
@@ -203,8 +205,8 @@ options.addTypes({
 
     updateParams = function(handler, scene)
     {
-      local unitType = options.UNITTYPE.value
-      local country = options.COUNTRY.value
+      let unitType = options.UNITTYPE.value
+      let country = options.COUNTRY.value
       values = []
       for (local rank = 1; rank <= ::max_country_rank; rank++)
         if (hasUnitAtRank(rank, unitType, country, true, false))
@@ -212,7 +214,7 @@ options.addTypes({
       items = ::u.map(values, @(r) {
         text = ::format(::loc("conditions/unitRank/format"), get_roman_numeral(r))
       })
-      local preferredRank = value ?? options.targetUnit.rank
+      let preferredRank = value ?? options.targetUnit.rank
       value = values?[::find_nearest(preferredRank, values)] ?? 0
     }
   }
@@ -221,10 +223,10 @@ options.addTypes({
 
     updateParams = function(handler, scene)
     {
-      local unitType = options.UNITTYPE.value
-      local rank = options.RANK.value
-      local country = options.COUNTRY.value
-      local ediff = ::get_current_ediff()
+      let unitType = options.UNITTYPE.value
+      let rank = options.RANK.value
+      let country = options.COUNTRY.value
+      let ediff = ::get_current_ediff()
       local list = ::get_units_list(@(u) u.esUnitType == unitType
         && u.shopCountry == country && u.rank == rank && u.isVisibleInShop())
       list = ::u.map(list, @(u) { unit = u, id = u.name, br = u.getBattleRating(ediff) })
@@ -235,8 +237,8 @@ options.addTypes({
         image = ::image_for_air(v.unit)
         addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
       })
-      local targetUnitId = options.targetUnit.name
-      local preferredUnitId = value?.name ?? targetUnitId
+      let targetUnitId = options.targetUnit.name
+      let preferredUnitId = value?.name ?? targetUnitId
       value = values.findvalue(@(v) v.name == preferredUnitId) ??
         values.findvalue(@(v) v.name == targetUnitId) ??
         values?[0]
@@ -252,22 +254,22 @@ options.addTypes({
 
     updateParams = function(handler, scene)
     {
-      local unit = options.UNIT.value
+      let unit = options.UNIT.value
       values = []
       items = []
-      local bulletSetData = []
-      local bulletNamesSet = []
+      let bulletSetData = []
+      let bulletNamesSet = []
 
       local curGunIdx = -1
-      local groupsCount = getBulletsGroupCount(unit)
+      let groupsCount = getBulletsGroupCount(unit)
 
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++)
       {
-        local gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
+        let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
         if (gunIdx == curGunIdx)
           continue
 
-        local bulletsList = getBulletsList(unit.name, groupIndex, {
+        let bulletsList = getBulletsList(unit.name, groupIndex, {
           needCheckUnitPurchase = false, needOnlyAvailable = false, needTexts = true
         })
         if (bulletsList.values.len())
@@ -275,22 +277,22 @@ options.addTypes({
 
         foreach(i, value in bulletsList.values)
         {
-          local bulletsSet = getBulletsSetData(unit, value)
-          local weaponBlkName = bulletsSet?.weaponBlkName
-          local isBulletBelt = bulletsSet?.isBulletBelt ?? true
+          let bulletsSet = getBulletsSetData(unit, value)
+          let weaponBlkName = bulletsSet?.weaponBlkName
+          let isBulletBelt = bulletsSet?.isBulletBelt ?? true
 
           if (!weaponBlkName)
             continue
           if (visibleTypes.indexof(bulletsSet?.weaponType) == null)
             continue
 
-          local searchName = getBulletsSearchName(unit, value)
-          local useDefaultBullet = searchName != value
-          local bulletParameters = ::calculate_tank_bullet_parameters(unit.name,
+          let searchName = getBulletsSearchName(unit, value)
+          let useDefaultBullet = searchName != value
+          let bulletParameters = ::calculate_tank_bullet_parameters(unit.name,
             (useDefaultBullet && weaponBlkName) || getModificationBulletsEffect(searchName),
             useDefaultBullet, false)
 
-          local bulletNames = isBulletBelt ? [] : (bulletsSet?.bulletNames ?? [])
+          let bulletNames = isBulletBelt ? [] : (bulletsSet?.bulletNames ?? [])
           if (isBulletBelt)
             foreach(t, data in bulletsSet.bulletDataByType)
               bulletNames.append(t)
@@ -304,7 +306,7 @@ options.addTypes({
             {
               locName = " ".concat(::format(::loc("caliber/mm"), bulletsSet.caliber),
                 ::loc($"{bulletName}/name/short"))
-              local bulletType = bulletName
+              let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
               // Find bullet dub by params
               isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType && p.mass == bulletParams.mass
@@ -321,7 +323,7 @@ options.addTypes({
             if (isDub)
               continue
 
-            local addDiv = isBulletBelt
+            let addDiv = isBulletBelt
               ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
                 modName = value,
                 //Generate set of identical bullets by getting rid of all bullets excluding current.
@@ -351,50 +353,43 @@ options.addTypes({
       }
 
       // Collecting special shells
-      local specialBulletTypes = [ "rocket" ]
-      local unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
-      if (unitBlk?.weapon_presets != null)
+      let specialBulletTypes = [ "rocket" ]
+      let unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
+      let weapons = getUnitWeapons(unitBlk)
+      let knownWeapBlkArray = []
+      foreach (weap in weapons)
       {
-        local knownWeapBlkArray = []
-        foreach (block in (unitBlk.weapon_presets % "preset"))
-        {
-          local presetName = block.name
-          local presetBlk = blkFromPath(block.blk)
-          foreach (weap in (presetBlk % "Weapon"))
-          {
-            if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, knownWeapBlkArray))
-              continue
-            knownWeapBlkArray.append(weap.blk)
+        if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, knownWeapBlkArray))
+          continue
+        knownWeapBlkArray.append(weap.blk)
 
-            local weaponBlkPath = weap.blk
-            local weaponBlk = blkFromPath(weaponBlkPath)
-            local bulletBlk = null
-            foreach (t in specialBulletTypes)
-              bulletBlk = bulletBlk ?? weaponBlk?[t]
+        let weaponBlkPath = weap.blk
+        let weaponBlk = blkFromPath(weaponBlkPath)
+        local bulletBlk = null
+        foreach (t in specialBulletTypes)
+          bulletBlk = bulletBlk ?? weaponBlk?[t]
 
-            local locName = ::g_string.utf8ToUpper(
-              ::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
-            if (!bulletBlk || ::isInArray(locName, bulletNamesSet))
-              continue
+        let locName = ::g_string.utf8ToUpper(
+          ::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
+        if (!bulletBlk || ::isInArray(locName, bulletNamesSet))
+          continue
 
-            bulletNamesSet.append(locName)
-            values.append({
-              bulletName = ""
-              weaponBlkName = weaponBlkPath
-              bulletParams = ::calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
-              sortVal = bulletBlk?.caliber ?? 0
-            })
+        bulletNamesSet.append(locName)
+        values.append({
+          bulletName = ""
+          weaponBlkName = weaponBlkPath
+          bulletParams = ::calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
+          sortVal = bulletBlk?.caliber ?? 0
+        })
 
-            items.append({
-              text = locName
-              addDiv = WEAPON.getMarkup(unit.name, presetName, {
-                hasPlayerInfo = false,
-                weaponBlkPath = weaponBlkPath,
-                shouldShowEffects = false
-              })
-            })
-          }
-        }
+        items.append({
+          text = locName
+          addDiv = WEAPON.getMarkup(unit.name, weap.presetId, {
+            hasPlayerInfo = false,
+            weaponBlkPath = weaponBlkPath,
+            shouldShowEffects = false
+          })
+        })
       }
 
       value = values?[0]
@@ -402,7 +397,7 @@ options.addTypes({
 
     afterChangeFunc = function(obj) {
       updateArmorPiercingText(options.nestObj)
-      local parentObj = obj.getParent().getParent()
+      let parentObj = obj.getParent().getParent()
       if (!parentObj?.isValid())
         return
 
@@ -420,7 +415,7 @@ options.addTypes({
     valueWidth = "@dmInfoTextWidth"
 
     getControlMarkup = function() {
-      return ::handyman.renderCached("gui/dmViewer/distanceSlider", {
+      return ::handyman.renderCached("%gui/dmViewer/distanceSlider", {
         containerId = "container_" + id
         id = id
         min = 0
@@ -435,7 +430,7 @@ options.addTypes({
     }
 
     getInfoRows = function() {
-      local res = [{
+      let res = [{
         valueId = "armorPiercingText"
         valueWidth = valueWidth
         label = ::loc("bullet_properties/armorPiercing") + ::loc("ui/colon")
@@ -454,7 +449,7 @@ options.addTypes({
     getValFromObj = @(obj) ::check_obj(obj) ? obj.getValue() : 0
 
     afterChangeFunc = function(obj) {
-      local parentObj = obj.getParent().getParent()
+      let parentObj = obj.getParent().getParent()
       parentObj.findObject("value_" + id).setValue(value + ::loc("measureUnits/meters_alt"))
       ::enableBtnTable(parentObj, {
         buttonInc = value < maxValue
@@ -468,16 +463,16 @@ options.addTypes({
       minValue = 0
       maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 5000
       step     = 100
-      local preferredDistance = value >= 0 ? value
+      let preferredDistance = value >= 0 ? value
         : (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
       value = ::clamp(preferredDistance, minValue, maxValue)
     }
 
     updateView = function(handler, scene) {
-      local obj = scene.findObject(id)
+      let obj = scene.findObject(id)
       if (!obj?.isValid())
         return
-      local parentObj = obj.getParent().getParent()
+      let parentObj = obj.getParent().getParent()
       if (isBulletAvailable()) {
         obj.max = maxValue
         obj.optionAlign = step
@@ -490,7 +485,7 @@ options.addTypes({
 
 options.init <- function(handler, scene) {
   nestObj = scene
-  local needReinit = !isSaved
+  let needReinit = !isSaved
     || !targetTypeToThreatTypes[targetUnit.esUnitType].contains(UNITTYPE.value)
 
   if (needReinit)
@@ -501,8 +496,8 @@ options.init <- function(handler, scene) {
 }
 
 options.setAnalysisParams <- function() {
-  local bullet   = options.BULLET.value
-  local distance = options.DISTANCE.value
+  let bullet   = options.BULLET.value
+  let distance = options.DISTANCE.value
   ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance)
 }
 

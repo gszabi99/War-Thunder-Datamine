@@ -1,13 +1,13 @@
-local { WW_LOG_BATTLE_TOOLTIP } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
+let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
-class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwOperationLog <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   sceneTplName = null
-  sceneBlkName = "gui/worldWar/worldWarOperationLogInfo"
-  logRowTplName = "gui/worldWar/wwOperationLogRow"
+  sceneBlkName = "%gui/worldWar/worldWarOperationLogInfo"
+  logRowTplName = "%gui/worldWar/wwOperationLogRow"
 
   prevLogDate = ""
   viewLogAmount = 0
@@ -49,21 +49,21 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildEmptyLogsBlock()
   {
-    local emptyBattleArmies = ::array(WW_LOG_BATTLE.MAX_ARMIES_PER_SIDE, {})
-    local emptyDamagedArmies = []
+    let emptyBattleArmies = ::array(WW_LOG_BATTLE.MAX_ARMIES_PER_SIDE, {})
+    let emptyDamagedArmies = []
     for (local i = 0; i < WW_LOG_BATTLE.MAX_DAMAGED_ARMIES; i++)
       emptyDamagedArmies.append({idx = i})
 
-    local emptyLog = {battleArmy = emptyBattleArmies, damagedArmy = emptyDamagedArmies}
-    local logsList = ::array(WW_LOG_MAX_DISPLAY_AMOUNT, emptyLog)
-    local logData = ::handyman.renderCached(logRowTplName, {operationLogRow = logsList})
+    let emptyLog = {battleArmy = emptyBattleArmies, damagedArmy = emptyDamagedArmies}
+    let logsList = ::array(WW_LOG_MAX_DISPLAY_AMOUNT, emptyLog)
+    let logData = ::handyman.renderCached(logRowTplName, {operationLogRow = logsList})
     guiScene.replaceContentFromText(logContainerObj, logData, logData.len(), this)
     emptyLogChild = ::handyman.renderCached(logRowTplName, {operationLogRow = [emptyLog]})
   }
 
   function onEventWWNewLogsAdded(params = {})
   {
-    local isLogMarkUsed = ::getTblValue("isLogMarkUsed", params, false)
+    let isLogMarkUsed = ::getTblValue("isLogMarkUsed", params, false)
     if (!isLogMarkUsed && !isLogPageScrolledDown)
     {
       configShowNextLogsBlock({isForcedShow = true})
@@ -88,37 +88,37 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(logContainerObj))
       return
 
-    local emptyTextObj = scene.findObject("ww_operation_empty_log")
+    let emptyTextObj = scene.findObject("ww_operation_empty_log")
     if (::check_obj(emptyTextObj))
       emptyTextObj.show(!::g_ww_logs.filtered.len())
 
     if (isNewOperationEventLog && ::g_ww_logs.viewIndex in ::g_ww_logs.filtered)
     {
-      local firstLog = ::g_ww_logs.loaded[::g_ww_logs.filtered[::g_ww_logs.viewIndex]]
-      local logAmountToDestroy = getOutsideBlockLogAmount(firstLog.id)
+      let firstLog = ::g_ww_logs.loaded[::g_ww_logs.filtered[::g_ww_logs.viewIndex]]
+      let logAmountToDestroy = getOutsideBlockLogAmount(firstLog.id)
       removeOutsideBlockLogs(logAmountToDestroy)
       addMissingLogs(logAmountToDestroy)
     }
 
-    local scrollTargetId = scrollDefined ? scrollId : getScrollTargetId()
+    let scrollTargetId = scrollDefined ? scrollId : getScrollTargetId()
     markPreviousLogsAsReaded()
     guiScene.setUpdatesEnabled(false, false)
     viewLogAmount = 0
     for(local i = 0; i < logContainerObj.childrenCount(); i++)
     {
-      local logObj = logContainerObj.getChild(i)
-      local logIdx = i + ::g_ww_logs.viewIndex
+      let logObj = logContainerObj.getChild(i)
+      let logIdx = i + ::g_ww_logs.viewIndex
       if (!(logIdx in ::g_ww_logs.filtered))
       {
         logObj.show(false)
         continue
       }
 
-      local num = ::g_ww_logs.filtered[logIdx]
-      local log = ::g_ww_logs.loaded[num]
+      let num = ::g_ww_logs.filtered[logIdx]
+      let log = ::g_ww_logs.loaded[num]
       log.isReaded = true
 
-      local logView = ::g_ww_logs.logsViews[log.id]
+      let logView = ::g_ww_logs.logsViews[log.id]
       logView.setPrevLogDateValue(prevLogDate)
       logView.setIsFirstRowValue(logIdx == ::g_ww_logs.viewIndex)
       fillLogObject(logObj, logView)
@@ -134,7 +134,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!selectedArmyName.len())
     {
-      local selectedArmies = ::ww_get_selected_armies_names()
+      let selectedArmies = ::ww_get_selected_armies_names()
       if (selectedArmies.len())
         selectedArmyName = selectedArmies[0]
     }
@@ -145,7 +145,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function setObjParamsById(objNest, id, paramsToSet)
   {
-    local obj = objNest.findObject(id)
+    let obj = objNest.findObject(id)
     if (!::check_obj(obj))
       return
 
@@ -159,7 +159,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
   function fillLogObject(obj, logView)
   {
     obj.show(true)
-    local logId = logView.getId()
+    let logId = logView.getId()
     if (obj?.id == logId)
       return
 
@@ -169,11 +169,11 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     foreach (blockId, blockData in logView.getBasicInfoTable())
       setObjParamsById(obj, blockId, blockData)
 
-    local bodyObj = obj.findObject("log_body")
+    let bodyObj = obj.findObject("log_body")
     if (!::check_obj(bodyObj))
       return
 
-    local armyData = logView.getArmyData()
+    let armyData = logView.getArmyData()
     setObjParamsById(bodyObj, "log_text", logView.getTextInfoTable())
     fillLogArmyContainer(armyData ? armyData.army[0] : null, "army", bodyObj)
     fillLogBattleObject(bodyObj, logView.getBattleData())
@@ -184,7 +184,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
   {
     for(local i = 0; i < WW_LOG_BATTLE.MAX_DAMAGED_ARMIES; i++)
     {
-      local damagedArmyObj = bodyObj.findObject("damaged_army_" + i)
+      let damagedArmyObj = bodyObj.findObject("damaged_army_" + i)
       if (!::check_obj(damagedArmyObj))
         continue
 
@@ -194,21 +194,21 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
         continue
       }
 
-      local wwArmyName = dmgArmiesData[i].armyName
-      local wwArmy = ::g_ww_logs.logsArmies[wwArmyName]
+      let wwArmyName = dmgArmiesData[i].armyName
+      let wwArmy = ::g_ww_logs.logsArmies[wwArmyName]
 
-      local textValue = dmgArmiesData[i].casualties.tostring()
-      local textColor = wwArmy.isMySide(::ww_get_player_side()) ?
+      let textValue = dmgArmiesData[i].casualties.tostring()
+      let textColor = wwArmy.isMySide(::ww_get_player_side()) ?
         WW_LOG_COLORS.BAD_EVENT : WW_LOG_COLORS.GOOD_EVENT
 
-      local armyCasualtiesObj = damagedArmyObj.findObject("army_casualties")
+      let armyCasualtiesObj = damagedArmyObj.findObject("army_casualties")
       if (::check_obj(armyCasualtiesObj))
         armyCasualtiesObj.setValue(
           ::loc("worldWar/iconStrike") + ::colorize(textColor, textValue)
         )
 
-      local armyContainerObj = damagedArmyObj.findObject("army_container")
-      local armyObj = armyContainerObj.getChild(0)
+      let armyContainerObj = damagedArmyObj.findObject("army_container")
+      let armyObj = armyContainerObj.getChild(0)
       fillLogArmyObject(wwArmy.getView(), armyObj)
       damagedArmyObj.show(true)
     }
@@ -216,25 +216,25 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillLogBattleObject(bodyObj, battleData)
   {
-    local battleObj = ::showBtn("battle", battleData != null, bodyObj)
+    let battleObj = ::showBtn("battle", battleData != null, bodyObj)
     if (!battleObj || !battleData)
       return
 
-    local wwBattleView = battleData.battleView.battle
+    let wwBattleView = battleData.battleView.battle
     if (wwBattleView)
       setObjParamsById(battleObj, "battle_icon", {
         status = wwBattleView.getStatus(),
         battleId = wwBattleView.getId() })
 
-    local tooltipId = WW_LOG_BATTLE_TOOLTIP.getTooltipId("",
+    let tooltipId = WW_LOG_BATTLE_TOOLTIP.getTooltipId("",
       {currentId = wwBattleView.getId()})
-    local tooltipObj = bodyObj.findObject("battle_icon_tooltip")
+    let tooltipObj = bodyObj.findObject("battle_icon_tooltip")
     if (::check_obj(tooltipObj))
       tooltipObj.tooltipId = tooltipId
 
     foreach (side in ::g_world_war.getCommonSidesOrder())
     {
-      local armyContainerObj = battleObj.findObject("army_side_" + side + "_container")
+      let armyContainerObj = battleObj.findObject("army_side_" + side + "_container")
       if (!::check_obj(armyContainerObj))
         continue
 
@@ -253,18 +253,18 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     idx = WW_LOG_BATTLE.DEFAULT_ARMY_INDEX,
     amount = WW_LOG_BATTLE.MIN_ARMIES_PER_SIDE)
   {
-    local armyTextObj = ::showBtn(armyObjId, wwArmy != null, bodyObj)
+    let armyTextObj = ::showBtn(armyObjId, wwArmy != null, bodyObj)
     if (!armyTextObj || !wwArmy)
       return
 
     armyTextObj.width = amount + "@wwArmySmallIconWidth"
-    local armyContainerObj = armyTextObj.findObject(armyObjId + "_container")
+    let armyContainerObj = armyTextObj.findObject(armyObjId + "_container")
     if (!::check_obj(armyContainerObj))
       return
     if (idx >= armyContainerObj.childrenCount())
       return
 
-    local armyObj = armyContainerObj.getChild(idx)
+    let armyObj = armyContainerObj.getChild(idx)
     fillLogArmyObject(wwArmy, armyObj)
   }
 
@@ -274,7 +274,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     armyObj.armyId = wwArmy.getId()
     armyObj.id = wwArmy.getName()
     armyObj.selected = "no"
-    local armyIconObj = armyObj.findObject("army_icon")
+    let armyIconObj = armyObj.findObject("army_icon")
     armyIconObj.team = wwArmy.getTeamColor()
     armyIconObj.isBelongsToMyClan = wwArmy.isBelongsToMyClan() ? "yes" : "no"
     armyObj.findObject("army_unit_text").setValue(wwArmy.getUnitTypeCustomText())
@@ -327,16 +327,16 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     if (!::g_ww_logs.filtered.len())
       return
 
-    local lastContainerObj = logContainerObj.getChild(viewLogAmount - 1)
+    let lastContainerObj = logContainerObj.getChild(viewLogAmount - 1)
     if (!::check_obj(lastContainerObj))
       return
 
-    local lastFilteredLogId = ::g_ww_logs.loaded[::g_ww_logs.filtered.top()].id
+    let lastFilteredLogId = ::g_ww_logs.loaded[::g_ww_logs.filtered.top()].id
     if (lastContainerObj?.id != lastFilteredLogId)
       return
 
-    local visibleBox = ::GuiBox().setFromDaguiObj(logFrameObj)
-    local lastFilteredLogBox = ::GuiBox().setFromDaguiObj(lastContainerObj)
+    let visibleBox = ::GuiBox().setFromDaguiObj(logFrameObj)
+    let lastFilteredLogBox = ::GuiBox().setFromDaguiObj(lastContainerObj)
     if (lastFilteredLogBox.isInside(visibleBox))
       isLogPageScrolledDown = true
   }
@@ -351,7 +351,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
       if (!(i in ::g_ww_logs.filtered))
         break
 
-      local num = ::g_ww_logs.filtered[i]
+      let num = ::g_ww_logs.filtered[i]
       if (::g_ww_logs.loaded[num].isReaded)
         break
 
@@ -365,14 +365,14 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(logContainerObj))
       return scrollTargetId
 
-    local visibleBox = ::GuiBox().setFromDaguiObj(logFrameObj)
+    let visibleBox = ::GuiBox().setFromDaguiObj(logFrameObj)
     for(local i = 0; i < logContainerObj.childrenCount(); i++)
     {
-      local logObj = logContainerObj.getChild(i)
+      let logObj = logContainerObj.getChild(i)
       if (!logObj.isVisible())
         break
 
-      local logBox = ::GuiBox().setFromDaguiObj(logObj)
+      let logBox = ::GuiBox().setFromDaguiObj(logObj)
       if (logBox.isInside(visibleBox))
         scrollTargetId = logObj?.id
       else
@@ -417,18 +417,18 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(logContainerObj))
       return
 
-    local prevLogsObj = scene.findObject("show_prev_logs")
+    let prevLogsObj = scene.findObject("show_prev_logs")
     if (::check_obj(prevLogsObj))
       prevLogsObj.show(::g_ww_logs.filtered.len())
 
     if (viewLogAmount > 0)
     {
-      local firstLogObj = logContainerObj.getChild(0)
-      local prevLogsTextObj = scene.findObject("show_prev_logs_text")
+      let firstLogObj = logContainerObj.getChild(0)
+      let prevLogsTextObj = scene.findObject("show_prev_logs_text")
       if (::check_obj(prevLogsTextObj))
         prevLogsTextObj.setValue(firstLogObj.findObject("date_text").getValue())
-      local nextLogsTextObj = scene.findObject("show_next_logs_text")
-      local lastLogObj = logContainerObj.getChild(viewLogAmount-1)
+      let nextLogsTextObj = scene.findObject("show_next_logs_text")
+      let lastLogObj = logContainerObj.getChild(viewLogAmount-1)
       if (::check_obj(nextLogsTextObj))
         nextLogsTextObj.setValue(lastLogObj.findObject("date_text").getValue())
     }
@@ -436,18 +436,18 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     configShowPrevLogsBlock()
     configShowNextLogsBlock()
 
-    local hidedObj = scene.findObject("hidden_logs_text")
+    let hidedObj = scene.findObject("hidden_logs_text")
     if (!::check_obj(hidedObj))
       return
 
-    local hiddenQuantity = ::g_ww_logs.loaded.len() - ::g_ww_logs.filtered.len()
+    let hiddenQuantity = ::g_ww_logs.loaded.len() - ::g_ww_logs.filtered.len()
     hidedObj.setValue(hiddenQuantity ?
       ::loc("worldWar/hided_logs") + ::loc("ui/colon") + hiddenQuantity : "")
   }
 
   function configShowPrevLogsBlock()
   {
-    local prevLogsNestObj = scene.findObject("show_prev_logs_btn_nest")
+    let prevLogsNestObj = scene.findObject("show_prev_logs_btn_nest")
     if (!::check_obj(prevLogsNestObj))
       return
 
@@ -457,14 +457,14 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function configShowNextLogsBlock(isForcedShow = false)
   {
-    local nextLogsObj = scene.findObject("show_next_logs")
+    let nextLogsObj = scene.findObject("show_next_logs")
     if (::check_obj(nextLogsObj))
       nextLogsObj.show(isForcedShow || ::g_ww_logs.viewIndex + WW_LOG_MAX_DISPLAY_AMOUNT < ::g_ww_logs.filtered.len())
   }
 
   function onHoverZoneName(obj)
   {
-    local zone = obj.getValue()
+    let zone = obj.getValue()
     if (zone)
       ::ww_mark_zones_as_outlined_by_name([zone])
   }
@@ -508,7 +508,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
   {
     clearSelectFromLogArmy()
 
-    local wwArmy = ::getTblValue(obj.armyId, ::g_ww_logs.logsArmies)
+    let wwArmy = ::getTblValue(obj.armyId, ::g_ww_logs.logsArmies)
     if (wwArmy)
       ::ww_event("ShowLogArmy", { wwArmy = wwArmy })
   }
@@ -531,15 +531,15 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function markZoneByArmyName(armyName)
   {
-    local wwArmy = ::g_world_war.getArmyByName(armyName)
+    let wwArmy = ::g_world_war.getArmyByName(armyName)
     if (!wwArmy)
       return
 
-    local wwArmyPosition = wwArmy.getPosition()
+    let wwArmyPosition = wwArmy.getPosition()
     if (!wwArmyPosition)
       return
 
-    local wwArmyZoneName = ::ww_get_zone_name(::ww_get_zone_idx_world(wwArmyPosition))
+    let wwArmyZoneName = ::ww_get_zone_name(::ww_get_zone_idx_world(wwArmyPosition))
     ::ww_mark_zones_as_outlined_by_name([wwArmyZoneName])
   }
 
@@ -548,17 +548,17 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
     if (::u.isEmpty(armyName))
       return []
 
-    local armyObjects = []
+    let armyObjects = []
     for(local i = 0; i < logContainerObj.childrenCount(); i++)
     {
-      local logObj = logContainerObj.getChild(i)
+      let logObj = logContainerObj.getChild(i)
       if (!::check_obj(logObj))
         continue
 
       if (!logObj.isVisible())
         break
 
-      local armyObj = logObj.findObject(armyName)
+      let armyObj = logObj.findObject(armyName)
       if (::check_obj(armyObj))
         armyObjects.append(armyObj)
     }
@@ -588,15 +588,15 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onClickBattle(obj)
   {
-    local battleId = obj.battleId
-    local battle = ::g_world_war.getBattleById(battleId)
+    let battleId = obj.battleId
+    let battle = ::g_world_war.getBattleById(battleId)
     if (battle.isValid())
     {
       ::ww_event("MapSelectedBattle", { battle = battle })
       return
     }
 
-    local logBlk = ::g_ww_logs.logsBattles?[battleId].logBlk
+    let logBlk = ::g_ww_logs.logsBattles?[battleId].logBlk
     ::gui_handlers.WwBattleResults.open(::WwBattleResults(logBlk))
   }
 
@@ -619,11 +619,11 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
 
   function updatePrevLogsBtn(isLogsLoading = false)
   {
-    local prevLogsBtnObj = scene.findObject("show_prev_logs_btn")
+    let prevLogsBtnObj = scene.findObject("show_prev_logs_btn")
     if (!::check_obj(prevLogsBtnObj))
       return
 
-    local waitAnimObj = prevLogsBtnObj.findObject("show_prev_logs_btn_wait_anim")
+    let waitAnimObj = prevLogsBtnObj.findObject("show_prev_logs_btn_wait_anim")
     if (::check_obj(waitAnimObj))
       waitAnimObj.show(isLogsLoading)
 
@@ -664,8 +664,8 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach(renderData in ::g_ww_logs.logCategories)
     {
-      local category = renderData.value
-      local enable = ::isInArray(category, values)
+      let category = renderData.value
+      let enable = ::isInArray(category, values)
       if (::g_ww_logs.filter[category] == enable)
         continue
 
@@ -676,7 +676,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
       if (!::g_ww_logs.loaded.len())
         return
 
-      local logNumber = ::g_ww_logs.loaded.len() - 1
+      let logNumber = ::g_ww_logs.loaded.len() - 1
       local scrollTargetId = null
       local logsAmount = 0
       for (local i = ::g_ww_logs.filtered.len() - 1; i >= 0; i--)

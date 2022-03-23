@@ -12,9 +12,9 @@ local clanBlackList = [
   ::gui_start_modal_wnd(::gui_handlers.clanBlacklistModal, {clanData = clanData})
 }
 
-class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanBlacklistModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/clans/clanRequests.blk"
+  sceneBlkName = "%gui/clans/clanRequests.blk"
   wndType = handlerType.MODAL
 
   myRights = []
@@ -33,7 +33,7 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
 
     blacklistData = clanData.blacklist
     updateBlacklistTable()
-    local tObj = scene.findObject("clan_title_table")
+    let tObj = scene.findObject("clan_title_table")
     if(tObj)
       tObj.setValue(::loc("clan/blacklist"))
   }
@@ -46,14 +46,14 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
     if (curPage > 0 && blacklistData.len() <= curPage * rowsPerPage)
       curPage--
 
-    local tblObj = scene.findObject("candidatesList")
+    let tblObj = scene.findObject("candidatesList")
     local data = ""
 
-    local headerRow = []
+    let headerRow = []
     foreach(item in blacklistRow)
     {
-      local itemName = (typeof(item) != "table")? item : item.id
-      local name = "#clan/"+(itemName == "date"? "bannedDate" : itemName)
+      let itemName = (typeof(item) != "table")? item : item.id
+      let name = "#clan/"+(itemName == "date"? "bannedDate" : itemName)
       headerRow.append({
         id = itemName,
         text = name,
@@ -63,16 +63,16 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
     data = ::buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ")
 
-    local startIdx = curPage * rowsPerPage
-    local lastIdx = min((curPage + 1) * rowsPerPage, blacklistData.len())
+    let startIdx = curPage * rowsPerPage
+    let lastIdx = min((curPage + 1) * rowsPerPage, blacklistData.len())
     for(local i=startIdx; i < lastIdx; i++)
     {
-      local rowName = "row_" + i
-      local rowData = []
+      let rowName = "row_" + i
+      let rowData = []
 
       foreach(item in blacklistRow)
       {
-         local itemName = (typeof(item) != "table")? item : item.id
+         let itemName = (typeof(item) != "table")? item : item.id
          rowData.append({
           id = itemName,
           text = "",
@@ -95,18 +95,18 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillRow(tblObj, i)
   {
-    local block = blacklistData[i]
-    local rowObj = tblObj.findObject("row_"+i)
+    let block = blacklistData[i]
+    let rowObj = tblObj.findObject("row_"+i)
     if (rowObj)
     {
-      local comments = ("comments" in block) ? block.comments : ""
+      let comments = ("comments" in block) ? block.comments : ""
       rowObj.tooltip = comments.len()
         ? ::loc("clan/blacklistRowTooltip", {comments = comments}) : ""
 
       foreach(item in clanBlackList)
       {
-        local vObj = rowObj.findObject("txt_" + item.id)
-        local itemValue = (item.id in block)? block[item.id] : 0
+        let vObj = rowObj.findObject("txt_" + item.id)
+        let itemValue = (item.id in block)? block[item.id] : 0
         if(vObj)
           vObj.setValue(item.type.getShortTextByValue(itemValue))
       }
@@ -124,8 +124,8 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
     curCandidate = null
     if (blacklistData && blacklistData.len()>0)
     {
-      local objTbl = scene.findObject("candidatesList");
-      local index = objTbl.getValue() + curPage*rowsPerPage - 1 //header
+      let objTbl = scene.findObject("candidatesList");
+      let index = objTbl.getValue() + curPage*rowsPerPage - 1 //header
       if (index in blacklistData)
         curCandidate = blacklistData[index]
     }
@@ -156,15 +156,15 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserAction()
   {
-    local table = scene.findObject("candidatesList")
+    let table = scene.findObject("candidatesList")
     if (!::checkObj(table))
       return
 
-    local index = table.getValue()
+    let index = table.getValue()
     if (index < 0 || index >= table.childrenCount())
       return
 
-    local position = table.getChild(index).getPosRC()
+    let position = table.getChild(index).getPosRC()
     openUserPopupMenu(position)
   }
 
@@ -173,7 +173,7 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!curCandidate)
       return
 
-    local menu = [
+    let menu = [
       {
         text = ::loc("msgbox/btn_delete")
         show = ::isInArray("MEMBER_BLACKLIST", myRights)
@@ -207,8 +207,8 @@ class ::gui_handlers.clanBlacklistModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventClanCandidatesListChanged(p)
   {
-    local uid = p?.userId
-    local candidate = ::u.search(blacklistData, @(candidate) candidate.uid == uid )
+    let uid = p?.userId
+    let candidate = ::u.search(blacklistData, @(candidate) candidate.uid == uid )
     hideCandidateByName(candidate?.nick)
   }
 }

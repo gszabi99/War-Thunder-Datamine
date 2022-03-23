@@ -1,14 +1,14 @@
-local statsd = require("statsd")
-local { animBgLoad } = require("scripts/loading/animBg.nut")
-local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
-local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { targetPlatform } = require("scripts/clientState/platform.nut")
-local { requestPackageUpdateStatus } = require("sony")
+let statsd = require("statsd")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
+let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { targetPlatform } = require("%scripts/clientState/platform.nut")
+let { requestPackageUpdateStatus } = require("sony")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 
-class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
+::gui_handlers.LoginWndHandlerPs4 <- class extends ::BaseGuiHandler
 {
-  sceneBlkName = "gui/loginBoxSimple.blk"
+  sceneBlkName = "%gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
   isAutologin = false
@@ -23,7 +23,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 
     isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
 
-    local data = ::handyman.renderCached("gui/commonParts/button", {
+    let data = ::handyman.renderCached("%gui/commonParts/button", {
       id = "authorization_button"
       text = "#HUD_PRESS_A_CNT"
       shortcut = "A"
@@ -46,7 +46,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 
   function updateButtons(isUpdateAvailable = false) {
     showSceneBtn("authorization_button", !isAutologin)
-    local text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
+    let text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
       ::loc("ps4/reqInstantConnection")
     ], true)
     scene.findObject("user_notify_text").setValue(text)
@@ -71,7 +71,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       loginStatus = ::ps4_login();
       if (loginStatus >= 0)
       {
-        local cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
+        let cfgName = ::ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
         ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
           {

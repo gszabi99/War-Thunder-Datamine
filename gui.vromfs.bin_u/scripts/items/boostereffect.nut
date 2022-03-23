@@ -1,4 +1,4 @@
-local boosterEffectType = {
+let boosterEffectType = {
   RP = {
     name = "xpRate"
     currencyMark = ::loc("currency/researchPoints/sign/colored")
@@ -39,15 +39,15 @@ local boosterEffectType = {
   }
 }
 
-local function getActiveBoostersArray(effectType = null)
+let function getActiveBoostersArray(effectType = null)
 {
-  local res = []
-  local total = ::get_current_booster_count(::INVALID_USER_ID)
-  local bonusType = effectType ? effectType.name : null
+  let res = []
+  let total = ::get_current_booster_count(::INVALID_USER_ID)
+  let bonusType = effectType ? effectType.name : null
   for (local i = 0; i < total; i++)
   {
-    local uid = ::get_current_booster_uid(::INVALID_USER_ID, i)
-    local item = ::ItemsManager.findItemByUid(uid, itemType.BOOSTER)
+    let uid = ::get_current_booster_uid(::INVALID_USER_ID, i)
+    let item = ::ItemsManager.findItemByUid(uid, itemType.BOOSTER)
     if (!item || (bonusType && item[bonusType] == 0) || !item.isActive(true))
       continue
 
@@ -60,9 +60,9 @@ local function getActiveBoostersArray(effectType = null)
   return res
 }
 
-local function sortByParam(arr, param)
+let function sortByParam(arr, param)
 {
-  local sortByBonus = (@(param) function(a, b) {
+  let sortByBonus = (@(param) function(a, b) {
     if (a[param] != b[param])
       return a[param] > b[param]? -1 : 1
     return 0
@@ -84,9 +84,9 @@ local function sortByParam(arr, param)
  * }
  * Public and personal arrays of boosters sorted by effect type
  */
-local function sortBoosters(boosters, effectType)
+let function sortBoosters(boosters, effectType)
 {
-  local res = {
+  let res = {
     maxSortOrder = 0
   }
   foreach(booster in boosters)
@@ -111,9 +111,9 @@ local function sortBoosters(boosters, effectType)
   return res
 }
 
-local function getBoostersEffectsArray(itemsArray, effectType)
+let function getBoostersEffectsArray(itemsArray, effectType)
 {
-  local res = []
+  let res = []
   foreach(item in itemsArray)
     res.append(item[effectType.name])
   return res
@@ -125,13 +125,13 @@ local function getBoostersEffectsArray(itemsArray, effectType)
  *   <boosterEffectType.name> = <value in percent>
  * }
  */
-local function getBoostersEffects(boosters)
+let function getBoostersEffects(boosters)
 {
-  local result = {}
+  let result = {}
   foreach (effectType in boosterEffectType)
   {
     result[effectType.name] <- 0
-    local sortedBoosters = sortBoosters(boosters, effectType)
+    let sortedBoosters = sortBoosters(boosters, effectType)
     for (local i = 0; i <= sortedBoosters.maxSortOrder; i++)
     {
       if (!(i in sortedBoosters))
@@ -144,15 +144,15 @@ local function getBoostersEffects(boosters)
   return result
 }
 
-local function hasActiveBoosters(effectType, personal)
+let function hasActiveBoosters(effectType, personal)
 {
-  local items = ::ItemsManager.getInventoryList(itemType.BOOSTER, (
+  let items = ::ItemsManager.getInventoryList(itemType.BOOSTER, (
       @(effectType, personal) @(item) item.isActive(true) && effectType.checkBooster(item)
         && item.personal == personal )(effectType, personal))
   return items.len() != 0
 }
 
-local function haveActiveBonusesByEffectType(effectType, personal = false)
+let function haveActiveBonusesByEffectType(effectType, personal = false)
 {
   return hasActiveBoosters(effectType, personal)
     || (personal

@@ -1,17 +1,22 @@
-local {sh, sw} = require("daRg")
+let {sh, sw, set_kb_focus} = require("daRg")
 require("interop.nut").setHandlers()
+require("daeditor_es.nut")
 
-local {showHelp, editorIsActive, showEntitySelect,
+let {showHelp, editorIsActive, editorFreeCam, showEntitySelect,
   showTemplateSelect, entitiesListUpdateTrigger} = require("state.nut")
 
-local mainToolbar = require("mainToolbar.nut")
-local entitySelect = require("entitySelect.nut")
-local templateSelect = require("templateSelect.nut")
-local attrPanel = require("attrPanel.nut")
-local help = require("components/help.nut")(showHelp)
-local cursors = require("components/cursors.nut")
-local {modalWindowsComponent} = require("components/modalWindows.nut")
-local {msgboxComponent} = require("editor_msgbox.nut")
+editorIsActive.subscribe(function(v){ if(v == false) set_kb_focus(null) })
+editorFreeCam.subscribe(function(v){ if(v == true) set_kb_focus(null) })
+
+let mainToolbar = require("mainToolbar.nut")
+let entitySelect = require("entitySelect.nut")
+let templateSelect = require("templateSelect.nut")
+let attrPanel = require("attrPanel.nut")
+let help = require("components/help.nut")(showHelp)
+let cursors = require("components/cursors.nut")
+let {modalWindowsComponent} = require("components/modalWindows.nut")
+let {msgboxComponent} = require("editor_msgbox.nut")
+
 return function() {
   if (!editorIsActive.value) {
     return {
@@ -33,8 +38,8 @@ return function() {
     children = [
       mainToolbar,
       attrPanel,
-      (showEntitySelect.value && !showHelp.value ? entitySelect : null),
-      (showTemplateSelect.value && !showHelp.value ? templateSelect : null),
+      (showEntitySelect.value ? entitySelect : null),
+      (showTemplateSelect.value ? templateSelect : null),
       (showHelp.value ? help : null),
       modalWindowsComponent,
       msgboxComponent,

@@ -1,5 +1,5 @@
-local time = require("scripts/time.nut")
-local spectatorWatchedHero = require("scripts/replays/spectatorWatchedHero.nut")
+let time = require("%scripts/time.nut")
+let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 
 enum BATTLE_LOG_FILTER
 {
@@ -181,14 +181,14 @@ enum BATTLE_LOG_FILTER
     if (!("text" in msg))
       msg.text <- ""
 
-    local now = ::get_usefull_total_time()
+    let now = ::get_usefull_total_time()
     if (msg.id != -1)
       foreach (logEntry in battleLog)
         if (logEntry.msg.id == msg.id)
           return
     if (msg.id == -1 && msg.text != "")
     {
-      local skipDupTime = now - skipDuplicatesSec
+      let skipDupTime = now - skipDuplicatesSec
       for (local i = battleLog.len() - 1; i >= 0; i--)
       {
         if (battleLog[i].time < skipDupTime)
@@ -201,10 +201,10 @@ enum BATTLE_LOG_FILTER
     local filters = 0
     if (msg.type == ::HUD_MSG_MULTIPLAYER_DMG)
     {
-      local p1 = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
-      local p2 = ::get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
-      local t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
-      local t2Friendly = ::is_team_friendly(msg?.victimTeam ?? Team.B)
+      let p1 = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
+      let p2 = ::get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
+      let t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
+      let t2Friendly = ::is_team_friendly(msg?.victimTeam ?? Team.B)
 
       if (p1?.isLocal || p2?.isLocal)
         filters = filters | BATTLE_LOG_FILTER.HERO
@@ -219,8 +219,8 @@ enum BATTLE_LOG_FILTER
     }
     else
     {
-      local player = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
-      local localPlayer = ::get_local_mplayer()
+      let player = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
+      let localPlayer = ::get_local_mplayer()
       if (msg.text.indexof("\x1B011") != null || player?.isLocal)
         filters = filters | BATTLE_LOG_FILTER.HERO
       if (msg.text.indexof("\x1B010") != null || player?.isInHeroSquad)
@@ -233,30 +233,30 @@ enum BATTLE_LOG_FILTER
         filters = filters | BATTLE_LOG_FILTER.OTHER
     }
 
-    local timestamp = time.secondsToString(now, false) + " "
+    let timestamp = time.secondsToString(now, false) + " "
     local message = ""
     switch (msg.type)
     {
       // All players messages
       case ::HUD_MSG_MULTIPLAYER_DMG: // Any player unit damaged or destroyed
-        local text = msgMultiplayerDmgToText(msg)
+        let text = msgMultiplayerDmgToText(msg)
         message = timestamp + ::colorize("userlogColoredText", text)
         break
       case ::HUD_MSG_STREAK_EX: // Any player got streak
-        local text = msgStreakToText(msg)
+        let text = msgStreakToText(msg)
         message = timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
       case ::HUD_MSG_STREAK: // Any player got streak (deprecated)
         if (::HUD_MSG_STREAK_EX > 0) // compatibility
           return
-        local text = msgEscapeCodesToCssColors(msg.text)
+        let text = msgEscapeCodesToCssColors(msg.text)
         message = timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
       default:
         return
     }
 
-    local logEntry = {
+    let logEntry = {
       msg = msg
       time = now
       message = message
@@ -287,7 +287,7 @@ enum BATTLE_LOG_FILTER
   function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0)
   {
     filter = filter || BATTLE_LOG_FILTER.ALL
-    local lines = []
+    let lines = []
     for (local i = battleLog.len() - 1; i >= 0 ; i--)
       if (battleLog[i].filters & filter)
       {
@@ -300,7 +300,7 @@ enum BATTLE_LOG_FILTER
 
   function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0)
   {
-    local player = ::get_mplayer_by_id(playerId)
+    let player = ::get_mplayer_by_id(playerId)
     if (player && ::is_replay_playing())
     {
       player.isLocal = spectatorWatchedHero.id == player.id
@@ -312,12 +312,12 @@ enum BATTLE_LOG_FILTER
 
   function getUnitTypeEx(msg, isVictim = false)
   {
-    local uType = ::getTblValue(isVictim ? "victimUnitType" : "unitType", msg)
+    let uType = ::getTblValue(isVictim ? "victimUnitType" : "unitType", msg)
 
     local res = ::getTblValue(uType, utToEsUnitType, ::ES_UNIT_TYPE_INVALID)
     if (res == ::ES_UNIT_TYPE_INVALID) //we do not receive unitType for player killer unit, but can easy get it by unitName
     {
-      local unit = ::getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
+      let unit = ::getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
       if (unit)
         res = unit.esUnitType
     }
@@ -332,45 +332,45 @@ enum BATTLE_LOG_FILTER
 
   function getActionTextIconic(msg)
   {
-    local msgAction = msg?.action ?? "kill"
+    let msgAction = msg?.action ?? "kill"
     local iconId = msgAction
     if (msgAction == "kill")
       iconId += getUnitTypeSuffix(getUnitTypeEx(msg, false))
     if (msgAction == "kill" || msgAction == "crash")
       iconId += getUnitTypeSuffix(getUnitTypeEx(msg, true))
-    local actionColor = msg?.isKill ?? true ? "userlogColoredText" : "silver"
+    let actionColor = msg?.isKill ?? true ? "userlogColoredText" : "silver"
     return ::colorize(actionColor, ::loc("icon/hud_msg_mp_dmg/" + iconId))
   }
 
   function getActionTextVerbal(msg)
   {
-    local victimUnitType = getUnitTypeEx(msg, true)
-    local msgAction = msg?.action ?? "kill"
-    local verb = ::getTblValue(victimUnitType, ::getTblValue(msgAction, actionVerbs, {}), msgAction)
-    local isLoss = (msg?.victimTeam ?? ::get_player_army_for_hud()) == ::get_player_army_for_hud()
-    local color = "hudColor" + (msg?.isKill ?? true ? (isLoss ? "DeathAlly" : "DeathEnemy") : (isLoss ? "DarkRed" : "DarkBlue"))
+    let victimUnitType = getUnitTypeEx(msg, true)
+    let msgAction = msg?.action ?? "kill"
+    let verb = ::getTblValue(victimUnitType, ::getTblValue(msgAction, actionVerbs, {}), msgAction)
+    let isLoss = (msg?.victimTeam ?? ::get_player_army_for_hud()) == ::get_player_army_for_hud()
+    let color = "hudColor" + (msg?.isKill ?? true ? (isLoss ? "DeathAlly" : "DeathEnemy") : (isLoss ? "DarkRed" : "DarkBlue"))
     return ::colorize(color, ::loc(verb))
   }
 
   function msgMultiplayerDmgToText(msg, iconic = false)
   {
-    local what = iconic ? getActionTextIconic(msg) : getActionTextVerbal(msg)
-    local who  = getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? my_user_name, msg?.team ?? Team.A)
-    local whom = getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? my_user_name, msg?.victimTeam ?? Team.B)
+    let what = iconic ? getActionTextIconic(msg) : getActionTextVerbal(msg)
+    let who  = getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? my_user_name, msg?.team ?? Team.A)
+    let whom = getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? my_user_name, msg?.victimTeam ?? Team.B)
 
-    local msgAction = msg?.action ?? "kill"
-    local isCrash = msgAction == "crash" || msgAction == "exit"
-    local sequence = isCrash ? [whom, what] : [who, what, whom]
+    let msgAction = msg?.action ?? "kill"
+    let isCrash = msgAction == "crash" || msgAction == "exit"
+    let sequence = isCrash ? [whom, what] : [who, what, whom]
     return ::g_string.implode(sequence, " ")
   }
 
   function msgStreakToText(msg, forceThirdPerson = false)
   {
-    local playerId = msg?.playerId ?? -1
-    local localPlayerId = ::is_replay_playing() ? spectatorWatchedHero.id : ::get_local_mplayer().id
-    local isLocal = !forceThirdPerson && playerId == localPlayerId
-    local streakNameType = isLocal ? ::SNT_MY_STREAK_HEADER : :: SNT_OTHER_STREAK_TEXT
-    local what = ::get_loc_for_streak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
+    let playerId = msg?.playerId ?? -1
+    let localPlayerId = ::is_replay_playing() ? spectatorWatchedHero.id : ::get_local_mplayer().id
+    let isLocal = !forceThirdPerson && playerId == localPlayerId
+    let streakNameType = isLocal ? ::SNT_MY_STREAK_HEADER : :: SNT_OTHER_STREAK_TEXT
+    let what = ::get_loc_for_streak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
     return isLocal ? what : ::format("%s %s", getUnitNameEx(playerId), what)
   }
 
@@ -381,9 +381,9 @@ enum BATTLE_LOG_FILTER
     {
       if (w.len() >= 3 && rePatternNumeric.match(w.slice(0, 3)))
       {
-        local color = ::getTblValue(w.slice(0,3).tointeger(), escapeCodeToCssColor)
-        w = w.slice(3)
-        ret += color ? ::colorize(color, w) : w
+        let color = ::getTblValue(w.slice(0,3).tointeger(), escapeCodeToCssColor)
+        let value = w.slice(3)
+        ret += color ? ::colorize(color, value) : value
       }
       else
         ret += w

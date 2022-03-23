@@ -1,5 +1,5 @@
 {
-  class LoadingTip
+  let class LoadingTip
   {
     eventMask = ::EV_TIMER | ::EV_ON_CMD
     unitTypeMaskPID = ::dagui_propid.add_name_id("unitTypeMask")
@@ -9,7 +9,7 @@
     {
       obj.set_prop_latent(timerIntervalPID, 1000)
 
-      local unitTypeMask = obj?.unitTypeMask
+      let unitTypeMask = obj?.unitTypeMask
       if (unitTypeMask)
         setValue(obj, unitTypeMask.tointeger())
       else
@@ -43,7 +43,7 @@
           if (!obj.isValid())
             return
 
-          local textObj = obj.findObject("tip_hint")
+          let textObj = obj.findObject("tip_hint")
           if (::check_obj(textObj))
             textObj.setValue(::g_tips.getTip(getUnitTypeMask(obj)))
         })

@@ -1,9 +1,9 @@
-local { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
+let { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
   CREW_SPECIALIZATION, BUY_CREW_SPEC, DECORATION
 } = require("genericTooltipTypes.nut")
 
 local openedTooltipObjs = []
-local function removeInvalidTooltipObjs() {
+let function removeInvalidTooltipObjs() {
   openedTooltipObjs = openedTooltipObjs.filter(@(t) t.isValid())
 }
 
@@ -31,13 +31,13 @@ local function removeInvalidTooltipObjs() {
     DECORATION.getTooltipId(decoratorId, unlockedItemType, params)
 }
 
-local function fillTooltip(obj, handler, tooltipType, id, params) {
+let function fillTooltip(obj, handler, tooltipType, id, params) {
   local isSucceed = true
   if (tooltipType.isCustomTooltipFill)
     isSucceed = tooltipType.fillTooltip(obj, handler, id, params)
   else
   {
-    local content = tooltipType.getTooltipContent(id, params)
+    let content = tooltipType.getTooltipContent(id, params)
     if (content.len())
       obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
     else
@@ -55,17 +55,17 @@ g_tooltip.open <- function open(obj, handler)
 
   if (!::handlersManager.isHandlerValid(handler))
     return
-  local tooltipId = ::getTooltipObjId(obj)
+  let tooltipId = ::getTooltipObjId(obj)
   if (!tooltipId || tooltipId == "")
     return
-  local params = ::parse_json(tooltipId)
+  let params = ::parse_json(tooltipId)
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return
 
-  local tooltipType = getTooltipType(params.ttype)
-  local id = params.id
+  let tooltipType = getTooltipType(params.ttype)
+  let id = params.id
 
-  local isSucceed = fillTooltip(obj, handler, tooltipType, id, params)
+  let isSucceed = fillTooltip(obj, handler, tooltipType, id, params)
 
   if (!isSucceed || !::check_obj(obj))
     return
@@ -76,7 +76,7 @@ g_tooltip.open <- function open(obj, handler)
 
 g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
 {
-  local data = {
+  let data = {
     obj         = obj
     handler     = handler
     tooltipType = tooltipType
@@ -88,7 +88,7 @@ g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
   foreach (key, value in tooltipType)
     if (::u.isFunction(value) && ::g_string.startsWith(key, "onEvent"))
     {
-      local eventName = key.slice("onEvent".len())
+      let eventName = key.slice("onEvent".len())
       ::add_event_listener(eventName, (@(eventName) function(eventParams) {
         tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params)
       })(eventName), data)
@@ -99,7 +99,7 @@ g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
 
 g_tooltip.close <- function close(obj) //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
 {
-  local tIdx = !obj.isValid() ? null
+  let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
   if (tIdx != null) {
     openedTooltipObjs[tIdx].tooltipType.onClose(obj)
@@ -108,7 +108,7 @@ g_tooltip.close <- function close(obj) //!!FIXME: this function can be called wi
 
   if (!::checkObj(obj) || !obj.childrenCount())
     return
-  local guiScene = obj.getScene()
+  let guiScene = obj.getScene()
   obj.show(false)
 
   guiScene.performDelayed(this, function() {
@@ -116,7 +116,7 @@ g_tooltip.close <- function close(obj) //!!FIXME: this function can be called wi
       return
 
     //for debug and catch rare bug
-    local dbg_event = obj?.on_tooltip_open
+    let dbg_event = obj?.on_tooltip_open
     if (!dbg_event)
       return
 
@@ -153,7 +153,7 @@ g_tooltip.removeAll <- function removeAll()
 
   while (openedTooltipObjs.len())
   {
-    local tooltipData = openedTooltipObjs.remove(0)
+    let tooltipData = openedTooltipObjs.remove(0)
     close.call(tooltipData.handler, tooltipData.obj)
   }
   openedTooltipObjs.clear()

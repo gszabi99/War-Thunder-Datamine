@@ -7,18 +7,18 @@
  * Each page buttons order is (cardinal directions): NW, W, SW, NE, E, SE, S, N.
  */
 
-local { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT,
+let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT,
   EII_MEDICALKIT, EII_TERRAFORM, EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH,
   EII_EXTINGUISHER, EII_TOOLKIT, EII_REPAIR_BREACHES, EII_SPEED_BOOSTER,
   EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR,
-  EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_STEALTH, EII_LOCK
+  EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_STEALTH, EII_LOCK
 } = ::require_native("hudActionBarConst")
 
 const ITEMS_PER_PAGE = 8
 
 /******************************* CONFIGS START ********************************/
 
-local cfgMenuTank = [
+let cfgMenuTank = [
   // Page #1
     EII_SMOKE_GRENADE,
     EII_SMOKE_SCREEN,
@@ -34,12 +34,13 @@ local cfgMenuTank = [
     null,
     EII_AUTO_TURRET,    // Event
     EII_SUPPORT_PLANE,  // Event
+    EII_SUPPORT_PLANE_2,
     EII_STEALTH,        // Event
     EII_LOCK,           // Event
     null,
 ]
 
-local cfgMenuShip = [
+let cfgMenuShip = [
   // Page #1
     EII_SMOKE_GRENADE,
     EII_SMOKE_SCREEN,
@@ -51,6 +52,7 @@ local cfgMenuShip = [
     EII_SPEED_BOOSTER,  // Event
   // Page #2
     EII_SUPPORT_PLANE,
+    EII_SUPPORT_PLANE_2,
     null,
     null,
     null,
@@ -60,7 +62,7 @@ local cfgMenuShip = [
     null,
 ]
 
-local cfgMenuSubmarine = [
+let cfgMenuSubmarine = [
   // Page #1
     null,
     EII_SMOKE_SCREEN,
@@ -72,9 +74,10 @@ local cfgMenuSubmarine = [
     null,
 ]
 
-local cfgMenuAircraft = [
+let cfgMenuAircraft = [
   // Page #1
     EII_SUPPORT_PLANE,
+    EII_SUPPORT_PLANE_2,
     EII_SMOKE_SCREEN,
     null,
     null,
@@ -86,7 +89,7 @@ local cfgMenuAircraft = [
 
 /******************************** CONFIGS END *********************************/
 
-local function getCfgByUnit(unit) {
+let function getCfgByUnit(unit) {
   return unit?.isTank()       ? cfgMenuTank
        : unit?.isShipOrBoat() ? cfgMenuShip
        : unit?.isAir()        ? cfgMenuAircraft
@@ -94,7 +97,7 @@ local function getCfgByUnit(unit) {
        : []
 }
 
-local function isActionMatch(cfgItem, action) {
+let function isActionMatch(cfgItem, action) {
   switch (type(cfgItem)) {
     case "array":
       foreach (c in cfgItem)
@@ -112,10 +115,10 @@ local function isActionMatch(cfgItem, action) {
   return false
 }
 
-local function arrangeStreakWheelActions(unit, actions) {
-  local res = getCfgByUnit(unit).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
+let function arrangeStreakWheelActions(unit, actions) {
+  let res = getCfgByUnit(unit).map(@(c) c != null ? actions.findvalue(@(a) isActionMatch(c, a)) : null)
   local filledLen = res.reduce(@(lastIdx, a, idx) lastIdx = a != null ? idx : lastIdx, -1) + 1
-  local pagesCount = (filledLen + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE
+  let pagesCount = (filledLen + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE
   res.resize(pagesCount * ITEMS_PER_PAGE, null)
   foreach (a in actions)
     if (res.indexof(a) == null)

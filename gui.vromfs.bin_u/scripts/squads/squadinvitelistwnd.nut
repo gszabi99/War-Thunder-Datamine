@@ -1,9 +1,9 @@
-class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
-  sceneBlkName        = "gui/squads/squadInvites.blk"
+  sceneBlkName        = "%gui/squads/squadInvites.blk"
 
-  inviteListTplName   = "gui/squads/squadInvites"
+  inviteListTplName   = "%gui/squads/squadInvites"
 
   CONFIG_PLAYERS_LISTS = {
     invites = { listObjId = "invites_list"
@@ -31,7 +31,7 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(alignObj))
       return null
 
-    local params = {
+    let params = {
       alignObj = alignObj
     }
 
@@ -69,11 +69,11 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateList(configPlayersList)
   {
-    local playersList = configPlayersList.playersList()
-    local listObj = scene.findObject(configPlayersList.listObjId)
-    local viewData = getMembersViewData(playersList)
-    local viewBlk = ::handyman.renderCached(inviteListTplName, viewData)
-    local isFocused = listObj.isFocused()
+    let playersList = configPlayersList.playersList()
+    let listObj = scene.findObject(configPlayersList.listObjId)
+    let viewData = getMembersViewData(playersList)
+    let viewBlk = ::handyman.renderCached(inviteListTplName, viewData)
+    let isFocused = listObj.isFocused()
     local selectedIdx = listObj.getValue()
     local selectedObjId = null
     if ((selectedIdx >= 0) && (selectedIdx < listObj.childrenCount()) && isFocused)
@@ -83,8 +83,8 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
     local i = 0
     foreach(memberData in playersList)
     {
-      local inviteObjId = "squad_invite_" + memberData.uid
-      local inviteObj = listObj.findObject(inviteObjId)
+      let inviteObjId = "squad_invite_" + memberData.uid
+      let inviteObj = listObj.findObject(inviteObjId)
       if (::checkObj(inviteObj))
       {
         if (::u.isEqual(selectedObjId, inviteObjId) && isFocused)
@@ -93,7 +93,7 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
       }
       i++
     }
-    local countPlayers = listObj.childrenCount()
+    let countPlayers = listObj.childrenCount()
     if (isFocused && countPlayers > 0)
       listObj.setValue(clamp(selectedIdx, 0, countPlayers - 1))
     scene.findObject(configPlayersList.headerObjId).show(playersList.len() > 0)
@@ -103,7 +103,7 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMembersViewData(membersData)
   {
-    local items = []
+    let items = []
     foreach(memberData in membersData)
       items.append(
         {
@@ -117,19 +117,19 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSquadSizeOption()
   {
-    local isAvailable = ::g_squad_manager.canChangeSquadSize(false)
+    let isAvailable = ::g_squad_manager.canChangeSquadSize(false)
     optionsObj.show(isAvailable)
     optionsObj.enable(isAvailable)
     if (!isAvailable)
       return
 
-    local sizes = ::u.map(::g_squad_manager.squadSizesList,
+    let sizes = ::u.map(::g_squad_manager.squadSizesList,
       @(s) s.value + ::loc("ui/comma") + ::loc("squadSize/" + s.name))
-    local curValue = ::g_squad_manager.getMaxSquadSize()
-    local curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0
+    let curValue = ::g_squad_manager.getMaxSquadSize()
+    let curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0
 
-    local optionObj = scene.findObject("squad_size_option")
-    local markup = ::create_option_combobox("", sizes, curIdx, null, false)
+    let optionObj = scene.findObject("squad_size_option")
+    let markup = ::create_option_combobox("", sizes, curIdx, null, false)
     guiScene.replaceContentFromText(optionObj, markup, markup.len(), this)
     optionObj.setValue(curIdx)
     optionObj.enable(::g_squad_manager.canChangeSquadSize())
@@ -137,8 +137,8 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateReceiveApplicationsOption()
   {
-    local isAvailable = ::g_squad_manager.canChangeReceiveApplications(false)
-    local obj = showSceneBtn("receive_applications", isAvailable)
+    let isAvailable = ::g_squad_manager.canChangeReceiveApplications(false)
+    let obj = showSceneBtn("receive_applications", isAvailable)
     if (!isAvailable || !obj)
       return
 
@@ -151,18 +151,18 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(listObj))
       return
 
-    local total = playersList.len()
-    local rows = total && ::ceil(total.tofloat() / MAX_COLUMNS.tofloat())
-    local columns = rows && ::ceil(total.tofloat() / rows.tofloat())
+    let total = playersList.len()
+    let rows = total && ::ceil(total.tofloat() / MAX_COLUMNS.tofloat())
+    let columns = rows && ::ceil(total.tofloat() / rows.tofloat())
 
-    local sizeFormat = "%d@mIco"
+    let sizeFormat = "%d@mIco"
     listObj.width = ::format(sizeFormat, columns)
     listObj.height = ::format(sizeFormat, rows)
   }
 
   function updatePosition()
   {
-    local nestObj = scene.findObject(NEST_OBJ_ID)
+    let nestObj = scene.findObject(NEST_OBJ_ID)
     if (::checkObj(nestObj))
       align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, nestObj)
   }
@@ -179,7 +179,7 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSquadSizeChange(obj)
   {
-    local idx = obj.getValue()
+    let idx = obj.getValue()
     if (idx in ::g_squad_manager.squadSizesList)
       ::g_squad_manager.setSquadSize(::g_squad_manager.squadSizesList[idx].value)
   }
@@ -188,7 +188,7 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!obj)
       return
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value == ::g_squad_manager.isApplicationsEnabled())
       return
 

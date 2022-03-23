@@ -1,5 +1,5 @@
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { hasFeature } = require("scripts/user/features.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
 
 ::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 {
@@ -26,7 +26,7 @@ fpsDrawer.init <- function init()
 
 fpsDrawer.updateStatus <- function updateStatus(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 {
-  local objects = getCurSceneObjects()
+  let objects = getCurSceneObjects()
   if (!objects)
     return
 
@@ -36,7 +36,7 @@ fpsDrawer.updateStatus <- function updateStatus(fps, ping, packetLoss, sessionId
 
 fpsDrawer.getCurSceneObjects <- function getCurSceneObjects()
 {
-  local guiScene = ::get_cur_gui_scene()
+  let guiScene = ::get_cur_gui_scene()
   if (!guiScene)
     return null
 
@@ -55,7 +55,7 @@ fpsDrawer.validateObjects <- function validateObjects(objects, guiScene)
   if (::checkObj(::getTblValue(paramsList[0], objects)))
     return true
 
-  local holderObj = guiScene["status_texts_holder"]
+  let holderObj = guiScene["status_texts_holder"]
   if (!::checkObj(holderObj))
     return false
 
@@ -70,8 +70,8 @@ fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId,
 {
   fps = (fps + 0.5).tointeger();
   local fpsText = ""
-  local isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
-  local isAllowedForUser = hasFeature("FpsCounterOverride")
+  let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
+  let isAllowedForUser = hasFeature("FpsCounterOverride")
   if ((::is_dev_version || isAllowedForPlatform || isAllowedForUser) && fps < 10000 && fps > 0)
     fpsText = ::colorize(getFpsColor(fps), ::format("FPS: %d", fps))
   objects.fps.setValue(fpsText)
@@ -127,7 +127,7 @@ fpsDrawer.getPacketlossColor <- function getPacketlossColor(pl)
 
 fpsDrawer.checkVisibility <- function checkVisibility(objects)
 {
-  local show = ::is_hud_visible()
+  let show = ::is_hud_visible()
   if (objects.show == show)
     return
 
@@ -138,7 +138,7 @@ fpsDrawer.checkVisibility <- function checkVisibility(objects)
 
 fpsDrawer.onEventShowHud <- function onEventShowHud(p)
 {
-  local objects = getCurSceneObjects()
+  let objects = getCurSceneObjects()
   if (objects)
     checkVisibility(objects)
 }

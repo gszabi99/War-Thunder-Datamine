@@ -1,5 +1,5 @@
-local { getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-local enums = require("sqStdLibs/helpers/enums.nut")
+let { getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 
 local unitClassType = {
   types = []
@@ -168,34 +168,34 @@ function()
 
 unitClassType.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-local function getTypesFromCodeMask(codeMask) {
-  local resultTypes = []
+let function getTypesFromCodeMask(codeMask) {
+  let resultTypes = []
   foreach (t in unitClassType.types)
     if (t.checkCode(codeMask))
       resultTypes.append(t)
   return resultTypes
 }
 
-local classTypesCache = {
+let classTypesCache = {
   byExpClass = {}
 }
 
-local function getTypeByExpClass(expClass) {
+let function getTypeByExpClass(expClass) {
   return enums.getCachedType("getExpClass", expClass, classTypesCache.byExpClass,
     unitClassType, unitClassType.UNKNOWN)
 }
 
-local function getTypesByEsUnitType(esUnitType = null) { //null if all unit types
+let function getTypesByEsUnitType(esUnitType = null) { //null if all unit types
   return unitClassType.types.filter(@(t) (esUnitType == null && t.unitTypeCode != ::ES_UNIT_TYPE_INVALID)
     || t.unitTypeCode == esUnitType)
 }
 
-local remapShipTypes = {
+let remapShipTypes = {
   ship = "ship_only"
   boat = "boat_only"
 }
-local function processUnitTypeArray(unitTypeArray) {
-  local res = unitTypeArray.filter(@(v) v not in remapShipTypes)
+let function processUnitTypeArray(unitTypeArray) {
+  let res = unitTypeArray.filter(@(v) v not in remapShipTypes)
   if (unitTypeArray.len() >= res.len() + remapShipTypes.len())
     return res.append("ship_and_boat")
   return unitTypeArray.map(@(v) remapShipTypes?[v] ?? v)

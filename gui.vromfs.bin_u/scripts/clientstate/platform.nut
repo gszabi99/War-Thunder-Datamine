@@ -1,4 +1,4 @@
-local {
+let {
   platformId,
   isXboxScarlett,
   isXbox,
@@ -7,55 +7,58 @@ local {
   isSony,
   isPC,
   is_console,
-  consoleRevision } = require("std/platform.nut")
+  consoleRevision } = require("%sqstd/platform.nut")
 
-local {
+let {is_running_on_steam_deck} = require_native("steam")
+
+let {
   isXBoxPlayerName,
   isPS4PlayerName,
   cutPlayerNamePrefix, //TODO: Uses in single place,
   cutPlayerNamePostfix //TODO: better to refactor
-} = require("scripts/user/nickTools.nut")
+} = require("%scripts/user/nickTools.nut")
 
-local remapNick = require("scripts/user/remapNick.nut")
+let remapNick = require("%scripts/user/remapNick.nut")
+let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
 
-local PS4_REGION_NAMES = {
+let PS4_REGION_NAMES = {
   [::SCE_REGION_SCEE]  = "scee",
   [::SCE_REGION_SCEA]  = "scea",
   [::SCE_REGION_SCEJ]  = "scej"
 }
 
-local getPlayerName = function(name)
+let getPlayerName = function(name)
 {
-  if (name == ::my_user_name)
+  if (name == ::my_user_name || getRealName(name) == ::my_user_name) //local usage
   {
-    local replaceName = ::get_gui_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY, "")
+    let replaceName = ::get_gui_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY, "")
     if (replaceName != "")
       return replaceName
   }
 
-  return remapNick(name)
+  return getFakeName(name) ?? remapNick(name)
 }
 
-local isPlayerFromXboxOne = @(name) isXbox && isXBoxPlayerName(name)
-local isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
+let isPlayerFromXboxOne = @(name) isXbox && isXBoxPlayerName(name)
+let isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
 
-local isMePS4Player = @() ::get_player_tags().indexof("ps4") != null
-local isMeXBOXPlayer = @() ::get_player_tags().indexof("xbone") != null
+let isMePS4Player = @() ::get_player_tags().indexof("ps4") != null
+let isMeXBOXPlayer = @() ::get_player_tags().indexof("xbone") != null
 
-local canSpendRealMoney = @() !isPC || (!::has_entitlement("XBOXAccount") && !::has_entitlement("PSNAccount"))
+let canSpendRealMoney = @() !isPC || (!::has_entitlement("XBOXAccount") && !::has_entitlement("PSNAccount"))
 
-local isPs4XboxOneInteractionAvailable = function(name)
+let isPs4XboxOneInteractionAvailable = function(name)
 {
-  local isPS4Player = isPS4PlayerName(name)
-  local isXBOXPlayer = isXBoxPlayerName(name)
+  let isPS4Player = isPS4PlayerName(name)
+  let isXBOXPlayer = isXBoxPlayerName(name)
   if (((isMePS4Player() && isXBOXPlayer) || (isMeXBOXPlayer() && isPS4Player)) && !::has_feature("Ps4XboxOneInteraction"))
     return false
   return true
 }
 
-local canInteractCrossConsole = function(name) {
-  local isPS4Player = isPS4PlayerName(name)
-  local isXBOXPlayer = isXBoxPlayerName(name)
+let canInteractCrossConsole = function(name) {
+  let isPS4Player = isPS4PlayerName(name)
+  let isXBOXPlayer = isXBoxPlayerName(name)
 
   if (!isXBOXPlayer && (isPC || isSony))
     return true
@@ -78,6 +81,7 @@ return {
   isPlatformPS5 = isPS5
   isPlatformSony = isSony
   isPlatformPC = isPC
+  isPlatformSteamDeck = is_running_on_steam_deck()
   is_console
 
   isXBoxPlayerName = isXBoxPlayerName

@@ -1,4 +1,4 @@
-local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
+let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::SlotbarPresetsList <- class
 {
@@ -21,11 +21,11 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
     scene.show(true)
     maxPresets = ::slotbarPresets.getTotalPresetsCount()
     curPresetsData = array(maxPresets, NULL_PRESET_DATA)
-    local view = {
+    let view = {
       presets = array(maxPresets, null)
       isSmallFont = ::is_low_width_screen()
     }
-    local blk = ::handyman.renderCached(("gui/slotbar/slotbarPresets"), view)
+    let blk = ::handyman.renderCached(("%gui/slotbar/slotbarPresets"), view)
     scene.getScene().replaceContentFromText(scene, blk, blk.len(), this)
     update()
 
@@ -52,8 +52,8 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
   function getPresetsData()
   {
-    local curPresetIdx = getCurPresetIdx()
-    local res = ::u.mapAdvanced(::slotbarPresets.list(getCurCountry()),
+    let curPresetIdx = getCurPresetIdx()
+    let res = ::u.mapAdvanced(::slotbarPresets.list(getCurCountry()),
       @(l, idx, ...) {
         title = l.title
         isEnabled = l.enabled || idx == curPresetIdx //enable current preset for list
@@ -68,12 +68,12 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
     if(isSmallScreen)
       return
 
-    local listObj = getListObj()
+    let listObj = getListObj()
     if (!listObj)
       return
 
-    local newPresetsData = getPresetsData()
-    local curPresetIdx = getCurPresetIdx()
+    let newPresetsData = getPresetsData()
+    let curPresetIdx = getCurPresetIdx()
     local hasVisibleChanges = curPresetIdx != listObj.getValue()
     for(local i = 0; i < maxPresets; i++)
       if (updatePresetObj(listObj.getChild(i), curPresetsData[i], newPresetsData[i]))
@@ -93,7 +93,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
     if (::u.isEqual(wasData, newData))
       return false
 
-    local isEnabled = newData.isEnabled
+    let isEnabled = newData.isEnabled
     showObj(obj, isEnabled)
     if (!isEnabled)
       return wasData.isEnabled
@@ -112,7 +112,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
   function updateSizes(needFullRecount = false)
   {
     scene.getScene().applyPendingChanges(false)
-    local listObj = getListObj()
+    let listObj = getListObj()
     local availWidth = listObj.getSize()[0]
     if (!needFullRecount && _lastListWidth == availWidth)
       return
@@ -121,7 +121,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
     availWidth -= listObj.findObject("btn_slotbar_presets").getSize()[0]
 
     //count all sizes
-    local widthList = []
+    let widthList = []
     local totalWidth = 0
     for(local i = 0; i < maxPresets; i++)
     {
@@ -133,11 +133,11 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
     }
 
     //update all items visibility
-    local curPresetIdx = getCurPresetIdx()
+    let curPresetIdx = getCurPresetIdx()
     for(local i = maxPresets - 1; i >= 0; i--)
       if (curPresetsData[i].isEnabled)
       {
-        local isVisible = totalWidth <= availWidth || i == curPresetIdx
+        let isVisible = totalWidth <= availWidth || i == curPresetIdx
         showObj(listObj.getChild(i), isVisible)
         if (!isVisible)
           totalWidth -= widthList[i]
@@ -151,11 +151,11 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
   function getSelPresetIdx() //selected preset in view
   {
-    local listObj = getListObj()
+    let listObj = getListObj()
     if (!listObj)
       return getCurPresetIdx()
 
-    local value = listObj.getValue()
+    let value = listObj.getValue()
     if (value < 0 || value >= (listObj.childrenCount() -1)) //last index is button 'presets'
       return -1
     return value
@@ -163,7 +163,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
 
   function isPresetChanged()
   {
-    local idx = getSelPresetIdx()
+    let idx = getSelPresetIdx()
     return idx != getCurPresetIdx()
   }
 
@@ -172,7 +172,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
     if (!::slotbarPresets.canLoad(true, getCurCountry()))
       return update()
 
-    local idx = getSelPresetIdx()
+    let idx = getSelPresetIdx()
     if (idx < 0)
     {
       update()
@@ -258,7 +258,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
   {
     if (!::checkObj(scene))
       return null
-    local obj = scene.findObject("slotbar-presetsList")
+    let obj = scene.findObject("slotbar-presetsList")
     if (::checkObj(obj))
       return obj
     return null
@@ -268,7 +268,7 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
   {
     if (scene == null)
       return null
-    local obj = scene.findObject("btn_slotbar_presets")
+    let obj = scene.findObject("btn_slotbar_presets")
     if (::checkObj(obj))
       return obj
     return null
@@ -280,12 +280,12 @@ local { isSmallScreen } = require("scripts/clientState/touchScreen.nut")
    */
   function getListChildByPresetIdx(presetIdx)
   {
-    local listObj = getListObj()
+    let listObj = getListObj()
     if (listObj == null)
       return null
     if (presetIdx < 0 || listObj.childrenCount() <= presetIdx)
       return null
-    local childObj = listObj.getChild(presetIdx)
+    let childObj = listObj.getChild(presetIdx)
     if (::checkObj(childObj))
       return childObj
     return null

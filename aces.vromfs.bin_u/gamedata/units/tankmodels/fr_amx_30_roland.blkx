@@ -262,6 +262,9 @@
         },
         "ex_armor_12_dm": {
           "armorThickness": 5.0
+        },
+        "turret_04_front_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
@@ -573,7 +576,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -604,7 +607,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -843,6 +846,38 @@
       "EngineNameAi": "engine_tank_ai_middle",
       "TrackSoundNameAi": "tracks_ai_mbt"
     }
+  },
+  {
+    "chainIK": [
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_roll_03"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_hatch_turret_03"
+            }
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_roll_04"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_hatch_turret_01"
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "DamageEffects": [
@@ -2452,9 +2487,17 @@
           "pitch": [-10.0,35.0]
         }
       },
-      "animatedBones": {
-        "node": "antenna_target_location"
-      }
+      "animatedBones": [
+        {
+          "node": "antenna_target_location"
+        },
+        {
+          "node": "bone_gun"
+        },
+        {
+          "node": "bone_gun_01"
+        }
+      ]
     }
   },
   {
@@ -3321,9 +3364,17 @@
               }
             },
             {
-              "animatedBones": {
-                "node": "antenna_target_location"
-              }
+              "animatedBones": [
+                {
+                  "node": "antenna_target_location"
+                },
+                {
+                  "node": "bone_gun"
+                },
+                {
+                  "node": "bone_gun_01"
+                }
+              ]
             }
           ]
         }

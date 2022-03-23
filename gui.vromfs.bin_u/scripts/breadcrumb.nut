@@ -1,7 +1,7 @@
-local backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
+let backToMainScene = require("%scripts/mainmenu/backToMainScene.nut")
 local lastBaseHandlerStartData = null
 
-local function setBreadcrumbGoBackParams(handler)
+let function setBreadcrumbGoBackParams(handler)
 {
   if (!handler.isValid())
     return
@@ -10,8 +10,8 @@ local function setBreadcrumbGoBackParams(handler)
     lastBaseHandlerStartData = clone ::handlersManager.findLastBaseHandlerStartData(handler.guiScene)
   handler.backSceneFunc = lastBaseHandlerStartData?.handlerLocId
     ? lastBaseHandlerStartData?.startFunc : backToMainScene
-  local handlerLocId = lastBaseHandlerStartData?.handlerLocId ?? "mainmenu/hangar"
-  local backSceneObj = handler.scene.findObject("back_scene_name")
+  let handlerLocId = lastBaseHandlerStartData?.handlerLocId ?? "mainmenu/hangar"
+  let backSceneObj = handler.scene.findObject("back_scene_name")
   if (!backSceneObj?.isValid())
     return
 
@@ -19,7 +19,7 @@ local function setBreadcrumbGoBackParams(handler)
 }
 
 ::add_event_listener("SwitchedBaseHandler", function(p) {
-  local handlerClass = ::handlersManager.getActiveBaseHandler()?.getclass()
+  let handlerClass = ::handlersManager.getActiveBaseHandler()?.getclass()
   if(handlerClass == ::gui_handlers.MainMenu || handlerClass == ::gui_handlers.Hud)
     lastBaseHandlerStartData = null
 }, this)

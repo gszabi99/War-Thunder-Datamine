@@ -1,13 +1,13 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { search, isEmpty, isTMatrix } = require("sqStdLibs/helpers/u.nut")
-local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-local helpTabs = require("scripts/controls/help/controlsHelpTabs.nut")
-local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
-local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { EII_BULLET } = ::require_native("hudActionBarConst")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
+let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
+let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
+let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { EII_BULLET } = ::require_native("hudActionBarConst")
 
-require("scripts/viewUtils/bhvHelpFrame.nut")
+require("%scripts/viewUtils/bhvHelpFrame.nut")
 
 ::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet)
 {
@@ -28,16 +28,16 @@ require("scripts/viewUtils/bhvHelpFrame.nut")
     })
     return
   }
-  local needFlightMenu = !::get_is_in_flight_menu() && !::is_flight_menu_disabled();
+  let needFlightMenu = !::get_is_in_flight_menu() && !::is_flight_menu_disabled();
   if (needFlightMenu)
     ::get_cur_base_gui_handler().goForward(function(){::gui_start_flight_menu()})
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
 }
 
-class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.helpWndModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/help/helpWnd.blk"
+  sceneBlkName = "%gui/help/helpWnd.blk"
 
   defaultLinkLinesInterval = "@helpLineInterval"
 
@@ -65,7 +65,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     visibleTabs = helpTabs.getTabs(contentSet)
     fillTabs()
 
-    local subTabsObj = scene.findObject("sub_tabs_list")
+    let subTabsObj = scene.findObject("sub_tabs_list")
     ::move_mouse_on_child_by_value(subTabsObj?.isVisible()
       ? subTabsObj
       : scene.findObject("tabs_list"))
@@ -75,13 +75,13 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillTabs()
   {
-    local tabsObj = scene.findObject("tabs_list")
-    local countVisibleTabs = visibleTabs.len()
+    let tabsObj = scene.findObject("tabs_list")
+    let countVisibleTabs = visibleTabs.len()
 
-    local preselectedTab = helpTabs.getPrefferableType(contentSet)
+    let preselectedTab = helpTabs.getPrefferableType(contentSet)
 
     curTabIdx = 0
-    local view = { tabs = [] }
+    let view = { tabs = [] }
     foreach (idx, group in visibleTabs)
     {
       local isSelected = false
@@ -100,7 +100,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
 
     fillSubTabs()
@@ -108,14 +108,14 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillSubTabs()
   {
-    local subTabsList = visibleTabs[curTabIdx].list
+    let subTabsList = visibleTabs[curTabIdx].list
 
-    local isSubTabsVisible = subTabsList.len() > 1
-    local subTabsObj = showSceneBtn("sub_tabs_list", isSubTabsVisible)
+    let isSubTabsVisible = subTabsList.len() > 1
+    let subTabsObj = showSceneBtn("sub_tabs_list", isSubTabsVisible)
     if (!subTabsObj)
       return
 
-    local view = { items = [] }
+    let view = { items = [] }
     if (isSubTabsVisible)
     {
       foreach (idx, tType in subTabsList)
@@ -126,7 +126,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         })
       }
 
-      local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
+      let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
       guiScene.replaceContentFromText(subTabsObj, data, data.len(), this)
     }
 
@@ -135,13 +135,13 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentSubTab()
   {
-    local list = visibleTabs[curTabIdx].list
+    let list = visibleTabs[curTabIdx].list
     return list?[curSubTabIdx] ?? list?[0]
   }
 
   function onHelpSheetChange(obj)
   {
-    local selTabIdx = obj.getValue()
+    let selTabIdx = obj.getValue()
     if (curTabIdx == selTabIdx)
       return
 
@@ -151,7 +151,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onHelpSubSheetChange(obj)
   {
-    local selTabIdx = obj.getValue()
+    let selTabIdx = obj.getValue()
     if (obj.childrenCount() > 1 && curSubTabIdx == selTabIdx)
       return
 
@@ -161,20 +161,20 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillSubTabContent()
   {
-    local tab = getCurrentSubTab()
+    let tab = getCurrentSubTab()
     if (!tab)
       return
 
     pageUnitType = unitTypes.getByBit(tab?.pageUnitTypeBit)
     pageUnitTag = tab?.pageUnitTag
 
-    local sheetObj = scene.findObject("help_sheet")
-    local pageBlkName = ::getTblValue("pageBlkName", tab, "")
+    let sheetObj = scene.findObject("help_sheet")
+    let pageBlkName = ::getTblValue("pageBlkName", tab, "")
     if (!isEmpty(pageBlkName))
       guiScene.replaceContent(sheetObj, pageBlkName, this)
 
-    local fillFuncName = ::getTblValue("pageFillfuncName", tab)
-    local fillFunc = fillFuncName ? ::getTblValue(fillFuncName, this) : fillHelpPage
+    let fillFuncName = ::getTblValue("pageFillfuncName", tab)
+    let fillFunc = fillFuncName ? ::getTblValue(fillFuncName, this) : fillHelpPage
     fillFunc()
 
     showTabSpecificControls(tab)
@@ -188,16 +188,16 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function showTabSpecificControls(tab)
   {
-    local countryRelatedObjs = ::getTblValue("countryRelatedObjs", tab, null)
+    let countryRelatedObjs = ::getTblValue("countryRelatedObjs", tab, null)
     if (countryRelatedObjs != null)
     {
       local selectedCountry = ::get_profile_country_sq().slice(8)
       selectedCountry = (selectedCountry in countryRelatedObjs) ? selectedCountry : tab.defaultValues.country
-      local selectedCountryConfig = countryRelatedObjs?[selectedCountry] ?? []
+      let selectedCountryConfig = countryRelatedObjs?[selectedCountry] ?? []
       foreach(key, countryConfig in countryRelatedObjs)
         foreach (idx, value in countryConfig)
         {
-          local obj = scene.findObject(value)
+          let obj = scene.findObject(value)
           if (::checkObj(obj))
             obj.show(::isInArray(value, selectedCountryConfig))
         }
@@ -206,7 +206,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillTabLinkLines(tab)
   {
-    local linkLines = ::getTblValue("linkLines", tab, null)
+    let linkLines = ::getTblValue("linkLines", tab, null)
     scene.findObject("link_lines_block").show(linkLines != null)
     if (linkLines == null)
       return
@@ -214,32 +214,32 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     //Need for update elements visible
     guiScene.applyPendingChanges(false)
 
-    local linkContainer = scene.findObject("help_sheet")
-    local linkLinesConfig = {
+    let linkContainer = scene.findObject("help_sheet")
+    let linkLinesConfig = {
       startObjContainer = linkContainer
       endObjContainer = linkContainer
       lineInterval = ::getTblValue("lineInterval", linkLines, defaultLinkLinesInterval)
       links = linkLines?.links ?? []
       obstacles = ::getTblValue("obstacles", linkLines, null)
     }
-    local linesData = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
+    let linesData = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
     guiScene.replaceContentFromText(scene.findObject("link_lines_block"), linesData, linesData.len(), this)
   }
 
   function fillHelpPage()
   {
-    local tab = getCurrentSubTab()
+    let tab = getCurrentSubTab()
     if (!tab)
       return
 
-    local basePresets = preset.getBasePresetNames()
-    local haveIconsForControls = ::is_xinput_device() ||
+    let basePresets = preset.getBasePresetNames()
+    let haveIconsForControls = ::is_xinput_device() ||
       (search(basePresets, @(val) val == "keyboard"|| val == "keyboard_shooter") != null)
     showDefaultControls(haveIconsForControls)
     if ("moveControlsFrames" in tab)
       tab.moveControlsFrames(haveIconsForControls, scene)
 
-    local backImg = scene.findObject("help_background_image")
+    let backImg = scene.findObject("help_background_image")
     local curCountry = ::get_profile_country_sq().slice(8)
     if ("hasImageByCountries" in tab)
       curCountry = ::isInArray(curCountry, tab.hasImageByCountries)
@@ -258,7 +258,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (id in modifierSymbols)
       return modifierSymbols[id]
 
-    local item = shortcutsAxisListModule[id]
+    let item = shortcutsAxisListModule[id]
     {
       if ("symbol" in item)
         modifierSymbols[id] <- ::colorize("axisSymbolColor", ::loc(item.symbol) + ::loc("ui/colon"))
@@ -273,23 +273,23 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     remapKeyboardKeysByLang()
 
-    local scTextFull = []
-    local tipTexts = {} //btnName = { text, isMain }
+    let scTextFull = []
+    let tipTexts = {} //btnName = { text, isMain }
     modifierSymbols = {}
 
-    local shortcutsList = ::g_controls_utils.getControlsList({
+    let shortcutsList = ::g_controls_utils.getControlsList({
       unitType = pageUnitType,
       unitTags = pageUnitTag? [pageUnitTag] : []
     }).filter(@(item) item.needShowInHelp)
 
     for(local i=0; i<shortcutsList.len(); i++)
     {
-      local item = shortcutsList[i]
-      local name = (typeof(item)=="table")? item.id : item
-      local isAxis = typeof(item)=="table" && item.type == CONTROL_TYPE.AXIS
-      local isHeader = typeof(item)=="table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
-      local shortcutNames = []
-      local axisModifyerButtons = []
+      let item = shortcutsList[i]
+      let name = (typeof(item)=="table")? item.id : item
+      let isAxis = typeof(item)=="table" && item.type == CONTROL_TYPE.AXIS
+      let isHeader = typeof(item)=="table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
+      let shortcutNames = []
+      let axisModifyerButtons = []
       local scText = ""
 
       if (isHeader)
@@ -315,13 +315,13 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         else
           shortcutNames.append(name)
 
-        local shortcuts = ::get_shortcuts(shortcutNames, preset)
-        local btnList = {} //btnName = isMain
+        let shortcuts = ::get_shortcuts(shortcutNames, preset)
+        let btnList = {} //btnName = isMain
 
         //--- F1 help window ---
         for(local sc=0; sc<shortcuts.len(); sc++)
         {
-          local text = getShortcutText(shortcuts[sc], btnList, true)
+          let text = getShortcutText(shortcuts[sc], btnList, true)
           if (text!="" && (!isAxis || axisModifyerButtons[sc] != "")) //do not show axis text (axis buttons only)
             scText += ((scText!="")? ";  ":"") +
             (isAxis? getModifierSymbol(axisModifyerButtons[sc]) : "") +
@@ -346,7 +346,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     //set texts and tooltips
-    local view = {texts = [] }
+    let view = {texts = [] }
     foreach(idx, textsArr in scTextFull)
       view.texts.append({
         width = 100.0 / (scTextFull.len() || 1) + "%pw"
@@ -354,15 +354,15 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         text = ::g_string.implode(textsArr, "\n")
       })
 
-    local obj = scene.findObject("full_shortcuts_texts")
-    local data = ::handyman.renderCached("gui/commonParts/text", view)
+    let obj = scene.findObject("full_shortcuts_texts")
+    let data = ::handyman.renderCached("%gui/commonParts/text", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
 
-    local kbdObj = scene.findObject("keyboard_div")
+    let kbdObj = scene.findObject("keyboard_div")
     foreach(btnName, btn in tipTexts)
     {
-      local objId = ::stringReplace(btnName, " ", "_")
-      local tipObj = kbdObj.findObject(objId)
+      let objId = ::stringReplace(btnName, " ", "_")
+      let tipObj = kbdObj.findObject(objId)
       if (tipObj)
       {
         tipObj.tooltip = btn.text
@@ -379,17 +379,17 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function remapKeyboardKeysByLang()
   {
-    local map = ::getTblValue(::g_language.getLanguageName(), kbdKeysRemapByLang)
+    let map = ::getTblValue(::g_language.getLanguageName(), kbdKeysRemapByLang)
     if (!map)
       return
-    local kbdObj = scene.findObject("keyboard_div")
+    let kbdObj = scene.findObject("keyboard_div")
     if (!::checkObj(kbdObj))
       return
 
-    local replaceData = {}
+    let replaceData = {}
     foreach(key, val in map)
     {
-      local textObj = kbdObj.findObject(val)
+      let textObj = kbdObj.findObject(val)
       replaceData[val] <- {
         obj = kbdObj.findObject(key)
         text = (::checkObj(textObj) && textObj.text) || val
@@ -408,7 +408,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local scText = ""
     for(local i=0; i<shortcut.len(); i++)
     {
-      local sc = shortcut[i]
+      let sc = shortcut[i]
       if (!sc) continue
 
       local text = ""
@@ -441,7 +441,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach(name, val in gamepadIcons.fullIconsList)
     {
-      local obj = scene.findObject("ctrl_img_" + name)
+      let obj = scene.findObject("ctrl_img_" + name)
       if (::check_obj(obj))
         obj["background-image"] = gamepadIcons.getTexture(name)
     }
@@ -449,27 +449,27 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateGamepadTexts()
   {
-    local forceButtons = (pageUnitType == unitTypes.AIRCRAFT) ? ["camx"] : (pageUnitType == unitTypes.TANK) ? ["ID_ACTION_BAR_ITEM_5"] : []
-    local ignoreButtons = ["ID_CONTINUE_SETUP"]
-    local ignoreAxis = ["camx", "camy"]
-    local customLocalization = { ["camx"] = "controls/help/camx" }
+    let forceButtons = (pageUnitType == unitTypes.AIRCRAFT) ? ["camx"] : (pageUnitType == unitTypes.TANK) ? ["ID_ACTION_BAR_ITEM_5"] : []
+    let ignoreButtons = ["ID_CONTINUE_SETUP"]
+    let ignoreAxis = ["camx", "camy"]
+    let customLocalization = { ["camx"] = "controls/help/camx" }
 
-    local curJoyParams = ::JoystickParams()
+    let curJoyParams = ::JoystickParams()
     curJoyParams.setFrom(::joystick_get_cur_settings())
-    local axisIds = [
+    let axisIds = [
       { id="joy_axis_l", x=0, y=1 }
       { id="joy_axis_r", x=2, y=3 }
     ]
 
-    local joystickButtons = array(gamepadIcons.TOTAL_BUTTON_INDEXES, null)
-    local joystickAxis = array(axisIds.len()*2, null)
+    let joystickButtons = array(gamepadIcons.TOTAL_BUTTON_INDEXES, null)
+    let joystickAxis = array(axisIds.len()*2, null)
 
-    local scList = ::g_controls_utils.getControlsList({
+    let scList = ::g_controls_utils.getControlsList({
       unitType = pageUnitType,
       unitTags = pageUnitTag? [pageUnitTag] : []
     })
 
-    local shortcutNames = scList.filter(function(sc) {
+    let shortcutNames = scList.filter(function(sc) {
       if (sc.type == CONTROL_TYPE.SHORTCUT || sc.type == CONTROL_TYPE.AXIS_SHORTCUT)
         return ignoreButtons.findvalue(@(b) b == sc.id) == null || forceButtons.findvalue(@(b) b == sc.id) != null
 
@@ -480,7 +480,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (ignoreAxis.findvalue(@(b) b == sc.id) != null)
           return false
 
-        local axisId = curJoyParams.getAxis(sc.axisIndex).axisId
+        let axisId = curJoyParams.getAxis(sc.axisIndex).axisId
         if (axisId != -1 && axisId < joystickAxis.len())
         {
           joystickAxis[axisId] = joystickAxis[axisId] || []
@@ -491,7 +491,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       return false
     }).map(@(sc) sc.id)
 
-    local shortcuts = ::get_shortcuts(shortcutNames, preset)
+    let shortcuts = ::get_shortcuts(shortcutNames, preset)
     foreach (i, item in shortcuts)
     {
       if (item.len() == 0)
@@ -505,7 +505,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         foreach(idx, devId in itemButton.dev)
           if (devId == ::JOYSTICK_DEVICE_0_ID)
           {
-            local btnId = itemButton.btn[idx]
+            let btnId = itemButton.btn[idx]
             if (!(btnId in joystickButtons))
               continue
 
@@ -515,14 +515,14 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local bullet = "-"+ ::nbsp
+    let bullet = "-"+ ::nbsp
     foreach (btnId, actions in joystickButtons)
     {
-      local idSuffix = gamepadIcons.getButtonNameByIdx(btnId)
+      let idSuffix = gamepadIcons.getButtonNameByIdx(btnId)
       if (idSuffix == "")
         continue
 
-      local tObj = scene.findObject("joy_" + idSuffix)
+      let tObj = scene.findObject("joy_" + idSuffix)
       if (::checkObj(tObj))
       {
         local title = ""
@@ -531,16 +531,16 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (actions)
         {
           local titlesCount = 0
-          local sliceBtn = "button"
-          local sliceDirpad = "dirpad"
-          local slicedSuffix = idSuffix.slice(0, 6)
+          let sliceBtn = "button"
+          let sliceDirpad = "dirpad"
+          let slicedSuffix = idSuffix.slice(0, 6)
           local maxActionsInTitle = 2
           if (slicedSuffix == sliceBtn || slicedSuffix == sliceDirpad)
             maxActionsInTitle = 1
 
           for (local a=0; a<actions.len(); a++)
           {
-            local actionId = actions[a]
+            let actionId = actions[a]
 
             local shText = ::loc("hotkeys/" + actionId)
             if (::getTblValue(actionId, customLocalization, null))
@@ -565,19 +565,19 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (axis in axisIds)
     {
-      local tObj = scene.findObject(axis.id)
+      let tObj = scene.findObject(axis.id)
       if (::checkObj(tObj))
       {
-        local actionsX = (axis.x < joystickAxis.len() && joystickAxis[axis.x])? joystickAxis[axis.x] : []
-        local actionsY = (axis.y < joystickAxis.len() && joystickAxis[axis.y])? joystickAxis[axis.y] : []
+        let actionsX = (axis.x < joystickAxis.len() && joystickAxis[axis.x])? joystickAxis[axis.x] : []
+        let actionsY = (axis.y < joystickAxis.len() && joystickAxis[axis.y])? joystickAxis[axis.y] : []
 
-        local actionIdX = actionsX.len()? actionsX[0] : null
-        local isIgnoredX = actionIdX && isInArray(actionIdX, ignoreAxis)
-        local titleX = (actionIdX && !isIgnoredX)? ::loc("controls/" + actionIdX) : "---"
+        let actionIdX = actionsX.len()? actionsX[0] : null
+        let isIgnoredX = actionIdX && isInArray(actionIdX, ignoreAxis)
+        let titleX = (actionIdX && !isIgnoredX)? ::loc("controls/" + actionIdX) : "---"
 
-        local actionIdY = actionsY.len()? actionsY[0] : null
-        local isIgnoredY = actionIdY && isInArray(actionIdY, ignoreAxis)
-        local titleY = (actionIdY && !isIgnoredY)? ::loc("controls/" + actionIdY) : "---"
+        let actionIdY = actionsY.len()? actionsY[0] : null
+        let isIgnoredY = actionIdY && isInArray(actionIdY, ignoreAxis)
+        let titleY = (actionIdY && !isIgnoredY)? ::loc("controls/" + actionIdY) : "---"
 
         local tooltipX = ""
         for (local a=0; a<actionsX.len(); a++)
@@ -591,33 +591,33 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         tooltipY = tooltipY.len()? tooltipY : ::loc("controls/unmapped")
         tooltipY = ::loc("controls/help/mouse_aim_y") + ::loc("ui/colon") + "\n" + tooltipY
 
-        local title = titleX + " + " + titleY
-        local tooltip = tooltipX + "\n\n" + tooltipY
+        let title = titleX + " + " + titleY
+        let tooltip = tooltipX + "\n\n" + tooltipY
         tObj.setValue(title)
         tObj.tooltip = tooltip
       }
     }
 
-    local tObj = scene.findObject("joy_btn_share")
+    let tObj = scene.findObject("joy_btn_share")
     if (::checkObj(tObj))
     {
-      local title = ::loc(helpMarkup.btnBackLocId)
+      let title = ::loc(helpMarkup.btnBackLocId)
       tObj.setValue(title)
       tObj.tooltip = ::loc("controls/help/press") + ::loc("ui/colon") + "\n" + title
     }
 
-    local mouseObj = scene.findObject("joy_mouse")
+    let mouseObj = scene.findObject("joy_mouse")
     if (::checkObj(mouseObj))
     {
-      local mouse_aim_x = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_x" : "controls/gm_mouse_aim_x"
-      local mouse_aim_y = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_y" : "controls/gm_mouse_aim_y"
+      let mouse_aim_x = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_x" : "controls/gm_mouse_aim_x"
+      let mouse_aim_y = (pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_y" : "controls/gm_mouse_aim_y"
 
-      local titleX = ::loc(mouse_aim_x)
-      local titleY = ::loc(mouse_aim_y)
-      local title = titleX + " + " + titleY
-      local tooltipX = ::loc("controls/help/mouse_aim_x") + ::loc("ui/colon") + "\n" + ::loc(mouse_aim_x)
-      local tooltipY = ::loc("controls/help/mouse_aim_y") + ::loc("ui/colon") + "\n" + ::loc(mouse_aim_y)
-      local tooltip = tooltipX + "\n\n" + tooltipY
+      let titleX = ::loc(mouse_aim_x)
+      let titleY = ::loc(mouse_aim_y)
+      let title = titleX + " + " + titleY
+      let tooltipX = ::loc("controls/help/mouse_aim_x") + ::loc("ui/colon") + "\n" + ::loc(mouse_aim_x)
+      let tooltipY = ::loc("controls/help/mouse_aim_y") + ::loc("ui/colon") + "\n" + ::loc(mouse_aim_y)
+      let tooltip = tooltipX + "\n\n" + tooltipY
       mouseObj.setValue(title)
       mouseObj.tooltip = tooltip
     }
@@ -625,44 +625,44 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function showDefaultControls(isDefaultControls)
   {
-    local tab = getCurrentSubTab()
+    let tab = getCurrentSubTab()
     if (!tab)
       return
 
-    local frameForHideIds = ::getTblValue("defaultControlsIds", tab, [])
+    let frameForHideIds = ::getTblValue("defaultControlsIds", tab, [])
     foreach (item in frameForHideIds)
       if ("frameId" in item)
         scene.findObject(item.frameId).show(isDefaultControls)
 
-    local defControlsFrame = showSceneBtn("not_default_controls_frame", !isDefaultControls)
+    let defControlsFrame = showSceneBtn("not_default_controls_frame", !isDefaultControls)
     if (isDefaultControls || !defControlsFrame)
       return
 
-    local view = {
+    let view = {
       rows = []
     }
     foreach (item in frameForHideIds)
     {
-      local shortcutId = ::getTblValue("shortcut", item)
+      let shortcutId = ::getTblValue("shortcut", item)
       if (!shortcutId)
         continue
 
-      local rowData = {
+      let rowData = {
         text = ::loc("controls/help/"+shortcutId+"_0")
         shortcutMarkup = ::g_shortcut_type.getShortcutMarkup(shortcutId, preset)
       }
       view.rows.append(rowData)
     }
 
-    local markup = ::handyman.renderCached("gui/help/helpShortcutsList", view)
+    let markup = ::handyman.renderCached("%gui/help/helpShortcutsList", view)
     guiScene.replaceContentFromText(defControlsFrame, markup, markup.len(), this)
   }
 
   function updatePlatformControls()
   {
-    local isGamepadPreset = ::is_xinput_device()
+    let isGamepadPreset = ::is_xinput_device()
 
-    local buttonsList = {
+    let buttonsList = {
       controller_switching_ammo = isGamepadPreset
       keyboard_switching_ammo = !isGamepadPreset
       controller_smoke_screen_label = isGamepadPreset
@@ -677,27 +677,27 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillMissionObjectivesTexts()
   {
-    local misHelpBlkPath = ::g_mission_type.getHelpPathForCurrentMission()
+    let misHelpBlkPath = ::g_mission_type.getHelpPathForCurrentMission()
     if (misHelpBlkPath == null)
       return
 
-    local sheetObj = scene.findObject("help_sheet")
+    let sheetObj = scene.findObject("help_sheet")
     guiScene.replaceContent(sheetObj, misHelpBlkPath, this)
 
-    local airCaptureZoneDescTextObj = scene.findObject("air_capture_zone_desc")
+    let airCaptureZoneDescTextObj = scene.findObject("air_capture_zone_desc")
     if (::checkObj(airCaptureZoneDescTextObj))
     {
       local altitudeBottom = 0
       local altitudeTop = 0
 
-      local misInfoBlk = ::get_mission_meta_info(::get_current_mission_name())
-      local misBlk = misInfoBlk?.mis_file ? blkFromPath(misInfoBlk.mis_file) : null
-      local areasBlk = misBlk?.areas
+      let misInfoBlk = ::get_mission_meta_info(::get_current_mission_name())
+      let misBlk = misInfoBlk?.mis_file ? blkFromPath(misInfoBlk.mis_file) : null
+      let areasBlk = misBlk?.areas
       if (areasBlk)
       {
         for (local i = 0; i < areasBlk.blockCount(); i++)
         {
-          local block = areasBlk.getBlock(i)
+          let block = areasBlk.getBlock(i)
           if (block && block.type == "Cylinder" && isTMatrix(block.tm))
           {
             altitudeBottom = ::ceil(block.tm[3].y)
@@ -720,7 +720,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillHotas4Image()
   {
-    local imgObj = scene.findObject("image")
+    let imgObj = scene.findObject("image")
     if (!::checkObj(imgObj))
       return
 
@@ -731,7 +731,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isStartedFromMenu)
     {
-      local curHandler = ::handlersManager.getActiveBaseHandler()
+      let curHandler = ::handlersManager.getActiveBaseHandler()
       if (curHandler != null && curHandler instanceof ::gui_handlers.FlightMenu)
         curHandler.onResumeRaw()
     }
@@ -741,27 +741,27 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach (actionBar in (tab?.actionBars ?? []))
     {
-      local obj = scene.findObject(actionBar?.nest)
-      local actionBarItems = actionBar?.items ?? []
+      let obj = scene.findObject(actionBar?.nest)
+      let actionBarItems = actionBar?.items ?? []
       if (!::check_obj(obj) || !actionBarItems.len())
         continue
 
-      local items = []
+      let items = []
       foreach (item in actionBarItems)
         items.append(buildActionbarItemView(item, actionBar))
 
-      local view = {
+      let view = {
         items = items
       }
-      local blk = ::handyman.renderCached(("gui/help/helpActionBarItem"), view)
+      let blk = ::handyman.renderCached(("%gui/help/helpActionBarItem"), view)
       guiScene.replaceContentFromText(obj, blk, blk.len(), this)
     }
   }
 
   function buildActionbarItemView(item, actionBar)
   {
-    local actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
-    local viewItem = {}
+    let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
+    let viewItem = {}
 
     viewItem.id                 <- item.id
     viewItem.selected           <- item?.selected ? "yes" : "no"

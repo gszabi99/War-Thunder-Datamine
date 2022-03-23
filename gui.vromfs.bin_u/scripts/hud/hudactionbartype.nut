@@ -1,17 +1,17 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local time = require("scripts/time.nut")
-local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { getActionShortcutIndexByType, getActionBarUnitName, getForceWeapTriggerGroup,
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { getActionShortcutIndexByType, getActionBarUnitName, getForceWeapTriggerGroup,
   getAiGunnersState, getAutoturretState, getCurrentTriggerGroup, singleTorpedoSelected
 } = ::require_native("hudActionBar")
-local { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SPECIAL_UNIT, EII_WINCH, EII_WINCH_DETACH, EII_WINCH_ATTACH, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_TORPEDO_SIGHT, EII_HULL_AIMING, EII_DEPTH_CHARGE,
   EII_MINE, EII_MORTAR, EII_ROCKET, EII_GRENADE, EII_SMOKE_GRENADE, EII_REPAIR_BREACHES,
   EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER,
-  EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE,
+  EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2,
   EII_STEALTH, EII_LOCK, EII_FORCED_GUN, WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN,
   AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS, AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS,
   AI_GUNNERS_SHELL, EII_TERRAFORM
@@ -23,16 +23,16 @@ local { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   cache = { byCode = {} }
 }
 
-local getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
+let getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
 {
   local res = actionBarInfo.getActionDesc(getActionBarUnitName(), triggerGroup)
-  local cooldownTime = actionItem?.cooldownTime
+  let cooldownTime = actionItem?.cooldownTime
   if (cooldownTime)
     res += ("\n" + ::loc("shop/reloadTime") + " " + time.secondsToString(cooldownTime, true, true))
   return res
 }
 
-local getUnit = @() ::getAircraftByName(getActionBarUnitName())
+let getUnit = @() ::getAircraftByName(getActionBarUnitName())
 
 ::g_hud_action_bar_type.template <- {
   code = -1
@@ -61,7 +61,7 @@ local getUnit = @() ::getAircraftByName(getActionBarUnitName())
   getTooltipText = function(actionItem = null)
   {
     local res = ::loc("actionBarItem/" + getName(actionItem?.killStreakUnitTag))
-    local cooldownTime = ::getTblValue("cooldownTime", actionItem)
+    let cooldownTime = ::getTblValue("cooldownTime", actionItem)
     if (cooldownTime)
       res += "\n" + ::loc("shop/reloadTime") + " " + time.secondsToString(cooldownTime, true, true)
     if (actionItem?.automatic)
@@ -73,7 +73,7 @@ local getUnit = @() ::getAircraftByName(getActionBarUnitName())
   {
     if (!unit)
       unit = getUnit()
-    local shortcutIdx = actionItem?.shortcutIdx ?? getActionShortcutIndexByType(code)
+    let shortcutIdx = actionItem?.shortcutIdx ?? getActionShortcutIndexByType(code)
     if (shortcutIdx < 0)
       return null
 
@@ -349,7 +349,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
     getIcon = function (killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      local mod = getModificationByName(unit, "tank_medical_kit")
+      let mod = getModificationByName(unit, "tank_medical_kit")
       return mod?.image ?? ""
     }
   }
@@ -403,7 +403,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
     getIcon = function (killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      local mod = getModificationByName(unit, "ship_race_speed_boost")
+      let mod = getModificationByName(unit, "ship_race_speed_boost")
       return mod?.image ?? ""
     }
   }
@@ -455,7 +455,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
           : null
     getIcon = function (killStreakTag = null, unit = null) {
-      local currentTrigger = getCurrentTriggerGroup()
+      let currentTrigger = getCurrentTriggerGroup()
       switch (currentTrigger)
       {
         case TRIGGER_GROUP_PRIMARY:
@@ -481,7 +481,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_FORCED_GUN
     isForSelectWeaponMenu = @()
     getTitle = function(killStreakTag = null) {
-      local forceTrigger = getForceWeapTriggerGroup()
+      let forceTrigger = getForceWeapTriggerGroup()
       switch (forceTrigger)
       {
         case TRIGGER_GROUP_PRIMARY:
@@ -575,10 +575,36 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         : "#ui/gameuiskin#shipSupportPlane"
     }
     getTitle = function(killStreakTag = null) {
-      local unit = getUnit()
+      let unit = getUnit()
       return unit?.isTank() ? _title
         : unit?.isAir() ? ::loc("actionBarItem/switch_to_ship")
         : ::loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
+    }
+  }
+
+  SUPPORT_PLANE_2 = {
+    code = EII_SUPPORT_PLANE_2
+    _name = "support_plane_2"
+    _icon = "#ui/gameuiskin#scout_streak"
+    _title = ::loc("hotkeys/ID_START_SUPPORT_PLANE_2")
+    isForWheelMenu = @() true
+    getShortcut = @(actionItem, unit = null)
+      unit?.isTank() ? "ID_START_SUPPORT_PLANE_2" : "ID_START_SUPPORT_PLANE_SHIP_2"
+    getName = @(killStreakTag = null)
+      getUnit()?.isTank() ? _name
+        : getUnit()?.isAir() ? "switch_to_ship"
+        : "support_plane_ship"
+    getIcon = function(killStreakTag = null, unit = null) {
+      unit = unit || getUnit()
+      return unit?.isTank() ? "#ui/gameuiskin#scout_streak"
+        : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls"
+        : "#ui/gameuiskin#shipSupportPlane"
+    }
+    getTitle = function(killStreakTag = null) {
+      local unit = getUnit()
+      return unit?.isTank() ? _title
+        : unit?.isAir() ? ::loc("actionBarItem/switch_to_ship")
+        : ::loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP_2")
     }
   }
 

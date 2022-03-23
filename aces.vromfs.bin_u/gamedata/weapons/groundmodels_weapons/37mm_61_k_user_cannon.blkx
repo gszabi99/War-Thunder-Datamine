@@ -101,9 +101,10 @@
   },
   {
     "bullet": {
-      "mass": 0.76,
+      "mass": 0.77,
       "caliber": 0.037,
-      "speed": 880.0,
+      "speed": 868.0,
+      "Cx": 0.3698,
       "maxDistance": 9000.0,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
@@ -242,11 +243,12 @@
   },
   {
     "bullet": {
-      "mass": 0.735,
+      "mass": 0.732,
       "caliber": 0.037,
-      "explosiveType": "tnt",
-      "explosiveMass": 0.034,
+      "explosiveType": "a_ix_2",
+      "explosiveMass": 0.037,
       "speed": 866.0,
+      "Cx": 0.3491,
       "maxDistance": 9000.0,
       "selfDestructionInAir": true,
       "normalizationPreset": "heat",
@@ -429,11 +431,12 @@
   {
     "37mm_ussr_61K_HE": {
       "bullet": {
-        "mass": 0.735,
+        "mass": 0.732,
         "caliber": 0.037,
-        "explosiveType": "tnt",
-        "explosiveMass": 0.034,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.037,
         "speed": 866.0,
+        "Cx": 0.3491,
         "maxDistance": 9000.0,
         "selfDestructionInAir": true,
         "normalizationPreset": "heat",
@@ -617,9 +620,10 @@
   {
     "37mm_ussr_61K_AP": {
       "bullet": {
-        "mass": 0.76,
+        "mass": 0.77,
         "caliber": 0.037,
-        "speed": 880.0,
+        "speed": 868.0,
+        "Cx": 0.3698,
         "maxDistance": 9000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -764,6 +768,10 @@
           "mass": 0.62,
           "caliber": 0.037,
           "speed": 960.0,
+          "damageMass": 0.26,
+          "ballisticCaliber": 0.037,
+          "damageCaliber": 0.02,
+          "Cx": 0.3792,
           "maxDistance": 4000.0,
           "normalizationPreset": "apcr",
           "ricochetPreset": "apcr",
@@ -805,15 +813,14 @@
             "HitPower2500m": [0.6,2500.0],
             "HitPower10000m": [0.5,10000.0]
           },
-          "armorpower": {
-            "ArmorPower0m": [102.0,10.0],
-            "ArmorPower100m": [95.0,100.0],
-            "ArmorPower500m": [80.0,500.0],
-            "ArmorPower1000m": [59.0,1000.0],
-            "ArmorPower1500m": [35.0,1500.0],
-            "ArmorPower2000m": [28.0,2000.0],
-            "ArmorPower2500m": [25.0,2500.0],
-            "ArmorPower5000m": [10.0,5000.0]
+          "damage": {
+            "kinetic": {
+              "damageType": "generic",
+              "demarrePenetrationK": 0.65,
+              "demarreSpeedPow": 1.43,
+              "demarreMassPow": 0.71,
+              "demarreCaliberPow": 1.07
+            }
           },
           "visual": {
             "range_percent_of_ammo": [100.0,0.0],
@@ -905,11 +912,12 @@
       },
       {
         "bullet": {
-          "mass": 0.735,
+          "mass": 0.732,
           "caliber": 0.037,
-          "explosiveType": "tnt",
-          "explosiveMass": 0.034,
+          "explosiveType": "a_ix_2",
+          "explosiveMass": 0.037,
           "speed": 866.0,
+          "Cx": 0.3491,
           "maxDistance": 9000.0,
           "selfDestructionInAir": true,
           "normalizationPreset": "heat",
@@ -1091,11 +1099,12 @@
       },
       {
         "bullet": {
-          "mass": 0.735,
+          "mass": 0.732,
           "caliber": 0.037,
-          "explosiveType": "tnt",
-          "explosiveMass": 0.034,
+          "explosiveType": "a_ix_2",
+          "explosiveMass": 0.037,
           "speed": 866.0,
+          "Cx": 0.3491,
           "maxDistance": 9000.0,
           "selfDestructionInAir": true,
           "normalizationPreset": "heat",

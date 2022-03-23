@@ -1,5 +1,5 @@
-local { actionByLogType, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
-local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
 ::hidden_userlogs <- [
   ::EULT_NEW_STREAK,
@@ -48,11 +48,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
             ::EULT_BUYENTITLEMENT, ::EULT_OPEN_TROPHY, ::EULT_CLAN_UNITS]
     checkFunc = function(userlogBlk)
     {
-      local body = userlogBlk?.body
+      let body = userlogBlk?.body
       if (!body)
         return true
 
-      local logType = userlogBlk?.type
+      let logType = userlogBlk?.type
       if (logType == ::EULT_CLAN_ACTION
           || logType == ::EULT_BUYING_UNLOCK
           || logType == ::EULT_BUYING_RESOURCE)
@@ -109,10 +109,10 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   ::gui_start_modal_wnd(::gui_handlers.UserLogHandler)
 }
 
-class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.UserLogHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/userlog.blk"
+  sceneBlkName = "%gui/userlog.blk"
 
   fullLogs = null // Pure log with dub instances to match with user log count in blk
   logs = null // Without dub instances (everyDayLoginAward)
@@ -127,7 +127,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   slotbarActions = [ "take", "showroom", "testflight", "sec_weapons", "weapons", "info" ]
 
-  logRowTplName = "gui/userLog/userLogRow"
+  logRowTplName = "%gui/userLog/userLogRow"
 
   function initScreen()
   {
@@ -143,10 +143,10 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
-    local value = ::get_gui_option(::USEROPT_USERLOG_FILTER)
-    local curIdx = (value in ::userlog_pages)? value : 0
+    let value = ::get_gui_option(::USEROPT_USERLOG_FILTER)
+    let curIdx = (value in ::userlog_pages)? value : 0
 
-    local view = {
+    let view = {
       tabs = []
     }
     foreach(idx, page in ::userlog_pages)
@@ -155,15 +155,15 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
         continue
       view.tabs.append({
         id = "page_" + idx
-        cornerImg = "#ui/gameuiskin#new_icon"
+        cornerImg = "#ui/gameuiskin#new_icon.svg"
         cornerImgId = "img_new_" + page.id
         cornerImgSmall = true
         tabName = "#userlog/page/" + page.id
         navImagesText = ::get_navigation_images_text(idx, ::userlog_pages.len())
       })
     }
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
-    local tabsObj = scene.findObject("tabs_list")
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    let tabsObj = scene.findObject("tabs_list")
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     updateTabNewIconWidgets()
 
@@ -172,11 +172,11 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getNewMessagesByPages()
   {
-    local res = array(::userlog_pages.len(), 0)
-    local total = ::get_user_logs_count()
+    let res = array(::userlog_pages.len(), 0)
+    let total = ::get_user_logs_count()
     for(local i=0; i<total; i++)
     {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
 
       if (blk?.disabled) // was seen
@@ -200,7 +200,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     nextLogId = 0
     haveNext = false
     addLogsPage()
-    local childrenCount = listObj.childrenCount() - (haveNext ? 1 : 0)
+    let childrenCount = listObj.childrenCount() - (haveNext ? 1 : 0)
     if (selectedIndex < childrenCount || childrenCount > 0)
     {
       selectedIndex = clamp(selectedIndex, 0, childrenCount - 1)
@@ -208,7 +208,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     ::move_mouse_on_child_by_value(listObj)
 
-    local msgObj = scene.findObject("middle_message")
+    let msgObj = scene.findObject("middle_message")
     msgObj.show(logs.len()==0)
     if (logs.len()==0)
       msgObj.setValue(::loc("userlog/noMessages"))
@@ -220,13 +220,13 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     guiScene.setUpdatesEnabled(false, false)
-    local showTo = (nextLogId+logsPerPage < logs.len())? nextLogId+logsPerPage : logs.len()
+    let showTo = (nextLogId+logsPerPage < logs.len())? nextLogId+logsPerPage : logs.len()
 
     local data=""
     for(local i=nextLogId; i<showTo; i++)
       if (i!=nextLogId || !haveNext)
       {
-        local rowName = "row"+logs[i].idx
+        let rowName = "row"+logs[i].idx
         data += format("expandable { id:t='%s' } ", rowName)
       }
     guiScene.appendWithBlk(listObj, data, this)
@@ -244,12 +244,12 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillLog(log)
   {
-    local rowName = "row"+log.idx
-    local rowObj = listObj.findObject(rowName)
-    local rowData = ::get_userlog_view_data(log)
+    let rowName = "row"+log.idx
+    let rowObj = listObj.findObject(rowName)
+    let rowData = ::get_userlog_view_data(log)
     if ((rowData?.descriptionBlk ?? "") != "")
       rowData.hasExpandImg <- true
-    local viewBlk = ::handyman.renderCached(logRowTplName, rowData)
+    let viewBlk = ::handyman.renderCached(logRowTplName, rowData)
 
     guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
 
@@ -260,16 +260,16 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function addNextButton(log)
   {
-    local rowName = "row"+log.idx
+    let rowName = "row"+log.idx
     local rowObj = listObj.findObject(rowName)
     if (!rowObj)
     {
-      local data = format("expandable { id:t='%s' } ", rowName)
+      let data = format("expandable { id:t='%s' } ", rowName)
       guiScene.appendWithBlk(listObj, data, this)
       rowObj = listObj.findObject(rowName)
     }
 
-    local viewBlk = ::handyman.renderCached(logRowTplName,
+    let viewBlk = ::handyman.renderCached(logRowTplName,
       {
         middle = ::loc("userlog/showMore")
       })
@@ -306,11 +306,11 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local needSave = false
 
-    local total = ::get_user_logs_count()
+    let total = ::get_user_logs_count()
     local counter = 0
     for(local i=total-1; i>=0; i--)
     {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       ::get_user_log_blk_body(i, blk)
       if (!::isInArray(blk?.type, ::hidden_userlogs))
       {
@@ -335,10 +335,10 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    local newMsgs = getNewMessagesByPages()
+    let newMsgs = getNewMessagesByPages()
     foreach(idx, count in newMsgs)
     {
-      local obj = scene.findObject("img_new_" + ::userlog_pages[idx].id)
+      let obj = scene.findObject("img_new_" + ::userlog_pages[idx].id)
       if (::checkObj(obj))
         obj.show(count > 0)
     }
@@ -367,8 +367,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj)
       return
 
-    local index = obj.getValue();
-    local childrenCount = obj.childrenCount()
+    let index = obj.getValue();
+    let childrenCount = obj.childrenCount()
     if (index != selectedIndex && selectedIndex != -1)
     {
       markItemSeen(selectedIndex);
@@ -383,7 +383,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
       obj.setValue(selectedIndex)
     }
     guiScene.applyPendingChanges(false)
-    local childObj = obj.getChild(selectedIndex)
+    let childObj = obj.getChild(selectedIndex)
     if (!::check_obj(childObj))
       return
 
@@ -393,12 +393,12 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangePage(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
 
-    local idx = ::to_integer_safe(::getObjIdByPrefix(obj.getChild(value), "page_"), -1)
-    local newPage = ::getTblValue(idx, ::userlog_pages)
+    let idx = ::to_integer_safe(::getObjIdByPrefix(obj.getChild(value), "page_"), -1)
+    let newPage = ::getTblValue(idx, ::userlog_pages)
     if (!newPage || newPage == curPage)
       return
 
@@ -443,8 +443,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onUserLogAction(obj)
   {
-    local logIdx = obj?.logIdx
-    local log = logIdx != null
+    let logIdx = obj?.logIdx
+    let log = logIdx != null
       ? ::u.search(logs, @(l) l.idx == logIdx.tointeger())
       : logs?[selectedIndex]
     if (!log)

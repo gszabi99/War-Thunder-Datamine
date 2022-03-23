@@ -1,12 +1,12 @@
-local { isCountrySlotbarHasUnits } = require("scripts/slotbar/slotbar.nut")
-local { clearBorderSymbols } = require("std/string.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
-local { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbar.nut")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 // Independed Modules
-require("scripts/slotbar/hangarVehiclesPreset.nut")
+require("%scripts/slotbar/hangarVehiclesPreset.nut")
 
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"
@@ -51,9 +51,9 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       presets[presetDataItem.country] <- ::getTblValue(presetDataItem.country, presets, [])
       if (!presetDataItem.hasUnits)
         continue
-      local gameMode = ::game_mode_manager.getGameModeByUnitType(presetDataItem.unitType, -1, true)
+      let gameMode = ::game_mode_manager.getGameModeByUnitType(presetDataItem.unitType, -1, true)
       // Creating preset from preset data item.
-      local preset = _createPresetTemplate(0)
+      let preset = _createPresetTemplate(0)
       preset.title = ::get_unit_type_army_text(presetDataItem.unitType)
       preset.gameModeId = ::getTblValue("id", gameMode, "")
       foreach (taskData in presetDataItem.tasksData)
@@ -68,7 +68,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       _updateInfo(preset)
       presets[presetDataItem.country].append(preset)
 
-      local presetIndex = presets[presetDataItem.country].len() - 1
+      let presetIndex = presets[presetDataItem.country].len() - 1
       presetDataItem.presetIndex <- presetIndex
 
       if (newbiePresetsData.selectedCountry == presetDataItem.country &&
@@ -84,7 +84,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       if (!::isCountryAvailable(country))
         continue
 
-      local presetDataItem = getPresetDataByCountryAndUnitType(newbiePresetsData, country, newbiePresetsData.selectedUnitType)
+      let presetDataItem = getPresetDataByCountryAndUnitType(newbiePresetsData, country, newbiePresetsData.selectedUnitType)
       selected[country] <- ::getTblValue("presetIndex", presetDataItem, 0)
     }
 
@@ -111,7 +111,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     else
     {
       selPresetId = 0
-      local slotbarPreset = createPresetFromSlotbar(countryId)
+      let slotbarPreset = createPresetFromSlotbar(countryId)
       foreach (idx, preset in presets[countryId])
         if (::u.isEqual(preset.crews, slotbarPreset.crews) && ::u.isEqual(preset.units, slotbarPreset.units))
         {
@@ -127,14 +127,14 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if (!countryId)
       countryId = ::get_profile_country_sq()
-    local res = []
+    let res = []
     if (!(countryId in presets))
     {
       res.append(createPresetFromSlotbar(countryId))
       return res
     }
 
-    local currentIdx = getCurrent(countryId, -1)
+    let currentIdx = getCurrent(countryId, -1)
     foreach(idx, preset in presets[countryId])
     {
       if (idx == currentIdx)
@@ -161,8 +161,8 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if (!country)
       country = ::get_profile_country_sq()
-    local index = getCurrent(country, -1)
-    local currentPresets = ::getTblValue(country, presets)
+    let index = getCurrent(country, -1)
+    let currentPresets = ::getTblValue(country, presets)
     return ::getTblValue(index, currentPresets)
   }
 
@@ -182,7 +182,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if ( ! country)
       country = ::get_profile_country_sq()
-    local types = getUnitTypesWithNotActivePresetBonus(country)
+    let types = getUnitTypesWithNotActivePresetBonus(country)
     local typeNames = ::u.map(types, function(u) { return u.getArmyLocName()})
     return ::g_string.implode(typeNames, ", ")
   }
@@ -216,7 +216,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     if ( ! country)
       country = ::get_profile_country_sq()
     validateSlotsCountCache()
-    local result = []
+    let result = []
     foreach (unitType, typeStatus in ::getTblValue(country, activeTypeBonusByCountry, {}))
       if( ! typeStatus)
         result.append(unitType)
@@ -242,7 +242,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
           ! unit.isVisibleInShop())
         continue
 
-      local countryName = ::getUnitCountry(unit)
+      let countryName = ::getUnitCountry(unit)
       if ( ! (countryName in activeTypeBonusByCountry))
         activeTypeBonusByCountry[countryName] <- {}
 
@@ -268,7 +268,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if (!canCreate())
       return false
-    local countryId = ::get_profile_country_sq()
+    let countryId = ::get_profile_country_sq()
     presets[countryId].append(createEmptyPreset(countryId, presets[countryId].len()))
     save(countryId)
     ::broadcastEvent("SlotbarPresetsChanged", { showPreset = presets[countryId].len()-1 })
@@ -277,7 +277,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function canErase()
   {
-    local countryId = ::get_profile_country_sq()
+    let countryId = ::get_profile_country_sq()
     return (countryId in presets) && presets[countryId].len() > minCountryPresets
   }
 
@@ -285,7 +285,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   {
     if (!canErase())
       return false
-    local countryId = ::get_profile_country_sq()
+    let countryId = ::get_profile_country_sq()
     if (idx == selected[countryId])
       return
     presets[countryId].remove(idx)
@@ -298,8 +298,8 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function move(idx, offset)
   {
-    local countryId = ::get_profile_country_sq()
-    local newIdx = ::clamp(idx + offset, 0, presets[countryId].len() - 1)
+    let countryId = ::get_profile_country_sq()
+    let newIdx = ::clamp(idx + offset, 0, presets[countryId].len() - 1)
     if (newIdx == idx)
       return false
     presets[countryId].insert(newIdx, presets[countryId].remove(idx))
@@ -324,11 +324,11 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function rename(idx)
   {
-    local countryId = ::get_profile_country_sq()
+    let countryId = ::get_profile_country_sq()
     if (!(countryId in presets) || !(idx in presets[countryId]))
       return
 
-    local oldName = presets[countryId][idx].title
+    let oldName = presets[countryId][idx].title
     ::gui_modal_editbox_wnd({
                       title = ::loc("mainmenu/newPresetName"),
                       maxLen = 16,
@@ -348,7 +348,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function onChangePresetName(idx, newName, countryId)
   {
-    local oldName = presets[countryId][idx].title
+    let oldName = presets[countryId][idx].title
     if (oldName == newName)
       return
 
@@ -379,15 +379,15 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       countryId = ::get_profile_country_sq()
     if (!canEditCountryPresets(countryId) || !(countryId in presets))
       return false
-    local cfgBlk = ::loadLocalByAccount("slotbar_presets/" + countryId)
+    let cfgBlk = ::loadLocalByAccount("slotbar_presets/" + countryId)
     local blk = null
     if (presets[countryId].len() > 0)
     {
-      local curPreset = ::getTblValue(selected[countryId], presets[countryId])
+      let curPreset = ::getTblValue(selected[countryId], presets[countryId])
       if (curPreset && countryId == ::get_profile_country_sq())
         updatePresetFromSlotbar(curPreset, countryId)
 
-      local presetsList = []
+      let presetsList = []
       foreach (idx, p in presets[countryId])
       {
         if (p.units.len() == 0)
@@ -444,7 +444,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
     foreach (unitName in preset.units)
     {
-      local unit = ::getAircraftByName(unitName)
+      let unit = ::getAircraftByName(unitName)
       if (unit && ::SessionLobby.isUnitAllowed(unit))
         return true
     }
@@ -465,7 +465,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
     save(countryId) //save current preset slotbar changes
 
-    local preset = ::getTblValue(idx, presets[countryId])
+    let preset = ::getTblValue(idx, presets[countryId])
     if (!canLoadPreset(preset))
       return false
 
@@ -484,18 +484,18 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     if (countryIdx == -1 || !countryCrews.len())
       return false
 
-    local unitsList = {}
+    let unitsList = {}
     local selUnitId = ""
     local selCrewIdx = 0
     foreach (crewIdx, crew in countryCrews)
     {
-      local crewTrainedUnits = ::getTblValue("trained", crew, [])
+      let crewTrainedUnits = ::getTblValue("trained", crew, [])
       foreach (i, unitId in preset.units)
       {
-        local crewId = preset.crews[i]
+        let crewId = preset.crews[i]
         if (crewId == crew.id)
         {
-          local unit = ::getAircraftByName(unitId)
+          let unit = ::getAircraftByName(unitId)
           if (unit && unit.isInShop && ::isUnitUsable(unit)
               && (!unit.trainCost || ::isInArray(unitId, crewTrainedUnits))
               && !(unitId in unitsList))
@@ -515,7 +515,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     // we automatically overwrite this permanently unloadable preset with valid one.
     if (!unitsList.len())
     {
-      local p = createEmptyPreset(countryId)
+      let p = createEmptyPreset(countryId)
       foreach (i, unitId in p.units)
       {
         unitsList[unitId] <- p.crews[i]
@@ -524,10 +524,10 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       }
     }
 
-    local tasksData = []
+    let tasksData = []
     foreach (crew in countryCrews)
     {
-      local curUnitId = ::getTblValue("aircraft", crew, "")
+      let curUnitId = ::getTblValue("aircraft", crew, "")
       local unitId = ""
       foreach (uId, crewId in unitsList)
         if (crewId == crew.id)
@@ -596,7 +596,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     // we will try to find better one.
     if (gameMode != null && !::game_mode_manager.isPresetValidForGameMode(preset, gameMode))
     {
-      local betterGameModeId = ::game_mode_manager.findCurrentGameModeId(true, gameMode.diffCode)
+      let betterGameModeId = ::game_mode_manager.findCurrentGameModeId(true, gameMode.diffCode)
       if (betterGameModeId != null)
         gameMode = ::game_mode_manager.getGameModeById(betterGameModeId)
     }
@@ -610,10 +610,10 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function invalidateUnitsModificators(countryIdx)
   {
-    local crews = ::g_crews_list.get()?[countryIdx]?.crews ?? []
+    let crews = ::g_crews_list.get()?[countryIdx]?.crews ?? []
     foreach(crew in crews)
     {
-      local unit = ::g_crew.getCrewUnit(crew)
+      let unit = ::g_crew.getCrewUnit(crew)
       if (unit)
         unit.invalidateModificators()
     }
@@ -626,32 +626,32 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function getPresetsList(countryId)
   {
-    local res = []
-    local blk = ::loadLocalByAccount("slotbar_presets/" + countryId)
+    let res = []
+    let blk = ::loadLocalByAccount("slotbar_presets/" + countryId)
     if (blk)
     {
-      local presetsBlk = blk % "preset"
+      let presetsBlk = blk % "preset"
       foreach (idx, strPreset in presetsBlk)
       {
-        local data = ::g_string.split(strPreset, "|")
+        let data = ::g_string.split(strPreset, "|")
         if (data.len() < 3)
           continue
-        local preset = _createPresetTemplate(idx)
+        let preset = _createPresetTemplate(idx)
         preset.selected = ::to_integer_safe(data[0], -1)
-        local title = validatePresetName(::getTblValue(3, data, ""))
+        let title = validatePresetName(::getTblValue(3, data, ""))
         if (title.len())
           preset.title = title
         preset.gameModeId = ::getTblValue(4, data, "")
 
-        local unitNames = ::g_string.split(data[2], ",")
-        local crewIds = ::g_string.split(data[1], ",")
+        let unitNames = ::g_string.split(data[2], ",")
+        let crewIds = ::g_string.split(data[1], ",")
         if (!unitNames.len() || unitNames.len() != crewIds.len())
           continue
 
         //validate crews and units
         for(local i = 0; i < unitNames.len(); i++)
         {
-          local unitName = unitNames[i]
+          let unitName = unitNames[i]
           local crewId = crewIds[i]
           if (crewId == "" && presetsVersion == 0)
             continue
@@ -696,13 +696,13 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
     local unitTypesMask = 0
     foreach (unitId in preset.units)
     {
-      local unit = ::getAircraftByName(unitId)
-      local unitType = unit ? ::get_es_unit_type(unit) : ::ES_UNIT_TYPE_INVALID
+      let unit = ::getAircraftByName(unitId)
+      let unitType = unit ? ::get_es_unit_type(unit) : ::ES_UNIT_TYPE_INVALID
       if (unitType != ::ES_UNIT_TYPE_INVALID)
         unitTypesMask = unitTypesMask | (1 << unitType)
     }
 
-    local enabled = ::has_feature("Tanks") || (unitTypesMask != (1 << ::ES_UNIT_TYPE_TANK))
+    let enabled = ::has_feature("Tanks") || (unitTypesMask != (1 << ::ES_UNIT_TYPE_TANK))
 
     preset.unitTypesMask = unitTypesMask
     preset.enabled = enabled
@@ -716,8 +716,8 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       return preset   //but can not return null, because this value used in create new preset
 
     ::init_selected_crews()
-    local units = []
-    local crews = []
+    let units = []
+    let crews = []
     local selected = preset.selected
     foreach (tbl in ::g_crews_list.get())
       if (tbl.country == countryId)
@@ -725,7 +725,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
         foreach (crew in tbl.crews)
           if (("aircraft" in crew))
           {
-            local unitName = crew.aircraft
+            let unitName = crew.aircraft
             if (!::getAircraftByName(unitName))
               continue
 
@@ -753,14 +753,14 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function createEmptyPreset(countryId, presetIdx = 0)
   {
-    local crews = ::get_crews_list_by_country(countryId)
+    let crews = ::get_crews_list_by_country(countryId)
     local unitToSet = null
     local crewToSet = null
     foreach (crew in crews)
     {
       foreach (unitName in crew.trained)
       {
-        local unit = ::getAircraftByName(unitName)
+        let unit = ::getAircraftByName(unitName)
         if (!unit || !unit.isBought() || !unit.canAssignToCrew(countryId))
           continue
         if (unitToSet && unitToSet.rank > unit.rank)
@@ -772,7 +772,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
         break
     }
 
-    local preset = _createPresetTemplate(presetIdx)
+    let preset = _createPresetTemplate(presetIdx)
     if (unitToSet)
     {
       preset.units = [ unitToSet.name ]
@@ -785,11 +785,11 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
   function savePresetGameMode(country)
   {
-     local curGameModeId = ::game_mode_manager.getCurrentGameModeId()
+     let curGameModeId = ::game_mode_manager.getCurrentGameModeId()
      if (!curGameModeId)
        return
 
-     local preset = getCurrentPreset(country)
+     let preset = getCurrentPreset(country)
      if(!preset || curGameModeId == preset.gameModeId)
        return
 

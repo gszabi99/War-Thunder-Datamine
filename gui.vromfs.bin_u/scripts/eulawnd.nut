@@ -1,16 +1,16 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
-local { fillUserNick } = require("scripts/firstChoice/firstChoice.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 
 ::gui_start_eula <- function gui_start_eula(eulaType, isForView = false)
 {
   ::gui_start_modal_wnd(::gui_handlers.EulaWndHandler, { eulaType = eulaType, isForView = isForView })
 }
 
-class ::gui_handlers.EulaWndHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.EulaWndHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/eulaFrame.blk"
+  sceneBlkName = "%gui/eulaFrame.blk"
 
   eulaType = ::TEXT_EULA
   isForView = false
@@ -18,9 +18,9 @@ class ::gui_handlers.EulaWndHandler extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     fillUserNick(scene.findObject("usernick_place"))
-    local textObj = scene.findObject("eulaText")
+    let textObj = scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
-    local isEULA = eulaType == ::TEXT_EULA
+    let isEULA = eulaType == ::TEXT_EULA
     ::load_text_content_to_gui_object(textObj, isEULA ? ::loc("eula_filename") : ::loc("nda_filename"))
     if (isEULA && isPlatformSony)
     {
@@ -29,8 +29,8 @@ class ::gui_handlers.EulaWndHandler extends ::gui_handlers.BaseGuiHandlerWT
         regionTextRootMainPart = "scea"
 
       local eulaText = textObj.getValue()
-      local locId = "sony/" + regionTextRootMainPart
-      local legalLocText = ::loc(locId, "")
+      let locId = "sony/" + regionTextRootMainPart
+      let legalLocText = ::loc(locId, "")
       if (legalLocText == "")
       {
         ::dagor.debug("Cannot find '" + locId + "' text for " + ::get_current_language() + " language.")

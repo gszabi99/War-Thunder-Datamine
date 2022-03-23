@@ -2149,21 +2149,165 @@
     {
       "preset": {
         "name": "fiat_g91_default",
-        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_default.blk",
+        "tags": {
+          "free": true
+        },
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+            },
+            {
+              "tier": {
+                "idx": 5,
+                "iconType": "cannon_inner"
+              }
+            },
+            {
+              "tier": {
+                "idx": 4,
+                "iconType": "cannon_inner"
+              }
+            },
+            {
+              "tier": {
+                "idx": 7,
+                "iconType": "cannon_inner"
+              }
+            },
+            {
+              "tier": {
+                "idx": 8,
+                "iconType": "cannon_inner"
+              }
+            }
+          ]
+        }
       }
     },
     {
       "preset": {
         "name": "fiat_g91_2x500lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_2x500lb_bombs.blk",
-        "reqModification": "b-17_sbc"
+        "reqModification": "b-17_sbc",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "cannon_inner"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "iconType": "bombs_middle"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "iconType": "bombs_middle"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
       "preset": {
         "name": "fiat_g91_2_75in_ffar_rockets",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_2_75in_ffar_rockets.blk",
-        "reqModification": "us_2_75_in_ffar"
+        "reqModification": "us_2_75_in_ffar",
+        "weaponConfig": [
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "cannon_inner"
+                }
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+              },
+              {
+                "amountPerTier": 19.0
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "iconType": "nar_ap_middle"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "iconType": "nar_ap_middle"
+                }
+              }
+            ]
+          }
+        ]
       }
     }
   ],

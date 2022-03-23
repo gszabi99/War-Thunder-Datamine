@@ -1,12 +1,12 @@
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { getShopItem, openIngameStore, canUseIngameShop } = require("scripts/onlineShop/entitlementsStore.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { getShopItem, openIngameStore, canUseIngameShop } = require("%scripts/onlineShop/entitlementsStore.nut")
 
-local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
-local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { ENTITLEMENTS_PRICE } = require("scripts/utils/configs.nut")
-local { havePlayerTag } = require("scripts/user/userUtils.nut")
+let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
+let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
+let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 /*
  * Search in price.blk:
  * Search param is a name of a unit
@@ -38,16 +38,16 @@ OnlineShopModel.showUnitGoods <- function showUnitGoods(unitName, requestOrigin)
   if (!::has_feature("OnlineShopPacks"))
     return ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
 
-  local customUrl = ::loc("url/custom_purchase/unit", { unitName }, "")
+  let customUrl = ::loc("url/custom_purchase/unit", { unitName }, "")
   if (customUrl.len())
     return openShopUrl(customUrl)
 
   __assyncActionWrap(function ()
     {
-      local searchResult = searchEntitlementsByUnit(unitName)
+      let searchResult = searchEntitlementsByUnit(unitName)
       foreach (goodsName in searchResult)
       {
-        local bundleId = getBundleId(goodsName)
+        let bundleId = getBundleId(goodsName)
         if (bundleId != "")
         {
           if (isPlatformSony || isPlatformXboxOne)
@@ -99,7 +99,7 @@ OnlineShopModel.getPriceBlk <- function getPriceBlk()
 //If prise.blk is rotten, upfate price.blk and then perform action.
 OnlineShopModel.__assyncActionWrap <- function __assyncActionWrap(action)
 {
-  local isActual = ENTITLEMENTS_PRICE.checkUpdate(
+  let isActual = ENTITLEMENTS_PRICE.checkUpdate(
     action ? (@() action()).bindenv(this) : null,
     null,
     true,
@@ -138,12 +138,12 @@ OnlineShopModel.searchEntitlementsByUnit <- function searchEntitlementsByUnit(un
     return searchEntitlementsCache?[unitName] ?? []
 
   searchEntitlementsCache = {}
-  local priceBlk = getPriceBlk()
-  local numBlocks = priceBlk.blockCount()
+  let priceBlk = getPriceBlk()
+  let numBlocks = priceBlk.blockCount()
   for (local i = 0; i < numBlocks; i++)
   {
-    local ib = priceBlk.getBlock(i)
-    local entitlementName = ib.getBlockName()
+    let ib = priceBlk.getBlock(i)
+    let entitlementName = ib.getBlockName()
     if (ib?.hideWhenUnbought && !::has_entitlement(entitlementName))
       continue
 
@@ -182,33 +182,33 @@ OnlineShopModel.getPurchaseData <- function getPurchaseData(goodsName)
 
   if (_purchaseDataRecursion > 10)
   {
-    local msg = "OnlineShopModel: getPurchaseData: found recursion for " + goodsName
+    let msg = "OnlineShopModel: getPurchaseData: found recursion for " + goodsName
     ::script_net_assert_once("getPurchaseData recursion", msg)
     return createPurchaseData(goodsName)
   }
 
-  local customPurchaseLink = getCustomPurchaseLink(goodsName)
+  let customPurchaseLink = getCustomPurchaseLink(goodsName)
   if (!::u.isEmpty(customPurchaseLink))
     return createPurchaseData(goodsName, null, customPurchaseLink)
 
-  local guid = getBundleId(goodsName)
+  let guid = getBundleId(goodsName)
   if (!::u.isEmpty(guid))
     return createPurchaseData(goodsName, guid)
 
   _purchaseDataRecursion++
   //search in gifts or fingerPrints
   local res = null
-  local priceBlk = getPriceBlk()
-  local numBlocks = priceBlk.blockCount()
+  let priceBlk = getPriceBlk()
+  let numBlocks = priceBlk.blockCount()
   for (local i = 0; i < numBlocks; i++)
   {
-    local blk = priceBlk.getBlock(i)
+    let blk = priceBlk.getBlock(i)
     if (!::isInArray(goodsName, blk % "entitlementGift")
         && !::isInArray(goodsName, blk % "fingerprintController"))
       continue
 
-    local entitlement = blk.getBlockName()
-    local purchData = getPurchaseData(entitlement)
+    let entitlement = blk.getBlockName()
+    let purchData = getPurchaseData(entitlement)
     if (!purchData.canBePurchased)
       continue
 
@@ -223,7 +223,7 @@ OnlineShopModel.getPurchaseData <- function getPurchaseData(goodsName)
 
 OnlineShopModel.createPurchaseData <- function createPurchaseData(goodsName = "", guid = null, customPurchaseLink = null)
 {
-  local res = {
+  let res = {
     canBePurchased = !!(guid || customPurchaseLink)
     guid = guid
     customPurchaseLink = customPurchaseLink
@@ -239,12 +239,12 @@ OnlineShopModel.createPurchaseData <- function createPurchaseData(goodsName = ""
  * Returns array of entitlements that
  * unlock feature with provided name.
  */
-local function getEntitlementsByFeature(name)
+let function getEntitlementsByFeature(name)
 {
-  local entitlements = []
+  let entitlements = []
   if (name == null)
     return entitlements
-  local feature = ::get_game_settings_blk()?.features?[name]
+  let feature = ::get_game_settings_blk()?.features?[name]
   if (feature == null)
     return entitlements
   foreach(condition in (feature % "condition"))
@@ -274,10 +274,10 @@ OnlineShopModel.getFeaturePurchaseData <- function getFeaturePurchaseData(featur
 // or empty array
 OnlineShopModel.getAllFeaturePurchases <- function getAllFeaturePurchases(feature)
 {
-  local res = []
+  let res = []
   foreach(entitlement in getEntitlementsByFeature(feature))
   {
-    local purchase = getPurchaseData(entitlement)
+    let purchase = getPurchaseData(entitlement)
     if (purchase.canBePurchased)
       res.append(purchase)
   }
@@ -288,7 +288,7 @@ OnlineShopModel.openBrowserForFirstFoundEntitlement <- function openBrowserForFi
 {
   foreach(entitlement in entitlementsList)
   {
-    local purchase = getPurchaseData(entitlement)
+    let purchase = getPurchaseData(entitlement)
     if (purchase.canBePurchased)
     {
       openBrowserByPurchaseData(purchase)
@@ -310,7 +310,7 @@ OnlineShopModel.openBrowserByPurchaseData <- function openBrowserByPurchaseData(
     openShopUrl(purchaseData.customPurchaseLink)
     return true
   }
-  local customPurchaseUrl = getCustomPurchaseUrl(getGoodsChapter(purchaseData.sourceEntitlement))
+  let customPurchaseUrl = getCustomPurchaseUrl(getGoodsChapter(purchaseData.sourceEntitlement))
   if ( ! ::u.isEmpty(customPurchaseUrl))
   {
     openShopUrl(customPurchaseUrl)
@@ -330,7 +330,7 @@ OnlineShopModel.doBrowserPurchase <- function doBrowserPurchase(goodsName)
     return openIngameStore()
   //just to avoid bugs, when users, who should to purchase goods in regional
   //web shops, accidentally uses ingame online shop
-  local customUrl = getCustomPurchaseUrl(getGoodsChapter(goodsName))
+  let customUrl = getCustomPurchaseUrl(getGoodsChapter(goodsName))
   if (customUrl != "")
   {
     openShopUrl(customUrl)
@@ -341,25 +341,31 @@ OnlineShopModel.doBrowserPurchase <- function doBrowserPurchase(goodsName)
 
 OnlineShopModel.doBrowserPurchaseByGuid <- function doBrowserPurchaseByGuid(guid, dbgGoodsName = "")
 {
-  local isSteam = ::steam_is_running() &&
+  let isSteam = ::steam_is_running() &&
                   (havePlayerTag("steam") || ::has_feature("AllowSteamAccountLinking")) //temporary use old code pass for steam
-  local url = isSteam
+
+  // COMPATIBILITY: native pre-auth blocks login in embedded-to-external browser case, but we want this
+  //                fixed on production without version bump.
+  let useScriptBasedAutoLogin = "get_url_for_purchase" in getroottable()
+  let url = isSteam
             ? ::format(::loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), ::steam_get_my_id())
-            : ::get_authenticated_url_for_purchase(guid)
+            : (useScriptBasedAutoLogin
+              ? $"auto_local auto_login {::get_url_for_purchase(guid)}"
+              : ::get_authenticated_url_for_purchase(guid))
 
   if (url == "")
   {
     ::showInfoMsgBox(::loc("browser/purchase_url_not_found"), "errorMessageBox")
-    dagor.debug("get_authenticated_url_for_purchase have returned empty url for guid/" + dbgGoodsName)
+    dagor.debug("get_url_for_purchase have returned empty url for guid/" + dbgGoodsName)
     return
   }
 
-  openShopUrl(url, !isSteam)
+  openShopUrl(url, !useScriptBasedAutoLogin && !isSteam)
 }
 
 OnlineShopModel.getGoodsChapter <- function getGoodsChapter(goodsName)
 {
-  local goods = getGoodsByName(goodsName)
+  let goods = getGoodsByName(goodsName)
   return "chapter" in goods ? goods.chapter : ""
 }
 
@@ -372,13 +378,13 @@ OnlineShopModel.getCustomPurchaseUrl <- function getCustomPurchaseUrl(chapter)
   if (isPlatformSony || isPlatformXboxOne)
     return ""
 
-  local circuit = ::get_cur_circuit_name()
-  local locParams = {
+  let circuit = ::get_cur_circuit_name()
+  let locParams = {
     userId = ::my_user_id_str
     circuit = circuit
     circuitTencentId = ::getTblValue("circuitTencentId", ::get_network_block()[circuit], circuit)
   }
-  local locIdPrefix = ::is_platform_shield_tv()
+  let locIdPrefix = ::is_platform_shield_tv()
     ? "url/custom_purchase_shield_tv"
     : "url/custom_purchase"
   if (chapter == "eagles")
@@ -397,7 +403,7 @@ OnlineShopModel.openShopUrl <- function openShopUrl(baseUrl, isAlreadyAuthentica
 //return true when custom Url found
 OnlineShopModel.checkAndOpenCustomPurchaseUrl <- function checkAndOpenCustomPurchaseUrl(chapter, needMsgBox = false)
 {
-  local customUrl = getCustomPurchaseUrl(chapter)
+  let customUrl = getCustomPurchaseUrl(chapter)
   if (customUrl == "")
     return false
 
@@ -424,7 +430,7 @@ OnlineShopModel.checkAndOpenCustomPurchaseUrl <- function checkAndOpenCustomPurc
 
 OnlineShopModel.openUpdateBalanceMenu <- function openUpdateBalanceMenu(customUrl)
 {
-  local menu = [
+  let menu = [
     {
       text = ::loc("charServer/btn/web_recharge")
       action = (@(customUrl) function() { openShopUrl(customUrl) })(customUrl)
@@ -435,8 +441,8 @@ OnlineShopModel.openUpdateBalanceMenu <- function openUpdateBalanceMenu(customUr
       onUpdateButton = function(p)
       {
         local refreshText = ::loc("charServer/btn/refresh_balance")
-        local updateTimeout = ::get_update_entitlements_timeout_msec()
-        local enable = updateTimeout <= 0
+        let updateTimeout = ::get_update_entitlements_timeout_msec()
+        let enable = updateTimeout <= 0
         if (!enable)
           refreshText += ::loc("ui/parentheses/space", { text = ::ceil(0.001 * updateTimeout) })
         return {
@@ -490,11 +496,11 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
     return
   }
 
-  local taskId = ::update_entitlements_limited(true)
+  let taskId = ::update_entitlements_limited(true)
   //taskId = -1 doesn't mean that we must not perform afterCloseFunc
   if (taskId >= 0)
   {
-    local progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/checking"), null, null)
+    let progressBox = ::scene_msg_box("char_connecting", null, ::loc("charServer/checking"), null, null)
     ::add_bg_task_cb(taskId, function() {
       ::destroyMsgBox(progressBox)
       ::gui_start_mainmenu_reload()
@@ -521,9 +527,9 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
       return ::OnlineShopModel.openShopUrl(webStoreUrl)
   }
 
-  local useRowVisual = chapter != null && ::isInArray(chapter, ["premium", "eagles", "warpoints"])
-  local hClass = useRowVisual? ::gui_handlers.OnlineShopRowHandler : ::gui_handlers.OnlineShopHandler
-  local prevShopHandler = ::handlersManager.findHandlerClassInScene(hClass)
+  let useRowVisual = chapter != null && ::isInArray(chapter, ["premium", "eagles", "warpoints"])
+  let hClass = useRowVisual? ::gui_handlers.OnlineShopRowHandler : ::gui_handlers.OnlineShopHandler
+  let prevShopHandler = ::handlersManager.findHandlerClassInScene(hClass)
   if (prevShopHandler)
   {
     if (!afterCloseFunc)
@@ -540,12 +546,12 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
 
 ::subscribe_handler(::OnlineShopModel, ::g_listener_priority.CONFIG_VALIDATION)
 
-local function openOnlineShopFromPromo(handler, params) {
-  local shopType = params?[0]
+let function openOnlineShopFromPromo(handler, params) {
+  let shopType = params?[0]
   if (shopType == ONLINE_SHOP_TYPES.BUNDLE
     || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop()))
   {
-    local bundleId = getBundleId(params?[1])
+    let bundleId = getBundleId(params?[1])
     if (bundleId != "")
     {
       if (isPlatformSony || isPlatformXboxOne)

@@ -1,9 +1,9 @@
-local { openUrl } = require("scripts/onlineShop/url.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
 
-class ::gui_handlers.SteamRateGame extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.SteamRateGame <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/steamRateGame/steamRateGame"
+  sceneTplName = "%gui/steamRateGame/steamRateGame"
 
   getSceneTplView = @() {}
   initScreen = @() null

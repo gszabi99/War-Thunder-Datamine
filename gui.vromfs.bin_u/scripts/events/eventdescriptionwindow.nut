@@ -1,4 +1,4 @@
-class ::gui_handlers.EventDescriptionWindow extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.EventDescriptionWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   event = null
@@ -13,7 +13,7 @@ class ::gui_handlers.EventDescriptionWindow extends ::gui_handlers.BaseGuiHandle
       return
     }
 
-    local view = {
+    let view = {
       eventHeader = {
         difficultyImage = ::events.getDifficultyImg(event.name)
         difficultyTooltip = ::events.getDifficultyTooltip(event.name)
@@ -21,7 +21,7 @@ class ::gui_handlers.EventDescriptionWindow extends ::gui_handlers.BaseGuiHandle
       }
       showOkButton = false
     }
-    local data = ::handyman.renderCached("gui/events/eventDescriptionWindow", view)
+    let data = ::handyman.renderCached("%gui/events/eventDescriptionWindow", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
     eventDescription = ::create_event_description(scene, event, false)
   }

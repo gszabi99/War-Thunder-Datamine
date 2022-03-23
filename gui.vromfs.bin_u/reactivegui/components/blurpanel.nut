@@ -1,7 +1,7 @@
-local { isInVr } = require("reactiveGui/style/screenState.nut")
-local colors = require("reactiveGui/style/colors.nut")
+let { isInVr } = require("%rGui/style/screenState.nut")
+let colors = require("%rGui/style/colors.nut")
 
-local blurPanel = @() {
+let blurPanel = @() {
   watch = isInVr
   rendObj = !isInVr.value ? ROBJ_WORLD_BLUR_PANEL : null
   size = flex()

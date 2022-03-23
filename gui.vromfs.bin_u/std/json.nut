@@ -1,29 +1,29 @@
-local json = require("json")
-local io = require("io")
-local {read_text_from_file} = require("dagor.fs")
+let json = require("json")
+let io = require("io")
+let {read_text_from_file} = require("dagor.fs")
 
-local defLogger = @(...) print(" ".join(vargv))
+let defLogger = @(...) print(" ".join(vargv))
 /*
   todo: better return Monad Result
 */
-local callableTypes = ["function","table","instance"]
-local function isCallable(v) {
+let callableTypes = ["function","table","instance"]
+let function isCallable(v) {
   return callableTypes.indexof(type(v)) != null && (v.getfuncinfos() != null)
 }
 
-local function defSaveJsonFile(file_path, data){
+let function defSaveJsonFile(file_path, data){
   assert(type(data) == "string", "data should be string")
-  local file = io.file(file_path, "wt+")
+  let file = io.file(file_path, "wt+")
   file.writestring(data)
   file.close()
   return true
 }
 
-local defParamsSave = {pretty_print=true, logger=defLogger, save_text_file = defSaveJsonFile}
+let defParamsSave = {pretty_print=true, logger=defLogger, save_text_file = defSaveJsonFile}
 local function save(file_path, data, params = defParamsSave) {
-  local pretty_print = params?.pretty_print ?? defParamsSave.pretty_print
-  local save_text_file = params?.save_text_file ?? defParamsSave.save_text_file
-  local logger = params?.logger ?? defParamsSave.logger
+  let pretty_print = params?.pretty_print ?? defParamsSave.pretty_print
+  let save_text_file = params?.save_text_file ?? defParamsSave.save_text_file
+  let logger = params?.logger ?? defParamsSave.logger
   assert(isCallable(save_text_file), "save_text_file should be Callable")
   assert(type(file_path)=="string", "file_path should be string")
   assert(logger== null || isCallable(logger), @() $"logger should be Callable or null, got {type(logger)}")
@@ -31,7 +31,7 @@ local function save(file_path, data, params = defParamsSave) {
   assert(["function","class","instance","generator"].indexof(type(data))==null)
   try {
     data = json.to_string(data, pretty_print)
-    local res = save_text_file(file_path, data)
+    let res = save_text_file(file_path, data)
     if (res){
       logger?($"file:{file_path} saved")
       return true
@@ -47,15 +47,22 @@ local function save(file_path, data, params = defParamsSave) {
   }
 }
 
-local defParamsLoad = {logger=defLogger, load_text_file = read_text_from_file}
-local function load(file_path, params = defParamsLoad) {
+let function read_text_directly_from_fs_file(file_path){
+  let file = io.file(file_path, "rt")
+  let content = file.readblob(file.len()).as_string()
+  file.close()
+  return content
+}
+
+let defParamsLoad = {logger=defLogger, load_text_file = read_text_from_file}
+let function load(file_path, params = defParamsLoad) {
   assert(type(file_path)=="string", "file_path should be string")
-  local logger = params?.logger ?? defParamsLoad.logger
-  local load_text_file = params?.load_text_file ?? defParamsLoad.load_text_file
+  let logger = params?.logger ?? defParamsLoad.logger
+  let load_text_file = params?.load_text_file ?? defParamsLoad.load_text_file
   assert(isCallable(load_text_file), "load_text_file should be Callable")
   assert(isCallable(logger) || logger==null, @() $"logger should be Callable or null, got {type(logger)}")
   try {
-    local jsontext = load_text_file(file_path)
+    let jsontext = load_text_file(file_path)
     return json.parse(jsontext)
   }
   catch(e) {
@@ -70,4 +77,5 @@ return json.__merge({
   loadJson = load
   jsonToString = json.to_string
   parseJson = json.parse
+  read_text_directly_from_fs_file
 })

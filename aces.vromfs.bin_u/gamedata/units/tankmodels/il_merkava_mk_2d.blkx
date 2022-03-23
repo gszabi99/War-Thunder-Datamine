@@ -132,13 +132,6 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
-    "spawn_count": {
-      "numSpawnsPerBattleSimulation": 2,
-      "numSpawnsPerBattleArcade": 3,
-      "numSpawnsPerBattleHistorical": 3
-    }
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "CHA_tank",
@@ -202,7 +195,7 @@
           "armorThickness": 30.0
         },
         "ex_armor_body_11_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 10.0
         },
         "superstructure_back_dm": {
           "armorThickness": 30.0
@@ -218,6 +211,15 @@
           "armorClass": "CHA_tank"
         },
         "turret_01_side_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_08_bottom_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_08_back_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_09_bottom_dm": {
           "armorThickness": 10.0
         },
         "turret_07_back_dm": {
@@ -316,7 +318,7 @@
           "armorClass": "RHA_tank"
         },
         "turret_04_back_dm": {
-          "armorThickness": 65.0
+          "armorThickness": 30.0
         },
         "turret_04_top_dm": {
           "armorThickness": 30.0
@@ -361,9 +363,6 @@
         "turret_07_side_dm": {
           "armorThickness": 65.0
         },
-        "turret_07_bottom_dm": {
-          "armorThickness": 35.0
-        },
         "turret_08_side_dm": {
           "armorThickness": 35.0
         },
@@ -392,20 +391,6 @@
         "ex_armor_turret_07_dm": {
           "armorThickness": 30.0
         }
-      },
-      "body_armor": {
-        "armorClass": "RHA_tank",
-        "hp": 400.0,
-        "armorThickness": 10.0,
-        "stopChanceOnDeadPart": 0.0,
-        "createSecondaryShatters": false,
-        "hidableInViewer": true,
-        "ex_armor_l_04_dm": [],
-        "ex_armor_l_05_dm": [],
-        "ex_armor_l_06_dm": [],
-        "ex_armor_r_04_dm": [],
-        "ex_armor_r_05_dm": [],
-        "ex_armor_r_06_dm": []
       },
       "body_special_side_armor": {
         "armorClass": "hull_side_special_armor",
@@ -457,14 +442,34 @@
         "ex_armor_body_l_10_dm": [],
         "ex_armor_body_l_11_dm": []
       },
+      "body_side_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 100.0,
+        "armorThickness": 10.0,
+        "createSecondaryShatters": false,
+        "ex_armor_r_04_dm": [],
+        "ex_armor_r_05_dm": [],
+        "ex_armor_r_06_dm": [],
+        "ex_armor_r_07_dm": [],
+        "ex_armor_r_08_dm": [],
+        "ex_armor_r_09_dm": [],
+        "ex_armor_r_10_dm": [],
+        "ex_armor_l_04_dm": [],
+        "ex_armor_l_05_dm": [],
+        "ex_armor_l_06_dm": [],
+        "ex_armor_l_07_dm": [],
+        "ex_armor_l_08_dm": [],
+        "ex_armor_l_09_dm": [],
+        "ex_armor_l_10_dm": []
+      },
       "turret_side_add_armor": {
         "armorClass": "hull_side_special_armor",
-        "hp": 500.0,
         "hidableInViewer": true,
-        "armorThickness": 30.0,
-        "stopChanceOnDeadPart": 0.0,
+        "armorThickness": 60.0,
         "createSecondaryShatters": false,
         "variableThickness": true,
+        "cumulativeArmorQuality": 0.5,
+        "genericArmorQuality": 0.15,
         "ex_armor_turret_r_01_dm": [],
         "ex_armor_turret_r_02_dm": [],
         "ex_armor_turret_r_03_dm": [],
@@ -522,11 +527,6 @@
         "turret_08_top_dm": {
           "armorThickness": 25.0,
           "hidableInViewer": true
-        },
-        "turret_08_back_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank",
-          "hidableInViewer": true
         }
       },
       "body_shields": {
@@ -545,7 +545,10 @@
         "ex_armor_body_10_dm": [],
         "ex_armor_body_12_dm": [],
         "ex_armor_body_13_dm": [],
-        "ex_armor_07_dm": []
+        "ex_armor_07_dm": [],
+        "turret_10_top_dm": {
+          "armorThickness": 15.0
+        }
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -650,12 +653,10 @@
         "wheel_r_top_03_dm": [],
         "wheel_r_top_04_dm": [],
         "wheel_r_top_05_dm": [],
-        "wheel_support_dm": {
-          "armorThickness": 60.0
-        },
+        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
-          "armorThickness": 30.0,
+          "armorThickness": 20.0,
           "hp": 400.0,
           "ex_armor_body_r_01_dm": [],
           "ex_armor_body_l_01_dm": [],
@@ -2994,6 +2995,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h",
             "gun": "bone_mg_aa_v",
@@ -3034,6 +3036,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_h_01",
             "gun": "bone_mg_v_01",
@@ -4207,10 +4210,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us"
+        "image": "#ui/gameuiskin#tank_reinforcement_il"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us"
+        "image": "#ui/gameuiskin#tank_reinforcement_il"
       },
       "art_support": [],
       "tank_engine_smoke_screen_system": {
@@ -4522,6 +4525,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h",
                   "gun": "bone_mg_aa_v",
@@ -4562,6 +4566,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_h_01",
                   "gun": "bone_mg_v_01",
@@ -4745,7 +4750,7 @@
       "descLocId": "skin/winter/desc",
       "replace_tex": {
         "from": "us_camo_olive*",
-        "to": "us_camo_winter_olive*"
+        "to": "fr_camo_winter_green_white*"
       }
     }
   },

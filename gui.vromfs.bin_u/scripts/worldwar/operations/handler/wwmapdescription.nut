@@ -1,7 +1,7 @@
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 //show info about WwMap, WwOperation or WwOperationgroup
-class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
 
@@ -15,7 +15,7 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
   //this handler dosnt create own scene, just search objects in already exist scene.
   static function link(_scene, _descItem = null, _map = null, _descParams = {})
   {
-    local params = {
+    let params = {
       scene = _scene
       descItem = _descItem
       map = _map
@@ -33,7 +33,7 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
     scene.setUserData(this) //to not unload handler even when scene not loaded
     updateView()
 
-    local timerObj = scene.findObject("ww_map_description_timer")
+    let timerObj = scene.findObject("ww_map_description_timer")
     if (timerObj)
       timerObj.setUserData(this)
   }
@@ -53,7 +53,7 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateView()
   {
-    local isShow = isVisible()
+    let isShow = isVisible()
     updateVisibilities(isShow)
     if (!isShow)
       return
@@ -80,21 +80,21 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateName()
   {
-    local nameObj = scene.findObject("item_name")
+    let nameObj = scene.findObject("item_name")
     if (::checkObj(nameObj))
       nameObj.setValue(descItem.getNameText())
   }
 
   function updateDescription()
   {
-    local desctObj = scene.findObject("item_desc")
+    let desctObj = scene.findObject("item_desc")
     if (::checkObj(desctObj))
       desctObj.setValue(descItem.getDescription())
   }
 
   function mapCountriesToView(countries)
   {
-    local mapName = descItem.getId()
+    let mapName = descItem.getId()
     return {
       countries = countries.map(@(countryName) {
         countryName = countryName
@@ -105,27 +105,27 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCountriesList()
   {
-    local obj = scene.findObject("div_before_text")
+    let obj = scene.findObject("div_before_text")
     if (!::checkObj(obj))
       return
 
-    local cuntriesByTeams = descItem.getCountriesByTeams()
-    local sides = []
+    let cuntriesByTeams = descItem.getCountriesByTeams()
+    let sides = []
     foreach (side in ::g_world_war.getCommonSidesOrder())
       sides.append(mapCountriesToView(cuntriesByTeams?[side] ?? []))
-    local view = {
+    let view = {
       sides = sides
       vsText = ::loc("country/VS") + "\n "
     }
 
-    local data = ::handyman.renderCached("gui/worldWar/wwOperationCountriesInfo", view)
+    let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     obj.show(true)
   }
 
   function updateTotalClansText()
   {
-    local obj = scene.findObject("total_members_text")
+    let obj = scene.findObject("total_members_text")
     if (!::check_obj(obj))
       return
 
@@ -134,7 +134,7 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateAvailableText()
   {
-    local obj = scene.findObject("available_text")
+    let obj = scene.findObject("available_text")
     if (!::check_obj(obj) || !descItem)
       return
 

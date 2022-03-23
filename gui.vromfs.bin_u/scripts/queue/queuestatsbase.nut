@@ -4,7 +4,7 @@
 
 const MULTICLUSTER_NAME = "multi"
 
-class ::queue_stats_versions.Base
+::queue_stats_versions.Base <- class
 {
   isClanStats = false
   isSymmetric = false
@@ -101,7 +101,7 @@ class ::queue_stats_versions.Base
   function getPlayersCountOfAllRanks(cluster = null)
   {
     local res = 0
-    local teamQueueTable = getQueueTableByTeam("teamA", cluster)
+    let teamQueueTable = getQueueTableByTeam("teamA", cluster)
     for(local i = 1; i <= ::max_country_rank; i++)
       res += teamQueueTable?[i.tostring()] ?? 0
 
@@ -110,7 +110,7 @@ class ::queue_stats_versions.Base
 
   function getPlayersCountOfMyRank(cluster = null)
   {
-    local rankStr = myRankInQueue.tostring()
+    let rankStr = myRankInQueue.tostring()
     if (isSymmetric)
       return ::getTblValue(rankStr, getQueueTableByTeam("teamA", cluster), 0)
 

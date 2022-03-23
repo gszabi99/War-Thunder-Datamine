@@ -1,13 +1,13 @@
-local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
-local { setPollBaseUrl, generatePollUrl } = require("scripts/web/webpoll.nut")
-local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
-local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
-local { openLinkWithSource } = require("scripts/web/webActionsForPromo.nut")
-local { checkRankUpWindow } = require("scripts/debriefing/rankUpModal.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
+let unitActions = require("%scripts/unit/unitActions.nut")
+let { setPollBaseUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
+let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
+let { openLinkWithSource } = require("%scripts/web/webActionsForPromo.nut")
+let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -22,7 +22,7 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
 
 ::gui_start_unlock_wnd <- function gui_start_unlock_wnd(config)
 {
-  local unlockType = ::getTblValue("type", config, -1)
+  let unlockType = ::getTblValue("type", config, -1)
   if (unlockType == ::UNLOCKABLE_COUNTRY)
   {
     if (::isInArray(config.id, shopCountriesList))
@@ -48,16 +48,16 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
   if (!::delayed_unlock_wnd.len())
     return
 
-  local unlockData = ::delayed_unlock_wnd.remove(0)
+  let unlockData = ::delayed_unlock_wnd.remove(0)
   if (!::gui_start_unlock_wnd(unlockData))
     ::check_delayed_unlock_wnd(unlockData)
 }
 
-class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ShowUnlockHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/showUnlock.blk"
-  sceneNavBlkName = "gui/showUnlockTakeAirNavBar.blk"
+  sceneBlkName = "%gui/showUnlock.blk"
+  sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
 
   needShowUnitTutorial = false
 
@@ -75,8 +75,8 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::getTblValue("type", config, -1) == ::UNLOCKABLE_AIRCRAFT || "unitName" in config)
     {
-      local id = ::getTblValue("id", config)
-      local unitName = ::getTblValue("unitName", config, id)
+      let id = ::getTblValue("id", config)
+      let unitName = ::getTblValue("unitName", config, id)
       unit = ::getAircraftByName(unitName)
       updateUnitItem()
     }
@@ -93,9 +93,9 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!unit)
       return
 
-    local params = {hasActions = true}
-    local data = ::build_aircraft_item(unit.name, unit, params)
-    local airObj = scene.findObject("reward_aircrafts")
+    let params = {hasActions = true}
+    let data = ::build_aircraft_item(unit.name, unit, params)
+    let airObj = scene.findObject("reward_aircrafts")
     guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
     airObj.setValue(0)
@@ -104,10 +104,10 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTexts()
   {
-    local desc = ::getTblValue("desc", config)
+    let desc = ::getTblValue("desc", config)
     if (desc)
     {
-      local descObj = scene.findObject("award_desc")
+      let descObj = scene.findObject("award_desc")
       if (::checkObj(descObj))
       {
         descObj.setValue(desc)
@@ -117,26 +117,26 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local rewardText = ::getTblValue("rewardText", config, "")
+    let rewardText = ::getTblValue("rewardText", config, "")
     if (rewardText != "")
     {
-      local rewObj = scene.findObject("award_reward")
+      let rewObj = scene.findObject("award_reward")
       if (::checkObj(rewObj))
         rewObj.setValue(::loc("challenge/reward") + " " + config.rewardText)
     }
 
-    local nObj = scene.findObject("next_award")
+    let nObj = scene.findObject("next_award")
     if (::checkObj(nObj) && ("id" in config))
       nObj.setValue(::get_next_award_text(config.id))
   }
 
   function updateImage()
   {
-    local image = ::g_language.getLocTextFromConfig(config, "popupImage", "")
+    let image = ::g_language.getLocTextFromConfig(config, "popupImage", "")
     if (image == "")
       return
 
-    local imgObj = scene.findObject("award_image")
+    let imgObj = scene.findObject("award_image")
     if (!::checkObj(imgObj))
       return
 
@@ -146,7 +146,7 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
       imgObj["height"] = config.ratioHeight + "w"
     else if ("id" in config)
     {
-      local unlockBlk = ::g_unlocks.getUnlockById(config.id)
+      let unlockBlk = ::g_unlocks.getUnlockById(config.id)
       if (unlockBlk?.aspect_ratio)
         imgObj["height"] = unlockBlk.aspect_ratio + "w"
     }
@@ -177,47 +177,47 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
       linkText = generatePollUrl(config.pollId)
     }
 
-    local show = linkText != "" && ::g_promo.isLinkVisible(config)
-    local linkObj = showSceneBtn("btn_link_to_site", show)
+    let show = linkText != "" && ::g_promo.isLinkVisible(config)
+    let linkObj = showSceneBtn("btn_link_to_site", show)
     if (show)
     {
       if (::checkObj(linkObj))
       {
         linkObj.link = linkText
-        local linkBtnText = ::g_promo.getLinkBtnText(config)
+        let linkBtnText = ::g_promo.getLinkBtnText(config)
         if (linkBtnText != "")
           setColoredDoubleTextToButton(scene, "btn_link_to_site", linkBtnText)
       }
 
-      local imageObj = scene.findObject("award_image_button")
+      let imageObj = scene.findObject("award_image_button")
       if (::checkObj(imageObj))
         imageObj.link = linkText
     }
-    local showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
+    let showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
     showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
 
 
-    local showSetAir = unit != null && unit.isUsable() && !::isUnitInSlotbar(unit)
-    local canBuyOnline = unit != null && ::canBuyUnitOnline(unit)
-    local canBuy = unit != null && !unit.isRented() && !unit.isBought() && (::canBuyUnit(unit) || canBuyOnline)
+    let showSetAir = unit != null && unit.isUsable() && !::isUnitInSlotbar(unit)
+    let canBuyOnline = unit != null && ::canBuyUnitOnline(unit)
+    let canBuy = unit != null && !unit.isRented() && !unit.isBought() && (::canBuyUnit(unit) || canBuyOnline)
     showSceneBtn("btn_set_air", showSetAir)
-    local okObj = showSceneBtn("btn_ok", !showSetAir)
+    let okObj = showSceneBtn("btn_ok", !showSetAir)
     if ("okBtnText" in config)
       okObj.setValue(::loc(config.okBtnText))
 
     showSceneBtn("btn_close", !showSetAir || !needShowUnitTutorial)
 
-    local buyObj = showSceneBtn("btn_buy_unit", canBuy)
+    let buyObj = showSceneBtn("btn_buy_unit", canBuy)
     if (canBuy && ::checkObj(buyObj))
     {
-      local locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
-      local unitCost = canBuyOnline? ::Cost() : ::getUnitCost(unit)
+      let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
+      let unitCost = canBuyOnline? ::Cost() : ::getUnitCost(unit)
       placePriceTextToButton(scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(unit))
     }
 
-    local actionText = ::g_language.getLocTextFromConfig(config, "actionText", "")
-    local showActionBtn = actionText != "" && config?.action
-    local actionObj = showSceneBtn("btn_action", showActionBtn)
+    let actionText = ::g_language.getLocTextFromConfig(config, "actionText", "")
+    let showActionBtn = actionText != "" && config?.action
+    let actionObj = showSceneBtn("btn_action", showActionBtn)
     if (showActionBtn)
       actionObj.setValue(actionText)
 
@@ -289,16 +289,16 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function sendInvitationEmail()
   {
-    local linkString = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    local msg_head = ::format(::loc("mainmenu/invitationHead"), ::my_user_name)
-    local msg_body = ::format(::loc("mainmenu/invitationBody"), linkString)
+    let linkString = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    let msg_head = ::format(::loc("mainmenu/invitationHead"), ::my_user_name)
+    let msg_body = ::format(::loc("mainmenu/invitationBody"), linkString)
     ::shell_launch("mailto:yourfriend@email.com?subject=" + msg_head + "&body=" + msg_body)
   }
 
   function onFacebookPostLink()
   {
-    local link = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    local message = ::loc("facebook/wallMessage")
+    let link = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    let message = ::loc("facebook/wallMessage")
     ::make_facebook_login_and_do((@(link, message) function() {
                  ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"), null, null)
                  ::facebook_post_link(link, message)
@@ -307,7 +307,7 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onOk()
   {
-    local onOkFunc = ::getTblValue("onOkFunc", config)
+    let onOkFunc = ::getTblValue("onOkFunc", config)
     if (onOkFunc)
       onOkFunc()
     goBack()
@@ -331,7 +331,7 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAction()
   {
-    local actionData = ::g_promo.gatherActionParamsData(config)
+    let actionData = ::g_promo.gatherActionParamsData(config)
     if (!actionData)
       return
 

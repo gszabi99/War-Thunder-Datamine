@@ -1,11 +1,22 @@
-local statsd = require("statsd")
-local time = require("scripts/time.nut")
-local { animBgLoad } = require("scripts/loading/animBg.nut")
+let statsd = require("statsd")
+let time = require("%scripts/time.nut")
+let eventbus = require("eventbus")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
-class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
+const ContentUpdaterEventId = "contentupdater.modal.event"
+
+eventbus.subscribe(ContentUpdaterEventId, function (evt) {
+  let {t, p0, p1, p2} = evt
+
+  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.UpdaterModal)
+  if (handler?.isValid())
+    handler?.onUpdaterCallback(t, p0, p1, p2)
+})
+
+::gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/login/updaterModal.blk"
+  sceneBlkName = "%gui/login/updaterModal.blk"
   timeToShowCancel = 600
   timer = -1
 
@@ -43,13 +54,13 @@ class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
 
     updateText()
 
-    if ( ! ::start_content_updater(configPath, this, onUpdaterCallback))
+    if (!::start_content_updater_once(configPath, ContentUpdaterEventId))
       onFinish()
   }
 
   function changeBg()
   {
-    local dynamicBgContainer = scene.findObject("animated_bg_picture")
+    let dynamicBgContainer = scene.findObject("animated_bg_picture")
     if (::check_obj(dynamicBgContainer))
       animBgLoad("", dynamicBgContainer)
   }
@@ -130,7 +141,7 @@ class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
 
   function updateProgressbar()
   {
-    local blockObj = scene.findObject("loading_progress_box")
+    let blockObj = scene.findObject("loading_progress_box")
     if (!::checkObj(blockObj))
       return
     blockObj.setValue(100 * percent)
@@ -144,7 +155,7 @@ class ::gui_handlers.UpdaterModal extends ::BaseGuiHandler
       goBack()
     else
     {
-      local errorText = ::loc("updater/error/" + errorCode.tostring())
+      let errorText = ::loc("updater/error/" + errorCode.tostring())
       msgBox("updater_error", errorText, [["ok", goBack ]], "ok")
     }
   }

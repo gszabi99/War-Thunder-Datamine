@@ -1,10 +1,10 @@
-local { openMfm, getMfmSectionTitle, getMfmHandler } = require("scripts/wheelmenu/multifuncMenuTools.nut")
-local cfg = require("scripts/wheelmenu/multifuncmenuCfg.nut")
+let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
+let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
 local { emulateShortcut } = ::require_native("controls")
 
 //--------------------------------------------------------------------------------------------------
 
-class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandler
+::gui_handlers.multifuncMenuHandler <- class extends ::gui_handlers.wheelMenuHandler
 {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
@@ -32,8 +32,8 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
 
   function updateCaption()
   {
-    local objCaption = scene.findObject("wheel_menu_category")
-    local text = getMfmSectionTitle(mfmDescription[curSectionId])
+    let objCaption = scene.findObject("wheel_menu_category")
+    let text = getMfmSectionTitle(mfmDescription[curSectionId])
     objCaption.setValue(::colorize("hudGreenTextColor", text))
   }
 
@@ -53,7 +53,7 @@ class ::gui_handlers.multifuncMenuHandler extends ::gui_handlers.wheelMenuHandle
     if (path.len() == 0)
       return
 
-    local escapingSectionId = path.pop()
+    let escapingSectionId = path.pop()
     mfmDescription[escapingSectionId]?.onExit()
 
     if (path.len() > 0)

@@ -1980,7 +1980,6 @@
         "sensor": {
           "blk": "gameData/sensors/naval/su_foot_n.blk",
           "designationFromBody": true,
-          "designationTurretIndex": 1,
           "dmPart": "antenna_target_location_01_dm"
         }
       },
@@ -2418,7 +2417,7 @@
         "event": {
           "name": "turret_fire",
           "fx": {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "centerDmgPart": true
           }
         }
@@ -2427,7 +2426,7 @@
         "event": {
           "name": "turret_aux_fire",
           "fx": {
-            "name": "ship_fire_big",
+            "name": "ship_fire_small",
             "centerDmgPart": true
           }
         }
@@ -2445,7 +2444,7 @@
         "event": {
           "name": "torpedo_fire",
           "fx": {
-            "name": "ship_fire_big",
+            "name": "ship_fire_medium",
             "centerDmgPart": true
           }
         }
@@ -3458,11 +3457,11 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -35000.0,
+      "waterMassMult": 180.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 2500000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterDeathThreshold": 2300000.0,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 30.0,
       "maxHeelingTime": 9.0,
@@ -3484,22 +3483,8 @@
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.3,
-          "maxWaterAlive": 1.0,
-          "innerParts": [
-            {
-              "part": {
-                "partNo": "engine_01_dm",
-                "critWaterLevel": 0.5
-              }
-            },
-            {
-              "part": {
-                "partNo": "engine_03_dm",
-                "critWaterLevel": 0.5
-              }
-            }
-          ]
+          "weight": 0.6,
+          "maxWaterAlive": 1.0
         }
       },
       {
@@ -3512,7 +3497,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 1.0,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -3533,7 +3518,7 @@
       {
         "cover": {
           "part": "compartment_05_dm",
-          "weight": 0.3,
+          "weight": 0.4,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -3554,7 +3539,7 @@
       {
         "cover": {
           "part": "compartment_06_dm",
-          "weight": 0.1,
+          "weight": 0.3,
           "maxWaterAlive": 1.0
         }
       }

@@ -1,6 +1,6 @@
-local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.TicketBuyWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   afterBuyFunc = null
@@ -10,15 +10,15 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local view = {
+    let view = {
       headerText = ::loc("ticketBuyWindow/header")
-      tickets = ::handyman.renderCached("gui/items/item", createTicketsView(tickets))
+      tickets = ::handyman.renderCached("%gui/items/item", createTicketsView(tickets))
       windowMainText = createMainText()
       ticketCaptions = createTicketCaptionsView()
       activeTicketText = createActiveTicketText()
       hasActiveTicket = activeTicket != null
     }
-    local data = ::handyman.renderCached("gui/items/ticketBuyWindow", view)
+    let data = ::handyman.renderCached("%gui/items/ticketBuyWindow", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
     updateTicketCaptionsPosition()
     updateBuyButtonText()
@@ -46,7 +46,7 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function createTicketsView(ticketsList)
   {
-    local view = { items = [] }
+    let view = { items = [] }
     for (local i = 0; i < ticketsList.len(); ++i)
     {
       view.items.append(ticketsList[i].getViewData({
@@ -59,7 +59,7 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function createTicketCaptionsView()
   {
-    local view = []
+    let view = []
     for (local i = 0; i < tickets.len(); ++i)
     {
       view.append({
@@ -74,7 +74,7 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
   {
     for (local i = 0; i < tickets.len(); ++i)
     {
-      local captionObj = scene.findObject(getTicketCaptionId(i))
+      let captionObj = scene.findObject(getTicketCaptionId(i))
       if (::checkObj(captionObj))
         captionObj.setValue(getTicketCaptionText(tickets[i]))
     }
@@ -83,7 +83,7 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
   function getTicketCaptionText(ticket)
   {
     local captionText = ticket.getAvailableDefeatsText(::events.getEventEconomicName(event))
-    local limitText = ticket.getGlobalLimitText()
+    let limitText = ticket.getGlobalLimitText()
     if (limitText.len() > 0)
       captionText += "\n" + limitText
     return captionText
@@ -96,8 +96,8 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemAction(obj)
   {
-    local itemIdx = (obj?.holderId ?? "-1").tointeger()
-    local item = tickets?[itemIdx]
+    let itemIdx = (obj?.holderId ?? "-1").tointeger()
+    let item = tickets?[itemIdx]
     if (item != getCurItem())
       getItemsListObj().setValue(itemIdx)
 
@@ -134,11 +134,11 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTicketCaptionsPosition()
   {
-    local itemsListObj = getItemsListObj()
+    let itemsListObj = getItemsListObj()
     for (local i = 0; i < tickets.len(); ++i)
     {
-      local itemObj = itemsListObj.getChild(i)
-      local captionObj = scene.findObject("ticket_caption_" + i.tostring())
+      let itemObj = itemsListObj.getChild(i)
+      let captionObj = scene.findObject("ticket_caption_" + i.tostring())
       updateTicketCaptionPosition(captionObj, itemObj)
     }
   }
@@ -149,14 +149,14 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
       return
     if (!::checkObj(itemObj))
       return
-    local objCenterX = itemObj.getPosRC()[0] + 0.5 * itemObj.getSize()[0]
-    local position = objCenterX - 0.5 * captionObj.getSize()[0] - captionObj.getParent().getPosRC()[0]
+    let objCenterX = itemObj.getPosRC()[0] + 0.5 * itemObj.getSize()[0]
+    let position = objCenterX - 0.5 * captionObj.getSize()[0] - captionObj.getParent().getPosRC()[0]
     captionObj.left = position.tointeger().tostring()
   }
 
   function updateBuyButtonText()
   {
-    local mainActionData = getCurItem().getMainActionData()
+    let mainActionData = getCurItem().getMainActionData()
     if (mainActionData)
       setDoubleTextToButton(
         scene,
@@ -178,8 +178,8 @@ class ::gui_handlers.TicketBuyWindow extends ::gui_handlers.BaseGuiHandlerWT
     if (activeTicket == null)
       return ""
     local text = ::loc("ticketBuyWindow/activeTicketText") + "\n"
-    local tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(event))
-    local textParts = []
+    let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(event))
+    let textParts = []
     textParts.append(::loc("ticketBuyWindow/unfinishedSessions", tournamentData))
     textParts.append(activeTicket.getDefeatCountText(tournamentData))
     textParts.append(activeTicket.getSequenceDefeatCountText(tournamentData))

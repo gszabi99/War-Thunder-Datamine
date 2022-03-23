@@ -1,8 +1,8 @@
 from "%darg/ui_imports.nut" import *
 
-local cursorC = Color(180,180,180,180)
+let cursorC = Color(180,180,180,180)
 
-local styling = {
+let styling = {
   cursor = Cursor({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [sh(2), sh(2)]
@@ -44,10 +44,10 @@ local styling = {
   }
 
   button = function(desc, on_click) {
-    local buttonGrp = ElemGroup()
-    local stateFlags = Watched(0)
+    let buttonGrp = ElemGroup()
+    let stateFlags = Watched(0)
     return function(){
-      local sf = stateFlags.value
+      let sf = stateFlags.value
       return {
         key = desc
         behavior = Behaviors.Button

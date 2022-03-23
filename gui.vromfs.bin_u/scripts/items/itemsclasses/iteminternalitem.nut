@@ -1,26 +1,26 @@
-local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-class ::items_classes.InternalItem extends ItemCouponBase
+::items_classes.InternalItem <- class extends ItemCouponBase
 {
   static iType = itemType.INTERNAL_ITEM
   static typeIcon = "#ui/gameuiskin#item_type_trophies"
 
   getContentItem   = function()
   {
-    local contentItem = metaBlk?.item ?? metaBlk?.trophy
+    let contentItem = metaBlk?.item ?? metaBlk?.trophy
     return contentItem && ::ItemsManager.findItemById(contentItem)
   }
 
   function canConsume()
   {
-    local item = getContentItem()
+    let item = getContentItem()
     if (!isInventoryItem || !item)
       return false
 
     if (item.iType == itemType.TROPHY) {
       foreach (blk in item.getContent())
       {
-        local decoratorType = ::g_decorator_type.getTypeByResourceType(blk?.resourceType)
+        let decoratorType = ::g_decorator_type.getTypeByResourceType(blk?.resourceType)
         if (!blk?.resource || !decoratorType.isPlayerHaveDecorator(blk.resource))
           return true
       }
@@ -33,14 +33,14 @@ class ::items_classes.InternalItem extends ItemCouponBase
   function updateShopFilterMask()
   {
     shopFilterMask = iType
-    local contentItem = getContentItem()
+    let contentItem = getContentItem()
     if (contentItem)
       shopFilterMask = shopFilterMask | contentItem.iType
   }
 
   getContentIconData   = function()
   {
-    local contentItem = getContentItem()
+    let contentItem = getContentItem()
     return contentItem ? { contentIcon = contentItem.typeIcon } : null
   }
 

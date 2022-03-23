@@ -1,5 +1,5 @@
-local u = require("sqStdLibs/helpers/u.nut")
-::g_script_reloader.loadOnce("sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
+let u = require("%sqStdLibs/helpers/u.nut")
+::g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
 
 local SecondsUpdater = class
 {

@@ -1,7 +1,7 @@
-local time = require("scripts/time.nut")
+let time = require("%scripts/time.nut")
 
 
-class ::items_classes.Order extends ::BaseItem
+::items_classes.Order <- class extends ::BaseItem
 {
   static iType = itemType.ORDER
   static defaultLocId = "order"
@@ -67,16 +67,16 @@ class ::items_classes.Order extends ::BaseItem
 
   function getMainActionData(isShort = false, params = {})
   {
-    local res = base.getMainActionData(isShort, params)
+    let res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (!isInventoryItem || !amount)
       return null
 
-    local currentEvent = ::SessionLobby.getRoomEvent()
-    local diffCode = ::events.getEventDiffCode(currentEvent)
-    local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
-    local checkDifficulty = !::isInArray(diff, disabledDifficulties)
+    let currentEvent = ::SessionLobby.getRoomEvent()
+    let diffCode = ::events.getEventDiffCode(currentEvent)
+    let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    let checkDifficulty = !::isInArray(diff, disabledDifficulties)
     if (!isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)
       return {
         btnName = ::loc("item/activate")
@@ -89,7 +89,7 @@ class ::items_classes.Order extends ::BaseItem
 
   function doMainAction(cb, handler, params = null)
   {
-    local baseResult = base.doMainAction(cb, handler, params)
+    let baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !isInventoryItem)
       return true
     if (isActive() || !::g_orders.orderCanBeActivated())
@@ -129,7 +129,7 @@ class ::items_classes.Order extends ::BaseItem
     {
       foreach (diffName in blk % "disabledDifficulty")
       {
-        local difficulty = ::g_difficulty.getDifficultyByName(diffName)
+        let difficulty = ::g_difficulty.getDifficultyByName(diffName)
         if (difficulty != ::g_difficulty.UNKNOWN)
           disabledDifficulties.append(difficulty)
       }
@@ -152,7 +152,7 @@ class ::items_classes.Order extends ::BaseItem
    */
   function checkMission(missionName)
   {
-    local missionRestriction = ::getTblValue("missionRestriction", typeParams, null)
+    let missionRestriction = ::getTblValue("missionRestriction", typeParams, null)
     if (missionRestriction == null)
       return true // No restrictions at all.
     if (::u.isTable(missionRestriction))
@@ -173,10 +173,10 @@ class ::items_classes.Order extends ::BaseItem
     switch (restrictionElement?.type)
     {
       case "missionPostfix":
-        local missionPostfix = ::getTblValue("postfix", restrictionElement, null)
+        let missionPostfix = ::getTblValue("postfix", restrictionElement, null)
         if (missionPostfix == null)
           return true
-        local stringIndex = missionName.len() - missionPostfix.len()
+        let stringIndex = missionName.len() - missionPostfix.len()
         return missionName.indexof(missionPostfix, stringIndex) != stringIndex
 
       // More restrictions types to come...
@@ -187,10 +187,10 @@ class ::items_classes.Order extends ::BaseItem
   /** Description for tooltip. */
   function getDescription()
   {
-    local textParts = []
+    let textParts = []
     if (!::g_orders.checkCurrentMission(this))
     {
-      local warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
+      let warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
       textParts.append($"{::colorize("redMenuButtonColor", warningText)}\n")
     }
     textParts.append(getLongDescription())
@@ -200,13 +200,13 @@ class ::items_classes.Order extends ::BaseItem
   /** Description for shop. */
   function getLongDescription()
   {
-    local textParts = []
+    let textParts = []
 
-    local orderTypeDescription = orderType.getTypeDescription(colorScheme)
+    let orderTypeDescription = orderType.getTypeDescription(colorScheme)
     if (orderTypeDescription.len() > 0)
       textParts.append(orderTypeDescription)
 
-    local typeParamsDescription = orderType.getParametersDescription(typeParams, colorScheme)
+    let typeParamsDescription = orderType.getParametersDescription(typeParams, colorScheme)
     if (typeParamsDescription.len() > 0)
       textParts.append(typeParamsDescription)
 
@@ -214,25 +214,25 @@ class ::items_classes.Order extends ::BaseItem
       textParts.append("".concat(::loc("items/order/timeTotal"), ::loc("ui/colon"),
         ::colorize("activeTextColor", time.secondsToString(timeTotal, true, true))))
 
-    local expireText = getCurExpireTimeText()
+    let expireText = getCurExpireTimeText()
     if (expireText != "")
       textParts.append(expireText)
 
     if (textParts.len())
       textParts.append("")
 
-    local awardModeLocParams = { awardUnit = orderType.getAwardUnitText() }
+    let awardModeLocParams = { awardUnit = orderType.getAwardUnitText() }
     textParts.append(::loc($"items/order/awardMode/{awardMode.name}/header", awardModeLocParams))
     foreach (difficulty in ::g_difficulty.types)
     {
       if (::isInArray(difficulty, disabledDifficulties)
         || difficulty == ::g_difficulty.UNKNOWN)
         continue
-      local awardText = awardMode.getAwardTextByDifficulty(difficulty, this)
+      let awardText = awardMode.getAwardTextByDifficulty(difficulty, this)
       if (awardText.len() > 0)
         textParts.append("".concat(::loc($"options/{difficulty.name}"), ::loc("ui/colon"), awardText))
     }
-    local awardModeDescriptionFooter = ::loc("items/order/awardMode/"
+    let awardModeDescriptionFooter = ::loc("items/order/awardMode/"
       + awardMode.name + "/footer", "", awardModeLocParams)
     if (awardModeDescriptionFooter.len() > 0)
       textParts.append(awardModeDescriptionFooter)
@@ -249,7 +249,7 @@ class ::items_classes.Order extends ::BaseItem
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
-    local disabledItems = u.map(disabledDifficulties, function (diff) {
+    let disabledItems = u.map(disabledDifficulties, function (diff) {
       return ::loc("options/" + diff.name)
     })
     disabledItems.append(::loc("mainmenu/events"))

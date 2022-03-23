@@ -1,41 +1,41 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
-local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
-local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
-local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
+let { bombNbr, hasCountermeasures } = require("%scripts/unit/unitStatus.nut")
+let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 
-local options = {
+let options = {
   types = []
   cache = {
     bySortId = {}
   }
 }
 
-local _isVisible = @(p) p.unit != null
+let _isVisible = @(p) p.unit != null
   && isAvailableInMission()
   && (!p.isRandomUnit || isShowForRandomUnit)
   && isShowForUnit(p)
 
-local _isNeedUpdateByTrigger = @(trigger) isAvailableInMission() && (trigger & triggerUpdateBitMask) != 0
-local _isNeedUpdContentByTrigger = @(trigger, p) (trigger & triggerUpdContentBitMask) != 0
+let _isNeedUpdateByTrigger = @(trigger) isAvailableInMission() && (trigger & triggerUpdateBitMask) != 0
+let _isNeedUpdContentByTrigger = @(trigger, p) (trigger & triggerUpdContentBitMask) != 0
 
-local function _update(p, trigger, isAlreadyFilled) {
+let function _update(p, trigger, isAlreadyFilled) {
   if (!isNeedUpdateByTrigger(trigger))
     return false
 
-  local isShow = isVisible(p)
-  local isEnable = isShow && p.canChangeAircraft
-  local isNeedUpdateContent = !isAlreadyFilled || isNeedUpdContentByTrigger(trigger, p)
+  let isShow = isVisible(p)
+  let isEnable = isShow && p.canChangeAircraft
+  let isNeedUpdateContent = !isAlreadyFilled || isNeedUpdContentByTrigger(trigger, p)
   local isFilled = false
 
-  local obj = p.handler.scene.findObject(id)
+  let obj = p.handler.scene.findObject(id)
   if (obj?.isValid()) {
     obj.enable(isEnable)
     if (isShow) {
-      local opt = getUseropt(p)
-      local objOptionValue = obj.getValue()
+      let opt = getUseropt(p)
+      let objOptionValue = obj.getValue()
       if (isNeedUpdateContent) {
         if (cType == optionControlType.LIST) {
-          local markup = ::create_option_list(null, opt.items, opt.value, null, false)
+          let markup = ::create_option_list(null, opt.items, opt.value, null, false)
           p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
         }
         else if (cType == optionControlType.CHECKBOX)
@@ -50,7 +50,7 @@ local function _update(p, trigger, isAlreadyFilled) {
     }
   }
 
-  local rowObj = p.handler.scene.findObject($"{id}_tr")
+  let rowObj = p.handler.scene.findObject($"{id}_tr")
   if (rowObj?.isValid()) {
     rowObj.show(isShow)
   }
@@ -102,7 +102,7 @@ options.addTypes({
     isShowForRandomUnit = false
     isShowForUnit = @(p) true
     getUseropt = function(p) {
-      local skinsOpt = ::g_decorator.getSkinsOption(p.unit?.name ?? "")
+      let skinsOpt = ::g_decorator.getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(@(v, idx) v.__merge({
         tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, ::UNLOCKABLE_SKIN) }
       }))

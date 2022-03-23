@@ -1,8 +1,8 @@
-local time = require("scripts/time.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+let time = require("%scripts/time.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
 
-class ::queue_classes.Base
+::queue_classes.Base <- class
 {
   id = 0
   name = ""

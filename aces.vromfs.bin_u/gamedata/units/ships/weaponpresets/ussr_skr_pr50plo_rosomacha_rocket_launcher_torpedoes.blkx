@@ -138,85 +138,38 @@
     }
   },
   {
-    "Weapon": [
-      {
-        "trigger": "gunner11"
+    "Weapon": {
+      "trigger": "gunner11",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_39_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 3,
+      "useEmitter": true,
+      "emitterGenRange": [1.0,3.0],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [4.0,0.0,0.0],
+      "startSpeed": 20.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "barrelDP": "tt_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01",
+        "gunnerDm": "tt_01_dm"
       },
-      {
-        "triggerGroup": "torpedoes"
+      "limits": {
+        "yaw": [-140.0,140.0],
+        "pitch": [0.0,0.0]
       },
-      {
-        "external": true
-      },
-      {
-        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_39_torpedo.blk"
-      },
-      {
-        "emitter": "bone_torpedo_01"
-      },
-      {
-        "bullets": 3
-      },
-      {
-        "useEmitter": true
-      },
-      {
-        "emitterGenRange": [1.0,3.0]
-      },
-      {
-        "emitterGenFmt": "bone_torpedo_%02d"
-      },
-      {
-        "ammoDpGenFmt": "torpedo_%02d_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "barrelDP": "tt_01_dm"
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "brokenBarrelAllowShoot": false
-      },
-      {
-        "enableCourseCorrection": false
-      },
-      {
-        "startFx": "start_torpedo"
-      },
-      {
-        "startFxOffset": [4.0,0.0,0.0]
-      },
-      {
-        "startSpeed": 20.0
-      },
-      {
-        "useStartSpeed": true
-      },
-      {
-        "allowableDelta": 40.0
-      },
-      {
-        "turret": {
-          "head": "tt_head_01",
-          "gun": "tt_01"
-        }
-      },
-      {
-        "limits": {
-          "yaw": [-140.0,140.0],
-          "pitch": [0.0,0.0]
-        }
-      },
-      {
-        "limitsDeadzone": {
-          "yaw": [-57.0,57.0],
-          "pitch": [0.0,0.0]
-        }
+      "limitsDeadzone": {
+        "yaw": [-57.0,57.0],
+        "pitch": [0.0,0.0]
       }
-    ]
+    }
   }
 ]

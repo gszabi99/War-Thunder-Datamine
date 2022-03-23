@@ -304,32 +304,19 @@
             }
           }
         ],
-        "finishedTrack": [
-          {
-            "stateFrom": "track"
-          },
-          {
-            "event": "activeTargetOfInterestInertialTimeOut"
-          },
-          {
-            "command": "selectTarget"
-          },
-          {
-            "command": "designateTarget"
-          },
-          {
-            "stateTo": "standby"
-          },
-          {
-            "actions": {
-              "setStandbyMode": [],
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              }
+        "finishedTrack": {
+          "stateFrom": "track",
+          "event": "activeTargetOfInterestInertialTimeOut",
+          "stateTo": "standby",
+          "command": "designateTarget",
+          "actions": {
+            "setStandbyMode": [],
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
             }
           }
-        ]
+        }
       }
     },
     "lock": {

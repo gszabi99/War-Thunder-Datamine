@@ -1,4 +1,4 @@
-local platformModule = require("scripts/clientState/platform.nut")
+let platformModule = require("%scripts/clientState/platform.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_FADE_OUT_TIME = 1.5
@@ -46,7 +46,7 @@ g_streaks.checkNextState <- function checkNextState()
   if (stateTimeLeft > 0)
     return
 
-  local wasState = state
+  let wasState = state
   if (state == hudStreakState.ACTIVE)
   {
     state = hudStreakState.DELAY_BETWEEN_STREAKS
@@ -74,10 +74,10 @@ g_streaks.getSceneObj <- function getSceneObj()
   if (::checkObj(scene))
     return scene
 
-  local guiScene = ::get_gui_scene()
+  let guiScene = ::get_gui_scene()
   if (!guiScene)
     return null
-  local obj = guiScene["hud_streaks"]
+  let obj = guiScene["hud_streaks"]
   if (!::checkObj(obj))
     return null
 
@@ -90,20 +90,20 @@ g_streaks.showNextStreak <- function showNextStreak()
   if (!streakQueue.len())
     return false
 
-  local obj = getSceneObj()
+  let obj = getSceneObj()
   if (!obj)
     return false
 
-  local guiScene = obj.getScene()
+  let guiScene = obj.getScene()
   guiScene.setUpdatesEnabled(false, false)
 
-  local streak = streakQueue.remove(0)
+  let streak = streakQueue.remove(0)
 
-  local contentObj = obj.findObject("streak_content")
+  let contentObj = obj.findObject("streak_content")
   contentObj.show(true) //need to correct update textarea positions and sizes
   obj.findObject("streak_header").setValue(streak.header)
   obj.findObject("streak_score").setValue(streak.score)
-  local config = { iconStyle = "streak_" + streak.id }
+  let config = { iconStyle = "streak_" + streak.id }
   ::set_unlock_icon_by_config(obj.findObject("streak_icon"), config)
 
   contentObj._blink = "yes"
@@ -118,17 +118,17 @@ g_streaks.showNextStreak <- function showNextStreak()
 
 ::updateAnimTimer <- function updateAnimTimer()
 {
-  local obj = getSceneObj()
+  let obj = getSceneObj()
   if (!obj)
     return
 
-  local animTime = 1000 * STREAK_LIFE_TIME / getTimeMultiplier()
+  let animTime = 1000 * STREAK_LIFE_TIME / getTimeMultiplier()
   obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
 }
 
 g_streaks.updateSceneObj <- function updateSceneObj()
 {
-  local obj = getSceneObj()
+  let obj = getSceneObj()
   if (!obj)
     return
 
@@ -137,22 +137,22 @@ g_streaks.updateSceneObj <- function updateSceneObj()
 
 g_streaks.updatePlaceObj <- function updatePlaceObj()
 {
-  local obj = getSceneObj()
+  let obj = getSceneObj()
   if (!obj)
     return
 
-  local show = state == hudStreakState.ACTIVE
+  let show = state == hudStreakState.ACTIVE
                || (state == hudStreakState.DELAY_BETWEEN_STREAKS && streakQueue.len() > 0)
   obj.animation = show ? "show" : "hide"
 }
 
 g_streaks.updatePlaceObjHeight <- function updatePlaceObjHeight(newHeight)
 {
-  local obj = getSceneObj()
+  let obj = getSceneObj()
   if (!obj || !newHeight)
     return
 
-  local curHeight = ::to_integer_safe(obj?["height-end"], 1)
+  let curHeight = ::to_integer_safe(obj?["height-end"], 1)
   if (curHeight == newHeight)
     return
 
@@ -163,7 +163,7 @@ g_streaks.streakPlaySound <- function streakPlaySound(streakId)
 {
   if (!::has_feature("streakVoiceovers"))
     return
-  local unlockBlk = ::g_unlocks.getUnlockById(streakId)
+  let unlockBlk = ::g_unlocks.getUnlockById(streakId)
   if (!unlockBlk)
     return
 
@@ -203,7 +203,7 @@ g_streaks.clear <- function clear()
 
 ::add_streak_message <- function add_streak_message(header, wp, exp, id = "") // called from client
 {
-  local messageArr = []
+  let messageArr = []
   if (wp)
     messageArr.append(::loc("warpoints/received/by_param", {
       sign  = "+"
@@ -218,8 +218,8 @@ g_streaks.clear <- function clear()
 
 ::get_loc_for_streak <- function get_loc_for_streak(StreakNameType, name, stageparam, playerNick = "", colorId = 0)
 {
-  local stageId = ::g_unlocks.getMultiStageId(name, stageparam)
-  local isMyStreak = StreakNameType == ::SNT_MY_STREAK_HEADER
+  let stageId = ::g_unlocks.getMultiStageId(name, stageparam)
+  let isMyStreak = StreakNameType == ::SNT_MY_STREAK_HEADER
   local text = ""
   if (isMyStreak)
     text = ::loc("streaks/" + stageId)

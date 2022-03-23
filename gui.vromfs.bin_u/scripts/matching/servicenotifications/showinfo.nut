@@ -1,18 +1,18 @@
-local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
+let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
 
-local function showMessageBox(params)
+let function showMessageBox(params)
 {
   if (::is_in_flight())
     return { error = { message = "Can not be shown in battle" }}
 
-  local title = params?.title ?? ""
-  local message = params?.message ?? ""
+  let title = params?.title ?? ""
+  let message = params?.message ?? ""
   if (title == "" && message == "")
     return { error = { message = "Title and message is empty" }}
 
-  local closeFunction = (params?.logout_on_close ?? false)
+  let closeFunction = (params?.logout_on_close ?? false)
     ? exitGame
     : @() null
 
@@ -23,12 +23,12 @@ local function showMessageBox(params)
   return { result = "ok" }
 }
 
-local function showUrl(params)
+let function showUrl(params)
 {
   if (::is_in_flight())
     return { error = { message = "Can not be shown in battle" }}
 
-  local url = params?.url ?? ""
+  let url = params?.url ?? ""
   if (url == "")
     return { error = { message = "url is empty" }}
 

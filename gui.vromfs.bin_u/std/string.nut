@@ -1,10 +1,10 @@
 #no-plus-concat
 
-local string=require("string")
-local math=require("math")
-local regexp2 = require_optional("regexp2")
+let string=require("string")
+let math=require("math")
+let regexp2 = require_optional("regexp2")
 local regexp = string.regexp
-local utf8 = require_optional("utf8")
+let utf8 = require_optional("utf8")
 
 //pairs list taken from http://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/nls/rbagslowtoupmaptable.htm
 const CASE_PAIR_LOWER = "abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįıĳĵķĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷźżžƃƅƈƌƒƙơƣƥƨƭưƴƶƹƽǆǉǌǎǐǒǔǖǘǚǜǟǡǣǥǧǩǫǭǯǳǵǻǽǿȁȃȅȇȉȋȍȏȑȓȕȗɓɔɗɘəɛɠɣɨɩɯɲɵʃʈʊʋʒάέήίαβγδεζηθικλμνξοπρστυφχψωϊϋόύώϣϥϧϩϫϭϯабвгдежзийклмнопрстуфхцчшщъыьэюяёђѓєѕіїјљњћќўџѡѣѥѧѩѫѭѯѱѳѵѷѹѻѽѿҁґғҕҗҙқҝҟҡңҥҧҩҫҭүұҳҵҷҹһҽҿӂӄӈӌӑӓӕӗәӛӝӟӡӣӥӧөӫӯӱӳӵӹաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆაბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰჱჲჳჴჵḁḃḅḇḉḋḍḏḑḓḕḗḙḛḝḟḡḣḥḧḩḫḭḯḱḳḵḷḹḻḽḿṁṃṅṇṉṋṍṏṑṓṕṗṙṛṝṟṡṣṥṧṩṫṭṯṱṳṵṷṹṻṽṿẁẃẅẇẉẋẍẏẑẓẕạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹἀἁἂἃἄἅἆἇἐἑἒἓἔἕἠἡἢἣἤἥἦἧἰἱἲἳἴἵἶἷὀὁὂὃὄὅὑὓὕὗὠὡὢὣὤὥὦὧᾀᾁᾂᾃᾄᾅᾆᾇᾐᾑᾒᾓᾔᾕᾖᾗᾠᾡᾢᾣᾤᾥᾦᾧᾰᾱῐῑῠῡⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ"
@@ -60,7 +60,7 @@ local function split(joined, glue, isIgnoreEmpty = false) {
 
 if (regexp2 != null) {
   intRegExp = regexp2(@"^-?\d+$")
-  floatRegExp  = regexp2(@"^-?\d+\.?\d*$")
+  floatRegExp  = regexp2(@"^-?\d+\.?\d*([eE][-+]?\d{1,3})?$")
   trimRegExp = regexp2(@"^\s+|\s+$")
   stripTagsConfig = [
     {
@@ -98,7 +98,7 @@ if (regexp2 != null) {
 }
 else if (regexp != null) {
   intRegExp = regexp(@"^-?(\d+)$")
-  floatRegExp  = regexp(@"^-?(\d+)(\.?)(\d*)$")
+  floatRegExp  = regexp(@"^-?\d+\.?\d*([eE][-+]?\d{1,3})?$")
   trimRegExp = regexp(@"^(\s+)|(\s+)$")
   stripTagsConfig = [
     {
@@ -216,20 +216,19 @@ local function tostring_any(input, tostringfunc=null, compact=true) {
     }
   }
   else if (function_types.indexof(typ)!=null){
-    return func2str(input,{compact=compact})
+    return func2str(input,{compact})
   }
   else if (typ == "string"){
-    if(input=="")
-      return "''"
-    if(compact)
-      return input
-    return $"'{input}'"
+    if (input=="")
+      return "\"\""
+    return compact ? input : $"\"{input}\""
   }
   else if (typ == "null"){
     return "null"
   }
   else if (typ == "float" && input == input.tointeger().tofloat() && !compact){
-    return $"{input.tostring()}.0"
+    local r = input.tostring()
+    return r.contains(".") || r.contains("e") ? r : $"{r}.0"
   }
   else if (typ=="instance"){
     return input.tostring()
@@ -317,6 +316,8 @@ local function tostring_r(input, params=defTostringParams) {
     if (arrInd==null)
       arrInd=indent
     local out = []
+    local li = 0
+    local maxind = (input?.len() ?? 0) - 1
     foreach (key, value in input) {
       local typ = type(value)
       local isArray = typ=="array"
@@ -324,10 +325,10 @@ local function tostring_r(input, params=defTostringParams) {
       if (tostringLeafv[0]) {
         if (!arrayElem) {
           out.append(sep)
-          out.append(indent, tostring_any(key), " = ")
+          out.append(indent, tostring_any(key, null, compact), " = ")
         }
         out.append(tostringLeafv[1])
-        if (arrayElem && key!=input.len()-1)
+        if (arrayElem && li != maxind)
           out.append(sep)
       }
       else if (maxdeeplevel != null && curdeeplevel == maxdeeplevel && !tostringLeafv[0]) {
@@ -336,7 +337,7 @@ local function tostring_r(input, params=defTostringParams) {
         if (!arrayElem)
           out.append(newline, indent, tostring_any(key, null, compact), " = ")
         else if (arrayElem && showArrIdx) {
-          out.append(tostring_any(key), " = ")
+          out.append(tostring_any(key, null, compact), " = ")
         }
         out.append(brOp,"...",brCl)
       }
@@ -344,7 +345,7 @@ local function tostring_r(input, params=defTostringParams) {
         if (!arrayElem)
           out.append(newline, indent, tostring_any(key, null, compact), " = ")
         out.append("[", sub_tostring_r(value, $"{indent}{indentOnNewline}", curdeeplevel+1, true, arrSep, indent), "]") //warning disable: -param-pos
-        if (arrayElem && key!=input.len()-1)
+        if (arrayElem && li!=maxind)
           out.append(sep)
       }
       else if (table_types.indexof(typ) != null || (isArray && showArrIdx )) {
@@ -354,14 +355,15 @@ local function tostring_r(input, params=defTostringParams) {
         if (!arrayElem) {
           out.append(tostring_any(key,null, compact)," = ")
         }
-        out.append(brOp,sub_tostring_r(value, $"{indent}{indentOnNewline}", curdeeplevel+1),newline,indent,brCl)
-        if (arrayElem && key==input.len()-1 ){
-          out.append(newline,arrInd)
+        out.append(brOp,sub_tostring_r(value, $"{indent}{indentOnNewline}", curdeeplevel+1), newline,indent,brCl)
+        if (arrayElem && li==maxind ){
+          out.append(newline, arrInd)
         }
-        else if (arrayElem && key<input.len()-1 && table_types.indexof(type(input[key+1]))!=0){
+        else if (arrayElem && li < maxind && table_types.indexof(type(input[li+1]))!=0){
           out.append(newline, indent)
         }
       }
+      li += 1
     }
     return "".join(out)
   }
@@ -609,11 +611,32 @@ local function isStringFloat(str, separator=".") {
     return floatRegExp.match(str)
 
   if (startsWith(str,"-"))
-    str=str.slice(1)
-  local s_list = split(str,separator)
-  if (s_list.len() > 2)
+    str = str.slice(1)
+  local numList = split(str, separator)
+  local numListLen = numList.len()
+  if (numListLen > 2 || numList[0] == "")
     return false
-  foreach (s in s_list) {
+  if (numListLen == 2 && numList[1] == "")
+    numList[1] = "0"
+  local lastSeg = numList[numListLen - 1]
+  local expMark = lastSeg.indexof("e") != null ? "e"
+    : lastSeg.indexof("E") != null ? "E"
+    : null
+  if (expMark) {
+    local eList = split(lastSeg, expMark)
+    if (eList.len() != 2)
+      return false
+    if (numListLen == 2 && eList.len() == 2 && eList[0] == "")
+      eList[0] = "0"
+    if (startsWith(eList[1],"-") || startsWith(eList[1],"+"))
+      eList[1] = eList[1].slice(1)
+    local expDigits = eList[1].len()
+    if (expDigits < 1 || expDigits > 3)
+      return false
+    numList[numListLen - 1] = eList[0]
+    numList.append(eList[1])
+  }
+  foreach (idx, s in numList) {
     if (s == "")
       return false
     for (local i = 0; i < s.len(); i++)

@@ -26,6 +26,8 @@
 <</isHyperlink>>
 
   id:t='<<id>>'
+  <<#holderId>>holderId:t='<<holderId>>'<</holderId>>
+  <<#btnWidth>>width:t='<<btnWidth>>'<</btnWidth>>
   text:t='<<text>>'
   tooltip:t='<<tooltip>>'
   css-hier-invalidate:t='yes'

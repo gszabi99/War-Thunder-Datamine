@@ -14,7 +14,7 @@ local cbFunc = null
  *     renderer settings have already been applied).
  */
 
-local function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOnSceneSwitch = false, cb = null) {
+let function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOnSceneSwitch = false, cb = null) {
   isRequestedReloadScene = shouldReloadScene
   isRequestedOnSceneSwitch = shouldDoItOnSceneSwitch
   cbFunc = cb
@@ -36,7 +36,7 @@ local function applyRendererSettingsChange(shouldReloadScene = false, shouldDoIt
     isRequestedReloadScene = isRequestedReloadScene || forceReloadGuiScene
 
     if (isRequestedReloadScene) {
-      local handler = isRequestedOnSceneSwitch ? null : ::handlersManager.getActiveBaseHandler()
+      let handler = isRequestedOnSceneSwitch ? null : ::handlersManager.getActiveBaseHandler()
       if (handler)
         handler.fullReloadScene()
       else

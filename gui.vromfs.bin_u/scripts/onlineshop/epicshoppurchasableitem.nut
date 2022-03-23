@@ -1,5 +1,5 @@
-local statsd = require("statsd")
-local { GUI } = require("scripts/utils/configs.nut")
+let statsd = require("statsd")
+let { GUI } = require("%scripts/utils/configs.nut")
 
 local EpicShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
@@ -40,7 +40,7 @@ local EpicShopPurchasableItem = class {
     catalogNamespace = blk?.CatalogNamespace ?? "dlc"
     expirationTimestamp = blk?.ExpirationTimestamp ?? 0
 
-    local purchLimit = blk?.PurchaseLimit ?? 1
+    let purchLimit = blk?.PurchaseLimit ?? 1
     isMultiConsumable = purchLimit == -1
 
     if (isMultiConsumable) {
@@ -63,8 +63,8 @@ local EpicShopPurchasableItem = class {
     if (isPurchasable)
       amount = getPriceText()
 
-    local shopBlk = GUI.get()?.epic_ingame_shop
-    local ingameShopImages = shopBlk?.items
+    let shopBlk = GUI.get()?.epic_ingame_shop
+    let ingameShopImages = shopBlk?.items
     if (ingameShopImages?[id] && shopBlk?.mainPart && shopBlk?.fileExtension)
       imagePath = $"!{shopBlk.mainPart}{id}{shopBlk.fileExtension}"
 
@@ -79,8 +79,8 @@ local EpicShopPurchasableItem = class {
     if (priceText == "")
       return ""
 
-    local color = haveDiscount() ? "goodTextColor" : ""
-    local text = price == 0.0 ? ::loc("shop/free") : " ".join([priceText, currencyCode], true)
+    let color = haveDiscount() ? "goodTextColor" : ""
+    let text = price == 0.0 ? ::loc("shop/free") : " ".join([priceText, currencyCode], true)
     return ::colorize(color, text)
   }
 

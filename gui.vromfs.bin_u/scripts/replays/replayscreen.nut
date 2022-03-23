@@ -1,9 +1,9 @@
-local time = require("scripts/time.nut")
-local replayMetadata = require("scripts/replays/replayMetadata.nut")
+let time = require("%scripts/time.nut")
+let replayMetadata = require("%scripts/replays/replayMetadata.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGHT = 16
 
-local isCorruptedReplay = @(replay) (replay?.corrupted ?? false)
+let isCorruptedReplay = @(replay) (replay?.corrupted ?? false)
   || (replay?.isVersionMismatch ?? false)
 
 local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
@@ -43,7 +43,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
 
 ::get_replay_url_by_session_id <- function get_replay_url_by_session_id(sessionId)
 {
-  local sessionIdText = ::format("%0" + REPLAY_SESSION_ID_MIN_LENGHT + "s", sessionId.tostring())
+  let sessionIdText = ::format("%0" + REPLAY_SESSION_ID_MIN_LENGHT + "s", sessionId.tostring())
   return ::loc("url/server_wt_game_replay", {sessionId = sessionIdText})
 }
 
@@ -60,8 +60,8 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
 
 ::gui_modal_name_and_save_replay <- function gui_modal_name_and_save_replay(func_owner, after_func)
 {
-  local baseName = ::get_new_replay_filename();
-  local basePath = ::get_replays_dir() + "\\" + baseName;
+  let baseName = ::get_new_replay_filename();
+  let basePath = ::get_replays_dir() + "\\" + baseName;
   ::gui_modal_rename_replay(baseName, basePath, func_owner, null, after_func);
 }
 
@@ -74,14 +74,14 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
   if (::get_game_mode() == ::GM_BENCHMARK)
     return;
 
-  local replays = ::get_replays_list();
+  let replays = ::get_replays_list();
   local autosaveCount = 0;
   for (local i = 0; i < replays.len(); i++)
   {
     if (replays[i].name.slice(0,1) == ::autosave_replay_prefix)
       autosaveCount++;
   }
-  local toDelete = autosaveCount - (::autosave_replay_max_count - 1);
+  let toDelete = autosaveCount - (::autosave_replay_max_count - 1);
   for (local d = 0; d < toDelete; d++)
   {
     local indexToDelete = -1;
@@ -105,7 +105,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
         if (replays[i].name.slice(0,1) != ::autosave_replay_prefix)
           continue;
 
-        local startTime = replays[i]?.startTime ?? -1
+        let startTime = replays[i]?.startTime ?? -1
         if (oldestDate < 0 || startTime < oldestDate)
         {
           oldestDate = startTime
@@ -125,11 +125,11 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
   ::on_save_replay(name); //ignore errors
 }
 
-class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ReplayScreen <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/chapterModal.blk"
-  sceneNavBlkName = "gui/navReplays.blk"
+  sceneBlkName = "%gui/chapterModal.blk"
+  sceneNavBlkName = "%gui/navReplays.blk"
   replays = null
   isReplayPressed = false
   curPage = 0
@@ -193,20 +193,20 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshList(selItem)
   {
-    local listObj = scene.findObject("items_list")
+    let listObj = scene.findObject("items_list")
     if (!::checkObj(listObj))
       return
 
     selItem = replays.len() == 0 ? -1 : ::clamp(selItem, 0, replays.len() - 1)
     curPage = ::max(0, selItem / replaysPerPage)
 
-    local view = { items = [] }
-    local firstIdx = curPage * replaysPerPage
-    local lastIdx = ::min(replays.len(), ((curPage + 1) * replaysPerPage))
+    let view = { items = [] }
+    let firstIdx = curPage * replaysPerPage
+    let lastIdx = ::min(replays.len(), ((curPage + 1) * replaysPerPage))
     for (local i = firstIdx; i < lastIdx; i++)
     {
       local iconName = "";
-      local autosave = ::g_string.startsWith(replays[i].name, ::autosave_replay_prefix)
+      let autosave = ::g_string.startsWith(replays[i].name, ::autosave_replay_prefix)
       if (isCorruptedReplay(replays[i]))
         iconName = "#ui/gameuiskin#icon_primary_fail.svg"
       else if (autosave)
@@ -220,7 +220,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
     for (local i = 0; i < listObj.childrenCount(); i++)
       listObj.getChild(i).setIntProp(listIdxPID, firstIdx + i)
@@ -228,19 +228,19 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
     //* - text addition is ok
     //depends on ::get_new_replay_filename() format
-    local defaultReplayNameMask =
+    let defaultReplayNameMask =
       regexp2(@"2\d\d\d\.[0-3]\d\.[0-3]\d [0-2]\d\.[0-5]\d\.[0-5]\d*");
     for (local i = firstIdx; i < lastIdx; i++)
     {
-      local obj = scene.findObject("txt_replay_" + i);
+      let obj = scene.findObject("txt_replay_" + i);
       local name = replays[i].name;
-      local hasDateInName = ::g_string.startsWith(name, ::autosave_replay_prefix) || defaultReplayNameMask.match(name)
+      let hasDateInName = ::g_string.startsWith(name, ::autosave_replay_prefix) || defaultReplayNameMask.match(name)
       if (!hasDateInName && !isCorruptedReplay(replays[i]))
       {
-        local startTime = replays[i]?.startTime ?? -1
+        let startTime = replays[i]?.startTime ?? -1
         if (startTime >= 0)
         {
-          local date = time.buildDateTimeStr(startTime)
+          let date = time.buildDateTimeStr(startTime)
           name += ::colorize("fadedTextColor", ::loc("ui/parentheses/space", { text = date }))
         }
       }
@@ -265,10 +265,10 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local curReplay = replays?[getCurrentReplayIndex()]
+    let curReplay = replays?[getCurrentReplayIndex()]
 
-    local hoveredReplay = isMouseMode ? null : replays?[hoveredIdx]
-    local isCurItemInFocus = curReplay != null && (isMouseMode || hoveredReplay == curReplay)
+    let hoveredReplay = isMouseMode ? null : replays?[hoveredIdx]
+    let isCurItemInFocus = curReplay != null && (isMouseMode || hoveredReplay == curReplay)
 
     ::showBtnTable(scene, {
         btn_view_replay   = isCurItemInFocus && canPlayReplay(curReplay)
@@ -279,8 +279,8 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateDescription()
   {
-    local index = getCurrentReplayIndex()
-    local objDesc = scene.findObject("item_desc")
+    let index = getCurrentReplayIndex()
+    let objDesc = scene.findObject("item_desc")
     //local objPic = objDesc.findObject("item_picture")
     //if (objPic != null)
     //{
@@ -294,7 +294,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local replayInfo = ::get_replay_info(replays[index].path)
+    let replayInfo = ::get_replay_info(replays[index].path)
     if (replayInfo == null)
     {
       objDesc.findObject("item_name").setValue(replays[index].name)
@@ -302,9 +302,9 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      local corrupted = ::getTblValue("corrupted", replayInfo, false) // Any error reading headers (including version mismatch).
-      local isVersionMismatch = ::getTblValue("isVersionMismatch", replayInfo, false) // Replay was recorded for in older game version.
-      local isHeaderUnreadable = corrupted && !isVersionMismatch // Failed to read header (file not found or incomplete).
+      let corrupted = ::getTblValue("corrupted", replayInfo, false) // Any error reading headers (including version mismatch).
+      let isVersionMismatch = ::getTblValue("isVersionMismatch", replayInfo, false) // Replay was recorded for in older game version.
+      let isHeaderUnreadable = corrupted && !isVersionMismatch // Failed to read header (file not found or incomplete).
 
       local headerText = ""
       local text = ""
@@ -318,14 +318,14 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
         {
           objDesc.findObject("item_name").setValue(replays[index].name)
           objDesc.findObject("item_desc_text").setValue(text)
-          local tableObj = scene.findObject("session_results")
+          let tableObj = scene.findObject("session_results")
           if (::checkObj(tableObj))
             tableObj.show(false)
           return
         }
       }
 
-      local startTime = replayInfo?.startTime ?? -1
+      let startTime = replayInfo?.startTime ?? -1
       if (startTime >= 0)
         text += ::loc("options/mission_start_time") + ::loc("ui/colon") + time.buildDateTimeStr(startTime) + "\n"
 
@@ -352,14 +352,14 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
         limits = ::loc("options/unlimited")
 
       text += ::loc("options/fuel_and_ammo") + ::loc("ui/colon") + limits + "\n" */
-      local autosave = ::g_string.startsWith(replays[index].name, ::autosave_replay_prefix) //not replayInfo
+      let autosave = ::g_string.startsWith(replays[index].name, ::autosave_replay_prefix) //not replayInfo
       if (autosave)
         text += ::loc("msg/autosaveReplayDescription") + "\n"
       text += createSessionResultsTable(replayInfo)
       if ("sessionId" in replayInfo)
         text += ::loc("options/session") + ::loc("ui/colon") + replayInfo.sessionId + "\n"
 
-      local fps = replays[index].text
+      let fps = replays[index].text
       if (fps.len())
         text += fps + (::g_string.endsWith(fps, "\n") ? "" : "\n")
 
@@ -374,17 +374,17 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     local tables = ""
     if (::has_feature("extendedReplayInfo") && "comments" in replayInfo)
     {
-      local replayResultsTable = gatherReplayCommentData(replayInfo)
+      let replayResultsTable = gatherReplayCommentData(replayInfo)
       addDescr = ::getTblValue("addDescr", replayResultsTable, "")
 
       foreach (name in replayResultsTable.tablesArray)
       {
-        local rows = replayResultsTable.playersRows[name]
+        let rows = replayResultsTable.playersRows[name]
         tables += ::format("table{id:t='%s_table'; width:t='pw'; baseRow:t='yes' %s}",
           name, rows + ::getTblValue(name, replayResultsTable.addTableParams, ""))
       }
     }
-    local tablesObj = scene.findObject("session_results")
+    let tablesObj = scene.findObject("session_results")
     if (::checkObj(tablesObj))
     {
       tablesObj.show(tables!="")
@@ -396,7 +396,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function gatherReplayCommentData(replayInfo)
   {
-    local data = {
+    let data = {
       addDescr = ""
       playersRows = {}
       markups = {}
@@ -406,18 +406,18 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       addTableParams = {}
     }
 
-    local replayComments = ::getTblValue("comments", replayInfo)
+    let replayComments = ::getTblValue("comments", replayInfo)
     if (!replayComments)
       return data
 
-    local playersTables = {}
-    local addTableParams = { teamA = { team = "blue" }, teamB = { team = "red" } }
-    local replayParams = ["timePlayed", "author"]
+    let playersTables = {}
+    let addTableParams = { teamA = { team = "blue" }, teamB = { team = "red" } }
+    let replayParams = ["timePlayed", "author"]
 
-    local gameType = replayInfo?.gameType ?? 0
-    local gameMode = replayInfo?.gameMode ?? 0
-    local isRace = !!(gameType & ::GT_RACE)
-    local columnsOrder = isRace ? statsColumnsOrderRace : statsColumnsOrderPvp
+    let gameType = replayInfo?.gameType ?? 0
+    let gameMode = replayInfo?.gameMode ?? 0
+    let isRace = !!(gameType & ::GT_RACE)
+    let columnsOrder = isRace ? statsColumnsOrderRace : statsColumnsOrderPvp
 
     foreach(name in replayParams)
     {
@@ -430,7 +430,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       data.addDescr += (::loc("options/" + name) + ::loc("ui/colon") + value + "\n")
     }
 
-    local mplayersList = replayMetadata.buildReplayMpTable(replays?[getCurrentReplayIndex()]?.path ?? "")
+    let mplayersList = replayMetadata.buildReplayMpTable(replays?[getCurrentReplayIndex()]?.path ?? "")
     if (mplayersList.len())
     {
       foreach (mplayer in mplayersList)
@@ -468,19 +468,19 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local missionName = ::getTblValue("missionName", replayInfo, "")
-    local missionObjectivesMask = ::g_mission_type.getTypeByMissionName(missionName).getObjectives(
+    let missionName = ::getTblValue("missionName", replayInfo, "")
+    let missionObjectivesMask = ::g_mission_type.getTypeByMissionName(missionName).getObjectives(
       { isWorldWar = ::getTblValue("isWorldWar", replayInfo, false) })
 
-    local rowHeader = []
-    local headerArray = []
+    let rowHeader = []
+    let headerArray = []
     foreach(id in columnsOrder)
     {
-      local paramType = ::g_mplayer_param_type.getTypeById(id)
+      let paramType = ::g_mplayer_param_type.getTypeById(id)
       if (!paramType.isVisible(missionObjectivesMask, gameType, gameMode))
         continue
 
-      local tooltip = paramType.getName()
+      let tooltip = paramType.getName()
       headerArray.append(id)
       rowHeader.append({
         tooltip       = tooltip
@@ -500,7 +500,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       data.rowHeader[name] <- rowHeader
       data.headerArray[name] <- headerArray
 
-      local isMyTeam = idx == 0
+      let isMyTeam = idx == 0
       if (name == "teamA" || name == "teamB")
         data.rowHeader[name][0] = {
           image   = isMyTeam ? "#ui/gameuiskin#mp_logo_allies.svg" : "#ui/gameuiskin#mp_logo_axis.svg"
@@ -521,7 +521,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurrentReplayIndex()
   {
-    local list = scene.findObject("items_list")
+    let list = scene.findObject("items_list")
     return list.getValue() + replaysPerPage * curPage
   }
 
@@ -543,8 +543,8 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::show_console_buttons)
       return
-    local isHover = obj.isHovered()
-    local idx = obj.getIntProp(listIdxPID, -1)
+    let isHover = obj.isHovered()
+    let idx = obj.getIntProp(listIdxPID, -1)
     if (isHover == (hoveredIdx == idx))
       return
     hoveredIdx = isHover ? idx : -1
@@ -571,8 +571,8 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function onViewReplay()
   {
-    local index = getCurrentReplayIndex()
-    local curReplay = replays?[index]
+    let index = getCurrentReplayIndex()
+    let curReplay = replays?[index]
     if (!canPlayReplay(curReplay))
       return
 
@@ -592,8 +592,8 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       }
       ::req_unlock_by_client("view_replay", false)
       ::current_replay = replays[index].path
-      local replayInfo = ::get_replay_info(::current_replay)
-      local comments = ::getTblValue("comments", replayInfo)
+      let replayInfo = ::get_replay_info(::current_replay)
+      let comments = ::getTblValue("comments", replayInfo)
       ::current_replay_author = comments ? ::getTblValue("authorUserId", comments, null) : null
       ::on_view_replay(::current_replay)
       isReplayPressed = false
@@ -602,7 +602,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function doDelReplay()
   {
-    local index = getCurrentReplayIndex()
+    let index = getCurrentReplayIndex()
     if (index >= 0 && index < replays.len())
     {
       ::on_del_replay(replays[index].path)
@@ -613,10 +613,10 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function onRenameReplay()
   {
-    local index = getCurrentReplayIndex()
+    let index = getCurrentReplayIndex()
     if (index >= 0 && index < replays.len())
     {
-      local afterRenameFunc = function(newName)
+      let afterRenameFunc = function(newName)
       {
         loadReplays()
         refreshList(index)
@@ -645,14 +645,14 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function calculateReplaysPerPage() {
     guiScene.applyPendingChanges(false)
-    local replaysListObj = scene.findObject("items_list")
+    let replaysListObj = scene.findObject("items_list")
     replaysPerPage = ::g_dagui_utils.countSizeInItems(replaysListObj, 1, "1@baseTrHeight", 0, 0).itemsCountY
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class ::gui_handlers.RenameReplayHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.RenameReplayHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   function initScreen()
   {
@@ -664,7 +664,7 @@ class ::gui_handlers.RenameReplayHandler extends ::gui_handlers.BaseGuiHandlerWT
       baseName.slice(::autosave_replay_prefix.len()) : baseName
     scene.findObject("edit_box_window_header").setValue(::loc("mainmenu/replayName"));
 
-    local editBoxObj = scene.findObject("edit_box_window_text")
+    let editBoxObj = scene.findObject("edit_box_window_text")
     editBoxObj.show(true)
     editBoxObj.enable(true)
     editBoxObj.setValue(baseName)
@@ -685,15 +685,15 @@ class ::gui_handlers.RenameReplayHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeValue(obj)
   {
-    local newName = scene.findObject("edit_box_window_text").getValue()
-    local btnOk = scene.findObject("btn_ok")
+    let newName = scene.findObject("edit_box_window_text").getValue()
+    let btnOk = scene.findObject("btn_ok")
     if (::checkObj(btnOk))
       btnOk.inactiveColor = checkName(newName) ? "no" : "yes"
   }
 
   function onOk()
   {
-    local newName = scene.findObject("edit_box_window_text").getValue();
+    let newName = scene.findObject("edit_box_window_text").getValue();
     if (!checkName(newName))
     {
       msgBox("RenameReplayHandler_invalidName",::loc("msgbox/invalidReplayFileName"),
@@ -726,5 +726,5 @@ class ::gui_handlers.RenameReplayHandler extends ::gui_handlers.BaseGuiHandlerWT
   afterFunc = null
 
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/editBoxWindow.blk"
+  sceneBlkName = "%gui/editBoxWindow.blk"
 }

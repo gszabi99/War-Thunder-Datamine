@@ -1,8 +1,8 @@
-class ::gui_handlers.WwBattleResults extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwBattleResults <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/modalSceneWithGamercard.blk"
-  sceneTplName = "gui/worldWar/battleResultsWindow"
+  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
+  sceneTplName = "%gui/worldWar/battleResultsWindow"
 
   battleRes = null
 

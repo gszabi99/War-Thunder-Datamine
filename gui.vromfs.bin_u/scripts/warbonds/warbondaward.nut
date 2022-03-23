@@ -1,7 +1,7 @@
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local { fillItemDescr } = require("scripts/items/itemVisual.nut")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
-class ::WarbondAward
+::WarbondAward <- class
 {
   id = ""
   idx = 0
@@ -94,7 +94,7 @@ class ::WarbondAward
     if (!warbondWeak)
       return ""
 
-    local level = warbondWeak.getShopLevel(ordinaryTasks)
+    let level = warbondWeak.getShopLevel(ordinaryTasks)
     if (level == 0)
       return ""
 
@@ -103,7 +103,7 @@ class ::WarbondAward
 
   function getWarbondMedalImage()
   {
-    local medals = getMedalsCountNum()
+    let medals = getMedalsCountNum()
     if (!warbondWeak || medals == 0)
       return ""
 
@@ -112,12 +112,12 @@ class ::WarbondAward
 
   function getBuyText(isShort = true)
   {
-    local res = ::loc("mainmenu/btnBuy")
+    let res = ::loc("mainmenu/btnBuy")
     if (isShort)
       return res
 
-    local cost = getCost()
-    local costText = warbondWeak ? warbondWeak.getPriceText(cost) : cost
+    let cost = getCost()
+    let costText = warbondWeak ? warbondWeak.getPriceText(cost) : cost
     return res + ((costText == "")? "" : ::loc("ui/parentheses/space", { text = costText }))
   }
 
@@ -141,14 +141,14 @@ class ::WarbondAward
       return ::showInfoMsgBox(reason)
     }
 
-    local costWb = getCost()
-    local balanceWb = warbondWeak.getBalance()
+    let costWb = getCost()
+    let balanceWb = warbondWeak.getBalance()
     if (costWb > balanceWb)
       return ::showInfoMsgBox(::loc("not_enough_currency",
                                     { currency = warbondWeak.getPriceText(costWb - balanceWb, true, false) }))
 
 
-    local msgText = ::loc("onlineShop/needMoneyQuestion",
+    let msgText = ::loc("onlineShop/needMoneyQuestion",
                           { purchase = ::colorize("userlogColoredText", getNameText()),
                             cost = ::colorize("activeTextColor", getCostText())
                           })
@@ -168,8 +168,8 @@ class ::WarbondAward
     if (!isValid())
       return
 
-    local taskId = awardType.requestBuy(warbondWeak, blk)
-    local cb = ::Callback(onBought, this)
+    let taskId = awardType.requestBuy(warbondWeak, blk)
+    let cb = ::Callback(onBought, this)
     ::g_tasker.addTask(taskId, {showProgressBox = true}, cb)
   }
 
@@ -184,7 +184,7 @@ class ::WarbondAward
     if (!isValid())
       return false
 
-    local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
+    let maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
     return !awardType.hasIncreasingLimit() && maxBoughtCount > 0
       && getLeftBoughtCount() == 0
   }
@@ -194,11 +194,11 @@ class ::WarbondAward
     if (!isValid())
       return ""
 
-    local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
-    local hasIncreasingLimit = awardType.hasIncreasingLimit()
+    let maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
+    let hasIncreasingLimit = awardType.hasIncreasingLimit()
     if (!hasIncreasingLimit && maxBoughtCount <= 0)
       return ""
-    local leftAmount = getLeftBoughtCount()
+    let leftAmount = getLeftBoughtCount()
     if (!hasIncreasingLimit && leftAmount == 0)
       return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
     if (!awardType.showAvailableAmount)
@@ -230,7 +230,7 @@ class ::WarbondAward
 
   function fillItemDesc(descObj, handler)
   {
-    local item = awardType.getDescItem(blk)
+    let item = awardType.getDescItem(blk)
     if (!item)
       return false
 
@@ -263,7 +263,7 @@ class ::WarbondAward
     if (!warbondWeak)
       return ""
 
-    local level = warbondWeak.getShopLevel(tasksNum)
+    let level = warbondWeak.getShopLevel(tasksNum)
     return warbondWeak.getShopLevelText(level)
   }
 
@@ -272,8 +272,8 @@ class ::WarbondAward
     if (!haveOrdinaryRequirement())
       return true
 
-    local shopLevel = warbondWeak? warbondWeak.getShopLevel(ordinaryTasks) : 0
-    local execTasks = warbondWeak? warbondWeak.getCurrentShopLevel() : 0
+    let shopLevel = warbondWeak? warbondWeak.getShopLevel(ordinaryTasks) : 0
+    let execTasks = warbondWeak? warbondWeak.getCurrentShopLevel() : 0
     return shopLevel <= execTasks
   }
 
@@ -282,8 +282,8 @@ class ::WarbondAward
     if (!haveSpecialRequirement())
       return true
 
-    local curMedalsCount = warbondWeak? warbondWeak.getCurrentMedalsCount() : 0
-    local reqMedalsCount = getMedalsCountNum()
+    let curMedalsCount = warbondWeak? warbondWeak.getCurrentMedalsCount() : 0
+    let reqMedalsCount = getMedalsCountNum()
     return reqMedalsCount <= curMedalsCount
   }
 
@@ -305,7 +305,7 @@ class ::WarbondAward
     if (!isValid() || !isRequiredSpecialTasksComplete())
       return ""
 
-    local text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
+    let text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
     return colored? ::colorize("warningTextColor", text) : text
   }
 
@@ -320,7 +320,7 @@ class ::WarbondAward
     if (isAvailableForCurrentWarbondShop())
       return ""
 
-    local text = ::loc("warbonds/shop/notAvailableForCurrentShop")
+    let text = ::loc("warbonds/shop/notAvailableForCurrentShop")
     return colored? ::colorize("badTextColor", text) : text
   }
 
@@ -329,7 +329,7 @@ class ::WarbondAward
     if (!haveOrdinaryRequirement())
       return ""
 
-    local text = ::loc("warbonds/shop/requiredLevel", {
+    let text = ::loc("warbonds/shop/requiredLevel", {
       level = getShopLevelText(ordinaryTasks)
     })
     return isAvailableByShopLevel() || !colored? text : ::colorize("badTextColor", text)
@@ -340,7 +340,7 @@ class ::WarbondAward
     if (!haveSpecialRequirement())
       return ""
 
-    local text = ::loc("warbonds/shop/requiredMedals", {
+    let text = ::loc("warbonds/shop/requiredMedals", {
       count = getMedalsCountNum()
     })
     return isAvailableByMedalsCount() || !colored? text : ::colorize("badTextColor", text)
@@ -351,7 +351,7 @@ class ::WarbondAward
     if (reqMaxUnitRank < 2)
       return ""
 
-    local text = ::loc("warbonds/shop/requiredUnitRank", {
+    let text = ::loc("warbonds/shop/requiredUnitRank", {
       unitRank = reqMaxUnitRank
     })
     return isAvailableByUnitsRank() || !colored? text : ::colorize("badTextColor", text)

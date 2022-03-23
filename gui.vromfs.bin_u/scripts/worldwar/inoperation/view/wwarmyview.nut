@@ -1,10 +1,10 @@
-local time = require("scripts/time.nut")
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-local wwTransportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-local { WW_MAP_TOOLTIP_TYPE_GROUP } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
+let time = require("%scripts/time.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwTransportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 
-class ::WwArmyView
+::WwArmyView <- class
 {
   redrawData = null
   formation = null
@@ -47,7 +47,7 @@ class ::WwArmyView
 
   function getUnitTypeCustomText()
   {
-    local overrideIcon = "getOverrideIcon" in formation ? formation.getOverrideIcon() : null
+    let overrideIcon = "getOverrideIcon" in formation ? formation.getOverrideIcon() : null
     return overrideIcon || getUnitTypeText()
   }
 
@@ -58,21 +58,21 @@ class ::WwArmyView
 
   function getSectionsView(sections, isMultipleColumns)
   {
-    local view = {infoSections = []}
+    let view = {infoSections = []}
     foreach (sect in sections)
     {
-      local sectView = {
+      let sectView = {
         title = sect?.title,
         columns = [],
         multipleColumns = isMultipleColumns,
         hasSpaceBetweenUnits = true
       }
-      local units = sect.units
+      let units = sect.units
       if (!isMultipleColumns)
         sectView.columns.append({unitString = units})
       else
       {
-        local unitsInRow = ::ceil(units.len() / 2.0).tointeger()
+        let unitsInRow = ::ceil(units.len() / 2.0).tointeger()
         sectView.columns.append({unitString = units.slice(0, unitsInRow), first = true})
         sectView.columns.append({unitString = units.slice(unitsInRow)})
       }
@@ -83,16 +83,16 @@ class ::WwArmyView
 
   function unitsList()
   {
-    local wwUnits = formation.getUnits().reduce(function (memo, unit) {
+    let wwUnits = formation.getUnits().reduce(function (memo, unit) {
       if (unit.getActiveCount())
         memo.append(unit)
       return memo
     }, [])
-    local transportedArmiesData = wwTransportManager.getTransportedArmiesData(formation)
-    local rowsCount = wwUnits.len() + transportedArmiesData.armies.len()
+    let transportedArmiesData = wwTransportManager.getTransportedArmiesData(formation)
+    let rowsCount = wwUnits.len() + transportedArmiesData.armies.len()
       + transportedArmiesData.totalUnitsNum
-    local isMultipleColumns = rowsCount > unitsInArmyRowsMax
-    local sections = [{units = wwActionsWithUnitsList.getUnitsListViewParams({wwUnits = wwUnits})}]
+    let isMultipleColumns = rowsCount > unitsInArmyRowsMax
+    let sections = [{units = wwActionsWithUnitsList.getUnitsListViewParams({wwUnits = wwUnits})}]
     foreach (army in transportedArmiesData.armies)
       sections.append({
         units = wwActionsWithUnitsList.getUnitsListViewParams({wwUnits = army.getUnits()}),
@@ -101,8 +101,8 @@ class ::WwArmyView
             text = army.getOverrideIcon() ?? ::g_ww_unit_type.getUnitTypeFontIcon(army.unitType)}),
           ::loc("ui/colon"))
       })
-    local view = getSectionsView(sections, isMultipleColumns)
-    return ::handyman.renderCached("gui/worldWar/worldWarMapArmyInfoUnitsList", view)
+    let view = getSectionsView(sections, isMultipleColumns)
+    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList", view)
   }
 
   /** exclude infantry */
@@ -210,7 +210,7 @@ class ::WwArmyView
 
   function getSuppliesFinishTime()
   {
-    local finishTime = "getSuppliesFinishTime" in formation? formation.getSuppliesFinishTime() : 0
+    let finishTime = "getSuppliesFinishTime" in formation? formation.getSuppliesFinishTime() : 0
     if (finishTime > 0)
       return time.hoursToString(time.secondsToHours(finishTime), false, true) + " " + ::loc("icon/timer")
 
@@ -226,7 +226,7 @@ class ::WwArmyView
 
   function getAmmoRefillTime()
   {
-    local refillTimeSec = formation.getNextAmmoRefillTime()
+    let refillTimeSec = formation.getNextAmmoRefillTime()
     if (refillTimeSec > 0)
       return time.hoursToString(time.secondsToHours(refillTimeSec), false, true) + " " +
         ::loc("weapon/torpedoIcon")
@@ -244,7 +244,7 @@ class ::WwArmyView
   {
     if ("secondsLeftToEntrench" in formation)
     {
-      local entrenchTime = formation.secondsLeftToEntrench()
+      let entrenchTime = formation.secondsLeftToEntrench()
       if (entrenchTime >= 0)
         return time.hoursToString(time.secondsToHours(entrenchTime), false, true)
     }
@@ -341,11 +341,11 @@ class ::WwArmyView
     if (isDead())
       return ::loc("debriefing/ww_army_state_dead")
 
-    local groundSurroundingTime = getGroundSurroundingTime()
+    let groundSurroundingTime = getGroundSurroundingTime()
     if (groundSurroundingTime)
       return ::loc("worldwar/groundsurrended") + ::loc("ui/colon") + groundSurroundingTime
 
-    local inactiveUnitsCountText = getInactiveUnitsCountText()
+    let inactiveUnitsCountText = getInactiveUnitsCountText()
     if (inactiveUnitsCountText)
       return ::loc("worldwar/active_units", {
         active = unitsCount(true, isArtillery()),
@@ -368,14 +368,14 @@ class ::WwArmyView
 
     if (formation.isStrikePreparing())
     {
-      local timeToPrepareStike = formation.artilleryAmmo.getTimeToNextStrike()
+      let timeToPrepareStike = formation.artilleryAmmo.getTimeToNextStrike()
       return ::loc("worldwar/artillery/aiming") + ::loc("ui/colon") +
              time.hoursToString(time.secondsToHours(timeToPrepareStike), false, true)
     }
 
     if (formation.isStrikeInProcess())
     {
-      local timeToFinishStike = formation.artilleryAmmo.getTimeToCompleteStrikes()
+      let timeToFinishStike = formation.artilleryAmmo.getTimeToCompleteStrikes()
       return ::loc("worldwar/artillery/firing") + ::loc("ui/colon") +
              time.hoursToString(time.secondsToHours(timeToFinishStike), false, true)
     }
@@ -450,7 +450,7 @@ class ::WwArmyView
 
   function getZoneName()
   {
-    local wwArmyPosition = formation.getPosition()
+    let wwArmyPosition = formation.getPosition()
     if (!wwArmyPosition)
       return ""
 
@@ -483,7 +483,7 @@ class ::WwArmyView
 
   function getManagersInfoLines()
   {
-    local lines = []
+    let lines = []
     if(hasManagersStat())
       foreach(inst in formation.armyManagers)
         lines.append({

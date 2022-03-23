@@ -1,10 +1,10 @@
 from "%darg/ui_imports.nut" import *
-local {colors} = require("style.nut")
+let {colors} = require("style.nut")
 
 
-local function nameFilter(watched_text, params) {
-  local group = ElemGroup()
-  local stateFlags = Watched(0)
+let function nameFilter(watched_text, params) {
+  let group = ElemGroup()
+  let stateFlags = Watched(0)
 
   local placeholder = null
   if (params?.placeholder) {

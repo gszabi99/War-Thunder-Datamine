@@ -1,10 +1,10 @@
-local formatters = require("textFormatters.nut")
-local {defStyle} = formatters
-local filter = function(object) {
+let formatters = require("textFormatters.nut")
+let {defStyle} = formatters
+let filter = function(object) {
   return !(object?.platform == null || object.platform.indexof(::get_platform())!=null
     || (::cross_call.platform.is_pc() && object.platform.indexof("pc")!=null))
 }
-local formatText = require("%darg/components/mkFormatAst.nut")({formatters=formatters, style=defStyle, filter=filter})
+let formatText = require("%darg/components/mkFormatAst.nut")({formatters=formatters, style=defStyle, filter=filter})
 
 return {
   formatText = formatText

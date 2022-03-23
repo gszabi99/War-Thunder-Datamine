@@ -1,4 +1,4 @@
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 local { getCdBaseDifficulty } = ::require_native("guiOptions")
 
 ::gui_start_builder <- function gui_start_builder(params = {})
@@ -6,11 +6,11 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
   ::gui_start_modal_wnd(::gui_handlers.MissionBuilder, params)
 }
 
-class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
+::gui_handlers.MissionBuilder <- class extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/options/genericOptionsMap.blk"
-  sceneNavBlkName = "gui/navBuilderOptions.blk"
+  sceneBlkName = "%gui/options/genericOptionsMap.blk"
+  sceneNavBlkName = "%gui/navBuilderOptions.blk"
   wndGameMode = ::GM_BUILDER
   wndOptionsMode = ::OPTIONS_MODE_DYNAMIC
 
@@ -26,7 +26,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     init_builder_map()
     generate_builder_list(true)
 
-    local options =
+    let options =
     [
       [::USEROPT_DYN_MAP, "combobox"],
 //      [::USEROPT_YEAR, "spinner"],
@@ -47,14 +47,14 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   //    [::USEROPT_SESSION_PASSWORD, "editbox"],
     ]
 
-    local container = create_options_container("builder_options", options, true, 0.5, true)
-    local optListObj = scene.findObject("optionslist")
+    let container = create_options_container("builder_options", options, true, 0.5, true)
+    let optListObj = scene.findObject("optionslist")
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
     optionsContainers.append(container.descr)
     setSceneTitle(::loc("mainmenu/btnDynamicTraining"), scene, "menu-title")
 
-    local desc = ::get_option(::USEROPT_DYN_ZONE)
-    local dynZoneObj = guiScene["dyn_zone"]
+    let desc = ::get_option(::USEROPT_DYN_ZONE)
+    let dynZoneObj = guiScene["dyn_zone"]
     local value = desc.value
     if(::checkObj(dynZoneObj))
       value = guiScene["dyn_zone"].getValue()
@@ -86,10 +86,10 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
     updateButtons()
 
-    local showOptions = isBuilderAvailable()
+    let showOptions = isBuilderAvailable()
 
-    local optListObj = scene.findObject("options_data")
-    local textObj = scene.findObject("no_options_textarea")
+    let optListObj = scene.findObject("options_data")
+    let textObj = scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
     textObj.setValue(showOptions ? ""
       : ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"))
@@ -110,7 +110,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     if (!::checkObj(scene))
       return
 
-    local available = isBuilderAvailable()
+    let available = isBuilderAvailable()
     scene.findObject("btn_select").inactiveColor = available? "no" : "yes"
     showSceneBtn("btn_random", available)
     showSceneBtn("btn_inviteSquad", ::enable_coop_in_QMB && ::g_squad_manager.canInviteMember())
@@ -137,8 +137,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function getSceneOptRes(optName)
   {
-    local option = ::get_option(optName)
-    local obj = scene.findObject(option.id)
+    let option = ::get_option(optName)
+    let obj = scene.findObject(option.id)
     local value = obj? obj.getValue() : -1
     if (!(value in option.items))
       value = option.value
@@ -147,11 +147,11 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function init_builder_map()
   {
-    local mapData = getSceneOptRes(::USEROPT_DYN_MAP)
+    let mapData = getSceneOptRes(::USEROPT_DYN_MAP)
     ::mission_settings.layout <- mapData.value
     ::mission_settings.layoutName <- mapData.name
 
-    local settings = ::DataBlock();
+    let settings = ::DataBlock();
     local playerSide = 1
     foreach (tag in (showedUnit.value?.tags ?? []))
       if (tag == "axis")
@@ -174,7 +174,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
     ::aircraft_for_weapons = showedUnit.value.name
 
-    local settings = ::DataBlock();
+    let settings = ::DataBlock();
     settings.setStr("player_class", showedUnit.value.name)
     settings.setStr("player_weapons", ::get_gui_option(::USEROPT_WEAPONS) ?? "")
     settings.setStr("player_skin", getSceneOptValue(::USEROPT_SKIN) || "")
@@ -185,10 +185,10 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
     ::mission_settings.dynlist <- ::dynamic_get_list(settings, wait)
 
-    local add = []
+    let add = []
     for (local i = 0; i < ::mission_settings.dynlist.len(); i++)
     {
-      local misblk = ::mission_settings.dynlist[i].mission_settings.mission
+      let misblk = ::mission_settings.dynlist[i].mission_settings.mission
 
       ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misblk)
 
@@ -204,9 +204,9 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function update_dynamic_map()
   {
-    local descr = ::get_option(::USEROPT_DYN_MAP)
-    local txt = ::create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
-    local dObj = scene.findObject(descr.id)
+    let descr = ::get_option(::USEROPT_DYN_MAP)
+    let txt = ::create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
+    let dObj = scene.findObject(descr.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
 
     init_builder_map()
@@ -219,9 +219,9 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   {
     init_builder_map()
 
-    local descrWeap = ::get_option(::USEROPT_DYN_ZONE)
-    local txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
-    local dObj = scene.findObject(descrWeap.id)
+    let descrWeap = ::get_option(::USEROPT_DYN_ZONE)
+    let txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
+    let dObj = scene.findObject(descrWeap.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
     return descrWeap
   }
@@ -229,9 +229,9 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   function update_dynamic_sector(guiScene, obj, descr)
   {
     generate_builder_list(true)
-    local descrWeap = ::get_option(::USEROPT_DMP_MAP)
-    local txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
-    local dObj = scene.findObject(descrWeap.id)
+    let descrWeap = ::get_option(::USEROPT_DMP_MAP)
+    let txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
+    let dObj = scene.findObject(descrWeap.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
 
     update_takeoff()
@@ -244,11 +244,11 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   function update_takeoff()
   {
     local haveTakeOff = false
-    local mapObj = scene.findObject("dyn_mp_map")
+    let mapObj = scene.findObject("dyn_mp_map")
     if (::checkObj(mapObj))
       ::mission_settings.currentMissionIdx = mapObj.getValue()
 
-    local dynMission = ::getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
+    let dynMission = ::getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
     if (!dynMission)
       return
 
@@ -256,26 +256,26 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
       haveTakeOff = true
 
     ::mission_name_for_takeoff <- dynMission.mission_settings.mission.name
-    local descrWeap = ::get_option(::USEROPT_TAKEOFF_MODE)
+    let descrWeap = ::get_option(::USEROPT_TAKEOFF_MODE)
     if (!haveTakeOff)
     {
       for(local i=0; i<descrWeap.items.len(); i++)
         descrWeap.items[i] = { text = descrWeap.items[i], enabled = (i==0) }
       descrWeap.value = 0
     }
-    local txt = ::create_option_combobox(descrWeap.id, descrWeap.items, descrWeap.value, "onMissionChange", false)
-    local dObj = scene.findObject(descrWeap.id)
+    let txt = ::create_option_combobox(descrWeap.id, descrWeap.items, descrWeap.value, "onMissionChange", false)
+    let dObj = scene.findObject(descrWeap.id)
     if (::checkObj(dObj))
       guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
   }
 
   function setRandomOpt(optName)
   {
-    local desc = ::get_option(optName)
-    local obj = scene.findObject(desc.id)
+    let desc = ::get_option(optName)
+    let obj = scene.findObject(desc.id)
     if(desc.values.len() == 0)
     {
-      local settings = ::toString({                      // warning disable: -declared-never-used
+      let settings = ::toString({                      // warning disable: -declared-never-used
           DYN_MAP = getSceneOptValue(::USEROPT_DYN_MAP),
           DYN_ZONE = getSceneOptValue(::USEROPT_DYN_ZONE),
           DYN_SURROUND = getSceneOptValue(::USEROPT_DYN_SURROUND),
@@ -289,10 +289,10 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
           LIMITED_FUEL = scene.findObject(::get_option(::USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
           LIMITED_AMMO = scene.findObject(::get_option(::USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
         })
-      local currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
-      local slotbarUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
-      local optId = desc.id                              // warning disable: -declared-never-used
-      local values = ::toString(desc.values)             // warning disable: -declared-never-used
+      let currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
+      let slotbarUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
+      let optId = desc.id                              // warning disable: -declared-never-used
+      let values = ::toString(desc.values)             // warning disable: -declared-never-used
       ::script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
       return
     }
@@ -346,17 +346,17 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
       return
 
     ::mission_settings.currentMissionIdx = scene.findObject("dyn_mp_map").getValue()
-    local fullMissionBlk = ::getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
+    let fullMissionBlk = ::getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
     if (!fullMissionBlk)
       return
 
     if (fullMissionBlk.mission_settings.mission.paramExists("takeoff_mode"))
     {
-      local takeoff_mode = scene.findObject("takeoff_mode").getValue()
+      let takeoff_mode = scene.findObject("takeoff_mode").getValue()
       ::dynamic_set_takeoff_mode(fullMissionBlk, takeoff_mode, takeoff_mode)
     }
 
-    local settings = DataBlock()
+    let settings = DataBlock()
     settings.setInt("allyCount",  getSceneOptValue(::USEROPT_DYN_ALLIES))
     settings.setInt("enemyCount", getSceneOptValue(::USEROPT_DYN_ENEMIES))
     settings.setInt("allySkill",  getSceneOptValue(::USEROPT_FRIENDLY_SKILL))
@@ -370,7 +370,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
     ::dynamic_tune(settings, fullMissionBlk)
 
-    local missionBlk = fullMissionBlk.mission_settings.mission
+    let missionBlk = fullMissionBlk.mission_settings.mission
 
     missionBlk.setInt("_gameMode", ::GM_BUILDER)
     missionBlk.setBool("gt_cooperative", ::mission_settings.coop)
@@ -445,13 +445,13 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function getCurrentEdiff()
   {
-    local diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
-    local difficulty = (diffValue == "custom") ?
+    let diffValue = getSceneOptValue(::USEROPT_DIFFICULTY)
+    let difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1)
     {
-      local battleType = ::get_battle_type_by_unit(showedUnit.value)
+      let battleType = ::get_battle_type_by_unit(showedUnit.value)
       return difficulty.getEdiff(battleType)
     }
     return ::get_current_ediff()

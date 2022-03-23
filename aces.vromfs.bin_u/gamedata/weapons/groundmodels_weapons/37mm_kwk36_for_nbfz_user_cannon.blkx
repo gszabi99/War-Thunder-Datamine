@@ -17,6 +17,7 @@
   "bulletsCluster": 1,
   "fxType": "muzzle_ground_40mm_slow",
   "fxGroundDust": "dust_ground_wave_dirt_small",
+  "fxGrassDust": "dust_ground_wave_grass_small",
   "fxSandDust": "dust_ground_wave_sand_small",
   "fxSnowDust": "dust_ground_wave_snow_small",
   "fxConcreteDust": "dust_ground_wave_asphalt_small",
@@ -364,6 +365,24 @@
         "mod1": [0.0,0.5],
         "mod2": [15.0,0.7],
         "mod3": [30.0,0.99]
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "pressureDamage": {
         "damageType": "pressure"

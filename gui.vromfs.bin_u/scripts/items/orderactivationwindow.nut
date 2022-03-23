@@ -1,5 +1,5 @@
-local sheets = require("scripts/items/itemsShopSheets.nut")
-local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let sheets = require("%scripts/items/itemsShopSheets.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_start_order_activation_window <- function gui_start_order_activation_window(params = null)
 {
@@ -9,7 +9,7 @@ local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nu
   ::handlersManager.loadHandler(::gui_handlers.OrderActivationWindow, params)
 }
 
-class ::gui_handlers.OrderActivationWindow extends ::gui_handlers.ItemsList
+::gui_handlers.OrderActivationWindow <- class extends ::gui_handlers.ItemsList
 {
   displayItemTypes = [sheets.ORDERS.id, sheets.DEV_ITEMS.id]
 
@@ -22,10 +22,10 @@ class ::gui_handlers.OrderActivationWindow extends ::gui_handlers.ItemsList
 
   /*override*/ function updateButtons()
   {
-    local item = getCurItem()
-    local mainActionData = item ? item.getMainActionData() : null
-    local showMainAction = !!mainActionData
-    local buttonObj = showSceneBtn("btn_main_action", showMainAction)
+    let item = getCurItem()
+    let mainActionData = item ? item.getMainActionData() : null
+    let showMainAction = !!mainActionData
+    let buttonObj = showSceneBtn("btn_main_action", showMainAction)
     if (showMainAction)
     {
       buttonObj.visualStyle = curTab == itemsTab.INVENTORY? "secondary" : "purchase"

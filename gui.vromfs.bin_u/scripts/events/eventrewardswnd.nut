@@ -1,8 +1,8 @@
-class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.EventRewardsWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/modalSceneWithGamercard.blk"
-  sceneTplName = "gui/events/eventRewardsWnd"
+  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
+  sceneTplName = "%gui/events/eventRewardsWnd"
 
   event = null
   rewardsList = null
@@ -11,11 +11,11 @@ class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!_event)
       return
-    local rewards = ::EventRewards.getSortedRewardsByConditions(_event)
+    let rewards = ::EventRewards.getSortedRewardsByConditions(_event)
     if (!rewards.len() && !::EventRewards.getBaseVictoryReward(_event))
       return
 
-    local params = {
+    let params = {
       event = _event
       rewardsList = rewards
     }
@@ -24,21 +24,21 @@ class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local view = {
+    let view = {
       header     = ::loc("tournaments/rewards")
       total      = rewardsList.len()
       baseReward = (@(event) function () {
-        local reward = ::EventRewards.getBaseVictoryReward(event)
+        let reward = ::EventRewards.getBaseVictoryReward(event)
         return reward ? ::loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
       })(event)
       items = (@(rewardsList, event) function () {
         local even = true
-        local res = []
+        let res = []
         foreach(conditionName, condition in rewardsList)
           foreach (idx, blk in condition)
           {
             even = !even
-            local item = {
+            let item = {
               index           = idx
               conditionId     = conditionName
               conditionText   = ::EventRewards.getConditionText(blk)
@@ -56,7 +56,7 @@ class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
       })(rewardsList, event)
     }
 
-    local data = ::handyman.renderCached(sceneTplName, view)
+    let data = ::handyman.renderCached(sceneTplName, view)
     guiScene.replaceContentFromText(scene.findObject("root-box"), data, data.len(), this)
     fetchRewardsProgress()
   }
@@ -67,19 +67,19 @@ class ::gui_handlers.EventRewardsWnd extends ::gui_handlers.BaseGuiHandlerWT
       foreach (idx, blk in rewardsInCondition)
         if (!::EventRewards.isRewardReceived(blk, event))
         {
-          local index = idx
-          local reward = blk
+          let index = idx
+          let reward = blk
           ::EventRewards.getCondition(conditionId)
                         .updateProgress(blk, event, function (progress) {
-                            local condId = ::EventRewards.getRewardConditionId(reward)
-                            local conditionField = ::EventRewards.getConditionField(reward)
-                            local conditionTextObj = scene.findObject("reward_condition_text_" +
+                            let condId = ::EventRewards.getRewardConditionId(reward)
+                            let conditionField = ::EventRewards.getConditionField(reward)
+                            let conditionTextObj = scene.findObject("reward_condition_text_" +
                                                                       condId + "_" +
                                                                       conditionField + "_" +
                                                                       index)
                             if (::checkObj(conditionTextObj))
                             {
-                              local condition = ::EventRewards.getConditionText(reward, progress)
+                              let condition = ::EventRewards.getConditionText(reward, progress)
                               conditionTextObj.setValue(condition)
                             }
         }, this)}

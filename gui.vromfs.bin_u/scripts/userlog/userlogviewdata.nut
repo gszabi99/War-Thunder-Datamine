@@ -1,21 +1,21 @@
-local time = require("scripts/time.nut")
-local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
-local { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("scripts/onlineShop/entitlements.nut")
-local { isCrossPlayEnabled,
+let time = require("%scripts/time.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { isCrossPlayEnabled,
         getTextWithCrossplayIcon,
-        needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
-local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
-local { boosterEffectType } = require("scripts/items/boosterEffect.nut")
-local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
-local { getTournamentRewardData } = require("scripts/userLog/userlogUtils.nut")
-local { money_type } = require("scripts/money.nut")
+        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
+let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
+let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
+let { money_type } = require("%scripts/money.nut")
 
-local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
-local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
-local descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
+let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
+let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
+let descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 
-local clanActionNames = {
+let clanActionNames = {
   [::ULC_CREATE]                  = "create",
   [::ULC_DISBAND]                 = "disband",
 
@@ -38,11 +38,11 @@ local clanActionNames = {
   [::ULC_UPGRADE_CLAN]            = "clan_was_upgraded",
   [::ULC_UPGRADE_MEMBERS]         = "clan_max_members_count_was_increased",
 }
-local getClanActionName = @(action) clanActionNames?[action] ?? "unknown"
+let getClanActionName = @(action) clanActionNames?[action] ?? "unknown"
 
-local function getDecoratorUnlock(resourceId, resourceType)
+let function getDecoratorUnlock(resourceId, resourceType)
 {
-  local unlock = ::create_default_unlock_data()
+  let unlock = ::create_default_unlock_data()
   local decoratorType = null
   unlock.id = resourceId
   decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
@@ -52,7 +52,7 @@ local function getDecoratorUnlock(resourceId, resourceType)
     unlock.desc = decoratorType.getLocDesc(unlock.id)
     unlock.image = decoratorType.userlogPurchaseIcon
 
-    local decorator = ::g_decorator.getDecorator(unlock.id, decoratorType)
+    let decorator = ::g_decorator.getDecorator(unlock.id, decoratorType)
     if (decorator && !::is_in_loading_screen())
     {
       unlock.descrImage <- decoratorType.getImage(decorator)
@@ -68,7 +68,7 @@ local function getResourcesConfig(resources) {
   if (resources == null)
     return null
 
-  local res = {
+  let res = {
     description = []
     logImg = null
     resourcesImagesMarkupArr = []
@@ -80,15 +80,15 @@ local function getResourcesConfig(resources) {
     resources = [resources]
 
   foreach (resource in resources) {
-    local unlock = getDecoratorUnlock(resource.resourceId, resource.resourceType)
-    local desc = unlock?.desc ?? ""
+    let unlock = getDecoratorUnlock(resource.resourceId, resource.resourceType)
+    let desc = unlock?.desc ?? ""
     if (desc != "")
       res.description.append(desc)
 
     res.logImg = unlock?.image ?? res.logImg
-    local descrImage = unlock?.descrImage ?? ""
+    let descrImage = unlock?.descrImage ?? ""
     if (descrImage != "") {
-      local imgSize = unlock?.descrImageSize ?? "0.05sh, 0.05sh"
+      let imgSize = unlock?.descrImageSize ?? "0.05sh, 0.05sh"
       res.resourcesImagesMarkupArr.append(::format(imgFormat, imgSize, unlock.descrImage))
     }
   }
@@ -96,12 +96,12 @@ local function getResourcesConfig(resources) {
   return res
 }
 
-local function getLinkMarkup(text, url, acccessKeyName=null)
+let function getLinkMarkup(text, url, acccessKeyName=null)
 {
   if (!::u.isString(url) || url.len() == 0 || !::has_feature("AllowExternalLink"))
     return ""
 
-  local btnParams = {
+  let btnParams = {
     text = text
     isHyperlink = true
     link = url
@@ -110,14 +110,14 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   {
     btnParams.acccessKeyName <- acccessKeyName
   }
-  return ::handyman.renderCached("gui/commonParts/button", btnParams)
+  return ::handyman.renderCached("%gui/commonParts/button", btnParams)
 }
 
 ::update_repair_cost <- function update_repair_cost(units, repairCost)
 {
   local idx = 0
   while (("cost"+idx) in units) {
-    local cost = ::getTblValue("cost"+idx, units, 0)
+    let cost = ::getTblValue("cost"+idx, units, 0)
     if (cost>0)
       repairCost.rCost += cost
     else
@@ -128,7 +128,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
 ::get_userlog_view_data <- function get_userlog_view_data(log)
 {
-  local res = {
+  let res = {
     name = "",
     time = time.buildDateTimeStr(log.time, true)
     tooltip = ""
@@ -177,7 +177,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     local desc = ""
     local wp = ::getTblValue("wpEarned", log, 0) + ::getTblValue("baseTournamentWp", log, 0)
     local gold = ::getTblValue("goldEarned", log, 0) + ::getTblValue("baseTournamentGold", log, 0)
-    local xp = ::getTblValue("xpEarned", log, 0)
+    let xp = ::getTblValue("xpEarned", log, 0)
     local earnedText = ::Cost(wp, gold, xp).toStringWithParams({isWpAlwaysShown = true})
     if (earnedText!="")
     {
@@ -187,7 +187,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (log.type == ::EULT_SESSION_RESULT && ("activity" in log))
     {
-      local activity = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(log.activity)
+      let activity = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(log.activity)
       desc += "\n" + ::loc("conditions/activity") + ::loc("ui/colon") + activity
     }
 
@@ -231,15 +231,15 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         desc += "\n" + ::loc("userlog/used_spare") + ::loc("ui/colon") + aText
     }
 
-    local containerLog = ::getTblValue("container", log)
+    let containerLog = ::getTblValue("container", log)
 
     local freeRepair = ("aircrafts" in log) && log.aircrafts.len() > 0
-    local repairCost = {rCost = 0, notEnoughCost = 0}
-    local aircraftsRepaired = ::getTblValue("aircraftsRepaired", containerLog)
+    let repairCost = {rCost = 0, notEnoughCost = 0}
+    let aircraftsRepaired = ::getTblValue("aircraftsRepaired", containerLog)
     if (aircraftsRepaired)
       update_repair_cost(aircraftsRepaired, repairCost);
 
-    local unitsRepairedManually = ::getTblValue("manuallySpentRepairCost", log)
+    let unitsRepairedManually = ::getTblValue("manuallySpentRepairCost", log)
     if (unitsRepairedManually)
       update_repair_cost(unitsRepairedManually, repairCost);
 
@@ -263,8 +263,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       desc += "\n" + ::loc("shop/auto_repair_free")
     }
 
-    local wRefillWp = ::getTblValue("wpCostWeaponRefill", containerLog, 0)
-    local wRefillGold = ::getTblValue("goldCostWeaponRefill", containerLog, 0)
+    let wRefillWp = ::getTblValue("wpCostWeaponRefill", containerLog, 0)
+    let wRefillGold = ::getTblValue("goldCostWeaponRefill", containerLog, 0)
     if (wRefillWp || wRefillGold)
     {
       desc += "\n" + ::loc("shop/auto_buy_weapons_cost") + ::loc("ui/colon")
@@ -282,17 +282,17 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       local idx = 0
       while (("aname"+idx) in log.rpEarned)
       {
-        local unitId = log.rpEarned["aname"+idx]
-        local modId = (("mname"+idx) in log.rpEarned) ? log.rpEarned["mname"+idx] : null
-        local mrp = log.rpEarned["mrp"+idx]
+        let unitId = log.rpEarned["aname"+idx]
+        let modId = (("mname"+idx) in log.rpEarned) ? log.rpEarned["mname"+idx] : null
+        let mrp = log.rpEarned["mrp"+idx]
 
-        local fromExcessRP = ("merp" + idx) in log.rpEarned ? log.rpEarned["merp" + idx] : 0
+        let fromExcessRP = ("merp" + idx) in log.rpEarned ? log.rpEarned["merp" + idx] : 0
         rp += mrp + fromExcessRP
 
         local modText = ""
         if (modId)
           modText = $" - {getModificationName(getAircraftByName(unitId), modId)}"
-        local title = $"{::getUnitName(unitId)}{modText}"
+        let title = $"{::getUnitName(unitId)}{modText}"
         local item = "".join(["\n", title, ::loc("ui/colon"),"<color=@activeTextColor>",
           ::Cost().setRp(mrp).tostring(), "</color>"])
 
@@ -317,7 +317,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     if (::getTblValue("haveTeamkills", log, false))
       desc += ((desc!="")? "\n\n":"") + "<color=@activeTextColor>" + ::loc("debriefing/noAwardsCaption") + "</color>"
 
-    local usedItems = []
+    let usedItems = []
 
     if ("affectedBoosters" in log)
     {
@@ -334,10 +334,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       if (activeBoosters.len() > 0)
         foreach(effectType in boosterEffectType)
         {
-          local boostersArray = []
+          let boostersArray = []
           foreach(idx, block in activeBoosters)
           {
-            local item = ::ItemsManager.findItemById(block.itemId)
+            let item = ::ItemsManager.findItemById(block.itemId)
             if (item && effectType.checkBooster(item))
               boostersArray.append(item)
           }
@@ -354,10 +354,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if ("tournamentResult" in log)
     {
-      local now = ::getTblValue("newStat", log.tournamentResult)
-      local was = ::getTblValue("oldStat", log.tournamentResult)
-      local lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
-      local items = []
+      let now = ::getTblValue("newStat", log.tournamentResult)
+      let was = ::getTblValue("oldStat", log.tournamentResult)
+      let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
+      let items = []
       foreach (lbFieldsConfig in ::events.eventsTableConfig)
       {
         if (!(lbFieldsConfig.field in now)
@@ -368,7 +368,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
                                                  now[lbFieldsConfig.field],
                                                  ::getTblValue(lbFieldsConfig.field, lbDiff, null)))
       }
-      local lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
+      let lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
       if (!("descriptionBlk" in res))
         res.descriptionBlk <- ""
       res.descriptionBlk += ::format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
@@ -378,7 +378,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     local totalText = res.tooltip
     totalText = "<color=@userlogColoredText>" + totalText + ::loc("ui/colon") + "</color>"
 
-    local total = ::Cost(wp, gold, xp, rp).toStringWithParams({isWpAlwaysShown = true})
+    let total = ::Cost(wp, gold, xp, rp).toStringWithParams({isWpAlwaysShown = true})
     totalText += "<color=@activeTextColor>" + total + "</color>"
 
     desc += "\n\n" + totalText
@@ -386,11 +386,11 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (log.type == ::EULT_SESSION_RESULT || log.type == ::EULT_EARLY_SESSION_LEAVE)
     {
-      local ecSpawnScore = ::getTblValue("ecSpawnScore", log, 0)
+      let ecSpawnScore = ::getTblValue("ecSpawnScore", log, 0)
       if (ecSpawnScore > 0)
         desc += "\n" + "<color=@userlogColoredText>" + ::loc("debriefing/total/ecSpawnScore") +  ::loc("ui/colon") + "</color>"
                 + "<color=@activeTextColor>" + ecSpawnScore + "</color>"
-      local wwSpawnScore = log?.wwSpawnScore ?? 0
+      let wwSpawnScore = log?.wwSpawnScore ?? 0
       if (wwSpawnScore > 0)
         desc += "\n"
           + ::colorize("@userlogColoredText", ::loc("debriefing/total/wwSpawnScore")
@@ -401,8 +401,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     if (desc!="")
       res.description <- desc
 
-    local expMul = log?.xpFirstWinInDayMul ?? 1.0
-    local wpMul = log?.wpFirstWinInDayMul ?? 1.0
+    let expMul = log?.xpFirstWinInDayMul ?? 1.0
+    let wpMul = log?.wpFirstWinInDayMul ?? 1.0
     if(expMul > 1.0 || wpMul > 1.0)
       res.logBonus = getBonus(expMul, wpMul, "item", "Log")
 
@@ -423,7 +423,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     local nameLoc = "userlog/" + logName
     local nameLocPostfix = ""
-    local win = ("win" in log) && log.win
+    let win = ("win" in log) && log.win
 
     if ("spectator" in log)
     {
@@ -437,7 +437,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       nameLoc += win? "/win":"/lose"
     }
 
-    local mission = ::get_mission_name(log.mission, log)
+    let mission = ::get_mission_name(log.mission, log)
     res.name = ::loc(nameLoc, { mode = ::loc("multiplayer/"+log.mode+"Mode"), mission = mission }) + nameLocPostfix
 
     local desc = ""
@@ -458,7 +458,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   {
     res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
     res.logImg = "#ui/gameuiskin#log_buy_aircraft"
-    local country = ::getShopCountry(log.aname)
+    let country = ::getShopCountry(log.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   } else
@@ -466,7 +466,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   {
     res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
-    local country = ::getShopCountry(log.aname)
+    let country = ::getShopCountry(log.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   } else
@@ -481,13 +481,13 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     local oneCountry = true
     while (("aname"+idx) in log) {
       if (desc!="") desc+="\n"
-      local airName = log["aname"+idx]
+      let airName = log["aname"+idx]
       desc += ::getUnitName(airName) + ::loc("ui/colon") +
         ::Cost(log["cost"+idx]).toStringWithParams({isWpAlwaysShown = true})
       totalCost += log["cost"+idx]
       if (oneCountry)
       {
-        local c = ::getShopCountry(airName)
+        let c = ::getShopCountry(airName)
         if (idx==0)
           country = c
         else
@@ -522,7 +522,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   } else
   if (log.type==::EULT_BUYING_WEAPONS_MULTI)
   {
-    local auto = !("autoMode" in log) || log.autoMode
+    let auto = !("autoMode" in log) || log.autoMode
     if (auto)
       res.name = ::loc("userlog/buy_weapons_auto") + priceText
     else
@@ -530,7 +530,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     res.description <- ""
     local idx = 0
-    local airDesc = {}
+    let airDesc = {}
     do {
       local desc = ""
 
@@ -612,10 +612,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   if (log.type==::EULT_BUYING_SLOT || log.type==::EULT_TRAINING_AIRCRAFT || log.type==::EULT_UPGRADING_CREW
       || log.type==::EULT_SPECIALIZING_CREW || log.type==::EULT_PURCHASINGSKILLPOINTS)
   {
-    local crew = get_crew_by_id(log.id)
-    local crewName = crew? (crew.idInCountry+1).tostring() : "?"
-    local country = crew? crew.country : ("country" in log)? log.country : ""
-    local airName = ("aname" in log)? ::getUnitName(log.aname) : ("aircraft" in log)? ::getUnitName(log.aircraft) : ""
+    let crew = get_crew_by_id(log.id)
+    let crewName = crew? (crew.idInCountry+1).tostring() : "?"
+    let country = crew? crew.country : ("country" in log)? log.country : ""
+    let airName = ("aname" in log)? ::getUnitName(log.aname) : ("aircraft" in log)? ::getUnitName(log.aircraft) : ""
     if (::checkCountry(country, "userlog EULT_*_CREW"))
       res.logImg2 = ::get_country_icon(country)
     res.logImg = "#ui/gameuiskin#log_crew"
@@ -635,13 +635,13 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       foreach(page in ::crew_skills)
         if ((page.id in log) && log[page.id].len()>0)
         {
-          local groupName = ::loc($"crew/{page.id}")
+          let groupName = ::loc($"crew/{page.id}")
           desc = $"{desc}{desc != "" ? "\n" : ""}{groupName}{::loc("ui/colon")}"
           foreach(item in page.items)
             if (item.name in log[page.id])
             {
-              local numPoints = ::g_crew.getSkillCrewLevel(item, log[page.id][item.name])
-              local skillName = ::loc($"crew/{item.name}")
+              let numPoints = ::g_crew.getSkillCrewLevel(item, log[page.id][item.name])
+              let skillName = ::loc($"crew/{item.name}")
               desc = $"{desc}{desc != "" ? "\n" : ""}{::nbsp}{::nbsp}+{numPoints} {skillName}"
               total += numPoints
             }
@@ -656,7 +656,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   } else
   if (log.type==::EULT_BUYENTITLEMENT)
   {
-    local ent = getEntitlementConfig(log.name)
+    let ent = getEntitlementConfig(log.name)
     if ("cost" in log)
       ent["goldCost"] <- log.cost
     local costText = getEntitlementPrice(ent)
@@ -668,7 +668,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   } else
   if (log.type == ::EULT_NEW_UNLOCK)
   {
-    local config = build_log_unlock_data(log)
+    let config = build_log_unlock_data(log)
 
     res.name = config.title
     if (config.name!="")
@@ -679,7 +679,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     else if ((config?.image2 ?? "") != "")
       res.logImg2 = config?.image2
 
-    local unlock = ::g_unlocks.getUnlockById(log?.unlockId ?? log?.id ?? "")
+    let unlock = ::g_unlocks.getUnlockById(log?.unlockId ?? log?.id ?? "")
     local desc = ""
     if (!(unlock?.isMultiUnlock ?? false) && "desc" in config)
     {
@@ -698,7 +698,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (("descrImage" in config) && config.descrImage!="")
     {
-      local imgSize = ("descrImageSize" in config)? config.descrImageSize : "0.05sh, 0.05sh"
+      let imgSize = ("descrImageSize" in config)? config.descrImageSize : "0.05sh, 0.05sh"
       res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage)
     }
     if ((config.type == ::UNLOCKABLE_SLOT ||
@@ -730,7 +730,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   } else
   if (log.type==::EULT_BUYING_SPARE_AIRCRAFT)
   {
-    local count = ::getTblValue("count", log, 1)
+    let count = ::getTblValue("count", log, 1)
     if (count == 1)
       res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
     else
@@ -740,14 +740,14 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
                      unitName = ::colorize("userlogColoredText", ::getUnitName(log.aname))
                    }) + priceText
     res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
-    local country = ::getShopCountry(log.aname)
+    let country = ::getShopCountry(log.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   } else
   if (log.type==::EULT_CLAN_ACTION)
   {
     res.logImg = "#ui/gameuiskin#log_clan_action"
-    local info = {
+    let info = {
       action = ::getTblValue("clanActionType", log, -1)
       clan = ("clanName" in log)? ::ps4CheckAndReplaceContentDisabledText(log.clanName) : ""
       player = ::getTblValue("initiatorNick", log, "")
@@ -758,7 +758,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       clanOld = ("clanNameOld" in log)? ::ps4CheckAndReplaceContentDisabledText(log.clanNameOld) : ""
       sizeIncrease = ::getTblValue("sizeIncrease", log, -1)
     }
-    local typeTxt = getClanActionName(info.action)
+    let typeTxt = getClanActionName(info.action)
     res.name = ::loc("userlog/"+logName+"/"+typeTxt, info) + priceText
 
     if ("comment" in log && log.comment!="")
@@ -797,18 +797,18 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (::getTblValue("descrImage", config, "") != "")
     {
-      local imgSize = ::getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
+      let imgSize = ::getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
       res.descriptionBlk <- ::format(imgFormat, imgSize, config.descrImage)
     }
   }
   else if (log.type==::EULT_CHARD_AWARD)
   {
-    local rewardType = ::getTblValue("rewardType", log, "")
+    let rewardType = ::getTblValue("rewardType", log, "")
     res.name = ::loc("userlog/" + rewardType)
     res.description <- ::loc("userlog/" + ::getTblValue("name", log, ""))
 
-    local wp = log?.wpEarned ?? 0, gold = log?.goldEarned ?? 0, exp = log?.xpEarned ?? 0
-    local reward = ::Cost(wp.tointeger(), gold.tointeger(), 0, exp.tointeger()).tostring()
+    let wp = log?.wpEarned ?? 0, gold = log?.goldEarned ?? 0, exp = log?.xpEarned ?? 0
+    let reward = ::Cost(wp.tointeger(), gold.tointeger(), 0, exp.tointeger()).tostring()
     if (reward != "")
       res.description += " <color=@activeTextColor>" + reward + "</color>"
 
@@ -816,7 +816,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     local lineReward = ""
     while (("chardReward"+idx) in log)
     {
-      local blk = log["chardReward"+idx]
+      let blk = log["chardReward"+idx]
 
       if ("country" in blk)
         lineReward += ::loc(blk.country) + ::loc("ui/colon")
@@ -834,13 +834,13 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
             lineReward, getModificationName(getAircraftByName(blk.aname), blk.mname), " "])
       }
 
-      local blkWp = blk?.wpEarned ?? 0
-      local blkGold = blk?.goldEarned ?? 0
-      local blkExp = blk?.xpEarned ?? 0
+      let blkWp = blk?.wpEarned ?? 0
+      let blkGold = blk?.goldEarned ?? 0
+      let blkExp = blk?.xpEarned ?? 0
       local blkReward = ::Cost(blkWp.tointeger(), blkGold.tointeger()).tostring()
       if (blkExp)
       {
-        local changeLightToXP = blk?.name == ::MSG_FREE_EXP_DENOMINATE_OLD
+        let changeLightToXP = blk?.name == ::MSG_FREE_EXP_DENOMINATE_OLD
         blkReward += ((blkReward!="")? ", ":"") + ( changeLightToXP ?
           (blkExp + " <color=@white>" + ::loc("mainmenu/experience/oldName") + "</color>")
           : ::Cost().setRp(blkExp.tointeger()).tostring())
@@ -855,29 +855,29 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if ("clanDuelReward" in log)
     {
-      local rewardBlk = log.clanDuelReward
+      let rewardBlk = log.clanDuelReward
 
-      local difficultyStr = ::loc(::getTblValue("difficulty", rewardBlk, ""))
+      let difficultyStr = ::loc(::getTblValue("difficulty", rewardBlk, ""))
       lineReward += ::loc("difficulty_name") + " <color=@white>" + difficultyStr +
           "</color>\n"
 
       if ("era" in rewardBlk)
       {
-        local era = rewardBlk.era
+        let era = rewardBlk.era
         lineReward += ::loc("userLog/clanDuelRewardRank") + " <color=@white>" + era +
             "</color>\n"
       }
 
-      local clanPlace = ::getTblValue("clanPlace", rewardBlk, -1)
+      let clanPlace = ::getTblValue("clanPlace", rewardBlk, -1)
 
-      local clanRating = ::getTblValue("clanRating", rewardBlk, -1)
+      let clanRating = ::getTblValue("clanRating", rewardBlk, -1)
 
       //show rating only for place reward due for rating-reward rating showed in header
       if (clanPlace > 0)
         lineReward += ::loc("userLog/clanDuelRewardClanRating") + " <color=@white>" + clanRating +
             "</color>\n"
 
-      local equalClanPlacesCount = ::getTblValue("equalClanPlacesCount", rewardBlk, -1)
+      let equalClanPlacesCount = ::getTblValue("equalClanPlacesCount", rewardBlk, -1)
       if (equalClanPlacesCount > 1)
       {
         lineReward += ::loc("userLog/clanDuelRewardEqualClanPlaces") + " <color=@white>" +
@@ -885,7 +885,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       }
 
       res.description = ""
-      local rewardCurency = ::Cost(wp, gold, exp).tostring()
+      let rewardCurency = ::Cost(wp, gold, exp).tostring()
       if (rewardCurency != "")
         res.description += ::loc("reward") + ::loc("ui/colon") + " " + ::colorize("activeTextColor", rewardCurency)
 
@@ -899,27 +899,27 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         res.description = ::loc("userlog/ClanRewardRatingReached", {rating = clanRating.tostring()})
 
 
-      local place = ::getTblValue("place", rewardBlk, -1)
+      let place = ::getTblValue("place", rewardBlk, -1)
       if (place > 0)
         lineReward += ::loc("userLog/clanDuelRewardPlace") + " <color=@white>" + place +
             "</color>\n"
 
-      local rating = round(rewardBlk.rating);
+      let rating = round(rewardBlk.rating);
       lineReward += ::loc("userLog/clanDuelRewardRating") + " <color=@white>" + rating +
             "</color>\n"
 
-      local equalPlacesCount = ::getTblValue("equalPlacesCount", rewardBlk, -1)
+      let equalPlacesCount = ::getTblValue("equalPlacesCount", rewardBlk, -1)
       if (equalPlacesCount > 1)
       {
         lineReward += ::loc("userLog/clanDuelRewardEqualPlaces") + " <color=@white>" +
             (equalPlacesCount - 1) + "</color>\n"
       }
 
-      local config = {
+      let config = {
         locId = "clan_duel_reward"
         subType = ps4_activity_feed.CLAN_DUEL_REWARD
       }
-      local customConfig = {
+      let customConfig = {
         gold = gold
         place = place
         blkParamName = "CLAN_DUEL_REWARD"
@@ -927,10 +927,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
       activityFeedPostFunc(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
 
-      local resourcesConfig = getResourcesConfig(rewardBlk?.resource)
+      let resourcesConfig = getResourcesConfig(rewardBlk?.resource)
       if (resourcesConfig != null) {
         if (resourcesConfig.description.len() > 0) {
-          local desc = "\n\n".join(resourcesConfig.description)
+          let desc = "\n\n".join(resourcesConfig.description)
           res.description <- $"{res?.description ?? ""}{("description" in  res) ? "\n\n" : ""}{desc}"
         }
         res.logImg = resourcesConfig.logImg
@@ -941,17 +941,17 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (rewardType == "EveryDayLoginAward" || rewardType == "PeriodicCalendarAward")
     {
-      local prefix = "trophy/"
-      local pLen = prefix.len()
+      let prefix = "trophy/"
+      let pLen = prefix.len()
       if (rewardType == "EveryDayLoginAward")
         res.name += ::loc("ui/parentheses/space", {
           text = ::colorize("userlogColoredText", ::loc("enumerated_day", {
               number = ::getTblValue("progress", log, 0) + (::getTblValue("daysFor0", log, 0)-1)
         }))})
 
-      local name = log.chardReward0.name
-      local itemId = (name.len() > pLen && name.slice(0, pLen) == prefix) ? name.slice(pLen) : name
-      local item = ::ItemsManager.findItemById(itemId)
+      let name = log.chardReward0.name
+      let itemId = (name.len() > pLen && name.slice(0, pLen) == prefix) ? name.slice(pLen) : name
+      let item = ::ItemsManager.findItemById(itemId)
       if (item)
         lineReward = ::colorize("activeTextColor", item.getName())
       res.logImg = ::items_classes.Trophy.typeIcon
@@ -959,8 +959,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     }
     else if (::isInArray(rewardType, ["WagerStageWin", "WagerStageFail", "WagerWin", "WagerFail"]))
     {
-      local itemId = ::getTblValue("id", log)
-      local item = ::ItemsManager.findItemById(itemId)
+      let itemId = ::getTblValue("id", log)
+      let item = ::ItemsManager.findItemById(itemId)
       if (item)
       {
         if (::isInArray(rewardType, ["WagerStageWin", "WagerStageFail"]))
@@ -968,7 +968,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         else
           res.name = ::loc("userlog/" + rewardType, {wagerName = ::colorize("userlogColoredText", item.getName())})
 
-        local desc = []
+        let desc = []
         desc.append(::loc("items/wager/numWins", { numWins = ::getTblValue("numWins", log), maxWins = item.maxWins }))
         desc.append(::loc("items/wager/numFails", {numFails = ::getTblValue("numFails", log), maxFails = item.maxFails}))
 
@@ -979,8 +979,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     }
     else if (rewardType == "TournamentReward")
     {
-      local result = getTournamentRewardData(log)
-      local desc = []
+      let result = getTournamentRewardData(log)
+      let desc = []
       foreach(rewardBlk in result)
         desc.append(::EventRewards.getConditionText(rewardBlk))
 
@@ -996,9 +996,9 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   } else
   if (log.type==::EULT_ADMIN_ADD_GOLD || log.type==::EULT_ADMIN_REVERT_GOLD)
   {
-    local goldAdd = log?.goldAdd ?? 0
-    local goldBalance = log?.goldBalance ?? 0
-    local suffix = (goldAdd >= 0) ? "/positive" : "/negative"
+    let goldAdd = log?.goldAdd ?? 0
+    let goldBalance = log?.goldBalance ?? 0
+    let suffix = (goldAdd >= 0) ? "/positive" : "/negative"
 
     res.name = ::loc("userlog/" + logName + suffix, {
       gold = ::Money(money_type.none, 0, ::abs(goldAdd)).toStringWithParams({isGoldAlwaysShown = true}),
@@ -1012,7 +1012,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_OPEN_ALL_IN_TIER)
   {
-    local locTbl = {
+    let locTbl = {
       unitName = ::getUnitName(log.unit)
       tier = ::get_roman_numeral(log.tier)
       exp = 0
@@ -1038,7 +1038,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     res.name <- ::loc("userlog/"+logName+"/name", locTbl)
     res.description <- ::loc("userlog/"+logName+"/desc", locTbl) + desc
 
-    local country = ::getShopCountry(log.unit)
+    let country = ::getShopCountry(log.unit)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   }
@@ -1052,7 +1052,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     res.description <- ""
     local idx = 0
-    local airDesc = {}
+    let airDesc = {}
 
     idx = 0
     do {
@@ -1090,29 +1090,29 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_OPEN_TROPHY)
   {
-    local itemId = log?.itemDefId ?? log?.id ?? ""
+    let itemId = log?.itemDefId ?? log?.id ?? ""
     local item = ::ItemsManager.findItemById(itemId)
 
     if(!item && log?.trophyItemDefId)
     {
-      local extItem = ::ItemsManager.findItemById(log?.trophyItemDefId)
+      let extItem = ::ItemsManager.findItemById(log?.trophyItemDefId)
       if (extItem)
         item = extItem.getContentItem()
     }
 
     if (item)
     {
-      local tags = item?.itemDef.tags
-      local isAutoConsume = tags?.autoConsume ?? false
-      local cost = item.isEveryDayAward() ? ::Cost() : item.getCost()
+      let tags = item?.itemDef.tags
+      let isAutoConsume = tags?.autoConsume ?? false
+      let cost = item.isEveryDayAward() ? ::Cost() : item.getCost()
       logName = (item?.userlogOpenLoc ?? logName) != logName
         || item.isEveryDayAward() ? item.userlogOpenLoc
           : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
 
-      local usedText = isAutoConsume
+      let usedText = isAutoConsume
         ? ::trophyReward.getRewardText(log, false, "userlogColoredText")
         : ::loc($"userlog/{logName}/short")
-      local costText = cost.gold > 0
+      let costText = cost.gold > 0
         ? ::loc("ui/parentheses/space", {text = $"{cost.getGoldText(true, false)}"}) : ""
       res.name = isAutoConsume
         ? " ".concat(item.blkType == "unlock" ? ""
@@ -1124,8 +1124,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         && ::checkCountry($"country_{tags.country}", "autoConsume EULT_OPEN_TROPHY"))
           res.logImg2 = ::get_country_icon($"country_{tags.country}")
 
-      local nameMarkup = item.getNameMarkup()
-      local rewardMarkup = ::format(textareaFormat,
+      let nameMarkup = item.getNameMarkup()
+      let rewardMarkup = ::format(textareaFormat,
         ::g_string.stripTags($"{::loc("reward")}{::loc("ui/colon")}"))
       res.descriptionBlk <- isAutoConsume
         ? ::get_userlog_image_item(item)
@@ -1140,10 +1140,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         {
           if (typeof(log.item) == "array")
           {
-            local items = log.item
+            let items = log.item
             while(items.len())
             {
-              local inst = items.pop()
+              let inst = items.pop()
               if (inst in rewards)
                 rewards[inst] += 1
               else
@@ -1154,7 +1154,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
             rewards = { [log.item] = 1 }
           foreach (idx, val in rewards)
           {
-            local data = {
+            let data = {
               type = log.type
               item = idx
               count = val
@@ -1170,8 +1170,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
           res.descriptionBlk = $"{res.descriptionBlk}{::trophyReward.getRewardsListViewData(log)}"
         }
 
-        local rewardText = "\n".join(resTextArr, true)
-        local reward = $"{::loc("reward")}{::loc("ui/colon")}{rewardText}"
+        let rewardText = "\n".join(resTextArr, true)
+        let reward = $"{::loc("reward")}{::loc("ui/colon")}{rewardText}"
         res.tooltip = $"{usedText}{::loc("ui/colon")}{item.getName()}\n{reward}"
       }
     }
@@ -1220,9 +1220,9 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_BUY_ITEM)
   {
-    local itemId = ::getTblValue("id", log, "")
-    local item = ::ItemsManager.findItemById(itemId)
-    local locId = "userlog/" + logName + ((log.count > 1) ? "/multiple" : "")
+    let itemId = ::getTblValue("id", log, "")
+    let item = ::ItemsManager.findItemById(itemId)
+    let locId = "userlog/" + logName + ((log.count > 1) ? "/multiple" : "")
     res.name = ::loc(locId, {
                      itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
                      price = ::Cost(log.cost * log.count, log.costGold * log.count).tostring()
@@ -1233,9 +1233,9 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_NEW_ITEM)
   {
-    local itemId = ::getTblValue("id", log, "")
-    local item = ::ItemsManager.findItemById(itemId)
-    local locId = "userlog/" + logName + ((log.count > 1) ? "/multiple" : "")
+    let itemId = ::getTblValue("id", log, "")
+    let item = ::ItemsManager.findItemById(itemId)
+    let locId = "userlog/" + logName + ((log.count > 1) ? "/multiple" : "")
     res.logImg = (item && item.getSmallIconName() ) || ::BaseItem.typeIcon
     res.name = ::loc(locId, {
                      itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
@@ -1245,10 +1245,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_ACTIVATE_ITEM)
   {
-    local itemId = ::getTblValue("id", log, "")
-    local item = ::ItemsManager.findItemById(itemId)
+    let itemId = ::getTblValue("id", log, "")
+    let item = ::ItemsManager.findItemById(itemId)
     res.logImg = (item && item.getSmallIconName() ) || ::BaseItem.typeIcon
-    local nameId = (item?.isSpecialOffer ?? false) ? "specialOffer/recived" : logName
+    let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer/recived" : logName
     res.name = ::loc($"userlog/{nameId}", {
                      itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
                    })
@@ -1271,15 +1271,15 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_REMOVE_ITEM)
   {
-    local itemId = ::getTblValue("id", log, "")
-    local item = ::ItemsManager.findItemById(itemId)
-    local reason = log?.reason ?? "unknown"
-    local nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
+    let itemId = ::getTblValue("id", log, "")
+    let item = ::ItemsManager.findItemById(itemId)
+    let reason = log?.reason ?? "unknown"
+    let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
     local locId = $"userlog/{nameId}/{reason}"
     if (reason == "replaced")
     {
-      local replaceItemId = ::getTblValue("replaceId", log, "")
-      local replaceItem = ::ItemsManager.findItemById(replaceItemId)
+      let replaceItemId = ::getTblValue("replaceId", log, "")
+      let replaceItem = ::ItemsManager.findItemById(replaceItemId)
       res.name = ::loc(locId, {
                      itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
                      replacedItemName = ::colorize("userlogColoredText", replaceItem ? replaceItem.getName() : "")
@@ -1293,14 +1293,14 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
                    })
       res.descriptionBlk <- ::get_userlog_image_item(item)
     }
-    local itemTypeValue = log?.itemType ?? ""
+    let itemTypeValue = log?.itemType ?? ""
     if (itemTypeValue == "universalSpare" && reason == "unknown")
     {
       locId = "userlog/" + logName
-      local unit =  ::getTblValue("unit", log)
+      let unit =  ::getTblValue("unit", log)
       if (unit != null)
         res.logImg2 = ::get_country_icon(::getShopCountry(unit))
-      local numSpares = ::getTblValue("numSpares", log, 1)
+      let numSpares = ::getTblValue("numSpares", log, 1)
       res.name = ::loc(locId + "_name/universalSpare", {
                      numSparesColored = ::colorize("userlogColoredText", numSpares)
                      numSpares = numSpares
@@ -1312,7 +1312,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     }
     else if (itemTypeValue == "wager")
     {
-      local earned = ::Cost(::getTblValue("wpEarned", log, 0), ::getTblValue("goldEarned", log, 0))
+      let earned = ::Cost(::getTblValue("wpEarned", log, 0), ::getTblValue("goldEarned", log, 0))
       if (earned > ::zero_money)
         res.description <- ::loc("userlog/" + logName + "_desc/wager") + " " + earned.tostring()
     }
@@ -1332,11 +1332,11 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       if (!("itemDefId" in data))
         continue
 
-      local item = ::ItemsManager.findItemById(data.itemDefId)
+      let item = ::ItemsManager.findItemById(data.itemDefId)
       if (!item)
         continue
 
-      local quantity = data?.quantity ?? 1
+      let quantity = data?.quantity ?? 1
       res.descriptionBlk += item.getNameMarkup(quantity, true, true)
       res.logImg = res.logImg || item.getSmallIconName()
 
@@ -1349,7 +1349,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     }
 
     res.logImg = res.logImg || ::BaseItem.typeIcon
-    local locId = "userlog/" + logName
+    let locId = "userlog/" + logName
     res.name = ::loc(locId, {
       numItemsColored = ::colorize("userlogColoredText", amount)
       numItems = amount
@@ -1370,7 +1370,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     res.name = ::loc("userlog/"+logName) + ::loc("ui/colon") +
         ::colorize("userlogColoredText", ::events.getNameByEconomicName(log.name))
 
-    local desc = []
+    let desc = []
     if (::getTblValue("battleLimitReminder", log))
       desc.append(::loc("userlog/battleLimitReminder") + ::loc("ui/colon") + log.battleLimitReminder)
     if (::getTblValue("defeatCountReminder", log))
@@ -1385,34 +1385,34 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     res.name = ::loc("userlog/"+logName) + ::loc("ui/colon") +
       ::colorize("userlogColoredText", ::events.getNameByEconomicName(log.tournamentName))
 
-    local cost = ::Cost()
+    let cost = ::Cost()
     cost.wp = ::getTblValue("costWP", log, 0)
     cost.gold = ::getTblValue("costGold", log, 0)
     res.description <- ::loc("events/battle_cost", {cost = cost.tostring()})
   }
   else if (log.type == ::EULT_CONVERT_EXPERIENCE)
   {
-    local logId = "userlog/"+logName
+    let logId = "userlog/"+logName
 
-    res.logImg = "#ui/gameuiskin#convert_xp"
-    local unitName = log["unit"]
-    local country = ::getShopCountry(unitName)
+    res.logImg = "#ui/gameuiskin#convert_xp.svg"
+    let unitName = log["unit"]
+    let country = ::getShopCountry(unitName)
     if (checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
 
-    local cost = ::Cost()
+    let cost = ::Cost()
     cost.wp = ::getTblValue("costWP", log, 0)
     cost.gold = ::getTblValue("costGold", log, 0)
-    local exp = ::getTblValue("exp", log, 0)
+    let exp = ::getTblValue("exp", log, 0)
 
     res.description <- ::loc(logId+"/desc", {cost = cost.tostring(), unitName = ::getUnitName(unitName),
       exp = ::Cost().setFrp(exp).tostring()})
   }
   else if (log.type == ::EULT_SELL_BLUEPRINT)
   {
-    local itemId = ::getTblValue("id", log, "")
-    local item = ::ItemsManager.findItemById(itemId)
-    local locId = "userlog/" + logName + ((log.count > 1) ? "/multiple" : "")
+    let itemId = ::getTblValue("id", log, "")
+    let item = ::ItemsManager.findItemById(itemId)
+    let locId = "userlog/" + logName + ((log.count > 1) ? "/multiple" : "")
     res.name = ::loc(locId, {
                      itemName = ::colorize("userlogColoredText", item ? item.getName() : "")
                      price = ::Cost(log.cost * log.count, log.costGold * log.count).tostring()
@@ -1445,7 +1445,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     local taskName = ""
 
     if (log?.id) {
-      local battleTask = ::g_battle_tasks.getTaskById(log.id)
+      let battleTask = ::g_battle_tasks.getTaskById(log.id)
       if (battleTask)
         res.logImg = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
       else
@@ -1459,7 +1459,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_PUNLOCK_REROLL_PROPOSAL && "new_proposals" in log)
   {
-    local text = ::g_battle_tasks.generateUpdateDescription(log.new_proposals)
+    let text = ::g_battle_tasks.generateUpdateDescription(log.new_proposals)
     if (log.new_proposals.len() > 1)
       res.description <- text
     else
@@ -1469,7 +1469,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_CONVERT_BLUEPRINTS)
   {
-    local locId = "userlog/"+logName
+    let locId = "userlog/"+logName
     res.name = ::loc(locId, {
                      from = ::loc("userlog/blueprintpart_name/" + ::getTblValue("from", log, ""))
                      to = ::loc("userlog/blueprintpart_name/" + ::getTblValue("to", log, ""))
@@ -1482,12 +1482,12 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       if (!("result" in unitData))
         continue
 
-      local resItem = ::ItemsManager.findItemById(unitData.result)
+      let resItem = ::ItemsManager.findItemById(unitData.result)
       res.description += "\n" + ::loc(unitName+"_0") + ::loc("ui/colon") + ::get_userlog_image_item(resItem)
       local idx = 0
       while (("source"+idx) in unitData)
       {
-        local srcItem = ::ItemsManager.findItemById(unitData["source"+idx])
+        let srcItem = ::ItemsManager.findItemById(unitData["source"+idx])
         res.description += ::get_userlog_image_item(srcItem)
         idx++
       }
@@ -1495,7 +1495,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_RENT_UNIT || log.type == ::EULT_RENT_UNIT_EXPIRED)
   {
-    local unitName = ::getTblValue("unit", log)
+    let unitName = ::getTblValue("unit", log)
     if (unitName)
     {
       res.name = ::loc("userlog/"+logName, {unitName = ::loc(unitName + "_0")})
@@ -1510,18 +1510,18 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_EXCHANGE_WARBONDS)
   {
-    local awardData = ::getTblValue("award", log)
+    let awardData = ::getTblValue("award", log)
     if (awardData)
     {
-      local wbPriceText = ::g_warbonds.getWarbondPriceText(awardData?.cost ?? 0)
-      local awardBlk = ::DataBlockAdapter(awardData)
-      local awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
+      let wbPriceText = ::g_warbonds.getWarbondPriceText(awardData?.cost ?? 0)
+      let awardBlk = ::DataBlockAdapter(awardData)
+      let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
       res.name = awardType.getUserlogBuyText(awardBlk, wbPriceText)
     }
   }
   else if (log.type == ::EULT_WW_START_OPERATION || log.type == ::EULT_WW_CREATE_OPERATION)
   {
-    local locId = log.type == ::EULT_WW_CREATE_OPERATION ? "worldWar/userlog/createOperation"
+    let locId = log.type == ::EULT_WW_CREATE_OPERATION ? "worldWar/userlog/createOperation"
                                                          : "worldWar/userlog/startOperation"
     local operation = ""
     if (::is_worldwar_enabled())
@@ -1539,20 +1539,20 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   {
     local textLocId = "worldWar/userlog/endOperation/"
     textLocId += ::getTblValue("winner", log) ? "win" : "lose"
-    local mapName = ::getTblValue("mapName", log)
-    local opId = ::getTblValue("operationId", log)
-    local earnedText = ::Cost(::getTblValue("wp", log, 0)).toStringWithParams({isWpAlwaysShown = true})
+    let mapName = ::getTblValue("mapName", log)
+    let opId = ::getTblValue("operationId", log)
+    let earnedText = ::Cost(::getTblValue("wp", log, 0)).toStringWithParams({isWpAlwaysShown = true})
     res.name = ::loc(textLocId, {
       opId = opId, mapName = ::loc("worldWar/map/" + mapName), reward = earnedText })
 
-    local statsWpText = ::Cost(::getTblValue("wpStats", log, 0)).toStringWithParams({isWpAlwaysShown = true})
+    let statsWpText = ::Cost(::getTblValue("wpStats", log, 0)).toStringWithParams({isWpAlwaysShown = true})
     res.description <- ::loc("worldWar/userlog/endOperation/stats", { reward = statsWpText })
   }
   else if (log.type == ::EULT_INVITE_TO_TOURNAMENT)
   {
     if ("action_tss" in log)
     {
-      local action_tss = log.action_tss
+      let action_tss = log.action_tss
       local desc = ""
 
       switch (action_tss)
@@ -1571,7 +1571,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
             {
               foreach(block in award_val.award)
                 {
-                  local item = ::ItemsManager.findItemById(block)
+                  let item = ::ItemsManager.findItemById(block)
                   if (!("descriptionBlk" in res))
                     res.descriptionBlk <- ""
                   res.descriptionBlk += ::get_userlog_image_item(item)
@@ -1611,10 +1611,10 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   }
   else if (log.type == ::EULT_CLAN_UNITS)
   {
-    local textLocId = "userlog/clanUnits/" + log.optype
+    let textLocId = "userlog/clanUnits/" + log.optype
     res.name = ::loc(textLocId + "/name")
 
-    local descLoc = textLocId + "/desc"
+    let descLoc = textLocId + "/desc"
 
     if (log.optype == "flush")
     {
@@ -1632,12 +1632,12 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
   else if (log.type == ::EULT_WW_AWARD)
   {
     res.name = ::loc("worldwar/personal/award")
-    local awardsFor = log?.awardsFor
-    local descLines = []
+    let awardsFor = log?.awardsFor
+    let descLines = []
     if (awardsFor != null) {
-      local day = ::g_string.cutPrefix(awardsFor.table, "day")
-      local period = day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason")
-      local modeStr = ::g_string.split(awardsFor.mode, "__")
+      let day = ::g_string.cutPrefix(awardsFor.table, "day")
+      let period = day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason")
+      let modeStr = ::g_string.split(awardsFor.mode, "__")
       local mapName = null
       local country = null
       foreach (partStr in modeStr)
@@ -1649,7 +1649,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       }
       country = country ? ::loc(country) : ::loc("worldwar/allCountries")
       mapName = mapName ? ::loc("worldWar/map/" + mapName) : ::loc("worldwar/allMaps")
-      local leaderboard = ::loc("mainmenu/leaderboard") + ::loc("ui/colon")
+      let leaderboard = ::loc("mainmenu/leaderboard") + ::loc("ui/colon")
         + ::g_string.implode([period, mapName, country], ::loc("ui/comma"))
       descLines.append(leaderboard)
 
@@ -1666,17 +1666,17 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
          break
       }
     }
-    local item = ::ItemsManager.findItemById(log?.itemDefId)
+    let item = ::ItemsManager.findItemById(log?.itemDefId)
     if (item)
       descLines.append(::colorize("activeTextColor", item.getName()))
     res.logImg = item?.getSmallIconName()
 
-    local markupArr = []
-    local itemMarkup = ::get_userlog_image_item(item)
+    let markupArr = []
+    let itemMarkup = ::get_userlog_image_item(item)
     if (itemMarkup != "")
       markupArr.append(itemMarkup)
 
-    local resourcesConfig = getResourcesConfig(log?.resources.resource)
+    let resourcesConfig = getResourcesConfig(log?.resources.resource)
     if (resourcesConfig != null) {
       if (resourcesConfig.description.len() > 0)
         descLines.append($"\n{"\n\n".join(resourcesConfig.description)}")

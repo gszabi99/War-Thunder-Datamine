@@ -1,14 +1,14 @@
-local { IsCommanderViewAimModeActive } = require("tankState.nut")
-local { IsSightLocked } = require("reactiveGui/hud/targetTrackerState.nut")
+let { IsCommanderViewAimModeActive } = require("tankState.nut")
+let { IsSightLocked } = require("%rGui/hud/targetTrackerState.nut")
 
-local drawMark = @(state_var, text, pos, line_style, colorWatched) function() {
+let drawMark = @(state_var, text, pos, line_style, colorWatched) function() {
 
-  local res = { watch = state_var }
+  let res = { watch = state_var }
 
   if (!state_var.value)
     return res
 
-  local textMark = @() line_style.__merge({
+  let textMark = @() line_style.__merge({
     rendObj = ROBJ_DTEXT
     watch = colorWatched
     color = colorWatched.value

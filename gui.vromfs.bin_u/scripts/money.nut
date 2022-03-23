@@ -89,7 +89,7 @@ Money.isZero <- function isZero()
 //Math methods
 Money._add <- function _add(that)
 {
-  local newClass = this.getclass()
+  let newClass = this.getclass()
   return newClass(this.wp + that.wp,
                   this.gold + that.gold,
                   this.frp + that.frp,
@@ -99,7 +99,7 @@ Money._add <- function _add(that)
 
 Money._sub <- function _sub(that)
 {
-  local newClass = this.getclass()
+  let newClass = this.getclass()
   return newClass(this.wp - that.wp,
                   this.gold - that.gold,
                   this.frp - that.frp,
@@ -199,45 +199,45 @@ Money.__get_sap_color_id <- function __get_sap_color_id()   { return money_color
 
 Money.__impl_get_wp_text <- function __impl_get_wp_text(colored = true, checkBalance = false, needIcon = true)
 {
-  local color_id = (checkBalance && colored)? __get_wp_color_id() : money_color.NEUTRAL
-  local sign = needIcon? ::loc(colored ? "warpoints/short/colored" : "warpoints/short") : ""
+  let color_id = (checkBalance && colored)? __get_wp_color_id() : money_color.NEUTRAL
+  let sign = needIcon? ::loc(colored ? "warpoints/short/colored" : "warpoints/short") : ""
   return __check_color(::g_language.decimalFormat(wp), color_id) + sign
 }
 
 Money.__impl_get_gold_text <- function __impl_get_gold_text(colored = true, checkBalance = false, needIcon = true)
 {
-  local color_id = (checkBalance && colored)? __get_gold_color_id() : money_color.NEUTRAL
-  local sign = needIcon? ::loc(colored ? "gold/short/colored" : "gold/short") : ""
+  let color_id = (checkBalance && colored)? __get_gold_color_id() : money_color.NEUTRAL
+  let sign = needIcon? ::loc(colored ? "gold/short/colored" : "gold/short") : ""
   return __check_color(::g_language.decimalFormat(gold), color_id) + sign
 }
 
 Money.__impl_get_frp_text <- function __impl_get_frp_text(colored = true, checkBalance = false, needIcon = true)
 {
-  local color_id = (checkBalance && colored)? __get_frp_color_id() : money_color.NEUTRAL
-  local sign = needIcon? ::loc(colored ? "currency/freeResearchPoints/sign/colored" : "currency/freeResearchPoints/sign") : ""
+  let color_id = (checkBalance && colored)? __get_frp_color_id() : money_color.NEUTRAL
+  let sign = needIcon? ::loc(colored ? "currency/freeResearchPoints/sign/colored" : "currency/freeResearchPoints/sign") : ""
   return __check_color(::g_language.decimalFormat(frp), color_id) + sign
 }
 
 Money.__impl_get_rp_text <- function __impl_get_rp_text(colored = true, checkBalance = false, needIcon = true)
 {
-  local color_id = (checkBalance && colored)? __get_rp_color_id() : money_color.NEUTRAL
-  local sign = needIcon? ::loc(colored ? "currency/researchPoints/sign/colored" : "currency/researchPoints/sign") : ""
+  let color_id = (checkBalance && colored)? __get_rp_color_id() : money_color.NEUTRAL
+  let sign = needIcon? ::loc(colored ? "currency/researchPoints/sign/colored" : "currency/researchPoints/sign") : ""
   return __check_color(::g_language.decimalFormat(rp), color_id) + sign
 }
 
 Money.__impl_get_sap_text <- function __impl_get_sap_text(colored = true, checkBalance = false, needIcon = true)
 {
-  local color_id = (checkBalance && colored)? __get_sap_color_id() : money_color.NEUTRAL
-  local sign = needIcon? ::loc(colored ? "currency/squadronActivity/colored" : "currency/squadronActivity") : ""
+  let color_id = (checkBalance && colored)? __get_sap_color_id() : money_color.NEUTRAL
+  let sign = needIcon? ::loc(colored ? "currency/squadronActivity/colored" : "currency/squadronActivity") : ""
   return __check_color(::g_language.decimalFormat(sap), color_id) + sign
 }
 
 Money.__impl_get_text <- function __impl_get_text(params = null)
 {
   local text = ""
-  local isColored = params?.isColored ?? true
-  local needCheckBalance = params?.needCheckBalance ?? false
-  local needIcon = params?.needIcon ?? true
+  let isColored = params?.isColored ?? true
+  let needCheckBalance = params?.needCheckBalance ?? false
+  let needIcon = params?.needIcon ?? true
 
   if (gold != 0 || params?.isGoldAlwaysShown)
     text += __impl_get_gold_text(isColored, needCheckBalance, needIcon)

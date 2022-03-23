@@ -1,5 +1,5 @@
-local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 return [
 //-------------------------------------------------------

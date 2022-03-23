@@ -1,14 +1,12 @@
-local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
-
 ::gui_start_invites <- function gui_start_invites()
 {
   ::handlersManager.loadHandler(::gui_handlers.InvitesWnd)
 }
 
-class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.InvitesWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/chat/invitesWnd.blk"
+  sceneBlkName = "%gui/chat/invitesWnd.blk"
 
   isAutoClose = true
 
@@ -20,9 +18,9 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateList()
   {
-    local listObj = scene.findObject("invites_list")
-    local selInvite = getInviteByObj()
-    local list = ::u.filter(::g_invites.list,
+    let listObj = scene.findObject("invites_list")
+    let selInvite = getInviteByObj()
+    let list = ::u.filter(::g_invites.list,
       function (invite) { return invite.isVisible() })
 
     list.sort(function(a, b) {
@@ -31,8 +29,8 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
       return 0
     })
 
-    local view = { invites = list }
-    local data = ::handyman.renderCached("gui/chat/inviteListRows", view)
+    let view = { invites = list }
+    let data = ::handyman.renderCached("%gui/chat/inviteListRows", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     if (list.len())
@@ -46,7 +44,7 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSingleInvite(invite)
   {
-    local inviteObj = scene.findObject("invite_" + invite.uid)
+    let inviteObj = scene.findObject("invite_" + invite.uid)
     if (!::check_obj(inviteObj))
       return
 
@@ -57,12 +55,12 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getInviteByObj(obj = null)
   {
-    local uid = obj?.inviteUid
+    let uid = obj?.inviteUid
     if (uid)
       return ::g_invites.findInviteByUid(uid)
 
-    local listObj = scene.findObject("invites_list")
-    local value = listObj.getValue() || 0
+    let listObj = scene.findObject("invites_list")
+    let value = listObj.getValue() || 0
     if (0 <= value && value < listObj.childrenCount())
       return ::g_invites.findInviteByUid(listObj.getChild(value)?.inviteUid)
     return null
@@ -70,7 +68,7 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onAccept(obj)
   {
-    local invite = getInviteByObj(obj)
+    let invite = getInviteByObj(obj)
     if (!invite)
       return
 
@@ -78,9 +76,6 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
       if (invite.haveRestrictions())
       {
         if (invite.needCheckSystemRestriction) {
-          if (!checkAndShowMultiplayerPrivilegeWarning())
-            return
-
           if (!invite.isAvailableByCrossPlay() && !::xbox_try_show_crossnetwork_message()) {
             ::showInfoMsgBox(invite.getRestrictionText())
             return
@@ -100,7 +95,7 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onReject(obj)
   {
-    local invite = getInviteByObj(obj)
+    let invite = getInviteByObj(obj)
     if (!invite)
       return
 
@@ -119,7 +114,7 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!obj)
       return
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value == isAutoClose)
       return
 
@@ -129,14 +124,14 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onInviterInfo(obj)
   {
-    local invite = getInviteByObj(obj)
+    let invite = getInviteByObj(obj)
     if (invite)
       invite.showInviterMenu()
   }
 
   function onInviterInfoAccessKey()
   {
-    local invite = getInviteByObj()
+    let invite = getInviteByObj()
     if (!invite)
       return
 
@@ -144,7 +139,7 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local pos = null
-    local nameObj = scene.findObject("inviterName_" + invite.uid)
+    let nameObj = scene.findObject("inviterName_" + invite.uid)
     if (::checkObj(nameObj))
     {
       pos = nameObj.getPosRC()

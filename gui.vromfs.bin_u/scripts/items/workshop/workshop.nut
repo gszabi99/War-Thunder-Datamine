@@ -1,36 +1,36 @@
-local u = require("sqStdLibs/helpers/u.nut")
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local Set = require("workshopSet.nut")
-local inventoryClient = require("scripts/inventory/inventoryClient.nut")
-local seenWorkshop = require("scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
+let u = require("%sqStdLibs/helpers/u.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let Set = require("workshopSet.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
 
-local OUT_OF_DATE_DAYS_WORKSHOP = 28
+let OUT_OF_DATE_DAYS_WORKSHOP = 28
 
 local isInited = false
-local setsList = []
+let setsList = []
 local markingPresetsList = {}
-local emptySet = Set(::DataBlock())
+let emptySet = Set(::DataBlock())
 
 local visibleSeenIds = null
-local seenIdCanBeNew = {}
+let seenIdCanBeNew = {}
 local additionalRecipes = {}
 
 local customLocalizationPresets = {}
 local effectOnStartCraftPresets = {}
 local effectOnOpenChestPresets = {}
 
-local function initOnce()
+let function initOnce()
 {
   if (isInited || !::g_login.isProfileReceived())
     return
   isInited = true
   setsList.clear()
 
-  local wBlk = ::DataBlock()
+  let wBlk = ::DataBlock()
   wBlk.load("config/workshop.blk")
   for(local i = 0; i < wBlk.blockCount(); i++)
   {
-    local set = Set(wBlk.getBlock(i))
+    let set = Set(wBlk.getBlock(i))
     if (!set.isValid())
       continue
 
@@ -48,9 +48,9 @@ local function initOnce()
   if (wBlk?.additionalRecipes)
     foreach (itemBlk in (wBlk.additionalRecipes % "item"))
     {
-      local item = ::DataBlock()
+      let item = ::DataBlock()
       item.setFrom(itemBlk)
-      local itemId = ::to_integer_safe(item.id)
+      let itemId = ::to_integer_safe(item.id)
       if (!additionalRecipes?[itemId])
         additionalRecipes[itemId] <- []
       additionalRecipes[itemId].append(item)
@@ -64,7 +64,7 @@ local function initOnce()
   effectOnOpenChestPresets = ::buildTableFromBlk(wBlk?.effectOnOpenChestPresets)
 }
 
-local function invalidateCache()
+let function invalidateCache()
 {
   setsList.clear()
   markingPresetsList = {}
@@ -75,19 +75,19 @@ local function invalidateCache()
   isInited = false
 }
 
-local function getSetsList()
+let function getSetsList()
 {
   initOnce()
   return setsList
 }
 
-local function getMarkingPresetsById(presetName)
+let function getMarkingPresetsById(presetName)
 {
   initOnce()
   return markingPresetsList?[presetName]
 }
 
-local function shouldDisguiseItem(item)
+let function shouldDisguiseItem(item)
 {
   foreach(set in getSetsList())
     if (set.isItemInSet(item))
@@ -95,7 +95,7 @@ local function shouldDisguiseItem(item)
   return false
 }
 
-local function getVisibleSeenIds()
+let function getVisibleSeenIds()
 {
   if (!visibleSeenIds)
   {
@@ -107,7 +107,7 @@ local function getVisibleSeenIds()
   return visibleSeenIds
 }
 
-local function invalidateItemsCache()
+let function invalidateItemsCache()
 {
   visibleSeenIds = null
   seenIdCanBeNew.clear()
@@ -118,34 +118,34 @@ local function invalidateItemsCache()
   seenWorkshop.onListChanged()
 }
 
-local function canSeenIdBeNew(seenId)
+let function canSeenIdBeNew(seenId)
 {
   if (!(seenId in seenIdCanBeNew))
   {
-    local id = ::to_integer_safe(seenId, seenId, false) //ext inventory items id need to convert to integer.
-    local item = ::ItemsManager.findItemById(id)
+    let id = ::to_integer_safe(seenId, seenId, false) //ext inventory items id need to convert to integer.
+    let item = ::ItemsManager.findItemById(id)
     seenIdCanBeNew[seenId] <- item && !shouldDisguiseItem(item)
   }
   return seenIdCanBeNew[seenId]
 }
 
-local getCustomLocalizationPresets = function(name) {
+let getCustomLocalizationPresets = function(name) {
   initOnce()
   return customLocalizationPresets?[name] ?? {}
 }
 
-local function getItemAdditionalRecipesById(id)
+let function getItemAdditionalRecipesById(id)
 {
   initOnce()
   return additionalRecipes?[id] ?? []
 }
 
-local getEffectOnStartCraftPresetById = function(name) {
+let getEffectOnStartCraftPresetById = function(name) {
   initOnce()
   return effectOnStartCraftPresets?[name] ?? {}
 }
 
-local getEffectOnOpenChestPresetById = function(name) {
+let getEffectOnOpenChestPresetById = function(name) {
   initOnce()
   return effectOnOpenChestPresets?[name] ?? {}
 }

@@ -67,17 +67,17 @@ also you can find example function below - dbgExample
 
 
 
-local LOC_ID = "l"
-local VALUE_ID = "t"
-local COLOR_ID = "c"
+let LOC_ID = "l"
+let VALUE_ID = "t"
+let COLOR_ID = "c"
 
-local colors = {}
-local getColorByTag = @(tag) colors?[tag] ?? ""
+let colors = {}
+let getColorByTag = @(tag) colors?[tag] ?? ""
 
-local locTags = {}
-local getLocId = @(locTag) locTags?[locTag] ?? locTag
+let locTags = {}
+let getLocId = @(locTag) locTags?[locTag] ?? locTag
 
-local function registerColors(colorsTable) //tag = color
+let function registerColors(colorsTable) //tag = color
 {
   foreach(tag, color in colorsTable)
   {
@@ -86,7 +86,7 @@ local function registerColors(colorsTable) //tag = color
   }
 }
 
-local function registerLocTags(locTagsTable) //tag = locId
+let function registerLocTags(locTagsTable) //tag = locId
 {
   foreach(tag, locId in locTagsTable)
   {
@@ -95,7 +95,7 @@ local function registerLocTags(locTagsTable) //tag = locId
   }
 }
 
-local systemMsg = { //functons here need to be able recursive call self
+let systemMsg = { //functons here need to be able recursive call self
   function validateLangConfig(langConfig, valueValidateFunction)
   {
     return ::u.map(
@@ -115,7 +115,7 @@ local systemMsg = { //functons here need to be able recursive call self
     if (textValidateFunction)
       langConfig = validateLangConfig(langConfig, textValidateFunction)
 
-    local jsonString = ::save_to_json(langConfig)
+    let jsonString = ::save_to_json(langConfig)
     return jsonString
   }
 
@@ -125,7 +125,7 @@ local systemMsg = { //functons here need to be able recursive call self
       return convertTable(langConfig, paramValidateFunction)
     if (::u.isArray(langConfig))
     {
-      local resArray = ::u.map(langConfig,
+      let resArray = ::u.map(langConfig,
         (@(cfg) convertAny(cfg, paramValidateFunction) || "").bindenv(this))
       return ::g_string.implode(resArray, separator)
     }
@@ -137,10 +137,10 @@ local systemMsg = { //functons here need to be able recursive call self
   function convertTable(configTbl, paramValidateFunction = null)
   {
     local res = ""
-    local locId = configTbl?[LOC_ID]
+    let locId = configTbl?[LOC_ID]
     if (!::u.isString(locId)) //res by value
     {
-      local value = configTbl?[VALUE_ID]
+      let value = configTbl?[VALUE_ID]
       if (value == null)
         return res
 
@@ -150,31 +150,34 @@ local systemMsg = { //functons here need to be able recursive call self
     }
     else //res by locId with params
     {
-      local params = {}
+      let params = {}
       foreach(key, param in configTbl)
       {
-        local text = convertAny(param, paramValidateFunction, "", "")
+        let text = convertAny(param, paramValidateFunction, "", "")
         if (!::u.isEmpty(text))
         {
           params[key] <- text
           continue
         }
 
+        local paramOut
         if (paramValidateFunction && ::u.isString(param))
-          param = paramValidateFunction(param)
-        params[key] <- param
+          paramOut = paramValidateFunction(param)
+        else
+          paramOut = param
+        params[key] <- paramOut
       }
       res = ::loc(getLocId(locId), params)
     }
 
-    local colorName = getColorByTag(configTbl?[COLOR_ID])
+    let colorName = getColorByTag(configTbl?[COLOR_ID])
     res = ::colorize(colorName, res)
     return res
   }
 
   function jsonStringToLang(jsonString, paramValidateFunction = null, separator = "")
   {
-    local langConfig = ::parse_json(jsonString)
+    let langConfig = ::parse_json(jsonString)
     return convertAny(langConfig, paramValidateFunction, separator)
   }
 }
@@ -182,7 +185,7 @@ local systemMsg = { //functons here need to be able recursive call self
 /*
 getroottable().dbgExample <- function(textObjId = "menu_chat_text")
 {
-  local systemMsg = require("scripts/utils/systemMsg.nut")
+  local systemMsg = require("%scripts/utils/systemMsg.nut")
   local json = systemMsg.configToJsonString([
     {
       [systemMsg.LOC_ID] = "multiplayer/enemyTeamTooLowMembers",

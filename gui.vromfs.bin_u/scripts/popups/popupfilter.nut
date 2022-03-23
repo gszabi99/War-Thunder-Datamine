@@ -1,20 +1,21 @@
-local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-const ALL_ITEMS  = "all_items"
-const MORE_ITEMS = "more"
-local moreTxt = $" {::loc("ui/ellipsis")} +"
+const MAIN_BTN_ID  = "filter_button"
+const POUP_ID      = "filter_popup"
+const RESET_ID     = "reset_btn"
+const SEPARATOR_ID = "separator"
 
 local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
-  sceneTplName         = "gui/popup/popupFilter"
+  sceneTplName         = "%gui/popup/popupFilter"
 
   stateList            = null
-  stateItems           = null
   isFilterVisible      = false
   iconNestObj          = null
-  maxWidth             = null
+  btnWidth             = null
 
   //init params
   filterTypes          = null
@@ -22,148 +23,129 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
   btnTitle             = null
   onChangeFn           = null
   isTop                = false
+  isRight              = false
+  visualStyle          = null
 
   function getSceneTplView() {
-    local rowsCount = 0
     local maxTextWidth = 0
-    btnTitle = btnTitle ?? ::loc("stats_filter_show")
-    maxWidth = (scene.getParent().getSize()[0] ?? 0) - ::to_pixels("1@buttonWidth")
-      - getStringWidthPx($"{moreTxt}  ", "fontMedium")
+    btnTitle = btnTitle ?? ::loc("tournaments/filters")
+    btnWidth = ::to_pixels($"{::show_console_buttons ? 2 : 1}@buttonIconHeight+2@blockInterval")
+      + getStringWidthPx($"{btnTitle} {::loc("ui/parentheses", {text = "+99"})}", "nav_button_font")
 
-    foreach (fType in filterTypes) {
-      rowsCount = ::max(rowsCount, fType.checkbox.len())
+    foreach (fType in filterTypes)
       foreach (cb in fType.checkbox)
         if (cb?.text)
           maxTextWidth = ::max(maxTextWidth, getStringWidthPx(cb.text, "fontMedium"))
-    }
 
-    local columns = filterTypes.map(function(fType, idx) {
-      local { checkbox } = fType
+    let columns = filterTypes.map(function(fType, idx) {
+      let { checkbox } = fType
       if (!checkbox.len())
         return null
 
-      local typeName = checkbox[checkbox.len()-1].id.split("_")[0]
-      local params = $"pos:t='0, 1@popupFilterRowHeight-h'; type:t='rightSideCb'; typeName:t={typeName}"
+      let isResetShow = checkbox.findindex(@(c) c.value) != null
+      let typeName = checkbox[checkbox.len()-1].id.split("_")[0]
+      let params = $"pos:t='0, 1@popupFilterRowHeight-h'; type:t='rightSideCb'; typeName:t={typeName}"
       return fType.__merge({
         typeName
-        isLast = false
+        isResetShow
+        typeIdx = idx
+        textWidth = maxTextWidth
         checkbox = checkbox.map(function(cb) {
-          local isMultiple = cb.id == ALL_ITEMS
           return cb.__merge({
-            isMultiple
             typeName
-            funcName = isMultiple ? "onSelectAllChange" : "onCheckBoxChange"
+            funcName = "onCheckBoxChange"
             specialParams = params
             textWidth = maxTextWidth
           })
         })
       })
     }).filter(@(inst) inst != null)
-    columns[columns.len()-1].isLast = true
+    columns[columns.len()-1].isLast <- true
 
-    stateItems = columns.reduce(@(res, inst)
-      res.extend(inst.checkbox.filter(@(cb) !cb.isMultiple)), []).append({ id = MORE_ITEMS })
+    let stateItems = columns.reduce(@(res, inst) res.extend(inst?.checkbox), [])
 
     stateList = {}
     foreach( inst in stateItems)
-      if (inst.id != MORE_ITEMS)
-        stateList[inst.id] <- inst
+      stateList[inst.id] <- inst
 
     return {
-      rowsCount = rowsCount
       columns = columns
       btnName = btnName ?? "Y"
-      btnTitle = btnTitle
       underPopupClick    = "onShowFilterBtnClick"
       underPopupDblClick = "onShowFilterBtnClick"
-      items = stateItems
       isTop = isTop
+      isRight = isRight
+      btnWidth = btnWidth
+      visualStyle = visualStyle
     }
   }
 
   function initScreen() {
-    iconNestObj = scene.findObject("icon_nest")
-    updateStates()
+    updateMainBtn()
   }
 
-  function updateColumns(typeName) {
-    local curList  = stateList.filter(@(inst) inst.typeName == typeName)
-    local columnObj = scene.findObject($"{typeName}_column")
+  function updateColumn(typeName) {
+    let curList  = stateList.filter(@(inst) inst.typeName == typeName)
+    let columnObj = scene.findObject($"{typeName}_column")
     if (!columnObj?.isValid())
       return
 
+    local isResetShow = false
     for (local i = 0; i < columnObj.childrenCount(); i++) {
-      local child = columnObj.getChild(i)
-      if (child.id == ALL_ITEMS)
-        child.setValue(curList.findvalue(@(v) !v.value) == null)
-      else
-        child.setValue(curList[child.id].value)
+      let child = columnObj.getChild(i)
+      if (child.id != RESET_ID && child.id != SEPARATOR_ID) {
+        let value = curList[child.id].value
+        child.setValue(value)
+        isResetShow = value || isResetShow
+      }
     }
+    ::showBtn(RESET_ID, isResetShow, columnObj)
   }
 
-  function onSelectAllChange(obj) {
+  function onResetFilters(obj) {
     if (!onChangeFn)
       return
 
-    local value    = obj.getValue()
-    local curList  = stateList.filter(@(inst) inst.typeName == obj.typeName)
-    if (value == (curList.findvalue(@(v) !v.value) == null))
-      return
+    foreach (inst in stateList.filter(@(inst) inst.typeName == obj.typeName))
+      stateList[inst.id].value = false
 
-    foreach (inst in curList)
-      stateList[inst.id].value = value
-
-    updateStates()
-    updateColumns(obj.typeName)
-    onChangeFn(obj.id, obj.typeName, value)
+    updateMainBtn()
+    updateColumn(obj.typeName)
+    onChangeFn(obj.id, obj.typeName, false)
   }
 
-  function updateStates() {
-    local isWidthExceed = false
-    local hiddenCount = 0
-    local totalWidth = 0
-    for (local i = 0; i < stateItems.len(); i++) {
-      //Use stateItems instead of stateList to get right items order
-      local id = stateItems[i].id
-      if (id == MORE_ITEMS)
-        continue
-      local inst = stateList[id]
-      local textWidth = !inst.value ? 0
-        : inst?.image ? ::to_pixels("1@checkboxSize + 2@blockInterval")
-        : getStringWidthPx($" {inst.text} |", "fontMedium")
-      totalWidth += textWidth
-      isWidthExceed = totalWidth > maxWidth
-      ::showBtn(id, isWidthExceed && inst.value ? false : inst.value, iconNestObj)
-      hiddenCount = isWidthExceed && inst.value ? ++hiddenCount : hiddenCount
-    }
-    local moreObj = ::showBtn(MORE_ITEMS, isWidthExceed, iconNestObj)
-    moreObj.setValue($"{moreTxt}{hiddenCount}")
-
+  function updateMainBtn() {
+    let count = stateList.filter(@(inst) inst.value).len()
+    setDoubleTextToButton(scene, MAIN_BTN_ID, btnTitle,
+      count == 0 ? ""
+        : ::colorize("lbActiveColumnColor", ::loc("ui/parentheses", {text = $"+{count}"})))
   }
-  function  onCheckBoxChange(obj) {
+
+  function onCheckBoxChange(obj) {
     if (!onChangeFn)
       return
 
-    local value    = obj.getValue()
-    local curInst = stateList[obj.id]
+    let value    = obj.getValue()
+    let curInst = stateList[obj.id]
     if (value == curInst.value)
       return
 
 
     curInst.value = value
-    updateStates()
-    updateColumns(obj.typeName)
+    updateMainBtn()
+    updateColumn(obj.typeName)
     onChangeFn(obj.id, obj.typeName, value)
   }
 
   function onShowFilterBtnClick(obj) {
     isFilterVisible = !isFilterVisible
-    showSceneBtn("filter_popup", isFilterVisible)
+    showSceneBtn(POUP_ID, isFilterVisible)
   }
 }
 
 ::gui_handlers.popupFilter <- popupFilter
 
 return {
+  RESET_ID
   openPopupFilter = @(params = {}) ::handlersManager.loadHandler(popupFilter, params)
 }

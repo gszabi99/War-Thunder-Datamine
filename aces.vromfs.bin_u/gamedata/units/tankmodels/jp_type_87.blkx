@@ -1210,33 +1210,33 @@
       "mechanics": {
         "maxBrakeForce": 235000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 1.0,
-        "sideGearRatio": 4.2,
+        "mainGearRatio": 3.82,
+        "sideGearRatio": 1.0,
         "neutralGearRatio": 10.0,
         "gearRatios": [
           {
-            "ratio": -4.61
+            "ratio": -9.64
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 8.0
+            "ratio": 12.88
           },
           {
-            "ratio": 6.0
+            "ratio": 6.94
           },
           {
-            "ratio": 4.64
+            "ratio": 4.55
           },
           {
-            "ratio": 2.6
+            "ratio": 3.03
           },
           {
-            "ratio": 1.667
+            "ratio": 2.02
           },
           {
-            "ratio": 1.22
+            "ratio": 1.35
           }
         ]
       },
@@ -1994,7 +1994,9 @@
           "ex_armor_turret_r_01_dm": [],
           "ex_armor_turret_r_02_dm": [],
           "ex_armor_turret_l_01_dm": [],
-          "ex_armor_turret_l_02_dm": []
+          "ex_armor_turret_l_02_dm": [],
+          "turret_02_back_dm": [],
+          "turret_02_top_dm": []
         }
       },
       "gun": {
@@ -2118,7 +2120,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -2149,7 +2151,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2955,7 +2957,7 @@
           "breechDP": "cannon_breech_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 90.0,
+          "speedYaw": 56.0,
           "speedPitch": 42.0,
           "bullets": 340,
           "fireConeAngle": 5.0,
@@ -2970,6 +2972,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": [
             {
               "head": "bone_turret"
@@ -3061,7 +3064,7 @@
           "breechDP": "cannon_breech_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 90.0,
+          "speedYaw": 56.0,
           "speedPitch": 42.0,
           "bullets": 340,
           "fireConeAngle": 5.0,
@@ -3076,6 +3079,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "reuseYawTrigger": 10,
           "reusePitchTrigger": 10,
           "turret": [
@@ -3441,7 +3445,7 @@
                 "breechDP": "cannon_breech_01_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "speedYaw": 90.0,
+                "speedYaw": 56.0,
                 "speedPitch": 42.0,
                 "bullets": 340,
                 "fireConeAngle": 5.0,
@@ -3456,6 +3460,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": [
                   {
                     "head": "bone_turret"
@@ -3547,7 +3552,7 @@
                 "breechDP": "cannon_breech_02_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "speedYaw": 90.0,
+                "speedYaw": 56.0,
                 "speedPitch": 42.0,
                 "bullets": 340,
                 "fireConeAngle": 5.0,
@@ -3562,6 +3567,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "reuseYawTrigger": 10,
                 "reusePitchTrigger": 10,
                 "turret": [
@@ -3735,6 +3741,9 @@
                 },
                 {
                   "errExplTime": 0.0
+                },
+                {
+                  "forestallTime": 0.1
                 },
                 {
                   "turret": {

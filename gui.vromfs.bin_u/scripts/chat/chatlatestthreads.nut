@@ -20,7 +20,7 @@
 //refresh for usual players
 g_chat_latest_threads.refresh <- function refresh()
 {
-  local langTags = ::u.map(getSearchLangsList(),
+  let langTags = ::u.map(getSearchLangsList(),
                            function(l) { return ::g_chat_thread_tag.LANG.prefix + l.chatId })
 
   local categoryTagsText = ""
@@ -41,7 +41,7 @@ g_chat_latest_threads.refreshAdvanced <- function refreshAdvanced(excludeTags = 
   if (!canRefresh())
     return
 
-  local cmdArr = ["xtlist"]
+  let cmdArr = ["xtlist"]
   if (!excludeTags.len() && (includeTags1.len() || includeTags2.len()) )
     excludeTags = ","
 
@@ -96,11 +96,11 @@ g_chat_latest_threads.canRefresh <- function canRefresh()
 
 g_chat_latest_threads.forceAutoRefreshInSecond <- function forceAutoRefreshInSecond()
 {
-  local state = getUpdateState()
+  let state = getUpdateState()
   if (state == chatUpdateState.IN_PROGRESS)
     return
 
-  local diffSec = 1000
+  let diffSec = 1000
   lastUpdatetTime = ::dagor.getCurTime() - autoUpdatePeriodMsec + diffSec
   //set status chatUpdateState.IN_PROGRESS
   lastRequestTime = ::dagor.getCurTime() - requestTimeoutMsec + diffSec
@@ -112,18 +112,18 @@ g_chat_latest_threads.checkInitLangs <- function checkInitLangs()
     return
   langsInited = true
 
-  local canChooseLang =  ::g_chat.canChooseThreadsLang()
+  let canChooseLang =  ::g_chat.canChooseThreadsLang()
   if (!canChooseLang)
   {
     isCustomLangsList = false
     return
   }
 
-  local langsStr = ::loadLocalByAccount("chat/latestThreadsLangs", "")
-  local savedLangs = ::split(langsStr, ",")
+  let langsStr = ::loadLocalByAccount("chat/latestThreadsLangs", "")
+  let savedLangs = ::split(langsStr, ",")
 
   langsList.clear()
-  local langsConfig = ::g_language.getGameLocalizationInfo()
+  let langsConfig = ::g_language.getGameLocalizationInfo()
   foreach(lang in langsConfig)
   {
     if (!lang.isMainChatId)
@@ -139,7 +139,7 @@ g_chat_latest_threads.saveCurLangs <- function saveCurLangs()
 {
   if (!langsInited || !isCustomLangsList)
     return
-  local chatIds = ::u.map(langsList, function (l) { return l.chatId })
+  let chatIds = ::u.map(langsList, function (l) { return l.chatId })
   ::saveLocalByAccount("chat/latestThreadsLangs", ::g_string.implode(chatIds, ","))
 }
 
@@ -162,9 +162,9 @@ g_chat_latest_threads.openChooseLangsMenu <- function openChooseLangsMenu(align 
   if (!::g_chat.canChooseThreadsLang())
     return
 
-  local optionsList = []
-  local curLangs = getSearchLangsList()
-  local langsConfig = ::g_language.getGameLocalizationInfo()
+  let optionsList = []
+  let curLangs = getSearchLangsList()
+  let langsConfig = ::g_language.getGameLocalizationInfo()
   foreach(lang in langsConfig)
     if (lang.isMainChatId)
       optionsList.append({
@@ -198,7 +198,7 @@ g_chat_latest_threads.onEventInitConfigs <- function onEventInitConfigs(p)
 {
   langsInited = false
 
-  local blk = ::get_game_settings_blk()
+  let blk = ::get_game_settings_blk()
   if (::u.isDataBlock(blk?.chat))
   {
     autoUpdatePeriodMsec = blk.chat?.threadsListAutoUpdatePeriodMsec ?? autoUpdatePeriodMsec

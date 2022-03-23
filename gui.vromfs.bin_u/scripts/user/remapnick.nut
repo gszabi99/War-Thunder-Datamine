@@ -1,4 +1,4 @@
-local {
+let {
   xboxPrefixNameRegexp,
   psnPrefixNameRegexp,
   xboxPostfixNameRegexp,
@@ -6,31 +6,31 @@ local {
   steamPostfixNameRegexp,
   epicPostfixNameRegexp,
   cutPlayerNamePrefix,
-  cutPlayerNamePostfix } = require("scripts/user/nickTools.nut")
+  cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
 
-local {
+let {
   isXbox,
   isSony,
-  isPC } = require("std/platform.nut")
+  isPC } = require("%sqstd/platform.nut")
 
-local PC_ICON = "⋆"
-local TV_ICON = "⋇"
+let PC_ICON = "⋆"
+let TV_ICON = "⋇"
 local NBSP = " " // Non-breaking space character
 
 return function(name) {
   if (typeof name != "string" || name == "")
     return ""
 
-  local isXboxPrefix = xboxPrefixNameRegexp.match(name)
-  local isPsnPrefix = psnPrefixNameRegexp.match(name)
+  let isXboxPrefix = xboxPrefixNameRegexp.match(name)
+  let isPsnPrefix = psnPrefixNameRegexp.match(name)
 
   if (isXboxPrefix || isPsnPrefix)
     name = cutPlayerNamePrefix(name)
 
-  local isXboxPostfix = xboxPostfixNameRegexp.match(name)
-  local isPsnPostfix = psnPostfixNameRegexp.match(name)
-  local isSteamPostfix = steamPostfixNameRegexp.match(name)
-  local isEpicPostfix = epicPostfixNameRegexp.match(name)
+  let isXboxPostfix = xboxPostfixNameRegexp.match(name)
+  let isPsnPostfix = psnPostfixNameRegexp.match(name)
+  let isSteamPostfix = steamPostfixNameRegexp.match(name)
+  let isEpicPostfix = epicPostfixNameRegexp.match(name)
 
   if (isXboxPostfix || isPsnPostfix || isSteamPostfix || isEpicPostfix)
     name = cutPlayerNamePostfix(name)

@@ -2,8 +2,8 @@
 
 g_crew_points.getSkillPointsPacks <- function getSkillPointsPacks(country)
 {
-  local res = []
-  local blk = ::get_warpoints_blk()
+  let res = []
+  let blk = ::get_warpoints_blk()
   if (!blk?.crewSkillPointsCost)
     return res
 
@@ -32,12 +32,12 @@ g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onC
     amount += pack.skills
     cost += pack.cost
   }
-  local locParams = {
+  let locParams = {
     amount = ::getCrewSpText(amount)
     cost = cost.getTextAccordingToBalance()
   }
 
-  local msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
+  let msgText = ::warningIfGold(::loc("shop/needMoneyQuestion_buySkillPoints", locParams), cost)
   ::scene_msg_box("purchase_ask", null, msgText,
     [["yes", ::Callback(function()
       {
@@ -49,9 +49,9 @@ g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onC
 
 g_crew_points.buyPackImpl <- function buyPackImpl(crew, packsList, onSuccess)
 {
-  local pack = packsList.remove(0)
-  local taskId = shop_purchase_skillpoints(crew.id, pack.name)
-  local cb = ::Callback(function()
+  let pack = packsList.remove(0)
+  let taskId = shop_purchase_skillpoints(crew.id, pack.name)
+  let cb = ::Callback(function()
   {
     ::broadcastEvent("CrewSkillsChanged", { crew = crew, isOnlyPointsChanged = true })
     if (packsList.len())
@@ -64,10 +64,10 @@ g_crew_points.buyPackImpl <- function buyPackImpl(crew, packsList, onSuccess)
 
 g_crew_points.getPacksToBuyAmount <- function getPacksToBuyAmount(country, skillPoints)
 {
-  local packs = getSkillPointsPacks(country)
+  let packs = getSkillPointsPacks(country)
   if (!packs.len())
     return []
 
-  local bestPack = packs.top() //while it only for developers it enough
+  let bestPack = packs.top() //while it only for developers it enough
   return array(::ceil(skillPoints.tofloat() / bestPack.skills), bestPack)
 }

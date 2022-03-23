@@ -1,10 +1,10 @@
-local psnsm = require("scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
-local psnNotify = require("sonyLib/notifications.nut")
+let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
+let psnNotify = require("%sonyLib/notifications.nut")
 
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 
-local getSessionData = @(pushContextId) {
+let getSessionData = @(pushContextId) {
   gameSessions = [{
     supportedPlatforms = ["PS4", "PS5"]
     maxPlayers = ::SessionLobby.getMaxMembersCount()
@@ -22,8 +22,8 @@ local getSessionData = @(pushContextId) {
   }]
 }
 
-local getSessionJoinData = function(pushContextId, isSpectator = false) {
-  local res = {
+let getSessionJoinData = function(pushContextId, isSpectator = false) {
+  let res = {
     accountId = "me"
     platform = "me"
   }
@@ -33,8 +33,8 @@ local getSessionJoinData = function(pushContextId, isSpectator = false) {
   return {[isSpectator? "spectators" : "players"] = [res]}
 }
 
-local createdSessionData = persist("createdSessionData", @() ::Watched({}))
-local dumpSessionData = function(sessionId, pushContextId, sessionData) {
+let createdSessionData = persist("createdSessionData", @() ::Watched({}))
+let dumpSessionData = function(sessionId, pushContextId, sessionData) {
   createdSessionData.mutate(@(v) v[sessionId] <- {
     pushContextId = pushContextId
     data = copy(sessionData)
@@ -42,18 +42,18 @@ local dumpSessionData = function(sessionId, pushContextId, sessionData) {
 }
 
 
-local pendingSessions = persist("pendingSessions", @() ::Watched({}))
+let pendingSessions = persist("pendingSessions", @() ::Watched({}))
 
 
-local create = function() {
-  local pushContextId = psnNotify.createPushContext()
-  local sessionData = getSessionData(pushContextId)
+let create = function() {
+  let pushContextId = psnNotify.createPushContext()
+  let sessionData = getSessionData(pushContextId)
   pendingSessions.mutate(@(v) v[pushContextId] <- copy(sessionData))
 
   psnsm.create(
     pendingSessions.value[pushContextId],
     ::Callback(function(r, err) {
-      local sessionId = r?.gameSessions[0].sessionId
+      let sessionId = r?.gameSessions[0].sessionId
 
       if (!err && !isEmpty(sessionId)) {
         ::SessionLobby.setExternalId(sessionId)
@@ -65,10 +65,10 @@ local create = function() {
   )
 }
 
-local destroy = function() {
+let destroy = function() {
   foreach (sessionId, info in createdSessionData.value)
     if (!isEmpty(sessionId)) {
-      local sId = sessionId
+      let sId = sessionId
       psnsm.destroy(
         sId,
         ::Callback(function(r, err) {
@@ -78,9 +78,9 @@ local destroy = function() {
     }
 }
 
-local update = function(sessionId) {
-  local existSessionInfo = createdSessionData.value?[sessionId]
-  local sessionData = getSessionData(existSessionInfo?.pushContextId)
+let update = function(sessionId) {
+  let existSessionInfo = createdSessionData.value?[sessionId]
+  let sessionData = getSessionData(existSessionInfo?.pushContextId)
   psnsm.updateInfo(
     sessionId,
     existSessionInfo?.data.gameSessions[0],
@@ -91,8 +91,8 @@ local update = function(sessionId) {
   )
 }
 
-local join = function(sessionId, isSpectator, pushContextId, onFinishCb) {
-  local sessionData = getSessionJoinData(pushContextId, isSpectator)
+let join = function(sessionId, isSpectator, pushContextId, onFinishCb) {
+  let sessionData = getSessionJoinData(pushContextId, isSpectator)
   if (isSpectator)
     psnsm.joinAsSpectator(sessionId, sessionData, pushContextId, onFinishCb)
   else
@@ -104,7 +104,7 @@ addListenersWithoutEnv({
     if (::get_game_mode() != ::GM_SKIRMISH)
       return
 
-    local sessionId = ::SessionLobby.getExternalId()
+    let sessionId = ::SessionLobby.getExternalId()
 
     if (isEmpty(sessionId) && ::SessionLobby.isRoomOwner)
       create()
@@ -133,7 +133,7 @@ addListenersWithoutEnv({
     if (!::SessionLobby.isRoomOwner)
       return
 
-    local sessionId = ::SessionLobby.getExternalId()
+    let sessionId = ::SessionLobby.getExternalId()
     if (!isEmpty(sessionId) &&
       (!(sessionId in createdSessionData.value) && !(sessionId in pendingSessions.value))
     ) {
@@ -141,7 +141,7 @@ addListenersWithoutEnv({
     }
   }
   LobbySettingsChange = function(p) {
-    local sessionId = ::SessionLobby.getExternalId()
+    let sessionId = ::SessionLobby.getExternalId()
     if (isEmpty(sessionId) || !::SessionLobby.isInRoom())
       return
 

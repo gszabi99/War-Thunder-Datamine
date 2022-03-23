@@ -1,7 +1,7 @@
-local fonts = require("fonts")
-local u = require("sqStdLibs/helpers/u.nut")
+let fonts = require("fonts")
+let u = require("%sqStdLibs/helpers/u.nut")
 
-local fontsList = {
+let fontsList = {
   defaults = [
     "fontBigBold",
     "fontMedium",
@@ -17,7 +17,7 @@ local fontsList = {
   ]
 }
 
-local realFontNamePrefixesMap = {
+let realFontNamePrefixesMap = {
   fontTiny        = "very_tiny_text"
   fontSmall       = "tiny_text"
   fontNormal      = "small_text"
@@ -53,12 +53,12 @@ local daguiFonts = {
       return 0
 
     local res = 0
-    local textList = u.isArray(text) ? text : [text]
+    let textList = u.isArray(text) ? text : [text]
     guiScene = guiScene || ::get_main_gui_scene()
-    local realFontName = guiScene.getConstantValue(fontName)
+    let realFontName = guiScene.getConstantValue(fontName)
     foreach(t in textList)
     {
-      local bbox = fonts.getStringBBox(t, realFontName)
+      let bbox = fonts.getStringBBox(t, realFontName)
       if (bbox)
         res = ::max(res, (bbox[2] - bbox[0] + 0.5).tointeger())
     }
@@ -71,7 +71,7 @@ local daguiFonts = {
   */
   getMaxFontTextByWidth = function(text, WidthPx, fontKeyName)
   {
-    local list = fontsList?[fontKeyName] ?? fontsList.defaults
+    let list = fontsList?[fontKeyName] ?? fontsList.defaults
     foreach (font in list)
       if (getStringWidthPx(text,font) < WidthPx)
         return font

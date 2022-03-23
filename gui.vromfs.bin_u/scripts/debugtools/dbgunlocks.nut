@@ -1,12 +1,12 @@
 // warning disable: -file:forbidden-function
-local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
+let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {
   if (!::is_dev_version)
     return
 
-  local awardsList = []
+  let awardsList = []
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
     if((!chapter || unlock.chapter == chapter) && (!group || unlock.group == group))
       awardsList.append(::build_log_unlock_data({ id = unlock.id }))
@@ -22,7 +22,7 @@ local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
     return
 
   local total = 0
-  local awardsList = []
+  let awardsList = []
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
     if (unlock.type != "streak" || unlock.hidden)
@@ -31,17 +31,17 @@ local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
 
     if (!::g_unlocks.isUnlockMultiStageLocId(unlock.id))
     {
-      local data = ::build_log_unlock_data({ id = unlock.id })
+      let data = ::build_log_unlock_data({ id = unlock.id })
       data.title = unlock.id
       awardsList.append(data)
     }
     else
     {
-      local paramShift = unlock?.stage.param ?? 0
+      let paramShift = unlock?.stage.param ?? 0
       foreach(key, stageId in ::g_unlocks.multiStageLocId[unlock.id])
       {
-        local stage = ::is_numeric(key) ? key : 99
-        local data = ::build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
+        let stage = ::is_numeric(key) ? key : 99
+        let data = ::build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
         data.title = unlock.id + " / " + stage
         awardsList.append(data)
       }
@@ -58,11 +58,11 @@ local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
 {
   dlog("GP: gen all unlocks description")
   local res = ""
-  local params = {showCost = showCost}
+  let params = {showCost = showCost}
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
-    local data = ::build_conditions_config(unlock)
-    local desc = ::getUnlockDescription(data, params)
+    let data = ::build_conditions_config(unlock)
+    let desc = ::getUnlockDescription(data, params)
     res += "\n" + unlock.id + ":" + (desc != ""? "\n" : "") + desc
   }
   dlog("GP: res:")
@@ -72,7 +72,7 @@ local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
 
 ::exportUnlockInfo <- function exportUnlockInfo(params)
 {
-  local info = ::g_language.getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
+  let info = ::g_language.getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
   _gen_all_unlocks_desc_to_blk(params.path, false, false, info, ::get_current_language())
   return "ok"
 }
@@ -84,14 +84,14 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
   if (!all_langs)
     return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
-  local curLang = ::get_current_language()
-  local info = ::g_language.getGameLocalizationInfo()
+  let curLang = ::get_current_language()
+  let info = ::g_language.getGameLocalizationInfo()
   _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
 }
 
 ::_gen_all_unlocks_desc_to_blk <- function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang)
 {
-  local lang = langsInfo.pop()
+  let lang = langsInfo.pop()
   ::g_language.setGameLocalization(lang.id, false, false)
   gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
@@ -99,7 +99,7 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
     return ::g_language.setGameLocalization(curLang, false, false)
 
   //delayed to easy see progress, and avoid watchdog crash.
-  local guiScene = ::get_main_gui_scene()
+  let guiScene = ::get_main_gui_scene()
   guiScene.performDelayed(this, (@(path, showCost, showValue, langsInfo, curLang) function () {
     _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang)
   })(path, showCost, showValue, langsInfo, curLang))
@@ -107,21 +107,21 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 
 ::gen_all_unlocks_desc_to_blk_cur_lang <- function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false)
 {
-  local fullPath = ::format("%s/unlocks%s.blk", path, ::get_current_language())
+  let fullPath = ::format("%s/unlocks%s.blk", path, ::get_current_language())
   dlog("GP: gen all unlocks description to " + fullPath)
 
-  local res = ::DataBlock()
-  local params = {
+  let res = ::DataBlock()
+  let params = {
                    showCost = showCost,
                    curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
                  }
 
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
-    local data = ::build_conditions_config(unlock)
-    local desc = ::getUnlockDescription(data, params)
+    let data = ::build_conditions_config(unlock)
+    let desc = ::getUnlockDescription(data, params)
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.name = ::get_unlock_name_text(data.unlockType, id)
     blk.desc = desc
     res[id] = blk
@@ -142,7 +142,7 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 }
 
 ::debug_show_debriefing_trophy <- function debug_show_debriefing_trophy(trophyItemId) {
-  local filteredLogs = ::getUserLogsList({
+  let filteredLogs = ::getUserLogsList({
     show = [::EULT_OPEN_TROPHY]
     disableVisible = true
     checkFunc = @(userlog) trophyItemId == userlog.body.id

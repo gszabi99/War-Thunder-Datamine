@@ -1,14 +1,14 @@
-local shortcutsEnumData = require("scripts/controls/shortcutsList/shortcutsEnumData.nut")
+let shortcutsEnumData = require("%scripts/controls/shortcutsList/shortcutsEnumData.nut")
 
-local shortcutsModulesList = require("scripts/controls/shortcutsList/shortcutsModulesList.nut")
+let shortcutsModulesList = require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")
 
-local shortcutsList = {
+let shortcutsList = {
   types = []
   template = shortcutsEnumData.template
   addShortcuts = shortcutsEnumData.definitionFunc
 }
 
-local function updateShortcutsList(value) {
+let function updateShortcutsList(value) {
   foreach (list in value)
     shortcutsList.addShortcuts(list, shortcutsList)
 }

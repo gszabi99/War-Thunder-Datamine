@@ -1,4 +1,4 @@
-local function isRewardBest (medal, clanData)
+let function isRewardBest (medal, clanData)
 {
   if((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
     foreach(reward in clanData.clanBestRewards)
@@ -8,7 +8,7 @@ local function isRewardBest (medal, clanData)
   return false
 }
 
-local function isRewardVisible (medal, clanData)
+let function isRewardVisible (medal, clanData)
 {
   if((clanData?.clanBestRewards.len() ?? 0) == 0 || !medal?.bestRewardsConfig)
     return true
@@ -20,10 +20,10 @@ local function isRewardVisible (medal, clanData)
   return false
 }
 
-class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.clanRewardsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType            = handlerType.MODAL
-  sceneTplName       = "gui/rewards/clanRewardsModal"
+  sceneTplName       = "%gui/rewards/clanRewardsModal"
   rewards            = null
   clanId             = null
   canEditBestRewards = false
@@ -34,8 +34,8 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
   function getSceneTplView()
   {
     maxClanBestRewards = ::get_warpoints_blk()?.maxClanBestRewards ?? maxClanBestRewards
-    local blocksCount = rewards.len() > 3 ? 2 : 1
-    local myClanRights = ::g_clans.getMyClanRights()
+    let blocksCount = rewards.len() > 3 ? 2 : 1
+    let myClanRights = ::g_clans.getMyClanRights()
     canEditBestRewards = clanId == ::clan_get_my_clan_id() && ::isInArray("CHANGE_INFO", myClanRights)
     return {
       width = blocksCount + "@unlockBlockWidth + " + (blocksCount - 1) + "@framePadding"
@@ -70,8 +70,8 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBestRewardsIds(id, isChecked)
   {
-    local rIdx = ::g_string.cutPrefix(id, "reward_").tointeger()
-    local bridx = bestIds.findindex(@(i) i == rIdx)
+    let rIdx = ::g_string.cutPrefix(id, "reward_").tointeger()
+    let bridx = bestIds.findindex(@(i) i == rIdx)
     if(bridx == null && isChecked)
       bestIds.append(rIdx)
     if(bridx != null && !isChecked)
@@ -80,7 +80,7 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function getBestRewardsConfig()
   {
-    local bestRewards = []
+    let bestRewards = []
     foreach(id in bestIds)
       bestRewards.append(rewards[id].bestRewardsConfig)
 
@@ -92,7 +92,7 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local isChecked = obj.getValue()
+    let isChecked = obj.getValue()
     if(bestIds.len() == maxClanBestRewards && isChecked)
     {
       obj.setValue(false)
@@ -112,7 +112,7 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (! canEditBestRewards || ::u.isEqual(bestIds, checkupIds))
       return
 
-    local taskId = ::char_send_custom_action("cln_set_clan_best_rewards",
+    let taskId = ::char_send_custom_action("cln_set_clan_best_rewards",
       ::EATT_SIMPLE_OK,
       ::DataBlock(),
       ::json_to_string({clanId = clanId, bestRewards = getBestRewardsConfig()}, false),
@@ -123,12 +123,12 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onActivate(obj)
   {
-    local childrenCount = obj.childrenCount()
-    local idx = obj.getValue()
+    let childrenCount = obj.childrenCount()
+    let idx = obj.getValue()
     if (idx < 0 || idx >= childrenCount)
       return
 
-    local checkBoxObj = obj.getChild(idx).findObject("reward_"+idx)
+    let checkBoxObj = obj.getChild(idx).findObject("reward_"+idx)
     if (!::check_obj(checkBoxObj))
       return
 

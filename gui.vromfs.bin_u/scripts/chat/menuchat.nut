@@ -1,13 +1,13 @@
-local { clearBorderSymbols } = require("std/string.nut")
-local penalties = require("scripts/penitentiary/penalties.nut")
-local { getPlayerName,
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let penalties = require("%scripts/penitentiary/penalties.nut")
+let { getPlayerName,
         isPlayerFromXboxOne,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
-local menuChatRoom = require("scripts/chat/menuChatRoom.nut")
-local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
-local { isChatEnabled, isChatEnableWithPlayer,
-  isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-local { updateContactsStatusByContacts } = require("scripts/contacts/updateContactsStatus.nut")
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let menuChatRoom = require("%scripts/chat/menuChatRoom.nut")
+let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
+let { isChatEnabled, isChatEnableWithPlayer,
+  isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -52,12 +52,12 @@ const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
 
 ::g_script_reloader.registerPersistentData("MenuChatGlobals", ::getroottable(), ["clanUserTable"]) //!!FIX ME: must be in contacts
 
-local sortChatUsers = @(a, b) a.name <=> b.name
+let sortChatUsers = @(a, b) a.name <=> b.name
 
 ::getGlobalRoomsListByLang <- function getGlobalRoomsListByLang(lang, roomsList = null)
 {
-  local res = []
-  local def_lang = ::isInArray(lang, ::langs_list)? lang : ::langs_list[0]
+  let res = []
+  let def_lang = ::isInArray(lang, ::langs_list)? lang : ::langs_list[0]
   foreach(r in ::global_chat_rooms)
   {
     local l = def_lang
@@ -75,12 +75,12 @@ local sortChatUsers = @(a, b) a.name <=> b.name
 
 ::getGlobalRoomsList <- function getGlobalRoomsList(all_lang=false)
 {
-  local res = getGlobalRoomsListByLang(::cur_chat_lang)
+  let res = getGlobalRoomsListByLang(::cur_chat_lang)
   if (all_lang)
     foreach(lang in ::langs_list)
       if (lang!=::cur_chat_lang)
       {
-        local list = getGlobalRoomsListByLang(lang)
+        let list = getGlobalRoomsListByLang(lang)
         foreach(ch in list)
           if (!::isInArray(ch, res))
             res.append(ch)
@@ -89,7 +89,7 @@ local sortChatUsers = @(a, b) a.name <=> b.name
 }
 ::global_chat_rooms_list = getGlobalRoomsList(true)
 
-class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
+::MenuChatHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
   needLocalEcho = true
@@ -136,8 +136,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (::last_chat_scene_show)
     {
-      local focusObj = guiScene.getSelectedObject()
-      local hasFocusedObj = ::check_obj(focusObj) && editboxObjIdList.contains(focusObj?.id)
+      let focusObj = guiScene.getSelectedObject()
+      let hasFocusedObj = ::check_obj(focusObj) && editboxObjIdList.contains(focusObj?.id)
 
       if (hasFocusedObj || (::show_console_buttons && isChatWindowMouseOver))
         if (::show_console_buttons)
@@ -161,7 +161,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::show_console_buttons)
       return
-    local isMouseOver = checkScene() && obj.isMouseOver()
+    let isMouseOver = checkScene() && obj.isMouseOver()
     if (isChatWindowMouseOver == isMouseOver)
       return
     isChatWindowMouseOver = isMouseOver
@@ -226,7 +226,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     for(local i=prevScenes.len()-1; i>=0; i--)
     {
-      local scn = prevScenes[i].scene
+      let scn = prevScenes[i].scene
       if (!::checkObj(scn) || scn.isEqual(obj))
         prevScenes.remove(i)
     }
@@ -242,7 +242,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       {
         scene = prevScenes[i].scene
         guiScene = scene.getScene()
-        local prevRoomHandler = prevScenes[i].roomHandlerWeak
+        let prevRoomHandler = prevScenes[i].roomHandlerWeak
         roomHandlerWeak = prevRoomHandler && prevRoomHandler.weakref()
         sceneChanged = true
         chatSceneShow(prevScenes[i].show || ::last_chat_scene_show)
@@ -262,12 +262,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       guiScene = scene.getScene()
       sceneChanged = true
-      guiScene.replaceContent(scene, "gui/chat/menuChat.blk", this)
+      guiScene.replaceContent(scene, "%gui/chat/menuChat.blk", this)
       setSavedSizes()
       scene.findObject("menu_chat_update").setUserData(this)
-      local hasChat = isChatEnabled()
+      let hasChat = isChatEnabled()
       showSceneBtn("chat_input_place", hasChat)
-      local chatObj = showSceneBtn("menuchat_input", hasChat)
+      let chatObj = showSceneBtn("menuchat_input", hasChat)
       chatObj["max-len"] = ::g_chat.MAX_MSG_LEN.tostring()
       showSceneBtn("btn_send", hasChat)
       searchInited = false
@@ -279,7 +279,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillList(listObj, formatText, listTotal)
   {
-    local total = listObj.childrenCount()
+    let total = listObj.childrenCount()
     if (total > listTotal)
       for(local i = total-1; i>=listTotal; i--)
         guiScene.destroyElement(listObj.getChild(i))
@@ -309,12 +309,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!checkScene())
       return
-    local obj = scene.findObject("rooms_list")
+    let obj = scene.findObject("rooms_list")
     if(!::checkObj(obj))
       return
 
     guiScene.setUpdatesEnabled(false, false)
-    local roomFormat = "shopFilter { shopFilterText { id:t='room_txt_%d'; text:t='' } Button_close { id:t='close_%d'; on_click:t='onRoomClose';}}\n"
+    let roomFormat = "shopFilter { shopFilterText { id:t='room_txt_%d'; text:t='' } Button_close { id:t='close_%d'; on_click:t='onRoomClose';}}\n"
     fillList(obj, roomFormat, ::g_chat.rooms.len())
 
     local curVal = -1
@@ -350,9 +350,9 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return false
 
-    local obj = scene.findObject("rooms_list")
-    local value = obj.getValue()
-    local roomData = ::getTblValue(value, ::g_chat.rooms)
+    let obj = scene.findObject("rooms_list")
+    let value = obj.getValue()
+    let roomData = ::getTblValue(value, ::g_chat.rooms)
 
     if (!roomData)
     {
@@ -415,8 +415,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function createRoomHandler(roomData)
   {
-    local obj = scene.findObject("menu_chat_custom_handler_block")
-    local roomHandler = roomData.type.loadCustomHandler(obj, roomData.id, ::Callback(goBack, this))
+    let obj = scene.findObject("menu_chat_custom_handler_block")
+    let roomHandler = roomData.type.loadCustomHandler(obj, roomData.id, ::Callback(goBack, this))
     roomHandlerWeak = roomHandler && roomHandler.weakref()
   }
 
@@ -425,9 +425,9 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local hasChatHeader = roomData.type.hasChatHeader
-    local obj = showSceneBtn("menu_chat_header_block", hasChatHeader)
-    local isRoomChanged = obj?.roomId != roomData.id
+    let hasChatHeader = roomData.type.hasChatHeader
+    let obj = showSceneBtn("menu_chat_header_block", hasChatHeader)
+    let isRoomChanged = obj?.roomId != roomData.id
     if (!isRoomChanged)
     {
       if (hasChatHeader)
@@ -455,7 +455,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       listObj = scene.findObject("rooms_list")
     if (listObj.childrenCount() <= idx)
       return
-    local roomTab = listObj.getChild(idx)
+    let roomTab = listObj.getChild(idx)
     if (!::checkObj(roomTab))
       return
 
@@ -463,7 +463,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     roomTab.enable(!room.hidden && !room.concealed())
     roomTab.show(!room.hidden && !room.concealed())
     roomTab.tooltip = room.type.getTooltip(room.id)
-    local textObj = roomTab.findObject("room_txt_"+idx)
+    let textObj = roomTab.findObject("room_txt_"+idx)
     textObj.colorTag = room.type.getRoomColorTag(room.id)
     textObj.setValue(room.getRoomName())
   }
@@ -479,7 +479,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!checkScene())
       return
-    local listObj = scene.findObject("rooms_list")
+    let listObj = scene.findObject("rooms_list")
     foreach(idx, room in ::g_chat.rooms)
       updateRoomTabByIdx(idx, room, listObj)
   }
@@ -536,7 +536,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene() || !::last_chat_scene_show)
       return
 
-    local roomsObj = scene.findObject("rooms_list")
+    let roomsObj = scene.findObject("rooms_list")
     if (!roomsObj)
       return
 
@@ -545,13 +545,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       total = ::g_chat.rooms.len() //Maybe assert here?
     for(local i=0; i<total; i++)
     {
-      local childObj = roomsObj.getChild(i)
-      local obj = childObj.findObject("new_msgs")
-      local haveNew = ::g_chat.rooms[i].newImportantMessagesCount > 0
+      let childObj = roomsObj.getChild(i)
+      let obj = childObj.findObject("new_msgs")
+      let haveNew = ::g_chat.rooms[i].newImportantMessagesCount > 0
       if (::checkObj(obj) != haveNew)
         if (haveNew)
         {
-          local data = ::handyman.renderCached("gui/cssElems/cornerImg", {
+          let data = ::handyman.renderCached("%gui/cssElems/cornerImg", {
             id = "new_msgs"
             img = "#ui/gameuiskin#chat_new.svg"
             hasGlow = true
@@ -568,8 +568,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     guiScene.setUpdatesEnabled(false, false)
-    local listObj = scene.findObject("users_list")
-    local leftObj = scene.findObject("middleLine")
+    let listObj = scene.findObject("users_list")
+    let leftObj = scene.findObject("middleLine")
     if (!curRoom || !curRoom.havePlayersList || (!showPlayersList && !alwaysShowPlayersList()))
     {
       leftObj.show(false)
@@ -578,12 +578,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     else
     {
       leftObj.show(true)
-      local users = curRoom.users
+      let users = curRoom.users
       if (users==null)
         guiScene.replaceContentFromText(listObj, "", 0, this)
       else
       {
-        local userFormat = "text { id:t='user_name_%d'; behaviour:t='button'; " +
+        let userFormat = "text { id:t='user_name_%d'; behaviour:t='button'; " +
                              "on_click:t='onUserListClick'; on_r_click:t='onUserListRClick'; " +
                              "tooltipObj { id:t='tooltip'; uid:t=''; on_tooltip_open:t='onContactTooltipOpen'; on_tooltip_close:t='onTooltipObjClose'; display:t='hide' }\n " +
                              "title:t='$tooltipObj';\n" +
@@ -591,7 +591,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         fillList(listObj, userFormat, users.len())
         foreach(idx, user in users)
         {
-          local fullName = ::g_contacts.getPlayerFullName(
+          let fullName = ::g_contacts.getPlayerFullName(
             getPlayerName(user.name),
             ::clanUserTable?[user.name] ?? ""
           )
@@ -605,7 +605,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (user.uid == null && (::g_squad_manager.isInMySquad(user.name, false) || ::is_in_my_clan(user.name)))
           user.uid = ::Contact.getByName(user.name)?.uid
 
-        local contact = (user.uid != null)? ::getContact(user.uid) : null
+        let contact = (user.uid != null)? ::getContact(user.uid) : null
         updateUserPresence(listObj, idx, contact)
       }
 
@@ -618,8 +618,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene() || !showPlayersList || !curRoom)
       return
 
-    local readyShow = curRoom.id == ::g_chat.getMySquadRoomId() && ::g_squad_manager.canSwitchReadyness()
-    local readyObj = scene.findObject("btn_ready")
+    let readyShow = curRoom.id == ::g_chat.getMySquadRoomId() && ::g_squad_manager.canSwitchReadyness()
+    let readyObj = scene.findObject("btn_ready")
     showSceneBtn("btn_ready", readyShow)
     if (readyShow)
       readyObj.setValue(::g_squad_manager.isMeReady() ? ::loc("multiplayer/btnNotReady") : ::loc("mainmenu/btnReady"))
@@ -630,16 +630,16 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene() || !curRoom)
       return
 
-    local squadBRTextObj = scene.findObject("battle_rating")
+    let squadBRTextObj = scene.findObject("battle_rating")
     if (!::checkObj(squadBRTextObj))
       return
 
-    local br = ::g_squad_manager.getLeaderBattleRating()
-    local isShow = br && ::g_squad_manager.isInSquad() && curRoom.id == ::g_chat.getMySquadRoomId()
+    let br = ::g_squad_manager.getLeaderBattleRating()
+    let isShow = br && ::g_squad_manager.isInSquad() && curRoom.id == ::g_chat.getMySquadRoomId()
 
     if(isShow)
     {
-      local gmText = ::events.getEventNameText(
+      let gmText = ::events.getEventNameText(
                        ::events.getEvent(::g_squad_manager.getLeaderGameModeId())
                      ) ?? ""
       local desc = ::loc("shop/battle_rating") +" "+ format("%.1f", br)
@@ -656,17 +656,17 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUserPresence(listObj, idx, contact)
   {
-    local obj = listObj.findObject("user_name_" + idx)
+    let obj = listObj.findObject("user_name_" + idx)
     if (obj)
     {
-      local inMySquad = contact && ::g_squad_manager.isInMySquad(contact.name, false)
-      local inMyClan = contact && ::is_in_my_clan(contact.name)
-      local img = inMySquad ? contact.presence.getIcon() : ""
+      let inMySquad = contact && ::g_squad_manager.isInMySquad(contact.name, false)
+      let inMyClan = contact && ::is_in_my_clan(contact.name)
+      let img = inMySquad ? contact.presence.getIcon() : ""
       local img2 = ""
       local voiceIcon = ""
       if (inMySquad)
       {
-        local memberData = ::g_squad_manager.getMemberData(contact.uid)
+        let memberData = ::g_squad_manager.getMemberData(contact.uid)
         if (memberData && checkCountry(memberData.country, "squad member data ( uid = " + contact.uid + ")", true))
           img2 = ::get_country_icon(memberData.country)
       }
@@ -680,7 +680,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       setIcon(obj, "statusImg", "img", img)
       setIcon(obj, "statusImg2", "img2", img2)
       setIcon(obj, "statusVoiceIcon", "voiceIcon", voiceIcon)
-      local imgCount = (inMySquad? 2 : 0) + (voiceIcon != ""? 1 : 0)
+      let imgCount = (inMySquad? 2 : 0) + (voiceIcon != ""? 1 : 0)
       obj.imgType = imgCount==0? "none" : (imgCount.tostring()+"ico")
     }
   }
@@ -690,13 +690,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if(!checkObj(obj))
       return
 
-    local picObj = obj.findObject(id)
+    let picObj = obj.findObject(id)
     if(picObj)
       picObj["background-image"] = image
     else
     {
-      local string = "%s { id:t='%s'; background-image:t='%s'}"
-      local data = format(string, blockName, id, image)
+      let string = "%s { id:t='%s'; background-image:t='%s'}"
+      let data = format(string, blockName, id, image)
       guiScene.prependWithBlk(obj, data, this)
     }
   }
@@ -712,7 +712,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (user.name == contact.name)
       {
         user.uid = contact.uid
-        local listObj = scene.findObject("users_list")
+        let listObj = scene.findObject("users_list")
         updateUserPresence(listObj, idx, contact)
         return
       }
@@ -746,7 +746,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function drawRoomTo(room, messagesContainer, isSceneChanged = false) {
-    local lastMessageIndex = (room.mBlocks.len() == 0) ? -1:room.mBlocks.top().messageIndex
+    let lastMessageIndex = (room.mBlocks.len() == 0) ? -1:room.mBlocks.top().messageIndex
     if (lastMessageIndex == lastShowedInRoomMessageIndex && !isSceneChanged)
       return
 
@@ -754,11 +754,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     messagesContainer.getScene().setUpdatesEnabled(false, false)
 
-    local totalMblocks = room.mBlocks.len()
-    local numChildrens = messagesContainer.childrenCount()
+    let totalMblocks = room.mBlocks.len()
+    let numChildrens = messagesContainer.childrenCount()
     for(local i=0; i < numChildrens; i++) {
-      local msgObj = messagesContainer.getChild(i)
-      local textObj  = msgObj.findObject("chat_message_text")
+      let msgObj = messagesContainer.getChild(i)
+      let textObj  = msgObj.findObject("chat_message_text")
       if (i < totalMblocks) {
         msgObj.show(true)
         msgObj.messageType=room.mBlocks[i].messageType
@@ -809,7 +809,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!checkScene())
       return
-    local inputObj = scene.findObject("menuchat_input")
+    let inputObj = scene.findObject("menuchat_input")
     if (::check_obj(inputObj) && inputObj.isVisible())
       selectEditbox(inputObj)
     else
@@ -820,13 +820,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach(r in ::default_chat_rooms) //validate incorrect created default chat rooms by cur lang
       if (roomName == "#" + r + "_" + ::cur_chat_lang)  {
-        local rList = ::getGlobalRoomsListByLang(::cur_chat_lang, [r])
+        let rList = ::getGlobalRoomsListByLang(::cur_chat_lang, [r])
         // default rooms should have empty joinParams
         return {  roomName = (rList.len()? "#" + rList[0] : roomName)
                   joinParams = ""  }
       }
 
-    local idx = roomName.indexof(" ")
+    let idx = roomName.indexof(" ")
     if ( idx )  {
       //  loading legacy record like '#some_chat password'
       return {  roomName = "#"+::g_chat.validateRoomName( roomName.slice(0, idx) )
@@ -844,25 +844,25 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (roomsInited && !initRooms)
       return
 
-    local baseRoomsList = ::g_chat.getBaseRoomsList()
+    let baseRoomsList = ::g_chat.getBaseRoomsList()
     foreach(idx, roomId in baseRoomsList)
       if (!::g_chat.getRoomById(roomId))
         addRoom(roomId, null, null, idx == 0)
 
     if (isChatEnabled())
     {
-      local chatRooms = ::load_local_account_settings(CHAT_ROOMS_LIST_SAVE_ID)
+      let chatRooms = ::load_local_account_settings(CHAT_ROOMS_LIST_SAVE_ID)
       local roomIdx = 0
       if (chatRooms != null)
       {
-        local storedRooms = []
+        let storedRooms = []
         for(roomIdx = 0; chatRooms?["room"+roomIdx]; roomIdx++)
           storedRooms.append( loadRoomParams(chatRooms?["room"+roomIdx],
                                              chatRooms?["params"+roomIdx]) )
 
         foreach (it in storedRooms)
         {
-          local roomType = ::g_chat_room_type.getRoomType(it.roomName)
+          let roomType = ::g_chat_room_type.getRoomType(it.roomName)
           if (!roomType.needSave()) //"needSave" has changed
             continue
 
@@ -880,7 +880,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local saveIdx = 0
-    local chatRoomsBlk = ::DataBlock()
+    let chatRoomsBlk = ::DataBlock()
     foreach(room in ::g_chat.rooms)
       if (!room.hidden && room.type.needSave())
       {
@@ -924,7 +924,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::menu_chat_sizes)
     {
-      local data = loadLocalByScreenSize("menu_chat_sizes")
+      let data = loadLocalByScreenSize("menu_chat_sizes")
       if (data)
       {
         ::menu_chat_sizes = ::parse_json(data)
@@ -948,12 +948,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     local obj = scene.findObject("menuchat")
     if (!obj) return
 
-    local pos = ::getTblValue("pos", ::menu_chat_sizes)
-    local size = ::getTblValue("size", ::menu_chat_sizes)
+    let pos = ::getTblValue("pos", ::menu_chat_sizes)
+    let size = ::getTblValue("size", ::menu_chat_sizes)
     if (!pos || !size)
       return
 
-    local rootSize = guiScene.getRoot().getSize()
+    let rootSize = guiScene.getRoot().getSize()
     for(local i=0; i<=1; i++) //pos chat in screen
       if (pos[i] < topMenuBorders[i][0]*rootSize[i])
         pos[i] = (topMenuBorders[i][0]*rootSize[i]).tointeger()
@@ -1009,7 +1009,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if ( get_charserver_time_sec() > presenceDetectionTimer )
     {
       presenceDetectionTimer = 0
-      local msg = format( ::loc("chat/presenceCheck"), ::get_pds_code_suggestion().tostring() )
+      let msg = format( ::loc("chat/presenceCheck"), ::get_pds_code_suggestion().tostring() )
 
       addRoomMsg("", "", msg, false, false)
     }
@@ -1048,7 +1048,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       rejoinDefaultRooms()
       if (g_chat.rooms.len() > 0)
       {
-        local msg = ::loc("chat/connected")
+        let msg = ::loc("chat/connected")
         addRoomMsg("", "", msg)
       }
 
@@ -1057,7 +1057,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         if (room.id.slice(0, 1) != "#" || ::g_chat.isSystemChatRoom(room.id))
           continue
 
-        local cb = (!::checkObj(room.customScene))? null : (@(room) function() { afterReconnectCustomRoom(room.id) })(room)
+        let cb = (!::checkObj(room.customScene))? null : (@(room) function() { afterReconnectCustomRoom(room.id) })(room)
         joinRoom(room.id, "", cb, null, null, true)
       }
       updateRoomsList()
@@ -1072,7 +1072,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if(db.uid)
       {
-        local contact = ::getContact(db.uid)
+        let contact = ::getContact(db.uid)
         local voiceChatStatus = null
         if(db.type == "join")
         {
@@ -1157,7 +1157,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkEventResponseByType(db)
   {
-    local dbType = db?.type
+    let dbType = db?.type
     if (!dbType)
       return false
 
@@ -1176,16 +1176,16 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (!db?.list || !db?.channel)
         return true
 
-      local roomData = ::g_chat.getRoomById(db.channel)
+      let roomData = ::g_chat.getRoomById(db.channel)
       if (roomData)
       {
-        local uList = db.list % "item"
+        let uList = db.list % "item"
         roomData.users = []
         foreach(idx, u in uList)
           if (::find_in_array(uList, u)==idx) //check duplicates
           {
-            local utbl = createRoomUserInfo(u)
-            local first = utbl.name.slice(0,1)
+            let utbl = createRoomUserInfo(u)
+            let first = utbl.name.slice(0,1)
 
             if (::g_chat_room_type.getRoomType(db.channel).isHaveOwner
                 && (first == "@" || first == "+"))
@@ -1229,7 +1229,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!db?.channel || !db?.nick)
         return true
-      local roomData = ::g_chat.getRoomById(db.channel)
+      let roomData = ::g_chat.getRoomById(db.channel)
       if (roomData)
       {
         local found = false
@@ -1260,8 +1260,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (!db?.channel || !db?.from)
         return true
 
-      local fromNick = db.from
-      local roomId = db.channel
+      let fromNick = db.from
+      let roomId = db.channel
       ::g_invites.addChatRoomInvite(roomId, fromNick)
     }
     else if (dbType == "thread_list" || dbType == "thread_update")
@@ -1279,7 +1279,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (::g_string.startsWith(taskId, "join_#"))
     {
-      local roomId = taskId.slice(5)
+      let roomId = taskId.slice(5)
       if (::g_chat.isSystemChatRoom(roomId))
         return
 
@@ -1302,16 +1302,16 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (::g_string.startsWith(taskId, "leave_#"))
     {
-      local roomId = taskId.slice(6) //auto reconnect to this channel by server
+      let roomId = taskId.slice(6) //auto reconnect to this channel by server
       if (::g_chat.isSystemChatRoom(roomId))
         return
-      local room = ::g_chat.getRoomById(roomId)
+      let room = ::g_chat.getRoomById(roomId)
       if (room)
       {
         room.joined = false
-        local isSquad = ::g_chat.isRoomSquad(room.id)
-        local isClan = ::g_chat.isRoomClan(room.id)
-        local msgId = isSquad ? "squad/leaveChannel" : "chat/leaveChannel"
+        let isSquad = ::g_chat.isRoomSquad(room.id)
+        let isClan = ::g_chat.isRoomClan(room.id)
+        let msgId = isSquad ? "squad/leaveChannel" : "chat/leaveChannel"
         if (isSquad || isClan)
           silenceUsersByList(room.users)
         room.users = []
@@ -1333,7 +1333,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if(!users || !users.len())
       return
 
-    local resultFunc = ::Callback(
+    let resultFunc = ::Callback(
       function(contact) {
         if(!contact)
           return
@@ -1368,7 +1368,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   function addRoomMsg(roomId, from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
     important = false)
   {
-    local mBlock = menuChatRoom.newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor,
+    let mBlock = menuChatRoom.newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor,
       important, !::g_chat.isRoomSquad(roomId))
     if (!mBlock)
       return
@@ -1463,7 +1463,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         foreach (room in ::g_chat.rooms)
           if (room.id == db?.sender.name)
           {
-            local idxLast = db.message.indexof(">")
+            let idxLast = db.message.indexof(">")
             if ((db.message.slice(0,1)=="<") && (idxLast != null))
             {
               room.addMessage(menuChatRoom.newMessage(db.message.slice(1, idxLast), db.message.slice(idxLast+1), false, false, mpostColor))
@@ -1487,7 +1487,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (!db?.sender || db.sender?.debug)
         return
 
-      local message = ::g_chat.localizeReceivedMessage(db?.message)
+      let message = ::g_chat.localizeReceivedMessage(db?.message)
       if (::u.isEmpty(message))
         return
 
@@ -1501,7 +1501,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           ::clanUserTable[db.sender.nick] <- clanTag
         roomId = db?.sender.name
         privateMsg = (db.type == "chat") || !roomRegexp.match(roomId)
-        local isSystemMessage = ::g_chat.isSystemUserName(user)
+        let isSystemMessage = ::g_chat.isSystemUserName(user)
 
         if (!isSystemMessage && !isCrossNetworkMessageAllowed(user))
           return
@@ -1540,7 +1540,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         // System message
         if (isSystemMessage)
         {
-          local nameLen = ::my_user_name.len()
+          let nameLen = ::my_user_name.len()
           if (message.len() >= nameLen && message.slice(0, nameLen) == ::my_user_name)
             ::sync_handler_simulate_signal("profile_reload")
         }
@@ -1559,9 +1559,9 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         return
 
       checkLastActionRoom()
-      local errorName = db.error?.errorName
+      let errorName = db.error?.errorName
       local roomId = lastActionRoom
-      local senderFrom = db?.sender.from
+      let senderFrom = db?.sender.from
       if (db?.error.param1)
         roomId = db.error.param1
       else if (senderFrom && roomRegexp.match(senderFrom))
@@ -1569,7 +1569,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
       if (errorName == chatErrorName.NO_SUCH_NICK_CHANNEL)
       {
-        local userName = roomId
+        let userName = roomId
         if (!roomRegexp.match(userName)) //private room
         {
           addRoomMsg(lastActionRoom, "",
@@ -1586,9 +1586,9 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           return
         }
 
-        local wasPasswordEntered = ::getTblValue(roomId, roomJoinParamsTable, "") != ""
-        local locId = wasPasswordEntered ? "chat/wrongPassword" : "chat/enterPassword"
-        local params = {
+        let wasPasswordEntered = ::getTblValue(roomId, roomJoinParamsTable, "") != ""
+        let locId = wasPasswordEntered ? "chat/wrongPassword" : "chat/enterPassword"
+        let params = {
           title = roomId.slice(1)
           label = ::format(::loc(locId), roomId.slice(1))
           isPassword = true
@@ -1600,7 +1600,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         return
       }
 
-      local roomType = ::g_chat_room_type.getRoomType(roomId)
+      let roomType = ::g_chat_room_type.getRoomType(roomId)
       if (::isInArray(errorName, [chatErrorName.NO_SUCH_CHANNEL, chatErrorName.NO_SUCH_NICK_CHANNEL]))
       {
         if (roomId == ::g_chat.getMySquadRoomId())
@@ -1610,18 +1610,18 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         }
         if (roomType == ::g_chat_room_type.THREAD)
         {
-          local threadInfo = ::g_chat.getThreadInfo(roomId)
+          let threadInfo = ::g_chat.getThreadInfo(roomId)
           if (threadInfo)
             threadInfo.invalidate()
         }
       }
 
       //remap roomnames in params
-      local locParams = {}
-      local errParamCount = db.error?.errorParamCount || db.error.getInt("paramCount", 0) //"paramCount" is a support old client
+      let locParams = {}
+      let errParamCount = db.error?.errorParamCount || db.error.getInt("paramCount", 0) //"paramCount" is a support old client
       for(local i = 0; i < errParamCount; i++)
       {
-        local key = "param" + i
+        let key = "param" + i
         local value = db.error?[key]
         if (!value)
           continue
@@ -1634,7 +1634,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         locParams[key] <- value
       }
 
-      local errMsg = ::loc("chat/error/" + errorName, locParams)
+      let errMsg = ::loc("chat/error/" + errorName, locParams)
       local roomToSend = roomId
       if (!::g_chat.getRoomById(roomToSend))
         roomToSend = lastActionRoom
@@ -1650,7 +1650,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function joinRoom(id, password = "", onJoinFunc = null, customScene = null, ownerHandler = null, reconnect = false)
   {
-    local roomData = ::g_chat.getRoomById(id)
+    let roomData = ::g_chat.getRoomById(id)
     if (roomData && id == ::g_chat.getMySquadRoomId())
       roomData.canBeClosed = false
 
@@ -1664,7 +1664,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (customScene && !roomData)
       addRoom(id, customScene, ownerHandler) //for correct reconnect
 
-    local task = ::gchat_join_room(::gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
+    let task = ::gchat_join_room(::gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
     if (task != "")
       chatTasks.append({ task = task, handler = onJoinRoom, roomId = id,
                          onJoinFunc = onJoinFunc, customScene = customScene,
@@ -1682,7 +1682,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         {
           if (!room.joined)
           {
-            local msgId = ::g_chat.isRoomSquad(taskConfig.roomId)? "squad/joinChannel" : "chat/joinChannel"
+            let msgId = ::g_chat.isRoomSquad(taskConfig.roomId)? "squad/joinChannel" : "chat/joinChannel"
             addRoomMsg(room.id, "", format(::loc(msgId), room.getRoomName()))
           }
           room.joined = true
@@ -1699,7 +1699,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function addRoom(id, customScene = null, ownerHandler = null, selectRoom = false)
   {
-    local r = menuChatRoom.newRoom(id, customScene, ownerHandler)
+    let r = menuChatRoom.newRoom(id, customScene, ownerHandler)
     r.joinParams = roomJoinParamsTable?[::gchat_escape_target(id)] ??  ""
 
     if (r.type != ::g_chat_room_type.PRIVATE)
@@ -1744,8 +1744,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     shouldCheckVoiceChatSuggestion = false
 
-    local VCdata = get_option(::USEROPT_VOICE_CHAT)
-    local voiceChatShowCount = ::load_local_account_settings(VOICE_CHAT_SHOW_COUNT_SAVE_ID, 0)
+    let VCdata = get_option(::USEROPT_VOICE_CHAT)
+    let voiceChatShowCount = ::load_local_account_settings(VOICE_CHAT_SHOW_COUNT_SAVE_ID, 0)
     if(isFirstAskForSession && voiceChatShowCount < ::g_chat.MAX_MSG_VC_SHOW_TIMES && !VCdata.value)
     {
       msgBox("join_voiceChat", ::loc("msg/enableVoiceChat"),
@@ -1785,11 +1785,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onRoomClose(obj)
   {
     if (!obj) return
-    local id = obj?.id
+    let id = obj?.id
     if (!id || id.len() < 7 || id.slice(0, 6) != "close_")
       return
 
-    local value = id.slice(6).tointeger()
+    let value = id.slice(6).tointeger()
     closeRoom(value)
   }
 
@@ -1802,13 +1802,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!(roomIdx in ::g_chat.rooms))
       return
-    local roomData = ::g_chat.rooms[roomIdx]
+    let roomData = ::g_chat.rooms[roomIdx]
     if (!roomData.canBeClosed)
       return
 
     if (askAllRooms)
     {
-      local msg = format(::loc("chat/ask/leaveRoom"), roomData.getRoomName())
+      let msg = format(::loc("chat/ask/leaveRoom"), roomData.getRoomName())
       msgBox("leave_squad", msg,
         [
           ["yes", (@(roomIdx) function() { closeRoom(roomIdx) })(roomIdx)],
@@ -1831,23 +1831,23 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function closeRoomById(id)
   {
-    local idx = getRoomIdxById(id)
+    let idx = getRoomIdxById(id)
     if (idx >= 0)
       closeRoom(idx)
   }
 
   function onUsersListActivate(obj)
   {
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
 
     if (!curRoom || curRoom.users.len() <= value || !checkScene())
       return
 
-    local playerName = curRoom.users[value].name
-    local roomId = curRoom.id
-    local position = obj.getChild(value).getPosRC()
+    let playerName = curRoom.users[value].name
+    let roomId = curRoom.id
+    let position = obj.getChild(value).getPosRC()
     ::find_contact_by_name_and_do(playerName,
       @(contact) ::g_chat.showPlayerRClickMenu(playerName, roomId, contact, position))
   }
@@ -1856,7 +1856,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isCustomRoomActionObj(obj))
     {
-      local customRoom = findCustomRoomByObj(obj)
+      let customRoom = findCustomRoomByObj(obj)
       if (customRoom && customRoom.ownerHandler && ("onCustomChatCancel" in customRoom.ownerHandler))
         customRoom.ownerHandler.onCustomChatCancel.call(customRoom.ownerHandler)
     }
@@ -1876,7 +1876,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         if ((msg.len() > (cmd.len()+2) && msg.slice(1, cmd.len()+2) == (cmd + " "))
             || (msg.len() == (cmd.len()+1) && msg.slice(1, cmd.len()+1) == cmd))
         {
-          local hasParam = msg.len() > cmd.len()+2;
+          let hasParam = msg.len() > cmd.len()+2;
 
           if (cmd == "help" || cmd == "shelp")
             addRoomMsg(curRoom.id, "", ::loc("menuchat/" + cmd))
@@ -1911,12 +1911,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
                 return null;
               }
 
-              local paramStr = msg.slice(cmd.len()+2)
-              local spaceidx = paramStr.indexof(" ")
+              let paramStr = msg.slice(cmd.len()+2)
+              let spaceidx = paramStr.indexof(" ")
               local roomName = spaceidx ? paramStr.slice(0,spaceidx) : paramStr
               if (roomName.slice(0, 1) != "#")
                 roomName = "#" + roomName
-              local pass = spaceidx ? paramStr.slice(spaceidx+1) : ""
+              let pass = spaceidx ? paramStr.slice(spaceidx+1) : ""
 
               addChatJoinParams(::gchat_escape_target(roomName), pass)
             }
@@ -1966,7 +1966,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
               return null;
             }
 
-            local playerName = msg.slice(cmd.len()+2)
+            let playerName = msg.slice(cmd.len()+2)
             if (cmd == "kick")
               kickPlayeFromRoom(playerName)
             else
@@ -2009,7 +2009,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function squadMsg(msg)
   {
-    local sRoom = ::g_chat.getMySquadRoomId()
+    let sRoom = ::g_chat.getMySquadRoomId()
     addRoomMsg(sRoom, "", msg)
     if (curRoom && curRoom.id != sRoom)
       addRoomMsg(curRoom.id, "", msg)
@@ -2037,7 +2037,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function isInSquadRoom()
   {
-    local roomName = ::g_chat.getMySquadRoomId()
+    let roomName = ::g_chat.getMySquadRoomId()
     foreach(room in ::g_chat.rooms)
       if (room.id == roomName)
         return room.joined
@@ -2072,7 +2072,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (delayed)
     {
-      local dcmd = "xinvite " + ::gchat_escape_target(playerName) + " " + ::gchat_escape_target(::g_chat.getMySquadRoomId())
+      let dcmd = "xinvite " + ::gchat_escape_target(playerName) + " " + ::gchat_escape_target(::g_chat.getMySquadRoomId())
       dagor.debug(dcmd)
       ::gchat_raw_command(dcmd)
     }
@@ -2116,11 +2116,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::g_squad_manager.isSquadLeader())
       return
 
-    local uid = ::getTblValue("uid", params, "")
+    let uid = ::getTblValue("uid", params, "")
     if (::u.isEmpty(uid))
       return
 
-    local contact = ::getContact(uid)
+    let contact = ::getContact(uid)
     if (contact != null)
        squadMsg(format(::loc("squad/invited_player"), contact.name))
   }
@@ -2143,7 +2143,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!roomId)
       roomId = curRoom.id
 
-    local devoice = penalties.getDevoiceMessage()
+    let devoice = penalties.getDevoiceMessage()
     if (devoice)
       addRoomMsg(roomId, "", devoice)
     return devoice != null
@@ -2151,10 +2151,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChatEdit(obj)
   {
-    local sceneData = getSceneDataByActionObj(obj)
+    let sceneData = getSceneDataByActionObj(obj)
     if (!sceneData)
       return
-    local roomData = ::g_chat.getRoomById(sceneData.room)
+    let roomData = ::g_chat.getRoomById(sceneData.room)
     if (roomData)
       roomData.lastTextInput = obj.getValue()
   }
@@ -2166,7 +2166,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function chatSendAction(obj, isFromButton = false)
   {
-    local sceneData = getSceneDataByActionObj(obj)
+    let sceneData = getSceneDataByActionObj(obj)
     if (!sceneData)
       return
 
@@ -2174,11 +2174,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     lastActionRoom = sceneData.room
-    local inputObj = sceneData.scene.findObject("menuchat_input")
-    local value = ::checkObj(inputObj)? inputObj.getValue() : ""
+    let inputObj = sceneData.scene.findObject("menuchat_input")
+    let value = ::checkObj(inputObj)? inputObj.getValue() : ""
     if (value == "")
     {
-      local roomData = findCustomRoomByObj(obj)
+      let roomData = findCustomRoomByObj(obj)
       if (!isFromButton && roomData && roomData.ownerHandler && ("onCustomChatContinue" in roomData.ownerHandler))
         roomData.ownerHandler.onCustomChatContinue.call(roomData.ownerHandler)
       return
@@ -2207,7 +2207,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     msg = ::g_chat.validateChatMessage(msg)
 
-    local privateData = getPrivateData(msg, roomId)
+    let privateData = getPrivateData(msg, roomId)
     if (privateData)
       onChatPrivate(privateData)
     else
@@ -2231,8 +2231,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (msg.slice(0, 1)=="\\" || msg.slice(0, 1)=="/")
     {
       msg = msg.slice(1)
-      local res = { user = "", msg = "" }
-      local start = msg.indexof(" ") ?? -1
+      let res = { user = "", msg = "" }
+      let start = msg.indexof(" ") ?? -1
       if (start < 1)
         res.user = msg
       else
@@ -2262,7 +2262,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (needLocalEcho)
       addRoomMsg(curRoom.id, ::my_user_name, data.msg, true, true)
 
-    local blocked = ::isPlayerNickInContacts(data.user, ::EPL_BLOCKLIST)
+    let blocked = ::isPlayerNickInContacts(data.user, ::EPL_BLOCKLIST)
     if (blocked)
       addRoomMsg(
         curRoom.id,
@@ -2274,7 +2274,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       )
     else if (data.user != curRoom.id)
     {
-      local userRoom = ::g_chat.getRoomById(data.user)
+      let userRoom = ::g_chat.getRoomById(data.user)
       if (!userRoom)
       {
         addRoom(data.user)
@@ -2289,7 +2289,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(showScene))
       return
-    local obj = showScene.findObject("menuchat_input")
+    let obj = showScene.findObject("menuchat_input")
     if (!::checkObj(obj))
       return
 
@@ -2312,10 +2312,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::last_send_messages.len()==0)
       return
 
-    local selObj = guiScene.getSelectedObject()
+    let selObj = guiScene.getSelectedObject()
     if (!::check_obj(selObj) || selObj?.id != "menuchat_input")
       return
-    local sceneData = getSceneDataByActionObj(selObj)
+    let sceneData = getSceneDataByActionObj(selObj)
     if (!sceneData)
       return
 
@@ -2348,7 +2348,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChatLink(obj, link, lclick)
   {
-    local sceneData = getSceneDataByActionObj(obj)
+    let sceneData = getSceneDataByActionObj(obj)
     if (!sceneData)
       return
 
@@ -2376,11 +2376,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (::g_chat.checkBlockedLink(link))
     {
-      local roomData = ::g_chat.getRoomById(sceneData.room)
+      let roomData = ::g_chat.getRoomById(sceneData.room)
       if (!roomData)
         return
 
-      local childIndex = obj.childIndex.tointeger()
+      let childIndex = obj.childIndex.tointeger()
       roomData.mBlocks[childIndex].text = ::g_chat.revealBlockedMsg(roomData.mBlocks[childIndex].text, link)
       obj.setValue(roomData.mBlocks[childIndex].text)
       updateChatText()
@@ -2397,7 +2397,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!obj?.id || obj.id.len() <= 10 || obj.id.slice(0,10) != "user_name_")
       return
 
-    local num = obj.id.slice(10).tointeger()
+    let num = obj.id.slice(10).tointeger()
     local name = obj.text
     if (curRoom && checkScene())
       if(curRoom.users.len() > num)
@@ -2406,7 +2406,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
           scene.findObject("users_list").setValue(num)
         }
 
-    local sceneData = getSceneDataByActionObj(obj)
+    let sceneData = getSceneDataByActionObj(obj)
     if (!sceneData)
       return
     if (lclick)
@@ -2424,7 +2424,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (user!=curRoom?.id)
     {
-      local userRoom = ::g_chat.getRoomById(user)
+      let userRoom = ::g_chat.getRoomById(user)
       if (!userRoom)
         addRoom(user)
       switchCurRoom(user)
@@ -2441,7 +2441,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       showScene = scene
     }
 
-    local inputObj = showScene.findObject("menuchat_input")
+    let inputObj = showScene.findObject("menuchat_input")
     if (!::checkObj(inputObj))
       return
 
@@ -2459,8 +2459,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    local sObj = scene.findObject("searchDiv")
-    local wasVisible = sObj.isVisible()
+    let sObj = scene.findObject("searchDiv")
+    let wasVisible = sObj.isVisible()
     if (show==null)
       show = !wasVisible
 
@@ -2506,13 +2506,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("btn_mainChannels", !defaultRoomsInSearch && ::g_chat_room_type.GLOBAL.isVisibleInSearch())
 
-    local listObj = scene.findObject("searchList")
+    let listObj = scene.findObject("searchList")
     if (!::checkObj(listObj))
       return
 
     guiScene.setUpdatesEnabled(false, false)
     local data = ""
-    local total = ::min(searchRoomList.len(), ::g_chat.MAX_ROOMS_IN_SEARCH)
+    let total = ::min(searchRoomList.len(), ::g_chat.MAX_ROOMS_IN_SEARCH)
     if (searchRoomList.len() > 0)
     {
       for(local i = 0; i < total; i++)
@@ -2553,7 +2553,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (searchInProgress && (::dagor.getCurTime() - last_search_time < 5000))
       return
 
-    local sObj = scene.findObject("search_edit")
+    let sObj = scene.findObject("search_edit")
     local value = sObj.getValue()
     if (!value || ::is_chat_message_empty(value))
       return
@@ -2616,7 +2616,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       obj = scene.findObject("searchList")
 
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (value in searchRoomList)
     {
       if (!isChatEnabled(true))
@@ -2628,8 +2628,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
 
       selectChatInputEditbox()
-      local rName = (searchRoomList[value].slice(0,1)!="#")? "#"+searchRoomList[value] : searchRoomList[value]
-      local room = ::g_chat.getRoomById(rName)
+      let rName = (searchRoomList[value].slice(0,1)!="#")? "#"+searchRoomList[value] : searchRoomList[value]
+      let room = ::g_chat.getRoomById(rName)
       if (room)
         switchCurRoom(room)
       else
@@ -2688,12 +2688,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function openChatRoom(roomId)
   {
-    local curScene = getLastGamercardScene()
+    let curScene = getLastGamercardScene()
 
     switchMenuChatObj(getChatDiv(curScene))
     chatSceneShow(true)
 
-    local roomList = scene.findObject("rooms_list")
+    let roomList = scene.findObject("rooms_list")
     foreach (idx, room in ::g_chat.rooms)
       if (room.id == roomId)
       {
@@ -2720,10 +2720,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     for(local idx = ::g_chat.rooms.len()-1; idx>=0; idx--)
     {
-      local room = ::g_chat.rooms[idx]
+      let room = ::g_chat.rooms[idx]
       if (::checkObj(room.customScene))
       {
-        local obj = room.customScene.findObject("custom_chat_text_block")
+        let obj = room.customScene.findObject("custom_chat_text_block")
         if (::checkObj(obj))
           drawRoomTo(room, obj)
       }
@@ -2739,7 +2739,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function findCustomRoomByObj(obj)
   {
-    local id = obj?._customRoomId ?? ""
+    let id = obj?._customRoomId ?? ""
     if (id != "")
       return ::g_chat.getRoomById(id)
 
@@ -2754,7 +2754,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isCustomRoomActionObj(obj))
     {
-      local customRoom = findCustomRoomByObj(obj)
+      let customRoom = findCustomRoomByObj(obj)
       if (!customRoom || !::checkObj(customRoom.customScene))
         return null
 
@@ -2767,24 +2767,24 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function joinCustomObjRoom(sceneObj, roomId, password, ownerHandler)
   {
-    local prevRoom = findCustomRoomByObj(sceneObj)
+    let prevRoom = findCustomRoomByObj(sceneObj)
     if (prevRoom)
       if (prevRoom.id == roomId)
         return
       else
         closeRoomById(prevRoom.id)
 
-    local objGuiScene = sceneObj.getScene()
-    objGuiScene.replaceContent(sceneObj, "gui/chat/customChat.blk", this)
+    let objGuiScene = sceneObj.getScene()
+    objGuiScene.replaceContent(sceneObj, "%gui/chat/customChat.blk", this)
     foreach(name in ["menuchat_input", "btn_send", "btn_prevMsg", "btn_nextMsg"])
     {
-      local obj = sceneObj.findObject(name)
+      let obj = sceneObj.findObject(name)
       obj._customRoomId = roomId
     }
 
     menuChatRoom.initChatMessageListOn(sceneObj.findObject("custom_chat_text_block"), this, roomId)
 
-    local room = ::g_chat.getRoomById(roomId)
+    let room = ::g_chat.getRoomById(roomId)
     if (room)
     {
       room.customScene = sceneObj
@@ -2803,13 +2803,13 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function afterReconnectCustomRoom(roomId)
   {
-    local roomData = ::g_chat.getRoomById(roomId)
+    let roomData = ::g_chat.getRoomById(roomId)
     if (!roomData || !::checkObj(roomData.customScene))
       return
 
     foreach(objName in ["menuchat_input", "btn_send"])
     {
-      local obj = roomData.customScene.findObject(objName)
+      let obj = roomData.customScene.findObject(objName)
       if (::checkObj(obj))
         obj.enable(isChatEnabled())
     }
@@ -2823,11 +2823,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventInviteReceived(params)
   {
-    local invite = ::getTblValue("invite", params)
+    let invite = ::getTblValue("invite", params)
     if (!invite || !invite.isVisible())
       return
 
-    local msg = invite.getChatInviteText()
+    let msg = invite.getChatInviteText()
     if (msg.len())
       addRoomMsg("", "", msg, false, false, invite.inviteColor, true)
   }
@@ -2890,7 +2890,7 @@ if (::g_login.isLoggedIn())
   if (!::checkObj(obj))
     return
 
-  local guiScene = obj.getScene()
+  let guiScene = obj.getScene()
   if (!::menu_chat_handler)
     ::menu_chat_handler = ::MenuChatHandler(guiScene)
   ::menu_chat_handler.initChat(obj)
@@ -2928,11 +2928,11 @@ if (::g_login.isLoggedIn())
     return false
   }
 
-  local scene = ownerHandler ? ownerHandler.scene : ::getLastGamercardScene()
+  let scene = ownerHandler ? ownerHandler.scene : ::getLastGamercardScene()
   if(!::checkObj(scene))
     return false
 
-  local obj = getChatDiv(scene)
+  let obj = getChatDiv(scene)
   if (!::menu_chat_handler)
     ::loadMenuChatToObj(obj)
   else
@@ -2982,7 +2982,7 @@ if (::g_login.isLoggedIn())
 {
   if(!::checkObj(scene))
     scene = null
-  local guiScene = get_gui_scene()
+  let guiScene = get_gui_scene()
   local chatObj = scene ? scene.findObject("menuChat_scene") : guiScene["menuChat_scene"]
   if (!chatObj)
   {
@@ -3012,15 +3012,15 @@ if (::g_login.isLoggedIn())
 {
   if (!::checkObj(obj))
     return null
-  local inputBox = obj.findObject("menuchat_input")
+  let inputBox = obj.findObject("menuchat_input")
   return ::checkObj(inputBox)? inputBox : null
 }
 
 ::isUserBlockedByPrivateSetting <- function isUserBlockedByPrivateSetting(uid = null, userName = "")
 {
-  local checkUid = uid != null
+  let checkUid = uid != null
 
-  local privateValue = ::get_gui_option_in_mode(::USEROPT_ONLY_FRIENDLIST_CONTACT, ::OPTIONS_MODE_GAMEPLAY)
+  let privateValue = ::get_gui_option_in_mode(::USEROPT_ONLY_FRIENDLIST_CONTACT, ::OPTIONS_MODE_GAMEPLAY)
   return (privateValue && !::isPlayerInFriendsGroup(uid, checkUid, userName))
     || ::isPlayerNickInContacts(userName, ::EPL_BLOCKLIST)
 }

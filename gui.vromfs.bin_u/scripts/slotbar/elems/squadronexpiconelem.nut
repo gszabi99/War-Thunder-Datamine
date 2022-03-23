@@ -1,9 +1,9 @@
-local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
-local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
-local { topMenuShopActive } = require("scripts/mainmenu/topMenuStates.nut")
-local { isAllVehiclesResearched } = require("scripts/unit/squadronUnitAction.nut")
-local { subscribe } = require("scripts/seen/seenListEvents.nut")
-local seenList = require("scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { isAllVehiclesResearched } = require("%scripts/unit/squadronUnitAction.nut")
+let { subscribe } = require("%scripts/seen/seenListEvents.nut")
+let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 
 
 elemModelType.addTypes({
@@ -37,7 +37,7 @@ elemViewType.addTypes({
 
     updateView = function(obj, params)
     {
-      local isVisible = model.isVisible()
+      let isVisible = model.isVisible()
       obj.show(isVisible)
       if (isVisible)
         obj.tooltip = model.getTooltip()
@@ -56,7 +56,7 @@ elemViewType.addTypes({
         return
       }
 
-      local unit = ::getAircraftByName(::clan_get_researching_unit())
+      let unit = ::getAircraftByName(::clan_get_researching_unit())
       isVisible = isVisible && unit?.shopCountry == obj.countryId
       obj.show(isVisible)
       if (isVisible)
@@ -76,8 +76,8 @@ elemViewType.addTypes({
         return
       }
 
-      local objConfig = ::split(obj.id, ";")
-      local unit = ::getAircraftByName(::clan_get_researching_unit())
+      let objConfig = ::split(obj.id, ";")
+      let unit = ::getAircraftByName(::clan_get_researching_unit())
       isVisible = isVisible && unit?.shopCountry == objConfig?[0]
         && unit?.unitType?.armyId == objConfig?[1]
       obj.show(isVisible)

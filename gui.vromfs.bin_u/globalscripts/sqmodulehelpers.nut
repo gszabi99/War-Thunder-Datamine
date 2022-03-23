@@ -10,8 +10,8 @@
 
 
 ::require_native <- function require_native(moduleName) {
-  local module = require_optional(moduleName) || {}
-  local fallBack = require_optional("nativeModuleCompatibility/" + moduleName + ".nut") ?? {}
+  let module = require_optional(moduleName) || {}
+  let fallBack = require_optional("%nativeModuleCompatibility/" + moduleName + ".nut") ?? {}
   foreach (slotName, slot in fallBack) {
     if (!(slotName in module)) {
       module[slotName] <- slot

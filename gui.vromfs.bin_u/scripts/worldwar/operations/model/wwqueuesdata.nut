@@ -1,4 +1,4 @@
-local { secondsToMilliseconds } = require("scripts/time.nut")
+let { secondsToMilliseconds } = require("%scripts/time.nut")
 
 local refreshMinTimeSec = 2 //sec
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
@@ -24,8 +24,8 @@ local WwQueuesData = class
 
   function canRequestByTime()
   {
-    local refreshMinTime = getRefreshMinTimeMsec()
-    local checkTime = isInUpdate
+    let refreshMinTime = getRefreshMinTimeMsec()
+    let checkTime = isInUpdate
       ? refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
       : refreshMinTime
     return  ::dagor.getCurTime() - lastRequestTimeMsec >= checkTime
@@ -60,8 +60,8 @@ local WwQueuesData = class
     isInUpdate = true
     lastRequestTimeMsec = ::dagor.getCurTime()
 
-    local cb = ::Callback(requestDataCb, this)
-    local errorCb = ::Callback(requestError, this)
+    let cb = ::Callback(requestDataCb, this)
+    let errorCb = ::Callback(requestError, this)
 
     ::queues.updateQueueInfoByType(::g_queue_type.WW_BATTLE, cb, errorCb, true)
     return true

@@ -1,9 +1,9 @@
-local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
-local { findChildIndex } = require("sqDagui/daguiUtil.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
-local MAX_SLOT_COUNT_X = 4
-local MAX_SLOT_COUNT_Y = 6
+let MAX_SLOT_COUNT_X = 4
+let MAX_SLOT_COUNT_Y = 6
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
@@ -18,7 +18,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   unitsTypes           = null
   lastSelectedUnit     = null
   needSkipFocus        = false
-  sceneTplName         = "gui/unit/vehiclesModal"
+  sceneTplName         = "%gui/unit/vehiclesModal"
   wndTitleLocId        = "itemTypes/vehicles"
   slotbarActions       = [ "research", "buy", "take", "sec_weapons", "weapons", "showroom", "testflight", "info", "repair" ]
 
@@ -41,10 +41,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local listObj = scene.findObject("units_list")
+    let listObj = scene.findObject("units_list")
     restoreLastUnitSelection(listObj)
 
-    local nestObj = scene.findObject("filter_nest")
+    let nestObj = scene.findObject("filter_nest")
     openPopupFilter({
       scene = nestObj
       onChangeFn = onChangeFilterItem.bindenv(this)
@@ -65,27 +65,27 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     foreach(unit in ::all_units)
       if (!unitsFilter || unitsFilter(unit))
       {
-        local country = unit.shopCountry
-        local unitTypeStr = unit.unitType.esUnitType.tostring()
+        let country = unit.shopCountry
+        let unitTypeStr = unit.unitType.esUnitType.tostring()
         units.append(unit)
         if (!(country in countries))
           countries[country] <- {
             id = country
             idx = shopCountriesList.findindex(@(id) id == country) ?? -1
-            value = true
+            value = false
           }
         if (!(unitTypeStr in unitsTypes))
-          unitsTypes[unitTypeStr] <- {unitType = unit.unitType, value = true}
+          unitsTypes[unitTypeStr] <- {unitType = unit.unitType, value = false}
       }
   }
 
   function onChangeFilterItem(objId, typeName, value)
   {
-    local isTypeUnit = typeName == "unit"
-    local referenceArr = isTypeUnit ? unitsTypes : countries
-    if (objId == "all_items")
+    let isTypeUnit = typeName == "unit"
+    let referenceArr = isTypeUnit ? unitsTypes : countries
+    if (objId == RESET_ID)
       foreach (inst in referenceArr)
-        inst.value = value
+        inst.value = false
     else
       referenceArr[isTypeUnit ? objId.split("_")[1] : objId].value = value
     fillUnitsList()
@@ -93,19 +93,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function getFiltersView()
   {
-    local res = []
+    let res = []
     foreach (tName in ["country", "unit"])
     {
-      local isUnitType = tName == "unit"
-      local responceArr = isUnitType ? unitsTypes : countries
-      local cbView = {
-        id = "all_items"
-        idx = -1
-        image = $"#ui/gameuiskin#{isUnitType ? "all_unit_types" : "flag_all_nations"}.svg"
-        text = ::loc($"all_{isUnitType ? "units" : "countries"}")
-        value = true
-      }
-      local view = { checkbox = [cbView] }
+      let isUnitType = tName == "unit"
+      let responceArr = isUnitType ? unitsTypes : countries
+      let view = { checkbox = [] }
       foreach(inst in responceArr)
       {
         if (isUnitType && !inst.unitType.isAvailable())
@@ -116,7 +109,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           idx = isUnitType ? inst.unitType.esUnitType : inst.idx
           image = isUnitType ? inst.unitType.testFlightIcon : ::get_country_icon(inst.id)
           text = isUnitType ? inst.unitType.getArmyLocName() : ::loc(inst.id)
-          value = inst.value
+          value = false
         })
       }
 
@@ -133,39 +126,38 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function getUnitsListData()
   {
     filteredUnits = []
+    let isEmptyCountryFilter  = countries.findindex(@(t) t.value) == null
+    let isEmptyUnitFilter = unitsTypes.findindex(@(t) t.value) == null
     foreach(unit in units)
     {
-      local country = unit.shopCountry
-      if (!countries[country].value || !unitsTypes[unit.unitType.esUnitType.tostring()].value)
+      let country = unit.shopCountry
+      // Show all items if filters list is empty
+      if ((!isEmptyCountryFilter && !countries[country].value)
+        || (!isEmptyUnitFilter && !unitsTypes[unit.unitType.esUnitType.tostring()].value))
         continue
       filteredUnits.append(unit)
     }
 
     local data = ""
     foreach(unit in filteredUnits)
-    {
-      local country = unit.shopCountry
-      if (!countries[country].value || !unitsTypes[unit.unitType.esUnitType.tostring()].value)
-        continue
-
       data += ::format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
         ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit)))
-    }
+
     return data
   }
 
   function fillUnitsList()
   {
-    local listObj = scene.findObject("units_list")
+    let listObj = scene.findObject("units_list")
     if (!::check_obj(listObj))
       return
 
-    local data = getUnitsListData()
+    let data = getUnitsListData()
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     foreach(unit in units)
     {
-      local placeObj = listObj.findObject("cont_" + unit.name)
+      let placeObj = listObj.findObject("cont_" + unit.name)
       if (!placeObj)
         continue
 
@@ -178,11 +170,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function selectCell()
   {
-    local listObj = scene.findObject("units_list")
+    let listObj = scene.findObject("units_list")
     if (!listObj?.isValid())
       return
 
-    local idx = findChildIndex(listObj, @(c) c.isHovered())
+    let idx = findChildIndex(listObj, @(c) c.isHovered())
     if (idx == -1 || idx == listObj.getValue())
       return
 
@@ -194,10 +186,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local newIdx = -1
     if (lastSelectedUnit)
     {
-      local unit = lastSelectedUnit
+      let unit = lastSelectedUnit
       newIdx = filteredUnits.findindex(@(u) u == unit) ?? -1
     }
-    local total = listObj.childrenCount()
+    let total = listObj.childrenCount()
     if (newIdx == -1 && total)
       newIdx = 0
 
@@ -239,7 +231,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(placeObj))
       return
 
-    local unitBlock = ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit))
+    let unitBlock = ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit))
     guiScene.replaceContentFromText(placeObj, unitBlock, unitBlock.len(), this)
     updateAdditionalProp(unit, placeObj)
   }
@@ -256,8 +248,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function getCurSlotObj() {
-    local listObj = scene.findObject("units_list")
-    local idx = ::get_obj_valid_index(listObj)
+    let listObj = scene.findObject("units_list")
+    let idx = ::get_obj_valid_index(listObj)
     if (idx < 0)
       return null
 
@@ -267,7 +259,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function onUnitSelect(obj)
   {
     lastSelectedUnit = null
-    local slotObj = getCurSlotObj()
+    let slotObj = getCurSlotObj()
     if (::check_obj(slotObj))
       lastSelectedUnit = ::getAircraftByName(slotObj.unit_name)
 
@@ -293,8 +285,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitResearch(p)
   {
-    local prevUnitName = p?.prevUnitName
-    local unitName = p?.unitName
+    let prevUnitName = p?.prevUnitName
+    let unitName = p?.unitName
 
     if (prevUnitName && prevUnitName != unitName)
       checkUnitItemAndUpdate(::getAircraftByName(prevUnitName))
@@ -330,7 +322,7 @@ return {
   handlerClass = handlerClass
   open = function(unitsFilter = null, params = {})
   {
-    local handlerParams = params.__merge({ unitsFilter = unitsFilter })
+    let handlerParams = params.__merge({ unitsFilter = unitsFilter })
     ::handlersManager.loadHandler(handlerClass, handlerParams)
   }
 }

@@ -1,7 +1,7 @@
-class ::gui_handlers.FavoriteUnlocksListView extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/unlocks/favoriteUnlocksList.blk"
+  sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null
 
   listContainer = null
@@ -24,17 +24,17 @@ class ::gui_handlers.FavoriteUnlocksListView extends ::gui_handlers.BaseGuiHandl
     if(!unlocksListIsValid)
       curFavoriteUnlocksBlk.setFrom(::g_unlocks.getFavoriteUnlocks())
 
-    local unlocksObjCount = listContainer.childrenCount()
-    local total = ::max(unlocksObjCount, curFavoriteUnlocksBlk.blockCount())
+    let unlocksObjCount = listContainer.childrenCount()
+    let total = ::max(unlocksObjCount, curFavoriteUnlocksBlk.blockCount())
     if (unlocksObjCount == 0 && total > 0) {
-      local blk = ::handyman.renderCached(("gui/unlocks/unlockItemSimplified"),
+      let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified"),
         { unlocks = array(total, { hasCloseButton = true, hasHiddenContent = true })})
       guiScene.appendWithBlk(listContainer, blk, this)
     }
 
     for(local i = 0; i < total; i++)
     {
-      local unlockObj = getUnlockObj(i)
+      let unlockObj = getUnlockObj(i)
       ::g_unlock_view.fillSimplifiedUnlockInfo(curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
     }
 

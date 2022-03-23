@@ -1,32 +1,32 @@
-local { isString } = require("sqStdLibs/helpers/u.nut")
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let { isString } = require("%sqStdLibs/helpers/u.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-local legalRestrictionsChecked = persist("legalRestrictionsChecked", @() ::Watched(false))
-local isPurchaseAllowed = persist("isPurchaseAllowed", @() ::Watched(true))
+let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() ::Watched(false))
+let isPurchaseAllowed = persist("isPurchaseAllowed", @() ::Watched(true))
 
-local countryCodeToLocId = {
+let countryCodeToLocId = {
   BE = "country_belgium",
   NL = "country_netherlands",
   RU = "country_russia"
 }
 
 // restrictedInCountries - comma-separated country codes
-local function hasLegalRestictions(restrictedInCountries)
+let function hasLegalRestictions(restrictedInCountries)
 {
   if (!isString(restrictedInCountries) || restrictedInCountries.len() == 0)
     return false
 
-  local userCountry = ::get_country_code()
+  let userCountry = ::get_country_code()
   return restrictedInCountries.split(",").findindex(@(c) c == userCountry) != null
 }
 
-local function showLegalRestrictionsNotice()
+let function showLegalRestrictionsNotice()
 {
   ::scene_msg_box("legalRestrictionsNotice", null, ::loc("msgbox/legalRestrictionsNotice"),
     [["ok"]], "ok")
 }
 
-local function getCountryName(countryCode)
+let function getCountryName(countryCode)
 {
   if (countryCode not in countryCodeToLocId)
   {
@@ -35,7 +35,7 @@ local function getCountryName(countryCode)
     return ""
   }
 
-  local res = ::loc(countryCodeToLocId[countryCode], "")
+  let res = ::loc(countryCodeToLocId[countryCode], "")
   if (res == "")
     ::script_net_assert_once("Legal restrictions: localization is not found",
       $"Random rewards functionality is limited in {countryCode}, but no localization was provided")
@@ -43,7 +43,7 @@ local function getCountryName(countryCode)
   return res
 }
 
-local function checkLegalRestrictions(restrictedInCountries, onSuccessCb)
+let function checkLegalRestrictions(restrictedInCountries, onSuccessCb)
 {
   if (!hasLegalRestictions(restrictedInCountries))
     return onSuccessCb()
@@ -57,23 +57,23 @@ local function checkLegalRestrictions(restrictedInCountries, onSuccessCb)
     return false
   }
 
-  local onCountryConfirmed = function() {
+  let onCountryConfirmed = function() {
     legalRestrictionsChecked(true)
     isPurchaseAllowed(false)
     showLegalRestrictionsNotice()
   }
 
-  local onCountryDeclined = function() {
+  let onCountryDeclined = function() {
     legalRestrictionsChecked(true)
     isPurchaseAllowed(true)
     onSuccessCb()
   }
 
-  local countryName = getCountryName(::get_country_code())
+  let countryName = getCountryName(::get_country_code())
   if (countryName == "")
     return onSuccessCb()
 
-  local text = ::loc("msgbox/countryConfirmation", { country = countryName })
+  let text = ::loc("msgbox/countryConfirmation", { country = countryName })
   ::scene_msg_box("countryConfirmation", null, text,
     [["yes", onCountryConfirmed], ["no", onCountryDeclined]], "yes", { cancel_fn = @() null })
 }

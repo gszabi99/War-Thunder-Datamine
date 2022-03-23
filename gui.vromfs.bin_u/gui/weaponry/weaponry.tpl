@@ -1,5 +1,5 @@
 <<#bgBlocks>>
-include "gui/weaponry/weaponryBg"
+include "%gui/weaponry/weaponryBg"
 <</bgBlocks>>
 
 <<#weaponryList>>

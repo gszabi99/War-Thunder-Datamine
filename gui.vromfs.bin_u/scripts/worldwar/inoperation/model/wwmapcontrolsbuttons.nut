@@ -1,6 +1,6 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local transportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
-local actionModesManager = require("scripts/worldWar/inOperation/wwActionModesManager.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
+let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 
 global enum WW_MAP_CONSPLE_SHORTCUTS
 {
@@ -69,14 +69,14 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     style = "accessKey:'J:RB | E';"
     getActionName = @() ::loc("worldWar/armyEntrench")
     isHidden = function () {
-      local armiesNames = ::ww_get_selected_armies_names()
+      let armiesNames = ::ww_get_selected_armies_names()
       if (!armiesNames.len())
         return true
 
       foreach (armyName in armiesNames)
       {
-        local army = ::g_world_war.getArmyByName(armyName)
-        local unitType = army.getUnitType()
+        let army = ::g_world_war.getArmyByName(armyName)
+        let unitType = army.getUnitType()
         if (::g_ww_unit_type.isGround(unitType) ||
             ::g_ww_unit_type.isInfantry(unitType))
           return false
@@ -116,13 +116,13 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       ? ::loc("worldWar/armyCancel")
       : ::loc("worldWar/armyFire")
     isHidden = function () {
-      local armiesNames = ::ww_get_selected_armies_names()
+      let armiesNames = ::ww_get_selected_armies_names()
       if (!armiesNames.len())
         return true
 
       foreach (armyName in armiesNames)
       {
-        local army = ::g_world_war.getArmyByName(armyName)
+        let army = ::g_world_war.getArmyByName(armyName)
         if (army.hasArtilleryAbility)
           return false
       }
@@ -145,13 +145,13 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       return ::loc("worldwar/loadArmyToTransport")
     }
     isHidden = function () {
-      local armiesNames = ::ww_get_selected_armies_names()
+      let armiesNames = ::ww_get_selected_armies_names()
       if (!armiesNames.len())
         return true
 
       foreach (armyName in armiesNames)
       {
-        local army = ::g_world_war.getArmyByName(armyName)
+        let army = ::g_world_war.getArmyByName(armyName)
         if (army.isTransport())
           return false
       }
@@ -162,7 +162,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       if (::g_world_war.isCurrentOperationFinished())
         return false
 
-      local armiesNames = ::ww_get_selected_armies_names()
+      let armiesNames = ::ww_get_selected_armies_names()
       foreach (armyName in armiesNames)
         if (!transportManager.isFullLoadedTransport(armyName))
           return true
@@ -185,13 +185,13 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       return ::loc("worldwar/unloadArmyFromTransport")
     }
     isHidden = function () {
-      local armiesNames = ::ww_get_selected_armies_names()
+      let armiesNames = ::ww_get_selected_armies_names()
       if (!armiesNames.len())
         return true
 
       foreach (armyName in armiesNames)
       {
-        local army = ::g_world_war.getArmyByName(armyName)
+        let army = ::g_world_war.getArmyByName(armyName)
         if (army.isTransport())
           return false
       }
@@ -202,7 +202,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       if (::g_world_war.isCurrentOperationFinished())
         return false
 
-      local armiesNames = ::ww_get_selected_armies_names()
+      let armiesNames = ::ww_get_selected_armies_names()
       foreach (armyName in armiesNames)
         if (!transportManager.isEmptyTransport(armyName))
           return true

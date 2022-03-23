@@ -2,6 +2,9 @@
   "model": "f_100d",
   "fmFile": "fm/f_100d.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "haveCCRPForBombs": true,
+  "haveCCRPForRocket": false,
+  "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.165,
   "gearSinkRangeC": 0.25,
   "JetNozzlesAnim1": [0.3,0.5],
@@ -2275,6 +2278,27 @@
         "blk": "gameData/flightModels/weaponPresets/f_100d_2xAim9b.blk",
         "reqModification": "us_aim_9b"
       }
+    },
+    {
+      "preset": {
+        "name": "f_100d_4xmk83_bomb",
+        "blk": "gameData/flightModels/weaponPresets/f_100d_4xmk83_bomb.blk",
+        "reqModification": "us_1000lb_mk83"
+      }
+    },
+    {
+      "preset": {
+        "name": "f_100_6xm117_bomb",
+        "blk": "gameData/flightModels/weaponPresets/f_100d_6xm117_bomb.blk",
+        "reqModification": "us_750lb_m117"
+      }
+    },
+    {
+      "preset": {
+        "name": "f_100_2xlau10",
+        "blk": "gameData/flightModels/weaponPresets/f_100d_2xlau10.blk",
+        "reqModification": "f4c_zuni"
+      }
     }
   ],
   "turbulence": {
@@ -2510,10 +2534,24 @@
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_9b": {
+    "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9b": {
+      "reqModification": "f4c_zuni",
       "tier": 4,
       "modClass": "weapon"
+    },
+    "us_750lb_m117": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_1000lb_mk83": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "us_750lb_m117"
     }
   },
   "default_skin": [

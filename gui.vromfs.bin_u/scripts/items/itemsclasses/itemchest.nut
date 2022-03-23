@@ -1,10 +1,10 @@
-local inventoryClient = require("scripts/inventory/inventoryClient.nut")
-local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
-local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
-local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-local { getPrizeChanceLegendMarkup } = require("scripts/items/prizeChance.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
+let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 
-class ::items_classes.Chest extends ItemExternal {
+::items_classes.Chest <- class extends ItemExternal {
   static iType = itemType.CHEST
   static defaultLocId = "chest"
   static typeIcon = "#ui/gameuiskin#item_type_trophies"
@@ -23,8 +23,8 @@ class ::items_classes.Chest extends ItemExternal {
     if (!_isInitialized)
     {
       _isInitialized = true
-      local genIds = inventoryClient.getChestGeneratorItemdefIds(id)
-      local genId = genIds.findvalue(@(genId) (ItemGenerators.get(genId)?.bundle ?? "") != "")
+      let genIds = inventoryClient.getChestGeneratorItemdefIds(id)
+      let genId = genIds.findvalue(@(genId) (ItemGenerators.get(genId)?.bundle ?? "") != "")
       generator = ItemGenerators.get(genId)
     }
     return generator
@@ -59,14 +59,14 @@ class ::items_classes.Chest extends ItemExternal {
   function getMainActionData(isShort = false, params = {})
   {
     if (canOpenForGold() && isInventoryItem && amount > 0) {
-      local openCost = getOpenForGoldRecipe()?.getOpenCost(this)
+      let openCost = getOpenForGoldRecipe()?.getOpenCost(this)
       if (openCost != null)
         return {
           btnName = getBuyText(false, isShort, "item/open", openCost)
           btnColoredName = getBuyText(true, isShort, "item/open", openCost)
       }
     }
-    local res = base.getMainActionData(isShort, params)
+    let res = base.getMainActionData(isShort, params)
     if (res)
       return res
     if (isInventoryItem && amount)
@@ -97,9 +97,9 @@ class ::items_classes.Chest extends ItemExternal {
 
   function getDescription()
   {
-    local params = { receivedPrizes = false }
+    let params = { receivedPrizes = false }
 
-    local content = getContent()
+    let content = getContent()
     local hasContent = content.len() != 0
 
     return ::g_string.implode([
@@ -128,17 +128,17 @@ class ::items_classes.Chest extends ItemExternal {
     params = params || {}
     params.receivedPrizes <- false
     params.needShowDropChance <- needShowDropChance()
-    local content = getContent()
-    local hasContent = content.len() != 0
+    let content = getContent()
+    let hasContent = content.len() != 0
 
-    local prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = getTransferText() }),
+    let prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = getTransferText() }),
       ::PrizesView.getPrizesListView([], { header = getMarketablePropDesc() }),
       (hasTimer() ? ::PrizesView.getPrizesListView([], { header = getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
       getDescRecipesMarkup(clone params)
     ]
 
     if (hasContent) {
-      local categoryWeightArray = getCategoryWeight()
+      let categoryWeightArray = getCategoryWeight()
       if (params.needShowDropChance && categoryWeightArray.len() > 0) {
         params.categoryWeight <- categoryWeightArray
         prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, getDescHeaderFunction(),clone params))
@@ -152,8 +152,8 @@ class ::items_classes.Chest extends ItemExternal {
 
   function _getDescHeader(fixedAmount = 1)
   {
-    local locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
-    local headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
+    let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
+    let headerText = ::loc(locId, { amount = ::colorize("commonTextColor", fixedAmount) })
     return ::colorize("grayOptionColor", headerText)
   }
 
@@ -176,7 +176,7 @@ class ::items_classes.Chest extends ItemExternal {
 
   function canPreview()
   {
-    local content = getContent()
+    let content = getContent()
     return content.len() == 1 && content[0].item != null
       && ::ItemsManager.findItemById(content[0].item)?.canPreview()
   }
@@ -216,7 +216,7 @@ class ::items_classes.Chest extends ItemExternal {
     if (!needShowDropChance())
       return null
 
-    local markup = getPrizeChanceLegendMarkup()
+    let markup = getPrizeChanceLegendMarkup()
     if (markup == "")
       return null
 
@@ -233,16 +233,16 @@ class ::items_classes.Chest extends ItemExternal {
     if (!canOpenForGold() || !isInventoryItem || amount == 0)
       return false
 
-    local openForGoldRecipe = getOpenForGoldRecipe()
+    let openForGoldRecipe = getOpenForGoldRecipe()
     if (openForGoldRecipe == null)
       return true
 
-    local cost = openForGoldRecipe.getOpenCost(this)
+    let cost = openForGoldRecipe.getOpenCost(this)
     if (!::check_balance_msgBox(cost))
       return true
 
-    local item = this
-    local text = ::warningIfGold(
+    let item = this
+    let text = ::warningIfGold(
       ::loc("item/openForGold/needMoneyQuestion", { itemName = getName(), cost = cost.getTextAccordingToBalance() }),
       cost)
     ::scene_msg_box("open_ches_for_gold", null, text, [
@@ -276,15 +276,15 @@ class ::items_classes.Chest extends ItemExternal {
       return categoryWeight
 
     foreach (category in (itemDef.tags % "categoryWeight")) {
-      local paramsArray = category.split("_")
+      let paramsArray = category.split("_")
       if (paramsArray.len() < 2)
         continue
 
-      local prizeType = paramsArray[0]
-      local weight = paramsArray[1]
-      local rarity = paramsArray?[2]
-      local hasRarity = rarity != null
-      local categoryIdx = categoryWeight.findindex(@(c) c.prizeType == prizeType)
+      let prizeType = paramsArray[0]
+      let weight = paramsArray[1]
+      let rarity = paramsArray?[2]
+      let hasRarity = rarity != null
+      let categoryIdx = categoryWeight.findindex(@(c) c.prizeType == prizeType)
       if (categoryIdx == null) {
         categoryWeight.append({
           prizeType = prizeType
@@ -294,7 +294,7 @@ class ::items_classes.Chest extends ItemExternal {
         continue
       }
 
-      local categ = categoryWeight[categoryIdx]
+      let categ = categoryWeight[categoryIdx]
       if (categ?.weight != null)  //All prizes of this type are filled by one group
         continue
 

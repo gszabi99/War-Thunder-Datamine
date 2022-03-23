@@ -1,5 +1,5 @@
-local u = require("sqStdLibs/helpers/u.nut")
-local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
 local ModificationBase = class extends ::BaseItem
 {
@@ -14,7 +14,7 @@ local ModificationBase = class extends ::BaseItem
   {
     base.constructor(blk, invBlk, slotData)
 
-    local conditionsBlk = getConditionsBlk(blk)
+    let conditionsBlk = getConditionsBlk(blk)
     if (u.isDataBlock(conditionsBlk))
       initConditions(conditionsBlk)
   }
@@ -30,8 +30,8 @@ local ModificationBase = class extends ::BaseItem
     if ("country" in conditionsBlk)
       countries = conditionsBlk % "country"
 
-    local minRank = conditionsBlk?.minRank
-    local maxRank = conditionsBlk?.maxRank
+    let minRank = conditionsBlk?.minRank
+    let maxRank = conditionsBlk?.maxRank
     if (shouldAlwaysShowRank || minRank || maxRank)
       rankRange = ::Point2(minRank || 1, maxRank || ::max_country_rank)
   }
@@ -41,19 +41,19 @@ local ModificationBase = class extends ::BaseItem
 
   function getDescription()
   {
-    local textParts = [base.getDescription()]
+    let textParts = [base.getDescription()]
 
-    local intro = getDescriptionIntroArray()
+    let intro = getDescriptionIntroArray()
     if (intro)
       textParts.extend(intro)
 
-    local expireText = getCurExpireTimeText()
+    let expireText = getCurExpireTimeText()
     if (expireText != "")
       textParts.append(expireText)
 
     if (modsList)
     {
-      local locMods = u.map(modsList,
+      let locMods = u.map(modsList,
         function(mod)
         {
           local res = ::loc("modification/" + mod + "/short", "")
@@ -67,23 +67,23 @@ local ModificationBase = class extends ::BaseItem
 
     if (countries)
     {
-      local locCountries = u.map(countries, @(country) ::loc("unlockTag/" + country))
+      let locCountries = u.map(countries, @(country) ::loc("unlockTag/" + country))
       textParts.append(::loc("trophy/unlockables_names/country") + ::loc("ui/colon")
           + ::colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
     }
     if (unitTypes)
     {
-      local processedUnitTypes = processUnitTypeArray(unitTypes)
-      local locUnitTypes = u.map(processedUnitTypes, @(unitType) ::loc($"mainmenu/type_{unitType}"))
+      let processedUnitTypes = processUnitTypeArray(unitTypes)
+      let locUnitTypes = u.map(processedUnitTypes, @(unitType) ::loc($"mainmenu/type_{unitType}"))
       textParts.append(::loc("mainmenu/btnUnits") + ::loc("ui/colon")
           + ::colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
     }
 
-    local rankText = getRankText()
+    let rankText = getRankText()
     if (rankText.len())
       textParts.append(::loc("sm_rank") + ::loc("ui/colon") + ::colorize("activeTextColor", rankText))
 
-    local outro = getDescriptionOutroArray()
+    let outro = getDescriptionOutroArray()
     if (outro)
       textParts.extend(outro)
 
@@ -114,7 +114,7 @@ local ModificationBase = class extends ::BaseItem
     if (!rankRange)
       return null
 
-    local res = ::LayersIcon.findLayerCfg("mod_upgrade_rank")
+    let res = ::LayersIcon.findLayerCfg("mod_upgrade_rank")
     if (res)
       res.img = "#ui/gameuiskin#item_rank_" + ::clamp(rankRange.y, 1, 6)
     return res

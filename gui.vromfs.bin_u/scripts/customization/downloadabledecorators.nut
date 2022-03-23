@@ -1,21 +1,21 @@
-local guidParser = require("scripts/guidParser.nut")
+let guidParser = require("%scripts/guidParser.nut")
 
-local downloadableSkins = {} // { unitName = [] }
+let downloadableSkins = {} // { unitName = [] }
 
-local function updateDownloadableSkins(unit) {
+let function updateDownloadableSkins(unit) {
   if (downloadableSkins?[unit.name] != null)
     return
 
-  local res = []
+  let res = []
   local shouldCache = true
 
   if (::has_feature("MarketplaceSkinsInCustomization") && ::has_feature("Marketplace")
     && ::has_feature("EnableLiveSkins"))
   {
-    local marketSkinsBlk = ::DataBlock()
+    let marketSkinsBlk = ::DataBlock()
     marketSkinsBlk.load("config/skins_market.blk")
-    local blkList = marketSkinsBlk % unit.name
-    local itemdefIdsList = blkList.filter(function(blk) {
+    let blkList = marketSkinsBlk % unit.name
+    let itemdefIdsList = blkList.filter(function(blk) {
       if (type(blk?.marketplaceItemdefId) != "integer")
         return false
       if (blk?.reqFeature != null && !::has_feature(blk.reqFeature))
@@ -27,19 +27,19 @@ local function updateDownloadableSkins(unit) {
 
     foreach (itemdefId in itemdefIdsList)
     {
-      local item = ::ItemsManager.findItemById(itemdefId)
+      let item = ::ItemsManager.findItemById(itemdefId)
       shouldCache = shouldCache && item != null
       if (item == null)
         continue
 
-      local resource = item.getMetaResource()
+      let resource = item.getMetaResource()
       if (!resource || !item.hasLink())
         continue
 
-      local isLive = guidParser.isGuid(resource)
+      let isLive = guidParser.isGuid(resource)
       if (isLive)
         item.addResourcesByUnitId(unit.name)
-      local skinId = isLive ? ::g_unlocks.getSkinId(unit.name, resource) : resource
+      let skinId = isLive ? ::g_unlocks.getSkinId(unit.name, resource) : resource
       ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)?.setCouponItemdefId(itemdefId)
 
       res.append(itemdefId)
@@ -50,7 +50,7 @@ local function updateDownloadableSkins(unit) {
     downloadableSkins[unit.name] <- res
 }
 
-local function getDownloadableSkins(unit) {
+let function getDownloadableSkins(unit) {
   updateDownloadableSkins(unit)
   return downloadableSkins?[unit.name] ?? []
 }

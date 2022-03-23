@@ -2513,6 +2513,8 @@
           "bullets": 400,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.06,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3934,18 +3936,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -11000.0,
+      "waterMassMult": 150.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
       "additionalWaterDeathThreshold": 800000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 36.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.25
     }
   },
   {
@@ -3953,7 +3955,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.39,
+          "weight": 0.15,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3966,33 +3968,33 @@
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.76,
+          "weight": 0.75,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.57,
+          "weight": 0.6,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.78,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_room_01_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_room_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -4001,7 +4003,7 @@
       {
         "cover": {
           "part": "compartment_05_dm",
-          "weight": 0.32,
+          "weight": 0.4,
           "maxWaterAlive": 1.0
         }
       },
@@ -4021,7 +4023,7 @@
       {
         "cover": {
           "part": "compartment_07_dm",
-          "weight": 0.17,
+          "weight": 0.1,
           "maxWaterAlive": 1.0
         }
       }

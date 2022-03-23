@@ -3,20 +3,20 @@ missionGenFunctions.append( function (isFreeFlight)
   if (!isFreeFlight){return}
 
   ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/free_flight_preset01.blk");
-  local startHeight = ::rndRange(1500, 3000);
-  local startPos = ::mgCreateStartPoint(startHeight);
+  let startHeight = ::rndRange(1500, 3000);
+  let startPos = ::mgCreateStartPoint(startHeight);
 
   ::mgSetDistToAction(10000);
   ::mgSetupAirfield(startPos, 1000);
 
-  local ws = ::get_warpoints_blk();
+  let ws = ::get_warpoints_blk();
   local wpMax = ws.dynPlanesMaxCost;
-  local startLookAt = ::mgCreateStartLookAt();
-  local playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
+  let startLookAt = ::mgCreateStartLookAt();
+  let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
   if (playerFighterPlane == "")
     return;
 
-  local playerSpeed = ::getDistancePerMinute(playerFighterPlane);
+  let playerSpeed = ::getDistancePerMinute(playerFighterPlane);
 
   ::waypointFlightWpHeightNext <- 0;
   ::waypointFlightWpHeight <- startHeight;
@@ -27,7 +27,7 @@ missionGenFunctions.append( function (isFreeFlight)
   if (playerSpeed > 7000){maxWpOnSpeed = 7; maxTimeOnSpeed = 35}
   if (playerSpeed > 10000){maxWpOnSpeed = 5; maxTimeOnSpeed = 30}
 
-  local wpDist = playerSpeed*1.0/60;
+  let wpDist = playerSpeed*1.0/60;
 
   wpMax = ::rndRangeInt(4,maxWpOnSpeed);
 
@@ -58,7 +58,7 @@ missionGenFunctions.append( function (isFreeFlight)
               waypointFlightWpHeightNext);
   wpHeightCalc();
 
-  local offsetPoints = [startPos, "waypoint01", "waypoint02"];
+  let offsetPoints = [startPos, "waypoint01", "waypoint02"];
 
   for (local j = 2; j<10; j++)
   {

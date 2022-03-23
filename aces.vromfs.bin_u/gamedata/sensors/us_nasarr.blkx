@@ -10,8 +10,8 @@
       "prf": 1000.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 18000.0,
-      "rangeMax": 37000.0,
+      "range": 20000.0,
+      "rangeMax": 40000.0,
       "timeGainControl": true,
       "antenna": {
         "azimuth": {
@@ -154,7 +154,8 @@
             "value": 0.0
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-10.0,10.0],
+            "azimuthRange": [-45.0,45.0],
+            "azimuthWidth": 10.0,
             "distanceRange": [500.0,37000.0]
           }
         },
@@ -273,6 +274,11 @@
             "clearTargetsOfInterest": []
           },
           {
+            "setCueEnabled": {
+              "value": true
+            }
+          },
+          {
             "setTransiver": {
               "transiver": "search"
             }
@@ -302,6 +308,9 @@
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         },
         "setDesignationLockMode": [
@@ -324,20 +333,8 @@
             }
           },
           {
-            "setCenterAzimuth": {
-              "source": "constant",
-              "value": 0.0
-            }
-          },
-          {
             "setCenterElevation": {
               "source": "targetDesignation"
-            }
-          },
-          {
-            "setCenterElevation": {
-              "source": "constant",
-              "value": 0.0
             }
           },
           {
@@ -554,6 +551,11 @@
               "type": 0,
               "self": true,
               "sensorIndex": 0
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "self": true,
+              "sensorIndex": 0
             }
           }
         },
@@ -767,20 +769,22 @@
             "setNextDetectedTargetActive": []
           }
         },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": []
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": []
+          }
+        },
         "setSelectedTarget": {
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": []
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 0,
-              "self": true
-            }
           }
         }
       }

@@ -66,8 +66,7 @@ root {
               img {
                 id:t='cluster_select_button_icon'
                 margin-right:t='3@sf/@pf'
-                background-image:t='#ui/gameuiskin#new_icon_not_colored'
-                isUrgentWarningIcon:t='yes'
+                background-image:t='#ui/gameuiskin#urgent_warning.svg'
                 wink:t='no'
                 display:t='hide'
               }

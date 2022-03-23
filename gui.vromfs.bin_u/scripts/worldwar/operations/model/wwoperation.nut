@@ -1,6 +1,6 @@
-local time = require("scripts/time.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { getMapByName, getMapFromShortStatusByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let time = require("%scripts/time.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getMapByName, getMapFromShortStatusByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum WW_OPERATION_STATUSES
 {
@@ -84,16 +84,16 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getMapText()
   {
-    local map = getMap()
+    let map = getMap()
     return map ? map.getNameText() : ""
   }
 
   function getDescription(showClanParticipateStatus = true)
   {
-    local txtList = []
+    let txtList = []
     if (showClanParticipateStatus && isMyClanParticipate())
       txtList.append(::colorize("userlogColoredText", ::loc("worldwar/yourClanInThisOperation")))
-    local map = getMap()
+    let map = getMap()
     if (map)
       txtList.append(map.getDescription(false))
     return ::g_string.implode(txtList, "\n")
@@ -106,13 +106,13 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getGeoCoordsText()
   {
-    local map = getMap()
+    let map = getMap()
     return map ? map.getGeoCoordsText() : ""
   }
 
   function getCantJoinReasonDataBySide(side)
   {
-    local res = {
+    let res = {
       canJoin = false
       country = ""
       reasonText = ""
@@ -120,15 +120,15 @@ enum WW_OPERATION_PRIORITY //bit enum
 
     if (::g_squad_manager.isSquadMember())
     {
-      local queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+      let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
       if (queue && queue.getQueueWwOperationId() != id)
         return res.__update({
           reasonText = ::loc("worldWar/cantJoinBecauseOfQueue", {operationInfo = getNameText()})
         })
     }
 
-    local countryes = ::getTblValue(side, getCountriesByTeams(), [])
-    local assignCountry = getMyAssignCountry()
+    let countryes = ::getTblValue(side, getCountriesByTeams(), [])
+    let assignCountry = getMyAssignCountry()
     if (assignCountry)
     {
       res.country = assignCountry
@@ -143,7 +143,7 @@ enum WW_OPERATION_PRIORITY //bit enum
     local summaryCantJoinReasonText = ""
     foreach(idx, country in countryes)
     {
-      local reasonData = getCantJoinReasonData(country)
+      let reasonData = getCantJoinReasonData(country)
       if (reasonData.canJoin)
       {
         res.canJoin = true
@@ -167,12 +167,12 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getCantJoinReasonData(country)
   {
-    local res = {
+    let res = {
       canJoin = false
       reasonText = ""
     }
 
-    local assignCountry = getMyAssignCountry()
+    let assignCountry = getMyAssignCountry()
     if (isMyClanParticipate() && !canJoinByMyClan())
       res.reasonText = ::loc("worldWar/cantJoinByAnotherSideClan")
     else if (assignCountry && assignCountry != country)
@@ -188,7 +188,7 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function join(country, onErrorCb = null, isSilence = false, onSuccess = null)
   {
-    local cantJoinReason = getCantJoinReasonData(country)
+    let cantJoinReason = getCantJoinReasonData(country)
     if (!cantJoinReason.canJoin)
     {
       if (!isSilence)
@@ -202,11 +202,11 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function _join(country, onErrorCb, isSilence, onSuccess)
   {
-    local taskId = ::ww_start_war(id)
-    local cb = ::Callback(function() {
+    let taskId = ::ww_start_war(id)
+    let cb = ::Callback(function() {
         ::g_world_war.onJoinOperationSuccess(id, country, isSilence, onSuccess)
       }, this)
-    local errorCb = function(res) {
+    let errorCb = function(res) {
         ::g_world_war.stopWar()
         if (onErrorCb)
           onErrorCb(res)
@@ -228,7 +228,7 @@ enum WW_OPERATION_PRIORITY //bit enum
       return
     isArmyGroupsDataGathered = true
 
-    local myClanId = ::clan_get_my_clan_id().tointeger()
+    let myClanId = ::clan_get_my_clan_id().tointeger()
     foreach(ag in getArmyGroups())
     {
       if (ag?.clanId != myClanId)
@@ -241,8 +241,8 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getArmyGroupsBySide(side)
   {
-    local countriesByTeams = getCountriesByTeams()
-    local sideCountries = ::getTblValue(side, countriesByTeams)
+    let countriesByTeams = getCountriesByTeams()
+    let sideCountries = ::getTblValue(side, countriesByTeams)
 
     return ::u.filter(
       getArmyGroups(),
@@ -266,7 +266,7 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getMyClanCountry()
   {
-    local myClanGroup = getMyClanGroup()
+    let myClanGroup = getMyClanGroup()
     return myClanGroup && getArmyGroupCountry(myClanGroup)
   }
 
@@ -275,8 +275,8 @@ enum WW_OPERATION_PRIORITY //bit enum
     if (!isMyClanParticipate())
       return false
 
-    local country = getMyClanCountry()
-    local countries = ::getTblValue(side, getCountriesByTeams(), [])
+    let country = getMyClanCountry()
+    let countries = ::getTblValue(side, getCountriesByTeams(), [])
     return ::isInArray(country, countries)
   }
 
@@ -288,7 +288,7 @@ enum WW_OPERATION_PRIORITY //bit enum
   function canJoinByMyClan()
   {
     //can join after change clan only if played by the same country in this operation
-    local assignCountry = getMyAssignCountry()
+    let assignCountry = getMyAssignCountry()
     return isMyClanParticipate() && (assignCountry == null || assignCountry == getMyClanCountry())
   }
 
@@ -304,16 +304,16 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   function getCountriesByTeams()
   {
-    local res = {}
-    local map = getMap()
+    let res = {}
+    let map = getMap()
     if (!map)
       return res
 
-    local countryToSide = map.getCountryToSideTbl()
+    let countryToSide = map.getCountryToSideTbl()
     foreach(ag in getArmyGroups())
     {
-      local country = getArmyGroupCountry(ag)
-      local side = ::getTblValue(country, countryToSide, ::SIDE_NONE)
+      let country = getArmyGroupCountry(ag)
+      let side = ::getTblValue(country, countryToSide, ::SIDE_NONE)
       if (side == ::SIDE_NONE)
         continue
 
@@ -340,7 +340,7 @@ enum WW_OPERATION_PRIORITY //bit enum
   function getPriority()
   {
     local res = 0
-    local availableByMyClan = canJoinByMyClan()
+    let availableByMyClan = canJoinByMyClan()
     if (availableByMyClan)
       res = res | WW_OPERATION_PRIORITY.CAN_JOIN_BY_MY_CLAN
     if (getMyAssignCountry() && (availableByMyClan || !getMyClanGroup()))

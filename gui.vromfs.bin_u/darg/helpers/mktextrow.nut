@@ -2,15 +2,15 @@
   this function takes text (for example from localization)
   and replace some tokens with darg components, and all left text with mkText functions, returning list of components
   example:
-    local text = "hello <<user>>, current time: <<time>>!"
-    local mkText = @(text) {rendObj = ROBJ_DTEXT, text=text}
-    local curUser = Watched("Bob")
-    local replaceTable = {
+    let text = "hello <<user>>, current time: <<time>>!"
+    let mkText = @(text) {rendObj = ROBJ_DTEXT, text=text}
+    let curUser = Watched("Bob")
+    let replaceTable = {
       ["<<user>>"] = {text=curUser.value, rendObj = ROBJ_DTEXT, color = Color(255,200,200)},
       ["<<time>>"] = {text=curTime.value, rendObj = ROBJ_DTEXT, color = Color(200,255,200)}
     }
 
-    local greeting = @(){
+    let greeting = @(){
       children = mkTextRow(text, mkText, replaceTable)
       watch = [curUser, curTime]
       flow = FLOW_HORIZONTAL
@@ -19,10 +19,10 @@
     result will be text that will be automatically update text with time and username, and time can be disaplayed with clocks widget
 */
 
-local function mkTextRow(fullText, mkText, replaceTable) {
+let function mkTextRow(fullText, mkText, replaceTable) {
   local res = [fullText]
   foreach(key, comp in replaceTable) {
-    local curList = res
+    let curList = res
     res = []
     foreach(text in curList) {
       if (type(text) != "string") {

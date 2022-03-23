@@ -1,25 +1,25 @@
-local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
+let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 
-local function loadUnitsFromBlk(blk, aiUnitsBlk = null)
+let function loadUnitsFromBlk(blk, aiUnitsBlk = null)
 {
   if (!blk)
     return []
 
-  local units = []
+  let units = []
   for (local i = 0; i < blk.blockCount(); i++)
   {
-    local unitBlk = blk.getBlock(i)
-    local unit    = ::WwUnit(unitBlk)
+    let unitBlk = blk.getBlock(i)
+    let unit    = ::WwUnit(unitBlk)
 
     if (unit.isValid())
       units.append(unit)
 
     if (aiUnitsBlk)
     {
-      local aiUnitData = ::getTblValue(unitBlk.getBlockName(), aiUnitsBlk)
+      let aiUnitData = ::getTblValue(unitBlk.getBlockName(), aiUnitsBlk)
       if (aiUnitData)
       {
-        local aiUnit = ::WwUnit(unitBlk)
+        let aiUnit = ::WwUnit(unitBlk)
         aiUnit.setCount(getTblValue("count", aiUnitData, -1))
         aiUnit.setForceControlledByAI(true)
         units.append(aiUnit)
@@ -29,19 +29,19 @@ local function loadUnitsFromBlk(blk, aiUnitsBlk = null)
   return units
 }
 
-local function loadUnitsFromNameCountTbl(tbl)
+let function loadUnitsFromNameCountTbl(tbl)
 {
   if (::u.isEmpty(tbl))
     return []
 
-  local units = []
-  local loadingBlk = ::DataBlock()
+  let units = []
+  let loadingBlk = ::DataBlock()
   foreach(name, count in tbl)
   {
     loadingBlk["name"] = name
     loadingBlk["count"] = count
 
-    local unit = ::WwUnit(loadingBlk)
+    let unit = ::WwUnit(loadingBlk)
     if (unit.isValid())
       units.append(unit)
   }
@@ -49,19 +49,19 @@ local function loadUnitsFromNameCountTbl(tbl)
   return units
 }
 
-local function loadWWUnitsFromUnitsArray(unitsArray)
+let function loadWWUnitsFromUnitsArray(unitsArray)
 {
   if (::u.isEmpty(unitsArray))
     return []
 
-  local units = []
-  local loadingBlk = ::DataBlock()
+  let units = []
+  let loadingBlk = ::DataBlock()
   foreach(unit in unitsArray)
   {
     loadingBlk["name"] = unit.name
     loadingBlk["count"] = 1
 
-    local wwUnit = ::WwUnit(loadingBlk)
+    let wwUnit = ::WwUnit(loadingBlk)
     if (wwUnit.isValid())
       units.append(wwUnit)
   }
@@ -69,23 +69,23 @@ local function loadWWUnitsFromUnitsArray(unitsArray)
   return units
 }
 
-local function getFakeUnitsArray(blk)
+let function getFakeUnitsArray(blk)
 {
   if (!blk?.fakeInfantry)
     return []
 
-  local resArray = []
-  local loadingBlk = ::DataBlock()
+  let resArray = []
+  let loadingBlk = ::DataBlock()
   loadingBlk.changeBlockName("fake_infantry")
   loadingBlk.count <- blk.fakeInfantry
-  local fakeUnit = ::WwUnit(loadingBlk)
+  let fakeUnit = ::WwUnit(loadingBlk)
   if (fakeUnit.isValid())
     resArray.append(fakeUnit)
 
   return resArray
 }
 
-local function unitsCount(units = [])
+let function unitsCount(units = [])
 {
   local res = 0
   foreach (wwUnit in units)
@@ -101,21 +101,21 @@ local function getUnitsListViewParams(wwUnits, params = {}, needSort = true)
   return wwOperationUnitsGroups.overrideUnitsViewParamsByGroups(wwUnits)
 }
 
-local function getMaxFlyTime(unit) {
+let function getMaxFlyTime(unit) {
   if (!unit?.isAir() && !unit?.isHelicopter())
     return 0
 
-  local maxFlyTime = unit.getUnitWpCostBlk().maxFlightTimeMinutes ??
+  let maxFlyTime = unit.getUnitWpCostBlk().maxFlightTimeMinutes ??
     ::g_world_war.getWWConfigurableValue("defaultMaxFlightTimeMinutes", 0)
   return (maxFlyTime * 60 / ::ww_get_speedup_factor()).tointeger()
 }
 
 return {
-  loadUnitsFromBlk = loadUnitsFromBlk
-  loadUnitsFromNameCountTbl = loadUnitsFromNameCountTbl
-  loadWWUnitsFromUnitsArray = loadWWUnitsFromUnitsArray
-  getFakeUnitsArray = getFakeUnitsArray
-  unitsCount = unitsCount
+  loadUnitsFromBlk
+  loadUnitsFromNameCountTbl
+  loadWWUnitsFromUnitsArray
+  getFakeUnitsArray
+  unitsCount
   getUnitsListViewParams = ::kwarg(getUnitsListViewParams)
-  getMaxFlyTime = getMaxFlyTime
+  getMaxFlyTime
 }

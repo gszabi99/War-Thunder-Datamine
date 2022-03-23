@@ -25,11 +25,11 @@ root {
     type:t='blue'
     padByLine:t='yes'
 
-    include 'gui/shop/shopInclude.blk'
+    include '%gui/shop/shopInclude.blk'
   }
 
   gamercard_div {
-    include 'gui/gamercardTopPanel.blk'
-    include 'gui/gamercardBottomPanel.blk'
+    include '%gui/gamercardTopPanel.blk'
+    include '%gui/gamercardBottomPanel.blk'
   }
 }

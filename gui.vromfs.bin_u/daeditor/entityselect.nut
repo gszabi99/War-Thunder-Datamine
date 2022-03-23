@@ -2,43 +2,39 @@ from "%darg/ui_imports.nut" import *
 
 from "ecs" import *
 
-local {showEntitySelect} = require("state.nut")
-local {colors} = require("components/style.nut")
-local textButton = require("components/textButton.nut")
-local mkWindow = require("components/window.nut")
-local nameFilter = require("components/nameFilter.nut")
-local scrollbar = require("%darg/components/scrollbar.nut")
-local string = require("string")
-local {checkbox} = require("%darg/components/checkbox.nut")
-local entity_editor = require("entity_editor")
+let {showEntitySelect, selectedEntities, de4workMode} = require("state.nut")
+let {colors} = require("components/style.nut")
+let textButton = require("components/textButton.nut")
+let mkWindow = require("components/window.nut")
+let nameFilter = require("components/nameFilter.nut")
+let combobox = require("%darg/components/combobox.nut")
+let scrollbar = require("%darg/components/scrollbar.nut")
+let string = require("string")
+let entity_editor = require("entity_editor")
 
-local selectionState = mkWatched(persist, "selectionState", {})
-local filterState = mkWatched(persist, "filterState", {})
-local filterByNameText = mkWatched(persist, "filterByNameText", "")
-local scrollHandler = ScrollHandler()
-local entitiesState = mkWatched(persist, "entitiesState", [])
-local filterEntities = mkWatched(persist, "filterEntities", true)
+let selectedGroup = Watched("")
+let selectionState = mkWatched(persist, "selectionState", {})
+let filterString = mkWatched(persist, "filterString", "")
+let scrollHandler = ScrollHandler()
+let allEntities = mkWatched(persist, "allEntities", [])
 
-local statusAnimTrigger = { lastN = null }
+let statusAnimTrigger = { lastN = null }
 
-local filteredEntitesByNow = Computed(function(){
-  local entities = entitiesState.value
-  if (filterByNameText.value != "" && filterEntities.value)
-    entities = entities.filter(@(e, idx) filterState.value?[e.getEid()])
- return entities
+
+let numSelectedEntities = Computed(function() {
+  local nSel = 0
+  foreach (k, v in selectionState.value) {
+    if (v)
+      ++nSel
+  }
+  return nSel
 })
 
-local function setFilter(cb) {
-  filterState.mutate(function(value) {
-    foreach (k, v in value)
-      value[k] = cb(k, v)
-  })
-}
 
-local function matchEntityByText(eid, text) {
-  if (eid.tostring().indexof(text)!=null)
+let function matchEntityByText(eid, text) {
+  if (text==null || text=="" || eid.tostring().indexof(text)!=null)
     return true
-  local tplName = g_entity_mgr.getEntityTemplateName(eid)
+  let tplName = g_entity_mgr.getEntityTemplateName(eid)
   if (tplName==null)
     return false
   if (tplName.tolower().contains(text.tolower()))
@@ -46,48 +42,40 @@ local function matchEntityByText(eid, text) {
   return false
 }
 
-local function setSelection(cb) {
+let filteredEntites = Computed(function() {
+  local entities = allEntities.value
+  if (filterString.value != "")
+    entities = entities.filter(@(eid, idx) matchEntityByText(eid, filterString.value))
+ return entities
+})
+
+
+let function applySelection(cb) {
   selectionState.mutate(function(value) {
     foreach (k, v in value)
       value[k] = cb(k, v)
   })
 }
-local function setSelectionFiltered(cb) {
-  if (!filterEntities.value)
-    setSelection(cb)
-  else
-    selectionState.mutate(function(value) {
-      foreach (k, v in value) {
-        if (matchEntityByText(k, filterByNameText.value))
-          value[k] = cb(k, v)
-        else
-          value[k] = false
-      }
-    })
-}
 
-local selectAll = @() setSelectionFiltered(@(eid, cur) true)
-local selectNone = @() setSelection(@(eid, cur) false)
-local selectInvert = @() setSelectionFiltered(@(eid, cur) !cur)
-local selectByName = @(text) setSelection(@(eid, cur) matchEntityByText(eid, text))
+// use of filteredEntites here would be more correct here, but reapplying name check should faster than
+// linear search in array (O(N) vs O(N^2))
+let selectAllFiltered = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.value))
+
+let selectNone = @() applySelection(@(eid, cur) false)
+
+// invert filtered, deselect unfiltered
+let selectInvert = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.value) ? !cur : false)
 
 
-local function scrollByName(text) {
-  scrollHandler.scrollToChildren(function(desc) {
-    return ("eid" in desc) && matchEntityByText(desc.eid, text)
-  }, 2, false, true)
-}
-
-
-local function scrollBySelection() {
+let function scrollBySelection() {
   scrollHandler.scrollToChildren(function(desc) {
     return ("eid" in desc) && selectionState.value?[desc.eid]
   }, 2, false, true)
 }
 
 
-local function doSelect() {
-  local eids = []
+let function doSelect() {
+  let eids = []
   foreach (k, v in selectionState.value) {
     if (v) {
       eids.append(k)
@@ -95,30 +83,25 @@ local function doSelect() {
   }
   entity_editor.get_instance().selectEntities(eids)
   showEntitySelect(false)
-//  filterByNameText.update("")
+//  filterString.update("")
 }
 
 
-local function doCancel() {
+let function doCancel() {
   showEntitySelect(false)
-//  filterByNameText.update("")
+//  filterString.update("")
 }
 
 
-local function statusLine() {
-  local nSel = 0
-  foreach (k, v in selectionState.value) {
-    if (v) {
-      ++nSel
-    }
-  }
+let function statusLine() {
+  let nSel = numSelectedEntities.value
 
   if (statusAnimTrigger.lastN != null && statusAnimTrigger.lastN != nSel)
     anim_start(statusAnimTrigger)
   statusAnimTrigger.lastN = nSel
 
   return {
-    watch = selectionState
+    watch = numSelectedEntities
     size = [flex(), SIZE_TO_CONTENT]
     children = {
       rendObj = ROBJ_DTEXT
@@ -129,51 +112,31 @@ local function statusLine() {
     }
   }
 }
-local select = nameFilter(filterByNameText, {
-  placeholder = "Select by name"
-  function onChange(text) {
-    filterByNameText.update(text)
-    if (text.len()==0)
-      selectNone()
-    else {
-      selectByName(text)
-      scrollByName(text)
-    }
-  }
-  function onEscape() {
-//    filterByNameText.update("")
-    selectNone()
-  }
-})
 
-filterEntities.subscribe(function(val){
-  if (!val)
-    setFilter(@(eid, cur) false)
-  else
-    setFilter(@(eid, cur) matchEntityByText(eid, filterByNameText.value))
-})
 
-local filter = nameFilter(filterByNameText, {
+let filter = nameFilter(filterString, {
   placeholder = "Filter by name"
 
   function onChange(text) {
-    filterByNameText.update(text)
-
-    if (text.len()==0)
-      setFilter(@(eid, cur) false)
-    else
-      setFilter(@(eid, cur) matchEntityByText(eid, text))
+    filterString(text)
   }
 
   function onEscape() {
-    filterByNameText.update("")
-    setFilter(@(eid, cur) false)
+    if (filterString.value != "")
+      filterString("")
+    else
+      set_kb_focus(null)
   }
 })
 
-local function listRow(entity, idx) {
+let function doSelectEid(eid) {
+  let eids = [eid]
+  entity_editor.get_instance().selectEntities(eids)
+}
+
+let function listRow(eid, idx) {
   return watchElemState(function(sf) {
-    local isSelected = selectionState.value?[entity.getEid()]
+    let isSelected = selectionState.value?[eid]
 
     local color
     if (isSelected) {
@@ -184,51 +147,74 @@ local function listRow(entity, idx) {
     return {
       rendObj = ROBJ_SOLID
       size = [flex(), SIZE_TO_CONTENT]
-      color = color
+      color
+      eid
       behavior = Behaviors.Button
-      eid = entity.getEid()
 
       function onClick(evt) {
         if (evt.ctrlKey) {
           selectionState.mutate(function(value) {
-            value[entity.getEid()] <- !value?[entity.getEid()]
+            value[eid] <- !value?[eid]
           })
         }
         else {
-          local selEid = entity.getEid()
-          setSelection(@(eid, cur) eid==selEid)
+          applySelection(@(eid_, cur) eid_==eid)
         }
       }
 
-      onDoubleClick = doSelect
+      onDoubleClick = @() doSelectEid(eid)
 
       children = {
         rendObj = ROBJ_DTEXT
-        text = "{0}  |  {1}".subst(entity.getEid(), g_entity_mgr.getEntityTemplateName(entity.getEid()))
+        text = $"{eid}  |  {g_entity_mgr.getEntityTemplateName(eid)}"
         margin = fsh(0.5)
       }
     }
   })
 }
 
-
-local function updateEntites(){
-  local entities = entity_editor.get_instance().getEntities()
-  foreach (e in entities) {
-    local eEid = e.getEid()
-    selectionState.value[eEid] <- e.isSelected()
-    filterState.value[eEid] <- e.isSelected() || (filterState.value?[eEid] ?? false)
-  }
-  entitiesState(entities)
+let function listRowMoreLeft(num, idx) {
+  return watchElemState(function(sf) {
+    let color = (sf & S_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
+    return {
+      rendObj = ROBJ_SOLID
+      size = [flex(), SIZE_TO_CONTENT]
+      color
+      children = {
+        rendObj = ROBJ_DTEXT
+        text = $"{num} more ..."
+        margin = fsh(0.5)
+        color = Color(160,160,160,160)
+      }
+    }
+  })
 }
 
-local filterCheckbox = checkbox({state=filterEntities, text = "filter by name"})
 
-local function entitySelectRoot() {
-  local function listContent() {
-    local rows = filteredEntitesByNow.value.map(@(entity, idx) listRow(entity, idx))
+let function initEntitiesList() {
+  let entities = entity_editor.get_instance()?.getEntities(selectedGroup.value) ?? []
+  foreach (eid in entities) {
+    let isSelected = selectedEntities.value?[eid] ?? false
+    selectionState.value[eid] <- isSelected
+  }
+  allEntities(entities)
+  selectionState.trigger()
+}
+
+selectedGroup.subscribe(@(v) initEntitiesList())
+de4workMode.subscribe(@(v) gui_scene.resetTimeout(0.1, initEntitiesList))
+
+let function entitySelectRoot() {
+  let templatesGroups = ["(all workset entities)"].extend(entity_editor.get_instance().getEcsTemplatesGroups())
+
+  let function listContent() {
+    const maxVisibleItems = 500
+    let rows = filteredEntites.value.slice(0, maxVisibleItems).map(@(eid, idx) listRow(eid, idx))
+    if (rows.len() < filteredEntites.value.len())
+      rows.append(listRowMoreLeft(filteredEntites.value.len() - rows.len(), rows.len()))
+
     return {
-      watch = [filterState, selectionState, filterByNameText, filterEntities, entitiesState, filteredEntitesByNow]
+      watch = [selectionState, filteredEntites]
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       children = rows
@@ -237,8 +223,8 @@ local function entitySelectRoot() {
   }
 
 
-  local scrollList = scrollbar.makeVertScroll(listContent, {
-    scrollHandler = scrollHandler
+  let scrollList = scrollbar.makeVertScroll(listContent, {
+    scrollHandler
     rootBase = class {
       size = flex()
       behavior = Behaviors.RecalcHandler
@@ -250,25 +236,34 @@ local function entitySelectRoot() {
     }
   })
 
-
-  local content = @(){
+  let content = @() {
     flow = FLOW_VERTICAL
     gap = fsh(0.5)
-    watch = entitiesState
+    watch = [allEntities, selectedEntities]
     size = flex()
     children = [
-      @(){watch = filterEntities, children = filterEntities.value ? filter : select, size = [flex(), SIZE_TO_CONTENT]}
+      {
+        size = [flex(), SIZE_TO_CONTENT]
+        flow = FLOW_HORIZONTAL
+        children = [
+          filter
+          {
+            size = [sw(11), sh(2.7)]
+            children = combobox(selectedGroup, templatesGroups)
+          }
+        ]
+      }
       {
         size = flex()
         children = scrollList
       }
-      {padding = [hdpx(10), 0] size = [flex(), SIZE_TO_CONTENT], flow = FLOW_HORIZONTAL children = [statusLine, {children = filterCheckbox, hplace = ALIGN_RIGHT}]}
+      statusLine
       {
         flow = FLOW_HORIZONTAL
         size = [flex(), SIZE_TO_CONTENT]
         halign = ALIGN_CENTER
         children = [
-          textButton("All",    selectAll)
+          textButton("All filtered", selectAllFiltered)
           textButton("None",   selectNone)
           textButton("Invert", selectInvert)
         ]
@@ -285,9 +280,10 @@ local function entitySelectRoot() {
     ]
   }
   return mkWindow({
-    onAttach = updateEntites
+    onAttach = initEntitiesList
     id = "entity_select"
     content
+    saveState = true
   })()
 }
 

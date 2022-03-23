@@ -1,9 +1,9 @@
-local localDevoice = require("scripts/penitentiary/localDevoice.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
-local voiceMessageNames = [
+let voiceMessageNames = [
   {category = "attack", name = "voice_message_attack_A", blinkTime = 0, haveTarget = false, showPlace = false, icon = "icon_attack", iconBlinkTime = 6, iconTarget = "zone_A"},
   {category = "attack", name = "voice_message_attack_B", blinkTime = 0, haveTarget = false, showPlace = false, icon = "icon_attack", iconBlinkTime = 6, iconTarget = "zone_B"},
   {category = "attack", name = "voice_message_attack_C", blinkTime = 0, haveTarget = false, showPlace = false, icon = "icon_attack", iconBlinkTime = 6, iconTarget = "zone_C"},
@@ -36,19 +36,19 @@ local voiceMessageNames = [
                                     icon = "icon_attention_to_point", iconBlinkTime = 8, iconTarget = "sender", attentionToPoint = true},
 ]
 
-local function initVoiceMessageList() {
+let function initVoiceMessageList() {
   for (local i = 0; i < voiceMessageNames.len(); i++)
   {
-    local line = voiceMessageNames[i];
+    let line = voiceMessageNames[i];
     ::add_voice_message(line);
   }
 }
 initVoiceMessageList()
 
-local getCategoryLoc = @(category) ::loc($"voice_message_category/{category}")
+let getCategoryLoc = @(category) ::loc($"voice_message_category/{category}")
 
-local function getFavoriteVoiceMessagesVariants() {
-  local result = ["#options/none"];
+let function getFavoriteVoiceMessagesVariants() {
+  let result = ["#options/none"];
   local categoryName = "";
   local categoryIndex = 0;
   local indexInCategory = 0;
@@ -70,15 +70,15 @@ local function getFavoriteVoiceMessagesVariants() {
   return result;
 }
 
-local function getVoiceMessageListLine(index, is_category, name, squad, targetName, messageIndex = -1) {
+let function getVoiceMessageListLine(index, is_category, name, squad, targetName, messageIndex = -1) {
   local scText = ""
   if (!isPlatformSony)
   {
-    local shortcutNames = [];
-    local key = "ID_VOICE_MESSAGE_" + (index + 1); //1based
+    let shortcutNames = [];
+    let key = "ID_VOICE_MESSAGE_" + (index + 1); //1based
     shortcutNames.append(key);
 
-    local shortcuts = ::get_shortcuts(shortcutNames)
+    let shortcuts = ::get_shortcuts(shortcutNames)
 
     for(local sc=0; sc<shortcuts.len(); sc++)
       if (shortcuts[sc].len())
@@ -92,7 +92,7 @@ local function getVoiceMessageListLine(index, is_category, name, squad, targetNa
   }
 }
 
-local function getCantUseVoiceMessagesReason(isForSquad) {
+let function getCantUseVoiceMessagesReason(isForSquad) {
   if (!::is_multiplayer())
     return ::loc("ui/unavailable")
   if (!::is_mode_with_teams(::get_game_type()))
@@ -104,24 +104,24 @@ local function getCantUseVoiceMessagesReason(isForSquad) {
   return ""
 }
 
-local onVoiceMessageAnswer = @(index) ::on_voice_message_button(index) //-1 means "close"
+let onVoiceMessageAnswer = @(index) ::on_voice_message_button(index) //-1 means "close"
 
-local function showVoiceMessageList(show, category, squad, targetName) {
+let function showVoiceMessageList(show, category, squad, targetName) {
   if (!show)
   {
     ::close_cur_voicemenu()
     return false
   }
 
-  local reason = getCantUseVoiceMessagesReason(squad)
+  let reason = getCantUseVoiceMessagesReason(squad)
   if (reason != "") {
     ::chat_system_message(reason)
     return false
   }
 
-  local categories = []
-  local menu = []
-  local heroIsTank = ::getAircraftByName(::last_ca_aircraft)?.isTank() ?? false
+  let categories = []
+  let menu = []
+  let heroIsTank = ::getAircraftByName(::last_ca_aircraft)?.isTank() ?? false
   local shortcutTable = {}
 
   foreach(idx, record in voiceMessageNames)
@@ -165,8 +165,8 @@ local function showVoiceMessageList(show, category, squad, targetName) {
       if (menu.len() == (LIMIT_SHOW_VOICE_MESSAGE_PETALS))
         break
 
-      local messageIndex = ::get_option_favorite_voice_message(i)
-      local record = ::getTblValue(messageIndex, voiceMessageNames)
+      let messageIndex = ::get_option_favorite_voice_message(i)
+      let record = ::getTblValue(messageIndex, voiceMessageNames)
       if (!record)
         continue
 
@@ -195,9 +195,9 @@ local function showVoiceMessageList(show, category, squad, targetName) {
 }
 ::show_voice_message_list <-showVoiceMessageList //used from native code
 
-local removeFavoriteVoiceMessage = @(index) ::set_option_favorite_voice_message(index, -1)
+let removeFavoriteVoiceMessage = @(index) ::set_option_favorite_voice_message(index, -1)
 
-local function resetFastVoiceMessages() {
+let function resetFastVoiceMessages() {
   for (local i = 0; i < ::NUM_FAST_VOICE_MESSAGES; i++)
     removeFavoriteVoiceMessage(i)
 }
@@ -209,7 +209,7 @@ local function resetFastVoiceMessages() {
 }
 
 //////////////////////////////////////////////////////
-local getVoiceMessageNames = @() voiceMessageNames
+let getVoiceMessageNames = @() voiceMessageNames
 
 return {
   getVoiceMessageNames = getVoiceMessageNames

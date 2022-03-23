@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_ww_army_move_state <- {
   types = []

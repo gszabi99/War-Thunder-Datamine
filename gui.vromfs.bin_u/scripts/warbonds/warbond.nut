@@ -1,7 +1,7 @@
-local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { GUI, PRICE } = require("scripts/utils/configs.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 
-class ::Warbond
+::Warbond <- class
 {
   id = ""
   listId = ""
@@ -33,14 +33,14 @@ class ::Warbond
 
     awardsList = []
 
-    local pBlk = ::get_price_blk()
-    local listBlk = get_blk_value_by_path(pBlk, blkListPath)
+    let pBlk = ::get_price_blk()
+    let listBlk = get_blk_value_by_path(pBlk, blkListPath)
     if (!::u.isDataBlock(listBlk))
       return
 
     fontIcon = ::g_warbonds.defaultWbFontIcon
 
-    local guiWarbondsBlock = GUI.get()?.warbonds
+    let guiWarbondsBlock = GUI.get()?.warbonds
     medalIcon = ::getTblValue(listId, ::getTblValue("medalIcons", guiWarbondsBlock), medalIcon)
     levelIcon = ::getTblValue(listId, ::getTblValue("levelIcons", guiWarbondsBlock), levelIcon)
     medalForSpecialTasks = ::getTblValue("specialTasksByMedal", guiWarbondsBlock, 1)
@@ -76,12 +76,12 @@ class ::Warbond
     isListValid = true
     awardsList.clear()
 
-    local pBlk = ::get_price_blk()
-    local config = get_blk_value_by_path(pBlk, blkListPath + "/shop")
+    let pBlk = ::get_price_blk()
+    let config = get_blk_value_by_path(pBlk, blkListPath + "/shop")
     if (!::u.isDataBlock(config))
       return
 
-    local total = config.blockCount()
+    let total = config.blockCount()
     for(local i = 0; i < total; i++)
       awardsList.append(::WarbondAward(this, config.getBlock(i), i))
   }
@@ -94,7 +94,7 @@ class ::Warbond
 
   function getAwardByIdx(awardIdx)
   {
-    local idx = ::to_integer_safe(awardIdx, -1)
+    let idx = ::to_integer_safe(awardIdx, -1)
     return ::getTblValue(idx, getAwardsList())
   }
 
@@ -124,7 +124,7 @@ class ::Warbond
 
   function getBalanceText()
   {
-    local limitText = ::loc("ui/slash") + getPriceText(::g_warbonds.getLimit(), true, false)
+    let limitText = ::loc("ui/slash") + getPriceText(::g_warbonds.getLimit(), true, false)
     return ::colorize("activeTextColor", getPriceText(getBalance(), true, false) + limitText)
   }
 
@@ -140,7 +140,7 @@ class ::Warbond
 
   function getChangeStateTimeLeft()
   {
-    local res = isCurrent() ? getCanEarnTimeLeft() : getExpiredTimeLeft()
+    let res = isCurrent() ? getCanEarnTimeLeft() : getExpiredTimeLeft()
     if (res < 0) //invalid warbond - need price update
     {
       PRICE.update(null, null, false, !updateRequested) //forceUpdate request only once
@@ -240,11 +240,11 @@ class ::Warbond
     if (!::g_login.isProfileReceived())
       return false
 
-    local curLevel = getCurrentShopLevel()
-    local lastSeen = ::loadLocalByAccount(LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, 0)
+    let curLevel = getCurrentShopLevel()
+    let lastSeen = ::loadLocalByAccount(LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, 0)
     if (curLevel != 0 && lastSeen != curLevel)
     {
-      local balance = getBalance()
+      let balance = getBalance()
       if (::u.search(getAwardsList(),
           (@(award) getShopLevel(award.ordinaryTasks) == curLevel &&
             award.getCost() <= balance).bindenv(this)
@@ -252,7 +252,7 @@ class ::Warbond
         return true
     }
 
-    local month = ::loadLocalByAccount(LAST_SEEN_WARBOND_SHOP_MONTH_PATH, "")
+    let month = ::loadLocalByAccount(LAST_SEEN_WARBOND_SHOP_MONTH_PATH, "")
     return month != listId
   }
 

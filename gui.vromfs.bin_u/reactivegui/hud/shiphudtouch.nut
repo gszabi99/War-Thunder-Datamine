@@ -1,15 +1,15 @@
-local { speedValue, speedUnits, machineSpeed } = require("reactiveGui/hud/shipStateView.nut")
-local { safeAreaSizeHud, rh } = require("reactiveGui/style/screenState.nut")
-local { dmgIndicatorStates } = require("reactiveGui/hudState.nut")
-local { isMultiplayer } = require("reactiveGui/networkState.nut")
-local { mkTouchButton, touchButtonSize, bigTouchButtonSize, touchButtonMargin
-} = require("reactiveGui/hud/hudTouchButton.nut")
+let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
+let { safeAreaSizeHud, rh } = require("%rGui/style/screenState.nut")
+let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+let { isMultiplayer } = require("%rGui/networkState.nut")
+let { mkTouchButton, touchButtonSize, bigTouchButtonSize, touchButtonMargin
+} = require("%rGui/hud/hudTouchButton.nut")
 
-local speedHeight = 2.5*touchButtonMargin
-local bottomLeftBlockHeigh = 2*bigTouchButtonSize + speedHeight
-local hudFont = Fonts.small_text_hud
+let speedHeight = 2.5*touchButtonMargin
+let bottomLeftBlockHeigh = 2*bigTouchButtonSize + speedHeight
+let hudFont = Fonts.small_text_hud
 
-local speedComp = @() {
+let speedComp = @() {
   size = [bigTouchButtonSize, speedHeight]
   pos = [bigTouchButtonSize + touchButtonMargin, bigTouchButtonSize]
   flow = FLOW_VERTICAL
@@ -28,7 +28,7 @@ local speedComp = @() {
   ]
 }
 
-local menuButtonsBlock = @() {
+let menuButtonsBlock = @() {
   watch = isMultiplayer
   hplace = ALIGN_RIGHT
   flow = FLOW_HORIZONTAL
@@ -46,7 +46,7 @@ local menuButtonsBlock = @() {
       ]
 }
 
-local movementBlock = @() {
+let movementBlock = @() {
   watch = [rh, dmgIndicatorStates]
   size = [3*bigTouchButtonSize + 2*touchButtonMargin, bottomLeftBlockHeigh]
   pos = [0, rh.value - bottomLeftBlockHeigh - dmgIndicatorStates.value.padding[2]]
@@ -68,7 +68,7 @@ local movementBlock = @() {
   ]
 }
 
-local weaponryBlock = @() {
+let weaponryBlock = @() {
   size = [bigTouchButtonSize + 1.5*touchButtonSize, bigTouchButtonSize + 1.5*touchButtonSize]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM

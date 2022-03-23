@@ -1,13 +1,13 @@
-local { getCurLoadingBgData,
+let { getCurLoadingBgData,
         getLoadingBgName,
-        getLoadingBgTooltip } = require("scripts/loading/loadingBgData.nut")
-local { animBgLoad } = require("scripts/loading/animBg.nut")
-local { isLoadingScreenBanned,
-        toggleLoadingScreenBan } = require("scripts/options/preloaderOptions.nut")
+        getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
+let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { isLoadingScreenBanned,
+        toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
 
 local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/options/preloaderOptions.blk"
+  sceneBlkName = "%gui/options/preloaderOptions.blk"
 
   isHovered = false
   hoveredId = null
@@ -15,8 +15,8 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    local listboxFilterHolder = scene.findObject("listbox_filter_holder")
-    guiScene.replaceContent(listboxFilterHolder, "gui/chapter_include_filter.blk", this)
+    let listboxFilterHolder = scene.findObject("listbox_filter_holder")
+    guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
 
     fillLoadingScreenList()
     showSceneBtn("items_list_msg", false).setValue(::loc("shop/search/global/notFound"))
@@ -27,7 +27,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillLoadingScreenList()
   {
-    local view = { items = [] }
+    let view = { items = [] }
     foreach (screenId, w in getCurLoadingBgData().list)
       view.items.append({
         imgTag = "banImg"
@@ -38,9 +38,9 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
       })
 
     view.items.sort(@(a, b) a.itemText <=> b.itemText)
-    local selectedIdx = view.items.findindex((@(a) a.id == selectedId).bindenv(this)) ?? 0
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
-    local itemsListObj = scene.findObject("items_list")
+    let selectedIdx = view.items.findindex((@(a) a.id == selectedId).bindenv(this)) ?? 0
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
+    let itemsListObj = scene.findObject("items_list")
     guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
     itemsListObj.setValue(selectedIdx)
 
@@ -49,11 +49,11 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateListItems()
   {
-    local hasPremium = ::havePremium()
-    local itemsListObj = scene.findObject("items_list")
-    local numItems = itemsListObj.childrenCount()
+    let hasPremium = ::havePremium()
+    let itemsListObj = scene.findObject("items_list")
+    let numItems = itemsListObj.childrenCount()
     for (local i = 0; i < numItems; i++) {
-      local itemObj = itemsListObj.getChild(i)
+      let itemObj = itemsListObj.getChild(i)
       itemObj.banned = hasPremium && isLoadingScreenBanned(itemObj.id) ? "yes" : "no"
     }
   }
@@ -70,8 +70,8 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
-    local isBanBtnVisible = (isMouseMode && scene.findObject(selectedId).isVisible())
+    let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    let isBanBtnVisible = (isMouseMode && scene.findObject(selectedId).isVisible())
       || hoveredId == selectedId
 
     showSceneBtn("btn_select", !isMouseMode && hoveredId != selectedId && isHovered)
@@ -125,7 +125,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelect(obj)
   {
-    local itemsListObj = scene.findObject("items_list")
+    let itemsListObj = scene.findObject("items_list")
     selectedId = itemsListObj.getChild(itemsListObj.getValue()).id
 
     updateBg()
@@ -134,7 +134,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFilterEditBoxCancel()
   {
-    local editBoxObj = scene.findObject("filter_edit_box")
+    let editBoxObj = scene.findObject("filter_edit_box")
     if (editBoxObj.getValue() != "")
       editBoxObj.setValue("")
     else
@@ -143,17 +143,17 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFilterEditBoxChangeValue(obj)
   {
-    local value = obj.getValue()
-    local searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
+    let value = obj.getValue()
+    let searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
     local isFound = false
-    local itemsListObj = scene.findObject("items_list")
-    local numItems = itemsListObj.childrenCount()
+    let itemsListObj = scene.findObject("items_list")
+    let numItems = itemsListObj.childrenCount()
 
     guiScene.setUpdatesEnabled(false, false)
     for (local i = 0; i < numItems; i++) {
-      local itemObj = itemsListObj.getChild(i)
-      local titleStr = itemObj.findObject($"txt_{itemObj.id}").getValue()
-      local isVisible = searchStr == "" || ::g_string.utf8ToLower(titleStr).contains(searchStr)
+      let itemObj = itemsListObj.getChild(i)
+      let titleStr = itemObj.findObject($"txt_{itemObj.id}").getValue()
+      let isVisible = searchStr == "" || ::g_string.utf8ToLower(titleStr).contains(searchStr)
       itemObj.show(isVisible)
       itemObj.enable(isVisible)
       isFound = isFound || isVisible

@@ -750,6 +750,22 @@
     }
   },
   {
+    "chainIK": {
+      "points": [
+        {
+          "point": {
+            "nameTemplate": "bone_mg_optic_mount_02"
+          }
+        },
+        {
+          "point": {
+            "nameTemplate": "bone_mg_optic_mount_03"
+          }
+        }
+      ]
+    }
+  },
+  {
     "sound": {
       "EngineName": "engine_chieftain",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -1824,34 +1840,17 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "turret": [
-          {
-            "head": "bone_turret"
-          },
-          {
-            "gun": "bone_gun"
-          },
-          {
-            "barrel": "bone_gun_barrel"
-          },
-          {
-            "gunnerDm": "gunner_dm"
-          },
-          {
-            "linkedAnimPart": {
-              "verNode": "bone_mg_optic_mount_01",
-              "verLimits": [-9.0,50.0],
-              "verOriginLimits": [-9.0,40.0]
-            }
-          },
-          {
-            "linkedAnimPart": {
-              "verNode": "bone_mg_optic_mount_02",
-              "verLimits": [10.0,-50.0],
-              "verOriginLimits": [-9.0,40.0]
-            }
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel",
+          "gunnerDm": "gunner_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_mg_optic_mount_01",
+            "verLimits": [-15.0,48.0],
+            "verOriginLimits": [-15.0,48.0]
           }
-        ],
+        },
         "limits": {
           "yaw": [-180.0,180.0],
           "pitch": [-15.0,48.0]
@@ -2609,34 +2608,17 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "turret": [
-                  {
-                    "head": "bone_turret"
-                  },
-                  {
-                    "gun": "bone_gun"
-                  },
-                  {
-                    "barrel": "bone_gun_barrel"
-                  },
-                  {
-                    "gunnerDm": "gunner_dm"
-                  },
-                  {
-                    "linkedAnimPart": {
-                      "verNode": "bone_mg_optic_mount_01",
-                      "verLimits": [-9.0,50.0],
-                      "verOriginLimits": [-9.0,40.0]
-                    }
-                  },
-                  {
-                    "linkedAnimPart": {
-                      "verNode": "bone_mg_optic_mount_02",
-                      "verLimits": [10.0,-50.0],
-                      "verOriginLimits": [-9.0,40.0]
-                    }
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun",
+                  "barrel": "bone_gun_barrel",
+                  "gunnerDm": "gunner_dm",
+                  "linkedAnimPart": {
+                    "verNode": "bone_mg_optic_mount_01",
+                    "verLimits": [-15.0,48.0],
+                    "verOriginLimits": [-15.0,48.0]
                   }
-                ],
+                },
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-15.0,48.0]
@@ -2742,6 +2724,9 @@
                 },
                 {
                   "errExplTime": 0.0
+                },
+                {
+                  "forestallTime": 0.1
                 },
                 {
                   "turret": {

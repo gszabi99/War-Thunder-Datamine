@@ -1,10 +1,10 @@
 local { getOperationById, getOperationGroupByMapId
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName   = "gui/worldWar/wwOperationsListModal.blk"
+  sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 
   map = null
   isDescrOnly = false
@@ -31,7 +31,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
   function getSortedOperationsData()
   {
-    local opDataList = ::u.map(getOpGroup().getOperationsList(),
+    let opDataList = ::u.map(getOpGroup().getOperationsList(),
                                function(o) { return { operation = o, priority = o.getPriority() } })
 
     opDataList.sort(
@@ -47,18 +47,18 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
     if (isDescrOnly)
       return null
 
-    local sortedOperationsDataList = getSortedOperationsData()
+    let sortedOperationsDataList = getSortedOperationsData()
     if (!sortedOperationsDataList.len())
       return null
 
-    local view = { items = [] }
+    let view = { items = [] }
     local isActiveChapterAdded = false
     local isFinishedChapterAdded = false
     foreach (idx, opData in sortedOperationsDataList)
     {
-      local operation = opData.operation
-      local isAvailableToJoin = operation.isAvailableToJoin()
-      local itemColor = isAvailableToJoin ? "activeTextColor" : "commonTextColor"
+      let operation = opData.operation
+      let isAvailableToJoin = operation.isAvailableToJoin()
+      let itemColor = isAvailableToJoin ? "activeTextColor" : "commonTextColor"
       if (isAvailableToJoin)
       {
         if (!isActiveChapterAdded)
@@ -105,11 +105,11 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
   function fillOperationList()
   {
-    local view = getOperationsListView()
-    local isOperationListVisible = view != null
+    let view = getOperationsListView()
+    let isOperationListVisible = view != null
     showSceneBtn("chapter_place", isOperationListVisible)
     showSceneBtn("separator_line", isOperationListVisible)
-    local data = ::handyman.renderCached("gui/worldWar/wwOperationsMapsItemsList", view)
+    let data = ::handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList", view)
     guiScene.replaceContentFromText(opListObj, data, data.len(), this)
 
     selectFirstItem(opListObj)
@@ -119,7 +119,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
   {
     for (local i = 0; i < containerObj.childrenCount(); i++)
     {
-      local itemObj = containerObj.getChild(i)
+      let itemObj = containerObj.getChild(i)
       if (!itemObj?.collapse_header && itemObj.isEnabled())
       {
         selOperation = null //force refresh description
@@ -132,18 +132,18 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
   function refreshSelOperation()
   {
-    local idx = opListObj.getValue()
+    let idx = opListObj.getValue()
     if (idx < 0 || idx >= opListObj.childrenCount())
       return false
-    local opObj = opListObj.getChild(idx)
+    let opObj = opListObj.getChild(idx)
     if(!::checkObj(opObj))
       return false
 
-    local newOperation = opObj?.collapse_header ? null
+    let newOperation = opObj?.collapse_header ? null
       : getOperationById(::to_integer_safe(opObj?.id))
     if (newOperation == selOperation)
       return false
-    local isChanged = !newOperation || !selOperation || !selOperation.isEqual(newOperation)
+    let isChanged = !newOperation || !selOperation || !selOperation.isEqual(newOperation)
     selOperation = newOperation
     return isChanged
   }
@@ -153,35 +153,35 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
     if (!::check_obj(obj))
       return
 
-    local headerObj = obj.getParent()
+    let headerObj = obj.getParent()
     if (::check_obj(headerObj))
       doCollapse(headerObj)
   }
 
   function onCollapsedChapter()
   {
-    local rowObj = opListObj.getChild(opListObj.getValue())
+    let rowObj = opListObj.getChild(opListObj.getValue())
     if (::check_obj(rowObj))
       doCollapse(rowObj)
   }
 
   function doCollapse(obj)
   {
-    local containerObj = obj.getParent()
+    let containerObj = obj.getParent()
     if (!::check_obj(containerObj))
       return
 
     obj.collapsing = "yes"
 
-    local containerLen = containerObj.childrenCount()
+    let containerLen = containerObj.childrenCount()
     local isHeaderFound = false
-    local isShow = obj?.collapsed == "yes"
-    local selectIdx = containerObj.getValue()
+    let isShow = obj?.collapsed == "yes"
+    let selectIdx = containerObj.getValue()
     local needReselect = false
 
     for (local i = 0; i < containerLen; i++)
     {
-      local itemObj = containerObj.getChild(i)
+      let itemObj = containerObj.getChild(i)
       if (!isHeaderFound)
       {
         if (itemObj?.collapsing == "yes")
@@ -202,7 +202,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
       }
     }
 
-    local selectedObj = containerObj.getChild(containerObj.getValue())
+    let selectedObj = containerObj.getChild(containerObj.getValue())
     if (needReselect || (::check_obj(selectedObj) && !selectedObj.isVisible()))
       selectFirstItem(containerObj)
 
@@ -230,7 +230,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
   function updateTitle()
   {
-    local titleObj = scene.findObject("wnd_title")
+    let titleObj = scene.findObject("wnd_title")
     if (!::check_obj(titleObj))
       return
 
@@ -243,7 +243,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
     if (descHandlerWeak)
       return descHandlerWeak.setDescItem(selOperation)
 
-    local handler = ::gui_handlers.WwMapDescription.link(scene.findObject("item_desc"), selOperation, map)
+    let handler = ::gui_handlers.WwMapDescription.link(scene.findObject("item_desc"), selOperation, map)
     descHandlerWeak = handler.weakref()
     registerSubHandler(handler)
   }
@@ -254,18 +254,18 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
     if (!selOperation)
     {
-      local isListEmpty = opListObj.getValue() < 0
-      local collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, scene)
+      let isListEmpty = opListObj.getValue() < 0
+      let collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, scene)
       if (!isListEmpty && collapsedChapterBtnObj != null)
       {
-        local rowObj = opListObj.getChild(opListObj.getValue())
+        let rowObj = opListObj.getChild(opListObj.getValue())
         if (rowObj?.isValid())
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
             ? ::loc("mainmenu/btnExpand")
             : ::loc("mainmenu/btnCollapse"))
       }
 
-      local operationDescText = scene.findObject("operation_short_info_text")
+      let operationDescText = scene.findObject("operation_short_info_text")
       operationDescText.setValue(getOpGroup().getOperationsList().len() == 0
         ? ::loc("worldwar/msg/noActiveOperations")
         : "" )
@@ -274,18 +274,18 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
 
     foreach(side in ::g_world_war.getCommonSidesOrder())
     {
-      local cantJoinReasonData = selOperation.getCantJoinReasonDataBySide(side)
+      let cantJoinReasonData = selOperation.getCantJoinReasonDataBySide(side)
 
-      local sideName = ::ww_side_val_to_name(side)
-      local joinBtn = scene.findObject("btn_join_" + sideName)
+      let sideName = ::ww_side_val_to_name(side)
+      let joinBtn = scene.findObject("btn_join_" + sideName)
       joinBtn.inactiveColor = cantJoinReasonData.canJoin ? "no" : "yes"
       joinBtn.findObject("is_clan_participate_img").show(selOperation.isMyClanSide(side))
 
-      local joinBtnFlagsObj = joinBtn.findObject("side_countries")
+      let joinBtnFlagsObj = joinBtn.findObject("side_countries")
       if (::checkObj(joinBtnFlagsObj))
       {
-        local wwMap = selOperation.getMap()
-        local markUpData = wwMap.getCountriesViewBySide(side, false)
+        let wwMap = selOperation.getMap()
+        let markUpData = wwMap.getCountriesViewBySide(side, false)
         guiScene.replaceContentFromText(joinBtnFlagsObj, markUpData, markUpData.len(), this)
       }
     }
@@ -314,7 +314,7 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
     if (isOperationJoining)
       return
 
-    local reasonData = selOperation.getCantJoinReasonDataBySide(side)
+    let reasonData = selOperation.getCantJoinReasonDataBySide(side)
     if (reasonData.canJoin)
     {
       isOperationJoining = true

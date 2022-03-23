@@ -1,6 +1,6 @@
-local {GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
+let {GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
   TrackerSize, TrackerX, TrackerY, TrackerVisible} = require("rocketAamAimState.nut")
-local {backgroundColor} = require("style/airHudStyle.nut")
+let {backgroundColor} = require("style/airHudStyle.nut")
 
 enum GuidanceLockResult {
   RESULT_INVALID = -1
@@ -11,12 +11,12 @@ enum GuidanceLockResult {
   RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
-local aamAimGimbal = @(is_background, color_watched, alert_color_watched) function() {
+let aamAimGimbal = @(is_background, color_watched, alert_color_watched) function() {
 
   if (!GimbalVisible.value)
     return { watch = GimbalVisible }
 
-  local circle = [[VECTOR_ELLIPSE, 0, 0, GimbalSize.value, GimbalSize.value]]
+  let circle = [[VECTOR_ELLIPSE, 0, 0, GimbalSize.value, GimbalSize.value]]
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
@@ -36,11 +36,11 @@ local aamAimGimbal = @(is_background, color_watched, alert_color_watched) functi
   }
 }
 
-local aamAimTracker = @(is_background, color_watched, alert_color_watched) function() {
+let aamAimTracker = @(is_background, color_watched, alert_color_watched) function() {
 
   if(!TrackerVisible.value)
     return { watch = TrackerVisible }
-  local circle = [[VECTOR_ELLIPSE, 0, 0, TrackerSize.value, TrackerSize.value]]
+  let circle = [[VECTOR_ELLIPSE, 0, 0, TrackerSize.value, TrackerSize.value]]
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
@@ -61,7 +61,7 @@ local aamAimTracker = @(is_background, color_watched, alert_color_watched) funct
 }
 
 
-local AamAim = @(is_background, color_watched, alert_color_watched)
+let AamAim = @(is_background, color_watched, alert_color_watched)
 {
   children = [
     aamAimGimbal(is_background, color_watched, alert_color_watched)

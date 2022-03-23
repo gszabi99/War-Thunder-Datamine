@@ -1,29 +1,29 @@
-local stdLog = require("std/log.nut")()
-local log = stdLog.with_prefix("[PSN: Contacts] ")
-local logerr = stdLog.logerr
+let stdLog = require("%sqstd/log.nut")()
+let log = stdLog.with_prefix("[PSN: Contacts] ")
+let logerr = stdLog.logerr
 
-local psn = require("sonyLib/webApi.nut")
-local { isPlatformSony, isPS4PlayerName } = require("scripts/clientState/platform.nut")
-local { requestUnknownPSNIds } = require("scripts/contacts/externalContactsService.nut")
+let psn = require("%sonyLib/webApi.nut")
+let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
+let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
 
-local isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
+let isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
 
-local LIMIT_FOR_ONE_TASK_GET_USERS = 200
-local UPDATE_TIMER_LIMIT = 10000
+let LIMIT_FOR_ONE_TASK_GET_USERS = 200
+let UPDATE_TIMER_LIMIT = 10000
 local LAST_UPDATE_FRIENDS = -UPDATE_TIMER_LIMIT
-local PSN_RESPONSE_FIELDS = psn.getPreferredVersion() == 2
+let PSN_RESPONSE_FIELDS = psn.getPreferredVersion() == 2
   ? { friends = "friends", blocklist = "blocks" }
   : { friends = "friendList", blocklist = "blockingUsers" }
 
-local convertPsnContact = (psn.getPreferredVersion() == 2)
+let convertPsnContact = (psn.getPreferredVersion() == 2)
   ? @(psnEntry) { accountId = psnEntry }
   : @(psnEntry) { accountId = psnEntry.user.accountId }
 
-local pendingContactsChanges = {}
-local checkGroups = []
+let pendingContactsChanges = {}
+let checkGroups = []
 
 
-local tryUpdateContacts = function(contactsBlk)
+let tryUpdateContacts = function(contactsBlk)
 {
   local haveAnyUpdate = false
   foreach (group, usersList in contactsBlk)
@@ -35,14 +35,14 @@ local tryUpdateContacts = function(contactsBlk)
     return
   }
 
-  local result = ::request_edit_player_lists(contactsBlk, false)
+  let result = ::request_edit_player_lists(contactsBlk, false)
   if (result)
   {
     foreach(group, playersBlock in contactsBlk)
     {
       foreach (uid, isAdding in playersBlock)
       {
-        local contact = ::getContact(uid)
+        let contact = ::getContact(uid)
         if (!contact)
           continue
 
@@ -58,9 +58,9 @@ local tryUpdateContacts = function(contactsBlk)
   }
 }
 
-local function psnUpdateContactsList(usersTable) {
+let function psnUpdateContactsList(usersTable) {
   //Create or update exist contacts
-  local contactsTable = {}
+  let contactsTable = {}
   foreach (uid, playerData in usersTable)
     contactsTable[playerData.id] <- ::updateContact({
       uid = uid
@@ -68,17 +68,17 @@ local function psnUpdateContactsList(usersTable) {
       psnId = playerData.id
     })
 
-  local contactsBlk = ::DataBlock()
+  let contactsBlk = ::DataBlock()
   contactsBlk[::EPLX_PS4_FRIENDS] <- ::DataBlock()
   contactsBlk[::EPL_BLOCKLIST]  <- ::DataBlock()
   contactsBlk[::EPL_FRIENDLIST] <- ::DataBlock()
 
   foreach (groupName, groupData in pendingContactsChanges)
   {
-    local existedPSNContacts = ::get_contacts_array_by_filter_func(groupName, isPS4PlayerName)
+    let existedPSNContacts = ::get_contacts_array_by_filter_func(groupName, isPS4PlayerName)
 
     foreach (userInfo in groupData.users) {
-      local contact = contactsTable?[userInfo.accountId]
+      let contact = contactsTable?[userInfo.accountId]
       if (!contact)
         continue
 
@@ -123,19 +123,19 @@ local function psnUpdateContactsList(usersTable) {
   pendingContactsChanges.clear()
 }
 
-local function proceedPlayersList() {
+let function proceedPlayersList() {
   foreach (groupName in checkGroups)
     if (!(groupName in pendingContactsChanges) || !pendingContactsChanges[groupName].isFinished)
       return
 
-  local playersList = []
+  let playersList = []
   foreach (groupName, data in pendingContactsChanges)
     playersList.extend(data.users)
 
-  local knownUsers = {}
+  let knownUsers = {}
   for (local i = playersList.len() - 1; i >= 0; i--)
   {
-    local contact = ::g_contacts.findContactByPSNId(playersList[i].accountId)
+    let contact = ::g_contacts.findContactByPSNId(playersList[i].accountId)
     if (contact)
     {
       knownUsers[contact.uid] <- {
@@ -152,9 +152,9 @@ local function proceedPlayersList() {
   )
 }
 
-local function onReceviedUsersList(groupName, responseInfoName, response, err) {
-  local size = (response?.size || 0) + (response?.start || 0)
-  local total = response?.totalResults || size
+let function onReceviedUsersList(groupName, responseInfoName, response, err) {
+  let size = (response?.size || 0) + (response?.start || 0)
+  let total = response?.totalResults || size
 
   if (!(groupName in pendingContactsChanges))
     pendingContactsChanges[groupName] <- {
@@ -176,7 +176,7 @@ local function onReceviedUsersList(groupName, responseInfoName, response, err) {
   proceedPlayersList()
 }
 
-local function fetchFriendlist() {
+let function fetchFriendlist() {
   checkGroups.append(::EPLX_PS4_FRIENDS)
   ::addContactGroup(::EPLX_PS4_FRIENDS)
   psn.fetch(
@@ -186,7 +186,7 @@ local function fetchFriendlist() {
   )
 }
 
-local function fetchBlocklist() {
+let function fetchBlocklist() {
   checkGroups.append(::EPL_BLOCKLIST)
   psn.fetch(
     psn.profile.listBlockedUsers(),
@@ -195,7 +195,7 @@ local function fetchBlocklist() {
   )
 }
 
-local function fetchContactsList() {
+let function fetchContactsList() {
   pendingContactsChanges.clear()
   checkGroups.clear()
 
@@ -203,7 +203,7 @@ local function fetchContactsList() {
   fetchBlocklist()
 }
 
-local function updateContacts(needIgnoreInitedFlag = false) {
+let function updateContacts(needIgnoreInitedFlag = false) {
   if (!isPlatformSony)
     return
 

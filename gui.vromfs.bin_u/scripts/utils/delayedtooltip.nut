@@ -1,46 +1,46 @@
-local { getObjCenteringPosRC } = require("sqDagui/guiBhv/guiBhvUtils.nut")
-local { getTooltipType } = require("genericTooltipTypes.nut")
-local { fillTooltip } = require("genericTooltip.nut")
-local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
+let { getTooltipType } = require("genericTooltipTypes.nut")
+let { fillTooltip } = require("genericTooltip.nut")
+let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
 const HINT_ID = "__delayed_tooltip_hint__"
-local waitIconMarkup = "holdWaitPlace { id:t='{0}'; holdWaitIconBg {} holdWaitIcon { id:t='icon'; sector-angle-2:t = '0' } }"
+let waitIconMarkup = "holdWaitPlace { id:t='{0}'; holdWaitIconBg {} holdWaitIcon { id:t='icon'; sector-angle-2:t = '0' } }"
   .subst(WAIT_ICON_ID)
-local tooltipObjMarkup = "tooltipObj { id:t='{0}'; position:t='root'; order-popup:t='yes' }"
+let tooltipObjMarkup = "tooltipObj { id:t='{0}'; position:t='root'; order-popup:t='yes' }"
   .subst(TOOLTIP_ID)
-local needActionAfterHoldPID = ::dagui_propid.add_name_id("need-action-after-hold")
+let needActionAfterHoldPID = ::dagui_propid.add_name_id("need-action-after-hold")
 
 local waitPlace = null
 local tooltipPlace = null
 local hintPlace = null
 local hintTgt = null
-local hasTooltip = @(obj) (obj?.tooltipId ?? "") != ""
+let hasTooltip = @(obj) (obj?.tooltipId ?? "") != ""
 local validateTimerId = -1
 
-local function hideWaitIcon() {
+let function hideWaitIcon() {
   ::show_obj(waitPlace, false)
   waitPlace = null
 }
 
-local function hideTooltip() {
+let function hideTooltip() {
   ::show_obj(tooltipPlace, false)
   tooltipPlace = null
 }
 
-local function hideHint() {
+let function hideHint() {
   ::show_obj(hintPlace, false)
   hintPlace = null
 }
 
-local function removeValidateTimer() {
+let function removeValidateTimer() {
   if (validateTimerId != -1)
     ::periodic_task_unregister(validateTimerId)
   validateTimerId = -1
 }
 
-local function validateObjs(_) {
+let function validateObjs(_) {
   if (hintTgt?.isValid() && hintTgt.isHovered()) //hold_stop or unhover event do not always received on destroy object
     return
   hintTgt = null
@@ -50,48 +50,48 @@ local function validateObjs(_) {
   removeValidateTimer()
 }
 
-local function startValidateTimer() {
+let function startValidateTimer() {
   if (validateTimerId < 0)
     validateTimerId = ::periodic_task_register({}, validateObjs, 1)
 }
 
-local function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
+let function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
   if (curInfoObj?.isValid() && curInfoObj.getParent().isVisible())
     return curInfoObj
-  local rootObj = obj.getScene().getRoot()
+  let rootObj = obj.getScene().getRoot()
   local sceneObj = obj
   while(true) {
-    local parentObj = sceneObj.getParent()
+    let parentObj = sceneObj.getParent()
     if (!parentObj?.isValid() || parentObj.isEqual(rootObj))
       break
     sceneObj = parentObj
   }
 
-  local res = sceneObj.findObject(infoObjId)
+  let res = sceneObj.findObject(infoObjId)
   return res?.isValid() ? res : ctor(sceneObj)
 }
 
-local mkObjCtorByMarkup = @(objId, markup) function(sceneObj) {
+let mkObjCtorByMarkup = @(objId, markup) function(sceneObj) {
   sceneObj.getScene().appendWithBlk(sceneObj, markup)
   return sceneObj.findObject(objId)
 }
 
-local waitIconCtor = mkObjCtorByMarkup(WAIT_ICON_ID, waitIconMarkup)
-local getWaitIconForObj = @(obj) getInfoObjForObj(obj, waitPlace, WAIT_ICON_ID, waitIconCtor)
-local tooltipCtor = mkObjCtorByMarkup(TOOLTIP_ID, tooltipObjMarkup)
-local getTooltipForObj  = @(obj) getInfoObjForObj(obj, tooltipPlace, TOOLTIP_ID, tooltipCtor)
-local getHintForObj  = @(obj) getInfoObjForObj(obj, hintPlace, HINT_ID,
-  @(sceneObj) sceneObj.getScene().createElementByObject(sceneObj, "gui/tooltips/holdTooltipHint.blk", "holdWaitPlace", null))
+let waitIconCtor = mkObjCtorByMarkup(WAIT_ICON_ID, waitIconMarkup)
+let getWaitIconForObj = @(obj) getInfoObjForObj(obj, waitPlace, WAIT_ICON_ID, waitIconCtor)
+let tooltipCtor = mkObjCtorByMarkup(TOOLTIP_ID, tooltipObjMarkup)
+let getTooltipForObj  = @(obj) getInfoObjForObj(obj, tooltipPlace, TOOLTIP_ID, tooltipCtor)
+let getHintForObj  = @(obj) getInfoObjForObj(obj, hintPlace, HINT_ID,
+  @(sceneObj) sceneObj.getScene().createElementByObject(sceneObj, "%gui/tooltips/holdTooltipHint.blk", "holdWaitPlace", null))
 
-local function showWaitIconForObj(obj) {
-  local wIcon = getWaitIconForObj(obj)
+let function showWaitIconForObj(obj) {
+  let wIcon = getWaitIconForObj(obj)
   if (!wIcon)
     return
 
   if (waitPlace?.isValid() && !waitPlace.isEqual(wIcon))
     hideWaitIcon()
 
-  local pos = getObjCenteringPosRC(obj)
+  let pos = getObjCenteringPosRC(obj)
   wIcon.left = pos[0].tostring()
   wIcon.top = pos[1].tostring()
   ::show_obj(wIcon, true)
@@ -99,25 +99,25 @@ local function showWaitIconForObj(obj) {
   waitPlace = wIcon
 }
 
-local function fillTooltipObj(tooltipObj, tooltipId) {
-  local params = ::parse_json(tooltipId)
+let function fillTooltipObj(tooltipObj, tooltipId) {
+  let params = ::parse_json(tooltipId)
   if (::type(params) != "table" || !("ttype" in params) || !("id" in params))
     return false
 
-  local tooltipType = getTooltipType(params.ttype)
+  let tooltipType = getTooltipType(params.ttype)
   return fillTooltip(tooltipObj, null, tooltipType, params.id, params)
 }
 
-local function showTooltipForObj(obj) {
-  local objId = obj?.id // warning disable: -declared-never-used
-  local tooltipId = obj?.tooltipId // warning disable: -declared-never-used
-  local tooltip = getTooltipForObj(obj)
+let function showTooltipForObj(obj) {
+  let objId = obj?.id // warning disable: -declared-never-used
+  let tooltipId = obj?.tooltipId // warning disable: -declared-never-used
+  let tooltip = getTooltipForObj(obj)
   if (!tooltip)
     return
   if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
     hideTooltip()
 
-  local isSuccess = fillTooltipObj(tooltip, obj?.tooltipId ?? "")
+  let isSuccess = fillTooltipObj(tooltip, obj?.tooltipId ?? "")
   ::show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
@@ -129,62 +129,62 @@ local function showTooltipForObj(obj) {
     ::script_net_assert_once("DelayedTooltip","Invalid object for tooltip")
     return
   }
-  local align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT
+  let align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT
   tooltip.getScene().applyPendingChanges(false)
   ::g_dagui_utils.setPopupMenuPosAndAlign(obj, align, tooltip)
 }
 
-local function showHintForObj(obj) {
-  local hObj = getHintForObj(obj)
+let function showHintForObj(obj) {
+  let hObj = getHintForObj(obj)
   if (!hObj)
     return
 
   if (hintPlace?.isValid() && !hintPlace.isEqual(hObj))
     hideHint()
 
-  local pos = obj.getPosRC()
-  local size = obj.getSize()
+  let pos = obj.getPosRC()
+  let size = obj.getSize()
   hObj.left = (pos[0] + size[0] / 2).tostring()
   hObj.top = pos[1].tostring()
   ::show_obj(hObj, true)
   hintPlace = hObj
 }
 
-local function onPush(obj, listObj = null) {
+let function onPush(obj, listObj = null) {
   hideTooltip()
-  local has = hasTooltip(obj)
-  local propsObj = listObj ?? obj
+  let has = hasTooltip(obj)
+  let propsObj = listObj ?? obj
   propsObj.set_prop_latent(needActionAfterHoldPID, has ? "no" : "yes")
   if (has)
     showWaitIconForObj(obj)
 }
 
-local function onHoldStart(obj, listObj = null) {
+let function onHoldStart(obj, listObj = null) {
   hideWaitIcon()
   hideHint()
   if (hasTooltip(obj))
     showTooltipForObj(obj)
 }
 
-local function onHoldStop(obj, listObj = null) {
+let function onHoldStop(obj, listObj = null) {
   hideWaitIcon()
   hideTooltip()
 }
 
 local hoverHintTask = -1
-local function removeHintTask() {
+let function removeHintTask() {
   if (hoverHintTask != -1)
     ::periodic_task_unregister(hoverHintTask)
   hoverHintTask = -1
 }
-local function restartHintTask(cb, delay = 1) {
+let function restartHintTask(cb, delay = 1) {
   removeHintTask()
   hoverHintTask = ::periodic_task_register({}, cb, delay)
 }
 
-local function onHover(obj) {
-  local isHovered = obj.isHovered()
-  local isSame = hintTgt?.isValid() && hintTgt.isEqual(obj)
+let function onHover(obj) {
+  let isHovered = obj.isHovered()
+  let isSame = hintTgt?.isValid() && hintTgt.isEqual(obj)
   if (isSame ? !isHovered : isHovered) {
     removeHintTask()
     hideHint()
@@ -205,25 +205,25 @@ local function onHover(obj) {
   })
 }
 
-local function getHoveredChild(listObj) {
-  local total = listObj.childrenCount()
+let function getHoveredChild(listObj) {
+  let total = listObj.childrenCount()
   for(local i = 0; i < total; i++) {
-    local child = listObj.getChild(i)
+    let child = listObj.getChild(i)
     if (child?.isValid() && child.isHovered())
       return child
   }
   return null
 }
 
-local mkListCb = @(func, emptyObjFunc = null) function(listObj, params) {
-  local tgt = getHoveredChild(listObj)
+let mkListCb = @(func, emptyObjFunc = null) function(listObj, params) {
+  let tgt = getHoveredChild(listObj)
   if (tgt != null)
     func(tgt, listObj)
   else
     emptyObjFunc?(tgt, listObj)
 }
 
-local mkChildCb = @(func, emptyObjFunc = null) function(childObj, params) {
+let mkChildCb = @(func, emptyObjFunc = null) function(childObj, params) {
   local tgt = childObj.getParent()
   while(tgt != null && "tooltipId" not in tgt)
     tgt = tgt.getParent()
@@ -233,7 +233,7 @@ local mkChildCb = @(func, emptyObjFunc = null) function(childObj, params) {
     emptyObjFunc?(tgt, childObj)
 }
 
-local actions = {
+let actions = {
   delayedTooltipPush             = @(obj, params) onPush(obj)
   delayedTooltipHoldStart        = @(obj, params) onHoldStart(obj)
   delayedTooltipHoldStop         = @(obj, params) onHoldStop(obj)
@@ -252,14 +252,14 @@ globalCallbacks.addTypes(actions.map(@(a) {
   onCb = a
 }))
 
-local paramsListSelf = {
+let paramsListSelf = {
   behavior = "button"
   on_pushed = "::gcb.delayedTooltipPush"
   on_hold_start = "::gcb.delayedTooltipHoldStart"
   on_hold_stop = "::gcb.delayedTooltipHoldStop"
 }
 
-local paramsListChild = {
+let paramsListChild = {
   behavior = "PosNavigator"
   navigatorShortcuts = "yes"
   on_pushed = "::gcb.delayedTooltipListPush"
@@ -267,9 +267,9 @@ local paramsListChild = {
   on_hold_stop = "::gcb.delayedTooltipListHoldStop"
 }
 
-local mkMarkup = @(list) " ".join(list.reduce(@(res, val, id) res.append($"{id}:t='{val}';"), []))
-local markupTooltipHoldSelf = mkMarkup(paramsListSelf)
-local markupTooltipHoldChild = mkMarkup(paramsListChild)
+let mkMarkup = @(list) " ".join(list.reduce(@(res, val, id) res.append($"{id}:t='{val}';"), []))
+let markupTooltipHoldSelf = mkMarkup(paramsListSelf)
+let markupTooltipHoldChild = mkMarkup(paramsListChild)
 
 return {
   markupTooltipHoldSelf

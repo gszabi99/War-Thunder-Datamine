@@ -10,7 +10,7 @@
 
   function init()
   {
-    local blk = ::get_game_settings_blk()?.tribunal
+    let blk = ::get_game_settings_blk()?.tribunal
     if (!blk)
       return
 
@@ -37,7 +37,7 @@
     ::tribunal.complaintsData = get_player_complaint_counts()
     if (complaintsData && complaintsData.complaint_count_own >= maxComplaintsFromMe)
     {
-      local text = ::format(::loc("charServer/complaintsLimitExpired"), maxComplaintsFromMe)
+      let text = ::format(::loc("charServer/complaintsLimitExpired"), maxComplaintsFromMe)
       ::showInfoMsgBox(text, "tribunal_msg_box")
       return false
     }
@@ -49,11 +49,11 @@
     if (!data)
       return
 
-    local complaintsToMe = data?.complaint_count_other
+    let complaintsToMe = data?.complaint_count_other
     if (!complaintsToMe || !complaintsToMe.len())
       return
 
-    local reasonsList = []
+    let reasonsList = []
     local complaintsCount = 0
     foreach(reason, count in complaintsToMe)
     {
@@ -61,7 +61,7 @@
         continue
 
       complaintsCount += count
-      local reasonText = ::loc("charServer/ban/reason/" + reason)
+      let reasonText = ::loc("charServer/ban/reason/" + reason)
       if (reason == "OTHER")
         reasonsList.append(reasonText)
       else
@@ -71,7 +71,7 @@
     if (!complaintsCount)
       return
 
-    local textReasons = ::g_string.implode(reasonsList, "\n")
+    let textReasons = ::g_string.implode(reasonsList, "\n")
     local text = ::loc("charServer/complaintToYou"
       + (complaintsCount >= maxComplaintCount ? "MoreThen" : ""))
 

@@ -10,10 +10,10 @@
 //  ]
 //}
 
-class ::gui_handlers.HelpInfoHandlerModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/tutorials/tutorWnd.blk"
+  sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
   config = null
   ownerScene = null
@@ -25,7 +25,7 @@ class ::gui_handlers.HelpInfoHandlerModal extends ::gui_handlers.BaseGuiHandlerW
     if (!wndInfoConfig)
       return
 
-    local params = {
+    let params = {
       config = wndInfoConfig
       ownerScene = wndScene
     }
@@ -41,24 +41,24 @@ class ::gui_handlers.HelpInfoHandlerModal extends ::gui_handlers.BaseGuiHandlerW
     if (!checkObj(objContainer))
       return goBack()
 
-    local links = ::getTblValue("links", config)
+    let links = ::getTblValue("links", config)
     if (!links)
       return goBack()
 
-    local textsBlk = config?.textsBlk
+    let textsBlk = config?.textsBlk
     if (textsBlk)
       guiScene.replaceContent(scene.findObject("texts_screen"), textsBlk, null)
 
     //update messages visibility to correct update other messages positions
-    local highlightList = []
+    let highlightList = []
     foreach(idx, link in links)
     {
-      local objBlock = ::guiTutor.getBlockFromObjData(link.obj, objContainer)
+      let objBlock = ::guiTutor.getBlockFromObjData(link.obj, objContainer)
 
       if (!link?.msgId)
         link.msgId <- null
 
-      local msgObj = link.msgId ? scene.findObject(link.msgId) : null
+      let msgObj = link.msgId ? scene.findObject(link.msgId) : null
       if (::check_obj(msgObj))
       {
         msgObj.show(!!objBlock)
@@ -74,7 +74,7 @@ class ::gui_handlers.HelpInfoHandlerModal extends ::gui_handlers.BaseGuiHandlerW
 
     ::guiTutor.createHighlight(scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
 
-    local linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
+    let linesData = ::LinesGenerator.getLinkLinesMarkup(getLinesGeneratorConfig())
     guiScene.replaceContentFromText(scene.findObject("lines_block"), linesData, linesData.len(), this)
   }
 

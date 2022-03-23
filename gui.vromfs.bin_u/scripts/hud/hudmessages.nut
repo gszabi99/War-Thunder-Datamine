@@ -1,6 +1,7 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local time = require("scripts/time.nut")
-local { getPlayerName } = require("scripts/clientState/platform.nut")
+let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT } = require_native("guiMission")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let time = require("%scripts/time.nut")
+let { getPlayerName } = require("%scripts/clientState/platform.nut")
 
 local heightPID = ::dagui_propid.add_name_id("height")
 
@@ -57,8 +58,8 @@ local heightPID = ::dagui_propid.add_name_id("height")
     if (stack.len() < messagesMax)
       return
 
-    local lastId = getCleanUpId(stack.len())
-    local obj = stack[lastId].obj
+    let lastId = getCleanUpId(stack.len())
+    let obj = stack[lastId].obj
     if (::check_obj(obj))
     {
       if (obj.isVisible())
@@ -86,7 +87,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (messageData.type != ::HUD_MSG_OBJECTIVE)
         return
 
-      local curMsg = findMessageById(messageData.id)
+      let curMsg = findMessageById(messageData.id)
       if (curMsg)
         updateMessage(curMsg, messageData)
       else
@@ -104,7 +105,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         return
 
       cleanUp()
-      local mainMessage = {
+      let mainMessage = {
         obj         = null
         messageData = messageData
         timer       = null
@@ -119,11 +120,11 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }
 
       showNest(true)
-      local view = {
+      let view = {
         id = getMsgObjId(messageData)
         text = messageData.text
       }
-      local blk = ::handyman.renderCached("gui/hud/messageStack/mainCenterMessage", view)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/mainCenterMessage", view)
       guiScene.prependWithBlk(nest, blk, this)
       mainMessage.obj = nest.getChild(0)
 
@@ -147,7 +148,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         return
       }
 
-      local msgObj = message.obj
+      let msgObj = message.obj
       if (!::checkObj(msgObj))
       {
         removeMessage(message)
@@ -225,8 +226,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!::checkObj(nest))
         return
 
-      local checkField = (messageData.id != -1) ? "id" : "text"
-      local oldMessage = ::u.search(stack, @(message) message.messageData[checkField] == messageData[checkField])
+      let checkField = (messageData.id != -1) ? "id" : "text"
+      let oldMessage = ::u.search(stack, @(message) message.messageData[checkField] == messageData[checkField])
       if (oldMessage)
         refreshMessage(messageData, oldMessage)
       else
@@ -236,16 +237,16 @@ enums.addTypesByGlobalName("g_hud_messages", {
     addMessage = function (messageData)
     {
       cleanUp()
-      local message = {
+      let message = {
         timer = null
         messageData = messageData
         obj = null
       }
       stack.append(message)
-      local view = {
+      let view = {
         text = messageData.text
       }
-      local blk = ::handyman.renderCached("gui/hud/messageStack/playerDamageMessage", view)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
       guiScene.appendWithBlk(nest, blk, blk.len(), this)
       message.obj = nest.getChild(nest.childrenCount() - 1)
 
@@ -266,7 +267,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     refreshMessage = function (messageData, message)
     {
-      local updateText = message.messageData.text != messageData.text
+      let updateText = message.messageData.text != messageData.text
       message.messageData = messageData
       if (message.timer)
         timers.setTimerTime(message.timer, showSec)
@@ -288,8 +289,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
         return
       nest.deleteChildren()
 
-      local timeDelete = ::dagor.getCurTime() - showSec * 1000
-      local killLogNotificationsOld = stack
+      let timeDelete = ::dagor.getCurTime() - showSec * 1000
+      let killLogNotificationsOld = stack
       stack = []
 
       foreach (killLogMessage in killLogNotificationsOld)
@@ -324,7 +325,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     addMessage = function (messageData, timestamp = null)
     {
       cleanUp()
-      local message = {
+      let message = {
         timer = null
         timestamp = timestamp || ::dagor.getCurTime()
         messageData = messageData
@@ -340,9 +341,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
         text = ::colorize("red", messageData.text)
       else
         text = ::colorize("silver", messageData.text)
-      local view = { text = text }
+      let view = { text = text }
 
-      local timeToShow = timestamp
+      let timeToShow = timestamp
        ? showSec - (::dagor.getCurTime() - timestamp) / 1000.0
        : showSec
 
@@ -355,7 +356,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!::checkObj(nest))
         return
 
-      local blk = ::handyman.renderCached("gui/hud/messageStack/playerDamageMessage", view)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
       guiScene.appendWithBlk(nest, blk, blk.len(), this)
       message.obj = nest.getChild(nest.childrenCount() - 1)
 
@@ -395,8 +396,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CAPTURE_ZONE_INFO))
         return
 
-      local message = createMessage(eventData)
-      local view = {
+      let message = createMessage(eventData)
+      let view = {
         text = eventData.text
         team = eventData.isMyTeam ? "ally" : "enemy"
       }
@@ -409,7 +410,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     createMessage = function (eventData)
     {
-      local message = {
+      let message = {
         obj         = null
         messageData = eventData
         timer       = null
@@ -433,7 +434,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     function createSceneObjectForMessage(view, message)
     {
-      local blk = ::handyman.renderCached("gui/hud/messageStack/zoneCaptureNotification", view)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/zoneCaptureNotification", view)
       guiScene.prependWithBlk(nest, blk, this)
       message.obj = nest.getChild(0)
     }
@@ -481,11 +482,11 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.REWARDS_MSG))
         return
 
-      local isSeries = curRewardPriority != REWARD_PRIORITY.noPriority
+      let isSeries = curRewardPriority != REWARD_PRIORITY.noPriority
       rewardWp += messageData.warpoints
       rewardXp += messageData.experience
 
-      local newPriority = ::g_hud_reward_message.getMessageByCode(messageData.messageCode).priority
+      let newPriority = ::g_hud_reward_message.getMessageByCode(messageData.messageCode).priority
       if (newPriority >= curRewardPriority)
       {
         curRewardPriority = newPriority
@@ -502,9 +503,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     showNewRewardMessage = function (newRewardMessage)
     {
-      local messageObj = ::showBtn("reward_message", true, nest)
-      local textObj = messageObj.findObject("reward_message_text")
-      local rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
+      let messageObj = ::showBtn("reward_message", true, nest)
+      let textObj = messageObj.findObject("reward_message_text")
+      let rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
 
       textObj.setValue(rewardType.getText(newRewardMessage.warpoints, newRewardMessage.counter, newRewardMessage?.expClass))
       textObj.view_class = rewardType.getViewClass(newRewardMessage.warpoints)
@@ -516,7 +517,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     updateRewardValue = function (isSeries)
     {
-      local reward = ::Cost(roundRewardValue(rewardWp), 0, roundRewardValue(rewardXp))
+      let reward = ::Cost(roundRewardValue(rewardWp), 0, roundRewardValue(rewardXp))
       nest.findObject("reward_message").setFloatProp(_animTimerPid, 0.0)
       nest.findObject("reward_total").setValue(reward.getUncoloredText())
 
@@ -555,7 +556,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
-      local statusObj = nest.findObject("race_status")
+      let statusObj = nest.findObject("race_status")
       if (::check_obj(statusObj))
       {
         local text = ::loc("HUD_RACE_FINISH")
@@ -570,16 +571,16 @@ enums.addTypesByGlobalName("g_hud_messages", {
         statusObj.setValue(text)
       }
 
-      local playerTime = ::getTblValue("time", ::getTblValue("player", eventData, {}), 0.0)
+      let playerTime = ::getTblValue("time", ::getTblValue("player", eventData, {}), 0.0)
 
       foreach (blockName in ["beforePlayer", "leader", "afterPlayer", "player"])
       {
-        local textBlockObj = nest.findObject(blockName)
+        let textBlockObj = nest.findObject(blockName)
         if (!::check_obj(textBlockObj))
           continue
 
-        local data = ::getTblValue(blockName, eventData)
-        local showBlock = data != null
+        let data = ::getTblValue(blockName, eventData)
+        let showBlock = data != null
         textBlockObj.show(showBlock)
         if (showBlock)
         {
@@ -589,7 +590,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
               textBlockObj.isPlayer = value? "yes" : "no"
             else
             {
-              local textObj = textBlockObj.findObject(param)
+              let textObj = textBlockObj.findObject(param)
               if (!::check_obj(textObj))
                 continue
 
@@ -597,14 +598,15 @@ enums.addTypesByGlobalName("g_hud_messages", {
               if (param == "time")
               {
                 local prefix = ""
-                local isPlayerBlock = blockName != "player"
+                let isPlayerBlock = blockName != "player"
+                local adjustedTime = value
                 if (isPlayerBlock)
                 {
-                  value -= playerTime
-                  if (value > 0)
+                  adjustedTime -= playerTime
+                  if (adjustedTime > 0)
                     prefix = ::loc("keysPlus")
                 }
-                text = prefix + time.preciseSecondsToString(value, isPlayerBlock)
+                text = prefix + time.preciseSecondsToString(adjustedTime, isPlayerBlock)
               }
               else if (param == "place")
                 text = value > 0? value.tostring() : ""
@@ -647,17 +649,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
     addMessage = function (messageData)
     {
       cleanUp()
-      local message = {
+      let message = {
         timer = null
         messageData = messageData
         obj = null
       }
       stack.append(message)
-      local deltaTime = messageData.deltaTime
-      local view = {
+      let deltaTime = messageData.deltaTime
+      let view = {
         text = ::loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
       }
-      local blk = ::handyman.renderCached("gui/hud/messageStack/playerDamageMessage", view)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage", view)
       guiScene.appendWithBlk(nest, blk, blk.len(), this)
       message.obj = nest.getChild(nest.childrenCount() - 1)
 
@@ -669,7 +671,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         guiScene.setUpdatesEnabled(true, true)
       }
 
-      local racePlaceNest = scene.findObject("hud_messages_race_messages")
+      let racePlaceNest = scene.findObject("hud_messages_race_messages")
       local playerPlaceObj = null
       if (::check_obj(racePlaceNest))
         playerPlaceObj = racePlaceNest.findObject("player")
@@ -699,24 +701,24 @@ enums.addTypesByGlobalName("g_hud_messages", {
           || ::get_game_mode() == ::GM_TEST_FLIGHT)
         return
 
-      local oldResultIdx = ::getTblValue("resultIdx", stack, ::GO_NONE)
+      let oldResultIdx = ::getTblValue("resultIdx", stack, GO_NONE)
 
-      local resultIdx = ::getTblValue("resultNum", eventData, ::GO_NONE)
-      local checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false //!!! waitingForResult need only for compatibiliti with 1.99.0.X
+      let resultIdx = ::getTblValue("resultNum", eventData, GO_NONE)
+      let checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false //!!! waitingForResult need only for compatibiliti with 1.99.0.X
 
       /*Have to check this, because, on guiStateChange GUI_STATE_FINISH_SESSION
         send checkResending=true after real mission result sended.
         But call saved in code, if it'll be needed to use somewhere else.
         For now it's working as if we already receive result WIN OR FAIL.
       */
-      if (checkResending && (oldResultIdx == ::GO_WIN || oldResultIdx == ::GO_FAIL))
+      if (checkResending && (oldResultIdx == GO_WIN || oldResultIdx == GO_FAIL))
         return
 
-      local noLives = ::getTblValue("noLives", eventData, false)
-      local place = ::getTblValue("place", eventData, -1)
-      local total = ::getTblValue("total", eventData, -1)
+      let noLives = ::getTblValue("noLives", eventData, false)
+      let place = ::getTblValue("place", eventData, -1)
+      let total = ::getTblValue("total", eventData, -1)
 
-      local resultLocId = getMissionResultLocId(resultIdx, checkResending, noLives)
+      let resultLocId = getMissionResultLocId(resultIdx, checkResending, noLives)
       local text = ::loc(resultLocId)
       if (place >= 0 && total >= 0)
         text += "\n" + ::loc("HUD_RACE_PLACE", {place = place, total = total})
@@ -724,20 +726,20 @@ enums.addTypesByGlobalName("g_hud_messages", {
       stack = {
         text = text
         resultIdx = resultIdx
-        useMoveOut = resultIdx == ::GO_WIN || resultIdx == ::GO_FAIL
+        useMoveOut = resultIdx == GO_WIN || resultIdx == GO_FAIL
       }
 
-      local blk = ::handyman.renderCached("gui/hud/messageStack/missionResultMessage", stack)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage", stack)
       guiScene.replaceContentFromText(nest, blk, blk.len(), this)
 
-      local objTarget = nest.findObject("mission_result_box")
+      let objTarget = nest.findObject("mission_result_box")
       if (!::check_obj(objTarget))
         return
       objTarget.show(true)
 
       if (stack.useMoveOut && nest.isVisible()) //no need animation when scene invisible
       {
-        local objStart = scene.findObject("mission_result_box_start")
+        let objStart = scene.findObject("mission_result_box_start")
         ::create_ObjMoveToOBj(scene, objStart, objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
       }
     }
@@ -749,15 +751,15 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
       switch(resultNum)
       {
-        case ::GO_NONE:
+        case GO_NONE:
           return ""
-        case ::GO_WIN:
+        case GO_WIN:
           return "MISSION_SUCCESS"
-        case ::GO_FAIL:
+        case GO_FAIL:
           return "MISSION_FAIL"
-        case ::GO_EARLY:
+        case GO_EARLY:
           return "MISSION_IN_PROGRESS"
-        case ::GO_WAITING_FOR_RESULT:
+        case GO_WAITING_FOR_RESULT:
           return "FINALIZING"
         default:
           return ::getTblValue("result", stack, "")
@@ -769,7 +771,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     {
       if (!::checkObj(nest))
         return
-      local msgObj = nest.findObject("mission_result_box")
+      let msgObj = nest.findObject("mission_result_box")
       if (!::checkObj(msgObj))
         return
 
@@ -796,7 +798,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!::checkObj(nest))
         return
 
-      local oldMessage = findMessageById(messageData.id)
+      let oldMessage = findMessageById(messageData.id)
       if (oldMessage)
         refreshMessage(messageData, oldMessage)
       else
@@ -806,17 +808,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
     addMessage = function (messageData, timestamp = null, needAnimations = true)
     {
       cleanUp()
-      local message = {
+      let message = {
         timer = null
         timestamp = timestamp || ::dagor.getCurTime()
         messageData = messageData
         obj = null
       }
       stack.append(message)
-      local view = {
+      let view = {
         text = messageData.text
       }
-      local blk = ::handyman.renderCached("gui/hud/messageStack/deathReasonMessage", view)
+      let blk = ::handyman.renderCached("%gui/hud/messageStack/deathReasonMessage", view)
       guiScene.appendWithBlk(nest, blk, blk.len(), this)
       message.obj = nest.getChild(nest.childrenCount() - 1)
 
@@ -828,7 +830,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         guiScene.setUpdatesEnabled(true, true)
       }
 
-      local timeToShow = timestamp
+      let timeToShow = timestamp
        ? showSec - (::dagor.getCurTime() - timestamp) / 1000.0
        : showSec
 
@@ -841,7 +843,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     refreshMessage = function (messageData, message)
     {
-      local shouldUpdateText = message.messageData.text != messageData.text
+      let shouldUpdateText = message.messageData.text != messageData.text
       message.messageData = messageData
       if (message.timer)
         timers.setTimerTime(message.timer, showSec)
@@ -865,8 +867,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
         return
       nest.deleteChildren()
 
-      local timeDelete = ::dagor.getCurTime() - showSec * 1000
-      local oldStack = stack
+      let timeDelete = ::dagor.getCurTime() - showSec * 1000
+      let oldStack = stack
       stack = []
 
       foreach (message in oldStack)

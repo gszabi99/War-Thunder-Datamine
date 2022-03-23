@@ -80,7 +80,8 @@ root {
             <<#isOnlyInResources>>
             img {
               size:t='0.75pw, 0.75pw'
-              background-image:t='#ui/gameuiskin#new_icon'
+              background-image:t='#ui/gameuiskin#new_icon.svg'
+              background-svg-size:t='0.75pw, 0.75pw'
               background-repeat:t='aspect-ratio'
               tooltip:t='icon in resources, but not added to game yet'
             }

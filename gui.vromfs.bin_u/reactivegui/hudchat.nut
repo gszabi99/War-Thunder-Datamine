@@ -1,20 +1,20 @@
-local colors = require("style/colors.nut")
-local teamColors = require("style/teamColors.nut")
-local textInput =  require("components/textInput.nut")
-local penalty = require("penitentiary/penalty.nut")
-local {secondsToTimeSimpleString} = require("std/time.nut")
-local state = require("hudChatState.nut")
-local hudState = require("hudState.nut")
-local hudLog = require("components/hudLog.nut")
-local fontsState = require("style/fontsState.nut")
-local hints = require("hints/hints.nut")
-local JB = require("reactiveGui/control/gui_buttons.nut")
+let colors = require("style/colors.nut")
+let teamColors = require("style/teamColors.nut")
+let textInput =  require("components/textInput.nut")
+let penalty = require("penitentiary/penalty.nut")
+let {secondsToTimeSimpleString} = require("%sqstd/time.nut")
+let state = require("hudChatState.nut")
+let hudState = require("hudState.nut")
+let hudLog = require("components/hudLog.nut")
+let fontsState = require("style/fontsState.nut")
+let hints = require("hints/hints.nut")
+let JB = require("%rGui/control/gui_buttons.nut")
 
-local scrollableData = require("components/scrollableData.nut")
+let scrollableData = require("components/scrollableData.nut")
 
 
-local function makeInputField(form_state, send_function) {
-  local function send () {
+let function makeInputField(form_state, send_function) {
+  let function send () {
     send_function(form_state.value)
     form_state.update("")
   }
@@ -24,9 +24,9 @@ local function makeInputField(form_state, send_function) {
 }
 
 
-local function chatBase(log_state, send_message_fn) {
-  local chatMessageState = Watched("")
-  local logInstance = scrollableData.make(log_state)
+let function chatBase(log_state, send_message_fn) {
+  let chatMessageState = Watched("")
+  let logInstance = scrollableData.make(log_state)
 
   return {
     form = chatMessageState
@@ -38,16 +38,16 @@ local function chatBase(log_state, send_message_fn) {
 }
 
 
-local chatLog = state.log
+let chatLog = state.log
 
 
-local function modeColor(mode) {
-  local colorName = ::cross_call.mp_chat_mode.getModeColorName(mode)
+let function modeColor(mode) {
+  let colorName = ::cross_call.mp_chat_mode.getModeColorName(mode)
   return colors.hud?[colorName] ?? teamColors.value[colorName]
 }
 
 
-local function sendFunc(message) {
+let function sendFunc(message) {
   if (!penalty.isDevoiced()) {
     ::chat_on_send()
   } else {
@@ -56,27 +56,27 @@ local function sendFunc(message) {
 }
 
 
-local chat = chatBase(chatLog, sendFunc)
+let chat = chatBase(chatLog, sendFunc)
 state.input.subscribe(function (new_val) {
   chat.form.update(new_val)
 })
 
 
-local function chatInputCtor(field, send) {
-  local restoreControle = function () {
+let function chatInputCtor(field, send) {
+  let restoreControle = function () {
     ::toggle_ingame_chat(false)
   }
 
-  local onReturn = function () {
+  let onReturn = function () {
     send()
     restoreControle()
   }
 
-  local onEscape = function () {
+  let onEscape = function () {
     restoreControle()
   }
 
-  local options = {
+  let options = {
     key = "chatInput"
     font = fontsState.get("small")
     margin = 0
@@ -107,8 +107,8 @@ local function chatInputCtor(field, send) {
 }
 
 
-local function getHintText() {
-  local config = hints(
+let function getHintText() {
+  let config = hints(
     ::cross_call.mp_chat_mode.getChatHint(),
     { font = fontsState.get("small")
       place = "chatHint"
@@ -117,7 +117,7 @@ local function getHintText() {
 }
 
 
-local chatHint = @() {
+let chatHint = @() {
   rendObj = ROBJ_9RECT
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
@@ -138,7 +138,7 @@ local chatHint = @() {
 }
 
 
-local inputField = @() {
+let inputField = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   watch = state.modeId
@@ -148,7 +148,7 @@ local inputField = @() {
 }
 
 
-local getMessageColor = function(message) {
+let getMessageColor = function(message) {
   if (message.isBlocked)
     return colors.menu.chatTextBlockedColor
   if (message.isAutomatic) {
@@ -163,7 +163,7 @@ local getMessageColor = function(message) {
 }
 
 
-local getSenderColor = function (message) {
+let getSenderColor = function (message) {
   if (message.isMyself)
     return colors.hud.mainPlayerColor
   else if (::cross_call.isPlayerDedicatedSpectator(message.sender))
@@ -176,7 +176,7 @@ local getSenderColor = function (message) {
 }
 
 
-local messageComponent = @(message) function() {
+let messageComponent = @(message) function() {
   local text = ""
   if (message.sender == "") { //systme
     text = ::string.format(
@@ -207,19 +207,19 @@ local messageComponent = @(message) function() {
   }
 }
 
-local logBox = hudLog({
+let logBox = hudLog({
   logComponent = chat
   messageComponent = messageComponent
 })
 
-local onInputToggle = function (enable) {
+let onInputToggle = function (enable) {
   if (enable)
     ::set_kb_focus(chatInputCtor)
   else
     ::set_kb_focus(null)
 }
 
-local bottomPanel = @() {
+let bottomPanel = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
 
@@ -242,7 +242,7 @@ local bottomPanel = @() {
 
 
 return function () {
-  local children = [ logBox ]
+  let children = [ logBox ]
   if (state.canWriteToChat.value)
     children.append(bottomPanel)
 

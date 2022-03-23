@@ -1,14 +1,14 @@
-local u = require("sqStdLibs/helpers/u.nut")
-local time = require("scripts/time.nut")
-local progressMsg = require("sqDagui/framework/progressMsg.nut")
-local DataBlock = require("DataBlock")
+let u = require("%sqStdLibs/helpers/u.nut")
+let time = require("%scripts/time.nut")
+let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let DataBlock = require("DataBlock")
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
-class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.SaveDataDialog <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   static wndType = handlerType.MODAL
-  static sceneBlkName = "gui/fileDialog/saveDataDialog.blk"
+  static sceneBlkName = "%gui/fileDialog/saveDataDialog.blk"
 
   curHoverObjId = null
 
@@ -97,17 +97,17 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
   function requestEntries()
   {
     showWaitAnimation(true)
-    local cb = ::Callback(onReceivedSaveDataListing, this)
+    let cb = ::Callback(onReceivedSaveDataListing, this)
     getSaveDataContents(@(blk) cb(blk))
   }
 
   function updateSortingList() {
-    local obj = scene.findObject("sorting_block_bg")
+    let obj = scene.findObject("sorting_block_bg")
     if (!::checkObj(obj))
       return
 
-    local curVal = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
-    local view = {
+    let curVal = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    let view = {
       id = "sort_params_list"
       btnName = "RB"
       funcName = "onChangeSortParam"
@@ -117,13 +117,13 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    local data = ::handyman.renderCached("gui/commonParts/comboBox", view)
+    let data = ::handyman.renderCached("%gui/commonParts/comboBox", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
     getSortListObj().setValue(curVal)
   }
 
   function onChangeSortParam(obj) {
-    local val = obj.getValue()
+    let val = obj.getValue()
     ::saveLocalByAccount(LOCAL_SORT_ENTITIES_ID, val)
 
     updateEntriesList()
@@ -131,15 +131,15 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function sortEntries()
   {
-    local val = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
-    local p = sortParams[val].param
-    local isAscending = sortParams[val].asc
+    let val = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    let p = sortParams[val].param
+    let isAscending = sortParams[val].asc
     entries.sort(@(a,b) (isAscending? 1 : -1)*(a[p] <=> b[p]))
   }
 
   function onHoverChange(obj)
   {
-    local id = obj.isHovered() ? obj.id : null
+    let id = obj.isHovered() ? obj.id : null
     if (curHoverObjId == id)
       return
 
@@ -154,10 +154,10 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (!isValid())
       return
 
-    local isNewFileSelected  = curHoverObjId == "file_name"
-    local isFileTableFocused = curHoverObjId == "file_table"
-    local curEntry = getSelectedEntry()
-    local isLoadedEntry = isEntryLoaded(curEntry)
+    let isNewFileSelected  = curHoverObjId == "file_name"
+    let isFileTableFocused = curHoverObjId == "file_table"
+    let curEntry = getSelectedEntry()
+    let isLoadedEntry = isEntryLoaded(curEntry)
 
     ::showBtnTable(scene, {
       btn_delete = doDelete && isFileTableFocused && isLoadedEntry,
@@ -166,19 +166,19 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
       btn_rewrite = isFileTableFocused
     })
 
-    local newFileName = getObj("file_name").getValue()
+    let newFileName = getObj("file_name").getValue()
     ::enableBtnTable(scene, {btn_save = newFileName != ""}, true)
   }
 
   function renderSaveDataContents()
   {
-    local fileTableObj = getTableListObj()
+    let fileTableObj = getTableListObj()
     if (!fileTableObj)
       return
 
-    local curSortIdx = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
-    local sortParam = sortParams[curSortIdx].param
-    local headerRow = []
+    let curSortIdx = ::loadLocalByAccount(LOCAL_SORT_ENTITIES_ID, 0)
+    let sortParam = sortParams[curSortIdx].param
+    let headerRow = []
     tableParams.each(function(p, idx) {
       headerRow.append({
         id = $"file_header_{p.id}"
@@ -195,12 +195,12 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
     tableEntries.clear()
 
-    local rowData = []
+    let rowData = []
     foreach (idx, e in entries)
     {
       rowData.clear()
 
-      local rowName = $"file_row_{idx}"
+      let rowName = $"file_row_{idx}"
       tableEntries[rowName] <- e
       tableParams.each(function(p) {
         rowData.append({
@@ -220,7 +220,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateSelectionAfterDataLoaded()
   {
-    local fileTableObj = getTableListObj()
+    let fileTableObj = getTableListObj()
     if (!fileTableObj)
       return
 
@@ -246,11 +246,11 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     if (!tableEntries.len())
       return null
 
-    local tableObj = getTableListObj()
-    local selectedRowIdx = tableObj.getValue()
+    let tableObj = getTableListObj()
+    let selectedRowIdx = tableObj.getValue()
     if (selectedRowIdx >= 0 && selectedRowIdx < tableObj.childrenCount())
     {
-      local e = tableObj.getChild(selectedRowIdx)
+      let e = tableObj.getChild(selectedRowIdx)
       if (e.id in tableEntries)
         return tableEntries[e.id]
     }
@@ -286,7 +286,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnDelete()
   {
-    local curEntry = getSelectedEntry()
+    let curEntry = getSelectedEntry()
     if (!curEntry)
       return
 
@@ -303,14 +303,14 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnSave()
   {
-    local entryName = getObj("file_name").getValue()
+    let entryName = getObj("file_name").getValue()
     if (entryName == "")
     {
       ::showInfoMsgBox(::loc("save/saveNameMissing"))
       return
     }
 
-    local entry = getExistEntry(entryName) || createEntry(entryName)
+    let entry = getExistEntry(entryName) || createEntry(entryName)
     dagor.debug("SAVE DIALOG: onBtnSave for entry:")
     ::debugTableData(entry)
 
@@ -330,7 +330,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnRewrite()
   {
-    local selectedEntry = getSelectedEntry()
+    let selectedEntry = getSelectedEntry()
     if (!selectedEntry)
       return
 
@@ -354,7 +354,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBtnLoad()
   {
-    local curEntry = getSelectedEntry()
+    let curEntry = getSelectedEntry()
     if (!curEntry)
       return
 

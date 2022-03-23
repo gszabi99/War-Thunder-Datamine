@@ -25,7 +25,7 @@ root {
         flow:t='vertical'
         overflow-y:t='auto'
 
-        include "gui/weaponry/weaponryPreset"
+        include "%gui/weaponry/weaponryPreset"
       }
       blockSeparator{}
       tdiv{
@@ -59,6 +59,35 @@ root {
           position:t='relative'
           margin-top:t="1@buttonMargin"
           margin-bottom:t="1@buttonMargin"
+        }
+        Button_text{
+          id:t='newPresetBtn'
+          text:t='#chat/create'
+          on_click:t='onPresetNew'
+          btnName:t='R3'
+          display:t='hide'
+          ButtonImg {}
+        }
+        Button_text{
+          id:t='editPresetBtn'
+          text:t='#msgbox/btn_edit'
+          on_click:t='onPresetEdit'
+          display:t='hide'
+          ButtonImg {}
+        }
+        Button_text{
+          id:t='copyPresetBtn'
+          text:t='Copy'
+          on_click:t='onPresetCopy'
+          display:t='hide'
+          ButtonImg {}
+        }
+        Button_text{
+          id:t='deletePresetBtn'
+          text:t='#msgbox/btn_delete'
+          on_click:t='onPresetDelete'
+          display:t='hide'
+          ButtonImg {}
         }
         Button_text {
           id:t='btn_buyAll'

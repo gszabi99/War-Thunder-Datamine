@@ -1,10 +1,10 @@
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-class ::gui_handlers.WwJoinBattleCondition extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwJoinBattleCondition <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/worldWar/battleJoinCondition"
+  sceneTplName = "%gui/worldWar/battleJoinCondition"
 
   battle = null
   side = ::SIDE_NONE
@@ -13,15 +13,15 @@ class ::gui_handlers.WwJoinBattleCondition extends ::gui_handlers.BaseGuiHandler
 
   function getSceneTplView()
   {
-    local unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+    let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
 
-    local team = battle.getTeamBySide(side)
+    let team = battle.getTeamBySide(side)
     local wwUnitsList = []
     if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.OPERATION_UNITS ||
         unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
     {
-      local requiredUnits = battle.getUnitsRequiredForJoin(team, side)
+      let requiredUnits = battle.getUnitsRequiredForJoin(team, side)
       wwUnitsList = u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(requiredUnits),
         @(unit) !unit.isControlledByAI())
       wwUnitsList = wwActionsWithUnitsList.getUnitsListViewParams({
@@ -31,19 +31,19 @@ class ::gui_handlers.WwJoinBattleCondition extends ::gui_handlers.BaseGuiHandler
       })
     }
 
-    local columns = []
+    let columns = []
     if (wwUnitsList.len() <= maxUnitsInColumn)
       columns.append({ unitString = wwUnitsList })
     else
     {
-      local unitsInColumn = wwUnitsList.len() > 2 * maxUnitsInColumn
+      let unitsInColumn = wwUnitsList.len() > 2 * maxUnitsInColumn
         ? wwUnitsList.len() - wwUnitsList.len() / 2
         : maxUnitsInColumn
       columns.append({ unitString = wwUnitsList.slice(0, unitsInColumn), first = true })
       columns.append({ unitString = wwUnitsList.slice(unitsInColumn) })
     }
 
-    local viewCountryData = getCustomViewCountryData(team.country)
+    let viewCountryData = getCustomViewCountryData(team.country)
     return {
       countryInfoText = ::loc("worldwar/help/country_info",
         {country = ::colorize("@newTextColor", ::loc(viewCountryData.locId))})

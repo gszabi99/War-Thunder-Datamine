@@ -641,7 +641,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -672,7 +672,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2599,6 +2599,9 @@
           "errExplTime": 0.0
         },
         {
+          "forestallTime": 0.1
+        },
+        {
           "turret": {
             "head": "bone_turret",
             "gun": "bone_gun",
@@ -2682,6 +2685,7 @@
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
+        "cls_turret_01": "convex_hull",
         "cls_body": "convex_hull"
       },
       "engine": {

@@ -22,13 +22,13 @@
 
   function runDelayedActions(...)
   {
-    local curTime = ::dagor.getCurTime()
-    local callActions = []
+    let curTime = ::dagor.getCurTime()
+    let callActions = []
 
     // actions is sorted by call time from last to first
     for (local i = delayedActionsList.len() - 1; i >= 0; --i)
     {
-      local elem = delayedActionsList[i]
+      let elem = delayedActionsList[i]
       if (elem.time <= curTime)
       {
         callActions.append(elem.action)
@@ -50,7 +50,7 @@
 
   function runInstantActions(...)
   {
-    local actions = instantActionsList
+    let actions = instantActionsList
     instantActionsList = []
 
     foreach (action in actions)
@@ -67,7 +67,7 @@
   {
     if (delay_ms > 0)
     {
-      local callTime = ::dagor.getCurTime() + delay_ms
+      let callTime = ::dagor.getCurTime() + delay_ms
       delayedActionsList.append({action = action, time = callTime})
       delayedActionsList.sort(function (a, b)
       {
@@ -94,10 +94,10 @@
 
   function test()
   {
-    local curTime = ::dagor.getCurTime()
+    let curTime = ::dagor.getCurTime()
     for (local i = 0; i < 100; ++i)
     {
-      local rndDelay = math.rnd() % 10
+      let rndDelay = math.rnd() % 10
 
       add((@(i, rndDelay, curTime) function() {
             dagor.debug(::format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))

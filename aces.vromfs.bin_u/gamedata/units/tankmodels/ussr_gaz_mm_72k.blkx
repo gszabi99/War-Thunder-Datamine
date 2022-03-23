@@ -2209,6 +2209,38 @@
     }
   },
   {
+    "chainIK": [
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_roll_01"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_roll_02"
+            }
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_roll_04"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_roll_05"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "wreckedParts": {
       "part": {
         "idx": 0,
@@ -2269,16 +2301,32 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel",
-          "linkedAnimPart": {
-            "verNode": "bone_camera_gunner",
-            "verLimits": [-10.0,85.0],
-            "verOriginLimits": [-10.0,85.0]
+        "forestallTime": 0.1,
+        "turret": [
+          {
+            "head": "bone_turret"
+          },
+          {
+            "gun": "bone_gun"
+          },
+          {
+            "barrel": "bone_gun_barrel"
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_camera_gunner",
+              "verLimits": [-10.0,85.0],
+              "verOriginLimits": [-10.0,85.0]
+            }
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_roll_03",
+              "verLimits": [-10.0,85.0],
+              "verOriginLimits": [-10.0,85.0]
+            }
           }
-        },
+        ],
         "limits": {
           "yaw": [-180.0,180.0],
           "pitch": [-10.0,85.0]

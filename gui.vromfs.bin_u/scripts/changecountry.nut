@@ -1,4 +1,4 @@
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 /**
  * Action to perform after change country window closes.
@@ -9,7 +9,7 @@ enum ChangeCountryAction {
   CHANGE_GAME_MODE
 }
 
-class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.ChangeCountry <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   currentCountry = null
@@ -22,7 +22,7 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     availableCountries = getAvailableCountries()
-    local view = {
+    let view = {
       headerText = hasUnlockedAvailableCountry()
         ? ::loc("mainmenu/coutryChoice")
         : ::loc("mainmenu/countryChoice/changeMode")
@@ -36,7 +36,7 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
       shopFilterItems = createShopFilterItems(availableCountries)
     }
 
-    local data = ::handyman.renderCached("gui/changeCountry", view)
+    let data = ::handyman.renderCached("%gui/changeCountry", view)
     guiScene.replaceContentFromText(scene, data, data.len(), this)
 
     buttonObject = getObj("btn_apply")
@@ -45,7 +45,7 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
     if (buttonObject != null)
       buttonObject.enable(false)
 
-    local listObj = scene.findObject("countries_list")
+    let listObj = scene.findObject("countries_list")
     if (::checkObj(listObj))
     {
       listObj.setValue(getValueByCountry(currentCountry))
@@ -69,10 +69,10 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCountrySelect(obj)
   {
-    local country = getCountryByValue(obj.getValue())
+    let country = getCountryByValue(obj.getValue())
     if (country == null)
       return
-    local countryUnlocked = isCountryUnlocked(country)
+    let countryUnlocked = isCountryUnlocked(country)
     currentCountry = countryUnlocked ? country : null
     if (::checkObj(buttonObject))
       buttonObject.enable(countryUnlocked || !hasUnlockedAvailableCountry())
@@ -97,10 +97,10 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
 
   function createShopFilterItems(countries)
   {
-    local shopFilterItems = []
+    let shopFilterItems = []
     for (local i = 0; i < countries.len(); ++i)
     {
-      local country = countries[i]
+      let country = countries[i]
       shopFilterItems.append({
         shopFilterId = country
         shopFilterText = ::loc(country)
@@ -127,9 +127,9 @@ class ::gui_handlers.ChangeCountry extends ::gui_handlers.BaseGuiHandlerWT
    */
   function getAvailableCountries()
   {
-    local res = []
-    local currentMode = ::game_mode_manager.getCurrentGameMode()
-    local source = ::getTblValue("source", currentMode, {})
+    let res = []
+    let currentMode = ::game_mode_manager.getCurrentGameMode()
+    let source = ::getTblValue("source", currentMode, {})
     foreach (country in shopCountriesList)
     {
       if (::events.isCountryAvailable(source, country))

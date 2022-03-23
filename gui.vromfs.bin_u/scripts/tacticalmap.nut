@@ -1,6 +1,6 @@
-local { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryDescription.nut")
-local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
+let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
+let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)
 {
@@ -13,9 +13,9 @@ local { useTouchscreen } = require("scripts/clientState/touchScreen.nut")
   gui_start_tactical_map(true);
 }
 
-class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.TacticalMap <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/tacticalMap.blk"
+  sceneBlkName = "%gui/tacticalMap.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
@@ -56,7 +56,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     if ((restoreType != ::ERT_TACTICAL_CONTROL))
       isActiveTactical = false
 
-    local playerArr = [1]
+    let playerArr = [1]
     numUnits = ::get_player_group(units, playerArr)
     dagor.debug("numUnits = "+numUnits)
 
@@ -116,7 +116,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTitle()
   {
-    local gt = ::get_game_type()
+    let gt = ::get_game_type()
     local titleText = ::loc_current_mission_name()
     if (gt & ::GT_VERSUS)
       titleText = ::loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
@@ -144,7 +144,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
     if (focus >= 0 && focus < numUnits)
     {
-      local isActive = ::is_aircraft_active(units[focus])
+      let isActive = ::is_aircraft_active(units[focus])
       if (!isActive)
       {
         scene.findObject("objectives_panel").show(false)
@@ -180,10 +180,10 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
         continue;
       }
 
-      local isActive = ::is_aircraft_active(units[i]);
+      let isActive = ::is_aircraft_active(units[i]);
       if (isActive != unitsActive[i])
       {
-        local trObj = scene.findObject("pilot_name" + i)
+        let trObj = scene.findObject("pilot_name" + i)
         trObj.enable = isActive ? "yes" : "no";
         trObj.inactive = isActive ? null : "yes"
         unitsActive[i] = isActive;
@@ -219,7 +219,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
         continue;
 
       local pilotFullName = ""
-      local pilotId = ::get_pilot_name(units[i], i)
+      let pilotId = ::get_pilot_name(units[i], i)
       if (pilotId != "")
       {
         if (::get_game_type() & ::GT_COOPERATIVE)
@@ -237,8 +237,8 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
       dagor.debug("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
 
       scene.findObject("pilot_text" + i).setValue(pilotFullName)
-      local objTr = scene.findObject("pilot_name" + i)
-      local isActive = ::is_aircraft_active(units[i])
+      let objTr = scene.findObject("pilot_name" + i)
+      let isActive = ::is_aircraft_active(units[i])
 
       objTr.mainPlayer = (wasPlayer == i)? "yes" : "no"
       objTr.enable = isActive ? "yes" : "no"
@@ -257,7 +257,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
       data += format("tr { id:t = 'pilot_name%d'; css-hier-invalidate:t='all'; td { text { id:t = 'pilot_text%d'; }}}",
                      k, k)
 
-    local pilotsObj = scene.findObject("pilots_list")
+    let pilotsObj = scene.findObject("pilots_list")
     guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
     pilotsObj.baseRow = (numUnits < 13)? "yes" : "rows16"
   }
@@ -286,16 +286,16 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
       }
 
   //    scene.findObject("dmg_hud").tag = "" + units[focus]
-      local obj = scene.findObject("pilot_name" + focus)
+      let obj = scene.findObject("pilot_name" + focus)
       if (obj)
         obj.scrollToView()
     }
 
-    local obj = scene.findObject("pilot_aircraft")
+    let obj = scene.findObject("pilot_aircraft")
     if (obj)
     {
-      local fm = ::get_player_unit_name()
-      local unit = ::getAircraftByName(fm)
+      let fm = ::get_player_unit_name()
+      let unit = ::getAircraftByName(fm)
       local text = ::getUnitName(fm)
       if (unit?.isAir() || unit?.isHelicopter?())
         text += ::loc("ui/colon") + getWeaponShortTypeFromWpName(::get_cur_unit_weapon_preset(), fm)
@@ -310,7 +310,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!isActiveTactical)
       return
 
-    local wasFocus = focus
+    let wasFocus = focus
     focus++
     if (focus >= numUnits)
       focus = 0;
@@ -318,8 +318,8 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     local cur = focus
     for (local i = 0; i < numUnits; i++)
     {
-      local isActive = ::is_aircraft_active(units[cur])
-      local isDelayed = ::is_aircraft_delayed(units[cur])
+      let isActive = ::is_aircraft_active(units[cur])
+      let isDelayed = ::is_aircraft_delayed(units[cur])
       if (isActive && !isDelayed)
         break
 
@@ -344,7 +344,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     if (!isActiveTactical)
       return
 
-    local wasFocus = focus
+    let wasFocus = focus
     focus--
     if (focus < 0)
       focus = numUnits - 1;
@@ -352,8 +352,8 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     local cur = focus
     for (local i = 0; i < numUnits; i++)
     {
-      local isActive = ::is_aircraft_active(units[cur])
-      local isDelayed = ::is_aircraft_delayed(units[cur])
+      let isActive = ::is_aircraft_active(units[cur])
+      let isDelayed = ::is_aircraft_delayed(units[cur])
 
       if (isActive && !isDelayed)
         break
@@ -374,7 +374,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     if (restoreType != ::ERT_TACTICAL_CONTROL || !isActiveTactical)
       return
 
-    local newFocus = scene.findObject("pilots_list").getValue()
+    let newFocus = scene.findObject("pilots_list").getValue()
     if (focus == newFocus)
       return
 
@@ -384,7 +384,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function doClose()
   {
-    local closeFn = base.goBack
+    let closeFn = base.goBack
     guiScene.performDelayed(this, function()
     {
       if (::is_in_flight())
@@ -419,7 +419,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
 ::addHideToObjStringById <- function addHideToObjStringById(data, objId)
 {
-  local pos = data.indexof("id:t = '" + objId + "';")
+  let pos = data.indexof("id:t = '" + objId + "';")
   if (pos)
     return data.slice(0, pos) + "display:t='hide'; " + data.slice(pos)
   return data
@@ -429,7 +429,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 {
   if (!("TacticalMap" in ::gui_handlers))
     return false
-  local curHandler = ::handlersManager.getActiveBaseHandler()
+  let curHandler = ::handlersManager.getActiveBaseHandler()
   return curHandler != null &&  (curHandler instanceof ::gui_handlers.TacticalMap ||
     curHandler instanceof ::gui_handlers.ArtilleryMap || curHandler instanceof ::gui_handlers.RespawnHandler)
 }

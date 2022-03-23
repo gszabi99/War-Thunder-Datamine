@@ -1,5 +1,8 @@
 require ecs
+require Unit
+require IGroundModel
 require Mission
+require %game.events
 
 [es (on_event=EventMissionUnload)]
 def unload_mission_entities(evt : Event)
@@ -29,3 +32,13 @@ def delayed_unit_shot_action_es(evt:Event;
     if (found)
       unit_single_shot(uid, delayed_unit_shot__triggerGroup)
     return found
+
+[es (no_order)]
+def disable_move_es(evt:CmdDisableMove;
+                    disable__targets_list : StringList)
+  for target_name in disable__targets_list
+    if target_name == evt.name
+      var gm = get_gm(evt.uid)
+      if gm != null && gm.moveSys != null
+        gm.moveSys.inactive = true
+

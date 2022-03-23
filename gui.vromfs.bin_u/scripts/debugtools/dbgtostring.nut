@@ -1,8 +1,8 @@
 // warning disable: -file:forbidden-function
 
-local time = require("scripts/time.nut")
-local sqdebugger = require_optional("sqdebugger")
-local { isDataBlock } = require("std/underscore.nut")
+let time = require("%scripts/time.nut")
+let sqdebugger = require_optional("sqdebugger")
+let { isDataBlock } = require("%sqstd/underscore.nut")
 
 ::dlog <- function dlog(...)
 {
@@ -19,14 +19,14 @@ local { isDataBlock } = require("std/underscore.nut")
     ::dagor.console_print(":  ".concat(time.getCurTimeMillisecStr(), ::type(arg) == "string" ? arg : ::toString(arg)))
 }
 
-function initEventBroadcastLogging()
+let function initEventBroadcastLogging()
 {
-  local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+  let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
   subscriptions.setDebugLoggingParams(::dagor.debug, ::dagor.getCurTime, ::toString)
   ::debug_event_logging <- subscriptions.debugLoggingEnable
 }
 
-local function tableKeyToString(k) {
+let function tableKeyToString(k) {
   if (typeof(k) != "string")
     return "[" + ::toString(k) + "]"
   if (::g_string.isStringInteger(k) || ::g_string.isStringFloat(k) ||
@@ -35,7 +35,7 @@ local function tableKeyToString(k) {
   return k
 }
 
-local DEBUG_TABLE_DATA_PARAMS = {
+let DEBUG_TABLE_DATA_PARAMS = {
   recursionLevel = 4,
   addStr = "",
   showBlockBrackets = true,
@@ -45,12 +45,12 @@ local DEBUG_TABLE_DATA_PARAMS = {
 
 ::debugTableData <- function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS)
 {
-  local showBlockBrackets = params?.showBlockBrackets ?? true
-  local addStr = params?.addStr ?? ""
-  local silentMode = params?.silentMode ?? false
-  local recursionLevel = params?.recursionLevel ?? 4
+  let showBlockBrackets = params?.showBlockBrackets ?? true
+  let addStr = params?.addStr ?? ""
+  let silentMode = params?.silentMode ?? false
+  let recursionLevel = params?.recursionLevel ?? 4
   local printFn = params?.printFn
-  local needUnfoldInstances = params?.needUnfoldInstances ?? false
+  let needUnfoldInstances = params?.needUnfoldInstances ?? false
 
   if (printFn == null)
     printFn = silentMode ? @(t) ::print(t + "\n") : ::dagor.debug;
@@ -58,7 +58,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
   if (addStr=="" && !silentMode)
     printFn("DD: START")
 
-  local prefix = silentMode ? "" : "DD: ";
+  let prefix = silentMode ? "" : "DD: ";
 
   if (info == null)
     printFn(prefix + "null");
@@ -66,13 +66,13 @@ local DEBUG_TABLE_DATA_PARAMS = {
   {
     if (isDataBlock(info))
     {
-      local blockName = (info.getBlockName()!="")? info.getBlockName()+" " : ""
+      let blockName = (info.getBlockName()!="")? info.getBlockName()+" " : ""
       if (showBlockBrackets)
         printFn(prefix+addStr+blockName+"{")
-      local addStr2 = addStr + (showBlockBrackets? "  " : "")
+      let addStr2 = addStr + (showBlockBrackets? "  " : "")
       for (local i = 0; i < info.paramCount(); i++)
       {
-        local name = info.getParamName(i)
+        let name = info.getParamName(i)
         local val = info.getParamValue(i)
         local vType = " "
         if (val == null) { val = "null" }
@@ -84,7 +84,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
         else if (u.isPoint3(val)) { vType = ":p3"; val = ::format("%s, %s, %s", val.x.tostring(), val.y.tostring(), val.z.tostring()) }
         else if (u.isColor4(val)) { vType = ":c";  val = ::format("%d, %d, %d, %d", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a) }
         else if (u.isTMatrix(val)) { vType = ":m"
-          local arr = []
+          let arr = []
           for (local j = 0; j < 4; j++)
             arr.append("[" + ::g_string.implode([ val[j].x, val[j].y, val[j].z ], ", ") + "]")
           val = "[" + ::g_string.implode(arr, " ") + "]"
@@ -105,16 +105,16 @@ local DEBUG_TABLE_DATA_PARAMS = {
     {
       if (showBlockBrackets)
         printFn(prefix + addStr + (typeof(info) == "array" ? "[" : "{"))
-      local addStr2 = addStr + (showBlockBrackets? "  " : "")
+      let addStr2 = addStr + (showBlockBrackets? "  " : "")
       foreach(id, data in info)
       {
-        local dType = typeof(data)
-        local isDataBlockType = isDataBlock(data)
-        local idText = tableKeyToString(id)
+        let dType = typeof(data)
+        let isDataBlockType = isDataBlock(data)
+        let idText = tableKeyToString(id)
         if (isDataBlockType || dType=="array" || dType=="table" || (dType=="instance" && needUnfoldInstances))
         {
-          local openBraket = isDataBlockType ? "DataBlock {" : dType == "array" ? "[" : "{"
-          local closeBraket = ((dType=="array")? "]":"}")
+          let openBraket = isDataBlockType ? "DataBlock {" : dType == "array" ? "[" : "{"
+          let closeBraket = ((dType=="array")? "]":"}")
           if (recursionLevel)
           {
             printFn(prefix + addStr2 + idText + " = " + openBraket)
@@ -126,7 +126,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
           }
           else
           {
-            local hasContent = (isDataBlockType && (data.paramCount() + data.blockCount()) > 0)
+            let hasContent = (isDataBlockType && (data.paramCount() + data.blockCount()) > 0)
               || dType=="instance" || data.len() > 0
             printFn("".concat(prefix, addStr2, idText, " = ", openBraket, hasContent ? "..." : "", closeBraket))
           }
@@ -149,7 +149,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
       printFn(prefix + addStr + toString(info, ::min(1, recursionLevel), addStr)) //not decrease recursion because it current instance
     else
     {
-      local iType = typeof(info)
+      let iType = typeof(info)
       if (iType == "string")
         printFn(prefix + addStr + "\"" + info + "\"")
       else if (iType == "float")
@@ -175,8 +175,8 @@ local DEBUG_TABLE_DATA_PARAMS = {
   {
     if (isDataBlock(val))
     {
-      local rootBlockName = val.getBlockName() ?? ""
-      local iv = []
+      let rootBlockName = val.getBlockName() ?? ""
+      let iv = []
       for (local i = 0; i < val.paramCount(); i++)
         iv.append("" + val.getParamName(i) + " = " + ::toString(val.getParamValue(i)))
       for (local i = 0; i < val.blockCount(); i++)
@@ -191,7 +191,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
       return format("Color4(%d/255.0, %d/255.0, %d/255.0, %d/255.0)", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a)
     else if (u.isTMatrix(val))
     {
-      local arr = []
+      let arr = []
       for (local i = 0; i < 4; i++)
         arr.append(::toString(val[i]))
       return "TMatrix(" + ::g_string.implode(arr, ", ") + ")"
@@ -222,7 +222,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
           //or it make harder to read debugtableData result in log, also arrays in one string generate too long strings
           if (typeof(v) != "function")
           {
-            local index = ::isInArray(::type(idx), [ "float", "null" ]) ? ::toString(idx) : idx
+            let index = ::isInArray(::type(idx), [ "float", "null" ]) ? ::toString(idx) : idx
             ret += "\n" + addStr + "  " + index + " = " + ::toString(v, recursion - 1, addStr + "  ")
           }
         }
@@ -238,14 +238,14 @@ local DEBUG_TABLE_DATA_PARAMS = {
     return val.tostring() + ((val % 1) ? "" : ".0")
   if (::type(val) != "array" && ::type(val) != "table")
     return "" + val
-  local isArray = ::type(val) == "array"
+  let isArray = ::type(val) == "array"
   local str = ""
   if (recursion > 0)
   {
-    local iv = []
+    let iv = []
     foreach (i,v in val)
     {
-      local index = isArray ? ("[" + i + "]") : tableKeyToString(i)
+      let index = isArray ? ("[" + i + "]") : tableKeyToString(i)
       iv.append("" + index + " = " + ::toString(v, recursion - 1, ""))
     }
     str = ::g_string.implode(iv, ", ")

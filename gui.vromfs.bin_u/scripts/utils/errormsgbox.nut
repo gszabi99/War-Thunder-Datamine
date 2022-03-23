@@ -1,19 +1,19 @@
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 ::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message=null)
 {
-  local guiScene = ::get_gui_scene()
+  let guiScene = ::get_gui_scene()
   if (::checkObj(guiScene["errorMessageBox"]))
     return
 
-  local errData = ::get_error_data(header, error_code)
+  let errData = ::get_error_data(header, error_code)
 
   if (!isPlatformXboxOne)
   {
     errData.text += "\n\n" + (isPlatformSony? "" : (::loc("msgbox/error_link_format_game") + ::loc("ui/colon")))
-    local knoledgebaseSuffix = ::is_vendor_tencent()? "/Tencent" : ""
-    local link = ::loc($"url/knowledgebase{knoledgebaseSuffix}") + errData.errCode
-    local linkText = isPlatformSony? ::loc("msgbox/error_link_format_game") : link
+    let knoledgebaseSuffix = ::is_vendor_tencent()? "/Tencent" : ""
+    let link = ::loc($"url/knowledgebase{knoledgebaseSuffix}") + errData.errCode
+    let linkText = isPlatformSony? ::loc("msgbox/error_link_format_game") : link
     errData.text += $"<url={link}>{linkText}</url>"
   }
 
@@ -58,7 +58,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
 ::get_error_data <- function get_error_data(header, error_code)
 {
-  local res = {
+  let res = {
     errCode = null
     text = null
   }
@@ -106,7 +106,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
   if (errMsg.len() == 0)
     errMsg = error_text
 
-  local errText = ::loc("yn1/error/fmt", {text=::loc(text == "" ? "msgbox/error_header" : text, ""), err_msg=errMsg, err_code=""})
+  let errText = ::loc("yn1/error/fmt", {text=::loc(text == "" ? "msgbox/error_header" : text, ""), err_msg=errMsg, err_code=""})
   return errText
 }
 

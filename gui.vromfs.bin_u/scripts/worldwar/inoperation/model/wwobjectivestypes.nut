@@ -1,6 +1,6 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local time = require("scripts/time.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let time = require("%scripts/time.nut")
 
 
 ::g_ww_objective_type <- {
@@ -49,8 +49,8 @@ local time = require("scripts/time.nut")
 
   getDesc = function(dataBlk, statusBlk, side)
   {
-    local additionalTextLocId = dataBlk?.additionalDescriptionTextLocId
-    local descList = [
+    let additionalTextLocId = dataBlk?.additionalDescriptionTextLocId
+    let descList = [
       additionalTextLocId ? ::loc(additionalTextLocId, "") : "",
       getLocText(dataBlk, side, prefixNameLocId, "/desc", "", getTitleLocId(dataBlk, statusBlk))
     ]
@@ -84,7 +84,7 @@ local time = require("scripts/time.nut")
   getTitleLocId = function(dataBlk, statusBlk) { return dataBlk?.id }
   getTitleLocParams = function(dataBlk, statusBlk, side)
   {
-    local res = {}
+    let res = {}
     foreach (paramName in titleParams)
       res[paramName] <- (paramName in dataBlk)   ? getValueByParam(paramName, dataBlk, side)
                       : (paramName in statusBlk) ? getValueByParam(paramName, statusBlk, side)
@@ -96,7 +96,7 @@ local time = require("scripts/time.nut")
   {
     if (pName in defaultValuesTable)
     {
-      local value = defaultValuesTable[pName]
+      let value = defaultValuesTable[pName]
       return ::u.isFunction(value) ? value(dataBlk) : value
     }
     return ""
@@ -139,7 +139,7 @@ local time = require("scripts/time.nut")
   getParamId = function(blk, paramName) { return blk.getBlockName() + "_" + typeName + "_" + paramName }
   getParamsArray = function(blk, side)
   {
-    local res = []
+    let res = []
     foreach (paramName in paramsArray)
       if (paramName in blk)
       {
@@ -174,16 +174,16 @@ local time = require("scripts/time.nut")
       ::ww_side_val_to_name(::g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
       side
 
-    local res = []
+    let res = []
     foreach (paramName in updateArray)
     {
-      local checkName = paramName in statusBlk? paramName : paramName + side
+      let checkName = paramName in statusBlk? paramName : paramName + side
       if (checkName in statusBlk)
       {
-        local val = statusBlk?[checkName]
+        let val = statusBlk?[checkName]
 
         local block = statusBlk?[checkName]
-        local isDataBlock = ::u.isDataBlock(val)
+        let isDataBlock = ::u.isDataBlock(val)
         if (!isDataBlock)
         {
           block = ::DataBlock()
@@ -192,7 +192,7 @@ local time = require("scripts/time.nut")
 
         foreach (name, value in block)
         {
-          local pValueParam = isDataBlock? name : paramName
+          let pValueParam = isDataBlock? name : paramName
           res.append({
             id = checkName
             pName = getParamName(dataBlk, side, pValueParam)
@@ -217,20 +217,20 @@ local time = require("scripts/time.nut")
       if (!::checkObj(nestObj))
         return true
 
-      local sideName = ::ww_side_val_to_name(side)
-      local operationTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
+      let sideName = ::ww_side_val_to_name(side)
+      let operationTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
       nestObj.setValue(t.getName(dataBlk, statusBlk, sideName))
-      local needStopTimer = t.needStopTimer(statusBlk, operationTime)
+      let needStopTimer = t.needStopTimer(statusBlk, operationTime)
       return needStopTimer
     }
     zones = function(nestObj, dataBlk, statusBlk, t, zoneName)
     {
-      local valueObj = nestObj.findObject("pValue")
+      let valueObj = nestObj.findObject("pValue")
       if (!::checkObj(valueObj))
         return true
 
-      local captureTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
-      local captureTimeEnd = dataBlk?.holdTimeSec ?? 0
+      let captureTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
+      let captureTimeEnd = dataBlk?.holdTimeSec ?? 0
 
       valueObj.setValue(time.hoursToString(time.secondsToHours(captureTimeSec), false, true))
 
@@ -240,18 +240,18 @@ local time = require("scripts/time.nut")
 
   timerFunc = function(handler, scene, objId, updateParam, timerParam, dataBlk, statusBlk, side)
   {
-    local t = this
-    local obj = scene.findObject(objId)
+    let t = this
+    let obj = scene.findObject(objId)
     if (!::check_obj(obj))
       return []
 
-    local setVisibleFunc = ::g_ww_objective_type.getTimerSetVisibleFunctionTableByParam(t, timerParam)
-    local isVisible = setVisibleFunc(obj, dataBlk, statusBlk, t, side)
+    let setVisibleFunc = ::g_ww_objective_type.getTimerSetVisibleFunctionTableByParam(t, timerParam)
+    let isVisible = setVisibleFunc(obj, dataBlk, statusBlk, t, side)
     if (!isVisible)
       return []
 
-    local updateFunc = ::g_ww_objective_type.getTimerUpdateFuncByParam(t, timerParam)
-    local update = ::Callback(function(nestObj, dataBlk) {
+    let updateFunc = ::g_ww_objective_type.getTimerUpdateFuncByParam(t, timerParam)
+    let update = ::Callback(function(nestObj, dataBlk) {
       return updateFunc(nestObj, dataBlk, statusBlk, t, updateParam, side)
     }, handler)
 
@@ -269,20 +269,20 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     getNameId = function(dataBlk, side) { return getParamId(dataBlk, "timeSecScaled") }
     getTitleLocId = function(dataBlk, statusBlk)
     {
-      local hasAmount = dataBlk?.num != null
-      local hasTime = (statusBlk?.timeSecScaled ?? 0 ) - ::g_world_war.getOperationTimeSec() > 0
+      let hasAmount = dataBlk?.num != null
+      let hasTime = (statusBlk?.timeSecScaled ?? 0 ) - ::g_world_war.getOperationTimeSec() > 0
       return (hasAmount ? "Amount" : "Specified") + (hasTime ? "" : "Timeless")
     }
 
     timersArrayByParamName = {
       timeSecScaled = function (handler, scene, param, dataBlk, statusBlk, t, side)
       {
-        local paramId = t.getParamId(dataBlk, param)
+        let paramId = t.getParamId(dataBlk, param)
         return [t.timerFunc(handler, scene, paramId, param, param, dataBlk, statusBlk, side)]
       }
       holdTimeSec = function (handler, scene, param, dataBlk, statusBlk, t, side)
       {
-        local paramId = t.getParamId(dataBlk, param)
+        let paramId = t.getParamId(dataBlk, param)
         return [t.timerFunc(handler, scene, paramId, param, param, dataBlk, statusBlk, side)]
       }
     }
@@ -290,28 +290,28 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     timerUpdateFunctionTables = {
       timeSecScaled = function(nestObj, dataBlk, statusBlk, t, updateParam, side)
       {
-        local sideName = ::ww_side_val_to_name(side)
+        let sideName = ::ww_side_val_to_name(side)
         local minCapturedTimeSec = -1
-        local block = statusBlk.getBlockByName("zones")
+        let block = statusBlk.getBlockByName("zones")
         foreach (zoneName, holderSide in block)
         {
-          local zoneCapturedTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
+          let zoneCapturedTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
           minCapturedTimeSec = minCapturedTimeSec < 0 ? zoneCapturedTimeSec : ::min(minCapturedTimeSec, zoneCapturedTimeSec)
         }
 
-        local timeSec = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
+        let timeSec = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
         nestObj.setValue(t.getName(dataBlk, statusBlk, sideName))
 
-        local stopTimer = t.needStopTimer(statusBlk, timeSec)
+        let stopTimer = t.needStopTimer(statusBlk, timeSec)
         return stopTimer
       }
       holdTimeSec = function(nestObj, dataBlk, statusBlk, t, updateParam, side)
       {
-        local pValueObj = nestObj.findObject("pValue")
+        let pValueObj = nestObj.findObject("pValue")
         if (!::checkObj(pValueObj))
           return
 
-        local zonesArray = ::split(dataBlk.zone, ";")
+        let zonesArray = ::split(dataBlk.zone, ";")
         local minCapturedTimeSec = -1
         for (local i = 0; i < zonesArray.len(); i++)
         {
@@ -321,8 +321,8 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
             minCapturedTimeSec = ::min(minCapturedTimeSec, ::ww_get_zone_capture_time_sec(zonesArray[i]))
         }
 
-        local leftTime = ((dataBlk?[updateParam] ?? 0) - minCapturedTimeSec) / ::ww_get_speedup_factor()
-        local pValueText = t.convertParamValue?[updateParam](leftTime, dataBlk)
+        let leftTime = ((dataBlk?[updateParam] ?? 0) - minCapturedTimeSec) / ::ww_get_speedup_factor()
+        let pValueText = t.convertParamValue?[updateParam](leftTime, dataBlk)
         pValueObj.setValue(pValueText)
         nestObj.show(!::u.isEmpty(pValueText))
 
@@ -339,8 +339,8 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         local show = false
         if (statusBlk?.winner == null)
         {
-          local sideName = ::ww_side_val_to_name(side)
-          local block = statusBlk.getBlockByName("zones")
+          let sideName = ::ww_side_val_to_name(side)
+          let block = statusBlk.getBlockByName("zones")
           local num = t.getValueByParam("num", dataBlk, sideName, false)
           foreach (zoneName, holderSide in block)
             if (holderSide == sideName)
@@ -356,7 +356,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     specificClassParamConvertion = {
       num = function(value, blk, side, t) {
-        local zones = ::split(blk.zone, ";")
+        let zones = ::split(blk.zone, ";")
         return t.isDefender(blk, side) ? zones.len() - value + 1 : value
       }
     }
@@ -371,12 +371,12 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
       if (!statusBlk)
         return []
 
-      local zonesArray = []
-      local data = statusBlk?.zones ?? dataBlk?.zones
+      let zonesArray = []
+      let data = statusBlk?.zones ?? dataBlk?.zones
       if (::u.isDataBlock(data))
       {
-        local num = data.paramCount()
-        local lastZoneName = data.getParamName(num - 1)
+        let num = data.paramCount()
+        let lastZoneName = data.getParamName(num - 1)
         foreach (zoneName, holderSide in data)
         {
           local teamName = "none"
@@ -401,8 +401,8 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     getUpdatableParamsArray = function(dataBlk, statusBlk, side)
     {
-      local paramName = "holdTimeSec"
-      local paramValue = dataBlk?[paramName]
+      let paramName = "holdTimeSec"
+      let paramValue = dataBlk?[paramName]
 
       return isParamVisible[paramName](paramValue)
         ? [{ id = getParamId(dataBlk, paramName)
@@ -414,7 +414,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     getUpdatableParamsDescriptionText = function(dataBlk, statusBlk, side)
     {
-      local speedupPerc = getReinforcementSpeedupPercent(dataBlk, statusBlk, side)
+      let speedupPerc = getReinforcementSpeedupPercent(dataBlk, statusBlk, side)
       if (speedupPerc <= 0)
         return ""
 
@@ -426,20 +426,20 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     getReinforcementSpeedupPercent = function(dataBlk, statusBlk, side)
     {
-      local sideIdx = ::ww_side_name_to_val(side)
-      local paramName = "rSpeedMulStatus" + sideIdx + "New"
-      local speedupFactor = statusBlk?[paramName] ?? 1
+      let sideIdx = ::ww_side_name_to_val(side)
+      let paramName = "rSpeedMulStatus" + sideIdx + "New"
+      let speedupFactor = statusBlk?[paramName] ?? 1
       return ::round(::max(speedupFactor - 1, 0) * 100)
     }
 
     getNameSpecification = function(dataBlk, statusBlk)
     {
-      local zonesNeeded = dataBlk?.num
+      let zonesNeeded = dataBlk?.num
       if (!zonesNeeded)
         return ""
 
-      local zonesData = dataBlk?.zones ?? statusBlk?.zones
-      local zonesCount = ::u.isDataBlock(zonesData) ? zonesData.paramCount() : 0
+      let zonesData = dataBlk?.zones ?? statusBlk?.zones
+      let zonesCount = ::u.isDataBlock(zonesData) ? zonesData.paramCount() : 0
       return zonesNeeded < zonesCount ? "/approximate" : "/accurate"
     }
 
@@ -454,14 +454,14 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     getNameId = function(dataBlk, side) { return getParamId(dataBlk, "timeSecScaled") }
     getTitleLocId = function(dataBlk, statusBlk)
     {
-      local hasTime = (statusBlk?.timeSecScaled ?? 0 ) - ::g_world_war.getOperationTimeSec() > 0
+      let hasTime = (statusBlk?.timeSecScaled ?? 0 ) - ::g_world_war.getOperationTimeSec() > 0
       return "Percentage" + (hasTime ? "" : "Timeless")
     }
 
     timersArrayByParamName = {
       timeSecScaled = function (handler, scene, timerParam, dataBlk, statusBlk, t, side)
       {
-        local objId = t.getParamId(dataBlk, timerParam)
+        let objId = t.getParamId(dataBlk, timerParam)
         return [t.timerFunc(handler, scene, objId, timerParam, timerParam, dataBlk, statusBlk, side)]
       }
     }
@@ -483,11 +483,11 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         if (!::checkObj(nestObj))
           return false
 
-        local attackerSide = ::g_world_war.getOppositeSide(::ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
-        local zonesPercent = dataBlk?.zonesPercent ?? 0
-        local capturedPercent = statusBlk?["zonePercent_" + attackerSide] ?? 0
+        let attackerSide = ::g_world_war.getOppositeSide(::ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
+        let zonesPercent = dataBlk?.zonesPercent ?? 0
+        let capturedPercent = statusBlk?["zonePercent_" + attackerSide] ?? 0
 
-        local isVisible = zonesPercent <= capturedPercent
+        let isVisible = zonesPercent <= capturedPercent
         nestObj.show(isVisible)
 
         return isVisible
@@ -517,7 +517,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
   OT_DONT_AFK = {
     getName = function(dataBlk, statusBlk, side)
     {
-      local isMeLost = side != ::ww_side_val_to_name(::ww_get_operation_winner())
+      let isMeLost = side != ::ww_side_val_to_name(::ww_get_operation_winner())
       return ::loc(isMeLost
         ? "worldwar/objectives/myTechnicalDefeat"
         : "worldwar/objectives/enemyTechnicalDefeat")

@@ -1,9 +1,9 @@
-local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-local wwRewards = require("scripts/worldWar/handler/wwRewards.nut")
-local time = require("scripts/time.nut")
-local { getSeparateLeaderboardPlatformName,
-        getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
-local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
+let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
+let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
+let time = require("%scripts/time.nut")
+let { getSeparateLeaderboardPlatformName,
+        getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
+let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -21,10 +21,10 @@ local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboar
 ]
 
 
-class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
+::gui_handlers.WwLeaderboard <- class extends ::gui_handlers.LeaderboardWindow
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/leaderboard/leaderboard.blk"
+  sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 
   beginningMode = null
   needDayOpen = false
@@ -73,12 +73,12 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function fetchRewardsData()
   {
-    local requestBlk = ::DataBlock()
+    let requestBlk = ::DataBlock()
     requestBlk.configname = "ww_rewards"
     ::g_tasker.charRequestBlk("cmn_get_config_bin", requestBlk, null,
       ::Callback(function(res) {
         rewardsBlk = ::DataBlock()
-        local curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
+        let curCircuitRewardsBlk = res?.body?[::get_cur_circuit_name()]
         if (curCircuitRewardsBlk)
           rewardsBlk.setFrom(curCircuitRewardsBlk)
         updateButtons()
@@ -91,17 +91,17 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function fetchRewardsTimeData()
   {
-    local userstatRequestData = {
+    let userstatRequestData = {
       add_token = true
       headers = { appid = "1134" }
       action = "GetTablesInfo"
     }
 
-    local callback = ::Callback(function(userstatTbl) {
+    let callback = ::Callback(function(userstatTbl) {
       rewardsTimeData = {}
       foreach (key, val in (userstatTbl?.response ?? userstatTbl))
       {
-        local rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
+        let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
           val?.prevInterval?.end : val?.interval?.end
         rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
       }
@@ -124,7 +124,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbMode = null
     lbModesList = []
 
-    local isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
+    let isAvailableWWSeparateLb = !getSeparateLeaderboardPlatformValue()
      || ::has_feature("ConsoleSeparateWWLeaderboards")
 
     local data = ""
@@ -138,26 +138,26 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
         continue
 
       lbModesList.append(modeData)
-      local optionText = ::g_string.stripTags(
+      let optionText = ::g_string.stripTags(
         ::loc($"worldwar/leaderboard/{modeData.mode}"))
       data += "option {text:t='{0}'}".subst(optionText)
     }
 
-    local curMod = beginningMode
-    local modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
+    let curMod = beginningMode
+    let modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
 
-    local modesObj = showSceneBtn("modes_list", true)
+    let modesObj = showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(modeIdx)
   }
 
   function updateDaysComboBox(seasonDays)
   {
-    local seasonDay = wwLeaderboardData.getSeasonDay(seasonDays)
+    let seasonDay = wwLeaderboardData.getSeasonDay(seasonDays)
     lbDaysList = [null]
     for (local i = 0; i < seasonDay; i++)
     {
-      local dayNumber = seasonDay - i
+      let dayNumber = seasonDay - i
       if (::isInArray(wwLeaderboardData.getDayIdByNumber(dayNumber), seasonDays))
         lbDaysList.append(dayNumber)
     }
@@ -165,12 +165,12 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     local data = ""
     foreach(day in lbDaysList)
     {
-      local optionText = ::g_string.stripTags(
+      let optionText = ::g_string.stripTags(
         day ? ::loc("enumerated_day", {number = day}) : ::loc("worldwar/allSeason"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    local daysObj = showSceneBtn("days_list", lbModeData.hasDaysData)
+    let daysObj = showSceneBtn("days_list", lbModeData.hasDaysData)
     guiScene.replaceContentFromText(daysObj, data, data.len(), this)
 
     daysObj.setValue(needDayOpen && lbDaysList.len() > 1 ? 1 : 0)
@@ -183,18 +183,18 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     local data = ""
     foreach(wwMap in lbMapsList)
     {
-      local optionText = ::g_string.stripTags(
+      let optionText = ::g_string.stripTags(
         wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : ::loc("worldwar/allMaps"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    local mapsObj = showSceneBtn("maps_list", lbMapsList.len() > 1)
+    let mapsObj = showSceneBtn("maps_list", lbMapsList.len() > 1)
     guiScene.replaceContentFromText(mapsObj, data, data.len(), this)
 
     local mapObjValue = 0
     if (lbMap)
     {
-      local selectedMapId = lbMap.getId()
+      let selectedMapId = lbMap.getId()
       mapObjValue = lbMapsList.findindex(@(m) m && m.getId() == selectedMapId) ?? 0
     }
     lbMap = null
@@ -208,18 +208,18 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     local data = ""
     foreach(country in lbCountriesList)
     {
-      local optionText = ::g_string.stripTags(
+      let optionText = ::g_string.stripTags(
         country ? ::loc(country) : ::loc("worldwar/allCountries"))
       data += format("option {text:t='%s'}", optionText)
     }
 
-    local countriesObj = showSceneBtn("countries_list", lbCountriesList.len() > 1)
+    let countriesObj = showSceneBtn("countries_list", lbCountriesList.len() > 1)
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
 
     local countryObjValue = 0
     if (lbCountry)
     {
-      local selectedCountry = lbCountry
+      let selectedCountry = lbCountry
       countryObjValue = lbCountriesList.findindex(@(c) c && c == selectedCountry) ?? 0
     }
     lbCountry = null
@@ -228,11 +228,11 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function fetchLbData(isForce = false)
   {
-    local newRequestData = getRequestData()
+    let newRequestData = getRequestData()
     if (!newRequestData)
       return
 
-    local isRequestDifferent = !::u.isEqual(requestData, newRequestData)
+    let isRequestDifferent = !::u.isEqual(requestData, newRequestData)
     if (!isRequestDifferent && !isForce)
       return
 
@@ -242,16 +242,16 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     lbField = curLbCategory.field
     requestData = newRequestData
 
-    local requestParams = {
+    let requestParams = {
       gameMode = requestData.modeName + requestData.modePostFix
       table    = requestData.day && requestData.day > 0 ? "day" + requestData.day : "season"
       category = lbField
       platformFilter = requestData.platformFilter
     }
 
-    local cb = function(hasSelfRow = false)
+    let cb = function(hasSelfRow = false)
     {
-      local callback = ::Callback(
+      let callback = ::Callback(
         function(lbPageData) {
           if (!hasSelfRow)
             selfRowData = []
@@ -269,7 +269,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
     if (isUsersLeaderboard() || (forClans && ::is_in_clan()))
     {
-      local callback = ::Callback(
+      let callback = ::Callback(
         function(lbSelfData) {
           selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(requestData.modeName, lbSelfData, isCountriesLeaderboard()).rows
           if(isRequestDifferent)
@@ -292,7 +292,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function onModeSelect(obj)
   {
-    local modeObjValue = obj.getValue()
+    let modeObjValue = obj.getValue()
     if (modeObjValue < 0 || modeObjValue >= lbModesList.len())
       return
 
@@ -303,7 +303,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
     checkLbCategory()
 
-    local callback = ::Callback(
+    let callback = ::Callback(
       function(modesData) {
         updateModeDataByAvailableTables(modesData?.modes ?? [])
         updateModeComboBoxes(modesData?.tables)
@@ -333,7 +333,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function onDaySelect(obj)
   {
-    local dayObjValue = obj.getValue()
+    let dayObjValue = obj.getValue()
     if (dayObjValue < 0 || dayObjValue >= lbDaysList.len())
       return
 
@@ -345,7 +345,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function onMapSelect(obj)
   {
-    local mapObjValue = obj.getValue()
+    let mapObjValue = obj.getValue()
     if (mapObjValue < 0 || mapObjValue >= lbMapsList.len())
       return
 
@@ -360,7 +360,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function onCountrySelect(obj)
   {
-    local countryObjValue = obj.getValue()
+    let countryObjValue = obj.getValue()
     if (countryObjValue < 0 || countryObjValue >= lbCountriesList.len())
       return
 
@@ -384,8 +384,8 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (!lbModeData)
       return null
 
-    local mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
-    local countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
+    let mapId = lbMap && ::isInArray(lbMap, availableMapsList) ? "__" + lbMap.getId() : ""
+    let countryId = lbCountry && ::isInArray(lbCountry, availableCountriesList)
       ? "__" + lbCountry : ""
 
     return {
@@ -398,7 +398,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function getWwMaps()
   {
-    local maps = [null]
+    let maps = [null]
     foreach (map in availableMapsList)
       maps.append(map)
 
@@ -407,7 +407,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function getWwCountries(filterMap)
   {
-    local countrries = [null]
+    let countrries = [null]
     if (filterMap)
     {
       foreach (country in filterMap.getCountries())
@@ -417,7 +417,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
       return countrries
     }
 
-    local countrriesData = {}
+    let countrriesData = {}
     foreach (map in availableMapsList)
       foreach (country in map.getCountries())
         if (!(country in countrriesData) && ::isInArray(country, availableCountriesList))
@@ -441,7 +441,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function onRewards()
   {
-    local curRewardsBlk = getCurModeAwards()
+    let curRewardsBlk = getCurModeAwards()
     if (!curRewardsBlk)
       return ::showInfoMsgBox(::loc("leaderboards/has_no_rewards"))
 
@@ -463,26 +463,26 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function updateWwRewardsButton()
   {
-    local curRewardsBlk = getCurModeAwards()
-    local rewardsBtn = showSceneBtn("btn_ww_rewards", true)
+    let curRewardsBlk = getCurModeAwards()
+    let rewardsBtn = showSceneBtn("btn_ww_rewards", true)
     rewardsBtn.inactiveColor = curRewardsBlk ? "no" : "yes"
   }
 
   function getCurModeAwards()
   {
-    local rewardTableName = wwLeaderboardData.getModeByName(lbMode)?.rewardsTableName
+    let rewardTableName = wwLeaderboardData.getModeByName(lbMode)?.rewardsTableName
     if (!rewardTableName || !rewardsBlk || !requestData)
       return null
 
-    local day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
-    local awardTableName = requestData.modeName + requestData.modePostFix
+    let day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
+    let awardTableName = requestData.modeName + requestData.modePostFix
 
     return rewardsBlk?[rewardTableName]?[day]?.awards?[awardTableName]
   }
 
   function getCurRewardsTime()
   {
-    local day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
+    let day = lbDay ? wwLeaderboardData.getDayIdByNumber(lbDay) : "season"
     return rewardsTimeData?[day] ?? 0
   }
 
@@ -494,8 +494,8 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function getAvailableMapsList(modes)
   {
-    local mode = lbMode
-    local maps = []
+    let mode = lbMode
+    let maps = []
     foreach (map in wwMapsList)
       if(::u.search(modes, @(m) m.split(mode)?[1] && m.split(map.name)?[1]) != null)
         maps.append(map)
@@ -505,12 +505,12 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
 
   function getAvailableCountriesList(modes)
   {
-    local countries = []
+    let countries = []
     foreach (mode in modes)
       if(mode.split(lbMode)?[1] != null)
       {
-        local cName = mode.split("__country")?[1]
-        local country = cName == null ? cName : $"{"country"}{cName}"
+        let cName = mode.split("__country")?[1]
+        let country = cName == null ? cName : $"{"country"}{cName}"
         if(country != null && !::isInArray(country, countries))
           countries.append(country)
       }
@@ -522,8 +522,8 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (clansInfoList.len() == 0)
       return
 
-    local clansInfo = clansInfoList
-    local function updateClanTag(row) {
+    let clansInfo = clansInfoList
+    let function updateClanTag(row) {
       row.__update({
         clanTag = clansInfo?[row?.clanId.tostring() ?? ""].tag ?? row?.clanTag ?? ""
       })
@@ -536,7 +536,7 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     if (lbMode != "ww_users_manager")
       return
 
-    local clansInfoList = p?.clansInfoList ?? {}
+    let clansInfoList = p?.clansInfoList ?? {}
     updateClanTagRowsData(clansInfoList)
     addClanTagToNameInLeaderbord(scene.findObject("lb_table_nest"), clansInfoList)
   }

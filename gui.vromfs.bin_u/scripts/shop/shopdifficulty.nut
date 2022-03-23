@@ -1,8 +1,8 @@
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local shopDiffMode = null
 
-local function getShopDiffMode() {
+let function getShopDiffMode() {
   if (shopDiffMode != null)
     return shopDiffMode
 
@@ -13,7 +13,7 @@ local function getShopDiffMode() {
   return shopDiffMode
 }
 
-local function storeShopDiffMode(value) {
+let function storeShopDiffMode(value) {
   if (value == shopDiffMode)
     return
 
@@ -25,8 +25,8 @@ local function storeShopDiffMode(value) {
   ::broadcastEvent("ShopDiffCodeChanged")
 }
 
-local isAutoDiff = @() shopDiffMode == -1
-local getShopDiffCode = @() isAutoDiff()
+let isAutoDiff = @() shopDiffMode == -1
+let getShopDiffCode = @() isAutoDiff()
   ? ::get_current_ediff()
   : getShopDiffMode() ?? ::get_current_ediff()
 

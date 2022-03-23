@@ -2335,14 +2335,19 @@
       ]
     }
   ],
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_apr_25.blk"
+    }
+  },
   "commonWeapons": [
     {
       "hideNodes": [
         {
-          "node": "tail_spo"
+          "node": "tail_no_spo"
         },
         {
-          "node": "tail_type941"
+          "node": "tail_no_type941"
         }
       ]
     },
@@ -2867,57 +2872,6 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "q_5b": {
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "tier": 1,
-      "group": "q_5b_group",
-      "effects": {
-        "commonWeapons": [
-          {
-            "hideNodes": [
-              {
-                "node": "tail_no_spo"
-              },
-              {
-                "node": "tail_type941"
-              }
-            ]
-          },
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannon_type23_2k.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 120,
-              "spread": 1.0,
-              "counterIndex": 1
-            }
-          },
-          {
-            "Weapon": {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannon_type23_2k.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "shell": "emtr_shellrejection2",
-              "dm": "cannon2_dm",
-              "bullets": 120,
-              "spread": 1.0,
-              "counterIndex": 3
-            }
-          }
-        ],
-        "sensors": {
-          "sensor": {
-            "blk": "gameData/sensors/us_an_apr_25.blk"
-          }
-        }
-      }
-    },
     "q5_countermeasures_launcher_chaff_only": [],
     "q5_countermeasures_launcher_flare_only": [],
     "q5_countermeasures_launcher_chaff_priority": [],
@@ -2925,8 +2879,7 @@
     "q_5b_ltc": {
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "tier": 2,
-      "reqModification": "q_5b",
+      "tier": 1,
       "group": "q_5b_group",
       "effects": {
         "commonWeapons": [
@@ -2977,12 +2930,7 @@
               "separate": false
             }
           }
-        ],
-        "sensors": {
-          "sensor": {
-            "blk": "gameData/sensors/us_an_apr_25.blk"
-          }
-        }
+        ]
       }
     },
     "q_5b_type130": {

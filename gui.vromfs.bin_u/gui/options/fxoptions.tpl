@@ -26,7 +26,7 @@ tdiv {
       baseRow:t = 'yes';
       selfFocusBorder:t="yes"
 
-      include "gui/options/verticalOptions"
+      include "%gui/options/verticalOptions"
     }
 
     navBar {

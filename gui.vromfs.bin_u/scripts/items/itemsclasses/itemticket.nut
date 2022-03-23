@@ -1,7 +1,7 @@
-local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
+let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
-class ::items_classes.Ticket extends ::BaseItem
+::items_classes.Ticket <- class extends ::BaseItem
 {
   static iType = itemType.TICKET
   static defaultLocId = "ticket"
@@ -29,7 +29,7 @@ class ::items_classes.Ticket extends ::BaseItem
   {
     base.constructor(blk, invBlk, slotData)
 
-    local params = blk?.tournamentTicketParams
+    let params = blk?.tournamentTicketParams
     maxDefeatCount = params?.maxDefeatCount ?? 0
     maxSequenceDefeatCount = params?.maxSequenceDefeatCount ?? 0
     haveAwards = params?.awards ?? false
@@ -41,14 +41,14 @@ class ::items_classes.Ticket extends ::BaseItem
       ::dagor.debug("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + id)
     else
     {
-      local tournamentBlk = ::get_tournaments_blk()
+      let tournamentBlk = ::get_tournaments_blk()
       clanTournament = clanTournament || get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/clanTournament", false)
       //handling closed sales
       canBuy = canBuy && !get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/saleClosed", false)
 
       if (isInventoryItem && !isActiveTicket)
       {
-        local tBlk = ::DataBlock()
+        let tBlk = ::DataBlock()
         ::get_tournament_info_blk(eventEconomicNamesArray[0], tBlk)
         isActiveTicket = ::isInArray(tBlk?.activeTicketUID, uids)
       }
@@ -91,8 +91,8 @@ class ::items_classes.Ticket extends ::BaseItem
     local iconTable = null
     foreach(eventId in eventEconomicNamesArray)
     {
-      local event = ::events.getEventByEconomicName(eventId)
-      local eventIconTable = getIconTableForEvent(event, eventId)
+      let event = ::events.getEventByEconomicName(eventId)
+      let eventIconTable = getIconTableForEvent(event, eventId)
       if (!iconTable)
         iconTable = eventIconTable
       else
@@ -107,8 +107,8 @@ class ::items_classes.Ticket extends ::BaseItem
     if (!iconTable)
       iconTable = getIconTableForEvent(null)
 
-    local unitTypeLayer = ::getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
-    local insertLayersArrayCfg = []
+    let unitTypeLayer = ::getTblValue("unitType", customLayers)? "_" + customLayers.unitType : iconTable.unitType
+    let insertLayersArrayCfg = []
     insertLayersArrayCfg.append(_getUnitTypeLayer(unitTypeLayer, small))
     insertLayersArrayCfg.append(_getDifficultyLayer(::getTblValue("diffCode", customLayers) || iconTable.diffCode, small))
     insertLayersArrayCfg.append(_getTournamentModeLayer(::getTblValue("mode", customLayers) || iconTable.mode, small))
@@ -133,7 +133,7 @@ class ::items_classes.Ticket extends ::BaseItem
     if (!event)
       return null
 
-    local unitTypeMask = ::events.getEventUnitTypesMask(event)
+    let unitTypeMask = ::events.getEventUnitTypesMask(event)
 
     local unitsString = ""
     foreach(unitType in unitTypes.types)
@@ -211,7 +211,7 @@ class ::items_classes.Ticket extends ::BaseItem
     if (!small || !text)
       return null
 
-    local layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
+    let layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
     if (!layerCfg)
       return null
 
@@ -245,22 +245,22 @@ class ::items_classes.Ticket extends ::BaseItem
 
   function getTicketTournamentData(eventId)
   {
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_tournament_info_blk(eventId, blk)
-    local data = {}
+    let data = {}
     data.defCount <- blk?.ticketDefeatCount ?? 0
     data.sequenceDefeatCount <- blk?.ticketSequenceDefeatCount ?? 0
     data.battleCount <- blk?.battleCount ?? 0
     data.numUnfinishedSessions <- 0
     data.timeToWait <- 0
-    local curTime = ::get_charserver_time_sec()
-    local sessions = blk?.sessions
+    let curTime = ::get_charserver_time_sec()
+    let sessions = blk?.sessions
     if (sessions != null)
     {
       foreach (session in sessions % "data")
       {
-        local timeExpired = ::getTblValue("timeExpired", session, 0)
-        local timeDelta = timeExpired - curTime
+        let timeExpired = ::getTblValue("timeExpired", session, 0)
+        let timeDelta = timeExpired - curTime
         if (timeDelta <= 0)
           continue
         ++data.numUnfinishedSessions
@@ -270,10 +270,10 @@ class ::items_classes.Ticket extends ::BaseItem
     }
 
     // Check for total defeats count.
-    local checkTotalDefCount = _checkTicketDefCount(data.defCount, maxDefeatCount, data.numUnfinishedSessions)
+    let checkTotalDefCount = _checkTicketDefCount(data.defCount, maxDefeatCount, data.numUnfinishedSessions)
 
     // Check for sequence defeats count.
-    local checkSequenceDefCount = _checkTicketDefCount(data.sequenceDefeatCount, maxSequenceDefeatCount, data.numUnfinishedSessions)
+    let checkSequenceDefCount = _checkTicketDefCount(data.sequenceDefeatCount, maxSequenceDefeatCount, data.numUnfinishedSessions)
 
     // Player can't join ticket's tournament if number of
     // unfinished sessions exceeds number of possible defeats.
@@ -310,10 +310,10 @@ class ::items_classes.Ticket extends ::BaseItem
 
   function getAvailableDefeatsText(eventId, valueColor = "activeTextColor")
   {
-    local textParts = []
+    let textParts = []
     if (isActive())
     {
-      local ticketTournamentData = getTicketTournamentData(eventId)
+      let ticketTournamentData = getTicketTournamentData(eventId)
       textParts.append(getDefeatCountText(ticketTournamentData, valueColor))
       textParts.append(getSequenceDefeatCountText(ticketTournamentData, valueColor))
       textParts.append(getBattleCountText(ticketTournamentData, valueColor))
@@ -348,17 +348,17 @@ class ::items_classes.Ticket extends ::BaseItem
   function getTournamentRewardsText(eventId)
   {
     local text = ""
-    local event = ::events.getEventByEconomicName(eventId)
+    let event = ::events.getEventByEconomicName(eventId)
     if (event)
     {
-      local baseReward = ::EventRewards.getBaseVictoryReward(event)
+      let baseReward = ::EventRewards.getBaseVictoryReward(event)
       if (baseReward)
         text += (text.len() ? "\n" : "") + ::loc("tournaments/reward/everyVictory",  {reward = baseReward})
 
       if (::EventRewards.haveRewards(event))
       {
         text += (text.len() ? "\n\n" : "") + ::loc("tournaments/specialRewards") + ::loc("ui/colon")
-        local specialRewards = ::EventRewards.getSortedRewardsByConditions(event)
+        let specialRewards = ::EventRewards.getSortedRewardsByConditions(event)
         foreach (conditionId, rewardsList in specialRewards)
           foreach (reward in rewardsList)
             text += "\n" + ::EventRewards.getConditionText(reward) + " - " + ::EventRewards.getRewardDescText(reward)
@@ -369,7 +369,7 @@ class ::items_classes.Ticket extends ::BaseItem
 
   function getDescription()
   {
-    local desc = []
+    let desc = []
     foreach(eventId in eventEconomicNamesArray)
     {
       if (desc.len())
@@ -386,7 +386,7 @@ class ::items_classes.Ticket extends ::BaseItem
 
   function getLongDescription()
   {
-    local desc = []
+    let desc = []
     foreach(eventId in eventEconomicNamesArray)
     {
       if (desc.len())

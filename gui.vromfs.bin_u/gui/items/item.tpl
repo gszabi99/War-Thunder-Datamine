@@ -169,6 +169,9 @@ itemDiv {
       pos:t='pw-w, 0'
       position:t='absolute'
       value:t='<<unseenIcon>>'
+      <<#isUnseenAlarmIcon>>
+      isAlarm:t='yes'
+      <</isUnseenAlarmIcon>>
       unseenText {}
     }
     <</unseenIcon>>
@@ -221,7 +224,8 @@ itemDiv {
       padding-left:t='0.5h'
       re-type:t='fgPict'
       foreground-color:t='@white'
-      foreground-image:t='#ui/gameuiskin#alarmclock_icon'
+      foreground-image:t='#ui/gameuiskin#alarmclock_icon.svg'
+      foreground-svg-size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
       foreground-repeat:t='aspect-ratio'
       foreground-align:t='left'
       <<^alarmIcon>>
@@ -243,23 +247,36 @@ itemDiv {
       <</needPriceFadeBG>>
 
       tdiv {
-        pos:t='pw-w -2@itemPadding, 50%ph-50%h'
         position:t='relative'
-        <<#havePsPlusDiscount>>
+        pos:t='pw-w -2@itemPadding, 50%ph-50%h'
+        flow:t='vertical'
+
+        <<#remainingLifetime>>
+        textareaNoTab {
+          id:t='remaining_lifetime'
+          position:t='relative'
+          pos:t='pw-w, -6@dp'
+          text:t='<<remainingLifetime>>'
+          overlayTextColor:t='disabled'
+        }
+        <</remainingLifetime>>
+
+        tdiv {
+          pos:t='pw-w, 0'
+          position:t='relative'
+
+          <<#havePsPlusDiscount>>
           cardImg {
             type:t='small'
             background-image:t='#ui/gameuiskin#ps_plus.svg'
-            top:t='50%ph-50%h'
-            position:t='relative'
             margin-right:t='0.005@scrn_tgt'
           }
-        <</havePsPlusDiscount>>
+          <</havePsPlusDiscount>>
 
-        textareaNoTab {
-          id:t='price'
-          text:t='<<price>>'
-          top:t='50%ph-50%h'
-          position:t='relative'
+          textareaNoTab {
+            id:t='price'
+            text:t='<<price>>'
+          }
         }
       }
     }

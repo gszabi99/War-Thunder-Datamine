@@ -1,7 +1,7 @@
-local ConfigBase = require("configBase.nut")
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let ConfigBase = require("configBase.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-local configs = {
+let configs = {
   PRICE = {
     getImpl = ::get_price_blk
     isActual = ::is_price_actual
@@ -20,7 +20,7 @@ local configs = {
 
   GUI = {
     getImpl = function() {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       try {
         blk.load("config/gui.blk")
       }
@@ -33,7 +33,7 @@ local configs = {
 
   AVATARS = {
     getImpl = function() {
-      local blk = ::DataBlock()
+      let blk = ::DataBlock()
       try {
         blk.load("config/avatars.blk")
       }

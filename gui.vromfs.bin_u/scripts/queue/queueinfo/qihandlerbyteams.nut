@@ -1,4 +1,4 @@
-class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
+::gui_handlers.QiHandlerByTeams <- class extends ::gui_handlers.QiHandlerBase
 {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
@@ -8,7 +8,7 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
     local myTeamNum = ::queues.getQueueTeam(queue)
     if (myTeamNum == Team.Any)
     {
-      local teams = ::events.getAvailableTeams(event)
+      let teams = ::events.getAvailableTeams(event)
       if (teams.len() == 1)
         myTeamNum = teams[0]
     }
@@ -19,17 +19,17 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
 
   function updateQueueStats(clusters, queueStats, myTeamNum)
   {
-    local teams = ::events.getSidesList(event)
+    let teams = ::events.getSidesList(event)
     foreach(team in ::events.getSidesList())
     {
-      local show = ::isInArray(team, teams)
+      let show = ::isInArray(team, teams)
                    && (!queueStats.isSymmetric || team == Team.A)
-      local blockObj = showSceneBtn(team + "_block", show)
+      let blockObj = showSceneBtn(team + "_block", show)
       if (!show)
         continue
 
-      local teamName = ::events.getTeamName(team)
-      local teamData = ::events.getTeamData(event, team)
+      let teamName = ::events.getTeamName(team)
+      let teamData = ::events.getTeamData(event, team)
 
       local tableMarkup = ""
       local playersCountText = ""
@@ -46,8 +46,8 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
 
       if (!queueStats.isClanStats)
       {
-        local clusterName = queueStats.getMaxClusterName()
-        local players = queueStats.getPlayersCountByTeam(teamName, clusterName)
+        let clusterName = queueStats.getMaxClusterName()
+        let players = queueStats.getPlayersCountByTeam(teamName, clusterName)
         if (clusterName == "")
           playersCountText = ::loc("events/players_count")
         else
@@ -82,7 +82,7 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 
-    local queueTableObj = teamObj.findObject("table_queue_stat")
+    let queueTableObj = teamObj.findObject("table_queue_stat")
     if (!::checkObj(queueTableObj))
       return
     guiScene.replaceContentFromText(queueTableObj, tableMarkup, tableMarkup.len(), this)
@@ -91,21 +91,21 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
   function getQueueTableMarkup(queueStats, teamName, clusters)
   {
     local res = buildQueueStatsHeader()
-    local rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     if (queueStats.isMultiCluster)
     {
-      local maxCluster = queueStats.getMaxClusterName()
-      local teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
-      local rowData = buildQueueStatsRowData(teamStats)
+      let maxCluster = queueStats.getMaxClusterName()
+      let teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
+      let rowData = buildQueueStatsRowData(teamStats)
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
       return res
     }
 
     foreach (clusterName in clusters)
     {
-      local teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
-      local rowData = buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
+      let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
+      let rowData = buildQueueStatsRowData(teamStats, ::g_clusters.getClusterLocName(clusterName))
       res += ::buildTableRow("", rowData, 0, rowParams, "0")
     }
     return res
@@ -113,40 +113,40 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
 
   function getClanQueueTableMarkup(queueStats)
   {
-    local totalClans = queueStats.getClansCount()
+    let totalClans = queueStats.getClansCount()
     if (!totalClans)
       return ""
 
     local res = buildQueueStatsHeader()
-    local rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
-    local myClanQueueTable = queueStats.getMyClanQueueTable()
+    let myClanQueueTable = queueStats.getMyClanQueueTable()
     if (myClanQueueTable)
     {
-      local headerData = [{
+      let headerData = [{
         text = ::loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
       }]
       res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-      local rowData = buildQueueStatsRowData(myClanQueueTable)
+      let rowData = buildQueueStatsRowData(myClanQueueTable)
       res += ::buildTableRow("", rowData, null, rowParams, "0")
     }
 
-    local headerData = [{
+    let headerData = [{
       text = ::loc("multiplayer/clansInQueue")
       width = "0.1@sf"
     }]
     res += ::buildTableRow("", headerData, null, rowParams, "0")
 
-    local rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
+    let rowData = buildQueueStatsRowData(queueStats.getClansQueueTable())
     res += ::buildTableRow("", rowData, null, rowParams, "0")
     return res
   }
 
   function buildQueueStatsRowData(queueStatData, clusterNameLoc = "")
   {
-    local params = []
+    let params = []
     params.append({
                     text = clusterNameLoc
                     tdalign = "center"
@@ -165,7 +165,7 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
 
   function buildQueueStatsHeader()
   {
-    local headerData = []
+    let headerData = []
     for(local i = 0; i <= ::max_country_rank; i++)
     {
       headerData.append({

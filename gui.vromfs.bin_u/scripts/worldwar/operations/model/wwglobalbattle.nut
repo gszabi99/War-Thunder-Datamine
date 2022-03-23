@@ -1,7 +1,7 @@
-local u = require("sqStdLibs/helpers/u.nut")
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local WwGlobalBattle = class extends ::WwBattle
 {
@@ -12,16 +12,16 @@ local WwGlobalBattle = class extends ::WwBattle
   {
     sidesByCountry = {}
 
-    local teamsBlk = blk.getBlockByName("teams")
+    let teamsBlk = blk.getBlockByName("teams")
     if (!teamsBlk)
       return
 
-    local countries = params?.countries
+    let countries = params?.countries
     for (local i = 0; i < teamsBlk.blockCount(); i++)
     {
-      local teamBlk = teamsBlk.getBlock(i)
-      local teamSide = teamBlk?.side
-      local teamCountry = countries?[teamSide]
+      let teamBlk = teamsBlk.getBlock(i)
+      let teamSide = teamBlk?.side
+      let teamCountry = countries?[teamSide]
       if (teamSide && teamCountry)
         sidesByCountry[teamCountry] <- ::ww_side_name_to_val(teamSide)
     }
@@ -34,34 +34,34 @@ local WwGlobalBattle = class extends ::WwBattle
     maxPlayersNumber = 0
     unitTypeMask = 0
 
-    local teamsBlk = blk.getBlockByName("teams")
+    let teamsBlk = blk.getBlockByName("teams")
     if (!teamsBlk)
       return
 
-    local updatesBlk = blk.getBlockByName("battleUpdates")
-    local updatedTeamsBlk = updatesBlk ? updatesBlk.getBlockByName("teams") : null
+    let updatesBlk = blk.getBlockByName("battleUpdates")
+    let updatedTeamsBlk = updatesBlk ? updatesBlk.getBlockByName("teams") : null
     for (local i = 0; i < teamsBlk.blockCount(); ++i)
     {
-      local teamBlk = teamsBlk.getBlock(i)
-      local teamName = teamBlk.getBlockName() || ""
+      let teamBlk = teamsBlk.getBlock(i)
+      let teamName = teamBlk.getBlockName() || ""
       if (teamName.len() == 0)
         continue
 
-      local teamSideName = teamBlk?.side ?? ""
+      let teamSideName = teamBlk?.side ?? ""
       if (teamSideName.len() == 0)
         continue
 
-      local numPlayers = teamBlk?.players ?? 0
-      local teamMaxPlayers = teamBlk?.maxPlayers ?? 0
-      local teamUnitTypes = []
+      let numPlayers = teamBlk?.players ?? 0
+      let teamMaxPlayers = teamBlk?.maxPlayers ?? 0
+      let teamUnitTypes = []
 
-      local teamUnitsRemain = []
-      local unitsRemainBlk = teamBlk.getBlockByName("unitsRemain")
+      let teamUnitsRemain = []
+      let unitsRemainBlk = teamBlk.getBlockByName("unitsRemain")
       teamUnitsRemain.extend(wwActionsWithUnitsList.loadUnitsFromBlk(unitsRemainBlk))
 
       if (updatedTeamsBlk)
       {
-        local updatedTeamBlk = updatedTeamsBlk.getBlockByName(teamName)
+        let updatedTeamBlk = updatedTeamsBlk.getBlockByName(teamName)
         if (updatedTeamBlk)
           teamUnitsRemain.extend(
             wwActionsWithUnitsList.loadUnitsFromBlk(updatedTeamBlk.getBlockByName("unitsAdded")))
@@ -74,7 +74,7 @@ local WwGlobalBattle = class extends ::WwBattle
           u.appendOnce(unit.wwUnitType.code, teamUnitTypes)
           unitTypeMask = unitTypeMask | unitTypes.getByEsUnitType(unit.wwUnitType.esUnitCode).bit
         }
-      local teamInfo = {name = teamName
+      let teamInfo = {name = teamName
                         players = numPlayers
                         maxPlayers = teamMaxPlayers
                         minPlayers = minPlayersPerArmy
@@ -99,17 +99,17 @@ local WwGlobalBattle = class extends ::WwBattle
 
   function getMyAssignCountry()
   {
-    local operation = getOperationById(operationId)
+    let operation = getOperationById(operationId)
     return operation ? operation.getMyAssignCountry() : null
   }
 
   function isOperationMapAvaliable()
   {
-    local operation = getOperationById(operationId)
+    let operation = getOperationById(operationId)
     if (!operation)
       return false
 
-    local map = operation.getMap()
+    let map = operation.getMap()
     if (!map)
       return false
 
@@ -118,11 +118,11 @@ local WwGlobalBattle = class extends ::WwBattle
 
   function isAvaliableForMap(mapName)
   {
-    local operation = getOperationById(operationId)
+    let operation = getOperationById(operationId)
     if (!operation)
       return false
 
-    local map = operation.getMap()
+    let map = operation.getMap()
     if (!map)
       return false
 

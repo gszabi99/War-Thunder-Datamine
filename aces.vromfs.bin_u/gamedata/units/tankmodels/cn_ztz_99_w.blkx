@@ -258,6 +258,11 @@
         "composite_armor_hull_02_dm": {
           "armorThickness": 0.2,
           "hidableInXrayViewer": true
+        },
+        "turret_02_bottom_dm": {
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 6.0,
+          "secondaryShatterArmorQuality": 0.8
         }
       },
       "turret_composite_armor": {
@@ -291,8 +296,8 @@
         },
         "turret_01_top_dm": {
           "armorThickness": 125.0,
-          "genericArmorQuality": 1.1,
-          "cumulativeArmorQuality": 1.15,
+          "genericArmorQuality": 1.0,
+          "cumulativeArmorQuality": 1.02,
           "createSecondaryShatters": false
         }
       },
@@ -530,10 +535,6 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
-        "turret_02_bottom_dm": {
-          "armorThickness": 8.0,
-          "createSecondaryShatters": true
-        },
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_12_dm": [],
@@ -698,9 +699,10 @@
       "tracks": {
         "armorClass": "tank_traks",
         "allowRicochet": true,
-        "armorThickness": 30.0,
+        "armorThickness": 20.0,
+        "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
-        "genericEffectiveThicknessMax": 30.0,
+        "genericEffectiveThicknessMax": 20.0,
         "genericDamageMult": 1.8,
         "cumulativeDamageMult": 1.8,
         "track_r_dm": [],
@@ -2932,6 +2934,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -4221,6 +4224,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",
@@ -4287,7 +4291,7 @@
               "Weapon": {
                 "trigger": "gunner4",
                 "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
+                "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,

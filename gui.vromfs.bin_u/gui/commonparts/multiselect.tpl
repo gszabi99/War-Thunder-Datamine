@@ -35,7 +35,6 @@ MultiSelect {
       <<#size>>
       type:t='<<size>>'
       <</size>>
-      <<@addImageProps>>
     }
     multiOptionText { text:t='<<text>>' }
   }

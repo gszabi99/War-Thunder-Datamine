@@ -643,7 +643,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -674,7 +674,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -1930,6 +1930,38 @@
     }
   },
   {
+    "chainIK": [
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_turret_05"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_turret_06"
+            }
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "bone_turret_01"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "bone_turret_02"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "MetaParts": {
       "open_fightning_compartment": [
         {
@@ -2690,12 +2722,51 @@
           "errExplTime": 0.0
         },
         {
-          "turret": {
-            "head": "bone_turret",
-            "gun": "bone_gun",
-            "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm"
-          }
+          "forestallTime": 0.1
+        },
+        {
+          "turret": [
+            {
+              "head": "bone_turret"
+            },
+            {
+              "gun": "bone_gun"
+            },
+            {
+              "barrel": "bone_gun_barrel"
+            },
+            {
+              "gunnerDm": "gunner_dm"
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_turret_03",
+                "verLimits": [-5.0,83.0],
+                "verOriginLimits": [-5.0,83.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_turret_04",
+                "verLimits": [-5.0,83.0],
+                "verOriginLimits": [-5.0,83.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_turret_07",
+                "verLimits": [-1.0,115.0],
+                "verOriginLimits": [-5.0,83.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_optic_gun",
+                "verLimits": [-5.0,83.0],
+                "verOriginLimits": [-5.0,83.0]
+              }
+            }
+          ]
         },
         {
           "limits": {

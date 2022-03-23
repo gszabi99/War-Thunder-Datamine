@@ -1,15 +1,15 @@
-local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
-local u = require("sqStdLibs/helpers/u.nut")
-local stdMath = require("std/math.nut")
-local tutorAction = require("scripts/tutorials/tutorialActions.nut")
-local { findChildIndex } = require("sqDagui/daguiUtil.nut")
+let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let stdMath = require("%sqstd/math.nut")
+let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
-class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.RecipesListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneTplName = "gui/items/recipesListWnd"
+  sceneTplName = "%gui/items/recipesListWnd"
 
   recipesList = null
   curRecipe = null
@@ -26,7 +26,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
   function getSceneTplView()
   {
     recipesList = clone recipesList
-    local hasMarkers = ExchangeRecipes.hasFakeRecipes(recipesList)
+    let hasMarkers = ExchangeRecipes.hasFakeRecipes(recipesList)
     if (hasMarkers)
       recipesList.sort(@(a, b) a.idx <=> b.idx)
     else
@@ -39,12 +39,12 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     foreach(r in recipesList)
       maxRecipeLen = ::max(maxRecipeLen, r.getVisibleMarkupComponents())
 
-    local recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
-    local recipeHeightPx = ::to_pixels("0.5@itemHeight")
-    local minColumns = ::ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
-    local columns = ::max(minColumns,
+    let recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
+    let recipeHeightPx = ::to_pixels("0.5@itemHeight")
+    let minColumns = ::ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
+    let columns = ::max(minColumns,
       stdMath.calc_golden_ratio_columns(recipesList.len(), recipeWidthPx / (recipeHeightPx || 1)))
-    local rows = ::ceil(recipesList.len().tofloat() / columns).tointeger()
+    let rows = ::ceil(recipesList.len().tofloat() / columns).tointeger()
 
     local itemsInRow = 0 //some columns are thinner than max
     local columnWidth = 0
@@ -59,7 +59,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     }
     itemsInRow += columnWidth
 
-    local res = {
+    let res = {
       maxRecipeLen
       recipesList = recipesList
       columns
@@ -78,7 +78,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
     needMarkRecipes = ExchangeRecipes.hasFakeRecipes(recipesList)
-    local recipesListObj = scene.findObject("recipes_list")
+    let recipesListObj = scene.findObject("recipes_list")
     if (recipesList.len() > 0)
       recipesListObj.setValue(0)
 
@@ -92,7 +92,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function startTutorial()
   {
-    local steps = [{
+    let steps = [{
       obj = getUsableRecipeObjs().map(@(r) { obj = r, hasArrow = true })
       text = ::loc("workshop/tutorial/selectRecipe")
       actionType = tutorAction.OBJ_CLICK
@@ -113,14 +113,14 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function selectRecipe()
   {
-    local recipesListObj = scene.findObject("recipes_list")
+    let recipesListObj = scene.findObject("recipes_list")
     if (!recipesListObj?.isValid())
       return
 
-    local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
-    local idx = findChildIndex(recipesListObj, function(childObj) {
-      local posRC = childObj.getPosRC()
-      local size = childObj.getSize()
+    let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    let idx = findChildIndex(recipesListObj, function(childObj) {
+      let posRC = childObj.getPosRC()
+      let size = childObj.getSize()
       return cursorPos[0] >= posRC[0] && cursorPos[0] <= posRC[0] + size[0]
         && cursorPos[1] >= posRC[1] && cursorPos[1] <= posRC[1] + size[1]
     })
@@ -133,8 +133,8 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function getUsableRecipeObjs()
   {
-    local res = []
-    local recipesListObj = scene.findObject("recipes_list")
+    let res = []
+    let recipesListObj = scene.findObject("recipes_list")
     foreach (recipe in recipesList)
       if (!recipe?.isSeparator && recipe.isUsable && !recipe.isRecipeLocked())
         res.append(recipesListObj.findObject($"id_{recipe.uid}"))
@@ -143,8 +143,8 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCurRecipeInfo()
   {
-    local infoObj = scene.findObject("selected_recipe_info")
-    local markup = curRecipe ? curRecipe.getTextMarkup() + curRecipe.getMarkDescMarkup() : ""
+    let infoObj = scene.findObject("selected_recipe_info")
+    let markup = curRecipe ? curRecipe.getTextMarkup() + curRecipe.getMarkDescMarkup() : ""
     guiScene.replaceContentFromText(infoObj, markup, markup.len(), this)
 
     updateButtons()
@@ -170,7 +170,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onRecipeSelect(obj)
   {
-    local newRecipe = recipesList?[obj.getValue()]
+    let newRecipe = recipesList?[obj.getValue()]
     if (!u.isRecipe(newRecipe) || newRecipe == curRecipe)
       return
     curRecipe = newRecipe
@@ -202,12 +202,12 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     curRecipe.markRecipe(true)
-    local recipeObj = scene.findObject("id_"+ curRecipe.uid)
+    let recipeObj = scene.findObject("id_"+ curRecipe.uid)
     if (!::check_obj(recipeObj))
       return
 
     recipeObj.isRecipeLocked = curRecipe.isRecipeLocked() ? "yes" : "no"
-    local markImgObj = recipeObj.findObject("img_"+ curRecipe.uid)
+    let markImgObj = recipeObj.findObject("img_"+ curRecipe.uid)
     markImgObj["background-image"] = curRecipe.getMarkIcon()
     markImgObj.tooltip = curRecipe.getMarkTooltip()
     updateCurRecipeInfo()
@@ -216,7 +216,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
 return {
   open = function(params) {
-    local recipesList = params?.recipesList
+    let recipesList = params?.recipesList
     if (!recipesList || !recipesList.len())
       return
     ::handlersManager.loadHandler(::gui_handlers.RecipesListWnd, params)

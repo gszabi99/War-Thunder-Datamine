@@ -2765,6 +2765,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -2802,7 +2803,17 @@
       "tracks": {
         "animationMultiplier": -0.63,
         "height": 0.085,
-        "width": 0.635
+        "width": 0.635,
+        "fricFrontal": [1.5,1.3],
+        "tracksTensionK": [11.0,10.0,5.0],
+        "trackMesh": "us_m1_abrams_phys_track_line",
+        "trackLen": 0.192,
+        "trackCount": 78,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.3,
+        "trackStartOffset": 0.16
       },
       "collisionProps": {
         "cls_turret": "convex_hull",

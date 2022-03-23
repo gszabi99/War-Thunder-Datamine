@@ -1,4 +1,4 @@
-local MAX_UNKNOWN_IDS_PEER_REQUEST = 100
+let MAX_UNKNOWN_IDS_PEER_REQUEST = 100
 
 local requestUnknownXboxIds = function(playersList, knownUsers, cb) {} //forward declaration
 requestUnknownXboxIds = function(playersList, knownUsers, cb)
@@ -15,16 +15,16 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
     return
   }
 
-  local cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
-  local requestList = playersList.slice(0, cutIndex)
-  local leftList = playersList.slice(cutIndex)
+  let cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
+  let requestList = playersList.slice(0, cutIndex)
+  let leftList = playersList.slice(cutIndex)
 
-  local taskId = ::xbox_find_friends(requestList)
+  let taskId = ::xbox_find_friends(requestList)
   ::g_tasker.addTask(taskId, null, function() {
       local blk = ::DataBlock()
       blk = ::xbox_find_friends_result()
 
-      local table = ::buildTableFromBlk(blk)
+      let table = ::buildTableFromBlk(blk)
       table.__update(knownUsers)
 
       requestUnknownXboxIds(leftList, table, cb)
@@ -32,26 +32,26 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
   )
 }
 
-local function requestUnknownPSNIds(playersList, knownUsers, cb) {}
-requestUnknownPSNIds = function(playersList, knownUsers, cb) {
+let function requestUnknownPSNIds(playersList, knownUsers, cb) {
   if (!playersList.len()) {
     cb(knownUsers)
     return
   }
 
-  local cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
-  local requestList = playersList.slice(0, cutIndex)
-  local leftList = playersList.slice(cutIndex)
+  let self = callee()
+  let cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
+  let requestList = playersList.slice(0, cutIndex)
+  let leftList = playersList.slice(cutIndex)
 
-  local taskId = ::ps4_find_friends(requestList)
+  let taskId = ::ps4_find_friends(requestList)
   ::g_tasker.addTask(taskId, null, function() {
     local blk = ::DataBlock()
     blk = ::ps4_find_friends_result()
 
-    local table = ::buildTableFromBlk(blk)
+    let table = ::buildTableFromBlk(blk)
     table.__update(knownUsers)
 
-    requestUnknownPSNIds(leftList, table, cb)
+    self(leftList, table, cb)
   }.bindenv(this))
 }
 

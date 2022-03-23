@@ -1,20 +1,20 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { skipTutorialBitmaskId } = require("scripts/tutorials/tutorialsData.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsData.nut")
 
-local TUTORIAL_VERSION_COUNTER = 1
+let TUTORIAL_VERSION_COUNTER = 1
 
-local saveVersion = function(ver = null)
+let saveVersion = function(ver = null)
 {
   if (::loadLocalByAccount("tutor/tutorialVersion") == null)
     ::saveLocalByAccount("tutor/tutorialVersion", ver ?? TUTORIAL_VERSION_COUNTER)
 }
 
-local getVersion =  @() ::loadLocalByAccount("tutor/tutorialVersion", 0)
+let getVersion =  @() ::loadLocalByAccount("tutor/tutorialVersion", 0)
 
-local needShowTutorial = @(id, tutorVersion) !::loadLocalByAccount("tutor/" + id)
+let needShowTutorial = @(id, tutorVersion) !::loadLocalByAccount("tutor/" + id)
                                              && (::is_me_newbie() || getVersion() >= tutorVersion)
 
-local saveShowedTutorial = @(id) ::saveLocalByAccount("tutor/" + id, true)
+let saveShowedTutorial = @(id) ::saveLocalByAccount("tutor/" + id, true)
 
 subscriptions.addListenersWithoutEnv({
   AccountReset = function(p) {

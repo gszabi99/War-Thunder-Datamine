@@ -1,7 +1,7 @@
-class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneTplName = "gui/wndWidgets/navigationPanel"
+  sceneTplName = "%gui/wndWidgets/navigationPanel"
   sceneBlkName = null
 
   // ==== Handler params ====
@@ -65,12 +65,12 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function setNavItems(navItems)
   {
-    local navListObj = scene.findObject(navListObjId)
+    let navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return
 
     itemList = navItems
-    local view = {items = itemList.map(@(navItem, idx)
+    let view = {items = itemList.map(@(navItem, idx)
       navItem.__merge({
         id = $"nav_{idx.tostring()}"
         isSelected = idx == 0
@@ -79,7 +79,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
       })
     )}
 
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(navListObj, data, data.len(), this)
 
     updateVisibility()
@@ -92,7 +92,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function setCurrentItem(item)
   {
-    local itemIdx = itemList.indexof(item)
+    let itemIdx = itemList.indexof(item)
     if (itemIdx != null)
       setCurrentItemIdx(itemIdx)
   }
@@ -106,11 +106,11 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function doNavigate(itemIdx, isRelative = false)
   {
-    local navListObj = scene.findObject(navListObjId)
+    let navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return false
 
-    local itemsCount = itemList.len()
+    let itemsCount = itemList.len()
     if (itemsCount < 1)
       return
 
@@ -133,7 +133,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateVisibility()
   {
-    local isNavRequired = itemList.len() > 1
+    let isNavRequired = itemList.len() > 1
     showSceneBtn(panelObjId, isNavRequired && isPanelVisible)
     showSceneBtn(expandButtonObjId, isNavRequired && !isPanelVisible)
     guiScene.performDelayed(this, function() {
@@ -144,18 +144,18 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onNavClick(obj = null)
   {
-    local navListObj = scene.findObject(navListObjId)
+    let navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return false
 
-    local itemIdx = navListObj.getValue()
+    let itemIdx = navListObj.getValue()
     if (shouldCallCallback && onClickCb && itemIdx in itemList)
       onClickCb(itemList[itemIdx])
   }
 
   function onNavSelect(obj = null)
   {
-    local navListObj = scene.findObject(navListObjId)
+    let navListObj = scene.findObject(navListObjId)
     if (!::checkObj(navListObj))
       return false
 
@@ -178,14 +178,14 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCollapse(obj)
   {
-    local itemObj = obj?.collapse_header ? obj : obj.getParent()
-    local listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
+    let itemObj = obj?.collapse_header ? obj : obj.getParent()
+    let listObj = ::check_obj(itemObj) ? itemObj.getParent() : null
     if (!::check_obj(listObj) || !itemObj?.collapse_header)
       return
 
     itemObj.collapsing = "yes"
-    local isShow = itemObj?.collapsed == "yes"
-    local listLen = listObj.childrenCount()
+    let isShow = itemObj?.collapsed == "yes"
+    let listLen = listObj.childrenCount()
     local selIdx = listObj.getValue()
     local headerIdx = -1
     local needReselect = false
@@ -193,7 +193,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
     local found = false
     for (local i = 0; i < listLen; i++)
     {
-      local child = listObj.getChild(i)
+      let child = listObj.getChild(i)
       if (!found)
       {
         if (child?.collapsing == "yes")
@@ -217,7 +217,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
 
     if (needReselect)
     {
-      local indexes = []
+      let indexes = []
       for (local i = selIdx + 1; i < listLen; i++)
         indexes.append(i)
       for (local i = selIdx - 1; i >= 0; i--)
@@ -226,7 +226,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
       local newIdx = -1
       foreach (idx in indexes)
       {
-        local child = listObj.getChild(idx)
+        let child = listObj.getChild(idx)
         if (!child?.collapse_header != "yes"  && child.isEnabled())
         {
           newIdx = idx
@@ -245,7 +245,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function getCurrentItem() {
-    local currentIdx = ::get_object_value(scene, navListObjId)
+    let currentIdx = ::get_object_value(scene, navListObjId)
     if (currentIdx == null)
       return null
 

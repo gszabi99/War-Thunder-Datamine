@@ -1,21 +1,22 @@
-local optionsListModule = require("scripts/options/optionsList.nut")
-local { isCrossNetworkChatEnabled } = require("scripts/social/crossplay.nut")
-local { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
-  } = require("scripts/options/systemOptions.nut")
-local fxOptions = require("scripts/options/fxOptions.nut")
-local { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
-local preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local { resetTutorialSkip } = require("scripts/tutorials/tutorialsData.nut")
-local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+let optionsListModule = require("%scripts/options/optionsList.nut")
+let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
+let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
+  } = require("%scripts/options/systemOptions.nut")
+let fxOptions = require("%scripts/options/fxOptions.nut")
+let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
+let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
+let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
-class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
+::gui_handlers.Options <- class extends ::gui_handlers.GenericOptionsModal
 {
   wndType = handlerType.BASE
-  sceneBlkName = "gui/options/optionsWnd.blk"
-  sceneNavBlkName = "gui/options/navOptions.blk"
+  sceneBlkName = "%gui/options/optionsWnd.blk"
+  sceneNavBlkName = "%gui/options/navOptions.blk"
 
   optGroups = null
   curGroup = -1
@@ -32,7 +33,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     base.initScreen()
     setBreadcrumbGoBackParams(this)
 
-    local view = { tabs = [] }
+    let view = { tabs = [] }
     local curOption = 0
     foreach(idx, gr in optGroups)
     {
@@ -47,14 +48,14 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
         curOption = idx
     }
 
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
-    local groupsObj = scene.findObject("groups_list")
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    let groupsObj = scene.findObject("groups_list")
     optionIdToObjCache.clear()
     guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
     groupsObj.show(true)
     groupsObj.setValue(curOption)
 
-    local showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
+    let showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
     showSceneBtn("web_ui_button", showWebUI)
   }
 
@@ -63,7 +64,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     if (!obj)
       return
 
-    local newGroup = obj.getValue()
+    let newGroup = obj.getValue()
     if (curGroup==newGroup && !(newGroup in optGroups))
       return
 
@@ -85,7 +86,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function fillOptions(group)
   {
-    local config = optGroups[group]
+    let config = optGroups[group]
 
     if ("fillFuncName" in config)
     {
@@ -102,17 +103,17 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function fillInternetRadioOptions(group)
   {
-    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/internetRadioOptions.blk", this);
+    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/internetRadioOptions.blk", this);
     fillLocalInternetRadioOptions(group)
     updateInternerRadioButtons()
   }
 
   function fillSocialOptions(group)
   {
-    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/socialOptions.blk", this)
+    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/socialOptions.blk", this)
 
-    local hasFacebook = ::has_feature("Facebook")
-    local fObj = showSceneBtn("facebook_frame", hasFacebook)
+    let hasFacebook = ::has_feature("Facebook")
+    let fObj = showSceneBtn("facebook_frame", hasFacebook)
     if (hasFacebook && fObj)
     {
       fObj.findObject("facebook_like_btn").tooltip = ::loc("guiHints/facebookLike") + ::loc("ui/colon") + ::get_unlock_reward("facebook_like")
@@ -149,7 +150,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function applySearchFilter()
   {
-    local filterEditBox = scene.findObject("filter_edit_box")
+    let filterEditBox = scene.findObject("filter_edit_box")
     if (!::checkObj(filterEditBox))
       return
 
@@ -161,8 +162,8 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
       return
     }
 
-    local searchResultOptions = []
-    local visibleHeadersArray = {}
+    let searchResultOptions = []
+    let visibleHeadersArray = {}
     local needShowSearchNotify = false
     foreach(option in getCurrentOptionsList())
     {
@@ -182,7 +183,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
         continue
       }
 
-      local header = getOptionHeader(option)
+      let header = getOptionHeader(option)
       if (header == null || (visibleHeadersArray?[header.id] ?? false))
         continue
 
@@ -191,7 +192,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
       base.showOptionRow(header, true)
     }
 
-    local filterNotifyObj = showSceneBtn("filter_notify", needShowSearchNotify)
+    let filterNotifyObj = showSceneBtn("filter_notify", needShowSearchNotify)
     if (needShowSearchNotify && filterNotifyObj != null)
       filterNotifyObj.setValue(::loc("menu/options/maxNumFilterOptions",
         { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
@@ -199,7 +200,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function resetSearch()
   {
-    local filterEditBox = scene.findObject("filter_edit_box")
+    let filterEditBox = scene.findObject("filter_edit_box")
     if ( ! ::checkObj(filterEditBox))
       return
 
@@ -247,19 +248,19 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     if (!::checkObj(scene))
       return
 
-    local fbObj = scene.findObject("facebook_frame")
+    let fbObj = scene.findObject("facebook_frame")
     if (!::checkObj(fbObj))
       return
 
-    local facebookLogged = ::facebook_is_logged_in();
+    let facebookLogged = ::facebook_is_logged_in();
     ::showBtn("facebook_login_btn", !facebookLogged, fbObj)
     fbObj.findObject("facebook_friends_btn").enable(facebookLogged)
 
-    local showLikeBtn = ::has_feature("FacebookWallPost")
-    local likeBtn = ::showBtn("facebook_like_btn", showLikeBtn, fbObj)
+    let showLikeBtn = ::has_feature("FacebookWallPost")
+    let likeBtn = ::showBtn("facebook_like_btn", showLikeBtn, fbObj)
     if (::checkObj(likeBtn) && showLikeBtn)
     {
-      local alreadyLiked = ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
+      let alreadyLiked = ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, "facebook_like")
       likeBtn.enable(facebookLogged && !alreadyLiked && !isPlatformSony)
       likeBtn.show(!isPlatformSony)
     }
@@ -267,7 +268,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function fillShortcutInfo(shortcut_id_name, shortcut_object_name)
   {
-    local shortcut = ::get_shortcuts([shortcut_id_name]);
+    let shortcut = ::get_shortcuts([shortcut_id_name]);
     local data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
     if (data == "")
       data = "---";
@@ -275,9 +276,9 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
   }
   function bindShortcutButton(devs, btns, shortcut_id_name, shortcut_object_name)
   {
-    local shortcut = ::get_shortcuts([shortcut_id_name]);
+    let shortcut = ::get_shortcuts([shortcut_id_name]);
 
-    local event = shortcut[0];
+    let event = shortcut[0];
 
     event.append({dev = devs, btn = btns});
     if (event.len() > 1)
@@ -288,13 +289,13 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     ::set_shortcuts(shortcut, [shortcut_id_name]);
     save(false);
 
-    local data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
+    let data = ::get_shortcut_text({shortcuts = shortcut, shortcutId = 0})
     scene.findObject(shortcut_object_name).setValue(data);
   }
 
   function onClearShortcutButton(shortcut_id_name, shortcut_object_name)
   {
-    local shortcut = ::get_shortcuts([shortcut_id_name]);
+    let shortcut = ::get_shortcuts([shortcut_id_name]);
 
     shortcut[0] = [];
 
@@ -308,7 +309,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function fillLocalInternetRadioOptions(group)
   {
-    local config = optGroups[group]
+    let config = optGroups[group]
 
     if ("options" in config)
       fillOptionsList(group, "internetRadioOptions")
@@ -357,11 +358,11 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function fillVoiceChatOptions(group)
   {
-    local config = optGroups[group]
+    let config = optGroups[group]
 
-    guiScene.replaceContent(scene.findObject("optionslist"), "gui/options/voicechatOptions.blk", this)
+    guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
 
-    local needShowOptions = isCrossNetworkChatEnabled()
+    let needShowOptions = isCrossNetworkChatEnabled()
     showSceneBtn("voice_disable_warning", !needShowOptions)
 
     showSceneBtn("voice_options_block", needShowOptions)
@@ -371,7 +372,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     if ("options" in config)
       fillOptionsList(group, "voiceOptions")
 
-    local ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
+    let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
     local data = ::get_shortcut_text({shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false});
     if (data == "")
       data = "---";
@@ -381,7 +382,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     scene.findObject("ptt_shortcut").setValue(data)
     ::showBtn("ptt_buttons_block", get_option(::USEROPT_PTT).value, scene)
 
-    local echoButton = scene.findObject("joinEchoButton");
+    let echoButton = scene.findObject("joinEchoButton");
     if (echoButton) echoButton.enable(true)
   }
 
@@ -392,9 +393,9 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function bindVoiceButton(devs, btns)
   {
-    local ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
+    let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
 
-    local event = ptt_shortcut[0];
+    let event = ptt_shortcut[0];
 
     event.append({dev = devs, btn = btns});
     if (event.len() > 1)
@@ -412,7 +413,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function onClearVoiceButton()
   {
-    local ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
+    let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
 
     ptt_shortcut[0] = [];
 
@@ -432,7 +433,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function onEchoTestButton()
   {
-    local echoButton = scene.findObject("joinEchoButton");
+    let echoButton = scene.findObject("joinEchoButton");
 
     joinEchoChannel(!echoTest);
     if(echoButton)
@@ -467,10 +468,10 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
   {
     if (!::checkObj(obj))
       return
-    local objParent = obj.getParent()
+    let objParent = obj.getParent()
     if (!::checkObj(objParent))
       return
-    local val = obj.getValue()
+    let val = obj.getValue()
     if (objParent.getValue() != val)
       objParent.setValue(val)
   }
@@ -478,14 +479,14 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
   function fillOptionsList(group, objName)
   {
     curGroup = group
-    local config = optGroups[group]
+    let config = optGroups[group]
 
     if( ! optionsConfig)
         optionsConfig = {}
     optionsConfig.onTblClick <- "onTblSelect"
 
     currentContainerName = "options_" + config.name
-    local container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
+    let container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
       true, optionsConfig)
     optionsContainers = [container.descr]
 
@@ -498,7 +499,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
   }
 
   function showOptionsSelectedNavigation() {
-    local currentHeaderId = navigationHandlerWeak?.getCurrentItem().id
+    let currentHeaderId = navigationHandlerWeak?.getCurrentItem().id
     if (currentHeaderId == null)
       return
 
@@ -550,9 +551,9 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function doApply()
   {
-    local result = base.doApply();
+    let result = base.doApply();
 
-    local group = curGroup == -1 ? null : optGroups[curGroup];
+    let group = curGroup == -1 ? null : optGroups[curGroup];
     if (group && ("onApplyHandler" in group) && group.onApplyHandler)
       group.onApplyHandler();
 
@@ -566,7 +567,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function onDialogEditRadio()
   {
-    local radio = ::get_internet_radio_options()
+    let radio = ::get_internet_radio_options()
     if (!radio)
       return updateInternerRadioButtons()
 
@@ -575,10 +576,10 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function onRemoveRadio()
   {
-    local radio = ::get_internet_radio_options()
+    let radio = ::get_internet_radio_options()
     if (!radio)
       return updateInternerRadioButtons()
-    local nameRadio = radio?.station
+    let nameRadio = radio?.station
     if (!nameRadio)
       return
     msgBox("warning",
@@ -594,7 +595,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function onEventUpdateListRadio(params)
   {
-    local obj = scene.findObject("groups_list")
+    let obj = scene.findObject("groups_list")
     if (!obj)
       return
     fillOptionsList(obj.getValue(), "internetRadioOptions")
@@ -603,12 +604,12 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function updateInternerRadioButtons()
   {
-    local radio = ::get_internet_radio_options()
-    local isEnable = radio?.station ? ::is_internet_radio_station_removable(radio.station) : false
-    local btnEditRadio = scene.findObject("btn_edit_radio")
+    let radio = ::get_internet_radio_options()
+    let isEnable = radio?.station ? ::is_internet_radio_station_removable(radio.station) : false
+    let btnEditRadio = scene.findObject("btn_edit_radio")
     if (btnEditRadio)
       btnEditRadio.enable(isEnable)
-    local btnRemoveRadio = scene.findObject("btn_remove_radio")
+    let btnRemoveRadio = scene.findObject("btn_remove_radio")
     if (btnRemoveRadio)
       btnRemoveRadio.enable(isEnable)
   }
@@ -640,35 +641,41 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     // to be sure, that operation is done.
     ::g_popups.add("", ::loc("mainmenu/btnRevealNotifications/onSuccess"))
   }
+
+  function resetVolumes()
+  {
+    reset_volumes()
+    fillOptionsList(curGroup, "optionslist")
+  }
 }
 
 return {
   openOptionsWnd = function(group = null)
   {
-    local isInFlight = ::is_in_flight()
+    let isInFlight = ::is_in_flight()
     if (isInFlight)
       ::init_options()
 
-    local options = optionsListModule.getOptionsList()
+    let options = optionsListModule.getOptionsList()
 
     if (group != null)
       foreach(o in options)
         if (o.name == group)
           o.selected <- true
 
-    local params = {
+    let params = {
       titleText = isInFlight ?
         ::is_multiplayer() ? null : ::loc("flightmenu/title")
         : ::loc("mainmenu/btnGameplay")
       optGroups = options
       wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
-      sceneNavBlkName = "gui/options/navOptionsIngame.blk"
+      sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
     }
     params.cancelFunc <- function()
     {
       ::set_option_gamma(::get_option_gamma(), false)
-      for (local i = 0; i < ::SND_NUM_TYPES; i++)
-        ::set_sound_volume(i, ::get_sound_volume(i), false)
+      for (local i = 0; i < SND_NUM_TYPES; i++)
+        set_sound_volume(i, get_sound_volume(i), false)
     }
 
     return ::handlersManager.loadHandler(::gui_handlers.Options, params)

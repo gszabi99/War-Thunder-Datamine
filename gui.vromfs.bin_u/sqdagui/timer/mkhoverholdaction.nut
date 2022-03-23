@@ -1,17 +1,17 @@
-local DaguiSceneTimers = require("daguiSceneTimers.nut")
+let DaguiSceneTimers = require("daguiSceneTimers.nut")
 
 const REPAY_TIME = 0.5
 
-local function mkHoverHoldAction(timerObj, repayTime = REPAY_TIME) {
-  local timers = DaguiSceneTimers(0.1)
+let function mkHoverHoldAction(timerObj, repayTime = REPAY_TIME) {
+  let timers = DaguiSceneTimers(0.1)
   timers.setUpdaterObj(timerObj)
   local allObjs = {}
 
-  local function hoverHoldAction(processObj, cb) {
+  let function hoverHoldAction(processObj, cb) {
     allObjs = allObjs.filter(@(_, o) o.isValid())
 
-    local isHovered = processObj.isHovered()
-    local existObj = allObjs.findindex(@(_, o) o.isEqual(processObj))
+    let isHovered = processObj.isHovered()
+    let existObj = allObjs.findindex(@(_, o) o.isEqual(processObj))
     if ((existObj != null) == isHovered)
       return
 

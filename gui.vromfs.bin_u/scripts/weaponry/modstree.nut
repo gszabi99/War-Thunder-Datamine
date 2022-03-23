@@ -1,8 +1,8 @@
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getModificationByName, getModificationBulletsGroup
-} = require("scripts/weaponry/modificationInfo.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { getModificationByName, getModificationBulletsGroup
+} = require("%scripts/weaponry/modificationInfo.nut")
 
-local isModificationInTree = @(unit, mod) !mod.isHidden
+let isModificationInTree = @(unit, mod) !mod.isHidden
   && !::wp_get_modification_cost_gold(unit.name, mod.name)
   && getModificationBulletsGroup(mod.name) == ""
 
@@ -21,7 +21,7 @@ local modsTree = {
       }
       else if (typeof(item)=="array") //branch
       {
-        local res = findPathToMod(item, modName)
+        let res = findPathToMod(item, modName)
         if (res!=null)
         {
           res.insert(0, idx)
@@ -66,14 +66,14 @@ local modsTree = {
       return true
     }
 
-    local path = findPathToMod(tree, prevMod)
+    let path = findPathToMod(tree, prevMod)
     if (!path) return false
 
     //put in right place
     local branch = tree
     for(local i = 0; i < path.len()-1; i++)
       branch = branch[path[i]]
-    local curIdx = path[path.len()-1]
+    let curIdx = path[path.len()-1]
     if (curIdx==0) //this mod depends on branch root
       branch.append(mod)
     else
@@ -91,7 +91,7 @@ local modsTree = {
     foreach(ctg in genAir.unitType.modClassOrder)
       tree.append([ctg])
 
-    local notInTreeMods = []
+    let notInTreeMods = []
     foreach(idx, mod in air.modifications)
       if (getModificationBulletsGroup(mod.name) == "" &&
           mustBeInModTree(mod) &&
@@ -123,7 +123,7 @@ local modsTree = {
   {
     for (local i = tree.len() - 1; i >= 0; i--)
     {
-      local branch = tree[i]
+      let branch = tree[i]
       if (branch != null && branch.len() <= 1)
         tree.remove(i)
     }
@@ -142,7 +142,7 @@ local modsTree = {
   {
     if (typeof(branch)=="table") //modification
     {
-      local curOffset = (tiersTable && (branch.tier in tiersTable))? tiersTable[branch.tier] : 0
+      let curOffset = (tiersTable && (branch.tier in tiersTable))? tiersTable[branch.tier] : 0
       return curOffset - branch.guiPosX
     } else
     if (typeof(branch)=="array") //branch
@@ -150,7 +150,7 @@ local modsTree = {
       local mergeOffset = 0
       foreach(idx, item in branch)
       {
-        local offset = getMergeBranchXOffset(item, tiersTable)
+        let offset = getMergeBranchXOffset(item, tiersTable)
         if (idx==0 || mergeOffset < offset)
           mergeOffset = offset
       }
@@ -177,19 +177,19 @@ local modsTree = {
 
   function generatePositions(branch, tiersTable = null)
   {
-    local isRoot = !branch[0] || typeof(branch[0])=="string"
-    local isCategory = branch[0] && typeof(branch[0])=="string"
-    local rootTier = isRoot? -1 : branch[0].tier
-    local sideBranches = [] //mods with same tier with they req mod tier
+    let isRoot = !branch[0] || typeof(branch[0])=="string"
+    let isCategory = branch[0] && typeof(branch[0])=="string"
+    let rootTier = isRoot? -1 : branch[0].tier
+    let sideBranches = [] //mods with same tier with they req mod tier
                             //in tree root here is mods without any branch
-    local sideTiers = []
+    let sideTiers = []
 
     if (!tiersTable && (!isRoot || isCategory))
       tiersTable = {}
 
     for(local i = 1; i<branch.len(); i++)  //0 = root
     {
-      local item = branch[i]
+      let item = branch[i]
       local isSide = false
       local itemTiers = null
       if (typeof(item)=="table") //modification
@@ -222,7 +222,7 @@ local modsTree = {
         sideTiers.append(itemTiers)
       } else
       {
-        local offset = tiersTable.len()? getMergeBranchXOffset(item, tiersTable) : 0
+        let offset = tiersTable.len()? getMergeBranchXOffset(item, tiersTable) : 0
         if (offset)
           shiftBranchX(item, offset)
         addTiers(tiersTable, itemTiers, offset)
@@ -236,11 +236,11 @@ local modsTree = {
       if (sideBranches.len())
       {
         ::dagor.assertf(sideBranches.len() <= 2, "Error: mod " + branch[0].name + " for "+ air.name + " have more than 2 child modifications with same tier")
-        local haveLeft = sideBranches.len()>1
-        local lastRight = haveLeft? sideBranches.len()-1 : sideBranches.len()
+        let haveLeft = sideBranches.len()>1
+        let lastRight = haveLeft? sideBranches.len()-1 : sideBranches.len()
         for(local i=0; i<lastRight; i++)
         {
-          local offset = tiersTable.len()? getMergeBranchXOffset(sideBranches[i], tiersTable) : 0
+          let offset = tiersTable.len()? getMergeBranchXOffset(sideBranches[i], tiersTable) : 0
           if (offset)
             shiftBranchX(sideBranches[i], offset)
           addTiers(tiersTable, sideTiers[i], offset)
@@ -248,8 +248,8 @@ local modsTree = {
 
         if (haveLeft)
         {
-          local leftIdx = sideBranches.len()-1
-          local offset = getTiersWidth(sideTiers[leftIdx])
+          let leftIdx = sideBranches.len()-1
+          let offset = getTiersWidth(sideTiers[leftIdx])
           if (offset)
           {
             shiftBranchX(branch, offset)
@@ -304,7 +304,7 @@ local modsTree = {
     if (!curArrows)
       curArrows = []
 
-    local reqName = (typeof(branch[0])=="table")? branch[0].name : null
+    let reqName = (typeof(branch[0])=="table")? branch[0].name : null
     foreach(idx, item in branch)
     {
       local checkItem = null
@@ -317,7 +317,7 @@ local modsTree = {
           checkItem = item[0]
       }
 
-      local r = function(f)
+      let r = function(f)
       {
         return (f*2.0).tointeger().tofloat()*0.5
       }
@@ -338,15 +338,15 @@ local modsTree = {
     if (!air || air.name!=genAir.name)
       generateTree(genAir)
 
-    local res = { blocks = [], arrows = [] }
+    let res = { blocks = [], arrows = [] }
     if (!tree)
       return res
 
     foreach(idx, item in tree)
       if (typeof(item)=="array") //branch
       {
-        local corners = getBranchCorners(item)
-        local block = {
+        let corners = getBranchCorners(item)
+        let block = {
           name = typeof(item[0])=="string"? ::loc("modification/category/" + item[0]) : ""
           width = ::max(corners[1].guiPosX - corners[0].guiPosX, 1)
         }
@@ -367,7 +367,7 @@ local modsTree = {
 
   function debugTree(branch=null, addStr="DD: ") //!!debug only
   {
-    local debugLog = ::dlog // warning disable: -forbidden-function
+    let debugLog = ::dlog // warning disable: -forbidden-function
     if (!branch)
       branch = tree
     foreach(idx, item in branch)
@@ -396,7 +396,7 @@ local modsTree = {
         prevName = mod.reqModification[0]
       else if ("prevModification" in mod)
         prevName = mod.prevModification
-      local prevMod = getModificationByName(air, prevName)
+      let prevMod = getModificationByName(air, prevName)
       local res = ""
       if (!prevMod)
         res = "does not exist"

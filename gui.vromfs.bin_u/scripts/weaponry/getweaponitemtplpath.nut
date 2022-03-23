@@ -1,4 +1,4 @@
-local weaponItemTplPath = ::Watched("gui/weaponry/weaponItem")
+let weaponItemTplPath = ::Watched("%gui/weaponry/weaponItem")
 
 return {
   weaponItemTplPath = weaponItemTplPath

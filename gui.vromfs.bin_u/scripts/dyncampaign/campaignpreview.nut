@@ -1,6 +1,6 @@
-local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary()
 {
@@ -12,10 +12,10 @@ local { getDynamicResult } = require("scripts/debriefing/debriefingFull.nut")
   ::handlersManager.loadHandler(::gui_handlers.CampaignPreview, { isFinal = true })
 }
 
-class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.CampaignPreview <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/dynamicSummary.blk"
-  sceneNavBlkName = "gui/dynamicSummaryNav.blk"
+  sceneBlkName = "%gui/dynamicSummary.blk"
+  sceneNavBlkName = "%gui/dynamicSummaryNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
   wndGameMode = ::GM_DYNAMIC
@@ -51,8 +51,8 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
     info = DataBlock()
     ::g_map_preview.setSummaryPreview(scene.findObject("tactical-map"), info, "")
 
-    local l_file = info.getStr("layout","")
-    local dynLayouts = ::get_dynamic_layouts()
+    let l_file = info.getStr("layout","")
+    let dynLayouts = ::get_dynamic_layouts()
     for (local i = 0; i < dynLayouts.len(); i++)
       if (dynLayouts[i].mis_file == l_file)
       {
@@ -70,22 +70,22 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
      month = ::loc("sm_month_"+info.getInt("dataMM",0).tostring())
     })
 
-    local playerSide = info.getInt("playerSide", 1)
+    let playerSide = info.getInt("playerSide", 1)
     if (playerSide == 2)
     {
-      guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon"
-      guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon"
+      guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon.svg"
+      guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon.svg"
     }
     else
     {
-      guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon"
-      guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon"
+      guiScene["ally-icon"]["background-image"] = "#ui/gameuiskin#team_allies_icon.svg"
+      guiScene["enemy-icon"]["background-image"] = "#ui/gameuiskin#team_axis_icon.svg"
     }
 
 
 //    guiScene["scene-info"]["text"] = "one long line\none long line\none long line"
-    local stats = ["wins", "sectors", "bombers", "fighters", "infantry", "tanks", "artillery","ships"]
-    local sides = ["ally","enemy"]
+    let stats = ["wins", "sectors", "bombers", "fighters", "infantry", "tanks", "artillery","ships"]
+    let sides = ["ally","enemy"]
     for (local i = 0; i < stats.len(); i++)
     {
       for (local j = 0; j < sides.len(); j++)
@@ -102,7 +102,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
       if (info.getBlock(i).getBlockName() == "log")
         log.append(buildLogLine(info.getBlock(i)))
 
-    local country = (playerSide == 2) ? info.getStr("country_axis","germany") : info.getStr("country_allies", "usa")
+    let country = (playerSide == 2) ? info.getStr("country_axis","germany") : info.getStr("country_allies", "usa")
     //wtf??
     dagor.debug("2 country = " + country)
     if (country != "")
@@ -121,7 +121,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 
   function buildLogLine(blk)
   {
-    local ret = {}
+    let ret = {}
 
     if (blk.getStr("sectorName", "").len() > 0)
     {
@@ -183,7 +183,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
         ret.enemy_loses += getLosesBlk(loses[i], blk.getInt("enemy_destroyed_"+loses[i], 0), i < (loses.len()-1))
     }
 
-    local misNum = blk.getInt("missionsPlayed", 0)
+    let misNum = blk.getInt("missionsPlayed", 0)
     if (misNum > logLastMission)
     {
       logLastMission = misNum
@@ -192,7 +192,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 
     ret.victory <- blk.getBool("isVictory", false)
     ret.sideIcon <- blk.getInt("owner", 1)?  //1 - allies, 2 - axis
-                      "#ui/gameuiskin#team_allies_icon": "#ui/gameuiskin#team_axis_icon"
+                      "#ui/gameuiskin#team_allies_icon.svg": "#ui/gameuiskin#team_axis_icon.svg"
 
     ret.showInSmallLog <- blk.getBool("showInSmallLog", false)
 
@@ -233,7 +233,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 
   function showLog(id)
   {
-    local show = (id >= 0 && log.len() > id && log[id].showInSmallLog)
+    let show = (id >= 0 && log.len() > id && log[id].showInSmallLog)
     if (show)
       guiScene["scene-info"].setValue(log[id].main)
     guiScene["scene-info"].animShow = show? "show" : "hide"
@@ -241,14 +241,14 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSelect(obj)
   {
-    local gm = ::get_game_mode()
+    let gm = ::get_game_mode()
     if (gm == ::GM_DYNAMIC)
     {
       if (::is_dynamic_won_by_player())
       {
         local wonCampaign = ""
-        local l_file = info.getStr("layout","")
-        local dynLayouts = ::get_dynamic_layouts()
+        let l_file = info.getStr("layout","")
+        let dynLayouts = ::get_dynamic_layouts()
         for (local i = 0; i < dynLayouts.len(); i++)
           if (dynLayouts[i].mis_file == l_file)
           {
@@ -282,7 +282,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
       [
         ["yes", function()
         {
-          local gt = ::get_game_type()
+          let gt = ::get_game_type()
           if (gt & ::GT_COOPERATIVE)
             ::destroy_session_scripted()
           goForward(::gui_start_mainmenu)
@@ -302,12 +302,12 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 
   function infoBox(data, title = "")
   {
-    local rootNode = ""
+    let rootNode = ""
 
-    local handlerClass = class {
+    let handlerClass = class {
       function goBack(obj)
       {
-        local delayedAction = (@(handler, guiScene, infoBoxObject) function() {
+        let delayedAction = (@(handler, guiScene, infoBoxObject) function() {
           guiScene.destroyElement(infoBoxObject)
           handler.isInInfo = false
           handler.showNav(true)
@@ -319,8 +319,8 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
       handler = null
     }
 
-    local handlerObj = handlerClass()
-    local infobox = guiScene.loadModal(rootNode, "gui/optionInfoBox.blk", "InfoBox", handlerObj)
+    let handlerObj = handlerClass()
+    let infobox = guiScene.loadModal(rootNode, "%gui/optionInfoBox.blk", "InfoBox", handlerObj)
     handlerObj.guiScene = guiScene
     handlerObj.infoBoxObject = infobox
     handlerObj.handler = this
@@ -335,7 +335,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local data = ""
-    local logTextsToSet = {}
+    let logTextsToSet = {}
 
     for (local i = (log.len() - 1); i >= 0; i--)
     {
@@ -359,7 +359,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
         data += "tdiv { margin-bottom:t='0.03sh';} \n";
     }
 
-    local title = ::loc("mainmenu/btnBattlelog")
+    let title = ::loc("mainmenu/btnBattlelog")
 
     infoBox(data, title)
     isInInfo = true

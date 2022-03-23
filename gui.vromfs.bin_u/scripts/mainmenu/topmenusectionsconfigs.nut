@@ -1,7 +1,7 @@
 require("scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
 
-local enums = require("sqStdLibs/helpers/enums.nut")
-local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 
 // Priority for separation on buttons.
 enum topMenuLeftSideMergeIndex {
@@ -53,6 +53,7 @@ enums.addTypesByGlobalName("g_top_menu_left_side_sections", [
         buttonsList.SKIRMISH
         buttonsList.WORLDWAR
         buttonsList.LINE_SEPARATOR
+        buttonsList.TOURNAMENTS
         buttonsList.USER_MISSION
         buttonsList.TUTORIAL
         buttonsList.SINGLE_MISSION
@@ -134,6 +135,7 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
         buttonsList.LINE_SEPARATOR
         buttonsList.WIKI
         buttonsList.FAQ
+        buttonsList.REPORT_AN_ISSUE
         buttonsList.SUPPORT
         buttonsList.DEBUG_URL
       ]

@@ -1,6 +1,6 @@
-local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
-class ::WwCustomFormation extends ::WwFormation
+::WwCustomFormation <- class extends ::WwFormation
 {
   constructor(blk, airfield)
   {
@@ -31,7 +31,7 @@ class ::WwCustomFormation extends ::WwFormation
 
   function addUnits(blk)
   {
-    local additionalUnits = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
+    let additionalUnits = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
     units.extend(additionalUnits)
     units = units.reduce(function (memo, unit) {
       foreach (unitInMemo in memo)

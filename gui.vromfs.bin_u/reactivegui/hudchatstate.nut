@@ -1,6 +1,6 @@
-local interopGet = require("interopGen.nut")
+let interopGet = require("interopGen.nut")
 
-local hudChatState = persist("hudChatState", @() {
+let hudChatState = persist("hudChatState", @() {
   inputEnable = Watched(false)
 
   //her for now, but it's more common state then chat
@@ -28,8 +28,8 @@ local hudChatState = persist("hudChatState", @() {
   }
 })
 
-local {inputEnable, hasEnableChatMode} = hudChatState
-local canWriteToChat = Computed(@() inputEnable.value && hasEnableChatMode.value)
+let {inputEnable, hasEnableChatMode} = hudChatState
+let canWriteToChat = Computed(@() inputEnable.value && hasEnableChatMode.value)
 hudChatState.canWriteToChat <- canWriteToChat
 
 ::interop.mpChatPushMessage <- function (message) {

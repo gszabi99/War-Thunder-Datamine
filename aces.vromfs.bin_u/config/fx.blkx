@@ -68,7 +68,7 @@
     }
   },
   "fxDustTypeByMat": {
-    "default": "ground",
+    "default": "grass",
     "water3d": "water",
     "water": "water",
     "concrete": "concrete",
@@ -77,7 +77,7 @@
     "sand": "sand",
     "quickSand": "sand",
     "rocks": "concrete",
-    "road": "concrete",
+    "road": "ground",
     "snow": "snow",
     "stone_snow": "snow",
     "snowLower": "snow",
@@ -134,6 +134,48 @@
       "defaultCollisionGroundFx": "ship_collision_unit_ground_steel",
       "defaultCollisionGroundScrapeFx": "ship_scrape_ground_steel"
     }
+  },
+  "shotDust": {
+    "fxType": {
+      "ground": "dust_shot_surface_dirt",
+      "grass": "dust_shot_surface_grass",
+      "sand": "dust_shot_surface_sand",
+      "snow": "dust_shot_surface_snow",
+      "concrete": "dust_shot_surface_asphalt",
+      "water": ""
+    },
+    "emitters": [
+      {
+        "emitter": "emtr_fire_small_dmg_01"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_02"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_03"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_04"
+      },
+      {
+        "emitter": "emtr_fire_small_dmg_05"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_01"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_02"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_03"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_04"
+      },
+      {
+        "emitter": "emtr_smoke_small_dmg_05"
+      }
+    ]
   },
   "gun_fire": {
     "cols": 4,
@@ -197,6 +239,17 @@
   },
   "land_crash_fire": {
     "fx": "fire_big_crash_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "farPlane": 10000.0,
+    "sfxPath": "tanks/explosions_tanks",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 5000.0
+  },
+  "land_crash_fire_time_limit": {
+    "fx": "fire_big_crash_time_limit_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 1,
@@ -279,7 +332,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "major_fuel_fire": {
-    "fx": "explosion_midair_fuel_cmps_fx",
+    "fx": "explosion_midair_fueltank_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 1,
@@ -1588,6 +1641,36 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "dust_ground_wave_grass_small": {
+    "fx": "dust_ground_wave_grass_small_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_ground_wave_grass_med": {
+    "fx": "dust_ground_wave_grass_med_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_ground_wave_grass_big": {
+    "fx": "dust_ground_wave_grass_big_cmps_fx",
+    "lifeTime": 10.0,
+    "softnessDepth": 5.0,
+    "sortDistanceOffset": 0.0,
+    "numInstances": 50,
+    "numReserved": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "sparks_track_hit_fx": {
     "fx": "sparks_track_hit_cmps_fx",
     "numInstances": 70,
@@ -1919,6 +2002,14 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "track_dirt_dust": {
+    "fx": "dust_tank_track_dust_dirt_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "track_dirt_back": {
     "fx": "dust_tank_track_back_dirt_cmps_fx",
     "numInstances": 50,
@@ -1951,6 +2042,14 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "track_snow_dust": {
+    "fx": "dust_tank_track_dust_snow_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "track_snow_back": {
     "fx": "dust_tank_track_back_snow_cmps_fx",
     "numInstances": 50,
@@ -1977,6 +2076,14 @@
   },
   "track_move_snow": {
     "fx": "dust_tank_track_move_snow_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "track_sand_dust": {
+    "fx": "dust_tank_track_dust_sand_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 0,
@@ -2079,6 +2186,56 @@
     "fx": "smoke_point_orange_cmps_fx",
     "lifeTime": 10.0,
     "farPlane": 10000.0,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_dirt": {
+    "fx": "dust_shot_surface_dirt_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_grass": {
+    "fx": "dust_shot_surface_grass_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_sand": {
+    "fx": "dust_shot_surface_sand_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_snow": {
+    "fx": "dust_shot_surface_snow_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
+    "numInstances": 50,
+    "numReserved": 8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "dust_shot_surface_asphalt": {
+    "fx": "dust_shot_surface_asphalt_cmps_fx",
+    "lifeTime": 10.0,
+    "sortDistanceOffset": 0.0,
+    "onePointNumber": 6,
     "numInstances": 50,
     "numReserved": 8,
     "sfxPath": "sounds/effects",
@@ -2361,28 +2518,35 @@
     "fx": "muzzle_air_8mm_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 50,
+    "onePointNumber": 40,
     "soundEnableDistance": 100.0
   },
   "muzzle_air_15mm": {
     "fx": "muzzle_air_15mm_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 50,
+    "onePointNumber": 40,
     "soundEnableDistance": 100.0
   },
   "muzzle_air_20mm": {
     "fx": "muzzle_air_20mm_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 50,
+    "onePointNumber": 40,
     "soundEnableDistance": 100.0
   },
   "muzzle_air_30mm": {
     "fx": "muzzle_air_30mm_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 40,
+    "onePointNumber": 30,
+    "soundEnableDistance": 100.0
+  },
+  "muzzle_air_30mm_rapid": {
+    "fx": "muzzle_air_30mm_rapid_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 30,
     "soundEnableDistance": 100.0
   },
   "muzzle_air_50mm": {
@@ -2849,7 +3013,7 @@
     "fx": "hit_8_11mm_dirt_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2858,7 +3022,7 @@
     "fx": "hit_8_11mm_dirt_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2867,19 +3031,19 @@
     "fx": "hit_8_11mm_metal_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_8_11mm_metal_he": {
     "fx": "hit_8_11mm_metal_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_8_11mm_sand_ap": {
     "fx": "hit_8_11mm_sand_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2888,7 +3052,7 @@
     "fx": "hit_8_11mm_sand_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2897,7 +3061,7 @@
     "fx": "hit_8_11mm_snow_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2906,7 +3070,7 @@
     "fx": "hit_8_11mm_snow_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2915,7 +3079,7 @@
     "fx": "hit_8_11mm_wood_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_wood",
     "soundEnableDistance": 100.0
@@ -2924,7 +3088,7 @@
     "fx": "hit_8_11mm_wood_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_wood",
     "soundEnableDistance": 100.0
@@ -2933,7 +3097,7 @@
     "fx": "hit_8_11mm_stone_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -2942,7 +3106,7 @@
     "fx": "hit_8_11mm_stone_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -2951,7 +3115,7 @@
     "fx": "hit_8_12mm_water_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_water",
     "soundEnableDistance": 100.0
@@ -2960,7 +3124,7 @@
     "fx": "hit_8_11mm_red_brick_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -2969,7 +3133,7 @@
     "fx": "hit_8_11mm_red_brick_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -2978,7 +3142,7 @@
     "fx": "hit_12_18mm_dirt_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2987,7 +3151,7 @@
     "fx": "hit_12_18mm_dirt_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -2996,19 +3160,19 @@
     "fx": "hit_12_18mm_metal_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_12_18mm_metal_he": {
     "fx": "hit_12_18mm_metal_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_12_18mm_sand_ap": {
     "fx": "hit_12_18mm_sand_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -3017,7 +3181,7 @@
     "fx": "hit_12_18mm_sand_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -3026,7 +3190,7 @@
     "fx": "hit_12_18mm_snow_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -3035,7 +3199,7 @@
     "fx": "hit_12_18mm_snow_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_ground",
     "soundEnableDistance": 100.0
@@ -3044,7 +3208,7 @@
     "fx": "hit_12_18mm_wood_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_wood",
     "soundEnableDistance": 100.0
@@ -3053,7 +3217,7 @@
     "fx": "hit_12_18mm_wood_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_wood",
     "soundEnableDistance": 100.0
@@ -3062,7 +3226,7 @@
     "fx": "hit_12_18mm_stone_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -3071,7 +3235,7 @@
     "fx": "hit_12_18mm_stone_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -3080,7 +3244,7 @@
     "fx": "hit_12_18mm_water_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_water",
     "soundEnableDistance": 100.0
@@ -3089,7 +3253,7 @@
     "fx": "hit_12_18mm_red_brick_ap_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -3098,7 +3262,7 @@
     "fx": "hit_12_18mm_red_brick_he_cmps_fx",
     "numInstances": 180,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_stone",
     "soundEnableDistance": 100.0
@@ -3107,7 +3271,7 @@
     "fx": "hit_19_27mm_dirt_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3116,7 +3280,7 @@
     "fx": "hit_19_27mm_dirt_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3125,13 +3289,13 @@
     "fx": "hit_19_27mm_metal_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_19_27mm_metal_he": {
     "fx": "hit_19_27mm_metal_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal_small",
     "soundEnableDistance": 500.0
@@ -3140,7 +3304,7 @@
     "fx": "hit_19_27mm_sand_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3149,7 +3313,7 @@
     "fx": "hit_19_27mm_sand_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3158,7 +3322,7 @@
     "fx": "hit_19_27mm_snow_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3167,7 +3331,7 @@
     "fx": "hit_19_27mm_snow_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3176,7 +3340,7 @@
     "fx": "hit_19_27mm_wood_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "splash_wood",
     "soundEnableDistance": 150.0
@@ -3185,7 +3349,7 @@
     "fx": "hit_19_27mm_wood_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3194,7 +3358,7 @@
     "fx": "hit_19_27mm_stone_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3203,7 +3367,7 @@
     "fx": "hit_19_27mm_stone_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3212,7 +3376,7 @@
     "fx": "hit_19_27mm_water_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_water",
     "soundEnableDistance": 100.0
@@ -3221,7 +3385,7 @@
     "fx": "hit_19_27mm_red_brick_ap_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3230,7 +3394,7 @@
     "fx": "hit_19_27mm_red_brick_he_cmps_fx",
     "numInstances": 120,
     "numReserved": 40,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3239,7 +3403,7 @@
     "fx": "hit_28_38mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3248,7 +3412,7 @@
     "fx": "hit_28_38mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3257,13 +3421,13 @@
     "fx": "hit_28_38mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_28_38mm_metal_he": {
     "fx": "hit_28_38mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal_small",
     "soundEnableDistance": 500.0
@@ -3272,7 +3436,7 @@
     "fx": "hit_28_38mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3281,7 +3445,7 @@
     "fx": "hit_28_38mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3290,7 +3454,7 @@
     "fx": "hit_28_38mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3299,7 +3463,7 @@
     "fx": "hit_28_38mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3308,7 +3472,7 @@
     "fx": "hit_28_38mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "splash_wood",
     "soundEnableDistance": 150.0
@@ -3317,7 +3481,7 @@
     "fx": "hit_28_38mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3326,7 +3490,7 @@
     "fx": "hit_28_38mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3335,7 +3499,7 @@
     "fx": "hit_28_38mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3344,7 +3508,7 @@
     "fx": "hit_28_38mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_water",
     "soundEnableDistance": 100.0
@@ -3353,7 +3517,7 @@
     "fx": "hit_28_38mm_red_brick_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3362,7 +3526,7 @@
     "fx": "hit_28_38mm_red_brick_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3371,7 +3535,7 @@
     "fx": "hit_28_38mm_dirt_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3380,7 +3544,7 @@
     "fx": "hit_28_38mm_dirt_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3389,13 +3553,13 @@
     "fx": "hit_28_38mm_metal_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50
+    "onePointNumber": 10
   },
   "hit_28_38mm_metal_he_rapid": {
     "fx": "hit_28_38mm_metal_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal_small",
     "soundEnableDistance": 500.0
@@ -3404,7 +3568,7 @@
     "fx": "hit_28_38mm_sand_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3413,7 +3577,7 @@
     "fx": "hit_28_38mm_sand_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3422,7 +3586,7 @@
     "fx": "hit_28_38mm_snow_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3431,7 +3595,7 @@
     "fx": "hit_28_38mm_snow_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3440,7 +3604,7 @@
     "fx": "hit_28_38mm_wood_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "splash_wood",
     "soundEnableDistance": 150.0
@@ -3449,7 +3613,7 @@
     "fx": "hit_28_38mm_wood_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3458,7 +3622,7 @@
     "fx": "hit_28_38mm_stone_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3467,7 +3631,7 @@
     "fx": "hit_28_38mm_stone_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_20_37",
     "soundEnableDistance": 1000.0
@@ -3476,7 +3640,7 @@
     "fx": "hit_19_27mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 8,
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "bullethit_water",
     "soundEnableDistance": 100.0
@@ -3485,7 +3649,7 @@
     "fx": "hit_28_38mm_red_brick_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 40,
-    "onePointNumber": 50,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3494,7 +3658,7 @@
     "fx": "hit_39_58mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3503,7 +3667,7 @@
     "fx": "hit_39_58mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3512,13 +3676,13 @@
     "fx": "hit_39_58mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_39_58mm_metal_he": {
     "fx": "hit_39_58mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal",
     "soundEnableDistance": 5000.0
@@ -3527,7 +3691,7 @@
     "fx": "hit_39_58mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3536,7 +3700,7 @@
     "fx": "hit_39_58mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3545,7 +3709,7 @@
     "fx": "hit_39_58mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3554,7 +3718,7 @@
     "fx": "hit_39_58mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3563,7 +3727,7 @@
     "fx": "hit_39_58mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_wood",
     "soundEnableDistance": 5000.0
@@ -3572,7 +3736,7 @@
     "fx": "hit_39_58mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_wood",
     "soundEnableDistance": 5000.0
@@ -3581,7 +3745,7 @@
     "fx": "hit_39_58mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3590,7 +3754,7 @@
     "fx": "hit_39_58mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3599,7 +3763,7 @@
     "fx": "hit_39_58mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water_small",
     "soundEnableDistance": 5000.0,
@@ -3609,7 +3773,7 @@
     "fx": "hit_39_58mm_red_brick_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3618,7 +3782,7 @@
     "fx": "hit_39_58mm_red_brick_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 5000.0
@@ -3627,16 +3791,16 @@
     "fx": "hit_39_58mm_dirt_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
-    "sfxEvent": "explosion_ground_37_50",
+    "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
   },
   "hit_39_58mm_dirt_he_rapid": {
     "fx": "hit_39_58mm_dirt_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 1000.0
@@ -3645,13 +3809,13 @@
     "fx": "hit_39_58mm_metal_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_39_58mm_metal_he_rapid": {
     "fx": "hit_39_58mm_metal_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal_small",
     "soundEnableDistance": 500.0
@@ -3660,7 +3824,7 @@
     "fx": "hit_39_58mm_sand_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3669,7 +3833,7 @@
     "fx": "hit_39_58mm_sand_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 1000.0
@@ -3678,7 +3842,7 @@
     "fx": "hit_39_58mm_snow_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "ground_splash",
     "soundEnableDistance": 150.0
@@ -3687,7 +3851,7 @@
     "fx": "hit_39_58mm_snow_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 1000.0
@@ -3696,7 +3860,7 @@
     "fx": "hit_39_58mm_wood_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "splash_wood",
     "soundEnableDistance": 150.0
@@ -3705,7 +3869,7 @@
     "fx": "hit_39_58mm_wood_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 1000.0
@@ -3714,7 +3878,7 @@
     "fx": "hit_39_58mm_stone_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3723,7 +3887,7 @@
     "fx": "hit_39_58mm_stone_he_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground_37_50",
     "soundEnableDistance": 1000.0
@@ -3732,7 +3896,7 @@
     "fx": "hit_39_58mm_water_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water_small",
     "soundEnableDistance": 500.0,
@@ -3742,7 +3906,7 @@
     "fx": "hit_39_58mm_red_brick_ap_rapid_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0
@@ -3751,7 +3915,7 @@
     "fx": "hit_59_80mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_ground",
     "soundEnableDistance": 5000.0
@@ -3760,7 +3924,7 @@
     "fx": "hit_59_80mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
     "soundEnableDistance": 5000.0
@@ -3769,13 +3933,13 @@
     "fx": "hit_59_80mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_59_80mm_metal_he": {
     "fx": "hit_59_80mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal",
     "soundEnableDistance": 5000.0
@@ -3784,7 +3948,7 @@
     "fx": "hit_59_80mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_ground",
     "soundEnableDistance": 5000.0
@@ -3793,7 +3957,7 @@
     "fx": "hit_59_80mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
     "soundEnableDistance": 5000.0
@@ -3802,7 +3966,7 @@
     "fx": "hit_59_80mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_ground",
     "soundEnableDistance": 5000.0
@@ -3811,7 +3975,7 @@
     "fx": "hit_59_80mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
     "soundEnableDistance": 5000.0
@@ -3820,7 +3984,7 @@
     "fx": "hit_59_80mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_wood",
     "soundEnableDistance": 5000.0
@@ -3829,7 +3993,7 @@
     "fx": "hit_59_80mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_wood",
     "soundEnableDistance": 5000.0
@@ -3838,7 +4002,7 @@
     "fx": "hit_59_80mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_concrete",
     "soundEnableDistance": 5000.0
@@ -3847,7 +4011,7 @@
     "fx": "hit_59_80mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_concrete",
     "soundEnableDistance": 5000.0
@@ -3856,7 +4020,7 @@
     "fx": "hit_59_80mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water",
     "soundEnableDistance": 5000.0,
@@ -3866,7 +4030,7 @@
     "fx": "hit_59_80mm_red_brick_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_concrete",
     "soundEnableDistance": 5000.0
@@ -3875,7 +4039,7 @@
     "fx": "hit_59_80mm_red_brick_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_concrete",
     "soundEnableDistance": 5000.0
@@ -3884,7 +4048,7 @@
     "fx": "hit_81_105mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_ground",
     "soundEnableDistance": 5000.0
@@ -3893,7 +4057,7 @@
     "fx": "hit_81_105mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
     "soundEnableDistance": 5000.0
@@ -3902,13 +4066,13 @@
     "fx": "hit_81_105mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_81_105mm_metal_he": {
     "fx": "hit_81_105mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_metal",
     "soundEnableDistance": 5000.0
@@ -3917,7 +4081,7 @@
     "fx": "hit_81_105mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_ground",
     "soundEnableDistance": 5000.0
@@ -3926,7 +4090,7 @@
     "fx": "hit_81_105mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
     "soundEnableDistance": 5000.0
@@ -3935,7 +4099,7 @@
     "fx": "hit_81_105mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_ground",
     "soundEnableDistance": 5000.0
@@ -3944,7 +4108,7 @@
     "fx": "hit_81_105mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_ground",
     "soundEnableDistance": 5000.0
@@ -3953,7 +4117,7 @@
     "fx": "hit_81_105mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_wood",
     "soundEnableDistance": 5000.0
@@ -3962,7 +4126,7 @@
     "fx": "hit_81_105mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_wood",
     "soundEnableDistance": 5000.0
@@ -3971,7 +4135,7 @@
     "fx": "hit_81_105mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_concrete",
     "soundEnableDistance": 5000.0
@@ -3980,7 +4144,7 @@
     "fx": "hit_81_105mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_concrete",
     "soundEnableDistance": 5000.0
@@ -3989,7 +4153,7 @@
     "fx": "hit_81_105mm_water_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "no_explosive_water",
     "soundEnableDistance": 5000.0,
@@ -3999,7 +4163,7 @@
     "fx": "hit_81_105mm_water_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_water",
     "soundEnableDistance": 5000.0,
@@ -4009,7 +4173,7 @@
     "fx": "hit_106_132mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4018,7 +4182,7 @@
     "fx": "hit_106_132mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4027,13 +4191,13 @@
     "fx": "hit_106_132mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_106_132mm_metal_he": {
     "fx": "hit_106_132mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_metal",
     "soundEnableDistance": 5000.0
@@ -4042,7 +4206,7 @@
     "fx": "hit_106_132mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4051,7 +4215,7 @@
     "fx": "hit_106_132mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4060,7 +4224,7 @@
     "fx": "hit_106_132mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4069,7 +4233,7 @@
     "fx": "hit_106_132mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4078,7 +4242,7 @@
     "fx": "hit_106_132mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_wood",
     "soundEnableDistance": 5000.0
@@ -4087,7 +4251,7 @@
     "fx": "hit_106_132mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_wood",
     "soundEnableDistance": 5000.0
@@ -4096,7 +4260,7 @@
     "fx": "hit_106_132mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_concrete",
     "soundEnableDistance": 5000.0
@@ -4105,7 +4269,7 @@
     "fx": "hit_106_132mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_concrete",
     "soundEnableDistance": 5000.0
@@ -4114,7 +4278,7 @@
     "fx": "hit_106_132mm_water_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_water",
     "soundEnableDistance": 5000.0,
@@ -4124,7 +4288,7 @@
     "fx": "hit_106_132mm_water_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_water",
     "soundEnableDistance": 5000.0,
@@ -4134,7 +4298,7 @@
     "fx": "hit_133_160mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4143,7 +4307,7 @@
     "fx": "hit_133_160mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4152,13 +4316,13 @@
     "fx": "hit_133_160mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_133_160mm_metal_he": {
     "fx": "hit_133_160mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_metal",
     "soundEnableDistance": 5000.0
@@ -4167,7 +4331,7 @@
     "fx": "hit_133_160mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4176,7 +4340,7 @@
     "fx": "hit_133_160mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4185,7 +4349,7 @@
     "fx": "hit_133_160mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4194,7 +4358,7 @@
     "fx": "hit_133_160mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4203,7 +4367,7 @@
     "fx": "hit_133_160mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_wood",
     "soundEnableDistance": 5000.0
@@ -4212,7 +4376,7 @@
     "fx": "hit_133_160mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_wood",
     "soundEnableDistance": 5000.0
@@ -4221,7 +4385,7 @@
     "fx": "hit_133_160mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_concrete",
     "soundEnableDistance": 5000.0
@@ -4230,7 +4394,7 @@
     "fx": "hit_133_160mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_concrete",
     "soundEnableDistance": 5000.0
@@ -4239,7 +4403,7 @@
     "fx": "hit_133_160mm_water_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_water",
     "soundEnableDistance": 5000.0,
@@ -4249,7 +4413,7 @@
     "fx": "hit_133_160mm_water_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_water",
     "soundEnableDistance": 5000.0,
@@ -4259,7 +4423,7 @@
     "fx": "hit_161_205mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4268,7 +4432,7 @@
     "fx": "hit_161_205mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4277,13 +4441,13 @@
     "fx": "hit_161_205mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_161_205mm_metal_he": {
     "fx": "hit_161_205mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_metal",
     "soundEnableDistance": 5000.0
@@ -4292,7 +4456,7 @@
     "fx": "hit_161_205mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4301,7 +4465,7 @@
     "fx": "hit_161_205mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4310,7 +4474,7 @@
     "fx": "hit_161_205mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4319,7 +4483,7 @@
     "fx": "hit_161_205mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4328,7 +4492,7 @@
     "fx": "hit_161_205mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_wood",
     "soundEnableDistance": 5000.0
@@ -4337,7 +4501,7 @@
     "fx": "hit_161_205mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_wood",
     "soundEnableDistance": 5000.0
@@ -4346,7 +4510,7 @@
     "fx": "hit_161_205mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_concrete",
     "soundEnableDistance": 5000.0
@@ -4355,7 +4519,7 @@
     "fx": "hit_161_205mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_concrete",
     "soundEnableDistance": 5000.0
@@ -4364,7 +4528,7 @@
     "fx": "hit_161_205mm_water_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_water",
     "soundEnableDistance": 5000.0,
@@ -4374,7 +4538,7 @@
     "fx": "hit_161_205mm_water_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_water",
     "soundEnableDistance": 5000.0,
@@ -4384,7 +4548,7 @@
     "fx": "hit_hit_artillery_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 20,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4393,7 +4557,7 @@
     "fx": "hit_hit_artillery_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 20,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4402,7 +4566,7 @@
     "fx": "hit_hit_artillery_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 20,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_ground",
     "soundEnableDistance": 5000.0
@@ -4411,7 +4575,7 @@
     "fx": "hit_206_290mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4420,7 +4584,7 @@
     "fx": "hit_206_290mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4429,13 +4593,13 @@
     "fx": "hit_206_290mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_206_290mm_metal_he": {
     "fx": "hit_206_290mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_explosion_metal",
     "soundEnableDistance": 5000.0
@@ -4444,7 +4608,7 @@
     "fx": "hit_206_290mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4453,7 +4617,7 @@
     "fx": "hit_206_290mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4462,7 +4626,7 @@
     "fx": "hit_206_290mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4471,7 +4635,7 @@
     "fx": "hit_206_290mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4480,7 +4644,7 @@
     "fx": "hit_206_290mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_wood",
     "soundEnableDistance": 5000.0
@@ -4489,7 +4653,7 @@
     "fx": "hit_206_290mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_wood",
     "soundEnableDistance": 5000.0
@@ -4498,7 +4662,7 @@
     "fx": "hit_206_290mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_concrete",
     "soundEnableDistance": 5000.0
@@ -4507,7 +4671,7 @@
     "fx": "hit_206_290mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_concrete",
     "soundEnableDistance": 5000.0
@@ -4516,7 +4680,7 @@
     "fx": "hit_206_290mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_water",
     "soundEnableDistance": 5000.0,
@@ -4526,7 +4690,7 @@
     "fx": "hit_291_390mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4535,7 +4699,7 @@
     "fx": "hit_291_390mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4544,13 +4708,13 @@
     "fx": "hit_291_390mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_291_390mm_metal_he": {
     "fx": "hit_291_390mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_metal",
     "soundEnableDistance": 5000.0
@@ -4559,7 +4723,7 @@
     "fx": "hit_291_390mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4568,7 +4732,7 @@
     "fx": "hit_291_390mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4577,7 +4741,7 @@
     "fx": "hit_291_390mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4586,7 +4750,7 @@
     "fx": "hit_291_390mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4595,7 +4759,7 @@
     "fx": "hit_291_390mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_wood",
     "soundEnableDistance": 5000.0
@@ -4604,7 +4768,7 @@
     "fx": "hit_291_390mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_wood",
     "soundEnableDistance": 5000.0
@@ -4613,7 +4777,7 @@
     "fx": "hit_291_390mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_concrete",
     "soundEnableDistance": 5000.0
@@ -4622,7 +4786,7 @@
     "fx": "hit_291_390mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_concrete",
     "soundEnableDistance": 5000.0
@@ -4631,7 +4795,7 @@
     "fx": "hit_291_390mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_water",
     "soundEnableDistance": 5000.0,
@@ -4641,7 +4805,7 @@
     "fx": "hit_391_480mm_dirt_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4650,7 +4814,7 @@
     "fx": "hit_391_480mm_dirt_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4659,13 +4823,13 @@
     "fx": "hit_391_480mm_metal_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30
+    "onePointNumber": 10
   },
   "hit_391_480mm_metal_he": {
     "fx": "hit_391_480mm_metal_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_metal",
     "soundEnableDistance": 5000.0
@@ -4674,7 +4838,7 @@
     "fx": "hit_391_480mm_sand_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4683,7 +4847,7 @@
     "fx": "hit_391_480mm_sand_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4692,7 +4856,7 @@
     "fx": "hit_391_480mm_snow_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_ground",
     "soundEnableDistance": 5000.0
@@ -4701,7 +4865,7 @@
     "fx": "hit_391_480mm_snow_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_ground",
     "soundEnableDistance": 5000.0
@@ -4710,7 +4874,7 @@
     "fx": "hit_391_480mm_wood_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_wood",
     "soundEnableDistance": 5000.0
@@ -4719,7 +4883,7 @@
     "fx": "hit_391_480mm_wood_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_wood",
     "soundEnableDistance": 5000.0
@@ -4728,7 +4892,7 @@
     "fx": "hit_391_480mm_stone_ap_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_no_expl_concrete",
     "soundEnableDistance": 5000.0
@@ -4737,7 +4901,7 @@
     "fx": "hit_391_480mm_stone_he_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 10,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_concrete",
     "soundEnableDistance": 5000.0
@@ -4746,7 +4910,7 @@
     "fx": "hit_391_480mm_water_cmps_fx",
     "numInstances": 70,
     "numReserved": 20,
-    "onePointNumber": 30,
+    "onePointNumber": 8,
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "art_heavy_water",
     "soundEnableDistance": 5000.0,
@@ -4821,6 +4985,159 @@
     "numReserved": 3,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
+  },
+  "location_ground_papers_big": {
+    "fx": "location_flying_papers_big_cmps_fx",
+    "lifeTime": 0.0,
+    "softnessDepth": 2.0,
+    "granularity": 4,
+    "numInstances": 500,
+    "numReserved": 10,
+    "group": "highres"
+  },
+  "location_smoke_small": {
+    "fx": "location_smoke_small_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_smoke_medium": {
+    "fx": "location_smoke_medium_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_smoke_big": {
+    "fx": "location_smoke_big_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_smoke_huge": {
+    "fx": "location_smoke_huge_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_blowing_gray": {
+    "fx": "location_blowing_gray_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_blowing_sand": {
+    "fx": "location_blowing_sand_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_blowing_snow": {
+    "fx": "location_blowing_snow_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_dust_cloud_gray": {
+    "fx": "location_dust_cloud_gray_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_dust_cloud_sand": {
+    "fx": "location_dust_cloud_sand_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_dust_cloud_snow": {
+    "fx": "location_dust_cloud_snow_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_fire_small": {
+    "fx": "location_fire_small_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3,
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 100.0
+  },
+  "location_fire_medium": {
+    "fx": "location_fire_medium_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3,
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_destroyed",
+    "soundEnableDistance": 300.0
+  },
+  "location_fire_big": {
+    "fx": "location_fire_big_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3,
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "fire",
+    "soundEnableDistance": 400.0
+  },
+  "location_fire_huge": {
+    "fx": "location_fire_huge_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3,
+    "sfxPathStudio": "naval/explosions",
+    "sfxEvent": "fire_big",
+    "soundEnableDistance": 1000.0
+  },
+  "location_smoke_pipe_small": {
+    "fx": "location_smoke_pipe_small_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_smoke_pipe_med": {
+    "fx": "location_smoke_pipe_med_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_smoke_pipe_big": {
+    "fx": "location_smoke_pipe_big_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_steam_pipe_small": {
+    "fx": "location_steam_pipe_small_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_steam_pipe_med": {
+    "fx": "location_steam_pipe_med_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_steam_pipe_big": {
+    "fx": "location_steam_pipe_big_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_water_steam": {
+    "fx": "location_water_steam_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
+  },
+  "location_water_bubbles": {
+    "fx": "location_water_bubbles_cmps_fx",
+    "numInstances": 30,
+    "numReserved": 20,
+    "onePointNumber": 3
   },
   "water_under_explosion_medium": {
     "fx": "water_under_explosion_medium_cmps_fx",
@@ -5432,6 +5749,16 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "firework_misc"
+  },
+  "shell_expl_long_fireworks": {
+    "fx": "misc_firework_single_cmps_fx",
+    "numInstances": 100,
+    "numReserved": 0,
+    "minScale": 0.5,
+    "maxScale": 0.8,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "firework"
   },
   "firework_score_ginger": {
     "fx": "firework_score_ginger_cmps_fx",
@@ -6198,8 +6525,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 15,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "concrete_mid",
@@ -6211,8 +6536,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "concrete_mid",
@@ -6224,8 +6547,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "sandbag",
@@ -6235,8 +6556,6 @@
     "fx": "dust_destruction_sand_med_cmps_fx",
     "lifeTime": 4.0,
     "softnessDepth": 5.0,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "numInstances": 1000,
     "numReserved": 25,
     "sfxPath": "sounds/effects",
@@ -6248,8 +6567,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "bollard",
@@ -6261,8 +6578,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "metal_small",
@@ -6274,8 +6589,7 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
+    "xScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "metal_grid",
@@ -6287,8 +6601,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "metal_grid_fall",
@@ -6300,8 +6612,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "bollard",
@@ -6313,8 +6623,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/ambient_tanks",
     "sfxPathStudio": "ground/ambient",
     "sfxEvent": "church_bell_hit",
@@ -6326,8 +6634,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6339,8 +6645,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6352,8 +6656,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6365,8 +6667,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6378,8 +6678,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
@@ -6391,8 +6689,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6404,8 +6700,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
@@ -6417,8 +6711,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/effects_tanks",
     "sfxPathStudio": "ground/effects",
     "sfxEvent": "collision_bushes",
@@ -6430,8 +6722,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6443,8 +6733,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "tree",
@@ -6454,8 +6742,8 @@
     "fx": "dust_destruction_tree_ground_med_cmps_fx",
     "numInstances": 15,
     "numReserved": 2,
-    "minScale": 5.0,
-    "maxScale": 5.2,
+    "minScale": 3.0,
+    "maxScale": 3.2,
     "sfxEvent": "tree_fall",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects",
@@ -6467,8 +6755,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_mid",
@@ -6480,8 +6766,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_big",
@@ -6493,8 +6777,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_metal",
@@ -6506,8 +6788,7 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
+    "xScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_small",
@@ -6519,8 +6800,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_metal_big",
@@ -6532,8 +6811,6 @@
     "numReserved": 0,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "speaker_destroy",
@@ -6543,8 +6820,6 @@
     "fx": "dust_destruction_snow_big_cmps_fx",
     "lifeTime": 4.0,
     "softnessDepth": 5.0,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "numInstances": 1000,
     "numReserved": 25,
     "sfxPath": "sounds/effects",
@@ -6569,8 +6844,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "bollard",
@@ -6582,8 +6855,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_metal_big",
@@ -6595,8 +6866,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_big",
@@ -6608,8 +6877,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_small",
@@ -6631,8 +6898,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "haystack",
@@ -6644,8 +6909,7 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
+    "xScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "car_wreck",
@@ -6657,8 +6921,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "car_wreck",
@@ -6693,8 +6955,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "explosion_mine",
@@ -6719,8 +6979,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "haystack",
@@ -6743,8 +7001,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "building_big",
@@ -6757,8 +7013,7 @@
     "numReserved": 50,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
+    "xScale": 1.2,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
@@ -6766,8 +7021,6 @@
     "fx": "dust_construction_collapse_local_medium_cmps_fx",
     "lifeTime": 4.0,
     "softnessDepth": 5.0,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "numInstances": 1000,
     "numReserved": 25,
     "sfxPath": "sounds/effects",
@@ -6779,8 +7032,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "concrete_big",
@@ -6792,8 +7043,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "building_big",
@@ -6805,8 +7054,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_metal_big",
@@ -6818,8 +7065,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "wood_metal",
@@ -6831,8 +7076,6 @@
     "numReserved": 5,
     "softnessDepth": 5.0,
     "onePointNumber": 5,
-    "minScale": 0.8,
-    "maxScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
     "sfxEvent": "building_big",

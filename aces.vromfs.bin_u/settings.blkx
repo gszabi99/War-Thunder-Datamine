@@ -94,7 +94,8 @@
       "giQuality": "low",
       "lowResFx": true,
       "riGpuObjects": true,
-      "fxTarget": "auto"
+      "fxTarget": "auto",
+      "enableBlastEffect": true
     },
     "sound": {
       "speakerMode": "",
@@ -1471,9 +1472,41 @@
       "forSource": "..\\..\\prog\\scripts\\sonyLib",
       "forVromfs": "sonyLib"
     },
-    "wt": {
+    "scripts": {
       "forSource": "../prog/scripts/scripts",
       "forVromfs": "scripts"
+    },
+    "gui": {
+      "forSource": "../prog/scripts/gui",
+      "forVromfs": "gui"
+    },
+    "game": {
+      "forSource": "../prog/scripts/scripts/game",
+      "forVromfs": "scripts/game"
+    },
+    "rGui": {
+      "forSource": "../../skyquake/prog/scripts/reactiveGui",
+      "forVromfs": "reactivegui"
+    },
+    "globalScripts": {
+      "forSource": "../../skyquake/prog/scripts/globalScripts",
+      "forVromfs": "globalScripts"
+    },
+    "dedScripts": {
+      "forSource": "../prog/scripts/dedicatedScripts",
+      "forVromfs": "dedicatedScripts"
+    },
+    "nativeModuleCompatibility": {
+      "forSource": "../../skyquake/prog/scripts/nativeModuleCompatibility",
+      "forVromfs": "nativeModuleCompatibility"
+    },
+    "sqDagui": {
+      "forSource": "../prog/scripts/sqDagui",
+      "forVromfs": "sqDagui"
+    },
+    "sqStdLibs": {
+      "forSource": "../prog/scripts/sqStdLibs",
+      "forVromfs": "sqStdLibs"
     },
     "daslib": {
       "forSource": "../../prog/1stPartyLibs/daScript/daslib",
@@ -1482,6 +1515,46 @@
     "dasGameLibs": {
       "forSource": "../../prog/gameLibs/das",
       "forVromfs": "das"
+    },
+    "lang": {
+      "forSource": "../develop/gameBase/lang_src/lang",
+      "forVromfs": "lang"
+    },
+    "guiConfig": {
+      "forSource": "../prog/scripts/config",
+      "forVromfs": "config"
+    },
+    "gameDev": {
+      "forSource": "../prog/scripts/game_pkg_dev",
+      "forVromfs": "game_pkg_dev"
+    },
+    "wtScripts": {
+      "forSource": "../prog/scripts/wt/scripts",
+      "forVromfs": "wt/scripts"
+    },
+    "mechaScripts": {
+      "forSource": "../prog/scripts/mecha/scripts",
+      "forVromfs": "mecha/scripts"
+    },
+    "mechaGui": {
+      "forSource": "../prog/scripts/mecha/gui",
+      "forVromfs": "mecha/gui"
+    },
+    "vrtScripts": {
+      "forSource": "../prog/scripts/vrThunder/scripts",
+      "forVromfs": "vrThunder/scripts"
+    },
+    "vrtGui": {
+      "forSource": "../prog/scripts/vrThunder/gui",
+      "forVromfs": "vrThunder/gui"
+    },
+    "vrtRGui": {
+      "forSource": "../../skyquake/prog/scripts/vrThunder/reactiveGui",
+      "forVromfs": "vrThunder/reactivegui"
+    },
+    "vrtGlobals": {
+      "forSource": "../../skyquake/prog/scripts/vrThunder/globals",
+      "forVromfs": "vrThunder/globals"
     }
   },
   "addons": [
@@ -1517,6 +1590,15 @@
     },
     {
       "folder": "content.hq/tomoe_hq"
+    },
+    {
+      "folder": "content.hq/uhq_vehicles"
+    },
+    {
+      "folder": "content.hq/uhq_aircraft"
+    },
+    {
+      "folder": "content.hq/uhq_environment"
     }
   ],
   "addons_no_check": [
@@ -1552,11 +1634,24 @@
     },
     {
       "folder": "content.hq/tomoe_hq"
+    },
+    {
+      "folder": "content.hq/uhq_vehicles"
+    },
+    {
+      "folder": "content.hq/uhq_aircraft"
+    },
+    {
+      "folder": "content.hq/uhq_environment"
     }
   ],
   "addonToXboxChunk": {
     "content.hq/hq_tex": 1002,
     "content.hq/pkg_cockpits": 1002
+  },
+  "addonToPs5ContentLabel": {
+    "content.hq/uhq_vehicles": "UHQVEHICLES00000",
+    "content.hq/uhq_aircraft": "UHQAIRCRAFT00000"
   },
   "video": {
     "safeArea": false,
@@ -1581,14 +1676,14 @@
     "vrMipBias": -0.8
   },
   "ps4": {
-    "garlic_size_mb": 2510,
+    "garlic_size_mb": 2610,
     "neo_garlic_size_mb": 3010,
     "onion_size_mb": 190,
     "dcb_size_mb": 8,
     "ccb_size_mb": 8,
     "onion_blocks": 16384,
-    "max_genmip_tex_sz": 2052,
-    "mem_reserve_mb": 768,
+    "max_genmip_tex_sz": 2048,
+    "mem_reserve_mb": 256,
     "emergency_buffer_pages": 20,
     "shader_garlic_size_kb": 2048,
     "dynbuf_heap_garlic_mb": 96,
@@ -1605,7 +1700,7 @@
     "mem_direct_size_mb": 6144,
     "mem_shader_heap_size_kb": 16384,
     "mem_reserve_mb": 256,
-    "max_genmip_tex_sz": 2052,
+    "max_genmip_tex_sz": 2048,
     "dynbuf_heap_gpu_mb": 256,
     "dynbuf_direct_threshold_kb": 1024,
     "enable_deferred_mipgen": true,
@@ -1788,9 +1883,6 @@
       "hqTexPrio": 1
     },
     {
-      "lqTexMaxSizeKB": 2048
-    },
-    {
       "defStubTexColor": "#50505000"
     },
     {
@@ -1798,15 +1890,6 @@
     },
     {
       "lqIsSplitBQ": false
-    },
-    {
-      "lqMipBiasHQ": 2
-    },
-    {
-      "lqMipBiasMQ": 3
-    },
-    {
-      "lqMipBiasLQ": 3
     },
     {
       "win32": {
@@ -1876,22 +1959,6 @@
         "idx": 8,
         "color": "#80800000",
         "gamma1": true
-      }
-    },
-    {
-      "biasGroup": {
-        "pack_re": "aircrafts",
-        "lqMipBiasHQ": 2,
-        "lqMipBiasMQ": 1,
-        "lqMipBiasLQ": 2
-      }
-    },
-    {
-      "biasGroup": {
-        "pack_re": "tanks",
-        "lqMipBiasHQ": 1,
-        "lqMipBiasMQ": 1,
-        "lqMipBiasLQ": 2
       }
     }
   ],
@@ -1987,5 +2054,47 @@
         "vendorid": -11714
       }
     ]
+  },
+  "graphicsAutodetect": {
+    "gpuBenchmarkDuration": 10.0,
+    "presetDefault": "high",
+    "presets": {
+      "ultralow": {
+        "timeMs30": 30.0,
+        "timeMs60": 15.0,
+        "timeMs120": 7.0,
+        "timeMs240": 3.0
+      },
+      "low": {
+        "timeMs30": 17.0,
+        "timeMs60": 8.0,
+        "timeMs120": 4.0,
+        "timeMs240": 2.0
+      },
+      "medium": {
+        "timeMs30": 11.0,
+        "timeMs60": 5.5,
+        "timeMs120": 2.5,
+        "timeMs240": 1.25
+      },
+      "high": {
+        "timeMs30": 6.5,
+        "timeMs60": 3.0,
+        "timeMs120": 1.5,
+        "timeMs240": 0.75
+      },
+      "max": {
+        "timeMs30": 4.5,
+        "timeMs60": 2.0,
+        "timeMs120": 1.0,
+        "timeMs240": 0.5
+      },
+      "movie": {
+        "timeMs30": 3.5,
+        "timeMs60": 1.25,
+        "timeMs120": 0.6,
+        "timeMs240": 0.3
+      }
+    }
   }
 }

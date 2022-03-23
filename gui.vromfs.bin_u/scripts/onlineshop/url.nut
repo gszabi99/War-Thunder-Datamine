@@ -1,5 +1,5 @@
-local { clearBorderSymbols } = require("std/string.nut")
-local base64 = require("base64")
+let { clearBorderSymbols } = require("%sqstd/string.nut")
+let base64 = require("base64")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -9,46 +9,46 @@ const URL_TAG_NO_ENCODING = "no_encoding"
 
 const AUTH_ERROR_LOG_COLLECTION = "log"
 
-local qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", "ko", "tr"]
+let qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", "ko", "tr"]
 const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
 
-local function getUrlWithQrRedirect(url) {
+let function getUrlWithQrRedirect(url) {
   local lang = ::g_language.getShortName()
   if (!::isInArray(lang, qrRedirectSupportedLangs))
     lang = "en"
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
 }
 
-local canAutoLogin = @() !::is_vendor_tencent() && ::g_login.isAuthorized()
+let canAutoLogin = @() !::is_vendor_tencent() && ::g_login.isAuthorized()
 
-local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
+let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
   if (baseUrl == null || baseUrl == "") {
     dagor.debug("Error: tried to open an empty url")
     return null
   }
 
   local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
-  local urlTags = ::split(baseUrl, URL_TAGS_DELIMITER)
+  let urlTags = ::split(baseUrl, URL_TAGS_DELIMITER)
   if (!urlTags.len()) {
     dagor.debug("Error: tried to open an empty url")
     return null
   }
-  local urlWithoutTags = urlTags.remove(urlTags.len() - 1)
+  let urlWithoutTags = urlTags.remove(urlTags.len() - 1)
   url = urlWithoutTags
 
-  local urlType = ::g_url_type.getByUrl(url)
+  let urlType = ::g_url_type.getByUrl(url)
   if (::isInArray(URL_TAG_AUTO_LOCALIZE, urlTags))
     url = urlType.applyCurLang(url)
 
-  local shouldLogin = ::isInArray(URL_TAG_AUTO_LOGIN, urlTags)
+  let shouldLogin = ::isInArray(URL_TAG_AUTO_LOGIN, urlTags)
   if (!isAlreadyAuthenticated && shouldLogin && canAutoLogin()) {
-    local shouldEncode = !::isInArray(URL_TAG_NO_ENCODING, urlTags)
+    let shouldEncode = !::isInArray(URL_TAG_NO_ENCODING, urlTags)
     if (shouldEncode)
       url = base64.encodeString(url)
 
-    local ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
-    local ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
-    local authData = ::get_authenticated_url_sso(url, ssoService)
+    let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
+    let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
+    let authData = ::get_authenticated_url_sso(url, ssoService)
 
     if (authData.yuplayResult == ::YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
@@ -64,27 +64,31 @@ local function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false
   }
 }
 
-local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false) {
+let function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false) {
   if (!::has_feature("AllowExternalLink"))
     return
 
-  local guiScene = ::get_cur_gui_scene()
+  let guiScene = ::get_cur_gui_scene()
   if (guiScene.isInAct()) {
-    local openImpl = callee()
+    let openImpl = callee()
     guiScene.performDelayed({}, @() openImpl(baseUrl, forceExternal, isAlreadyAuthenticated))
     return
   }
 
-  local urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
+  let browser = forceExternal ? "external" : "any"
+  let authenticated = isAlreadyAuthenticated ? " authenticated" : ""
+  ::dagor.debug($"[URL] open {browser} browser for{authenticated} '{baseUrl}'")
+
+  let urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
   if (urlConfig == null)
     return
 
-  local url = urlConfig.url
-  local urlType = urlConfig.urlType
+  let url = urlConfig.url
+  let urlType = urlConfig.urlType
 
-  ::dagor.debug("Open url with urlType = " + urlType.typeName + ": " + url)
-  ::dagor.debug("Base Url = " + baseUrl)
-  local hasFeature = urlType.isOnlineShop
+  ::dagor.debug("[URL] Open url with urlType = " + urlType.typeName + ": " + url)
+  ::dagor.debug("[URL] Base Url = " + baseUrl)
+  let hasFeature = urlType.isOnlineShop
                      ? ::has_feature("EmbeddedBrowserOnlineShop")
                      : ::has_feature("EmbeddedBrowser")
   if (!forceExternal && ::use_embedded_browser() && !::steam_is_running() && hasFeature)
@@ -98,10 +102,10 @@ local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false
   //shell_launch can be long sync function so call it delayed to avoid broke current call.
   ::get_gui_scene().performDelayed(::getroottable(), function() {
     // External browser
-    local response = ::shell_launch(url)
+    let response = ::shell_launch(url)
     if (response > 0)
     {
-      local errorText = ::get_yu2_error_text(response)
+      let errorText = ::get_yu2_error_text(response)
       ::showInfoMsgBox(errorText, "errorMessageBox")
       ::dagor.debug("shell_launch() have returned " + response + " for URL:" + url)
     }
@@ -109,11 +113,11 @@ local function open(baseUrl, forceExternal=false, isAlreadyAuthenticated = false
   })
 }
 
-local function openUrlByObj(obj, forceExternal=false, isAlreadyAuthenticated = false) {
+let function openUrlByObj(obj, forceExternal=false, isAlreadyAuthenticated = false) {
   if (!::check_obj(obj) || obj?.link == null || obj.link == "")
     return
 
-  local link = (obj.link.slice(0, 1) == "#") ? ::loc(obj.link.slice(1)) : obj.link
+  let link = (obj.link.slice(0, 1) == "#") ? ::loc(obj.link.slice(1)) : obj.link
   open(link, forceExternal, isAlreadyAuthenticated)
 }
 
@@ -139,7 +143,7 @@ local function validateLink(link) {
   if (link.indexof("www.", linkStartIdx) != null)
     return link
 
-  local localizedLink = ::loc(link, "")
+  let localizedLink = ::loc(link, "")
   if (localizedLink != "")
     return localizedLink
 
@@ -147,11 +151,11 @@ local function validateLink(link) {
   return null
 }
 
-local function openUrl(baseUrl, forceExternal=false, isAlreadyAuthenticated = false, biqQueryKey = "") {
+let function openUrl(baseUrl, forceExternal=false, isAlreadyAuthenticated = false, biqQueryKey = "") {
   if (!::has_feature("AllowExternalLink"))
     return
 
-  local bigQueryInfoObject = {url = baseUrl}
+  let bigQueryInfoObject = {url = baseUrl}
   if( ! ::u.isEmpty(biqQueryKey))
     bigQueryInfoObject["from"] <- biqQueryKey
 

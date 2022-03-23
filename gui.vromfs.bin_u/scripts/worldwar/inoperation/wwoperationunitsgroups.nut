@@ -1,25 +1,25 @@
-local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-local { UNIT_GROUP } = require("scripts/utils/genericTooltipTypes.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { UNIT_GROUP } = require("%scripts/utils/genericTooltipTypes.nut")
 
-local function getUnitsGroups() {
-  local unitsGroupByCountry = getOperationById(
+let function getUnitsGroups() {
+  let unitsGroupByCountry = getOperationById(
     ::ww_get_operation_id())?.getMap().getUnitsGroupsByCountry()
   if (unitsGroupByCountry == null)
     return null
 
-  local fullGroupsList = {}
+  let fullGroupsList = {}
   foreach (country in unitsGroupByCountry)
     fullGroupsList.__update(country.groups)
   return fullGroupsList
 }
 
-local function overrideUnitViewParamsByGroups(wwUnitViewParams, unitsGroups) {
-  local group = unitsGroups?[wwUnitViewParams.id]
+let function overrideUnitViewParamsByGroups(wwUnitViewParams, unitsGroups) {
+  let group = unitsGroups?[wwUnitViewParams.id]
   if (group == null)
     return wwUnitViewParams
 
-  local defaultUnit = group?.defaultUnit
+  let defaultUnit = group?.defaultUnit
   wwUnitViewParams.name         = ::loc(group.name)
   wwUnitViewParams.icon         = ::getUnitClassIco(defaultUnit)
   wwUnitViewParams.shopItemType = getUnitRole(defaultUnit)
@@ -28,8 +28,8 @@ local function overrideUnitViewParamsByGroups(wwUnitViewParams, unitsGroups) {
   return wwUnitViewParams
 }
 
-local function overrideUnitsViewParamsByGroups(wwUnitsViewParams) {
-  local unitsGroups = getUnitsGroups()
+let function overrideUnitsViewParamsByGroups(wwUnitsViewParams) {
+  let unitsGroups = getUnitsGroups()
   if (unitsGroups == null)
     return wwUnitsViewParams
 
@@ -37,7 +37,7 @@ local function overrideUnitsViewParamsByGroups(wwUnitsViewParams) {
 }
 
 return {
-  getUnitsGroups = getUnitsGroups
-  overrideUnitViewParamsByGroups = overrideUnitViewParamsByGroups
-  overrideUnitsViewParamsByGroups = overrideUnitsViewParamsByGroups
+  getUnitsGroups
+  overrideUnitViewParamsByGroups
+  overrideUnitsViewParamsByGroups
 }

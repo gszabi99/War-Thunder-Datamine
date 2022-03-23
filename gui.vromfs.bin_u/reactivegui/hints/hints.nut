@@ -1,9 +1,9 @@
-local hintTags = require("hintTags.nut")
+let hintTags = require("hintTags.nut")
 
-local hintsCache = {}
+let hintsCache = {}
 
-local createHintContent = function(text, override) {
-  local config = ::cross_call.getHintConfig(text)
+let createHintContent = function(text, override) {
+  let config = ::cross_call.getHintConfig(text)
 
   return {
     size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
@@ -14,7 +14,7 @@ local createHintContent = function(text, override) {
   }
 }
 
-local getHintContent = function(hintString, override = {}) {
+let getHintContent = function(hintString, override = {}) {
   if (hintString in hintsCache)
     return hintsCache.hintString
 

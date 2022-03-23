@@ -1,13 +1,13 @@
-local wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
-local slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-local { setCurPreset } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-local WwHelpSlotbarGroupsModal = require("scripts/worldWar/handler/WwHelpSlotbarGroupsModal.nut")
-local { getBestPresetData, generatePreset } = require("scripts/slotbar/generatePreset.nut")
-local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-local { getOperationById, getMapByName
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-local getLockedCountryData = require("scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
+let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
+let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
+let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let wwHelpSlotbarGroupsModal = require("%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
+let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
+let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById, getMapByName
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0"
@@ -27,15 +27,15 @@ local DEFAULT_BATTLE_ITEM_CONGIG = {
   isHidden = true
 }
 
-class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WwBattleDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/modalSceneWithGamercard.blk"
-  sceneTplName = "gui/worldWar/battleDescriptionWindow"
-  sceneTplBattleList = "gui/missions/missionBoxItemsList"
-  sceneTplDescriptionName = "gui/worldWar/battleDescriptionWindowContent"
-  sceneTplTeamRight = "gui/worldWar/wwBattleDescriptionTeamUnitsInfo"
-  sceneTplTeamHeaderInfo = "gui/worldWar/wwBattleDescriptionTeamInfo"
+  sceneBlkName = "%gui/modalSceneWithGamercard.blk"
+  sceneTplName = "%gui/worldWar/battleDescriptionWindow"
+  sceneTplBattleList = "%gui/missions/missionBoxItemsList"
+  sceneTplDescriptionName = "%gui/worldWar/battleDescriptionWindowContent"
+  sceneTplTeamRight = "%gui/worldWar/wwBattleDescriptionTeamUnitsInfo"
+  sceneTplTeamHeaderInfo = "%gui/worldWar/wwBattleDescriptionTeamInfo"
 
   slotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "crew", "info", "repair" ]
   shouldCheckCrewsReady = true
@@ -101,7 +101,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     battlesListObj = scene.findObject("items_list")
-    local battleListData = ::handyman.renderCached(sceneTplBattleList,
+    let battleListData = ::handyman.renderCached(sceneTplBattleList,
       { items = array(minCountBattlesInList, DEFAULT_BATTLE_ITEM_CONGIG)})
     guiScene.appendWithBlk(battlesListObj, battleListData, this)
     curBattleListMap = []
@@ -115,7 +115,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     reinitBattlesList()
     initSquadList()
 
-    local timerObj = scene.findObject("update_timer")
+    let timerObj = scene.findObject("update_timer")
     if (::check_obj(timerObj))
       timerObj.setUserData(this)
 
@@ -124,11 +124,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function initQueueInfo()
   {
-    local queueInfoObj = scene.findObject("queue_info")
+    let queueInfoObj = scene.findObject("queue_info")
     if (!::check_obj(queueInfoObj))
       return
 
-    local handler = ::handlersManager.loadHandler(::gui_handlers.WwQueueInfo,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.WwQueueInfo,
       { scene = queueInfoObj })
     registerSubHandler(handler)
     queueInfoHandlerWeak = handler.weakref()
@@ -136,16 +136,16 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateForceSelectedBattle()
   {
-    local queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (queue)
     {
-      local battleWithQueue = getQueueBattle(queue)
+      let battleWithQueue = getQueueBattle(queue)
       if (battleWithQueue && battleWithQueue.isValid() && curBattleInList.id != battleWithQueue.id)
         curBattleInList = getBattleById(battleWithQueue.id)
     }
     else
     {
-      local wwBattleName = ::g_squad_manager.getWwOperationBattle()
+      let wwBattleName = ::g_squad_manager.getWwOperationBattle()
       if (wwBattleName && curBattleInList.id != wwBattleName)
         curBattleInList = getBattleById(wwBattleName)
     }
@@ -156,11 +156,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function initSquadList()
   {
-    local squadInfoObj = scene.findObject("squad_info")
+    let squadInfoObj = scene.findObject("squad_info")
     if (!::check_obj(squadInfoObj))
       return
 
-    local handler = ::handlersManager.loadHandler(::gui_handlers.WwSquadList,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.WwSquadList,
       { scene = squadInfoObj })
     registerSubHandler(handler)
     squadListHandlerWeak = handler.weakref()
@@ -172,14 +172,14 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (!wwQueuesData.isDataValid())
       requestQueuesData()
 
-    local currentBattleListMap = createBattleListMap()
-    local needRefillBattleList = isForceUpdate || hasChangedInBattleListMap(currentBattleListMap)
+    let currentBattleListMap = createBattleListMap()
+    let needRefillBattleList = isForceUpdate || hasChangedInBattleListMap(currentBattleListMap)
 
     curBattleListMap = currentBattleListMap
 
     if (needRefillBattleList)
     {
-      local view = getBattleListView()
+      let view = getBattleListView()
       fillBattleList(view)
       curBattleListItems = clone view.items
       selectItemInList()
@@ -196,18 +196,18 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function validateCurQueue()
   {
-    local queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (!queue)
       return
 
-    local queueBattle = getQueueBattle(queue)
+    let queueBattle = getQueueBattle(queue)
     if (!queueBattle || !queueBattle.isValid())
       ::g_world_war.leaveWWBattleQueues()
   }
 
   function validateSquadInfo()
   {
-    local wwBattleName = ::g_squad_manager.getWwOperationBattle()
+    let wwBattleName = ::g_squad_manager.getWwOperationBattle()
     if (wwBattleName && (wwBattleName != operationBattle.id || !operationBattle.isValid()))
       ::g_squad_manager.cancelWwBattlePrepare()
   }
@@ -234,7 +234,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateTitle()
   {
-    local titleTextObj = scene.findObject("battle_description_frame_text")
+    let titleTextObj = scene.findObject("battle_description_frame_text")
     if (!::check_obj(titleTextObj))
       return
 
@@ -262,8 +262,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       showSceneBtn("no_available_battles_alert_text", false)
     else
     {
-      local country = ::g_world_war.curOperationCountry
-      local availableBattlesList = ::g_world_war.getBattles().filter(
+      let country = ::g_world_war.curOperationCountry
+      let availableBattlesList = ::g_world_war.getBattles().filter(
         function(battle) {
           return ::g_world_war.isBattleAvailableToPlay(battle)
             && isBattleAvailableToMatching(battle, country)
@@ -281,8 +281,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if(!battle.hasAvailableUnits())
       return false
 
-    local side = getPlayerSide(battle)
-    local team = battle.getTeamBySide(side)
+    let side = getPlayerSide(battle)
+    let team = battle.getTeamBySide(side)
     if (team && !battle.hasUnitsToFight(country, team, side))
       return false
 
@@ -297,7 +297,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getBattleListView()
   {
-    local wwBattlesView = ::u.map(curBattleListMap,
+    let wwBattlesView = ::u.map(curBattleListMap,
       function(battle) {
         return createBattleListItemView(battle)
       }.bindenv(this))
@@ -316,10 +316,10 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (!curBattleInList.isValid())
       updateForceSelectedBattle()
 
-    local itemId = curBattleInList.isValid() ? curBattleInList.id
+    let itemId = curBattleInList.isValid() ? curBattleInList.id
       : ""
 
-    local idx = itemId.len() ? (curBattleListItems.findindex(@(item) item.id == itemId) ?? -1) : -1
+    let idx = itemId.len() ? (curBattleListItems.findindex(@(item) item.id == itemId) ?? -1) : -1
     if (idx >= 0 && battlesListObj.getValue() != idx)
       battlesListObj.setValue(idx)
   }
@@ -327,8 +327,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   function fillBattleList(view)
   {
     guiScene.setUpdatesEnabled(false, false)
-    local newList = view.items
-    local total = ::max(newList.len(), curBattleListItems?.len?() ?? 0)
+    let newList = view.items
+    let total = ::max(newList.len(), curBattleListItems?.len?() ?? 0)
     for(local i = 0; i < total; i++)
       updateBattleInList(i, curBattleListItems?[i], newList?[i])
 
@@ -339,10 +339,10 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local maxSectorNameWidth = 0
-    local sectorNameTextObjs = []
+    let sectorNameTextObjs = []
     foreach(item in view.items)
     {
-      local sectorNameTxtObj = scene.findObject("mission_item_prefix_text_" + item.id)
+      let sectorNameTxtObj = scene.findObject("mission_item_prefix_text_" + item.id)
       if (::checkObj(sectorNameTxtObj))
       {
         sectorNameTextObjs.append(sectorNameTxtObj)
@@ -350,7 +350,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local sectorWidth = maxSectorNameWidth
+    let sectorWidth = maxSectorNameWidth
     foreach(sectorNameTextObj in sectorNameTextObjs)
       sectorNameTextObj["min-width"] = sectorWidth
   }
@@ -363,9 +363,9 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function createBattleListItemView(battleData)
   {
-    local playerSide = getPlayerSide(battleData)
-    local battleView = battleData.getView(playerSide)
-    local view = {
+    let playerSide = getPlayerSide(battleData)
+    let battleView = battleData.getView(playerSide)
+    let view = {
       id = battleData.id.tostring()
       itemPrefixText = getSelectedBattlePrefixText(battleData)
       itemText = ""
@@ -378,8 +378,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       view.itemText <- battleData.getLocName(playerSide)
     else
     {
-      local battleSides = ::g_world_war.getSidesOrder(curBattleInList)
-      local teamsData = battleView.getTeamBlockByIconSize(
+      let battleSides = ::g_world_war.getSidesOrder(curBattleInList)
+      let teamsData = battleView.getTeamBlockByIconSize(
         battleSides, WW_ARMY_GROUP_ICON_SIZE.SMALL, false,
         {hasArmyInfo = false, hasVersusText = true, canAlignRight = false})
       local teamsMarkUp = ""
@@ -394,30 +394,30 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedBattlePrefixText(battleData)
   {
-    local battleView = battleData.getView()
-    local battleName = ::colorize("newTextColor", battleView.getShortBattleName())
-    local sectorName = battleData.getSectorName()
+    let battleView = battleData.getView()
+    let battleName = ::colorize("newTextColor", battleView.getShortBattleName())
+    let sectorName = battleData.getSectorName()
     return battleName + (!::u.isEmpty(sectorName) ? " " + sectorName : "")
   }
 
   function updateSlotbar()
   {
-    local side = getPlayerSide()
-    local availableCountries = getOperationById(::ww_get_operation_id())?.getCountriesByTeams()[side]
-    local isSlotbarVisible = (availableCountries?.len() ?? 0) > 0
+    let side = getPlayerSide()
+    let availableCountries = getOperationById(::ww_get_operation_id())?.getCountriesByTeams()[side]
+    let isSlotbarVisible = (availableCountries?.len() ?? 0) > 0
     showSceneBtn("nav-slotbar", isSlotbarVisible)
     if (!isSlotbarVisible)
       return
 
-    local playerCountry = ::get_profile_country_sq()
-    local assignCountry = ::isInArray(playerCountry, availableCountries) ? playerCountry : availableCountries[0]
-    local playerTeam = operationBattle.getTeamBySide(side)
+    let playerCountry = ::get_profile_country_sq()
+    let assignCountry = ::isInArray(playerCountry, availableCountries) ? playerCountry : availableCountries[0]
+    let playerTeam = operationBattle.getTeamBySide(side)
     ::switch_profile_country(assignCountry)
-    local map = getMap()
-    local unitsGroupsByCountry = map?.getUnitsGroupsByCountry()
+    let map = getMap()
+    let unitsGroupsByCountry = map?.getUnitsGroupsByCountry()
     hasSlotbarByUnitsGroups = unitsGroupsByCountry != null
-    local operationUnits = ::g_world_war.getAllOperationUnitsBySide(side)
-    local availableUnits = playerTeam != null ? operationBattle.getTeamRemainUnits(playerTeam)
+    let operationUnits = ::g_world_war.getAllOperationUnitsBySide(side)
+    let availableUnits = playerTeam != null ? operationBattle.getTeamRemainUnits(playerTeam)
       : hasSlotbarByUnitsGroups ? ::all_units : operationUnits
     if (hasSlotbarByUnitsGroups)
       setCurPreset(map.getId() ,unitsGroupsByCountry)
@@ -458,11 +458,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMap()
   {
-    local operation = getOperationById(::ww_get_operation_id())
+    let operation = getOperationById(::ww_get_operation_id())
     if (operation == null)
       return null
 
-    local map = operation.getMap()
+    let map = operation.getMap()
     if (map == null)
       return null
 
@@ -471,7 +471,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCustomUnitsListNameText()
   {
-    local operation = getOperationById(::ww_get_operation_id())
+    let operation = getOperationById(::ww_get_operation_id())
     if (operation)
       return operation.getMapText()
 
@@ -480,14 +480,14 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateDescription()
   {
-    local descrObj = scene.findObject("item_desc")
+    let descrObj = scene.findObject("item_desc")
     if (!::check_obj(descrObj))
       return
 
-    local isOperationBattleLoaded = curBattleInList.id == operationBattle.id
-    local battle = isOperationBattleLoaded ? operationBattle : curBattleInList
-    local battleView = battle.getView(getPlayerSide())
-    local blk = ::handyman.renderCached(sceneTplDescriptionName, battleView)
+    let isOperationBattleLoaded = curBattleInList.id == operationBattle.id
+    let battle = isOperationBattleLoaded ? operationBattle : curBattleInList
+    let battleView = battle.getView(getPlayerSide())
+    let blk = ::handyman.renderCached(sceneTplDescriptionName, battleView)
 
     guiScene.replaceContentFromText(descrObj, blk, blk.len(), this)
 
@@ -506,21 +506,21 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local battleSides = ::g_world_war.getSidesOrder(curBattleInList)
-    local teamsData = battleView.getTeamsDataBySides(battleSides)
+    let battleSides = ::g_world_war.getSidesOrder(curBattleInList)
+    let teamsData = battleView.getTeamsDataBySides(battleSides)
     foreach(idx, teamData in teamsData)
     {
-      local teamObjHeaderInfo = scene.findObject($"team_header_info_{idx}")
+      let teamObjHeaderInfo = scene.findObject($"team_header_info_{idx}")
       if (::check_obj(teamObjHeaderInfo))
       {
-        local teamHeaderInfoBlk = ::handyman.renderCached(sceneTplTeamHeaderInfo, teamData)
+        let teamHeaderInfoBlk = ::handyman.renderCached(sceneTplTeamHeaderInfo, teamData)
         guiScene.replaceContentFromText(teamObjHeaderInfo, teamHeaderInfoBlk, teamHeaderInfoBlk.len(), this)
       }
 
-      local teamObjPlace = scene.findObject($"team_unit_info_{idx}")
+      let teamObjPlace = scene.findObject($"team_unit_info_{idx}")
       if (::check_obj(teamObjPlace))
       {
-        local teamBlk = ::handyman.renderCached(sceneTplTeamRight, teamData)
+        let teamBlk = ::handyman.renderCached(sceneTplTeamRight, teamData)
         guiScene.replaceContentFromText(teamObjPlace, teamBlk, teamBlk.len(), this)
       }
     }
@@ -531,7 +531,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillOperationBackground()
   {
-    local battleBgObj = scene.findObject("battle_background")
+    let battleBgObj = scene.findObject("battle_background")
     if (!::check_obj(battleBgObj))
       return
 
@@ -540,11 +540,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getOperationBackground()
   {
-    local curOperation = getOperationById(::ww_get_operation_id())
+    let curOperation = getOperationById(::ww_get_operation_id())
     if (!curOperation)
       return WW_OPERATION_DEFAULT_BG_IMAGE
 
-    local curMap = getMapByName(curOperation.getMapId())
+    let curMap = getMapByName(curOperation.getMapId())
     if (!curMap)
       return WW_OPERATION_DEFAULT_BG_IMAGE
 
@@ -557,15 +557,15 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function loadMap(playerSide)
   {
-    local tacticalMapObj = scene.findObject("tactical_map_single")
+    let tacticalMapObj = scene.findObject("tactical_map_single")
     if (!::checkObj(tacticalMapObj))
       return
 
     local misFileBlk = null
-    local misData = operationBattle.missionInfo
+    let misData = operationBattle.missionInfo
     if (misData != null)
     {
-      local missionBlk = ::DataBlock()
+      let missionBlk = ::DataBlock()
       missionBlk.setFrom(misData)
 
       misFileBlk = ::DataBlock()
@@ -575,21 +575,21 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       dagor.debug("Error: WWar: Battle with id=" + operationBattle.id + ": not found mission info for mission " + operationBattle.missionName)
 
     ::g_map_preview.setMapPreview(tacticalMapObj, misFileBlk)
-    local playerTeam = operationBattle.getTeamBySide(playerSide)
+    let playerTeam = operationBattle.getTeamBySide(playerSide)
     if (playerTeam && "name" in playerTeam)
       ::tactical_map_set_team_for_briefing(::get_mp_team_by_team_name(playerTeam.name))
   }
 
   function updateViewMode()
   {
-    local newViewMode = getViewMode()
+    let newViewMode = getViewMode()
     if (newViewMode == currViewMode)
       return
 
     currViewMode = newViewMode
 
-    local isViewBattleList = currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
-    local isViewSquadInfo = currViewMode == WW_BATTLE_VIEW_MODES.SQUAD_INFO
+    let isViewBattleList = currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
+    let isViewSquadInfo = currViewMode == WW_BATTLE_VIEW_MODES.SQUAD_INFO
     showSceneBtn("queue_info", currViewMode == WW_BATTLE_VIEW_MODES.QUEUE_INFO)
     showSceneBtn("items_list", isViewBattleList)
     showSceneBtn("squad_info", isViewSquadInfo)
@@ -616,7 +616,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    local isViewBattleList = currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
+    let isViewBattleList = currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
     showSceneBtn("btn_battles_filters", hasBattleFilter && isViewBattleList)
     showSceneBtn("goto_global_battles_btn", isViewBattleList)
     showSceneBtn("invite_squads_button",
@@ -641,9 +641,9 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       ? ::loc("mainmenu/toBattle")
       : ::loc("mainmenu/btnCancel")
 
-    local cantJoinReasonData = operationBattle.getCantJoinReasonData(getPlayerSide(),
+    let cantJoinReasonData = operationBattle.getCantJoinReasonData(getPlayerSide(),
       ::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadLeader())
-    local joinWarningData = operationBattle.getWarningReasonData(getPlayerSide())
+    let joinWarningData = operationBattle.getWarningReasonData(getPlayerSide())
     local warningText = ""
     local fullWarningText = ""
 
@@ -720,38 +720,38 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (isLeaveBattleVisible)
       scene.findObject("btn_leave_event_text").setValue(battleText)
 
-    local joinButtonObj = showSceneBtn("btn_join_battle", isJoinBattleVisible)
+    let joinButtonObj = showSceneBtn("btn_join_battle", isJoinBattleVisible)
     joinButtonObj.inactiveColor = isJoinBattleActive ? "no" : "yes"
-    local leaveButtonObj = showSceneBtn("btn_leave_battle", isLeaveBattleVisible)
+    let leaveButtonObj = showSceneBtn("btn_leave_battle", isLeaveBattleVisible)
     leaveButtonObj.enable(isLeaveBattleActive)
 
-    local warningTextObj = showSceneBtn("cant_join_reason_txt", !::u.isEmpty(warningText))
+    let warningTextObj = showSceneBtn("cant_join_reason_txt", !::u.isEmpty(warningText))
     warningTextObj.setValue(warningText)
 
-    local warningIconObj = showSceneBtn("warning_icon", !::u.isEmpty(fullWarningText))
+    let warningIconObj = showSceneBtn("warning_icon", !::u.isEmpty(fullWarningText))
     warningIconObj.tooltip = fullWarningText
 
-    local unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+    let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
     showSceneBtn("required_crafts_block",
       unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.OPERATION_UNITS ||
       unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
 
-    local isVisibleBtnAutoPreset = joinWarningData.needMsgBox || hasSlotbarByUnitsGroups
-    local btnAutoPreset = showSceneBtn("btn_auto_preset", isVisibleBtnAutoPreset)
+    let isVisibleBtnAutoPreset = joinWarningData.needMsgBox || hasSlotbarByUnitsGroups
+    let btnAutoPreset = showSceneBtn("btn_auto_preset", isVisibleBtnAutoPreset)
     if (isVisibleBtnAutoPreset) {
-      local bestPresetData = getBestPresetData(joinWarningData.availableUnits,
+      let bestPresetData = getBestPresetData(joinWarningData.availableUnits,
         joinWarningData.country, hasSlotbarByUnitsGroups)
-      local hasChangeInPreset = bestPresetData?.hasChangeInPreset ?? false
+      let hasChangeInPreset = bestPresetData?.hasChangeInPreset ?? false
       btnAutoPreset.inactiveColor = hasChangeInPreset ? "no" : "yes"
       btnAutoPreset.hasUnseenIcon = hasChangeInPreset ? "yes" : "no"
       ::showBtn("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
     }
 
-    local btnSlotbarHelpObj = showSceneBtn("btn_slotbar_help", hasSlotbarByUnitsGroups)
+    let btnSlotbarHelpObj = showSceneBtn("btn_slotbar_help", hasSlotbarByUnitsGroups)
     if (hasSlotbarByUnitsGroups)
     {
-      local isHelpUnseen = WwHelpSlotbarGroupsModal.isUnseen()
+      let isHelpUnseen = wwHelpSlotbarGroupsModal.isUnseen()
       showSceneBtn("btn_slotbar_help_unseen_icon", isHelpUnseen)
       btnSlotbarHelpObj.hasUnseenIcon = isHelpUnseen ? "yes" : "no"
     }
@@ -790,27 +790,27 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateBattleStatus(battleView)
   {
-    local statusObj = scene.findObject("battle_status_text")
+    let statusObj = scene.findObject("battle_status_text")
     if (::check_obj(statusObj))
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
-    local needShowWinChance = battleView.needShowWinChance()
-    local winCahnceObj = showSceneBtn("win_chance", needShowWinChance)
+    let needShowWinChance = battleView.needShowWinChance()
+    let winCahnceObj = showSceneBtn("win_chance", needShowWinChance)
     if (needShowWinChance && winCahnceObj)
     {
-      local winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
-      local percent = battleView.getAutoBattleWinChancePercentText()
+      let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
+      let percent = battleView.getAutoBattleWinChancePercentText()
       if (::check_obj(winCahnceTextObj) && percent != "")
         winCahnceTextObj.setValue(percent)
       else
         winCahnceObj.show(false)
     }
 
-    local battleTimeObj = scene.findObject("battle_time_text")
+    let battleTimeObj = scene.findObject("battle_time_text")
     if (::check_obj(battleTimeObj) && battleView.needShowTimer())
     {
       local battleTimeText = ""
-      local timeStartAutoBattle = battleView.getTimeStartAutoBattle()
+      let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
       if (battleView.hasBattleDurationTime())
         battleTimeText = ::loc("debriefing/BattleTime") + ::loc("ui/colon") +
           battleView.getBattleDurationTime()
@@ -836,17 +836,17 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local playersInfoText = battleView.hasTeamsInfo()
+    let playersInfoText = battleView.hasTeamsInfo()
       ? battleView.getTotalPlayersInfoText()
       : battleView.hasQueueInfo()
         ? battleView.getTotalQueuePlayersInfoText()
         : ""
 
-    local hasInfo = !::u.isEmpty(playersInfoText)
+    let hasInfo = !::u.isEmpty(playersInfoText)
     showSceneBtn("teams_info", hasInfo)
     if (hasInfo)
     {
-      local playersTextObj = scene.findObject("number_of_players")
+      let playersTextObj = scene.findObject("number_of_players")
       if (::check_obj(playersTextObj))
         playersTextObj.setValue(playersInfoText)
     }
@@ -911,7 +911,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (!::check_obj(obj))
       return
 
-    local side = obj?.isPlayerSide == "yes" ?
+    let side = obj?.isPlayerSide == "yes" ?
       getPlayerSide() : ::g_world_war.getOppositeSide(getPlayerSide())
 
     ::handlersManager.loadHandler(::gui_handlers.WwJoinBattleCondition, {
@@ -922,8 +922,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function onJoinBattle()
   {
-    local side = getPlayerSide()
-    local cantJoinReasonData = operationBattle.getCantJoinReasonData(side, false)
+    let side = getPlayerSide()
+    let cantJoinReasonData = operationBattle.getCantJoinReasonData(side, false)
     switch (currViewMode)
     {
       case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
@@ -979,7 +979,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function tryToSetCrewsReadyFlag()
   {
-    local warningData = operationBattle.getWarningReasonData(getPlayerSide())
+    let warningData = operationBattle.getWarningReasonData(getPlayerSide())
     if (warningData.needMsgBox && !::loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false))
     {
       ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
@@ -1031,8 +1031,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   function updateSelectedItem(isForceUpdate = false)
   {
     refreshSelBattle()
-    local newOperationBattle = getBattleById(curBattleInList.id)
-    local isBattleEqual = operationBattle.isEqual(newOperationBattle)
+    let newOperationBattle = getBattleById(curBattleInList.id)
+    let isBattleEqual = operationBattle.isEqual(newOperationBattle)
     operationBattle = newOperationBattle
 
     if (isBattleEqual)
@@ -1048,8 +1048,8 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     local remainUnits = null
     if (operationBattle && operationBattle.isValid() && !operationBattle.isFinished())
     {
-      local side = getPlayerSide()
-      local team = operationBattle.getTeamBySide(side)
+      let side = getPlayerSide()
+      let team = operationBattle.getTeamBySide(side)
       country = team?.country
       remainUnits = operationBattle.getUnitsRequiredForJoin(team, side)
     }
@@ -1059,11 +1059,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshSelBattle()
   {
-    local idx = battlesListObj.getValue()
+    let idx = battlesListObj.getValue()
     if (idx < 0 || idx >= battlesListObj.childrenCount())
       return
 
-    local opObj = battlesListObj.getChild(idx)
+    let opObj = battlesListObj.getChild(idx)
     if (!::check_obj(opObj))
       return
 
@@ -1082,17 +1082,17 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (getViewMode() != WW_BATTLE_VIEW_MODES.SQUAD_INFO)
       return
 
-    local squadCountry = ::g_squad_manager.getWwOperationCountry()
+    let squadCountry = ::g_squad_manager.getWwOperationCountry()
     if (!::u.isEmpty(squadCountry) && ::get_profile_country_sq() != squadCountry)
       ::switch_profile_country(squadCountry)
   }
 
   function onEventSquadDataUpdated(params)
   {
-    local wwBattleName = ::g_squad_manager.getWwOperationBattle()
-    local squadCountry = ::g_squad_manager.getWwOperationCountry()
-    local selectedBattleName = curBattleInList.id
-    local prevCurrViewMode = currViewMode
+    let wwBattleName = ::g_squad_manager.getWwOperationBattle()
+    let squadCountry = ::g_squad_manager.getWwOperationCountry()
+    let selectedBattleName = curBattleInList.id
+    let prevCurrViewMode = currViewMode
     updateViewMode()
 
     if (wwBattleName)
@@ -1103,7 +1103,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
         return
       }
 
-      local isBattleDifferent = !curBattleInList || curBattleInList.id != wwBattleName
+      let isBattleDifferent = !curBattleInList || curBattleInList.id != wwBattleName
       if (isBattleDifferent)
         curBattleInList = getBattleById(wwBattleName)
 
@@ -1181,7 +1181,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(item in curBattleListItems)
     {
-      local battle = getBattleById(item.id)
+      let battle = getBattleById(item.id)
       if (battle.isValid())
         return battle
     }
@@ -1191,14 +1191,14 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function createBattleListMap()
   {
-    local battles = ::g_world_war.getBattles(::g_world_war.isBattleAvailableToPlay)
+    let battles = ::g_world_war.getBattles(::g_world_war.isBattleAvailableToPlay)
     battles.sort(battlesSort)
     return battles
   }
 
   function getQueueBattle(queue)
   {
-    local battleId = queue.getQueueWwBattleId()
+    let battleId = queue.getQueueWwBattleId()
     if (!battleId)
       return null
 
@@ -1220,7 +1220,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(idx, newbattle in newBattleListMap)
     {
-      local curBattle = curBattleListMap[idx]
+      let curBattle = curBattleListMap[idx]
       if (newbattle.id != curBattle.id || newbattle.status != curBattle.status)
         return true
     }
@@ -1230,7 +1230,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function onShowSlotbarHelp(obj)
   {
-    WwHelpSlotbarGroupsModal.open()
+    wwHelpSlotbarGroupsModal.open()
   }
 
   function onRunAutoPreset(obj)
@@ -1238,7 +1238,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (slotbarWeak?.slotbarOninit ?? false)
       return
 
-    local cb = ::Callback(generateAutoPreset, this)
+    let cb = ::Callback(generateAutoPreset, this)
     ::queues.checkAndStart(
       ::Callback(function() {
         ::g_squad_utils.checkSquadUnreadyAndDo(cb, @() null, true)
@@ -1250,12 +1250,12 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function generateAutoPreset()
   {
-    local side = getPlayerSide()
-    local team = operationBattle.getTeamBySide(side)
+    let side = getPlayerSide()
+    let team = operationBattle.getTeamBySide(side)
     if (!team)
       return
 
-    local country = team?.country
+    let country = team?.country
     if (country == null)
       return
 
@@ -1265,7 +1265,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local teamUnits = operationBattle.getTeamRemainUnits(team, hasSlotbarByUnitsGroups)
+    let teamUnits = operationBattle.getTeamRemainUnits(team, hasSlotbarByUnitsGroups)
     generatePreset(teamUnits, country, hasSlotbarByUnitsGroups)
   }
 
@@ -1275,11 +1275,11 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function getWndHelpConfig()
   {
-    local res = {
-      textsBlk = "gui/worldWar/wwBattlesModalHelp.blk"
+    let res = {
+      textsBlk = "%gui/worldWar/wwBattlesModalHelp.blk"
       objContainer = scene.findObject("root-box")
     }
-    local links = [
+    let links = [
       { obj = ["items_list"]
         msgId = "hint_items_list"
       },
@@ -1334,14 +1334,14 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (curBattle == newBattle || (::u.isEqual(curBattle, newBattle)))
       return
 
-    local obj = getBattleObj(idx)
-    local show = !!newBattle
+    let obj = getBattleObj(idx)
+    let show = !!newBattle
     obj.show(show)
     obj.enable(show)
     if (!show)
       return
 
-    local oldId = obj.id
+    let oldId = obj.id
     obj.id = newBattle.id
     local childObj = obj.findObject("mission_item_prefix_text_" + oldId)
     childObj.id = "mission_item_prefix_text_" +  newBattle.id
@@ -1350,10 +1350,10 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     childObj.id = "txt_" +  newBattle.id
     childObj.setValue(newBattle.itemText)
 
-    local medalObj = obj.findObject("medal_icon")
+    let medalObj = obj.findObject("medal_icon")
     medalObj["background-image"] = newBattle.itemIcon
     medalObj["status"] = newBattle.status
-    local descriptionObj = obj.findObject("additional_desc")
+    let descriptionObj = obj.findObject("additional_desc")
     guiScene.replaceContentFromText(descriptionObj, newBattle.additionalDescription,
       newBattle.additionalDescription.len(), this)
   }

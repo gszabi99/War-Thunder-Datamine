@@ -1,8 +1,8 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { showedUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { GUI } = require("scripts/utils/configs.nut")
+let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
 
-local checkArgument = function(id, arg, varType) {
+let checkArgument = function(id, arg, varType) {
   if (typeof arg == varType)
     return true
 
@@ -14,7 +14,7 @@ local checkArgument = function(id, arg, varType) {
   return false
 }
 
-local createDefaultOption = function() {
+let createDefaultOption = function() {
   return {
     type = -1
     id = ""
@@ -47,7 +47,7 @@ local createDefaultOption = function() {
           break
 
         case optionControlType.LIST:
-          local result = ::getTblValue(values.indexof(val), items)
+          let result = ::getTblValue(values.indexof(val), items)
           local locKey = (::u.isString(result)) ? result : ::getTblValue("text", result, "")
           if (::g_string.startsWith(locKey, "#"))
             locKey = locKey.slice(1)
@@ -68,7 +68,7 @@ local createDefaultOption = function() {
   }
 }
 
-local fillBoolOption = function(descr, id, optionIdx)
+let fillBoolOption = function(descr, id, optionIdx)
 {
   descr.id = id
   descr.controlType = optionControlType.CHECKBOX
@@ -77,12 +77,12 @@ local fillBoolOption = function(descr, id, optionIdx)
   descr.boolOptionIdx <- optionIdx
 }
 
-local setHSVOption_ThermovisionColor = function(desrc, value)
+let setHSVOption_ThermovisionColor = function(desrc, value)
 {
   ::set_thermovision_index(value)
 }
 
-local fillHSVOption_ThermovisionColor = function(descr)
+let fillHSVOption_ThermovisionColor = function(descr)
 {
   descr.id = "color_picker_hue_tank_tv"
   descr.items = []
@@ -103,7 +103,7 @@ local fillHSVOption_ThermovisionColor = function(descr)
 local function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = null, defBri = null,
   curHue = null, customItems = null)
 {
-  local hueStep = 22.5
+  let hueStep = 22.5
   if (curHue==null)
     curHue = ::get_gui_option(descr.type)
   if (!::is_numeric(curHue))
@@ -162,7 +162,7 @@ local function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSa
 
 local fillHueOption = function(descr, id, defHue = null, curHue = null, customItems = null)
 {
-  local hueStep = 22.5
+  let hueStep = 22.5
   if (curHue==null)
     curHue = ::get_gui_option(descr.type)
   if (!::is_numeric(curHue))
@@ -209,18 +209,18 @@ local fillHueOption = function(descr, id, defHue = null, curHue = null, customIt
     descr.value = valueIdx
 }
 
-local function fillMultipleHueOption(descr, id, currentHueIndex)
+let function fillMultipleHueOption(descr, id, currentHueIndex)
 {
   descr.id = id
   descr.items = []
   descr.values = []
-  local alertHueBlock = GUI.get()?.alertHue
+  let alertHueBlock = GUI.get()?.alertHue
   if (!::u.isDataBlock(alertHueBlock))
     return
   for (local i = 0; i < alertHueBlock.blockCount(); ++i)
   {
-    local hueValues = []
-    local hueBlock = alertHueBlock.getBlock(i)
+    let hueValues = []
+    let hueBlock = alertHueBlock.getBlock(i)
     for (local j = 0; j < hueBlock.paramCount(); ++j)
     {
       hueValues.append(hueBlock.getParamValue(j))
@@ -234,17 +234,17 @@ local function fillMultipleHueOption(descr, id, currentHueIndex)
   descr.value = currentHueIndex
 }
 
-local fillDynMapOption = function(descr)
+let fillDynMapOption = function(descr)
 {
-  local curMap = getTblValue("layout", ::mission_settings)
-  local dynLayouts = ::get_dynamic_layouts()
+  let curMap = getTblValue("layout", ::mission_settings)
+  let dynLayouts = ::get_dynamic_layouts()
   foreach(layout in dynLayouts)
   {
     if (::get_game_mode() == ::GM_BUILDER)
     {
-      local db = blkFromPath(layout.mis_file)
-      local tags = db.mission_settings.mission.tags % "tag"
-      local airTags = showedUnit.value?.tags ?? []
+      let db = blkFromPath(layout.mis_file)
+      let tags = db.mission_settings.mission.tags % "tag"
+      let airTags = showedUnit.value?.tags ?? []
       local skip = false
       foreach (tag in tags)
       {
@@ -266,7 +266,7 @@ local fillDynMapOption = function(descr)
         continue
     }
     descr.items.append("#dynamic/" + layout.name)
-    local map = layout.mis_file
+    let map = layout.mis_file
     descr.values.append(map)
     if (map == curMap)
       descr.value <- descr.values.len() - 1

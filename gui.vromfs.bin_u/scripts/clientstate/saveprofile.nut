@@ -1,24 +1,24 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-local SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
-local MIN_SAVE_TIMEOUT = 5000
-local MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
+let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
+let MIN_SAVE_TIMEOUT = 5000
+let MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
 local nextAllowedSaveTime = 0
-local saveTask = persist("saveTask", @() { value = -1 })
+let saveTask = persist("saveTask", @() { value = -1 })
 local isSaveDelayed = false
 
-local log = @(txt) dagor.debug($"SAVE_PROFILE: {txt}")
+let log = @(txt) dagor.debug($"SAVE_PROFILE: {txt}")
 
-local function clearSaveTask() {
+let function clearSaveTask() {
   ::periodic_task_unregister(saveTask.value)
   saveTask.value = -1
 }
 if (saveTask.value != -1)
   clearSaveTask()
 
-local function startSaveTimer(timeout) {
-  local timeToUpdate = ::dagor.getCurTime() + timeout
+let function startSaveTimer(timeout) {
+  let timeToUpdate = ::dagor.getCurTime() + timeout
   if (saveTask.value >= 0) {
     if (nextAllowedSaveTime <= timeToUpdate)
       return
@@ -27,7 +27,7 @@ local function startSaveTimer(timeout) {
 
   log($"Schedule profile save after {timeout / 1000} sec")
   nextAllowedSaveTime = timeToUpdate
-  local isProfileReceived = ::g_login.isProfileReceived()
+  let isProfileReceived = ::g_login.isProfileReceived()
   saveTask.value = ::periodic_task_register({},
     function(_) {
       clearSaveTask()
@@ -50,11 +50,11 @@ local function startSaveTimer(timeout) {
     ::ceil(0.001 * timeout).tointeger())
 }
 
-local function forceSaveProfile() {
+let function forceSaveProfile() {
   startSaveTimer(::g_login.isProfileReceived() ? MIN_SAVE_TIMEOUT : MIN_SAVE_TIMEOUT_NOT_LOGGED)
 }
 
-local function saveProfile() {
+let function saveProfile() {
   startSaveTimer(SAVE_TIMEOUT)
 }
 

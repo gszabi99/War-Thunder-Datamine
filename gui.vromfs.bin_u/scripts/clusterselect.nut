@@ -1,25 +1,24 @@
-local { is_bit_set } = require("std/math.nut")
+let { is_bit_set } = require("%sqstd/math.nut")
 
-local getViewClusters = function() {
-  local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+let getViewClusters = function() {
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
   return clusterOpt.items.map(@(item, idx) {
     id = $"cluster_item_{idx}"
     value = idx
     selected = is_bit_set(clusterOpt.value, idx)
     text = item.text
     icon = item.image
-    addImageProps = item.addImageProps
     tooltip = item.tooltip
   })
 }
 
-local createClusterSelectMenu = function(placeObj, alight = "top")
+let createClusterSelectMenu = function(placeObj, alight = "top")
 {
   ::gui_start_multi_select_menu({
     list = getViewClusters()
     onChangeValuesBitMaskCb = function(mask) {
-      local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-      local prevMask = clusterOpt.value
+      let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+      let prevMask = clusterOpt.value
       ::set_option(::USEROPT_RANDB_CLUSTER, mask, clusterOpt)
 
       for (local i = 0; i < clusterOpt.values.len(); i++)
@@ -31,10 +30,10 @@ local createClusterSelectMenu = function(placeObj, alight = "top")
   })
 }
 
-local getCurrentClustersInfo = function()
+let getCurrentClustersInfo = function()
 {
-  local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-  local names = []
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+  let names = []
   local hasUnstable = false
   for (local i = 0; i < clusterOpt.values.len(); i++)
     if ((clusterOpt.value & (1 << i)) > 0) {
@@ -44,30 +43,30 @@ local getCurrentClustersInfo = function()
   return { names, hasUnstable }
 }
 
-local updateClusters = function(btnObj)
+let updateClusters = function(btnObj)
 {
   if (!btnObj?.isValid())
     return
 
-  local currentClustersInfo = getCurrentClustersInfo()
-  local clusterNamesText = "; ".join(currentClustersInfo.names)
-  local needWarning = currentClustersInfo.hasUnstable
+  let currentClustersInfo = getCurrentClustersInfo()
+  let clusterNamesText = "; ".join(currentClustersInfo.names)
+  let needWarning = currentClustersInfo.hasUnstable
 
   btnObj.tooltip = needWarning ? ::loc("multiplayer/cluster_connection_unstable") : ""
 
-  local btnTextObj = btnObj.findObject("cluster_select_button_text")
+  let btnTextObj = btnObj.findObject("cluster_select_button_text")
   btnTextObj.setValue("".concat(::loc("options/cluster"), ::loc("ui/colon"), clusterNamesText))
   btnTextObj.leftAligned = needWarning ? "yes" : "no"
 
-  local btnIconObj = btnObj.findObject("cluster_select_button_icon")
+  let btnIconObj = btnObj.findObject("cluster_select_button_icon")
   btnIconObj.wink = needWarning ? "veryfast" : "no"
   btnIconObj.show(needWarning)
 }
 
-local getCurrentClusters = function()
+let getCurrentClusters = function()
 {
-  local clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-  local result = []
+  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
+  let result = []
   for (local i = 0; i < clusterOpt.values.len(); i++)
     if ((clusterOpt.value & (1 << i)) > 0)
       result.append(clusterOpt.values[i])

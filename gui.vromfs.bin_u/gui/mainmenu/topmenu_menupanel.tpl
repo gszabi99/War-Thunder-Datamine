@@ -64,10 +64,10 @@ tdiv {
               }
             <</isLineSeparator>>
             <<#isButton>>
-              include "gui/commonParts/button"
+              include "%gui/commonParts/button"
             <</isButton>>
             <<#checkbox>>
-              include "gui/commonParts/checkbox"
+              include "%gui/commonParts/checkbox"
             <</checkbox>>
           <</buttons>>
           <<#addNewLine>>

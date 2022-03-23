@@ -1,8 +1,8 @@
 from "%darg/ui_imports.nut" import *
 
-local defStyle = {}
-local defTextStyle = {}
-local defBoxStyle = {
+let defStyle = {}
+let defTextStyle = {}
+let defBoxStyle = {
   padding = hdpx(3)
   borderWidth = hdpx(1)
   borderRadius = hdpx(2)
@@ -10,7 +10,7 @@ local defBoxStyle = {
   hoverColor = Color(250,250,250)
 }
 
-local function defMkText(text, state=null, stateFlags=null, style = null){
+let function defMkText(text, state=null, stateFlags=null, style = null){
   return @(){
     watch = [state, stateFlags]
     rendObj = ROBJ_DTEXT
@@ -18,12 +18,12 @@ local function defMkText(text, state=null, stateFlags=null, style = null){
   }.__update(style ?? {})
 }
 
-local function defMkBox(size, state=null, stateFlags=null, boxStyle=null){
-  local color = boxStyle?.color ?? defBoxStyle.color
-  local hoverColor = boxStyle?.hoverColor ?? defBoxStyle.hoverColor
-  local borderRadius = boxStyle?.borderRadius ?? defBoxStyle.borderRadius
+let function defMkBox(size, state=null, stateFlags=null, boxStyle=null){
+  let color = boxStyle?.color ?? defBoxStyle.color
+  let hoverColor = boxStyle?.hoverColor ?? defBoxStyle.hoverColor
+  let borderRadius = boxStyle?.borderRadius ?? defBoxStyle.borderRadius
   return function() {
-    local sf = stateFlags?.value ?? 0
+    let sf = stateFlags?.value ?? 0
     return {
       rendObj = ROBJ_BOX
       size = size
@@ -43,13 +43,13 @@ local function defMkBox(size, state=null, stateFlags=null, boxStyle=null){
   }
 }
 
-local function checkboxCtor(state, text = null, style = defStyle, textCtor = defMkText, textStyle = defTextStyle, boxCtor = defMkBox, boxStyle = defBoxStyle){
-  local stateFlags = Watched(0)
-  local h =calc_comp_size(textCtor("h"))
-  local hWidth = h[0]
-  local hHeight = h[1]
-  local box = boxCtor([hHeight, hHeight], state, stateFlags, boxStyle)
-  local label = textCtor(text, state, stateFlags, textStyle )
+let function checkboxCtor(state, text = null, style = defStyle, textCtor = defMkText, textStyle = defTextStyle, boxCtor = defMkBox, boxStyle = defBoxStyle){
+  let stateFlags = Watched(0)
+  let h =calc_comp_size(textCtor("h"))
+  let hWidth = h[0]
+  let hHeight = h[1]
+  let box = boxCtor([hHeight, hHeight], state, stateFlags, boxStyle)
+  let label = textCtor(text, state, stateFlags, textStyle )
   return function checkbox(){
     return {
       behavior = Behaviors.Button

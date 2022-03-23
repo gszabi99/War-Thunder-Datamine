@@ -1,23 +1,23 @@
-local { brokenEnginesCount, enginesInCooldown, enginesCount,
+let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
   steering, sightAngle, fwdAngle, hasAiGunners, fov
 } = require("shipState.nut")
-local { speedValue, speedUnits, machineSpeed } = require("reactiveGui/hud/shipStateView.nut")
-local { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
+let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
+let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
-local { isVisibleDmgIndicator } = require("hudState.nut")
-local dmModule = require("dmModule.nut")
-local {damageModule, shipSteeringGauge, hudLogBgColor} = require("style/colors.nut").hud
+let { isVisibleDmgIndicator } = require("hudState.nut")
+let dmModule = require("dmModule.nut")
+let {damageModule, shipSteeringGauge, hudLogBgColor} = require("style/colors.nut").hud
 
-local {lerp, sin} = require("std/math.nut")
+let {lerp, sin} = require("%sqstd/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
 
-local iconSize = hdpx(STATE_ICON_SIZE)
+let iconSize = hdpx(STATE_ICON_SIZE)
 
-local images = {
+let images = {
   engine = Picture("!ui/gameuiskin#engine_state_indicator")
   transmission = Picture("!ui/gameuiskin#ship_transmission_state_indicator")
   steeringGear = Picture("!ui/gameuiskin#ship_steering_gear_state_indicator")
@@ -43,11 +43,11 @@ local images = {
   ]
 }
 
-local fontFxColor = Color(80, 80, 80)
-local fontFx = FFT_GLOW
-local maxFontBoxHeight = hdpx(18.5)
+let fontFxColor = Color(80, 80, 80)
+let fontFx = FFT_GLOW
+let maxFontBoxHeight = hdpx(18.5)
 
-local speedComp = {
+let speedComp = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_CENTER
@@ -73,7 +73,7 @@ local speedComp = {
 }
 
 
-local engine = dmModule({
+let engine = dmModule({
   icon = images.engine
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
   totalCountState = enginesCount
@@ -81,20 +81,20 @@ local engine = dmModule({
   cooldownState = enginesInCooldown
 })
 
-local transmission = dmModule({
+let transmission = dmModule({
   icon = images.transmission
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
   totalCountState = transmissionCount
   brokenCountState = brokenTransmissionCount
   cooldownState = transmissionsInCooldown
 })
-local torpedo = dmModule({
+let torpedo = dmModule({
   icon = images.torpedo
   iconSize = [STATE_ICON_SIZE, STATE_ICON_SIZE]
   totalCountState = torpedosCount
   brokenCountState = brokenTorpedosCount
 })
-local artillery = dmModule({
+let artillery = dmModule({
   icon = @(art_type) art_type == TRIGGER_GROUP_PRIMARY     ? images.artillery
                    : art_type == TRIGGER_GROUP_SECONDARY   ? images.artillerySecondary
                    : art_type == TRIGGER_GROUP_MACHINE_GUN ? images.machineGun
@@ -104,7 +104,7 @@ local artillery = dmModule({
   totalCountState = artilleryCount
   brokenCountState = brokenArtilleryCount
 })
-local steeringGears = dmModule({
+let steeringGears = dmModule({
   icon = images.steeringGear
   iconSize = [30, 30]
   totalCountState = steeringGearsCount
@@ -112,7 +112,7 @@ local steeringGears = dmModule({
 })
 
 
-local damageModules = {
+let damageModules = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   gap = sh(STATE_ICON_MARGIN)
@@ -124,9 +124,9 @@ local damageModules = {
   ]
 }
 
-local buoyancyOpacity = Computed(@() buoyancy.value < 1.0 ? 1.0 : 0.0)
-local buoyancyPercent = Computed(@() (buoyancy.value * 100).tointeger())
-local buoyancyIndicator = @() {
+let buoyancyOpacity = Computed(@() buoyancy.value < 1.0 ? 1.0 : 0.0)
+let buoyancyPercent = Computed(@() (buoyancy.value * 100).tointeger())
+let buoyancyIndicator = @() {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -147,8 +147,8 @@ local buoyancyIndicator = @() {
   ]
 }
 
-local picFire = ::Picture($"{images.fire}{iconSize}:{iconSize}:K")
-local stateBlock = {
+let picFire = ::Picture($"{images.fire}{iconSize}:{iconSize}:K")
+let stateBlock = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   children = [
@@ -164,11 +164,11 @@ local stateBlock = {
 }
 
 
-local playAiSwithAnimation = function (ne_value) {
+let playAiSwithAnimation = function (ne_value) {
   ::anim_start(aiGunnersState)
 }
 
-local aiGunners = @() {
+let aiGunners = @() {
   vplace = ALIGN_BOTTOM
   size = [iconSize, iconSize]
   marigin = [hdpx(STATE_ICON_MARGIN), 0]
@@ -199,9 +199,9 @@ local aiGunners = @() {
 }
 
 
-local crewCountColor = Computed(function() {
-  local minimum = minCrewMembersCount.value
-  local current = aliveCrewMembersCount.value
+let crewCountColor = Computed(function() {
+  let minimum = minCrewMembersCount.value
+  let current = aliveCrewMembersCount.value
   if (current < minimum) {
     return damageModule.dmModuleDestroyed
   } else if (current < minimum * 1.1) {
@@ -210,19 +210,19 @@ local crewCountColor = Computed(function() {
   return damageModule.active
 })
 
-local maxCrewLeftPercent = Computed(@() totalCrewMembersCount.value > 0
+let maxCrewLeftPercent = Computed(@() totalCrewMembersCount.value > 0
   ? (100.0 * (1.0 + (bestMinCrewMembersCount.value.tofloat() - minCrewMembersCount.value)
       / totalCrewMembersCount.value)
     + 0.5).tointeger()
   : 0
 )
-local countCrewLeftPercent = Computed(@()
+let countCrewLeftPercent = Computed(@()
   ::clamp(lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
       0, maxCrewLeftPercent.value, aliveCrewMembersCount.value),
     0, 100)
 )
 
-local crewBlock = {
+let crewBlock = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   size = [iconSize, SIZE_TO_CONTENT]
@@ -257,13 +257,13 @@ local crewBlock = {
   ]
 }
 
-local steeringLine = {
+let steeringLine = {
   size = [hdpx(1), flex()]
   rendObj = ROBJ_SOLID
   color = shipSteeringGauge.serif
 }
 
-local steeringComp = {
+let steeringComp = {
   size = [pw(50), hdpx(3)]
   hplace = ALIGN_CENTER
 
@@ -297,13 +297,13 @@ local steeringComp = {
   ]
 }
 
-local dollSize = [sh(16), sh(32)]
-local fovSize = [sh(30), sh(30)]
-local fovTopOffset = sh(2)
-local fovPos = [0.5*dollSize[0] - 0.5*fovSize[0],
+let dollSize = [sh(16), sh(32)]
+let fovSize = [sh(30), sh(30)]
+let fovTopOffset = sh(2)
+let fovPos = [0.5*dollSize[0] - 0.5*fovSize[0],
   0.5*dollSize[1] - 0.5*fovSize[1] + fovTopOffset]
 
-local dollFov = @() {
+let dollFov = @() {
   watch = [ fwdAngle, sightAngle, fov ]
   pos = fovPos
   size = fovSize
@@ -328,7 +328,7 @@ local dollFov = @() {
   ]
 }
 
-local doll = {
+let doll = {
   color = Color(0, 255, 0)
   size = dollSize
   rendObj = ROBJ_XRAYDOLL
@@ -337,9 +337,9 @@ local doll = {
 }
 
 
-local leftBlock = damageModules
+let leftBlock = damageModules
 
-local rightBlock = @() {
+let rightBlock = @() {
   watch = hasAiGunners
   size = [SIZE_TO_CONTENT, flex()]
   flow = FLOW_VERTICAL
@@ -352,7 +352,7 @@ local rightBlock = @() {
 }
 
 
-local shipStateDisplay = {
+let shipStateDisplay = {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -372,7 +372,7 @@ local shipStateDisplay = {
 }
 
 
-local xraydoll = {
+let xraydoll = {
   rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
   size = [1, 1]
 }

@@ -1,10 +1,10 @@
-local { canRestart, canBailout } = require("scripts/flightMenu/flightMenuState.nut")
-local flightMenuButtonTypes = require("scripts/flightMenu/flightMenuButtonTypes.nut")
-local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
-local exitGame = require("scripts/utils/exitGame.nut")
-local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
-local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nut")
+let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
+let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
+let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
+let exitGame = require("%scripts/utils/exitGame.nut")
+let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
@@ -14,9 +14,9 @@ local { guiStartMPStatScreen } = require("scripts/statistics/mpStatisticsUtil.nu
 ::gui_start_flight_menu_failed <- gui_start_flight_menu //it checks MISSION_STATUS_FAIL status itself
 ::gui_start_flight_menu_psn <- function gui_start_flight_menu_psn() {} //unused atm, but still have a case in code
 
-class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.FlightMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
-  sceneBlkName = "gui/flightMenu/flightMenu.blk"
+  sceneBlkName = "%gui/flightMenu/flightMenu.blk"
   handlerLocId = "flightmenu"
   shouldBlurSceneBg = true
   keepLoaded = true
@@ -34,7 +34,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     setSceneTitle(getCurMpTitle())
 
     menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
-    local markup = ::handyman.renderCached("gui/flightMenu/menuButtons", { buttons = menuButtonsCfg })
+    let markup = ::handyman.renderCached("%gui/flightMenu/menuButtons", { buttons = menuButtonsCfg })
     guiScene.replaceContentFromText(scene.findObject("menu-buttons"), markup, markup.len(), this)
     guiScene.applyPendingChanges(false)
 
@@ -64,11 +64,11 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (btn in menuButtonsCfg)
     {
-      local isShow = btn.isVisible()
-      local btnObj = ::showBtn(btn.buttonId, isShow, scene)
+      let isShow = btn.isVisible()
+      let btnObj = ::showBtn(btn.buttonId, isShow, scene)
       if (!isShow)
         continue
-      local txt = btn.getUpdatedLabelText()
+      let txt = btn.getUpdatedLabelText()
       if (btnObj != null && txt != "")
         btnObj.setValue(txt)
     }
@@ -80,8 +80,8 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!isSceneActiveNoModals())
       return
-    local btnId = lastSelectedBtnId ?? (isMissionFailed ? "btn_restart" : "btn_resume")
-    local btnObj = getObj(btnId)
+    let btnId = lastSelectedBtnId ?? (isMissionFailed ? "btn_restart" : "btn_resume")
+    let btnObj = getObj(btnId)
 
     if (::show_console_buttons)
       ::move_mouse_on_obj(btnObj)
@@ -214,8 +214,8 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
         text = ::loc("flightmenu/questionQuitMissionHost")
       else if (::get_game_mode() == ::GM_DOMINATION)
       {
-        local unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
-        local unitsTexts = ::u.map(unitsData,
+        let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
+        let unitsTexts = ::u.map(unitsData,
                                    function(ud)
                                    {
                                      local res = ::colorize("userlogColoredText", ::getUnitName(ud.unit))
@@ -237,7 +237,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     }
     else if (isMissionFailed)
     {
-      local text = ::loc("flightmenu/questionQuitMission")
+      let text = ::loc("flightmenu/questionQuitMission")
       msgBox("question_quit_mission", text,
       [
         ["yes", function()
@@ -305,8 +305,8 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::check_obj(obj))
       return
-    local id = obj.id
-    local isHover = obj.isHovered()
+    let id = obj.id
+    let isHover = obj.isHovered()
     if (!isHover && id != lastSelectedBtnId)
       return
     lastSelectedBtnId = isHover ? id : null

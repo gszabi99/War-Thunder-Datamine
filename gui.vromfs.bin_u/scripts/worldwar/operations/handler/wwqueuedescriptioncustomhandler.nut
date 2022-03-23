@@ -1,17 +1,17 @@
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMapDescription
+::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
 {
   function mapCountriesToView(side, amountByCountry, joinedCountries)
   {
-    local cuntriesByTeams = descItem.getCountriesByTeams()
-    local countries = cuntriesByTeams?[side] ?? []
-    local mapName = descItem.getId()
+    let cuntriesByTeams = descItem.getCountriesByTeams()
+    let countries = cuntriesByTeams?[side] ?? []
+    let mapName = descItem.getId()
     return {
       countries = countries.map(function(countryId) {
-        local customViewCountryData = getCustomViewCountryData(countryId, mapName)
-        local customLocId = customViewCountryData.locId
-        local countryNameText = countryId == customLocId
+        let customViewCountryData = getCustomViewCountryData(countryId, mapName)
+        let customLocId = customViewCountryData.locId
+        let countryNameText = countryId == customLocId
           ? ::loc(countryId)
           : "".concat(::loc(customLocId), ::loc("ui/parentheses/space", {text = ::loc(countryId)}))
         return {
@@ -28,24 +28,24 @@ class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMa
 
   function updateCountriesList()
   {
-    local obj = scene.findObject("div_before_text")
+    let obj = scene.findObject("div_before_text")
     if (!::checkObj(obj))
       return
 
-    local amountByCountry = descItem.getArmyGroupsAmountByCountries()
-    local joinedCountries = descItem.getMyClanCountries()
-    local sides = []
+    let amountByCountry = descItem.getArmyGroupsAmountByCountries()
+    let joinedCountries = descItem.getMyClanCountries()
+    let sides = []
     foreach (side in ::g_world_war.getCommonSidesOrder())
       sides.append(mapCountriesToView(side, amountByCountry, joinedCountries))
-    local view = {
+    let view = {
       sides = sides
       vsText = ::loc("country/VS") + "\n "
     }
 
-    local lastSelectedValue = ::get_obj_valid_index(obj.findObject("countries_container"))
-    local data = ::handyman.renderCached("gui/worldWar/wwOperationCountriesInfo", view)
+    let lastSelectedValue = ::get_obj_valid_index(obj.findObject("countries_container"))
+    let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo", view)
     guiScene.replaceContentFromText(obj, data, data.len(), this)
-    local isVisible = descItem.isMapActive()
+    let isVisible = descItem.isMapActive()
     obj.show(isVisible)
     if (isVisible && lastSelectedValue >= 0)
       obj.findObject("countries_container").setValue(lastSelectedValue)

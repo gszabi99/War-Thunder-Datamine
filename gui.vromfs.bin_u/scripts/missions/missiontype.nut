@@ -1,7 +1,7 @@
-local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local enums = require("sqStdLibs/helpers/enums.nut")
-local { MISSION_GROUP } = require("scripts/missions/missionsFilterData.nut")
-local { MISSION_OBJECTIVE } = require("scripts/missions/missionsUtilsModule.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
+let { MISSION_GROUP } = require("%scripts/missions/missionsFilterData.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 ::g_mission_type <- {
   types = []
@@ -28,7 +28,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_AD(n|to)?(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.ZONE_CAPTURE | MISSION_OBJECTIVE.KILLS_TOTAL_AI
-    helpBlkPath = "gui/help/missionAirDomination.blk"
+    helpBlkPath = "%gui/help/missionAirDomination.blk"
     filterGroup = MISSION_GROUP.DOMINATION
   }
 
@@ -36,7 +36,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_AfD(n|to)?(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
-    helpBlkPath = "gui/help/missionAirfieldCapture.blk"
+    helpBlkPath = "%gui/help/missionAirfieldCapture.blk"
     filterGroup = MISSION_GROUP.DOMINATION
   }
 
@@ -45,7 +45,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI
                  | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
-    helpBlkPath = "gui/help/missionGroundStrikeComplete.blk"
+    helpBlkPath = "%gui/help/missionGroundStrikeComplete.blk"
     filterGroup = MISSION_GROUP.GROUND_STRIKE
   }
 
@@ -54,7 +54,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI
                  | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
-    helpBlkPath = "gui/help/missionGroundStrikeComplete.blk"
+    helpBlkPath = "%gui/help/missionGroundStrikeComplete.blk"
     filterGroup = MISSION_GROUP.DOMINATION
   }
 
@@ -62,7 +62,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_I2M(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
-    helpBlkPath = "gui/help/missionGroundStrikeComplete.blk"
+    helpBlkPath = "%gui/help/missionGroundStrikeComplete.blk"
     filterGroup = MISSION_GROUP.CONFRONTATION
   }
 
@@ -103,7 +103,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_Dom(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
-    helpBlkPath = "gui/help/missionGroundCapture.blk"
+    helpBlkPath = "%gui/help/missionGroundCapture.blk"
     filterGroup = MISSION_GROUP.DOMINATION
   }
 
@@ -111,7 +111,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_Conq\d*(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
-    helpBlkPath = "gui/help/missionGroundCapture.blk"
+    helpBlkPath = "%gui/help/missionGroundCapture.blk"
     filterGroup = MISSION_GROUP.CONQUEST
   }
 
@@ -119,7 +119,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_Bttl(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
-    helpBlkPath = "gui/help/missionGroundCapture.blk"
+    helpBlkPath = "%gui/help/missionGroundCapture.blk"
     filterGroup = MISSION_GROUP.BATTLE
   }
 
@@ -127,7 +127,7 @@ enums.addTypesByGlobalName("g_mission_type", {
     reMisName = ::regexp2(@"_Bto(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
-    helpBlkPath = "gui/help/missionGroundCapture.blk"
+    helpBlkPath = "%gui/help/missionGroundCapture.blk"
     filterGroup = MISSION_GROUP.BATTLE
   }
 
@@ -248,7 +248,7 @@ g_mission_type.getCurrentObjectives <- function getCurrentObjectives()
 
 g_mission_type.getHelpPathForCurrentMission <- function getHelpPathForCurrentMission()
 {
-  local path = getCurrent().helpBlkPath
+  let path = getCurrent().helpBlkPath
   if (path != "" && !::u.isEmpty(blkOptFromPath(path)))
     return path
   return null

@@ -188,6 +188,9 @@
         },
         "turret_side_dm": {
           "armorThickness": 25.4
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 12.7
         }
       },
       "armor_steel": {
@@ -240,19 +243,25 @@
         "hp": 400.0,
         "armorThickness": 25.0,
         "explosionDamageMult": 10.0,
-        "genericArmorQuality": 0.25,
+        "genericArmorQuality": 0.1,
         "explosionArmorQuality": 0.15,
-        "cumulativeArmorQuality": 1.9,
+        "cumulativeArmorQuality": 0.5,
         "variableThickness": true,
         "ex_armor_r_01_dm": [],
         "ex_armor_r_02_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "cumulativeArmorQuality": 0.3,
+          "genericArmorQuality": 0.09
         },
         "ex_armor_r_03_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "cumulativeArmorQuality": 0.3,
+          "genericArmorQuality": 0.09
         },
         "ex_armor_r_04_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "cumulativeArmorQuality": 0.3,
+          "genericArmorQuality": 0.09
         },
         "ex_armor_r_05_dm": [],
         "ex_armor_r_06_dm": [],
@@ -262,13 +271,19 @@
         "ex_armor_r_10_dm": [],
         "ex_armor_l_01_dm": [],
         "ex_armor_l_02_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "cumulativeArmorQuality": 0.3,
+          "genericArmorQuality": 0.09
         },
         "ex_armor_l_03_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "cumulativeArmorQuality": 0.3,
+          "genericArmorQuality": 0.09
         },
         "ex_armor_l_04_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "cumulativeArmorQuality": 0.3,
+          "genericArmorQuality": 0.09
         },
         "ex_armor_l_05_dm": [],
         "ex_armor_l_06_dm": [],
@@ -487,7 +502,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -518,7 +533,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2161,6 +2176,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -3147,6 +3163,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",

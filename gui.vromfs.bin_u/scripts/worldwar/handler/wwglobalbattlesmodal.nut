@@ -1,13 +1,13 @@
-local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
-local WwGlobalBattle = require("scripts/worldWar/operations/model/wwGlobalBattle.nut")
-local { openBattlesFilterMenu, isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
-local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let globalBattlesListData = require("%scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
+let WwGlobalBattle = require("%scripts/worldWar/operations/model/wwGlobalBattle.nut")
+let { openBattlesFilterMenu, isMatchFilterMask } = require("%scripts/worldWar/handler/wwBattlesFilterMenu.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
-class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescription
+::gui_handlers.WwGlobalBattlesModal <- class extends ::gui_handlers.WwBattleDescription
 {
   hasSquadsInviteButton = false
   hasBattleFilter = true
@@ -102,26 +102,26 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function updateSlotbar()
   {
-    local availableUnits = {}
-    local operationUnits = {}
+    let availableUnits = {}
+    let operationUnits = {}
     if (operationBattle.isValid())
       foreach (side in ::g_world_war.getSidesOrder(curBattleInList))
       {
-        local playerTeam = operationBattle.getTeamBySide(side)
+        let playerTeam = operationBattle.getTeamBySide(side)
         availableUnits.__update(operationBattle.getTeamRemainUnits(playerTeam))
         operationUnits.__update(::g_world_war.getAllOperationUnitsBySide(side))
       }
 
-    local map = getMap()
-    local unitsGroupsByCountry = map?.getUnitsGroupsByCountry()
-    local prevSlotbarStatus = hasSlotbarByUnitsGroups
+    let map = getMap()
+    let unitsGroupsByCountry = map?.getUnitsGroupsByCountry()
+    let prevSlotbarStatus = hasSlotbarByUnitsGroups
     hasSlotbarByUnitsGroups = unitsGroupsByCountry != null
     if (prevSlotbarStatus != hasSlotbarByUnitsGroups)
       destroySlotbar()
     if (hasSlotbarByUnitsGroups)
       slotbarPresets.setCurPreset(map.getId() ,unitsGroupsByCountry)
 
-    local assignCountry = ::get_profile_country_sq()
+    let assignCountry = ::get_profile_country_sq()
     createSlotbar(
       {
         singleCountry = assignCountry
@@ -138,14 +138,14 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
   function updateSelectedItem(isForceUpdate = false)
   {
     refreshSelBattle()
-    local cb = ::Callback(function() {
+    let cb = ::Callback(function() {
       local newOperationBattle = ::g_world_war.getBattleById(curBattleInList.id)
       if (!newOperationBattle.isValid() || newOperationBattle.isStale())
       {
         newOperationBattle = clone curBattleInList
         newOperationBattle.setStatus(::EBS_FINISHED)
       }
-      local isBattleEqual = operationBattle.isEqual(newOperationBattle)
+      let isBattleEqual = operationBattle.isEqual(newOperationBattle)
       operationBattle = newOperationBattle
 
       updateBattleSquadListData()
@@ -188,10 +188,10 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
       return getFilteredBattlesByMaxCountPerGroup()
     }
 
-    local battleListMap = clone curBattleListMap
+    let battleListMap = clone curBattleListMap
     foreach(idx, battle in battleListMap)
     {
-      local newBattle = getBattleById(battle.id, false)
+      let newBattle = getBattleById(battle.id, false)
       if (newBattle.isValid())
       {
         battleListMap[idx] = newBattle
@@ -220,7 +220,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function onOpenBattlesFilters(obj)
   {
-    local applyFilter = ::Callback(function()
+    let applyFilter = ::Callback(function()
       {
         reinitBattlesList(true)
         refreshList(true)
@@ -234,7 +234,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function setFilteredBattles()
   {
-    local assignCountry = ::get_profile_country_sq()
+    let assignCountry = ::get_profile_country_sq()
     battlesList = globalBattlesListData.getList().filter(@(battle)
       battle.hasSideCountry(assignCountry) && battle.isOperationMapAvaliable()
       && battle.hasAvailableUnits())
@@ -244,7 +244,7 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
     battlesList = battlesList.filter(
       function(battle) {
-        local side = getPlayerSide(battle)
+        let side = getPlayerSide(battle)
         local team = battle.getTeamBySide(side)
         return isMatchFilterMask(battle, assignCountry, team, side)
       }.bindenv(this))
@@ -280,11 +280,11 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
 
   function fillOperationInfoText()
   {
-    local operationInfoTextObj = scene.findObject("operation_info_text")
+    let operationInfoTextObj = scene.findObject("operation_info_text")
     if (!::check_obj(operationInfoTextObj))
       return
 
-    local operation = getOperationById(curBattleInList.getOperationId())
+    let operation = getOperationById(curBattleInList.getOperationId())
     if (!operation)
       return
 
@@ -300,14 +300,14 @@ class ::gui_handlers.WwGlobalBattlesModal extends ::gui_handlers.WwBattleDescrip
     if (battlesList.len() == 0)
       return []
 
-    local maxVisibleBattlesPerGroup = ::g_world_war.getSetting("maxVisibleGlobalBattlesPerGroup",
+    let maxVisibleBattlesPerGroup = ::g_world_war.getSetting("maxVisibleGlobalBattlesPerGroup",
       MAX_VISIBLE_BATTLES_PER_GROUP)
 
-    local battlesByGroups = {}
-    local res = []
+    let battlesByGroups = {}
+    let res = []
     foreach (battleData in battlesList)
     {
-      local groupId = battleData.getGroupId()
+      let groupId = battleData.getGroupId()
       if (!(groupId in battlesByGroups))
         battlesByGroups[groupId] <- [battleData]
       else

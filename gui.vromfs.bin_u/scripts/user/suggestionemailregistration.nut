@@ -1,11 +1,11 @@
-local sonyUser = require("sony.user")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { havePlayerTag } = require("scripts/user/userUtils.nut")
-local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+let sonyUser = require("sony.user")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-local countriesWithRecommendEmailRegistration = {
+let countriesWithRecommendEmailRegistration = {
   AZ = "Azerbaijan"
   AM = "Armenia"
   BY = "Belarus"
@@ -23,13 +23,13 @@ local countriesWithRecommendEmailRegistration = {
   EE = "Estonia"
 }
 
-local canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
+let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
   : isPlatformXboxOne ? @() havePlayerTag("livelogin") && ::has_feature("AllowXboxAccountLinking")
   : ::steam_is_running() ? @() havePlayerTag("steamlogin") && ::has_feature("AllowSteamAccountLinking")
   : @() false
 
-local function launchSteamEmailRegistration() {
-  local token = ::get_steam_link_token()
+let function launchSteamEmailRegistration() {
+  let token = ::get_steam_link_token()
   if (token == "")
     return ::dagor.debug("Steam Email Registration: empty token")
 
@@ -41,7 +41,7 @@ local function launchSteamEmailRegistration() {
     false, false, "profile_page")
 }
 
-local function checkAutoShowSteamEmailRegistration() {
+let function checkAutoShowSteamEmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -61,10 +61,10 @@ local function checkAutoShowSteamEmailRegistration() {
   })
 }
 
-local launchPS4EmailRegistration = @()
+let launchPS4EmailRegistration = @()
   ::ps4_open_url_logged_in(::loc("url/ps4_bind_url"), ::loc("url/ps4_bind_redirect"))
 
-local function checkAutoShowPS4EmailRegistration() {
+let function checkAutoShowPS4EmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -82,14 +82,14 @@ local function checkAutoShowPS4EmailRegistration() {
   })
 }
 
-local sendXboxEmailBind = @(val) ::xbox_link_email(val, function(status) {
+let sendXboxEmailBind = @(val) ::xbox_link_email(val, function(status) {
   ::g_popups.add("", ::colorize(
     status == ::YU2_OK ? "activeTextColor" : "warningTextColor",
     ::loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
   ))
 })
 
-local function launchXboxEmailRegistration(override = {}) {
+let function launchXboxEmailRegistration(override = {}) {
   ::gui_modal_editbox_wnd({
     leftAlignedLabel = true
     title = ::loc("mainmenu/XboxOneEmailRegistration")
@@ -104,20 +104,28 @@ local function launchXboxEmailRegistration(override = {}) {
   }.__update(override))
 }
 
-local getPlayerCountryCode = isPlatformSony ? @() sonyUser?.country.toupper() ?? ::get_country_code()
+let function xboxGetCountryCode() {
+  let xbox_code = ::xbox_get_region()
+  if (xbox_code != "")
+    return xbox_code.toupper()
+  return ::get_country_code()
+}
+
+let getPlayerCountryCode = isPlatformSony ? @() sonyUser?.country.toupper() ?? ::get_country_code()
+  : isPlatformXboxOne ? xboxGetCountryCode
   : @() ::get_country_code()
 
-local function reqUnlockForStartEmailBind() {
-  local unlockId = ::get_gui_regional_blk()?.unlockOnStartEmailBind
+let function reqUnlockForStartEmailBind() {
+  let unlockId = ::get_gui_regional_blk()?.unlockOnStartEmailBind
   if (unlockId == null || ::is_unlocked_scripted(::UNLOCKABLE_ACHIEVEMENT, unlockId))
     return
   ::req_unlock_by_client(unlockId, true)
 }
 
-local forceLauncheSuggestionEmailRegistration =
+let forceLauncheSuggestionEmailRegistration =
   isPlatformSony ? function() {
-    local bindBtnId = "bind"
-    local msgBox = ::scene_msg_box("recommend_email_registration", null, ::loc("mainmenu/recommendEmailRegistration"),
+    let bindBtnId = "bind"
+    let msgBox = ::scene_msg_box("recommend_email_registration", null, ::loc("mainmenu/recommendEmailRegistration"),
         [
           [bindBtnId, function() {
             reqUnlockForStartEmailBind()
@@ -144,7 +152,7 @@ local forceLauncheSuggestionEmailRegistration =
     })
   : @() null
 
-local function checkForceSuggestionEmailRegistration() {
+let function checkForceSuggestionEmailRegistration() {
   if (!canEmailRegistration())
     return
 
@@ -153,15 +161,15 @@ local function checkForceSuggestionEmailRegistration() {
   forceLauncheSuggestionEmailRegistration()
 }
 
-local checkAutoShowEmailRegistration = isPlatformSony ? checkAutoShowPS4EmailRegistration
+let checkAutoShowEmailRegistration = isPlatformSony ? checkAutoShowPS4EmailRegistration
  : ::steam_is_running() ? checkAutoShowSteamEmailRegistration
  : @() null
 
-local emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
+let emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
   : isPlatformXboxOne ? loc("mainmenu/XboxOneEmailRegistration/desc")
   : loc("mainmenu/SteamEmailRegistration/desc")
 
-local launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
+let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
   : isPlatformXboxOne ? launchXboxEmailRegistration
   : ::steam_is_running() ? launchSteamEmailRegistration
   : @() null

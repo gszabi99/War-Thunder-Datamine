@@ -1,6 +1,7 @@
-local { isChatEnabled, isChatEnableWithPlayer } = require("scripts/chat/chatStates.nut")
+let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { getRealName } = require("%scripts/user/nameMapping.nut")
 
-local mpChatState = {
+let mpChatState = {
   log = []
   currentModeId = null
   PERSISTENT_DATA_PARAMS = ["log"]
@@ -33,7 +34,7 @@ local mpChatModel = {
   }
 
   function getLogForBanhammer() {
-    local log = mpChatState.log.map(@(message) {
+    let log = mpChatState.log.map(@(message) {
       from = message.sender
       userColor = message.userColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(message.userColor, "@")) : ""
       fromUid = message.uid
@@ -59,16 +60,16 @@ local mpChatModel = {
       return false
     }
 
-    local player = u.search(::get_mplayers_list(::GET_MPLAYERS_LIST, true), @(p) p.name == sender)
+    let player = u.search(::get_mplayers_list(::GET_MPLAYERS_LIST, true), @(p) p.name == sender)
 
-    local message = {
+    let message = {
       userColor = ""
       msgColor = ""
       clanTag = ""
       uid = null
       sender = sender
       text = msg
-      isMyself = sender == ::my_user_name
+      isMyself = sender == ::my_user_name || getRealName(sender) == ::my_user_name
       isBlocked = ::isPlayerNickInContacts(sender, ::EPL_BLOCKLIST)
       isAutomatic = automatic
       mode = mode
@@ -127,7 +128,7 @@ local mpChatModel = {
   }
 
   function onModeSwitched() {
-    local newModeId = ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
+    let newModeId = ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
     if (newModeId == null)
       return
 

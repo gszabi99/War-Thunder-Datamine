@@ -1,6 +1,6 @@
-local ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
+let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-class ::items_classes.Warbonds extends ItemCouponBase {
+::items_classes.Warbonds <- class extends ItemCouponBase {
   static iType = itemType.WARBONDS
   static typeIcon = "#ui/gameuiskin#item_type_warbonds"
 
@@ -12,7 +12,7 @@ class ::items_classes.Warbonds extends ItemCouponBase {
   {
     if (!shouldAutoConsume)
       return null
-    local wb = getWarbond()
+    let wb = getWarbond()
     return wb && (count * getWarbondsAmount())  //prize already has type icon, so we no need 2 warbond icons near amount number
   }
 }

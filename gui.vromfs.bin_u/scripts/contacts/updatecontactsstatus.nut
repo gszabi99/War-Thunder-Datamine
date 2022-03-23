@@ -1,33 +1,33 @@
-local { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
-local { appendOnce, isEmpty } = require("sqStdLibs/helpers/u.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { appendOnce, isEmpty } = require("%sqStdLibs/helpers/u.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
-local UPDATE_DELAY_MSEC = isPlatformSony? 60000 : 1800000 //60 sec for psn, 30 minutes for others
-local lastUpdate = persist("lastUpdate", @() ::Watched(0))
-local saveLastUpdate = function() { lastUpdate(::dagor.getCurTime()) }
-local canUpdate = @() ::dagor.getCurTime() - lastUpdate.value >= UPDATE_DELAY_MSEC
+let UPDATE_DELAY_MSEC = isPlatformSony? 60000 : 1800000 //60 sec for psn, 30 minutes for others
+let lastUpdate = persist("lastUpdate", @() ::Watched(0))
+let saveLastUpdate = function() { lastUpdate(::dagor.getCurTime()) }
+let canUpdate = @() ::dagor.getCurTime() - lastUpdate.value >= UPDATE_DELAY_MSEC
 
 local afterUpdateCb = @() null
-local callCbOnce = function() {
+let callCbOnce = function() {
   afterUpdateCb()
   afterUpdateCb = @() null
 }
 
-local cachedUids = persist("cachedUids", @() ::Watched({}))
-local pendingUids = persist("pendingUids", @() ::Watched([]))
+let cachedUids = persist("cachedUids", @() ::Watched({}))
+let pendingUids = persist("pendingUids", @() ::Watched([]))
 
-local updateBlocklist = function() {
+let updateBlocklist = function() {
   if (isEmpty(pendingUids.value) || !canUpdate()) {
     callCbOnce()
     return
   }
 
   //While we waiting response, we can collect new uids list
-  local waitingUids = pendingUids.value
+  let waitingUids = pendingUids.value
   pendingUids([])
   saveLastUpdate()
 
-  local blk = ::DataBlock()
+  let blk = ::DataBlock()
   blk.addBlock("body")
   blk.body.addStr("groupName", ::EPL_BLOCKLIST)
   foreach (uid in waitingUids)
@@ -42,10 +42,10 @@ local updateBlocklist = function() {
       ::debugTableData(response)
 
       for (local i = 0; i < response.paramCount(); i++) {
-        local uid = response.getParamName(i)
+        let uid = response.getParamName(i)
 
         cachedUids.mutate(@(v) v[uid.tostring()] <- ::dagor.getCurTime())
-        local contact = ::getContact(uid)
+        let contact = ::getContact(uid)
         if (!contact)
         {
           ::dagor.debug($"[UCS]: Fail updating {uid}. Contact not found")
@@ -70,7 +70,7 @@ local updateBlocklist = function() {
   )
 }
 
-local updateContactsStatusByUids = function(uids) {
+let updateContactsStatusByUids = function(uids) {
   foreach (uid in uids) {
     if (uid && (cachedUids.value?[uid.tostring()] == null) && !::is_my_userid(uid))
       appendOnce(uid, pendingUids.value)
@@ -79,20 +79,20 @@ local updateContactsStatusByUids = function(uids) {
   updateBlocklist()
 }
 
-local invalidateCache = function() {
+let invalidateCache = function() {
   lastUpdate(0)
   cachedUids({})
   pendingUids([])
 }
 
-local updateContactsStatusByContacts = function(arr, cb = @() null) {
+let updateContactsStatusByContacts = function(arr, cb = @() null) {
   afterUpdateCb = cb
   updateContactsStatusByUids(arr.map(@(c) c?.uidInt64))
 }
 
-local checkInRoomMembers = function() {
-  local playersList = ::SessionLobby.getMembersInfoList()
-  local list = playersList.filter(
+let checkInRoomMembers = function() {
+  let playersList = ::SessionLobby.getMembersInfoList()
+  let list = playersList.filter(
     @(p) !p.isBot && !::is_my_userid(p.userId)
   ).map(
     @(p) ::getContact(p.userId, p.name, p.clanTag) //Need to create contact, so it will be updated later
@@ -106,7 +106,7 @@ addListenersWithoutEnv({
   LobbyMembersChanged = function(p) { checkInRoomMembers() }
   RoomJoined = function(p) { checkInRoomMembers() }
   ChatLatestThreadsUpdate = function(p) {
-    local arr = []
+    let arr = []
     foreach (thread in ::g_chat_latest_threads.getList()) {
       if (::is_my_userid(thread.ownerUid))
         continue
@@ -116,7 +116,7 @@ addListenersWithoutEnv({
     updateContactsStatusByContacts(arr)
   }
   ContactsGroupUpdate = function(p) {
-    local arr = []
+    let arr = []
     foreach (uid, contact in ::contacts_players)
       arr.append(contact)
 

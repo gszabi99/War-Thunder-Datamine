@@ -3381,10 +3381,10 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -20000.0,
+      "waterMassMult": 380.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 1300000.0,
+      "additionalWaterDeathThreshold": 1000000.0,
       "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 37.0,
@@ -3392,7 +3392,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.2
     }
   },
   {
@@ -3434,7 +3434,7 @@
       {
         "cover": {
           "part": "compartment_05_dm",
-          "weight": 0.6,
+          "weight": 0.5,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
@@ -3446,13 +3446,13 @@
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             },
             {
               "part": {
                 "partNo": "engine_03_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.9
               }
             },
             {
@@ -4091,6 +4091,18 @@
             "node": "auxiliary_caliber_gun_03"
           },
           {
+            "node": "auxiliary_caliber_gun_04"
+          },
+          {
+            "node": "auxiliary_caliber_turret_02"
+          },
+          {
+            "node": "auxiliary_caliber_turret_03"
+          },
+          {
+            "node": "auxiliary_caliber_turret_04"
+          },
+          {
             "node": "Bip01 Head_4"
           }
         ]
@@ -4112,6 +4124,8 @@
           "bullets": 100,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.015,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4201,6 +4215,8 @@
           "bullets": 100,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.015,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4813,6 +4829,8 @@
           "speedPitch": 15.0,
           "bullets": 2000,
           "useGunnerTargetingQuality": false,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.06,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,

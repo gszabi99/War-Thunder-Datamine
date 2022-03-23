@@ -1,6 +1,6 @@
-local stdMath = require("std/math.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let stdMath = require("%sqstd/math.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const WW_GLOBAL_BATTLES_FILTER_ID = "worldWar/ww_global_battles_filter"
 
@@ -12,7 +12,7 @@ enum UNAVAILABLE_BATTLES_CATEGORIES {
   NOT_STARTED         = 0x0010
 }
 
-local battlesFilters = [
+let battlesFilters = [
   {
     multiSelectId = "by_unit_type"
     title = @() ::loc("worldwar/battlesFilter/byUnitType")
@@ -23,16 +23,16 @@ local battlesFilters = [
       unitTypes.SHIP.bit, unitTypes.AIRCRAFT.bit | unitTypes.TANK.bit,
       unitTypes.AIRCRAFT.bit | unitTypes.SHIP.bit]
     checkChangeValue = function(filterBitMasks, newFilterBitMasks, apply, cancel) {
-      local id = "by_unit_type"
-      local filterMasks = filterBitMasks?[id] ?? {}
+      let id = "by_unit_type"
+      let filterMasks = filterBitMasks?[id] ?? {}
       foreach(mask, value in newFilterBitMasks)
         filterMasks[mask] <- value
 
       apply(id, filterMasks)
     }
     getFilterMaskByObj = function(obj, valueList) {
-      local masks = get_array_by_bit_value(obj.getValue(), valueList)
-      local masksList = {}
+      let masks = get_array_by_bit_value(obj.getValue(), valueList)
+      let masksList = {}
       foreach(mask in valueList)
         masksList[mask.tostring()] <- ::isInArray(mask, masks)
 
@@ -48,7 +48,7 @@ local battlesFilters = [
         value = UNAVAILABLE_BATTLES_CATEGORIES.NO_AVAILABLE_UNITS
         text = @() ::loc("worldwar/battle/filter/show_if_no_avaliable_units")
         needShow = function(bitMask) {
-          local unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+          let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
             WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
           return unitAvailability != WW_BATTLE_UNITS_REQUIREMENTS.NO_REQUIREMENTS
         }
@@ -71,7 +71,7 @@ local battlesFilters = [
       },
     ]
     checkChangeValue = function(filterBitMasks, newFilterBitMasks, apply, cancel) {
-      local filterId = "by_available_battles"
+      let filterId = "by_available_battles"
       if (!(UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED & filterBitMasks.by_available_battles)
         && (UNAVAILABLE_BATTLES_CATEGORIES.NOT_STARTED & newFilterBitMasks))
       {
@@ -90,7 +90,7 @@ local battlesFilters = [
 
 local battlesFilterMask = null
 
-local function validateFilterMask(filterMask) {
+let function validateFilterMask(filterMask) {
   local validFilterMask = null
   if (::u.isDataBlock(filterMask))    //  needs because it saves as boolean before
     validFilterMask = ::buildTableFromBlk(filterMask)
@@ -100,26 +100,26 @@ local function validateFilterMask(filterMask) {
   return validFilterMask
 }
 
-local function battlesFilterMaskInitOnce() {
+let function battlesFilterMaskInitOnce() {
   if (battlesFilterMask != null)
     return
 
   battlesFilterMask = validateFilterMask(::load_local_account_settings(WW_GLOBAL_BATTLES_FILTER_ID))
 }
 
-local function getBattlesFilterMask() {
+let function getBattlesFilterMask() {
   battlesFilterMaskInitOnce()
   return battlesFilterMask
 }
 
-local function setBattlesFilterMask(bitMask) {
+let function setBattlesFilterMask(bitMask) {
   battlesFilterMask = bitMask
   ::save_local_account_settings(WW_GLOBAL_BATTLES_FILTER_ID, bitMask)
 }
 
-local function isMatchFilterMask(battle, country, team, side, needCheckUnitType = true)
+let function isMatchFilterMask(battle, country, team, side, needCheckUnitType = true)
 {
-  local filterMask = getBattlesFilterMask()
+  let filterMask = getBattlesFilterMask()
   local curFilterMask = filterMask?.by_available_battles ?? 0
 
   if (team && !(UNAVAILABLE_BATTLES_CATEGORIES.NO_AVAILABLE_UNITS & curFilterMask)
@@ -153,10 +153,10 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(p) battlesFilterMask = null
 })
 
-class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.wwBattlesFilterMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "gui/worldWar/wwBattlesFilterMenu"
+  sceneTplName = "%gui/worldWar/wwBattlesFilterMenu"
   needVoiceChat = false
 
   rows = null
@@ -190,7 +190,7 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
         filterCategory.list = createUnitTypesFilterList(filterCategory)
       else
       {
-        local bitMask = filterBitMasks?[filterCategory.multiSelectId] ?? 0
+        let bitMask = filterBitMasks?[filterCategory.multiSelectId] ?? 0
         filterCategory.value <- bitMask
         foreach (option in filterCategory.list)
           option.show <- option?.needShow?(bitMask) ?? true
@@ -205,13 +205,13 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
 
   function createUnitTypesFilterList(category)
   {
-    local filterMasks = filterBitMasks?.by_unit_type ?? []
+    let filterMasks = filterBitMasks?.by_unit_type ?? []
     local categoryMask = 0
-    local list = []
+    let list = []
     foreach(idx, unitTypeMask in category.visibleFilterByUnitTypeMasks)
     {
-      local option = {}
-      local isSelected = filterMasks?[unitTypeMask.tostring()] ?? true
+      let option = {}
+      let isSelected = filterMasks?[unitTypeMask.tostring()] ?? true
       option.text <- ::g_string.implode(
         unitTypes.getArrayBybitMask(unitTypeMask).map(@(u) u.getArmyLocName()),
         " + ")
@@ -225,23 +225,23 @@ class ::gui_handlers.wwBattlesFilterMenu extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChangeValue(obj)
   {
-    local filterId = obj.id
-    local apply = ::Callback(function(id, selBitMask)
+    let filterId = obj.id
+    let apply = ::Callback(function(id, selBitMask)
       {
         filterBitMasks[id] <- selBitMask
         setBattlesFilterMask(filterBitMasks)
         if (onChangeValuesBitMaskCb)
           onChangeValuesBitMaskCb()
       }, this)
-    local cancel = ::Callback(function(id)
+    let cancel = ::Callback(function(id)
       {
-        local multiSelectObj = scene.findObject(id)
+        let multiSelectObj = scene.findObject(id)
         if (::check_obj(multiSelectObj))
           multiSelectObj.setValue(filterBitMasks[id])
       }, this)
 
-    local filterCategory = ::u.search(battlesFilters, @(filter) filter.multiSelectId == filterId)
-    local newFilterBitMasks = filterCategory.getFilterMaskByObj(obj, filterCategory?.visibleFilterByUnitTypeMasks ?? [])
+    let filterCategory = ::u.search(battlesFilters, @(filter) filter.multiSelectId == filterId)
+    let newFilterBitMasks = filterCategory.getFilterMaskByObj(obj, filterCategory?.visibleFilterByUnitTypeMasks ?? [])
     if (filterCategory?.checkChangeValue?(filterBitMasks, newFilterBitMasks, apply, cancel) ?? true)
       apply(filterId, newFilterBitMasks)
   }

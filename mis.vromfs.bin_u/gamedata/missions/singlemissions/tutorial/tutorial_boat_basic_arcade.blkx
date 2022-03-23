@@ -30,7 +30,10 @@
       "optionalTakeOff": false,
       "tutorialObjectsFile": "config/tutorial_hud_elements/tutorial_boat_hud_elements.blk",
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 5
+      "skiesInitialRandomSeed": 5,
+      "customWeather": {
+        "waterWindStrength": 2.0
+      }
     },
     "spectator_points": []
   },
@@ -813,6 +816,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint01",
             "radiusOffset": [0.0,0.0]
           }
@@ -944,6 +948,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint01",
             "radiusOffset": [0.0,0.0]
           }
@@ -958,6 +963,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint02",
             "radiusOffset": [0.0,0.0]
           }
@@ -1047,6 +1053,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint02",
             "radiusOffset": [0.0,0.0]
           }
@@ -1061,6 +1068,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint03",
             "radiusOffset": [0.0,0.0]
           }
@@ -1129,6 +1137,7 @@
           "show": false,
           "attach": false,
           "scale": 1.0,
+          "doNuclearExplosion": false,
           "target": "waypoint03",
           "radiusOffset": [0.0,0.0]
         },
@@ -1540,7 +1549,7 @@
       },
       "actions": [
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -1555,7 +1564,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint01",
             "action": "show",
@@ -1570,7 +1579,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint01_continue",
             "action": "show",
@@ -1592,12 +1601,12 @@
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 0.5
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 2.0
           }
         },
@@ -1638,11 +1647,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_CONTINUE"
-        }
-      },
+      "conditions": [],
       "actions": [
         {
           "playHint": {
@@ -1701,7 +1706,7 @@
         },
         {
           "triggerEnable": {
-            "target": "closeCombat_aim_hint03"
+            "target": "closeCombat_wait_for_turrets"
           }
         }
       ],
@@ -1934,6 +1939,7 @@
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
+            "doNuclearExplosion": false,
             "target": "target_ship01",
             "radiusOffset": [0.0,0.0]
           }
@@ -2242,14 +2248,10 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_CONTINUE"
-        }
-      },
+      "conditions": [],
       "actions": [
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -2264,7 +2266,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_xray_crew_hint02",
             "action": "show",
@@ -2279,7 +2281,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_xray_crew_hint02_continue",
             "action": "show",
@@ -2294,12 +2296,12 @@
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 0.5
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 2.0
           }
         },
@@ -2333,7 +2335,7 @@
         },
         {
           "triggerEnable": {
-            "target": "closeCombat_other_death_reasons01"
+            "target": "closeCombat_kill_the_targets_crew"
           }
         }
       ],
@@ -2655,6 +2657,7 @@
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
+            "doNuclearExplosion": false,
             "target": "target_ship01",
             "radiusOffset": [0.0,0.0]
           }
@@ -2784,6 +2787,20 @@
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship03"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "set_sero_torpedoes"
+          }
+        },
+        {
+          "unitRestore": {
+            "target_marking": 0,
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target": "player",
+            "ammoRestore": true
           }
         },
         {
@@ -3138,6 +3155,7 @@
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
+            "doNuclearExplosion": false,
             "target": "target_ship03",
             "radiusOffset": [0.0,0.0]
           }
@@ -3341,6 +3359,7 @@
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
+            "doNuclearExplosion": false,
             "target": "target_ship03",
             "radiusOffset": [0.0,0.0]
           }
@@ -3355,6 +3374,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint04",
             "radiusOffset": [0.0,0.0]
           }
@@ -4295,6 +4315,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint04",
             "radiusOffset": [0.0,0.0]
           }
@@ -4309,6 +4330,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint05",
             "radiusOffset": [0.0,0.0]
           }
@@ -4399,6 +4421,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint05",
             "radiusOffset": [0.0,0.0]
           }
@@ -4925,6 +4948,9 @@
           "setStatus": "disable",
           "control": "ID_SHIP_TOGGLE_GUNNERS"
         },
+        "triggerDisable": {
+          "target": "units_stay_at_pos"
+        },
         "triggerEnable": {
           "target": "artModes_target_killed+zone_hint"
         }
@@ -5029,22 +5055,25 @@
         {
           "missionMarkAsCaptureZone": {
             "army": 0,
-            "timeMultiplier": 1.0,
+            "timeMultiplier": 0.25,
             "disableZone": false,
             "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
             "useHUDMarkers": true,
+            "showBorderOnMap": false,
             "zoneDefenders": []
           }
         },
         {
           "hudElementSelectionShade": {
             "element": "iconCaptureZone"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "units_stay_at_pos"
           }
         },
         {
@@ -5236,13 +5265,11 @@
             "timeMultiplier": 1.0,
             "disableZone": true,
             "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
             "useHUDMarkers": true,
+            "showBorderOnMap": false,
             "zoneDefenders": []
           }
         },
@@ -5252,13 +5279,11 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": false,
             "useHUDMarkers": true,
+            "showBorderOnMap": false,
             "zoneDefenders": []
           }
         },
@@ -5404,7 +5429,7 @@
       ],
       "actions": [
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -5419,7 +5444,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint01",
             "action": "show",
@@ -5434,7 +5459,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint01_continue",
             "action": "show",
@@ -5449,18 +5474,23 @@
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 0.5
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 2.0
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "triggerEnable": {
-            "target": "rangedCombat_ranged_hint02"
+            "target": "rangedCombat_ranged_hint05+start_shooting"
           }
         }
       ],
@@ -5725,11 +5755,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_CONTINUE"
-        }
-      },
+      "conditions": [],
       "actions": [
         {
           "playHint": {
@@ -6014,6 +6040,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint06",
             "radiusOffset": [0.0,0.0]
           }
@@ -6088,6 +6115,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint06",
             "radiusOffset": [0.0,0.0]
           }
@@ -6102,6 +6130,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint07",
             "radiusOffset": [0.0,0.0]
           }
@@ -6171,6 +6200,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint07",
             "radiusOffset": [0.0,0.0]
           }
@@ -6185,6 +6215,7 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint08",
             "radiusOffset": [0.0,0.0]
           }
@@ -6219,141 +6250,127 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "player",
-          "target": "capture_zone",
-          "object_var_value": 0
+          "target": "capture_zone"
         }
       },
-      "actions": [
-        {
-          "triggerDisable": [
-            {
-              "target": "captureZone_waypoint01"
-            },
-            {
-              "target": "captureZone_waypoint02"
-            }
-          ]
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+      "actions": {
+        "triggerDisable": [
+          {
+            "target": "captureZone_waypoint01"
+          },
+          {
+            "target": "captureZone_waypoint02"
           }
+        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 100500,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "shouldBlink": false
         },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_stop_the_boat",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_FULL_STOP"
+        "__missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "unitPlayEffect": [
+          {
+            "effect_type": "specify"
+          },
+          {
+            "loopSpawn": true
+          },
+          {
+            "delay": [1.0,1.0]
+          },
+          {
+            "effect": "waypoint_ground"
+          },
+          {
+            "offset": [0.0,0.0,0.0]
+          },
+          {
+            "show": false
+          },
+          {
+            "attach": false
+          },
+          {
+            "scale": 1.0
+          },
+          {
+            "doNuclearExplosion": false
+          },
+          {
+            "target": "waypoint07"
+          },
+          {
+            "target": "waypoint08"
+          },
+          {
+            "target": "waypoint06"
+          },
+          {
+            "radiusOffset": [0.0,0.0]
+          },
+          {
+            "mustExist": false
           }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
+        ],
+        "missionMarkAsWaypoint": [
+          {
+            "visible": false
+          },
+          {
+            "primary": true
+          },
+          {
+            "oriented": false
+          },
+          {
+            "ignoreDifficulty": false
+          },
+          {
+            "scale": 1.0
+          },
+          {
+            "target": "waypoint_underground05"
+          },
+          {
+            "target": "waypoint_underground06"
+          },
+          {
+            "target": "waypoint_underground07"
           }
+        ],
+        "wait": {
+          "time": 0.5
         },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "effect": "waypoint_ground"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": false
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "target": "waypoint07"
-            },
-            {
-              "target": "waypoint08"
-            },
-            {
-              "target": "waypoint06"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
-            },
-            {
-              "mustExist": false
-            }
-          ]
+        "__playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialBoat_stop_the_boat",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHIP_FULL_STOP"
         },
-        {
-          "missionMarkAsWaypoint": [
-            {
-              "visible": false
-            },
-            {
-              "primary": true
-            },
-            {
-              "oriented": false
-            },
-            {
-              "ignoreDifficulty": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "target": "waypoint_underground05"
-            },
-            {
-              "target": "waypoint_underground06"
-            },
-            {
-              "target": "waypoint_underground07"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "captureZone_player_in_zone"
-          }
+        "triggerEnable": {
+          "target": "captureZone_player_in_zone"
         }
-      ],
+      },
       "else_actions": []
     },
     "captureZone_player_in_zone": {
@@ -6369,55 +6386,19 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_SHIP_FULL_STOP"
-        }
-      },
+      "conditions": [],
       "actions": [
         {
-          "missionSetTimeSpeed": {
+          "__missionSetTimeSpeed": {
             "speed": 1.0,
             "realtimeTriggers": true
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_player_in_capture_zone",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_player_in_capture_zone_continue",
-            "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 100500,
@@ -6452,6 +6433,7 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
+            "doNuclearExplosion": false,
             "target": "waypoint08",
             "radiusOffset": [0.0,0.0],
             "mustExist": false
@@ -6465,6 +6447,12 @@
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           }
         },
         {
@@ -6501,6 +6489,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_player_in_capture_zone",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_player_in_capture_zone_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "triggerEnable": {
             "target": "captureZone_wait_for_capture"
           }
@@ -6530,8 +6550,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "player",
-          "target": "capture_zone",
-          "object_var_value": 0
+          "target": "capture_zone"
         }
       },
       "actions": [
@@ -6578,14 +6597,12 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
             "zoneType": "capture",
             "useHUDMarkers": true,
+            "showBorderOnMap": false,
             "zoneDefenders": []
           }
         },
@@ -6624,8 +6641,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "player",
-          "target": "capture_zone",
-          "object_var_value": 0
+          "target": "capture_zone"
         },
         "missionIsZoneCaptured": {
           "target": "capture_zone",
@@ -6655,14 +6671,12 @@
           "timeMultiplier": 1.0,
           "disableZone": false,
           "name_for_respawn_base": "",
-          "showBorderOnMap": false,
-          "borderWidthCoef": 1.0,
-          "borderTransparencyCoef": 1.0,
           "target": "capture_zone",
           "canCaptureByGM": true,
           "onlyPlayersCanCapture": true,
           "zoneType": "capture",
           "useHUDMarkers": true,
+          "showBorderOnMap": false,
           "zoneDefenders": []
         },
         "wait": {
@@ -6735,6 +6749,12 @@
           }
         },
         {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_tickets_all_texts",
             "show": false,
@@ -6763,18 +6783,21 @@
           }
         },
         {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 1.0,
             "disableZone": true,
             "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": false,
             "useHUDMarkers": true,
+            "showBorderOnMap": false,
             "zoneDefenders": []
           }
         },
@@ -6784,13 +6807,11 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
             "useHUDMarkers": true,
+            "showBorderOnMap": false,
             "zoneDefenders": []
           }
         },
@@ -6843,7 +6864,7 @@
           ]
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -6859,7 +6880,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -6875,7 +6896,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
@@ -6891,7 +6912,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_zone_colors",
             "action": "show",
@@ -6907,7 +6928,7 @@
           }
         },
         {
-          "playHint": {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_zone_colors_continue",
             "action": "show",
@@ -6923,27 +6944,27 @@
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 3.5
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 2.0
           }
         },
         {
-          "wait": {
+          "__wait": {
             "time": 2.0
           }
         },
         {
-          "missionStopSpeech": []
+          "__missionStopSpeech": []
         },
         {
           "triggerEnable": [
             {
-              "target": "captureZone_tickets_hint01"
+              "target": "captureZone_tickets_hint03"
             },
             {
               "target": "teamB_tickets_restore"
@@ -7168,11 +7189,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_CONTINUE"
-        }
-      },
+      "conditions": [],
       "actions": [
         {
           "playHint": {
@@ -7207,7 +7224,30 @@
           }
         },
         {
-          "playHint": {
+          "missionStopSpeech": []
+        },
+        {
+          "__hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "__wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation03_continue",
             "action": "show",
@@ -7220,24 +7260,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -7261,11 +7283,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_CONTINUE"
-        }
-      },
+      "conditions": [],
       "actions": [
         {
           "triggerDisable": {
@@ -7882,6 +7900,156 @@
         }
       ],
       "else_actions": []
+    },
+    "units_stay_at_pos": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "pos_target_01",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "target_ship01",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "pos_target_02",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "target_ship02",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "pos_target_03",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "target_ship03",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "pos_target_04",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "target_ship04",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "pos_target_05",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "target_ship05",
+            "move_type": "teleport"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "set_sero_torpedoes": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetZeroAmmo": {
+          "target": "player",
+          "triggerGroup": "torpedoes"
+        }
+      },
+      "else_actions": []
     }
   },
   "mission_objectives": {
@@ -7978,6 +8146,7 @@
         "bulletsCount3": 0,
         "modification": "40mm_bofors_l60_navy_universal",
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -8015,6 +8184,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8035,7 +8205,7 @@
           [0.791333,0.0,-0.611386],
           [0.0,1.0,0.0],
           [0.611386,0.0,0.791333],
-          [2635.31,0.000701904,1656.55]
+          [2635.31,0.000701904,1655.0]
         ],
         "unit_class": "germ_ls4_class",
         "objLayer": 1,
@@ -8052,6 +8222,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8089,6 +8260,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8126,6 +8298,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8163,6 +8336,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8200,6 +8374,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8237,6 +8412,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8274,6 +8450,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8311,6 +8488,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8348,6 +8526,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8385,6 +8564,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8422,6 +8602,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8459,6 +8640,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8496,6 +8678,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8533,6 +8716,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8570,6 +8754,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8607,6 +8792,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8644,6 +8830,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8681,6 +8868,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8718,6 +8906,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -8755,6 +8944,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -9178,6 +9368,61 @@
         [0.0,119.288,0.0],
         [315.59,0.0,690.431],
         [1025.54,-7.27881,2235.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "pos_target_01": {
+      "type": "Sphere",
+      "tm": [
+        [9.84808,0.0,-1.73648],
+        [0.0,10.0,0.0],
+        [1.73648,0.0,9.84808],
+        [2494.4,0.0,1706.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "pos_target_03": {
+      "type": "Sphere",
+      "tm": [
+        [9.06308,0.0,-4.22618],
+        [0.0,10.0,0.0],
+        [4.22618,0.0,9.06308],
+        [2595.4,-3.05176e-05,1649.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "pos_target_02": {
+      "type": "Sphere",
+      "tm": [
+        [7.93353,0.0,-6.08761],
+        [0.0,10.0,0.0],
+        [6.08761,0.0,7.93353],
+        [2635.3,-3.05176e-05,1655.42]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "pos_target_04": {
+      "type": "Sphere",
+      "tm": [
+        [-9.96195,0.0,0.871559],
+        [0.0,10.0,0.0],
+        [-0.871559,0.0,-9.96195],
+        [1953.6,0.0,2035.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "pos_target_05": {
+      "type": "Sphere",
+      "tm": [
+        [-3.82684,0.0,-9.2388],
+        [0.0,10.0,0.0],
+        [9.2388,0.0,-3.82684],
+        [817.8,0.0,2329.0]
       ],
       "objLayer": 0,
       "props": []

@@ -1,29 +1,29 @@
 from "%darg/ui_imports.nut" import *
 
-//local {locate_element_source, sh, ph} = require("daRg")
-local {format} = require("string")
-local utf8 = require_optional("utf8")
-local clipboard = require("daRg.clipboard")
-local fieldsMap = require("inspectorViews.nut")
-local cursors = require("simpleCursors.nut")
+//let {locate_element_source, sh, ph} = require("daRg")
+let {format} = require("string")
+let utf8 = require_optional("utf8")
+let clipboard = require("daRg.clipboard")
+let fieldsMap = require("inspectorViews.nut")
+let cursors = require("simpleCursors.nut")
 
-local shown          = persist("shown", @() Watched(false))
-local wndHalign      = persist("wndHalign", @() Watched(ALIGN_RIGHT))
-local pickerActive   = persist("pickerActive", @() Watched(false))
-local highlight      = persist("highlight", @() Watched(null))
-local animHighlight  = Watched(null)
-local pickedList     = persist("pickedList", @() Watched([], FRP_DONT_CHECK_NESTED))
-local viewIdx        = persist("viewIdx", @() Watched(0))
+let shown          = persist("shown", @() Watched(false))
+let wndHalign      = persist("wndHalign", @() Watched(ALIGN_RIGHT))
+let pickerActive   = persist("pickerActive", @() Watched(false))
+let highlight      = persist("highlight", @() Watched(null))
+let animHighlight  = Watched(null)
+let pickedList     = persist("pickedList", @() Watched([], FRP_DONT_CHECK_NESTED))
+let viewIdx        = persist("viewIdx", @() Watched(0))
 
-local curData        = Computed(@() pickedList.value?[viewIdx.value])
+let curData        = Computed(@() pickedList.value?[viewIdx.value])
 
-local fontSize = sh(1.5)
-local valColor = Color(155,255,50)
+let fontSize = sh(1.5)
+let valColor = Color(155,255,50)
 
-local function textButton(text, action, isEnabled = true) {
-  local stateFlags = Watched(0)
+let function textButton(text, action, isEnabled = true) {
+  let stateFlags = Watched(0)
 
-  local override = isEnabled
+  let override = isEnabled
     ? {
         watch = stateFlags
         onElemState = isEnabled ? @(val) stateFlags.update(val) : null
@@ -32,8 +32,8 @@ local function textButton(text, action, isEnabled = true) {
     : {}
 
   return function() {
-    local sf = stateFlags.value
-    local color = !isEnabled ? Color(80, 80, 80, 200)
+    let sf = stateFlags.value
+    let color = !isEnabled ? Color(80, 80, 80, 200)
       : (sf & S_ACTIVE)   ? Color(100, 120, 200, 255)
       : (sf & S_HOVER)    ? Color(110, 135, 220, 255)
       : (sf & S_KB_FOCUS) ? Color(110, 135, 220, 255)
@@ -54,9 +54,9 @@ local function textButton(text, action, isEnabled = true) {
   }
 }
 
-local function mkDirBtn(text, dir) {
-  local isVisible = Computed(@() pickedList.value.len() > 1)
-  local isEnabled = Computed(@() (viewIdx.value + dir) in pickedList.value)
+let function mkDirBtn(text, dir) {
+  let isVisible = Computed(@() pickedList.value.len() > 1)
+  let isEnabled = Computed(@() (viewIdx.value + dir) in pickedList.value)
   return @() {
     watch = [isVisible, isEnabled]
     children = !isVisible.value ? null
@@ -64,12 +64,12 @@ local function mkDirBtn(text, dir) {
   }
 }
 
-local invAlign = @(align) align == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
-local function panelToolbar() {
-  local pickBtn = textButton("Pick", @() pickerActive(true))
-  local alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<|" : "|>", @() wndHalign(invAlign(wndHalign.value)))
-  local prev = mkDirBtn("Prev", -1)
-  local next = mkDirBtn("Next", 1)
+let invAlign = @(align) align == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
+let function panelToolbar() {
+  let pickBtn = textButton("Pick", @() pickerActive(true))
+  let alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<|" : "|>", @() wndHalign(invAlign(wndHalign.value)))
+  let prev = mkDirBtn("Prev", -1)
+  let next = mkDirBtn("Next", 1)
   return {
     watch = wndHalign
     size = [flex(), SIZE_TO_CONTENT]
@@ -83,10 +83,10 @@ local function panelToolbar() {
   }
 }
 
-local cutText = utf8 ? @(text, num) utf8(text).slice(0, num)
+let cutText = utf8 ? @(text, num) utf8(text).slice(0, num)
   : @(text, num) text.slice(0, num)
 
-local mkColorCtor = @(color) @(content) {
+let mkColorCtor = @(color) @(content) {
   flow = FLOW_HORIZONTAL
   gap = sh(0.5)
   children = [
@@ -95,7 +95,7 @@ local mkColorCtor = @(color) @(content) {
   ]
 }
 
-local mkImageCtor = @(image) @(content) {
+let mkImageCtor = @(image) @(content) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
@@ -111,11 +111,11 @@ local mkImageCtor = @(image) @(content) {
   ]
 }
 
-local IMAGE_KEYS = ["image", "fallbackImage"]
+let IMAGE_KEYS = ["image", "fallbackImage"]
 
-local function getPropValueTexts(desc, key, textLimit = 0) {
-  local val = desc[key]
-  local tp = type(val)
+let function getPropValueTexts(desc, key, textLimit = 0) {
+  let val = desc[key]
+  let tp = type(val)
 
   local text = null
   local valCtor = fieldsMap?[key][val]
@@ -133,7 +133,7 @@ local function getPropValueTexts(desc, key, textLimit = 0) {
   } else if (tp == "userdata" || tp == "userpointer") {
     text = "<userdata/userpointer>"
   } else {
-    local s = val.tostring()
+    let s = val.tostring()
     if (textLimit <= 0)
       text = s
     else {
@@ -147,12 +147,12 @@ local function getPropValueTexts(desc, key, textLimit = 0) {
   return { text, valCtor }
 }
 
-local textColor = @(sf) sf & S_ACTIVE ? 0xFFFFFF00
+let textColor = @(sf) sf & S_ACTIVE ? 0xFFFFFF00
   : sf & S_HOVER ? 0xFF80A0FF
   : 0xFFFFFFFF
 
-local function mkPropContent(desc, key, sf) {
-  local { text, valCtor } = getPropValueTexts(desc, key, 200)
+let function mkPropContent(desc, key, sf) {
+  let { text, valCtor } = getPropValueTexts(desc, key, 200)
   local keyValue = $"{key.tostring()} = <color={valColor}>{text}</color>"
   if (typeof valCtor == "string")
     keyValue = $"{keyValue} {valCtor}"
@@ -170,7 +170,7 @@ local function mkPropContent(desc, key, sf) {
   return content
 }
 
-local function propPanel(desc) {
+let function propPanel(desc) {
   local pKeys = []
   if (typeof desc == "class")
     foreach (key, _ in desc)
@@ -180,7 +180,7 @@ local function propPanel(desc) {
   pKeys.sort()
 
   return pKeys.map(function(k) {
-    local stateFlags = Watched(0)
+    let stateFlags = Watched(0)
     return @() {
       watch = stateFlags
       size = [flex(), SIZE_TO_CONTENT]
@@ -192,20 +192,20 @@ local function propPanel(desc) {
   })
 }
 
-local prepareCallstackText = @(text) //add /t for line wraps
+let prepareCallstackText = @(text) //add /t for line wraps
   text.replace("/", "/\t")
 
-local function details() {
-  local res = {
+let function details() {
+  let res = {
     watch = curData
     size = flex()
   }
-  local sel = curData.value
+  let sel = curData.value
   if (sel == null)
     return res
 
-  local summarySF = Watched(0)
-  local summaryText = @() {
+  let summarySF = Watched(0)
+  let summaryText = @() {
     watch = summarySF
     size = flex()
     rendObj = ROBJ_TEXTAREA
@@ -218,10 +218,10 @@ local function details() {
     hangingIndent = sh(3)
   }
 
-  local bb = sel.boundingBox
-  local bbText = $"\{ pos = [{bb.x}, {bb.y}], size = [{bb.width}, {bb.height}] \}"
-  local bboxSF = Watched(0)
-  local bbox = @() {
+  let bb = sel.boundingBox
+  let bbText = $"\{ pos = [{bb.x}, {bb.y}], size = [{bb.width}, {bb.height}] \}"
+  let bboxSF = Watched(0)
+  let bbox = @() {
     watch = bboxSF
     rendObj = ROBJ_TEXTAREA
     behavior = [Behaviors.TextArea, Behaviors.Button]
@@ -243,7 +243,7 @@ local function details() {
   })
 }
 
-local help = {
+let help = {
   rendObj = ROBJ_TEXTAREA
   size = [flex(), SIZE_TO_CONTENT]
   behavior = Behaviors.TextArea
@@ -253,13 +253,13 @@ local help = {
   text = @"L.Ctrl + L.Shift + I - switch inspector off\nL.Ctrl + L.Shift + P - switch picker on/off"
 }
 
-local hr = {
+let hr = {
   rendObj = ROBJ_SOLID
   color = 0x333333
   size = [flex(), hdpx(1)]
 }
 
-local inspectorPanel = @() {
+let inspectorPanel = @() {
   watch = wndHalign
   rendObj = ROBJ_SOLID
   color = Color(0, 0, 50, 50)
@@ -278,9 +278,9 @@ local inspectorPanel = @() {
 }
 
 
-local function highlightRect() {
-  local res = { watch = highlight }
-  local hv = highlight.value
+let function highlightRect() {
+  let res = { watch = highlight }
+  let hv = highlight.value
   if (hv == null)
     return res
   return res.__update({
@@ -297,14 +297,14 @@ local function highlightRect() {
   })
 }
 
-local function animHighlightRect() {
-  local res = {
+let function animHighlightRect() {
+  let res = {
     watch = animHighlight
     animations = [{
       prop = AnimProp.opacity, from = 0.5, to = 1.0, duration = 0.5, easing = CosineFull, play = true, loop = true
     }]
   }
-  local ah = animHighlight.value
+  let ah = animHighlight.value
   if (ah == null)
     return res
   return res.__update({
@@ -316,17 +316,17 @@ local function animHighlightRect() {
   })
 }
 
-local function elemLocationText(elem, builder) {
+let function elemLocationText(elem, builder) {
   local text = "Source: unknown"
 
-  local location = locate_element_source(elem)
+  let location = locate_element_source(elem)
   if (location)
     text = $"{location.stack}\n-------\n"
   return builder ? $"{text}\n(Function)" : $"{text}\n(Table)"
 }
 
 
-local elementPicker = @() {
+let elementPicker = @() {
   size = [sw(100), sh(100)]
   behavior = Behaviors.InspectPicker
   cursor = cursors.normal
@@ -347,8 +347,8 @@ local elementPicker = @() {
 }
 
 
-local function inspectorRoot() {
-  local res = {
+let function inspectorRoot() {
+  let res = {
     watch = [pickerActive, shown]
     size = [sw(100), sh(100)]
     zOrder = getroottable()?.Layers.Inspector ?? 10
@@ -371,7 +371,7 @@ local function inspectorRoot() {
   return res
 }
 
-local function inspectorToggle() {
+let function inspectorToggle() {
   shown(!shown.value)
   pickerActive(false)
   pickedList([])

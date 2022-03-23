@@ -2685,7 +2685,6 @@
         "sensor": {
           "blk": "gameData/sensors/naval/su_foot_n.blk",
           "designationFromBody": true,
-          "designationTurretIndex": 1,
           "dmPart": "antenna_target_location_01_dm"
         }
       },
@@ -2746,18 +2745,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -15000.0,
+      "waterMassMult": 30.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 850000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterDeathThreshold": 600000.0,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 37.0,
       "maxHeelingTime": 9.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.25
     }
   },
   {
@@ -2765,7 +2764,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.8,
+          "weight": 0.7,
           "maxWaterAlive": 1.0
         }
       },
@@ -2778,13 +2777,13 @@
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_03_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             }
           ]
@@ -2793,7 +2792,7 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.6,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -2806,7 +2805,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.3,
+          "weight": 0.5,
           "maxWaterAlive": 1.0
         }
       }

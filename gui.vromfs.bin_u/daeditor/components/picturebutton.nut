@@ -1,13 +1,13 @@
 from "%darg/ui_imports.nut" import *
-local {colors} = require("style.nut")
-local cursors = require("cursors.nut")
-local {endswith} = require("string")
+let {colors} = require("style.nut")
+let cursors = require("cursors.nut")
+let {endswith} = require("string")
 
-local defSize = [hdpx(21), hdpx(21)]
+let defSize = [hdpx(21), hdpx(21)]
 
-local function imagePic(params){
+let function imagePic(params){
   local image = params?.image
-  local size = params?.size ?? defSize
+  let size = params?.size ?? defSize
 
   if (endswith(image, ".svg"))
     image = $"{image}:{size[0]}:{size[1]}"
@@ -20,7 +20,7 @@ local function imagePic(params){
   }
 }
 
-local function canvasPic(params){
+let function canvasPic(params){
   return{
     rendObj = ROBJ_VECTOR_CANVAS
     image = params?.image
@@ -29,17 +29,17 @@ local function canvasPic(params){
   }.__update(params?.canvasObj ?? {})
 }
 
-local function picCmp(params){
+let function picCmp(params){
   if (params?.canvasObj)
     return canvasPic(params)
   return imagePic(params)
 }
 
-local function pictureButton(params) {
-  local stateFlags = Watched(0)
+let function pictureButton(params) {
+  let stateFlags = Watched(0)
 
   return function() {
-    local color = (params?.checked || (stateFlags.value & S_ACTIVE))
+    let color = (params?.checked || (stateFlags.value & S_ACTIVE))
                   ? colors.Active
                   : (stateFlags.value & S_HOVER)
                       ? colors.Hover

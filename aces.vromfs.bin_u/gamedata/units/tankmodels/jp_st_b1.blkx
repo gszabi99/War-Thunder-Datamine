@@ -317,7 +317,8 @@
           "ex_decor_r_12_dm": [],
           "ex_decor_l_02_dm": [],
           "ex_decor_l_12_dm": [],
-          "ex_decor_r_04_dm": []
+          "ex_decor_r_04_dm": [],
+          "turret_03_back_dm": []
         },
         "submodule": {
           "armorClass": "tank_traks",
@@ -482,7 +483,7 @@
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
-        "armorThickness": 5.0,
+        "armorThickness": 150.0,
         "fireProtectionHp": 5.0,
         "hidableInViewer": false,
         "cannon_breech_dm": {
@@ -513,7 +514,7 @@
       "power_block": {
         "armorClass": "armor_tank_engine",
         "hp": 100.0,
-        "armorThickness": 5.0,
+        "armorThickness": 50.0,
         "fireProtectionHp": 5.0,
         "restrainDamage": 0.5,
         "engine_dm": [],
@@ -2552,6 +2553,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
@@ -3550,6 +3552,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": {
                   "head": "bone_mg_aa_h_01",
                   "gun": "bone_mg_aa_v_01",
@@ -3698,6 +3701,9 @@
                   "errExplTime": 0.0
                 },
                 {
+                  "forestallTime": 0.1
+                },
+                {
                   "turret": {
                     "head": "bone_grenade",
                     "gun": "bone_grenade"
@@ -3806,18 +3812,6 @@
         {
           "shells": {
             "reloadTimeMult": 1.2,
-            "ammo_turret_10_dm": {
-              "count": 1
-            },
-            "ammo_turret_11_dm": {
-              "count": 1
-            },
-            "ammo_turret_12_dm": {
-              "count": 1
-            },
-            "ammo_turret_13_dm": {
-              "count": 1
-            },
             "ammo_body_17_dm": {
               "count": 1
             },
@@ -3915,6 +3909,18 @@
               "count": 1
             },
             "ammo_turret_09_dm": {
+              "count": 1
+            },
+            "ammo_turret_10_dm": {
+              "count": 1
+            },
+            "ammo_turret_11_dm": {
+              "count": 1
+            },
+            "ammo_turret_12_dm": {
+              "count": 1
+            },
+            "ammo_turret_13_dm": {
               "count": 1
             }
           }

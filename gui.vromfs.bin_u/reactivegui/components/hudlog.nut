@@ -1,18 +1,18 @@
-local colors = require("reactiveGui/style/colors.nut")
-local scrollbar = require("scrollbar.nut")
-local { cursorVisible } = require("reactiveGui/ctrlsState.nut")
+let colors = require("%rGui/style/colors.nut")
+let scrollbar = require("scrollbar.nut")
+let { cursorVisible } = require("%rGui/ctrlsState.nut")
 
-local logContainer = @() {
+let logContainer = @() {
   size = [flex(), SIZE_TO_CONTENT]
   gap = ::fpx(3)
   padding = [::scrn_tgt(0.005) , ::scrn_tgt(0.005)]
   flow = FLOW_VERTICAL
 }
 
-local hudLog = function (params) {
-  local messageComponent = params.messageComponent
-  local logComponent = params.logComponent
-  local content = scrollbar.makeSideScroll(
+let hudLog = function (params) {
+  let messageComponent = params.messageComponent
+  let logComponent = params.logComponent
+  let content = scrollbar.makeSideScroll(
     logComponent.data(@() logContainer, messageComponent),
     {
       scrollHandler = logComponent.scrollHandler

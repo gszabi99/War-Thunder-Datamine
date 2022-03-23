@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_chat_thread_tag <- {
   types = []
 }
@@ -136,7 +136,7 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     getTagString = function(threadInfo)
     {
       threadInfo.sortLangList()
-      local tags = ::u.map(threadInfo[threadInfoParamName], (@(prefix) function(val) { return prefix + val })(prefix))
+      let tags = ::u.map(threadInfo[threadInfoParamName], (@(prefix) function(val) { return prefix + val })(prefix))
       return ::g_string.implode(tags, ",")
     }
   }
@@ -147,8 +147,8 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
 
     setThreadInfoProperty = function(threadInfo, valueString)
     {
-      local categories = ::g_chat_categories.list
-      local category = (valueString in categories) ? valueString : ::g_chat_categories.defaultCategoryName
+      let categories = ::g_chat_categories.list
+      let category = (valueString in categories) ? valueString : ::g_chat_categories.defaultCategoryName
       threadInfo[threadInfoParamName] = category
     }
 

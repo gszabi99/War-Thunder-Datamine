@@ -1,4 +1,4 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 global enum HUD_VIS_PART //bit enum
 {
   DMG_PANEL           = 0x0001

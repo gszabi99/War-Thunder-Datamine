@@ -1,8 +1,8 @@
-local { getBestUnitForPreview } = require("scripts/customization/contentPreview.nut")
-local { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
-local { getPlayerCurUnit } = require("scripts/slotbar/playerCurUnit.nut")
+let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
+let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
-class ::items_classes.Smoke extends ::BaseItem
+::items_classes.Smoke <- class extends ::BaseItem
 {
   static iType = itemType.SMOKE
 
@@ -19,7 +19,7 @@ class ::items_classes.Smoke extends ::BaseItem
     canBuy = true
     unlockType = ::get_unlock_type_by_id(id)
     tags = []
-    local tagsBlk = blk?.tags
+    let tagsBlk = blk?.tags
     if (tagsBlk)
       for (local i=0; i < tagsBlk.paramCount(); i++)
         if (tagsBlk.getParamValue(i))
@@ -28,12 +28,12 @@ class ::items_classes.Smoke extends ::BaseItem
 
   function getOptionData()
   {
-    local option = ::get_option(::USEROPT_AEROBATICS_SMOKE_TYPE)
+    let option = ::get_option(::USEROPT_AEROBATICS_SMOKE_TYPE)
     if (!option)
       return {}
 
-    local unlockId = id
-    local idx = option.unlocks.findindex(@(v) v == unlockId)
+    let unlockId = id
+    let idx = option.unlocks.findindex(@(v) v == unlockId)
 
     return {option = option, currIdx = idx}
   }
@@ -47,7 +47,7 @@ class ::items_classes.Smoke extends ::BaseItem
     if (!isUnlocked())
       return false
 
-    local data = getOptionData()
+    let data = getOptionData()
 
     return data?.currIdx && data.option.value == data.currIdx
   }
@@ -76,18 +76,18 @@ class ::items_classes.Smoke extends ::BaseItem
 
   function doPreview()
   {
-    local unit = getBestUnitForPreview(isAllowedByUnitTypes, isAvailable)
+    let unit = getBestUnitForPreview(isAllowedByUnitTypes, isAvailable)
     if (!unit)
       return
 
-    local currUnit = getPlayerCurUnit()
+    let currUnit = getPlayerCurUnit()
     if (unit.name == currUnit?.name)
     {
       openTestFlight(unit)
       return
     }
 
-    local item = this
+    let item = this
     ::scene_msg_box("offer_unit_change", null, ::loc("decoratorPreview/autoselectedUnit", {
         previewUnit = ::colorize("activeTextColor", ::getUnitName(unit))
         hangarUnit = ::colorize("activeTextColor", ::getUnitName(currUnit))
@@ -101,11 +101,11 @@ class ::items_classes.Smoke extends ::BaseItem
 
   function openTestFlight(unit)
   {
-    local curItem = this
+    let curItem = this
     ::last_called_gui_testflight = @() ::gui_start_itemsShop({curTab = -1, curItem})
     ::test_flight_aircraft <- unit
     ::cur_aircraft_name = unit.name
-    local defaultValues = {
+    let defaultValues = {
       [::USEROPT_WEAPONS] = "",
       [::USEROPT_AIRCRAFT] = unit.name,
       [::USEROPT_WEATHER] = "clear",
@@ -121,14 +121,14 @@ class ::items_classes.Smoke extends ::BaseItem
     foreach (idx, val in defaultValues)
       ::set_gui_option_in_mode(idx, val, ::OPTIONS_MODE_TRAINING)
 
-    local misName = "aerobatic_smoke_preview"
-    local misInfo = ::get_mission_meta_info(misName)
+    let misName = "aerobatic_smoke_preview"
+    let misInfo = ::get_mission_meta_info(misName)
     if (!misInfo)
       return ::script_net_assert_once("Wrong testflight mission",
         "ItemSmoke: No meta info for aerobatic_smoke_preview")
 
-    local unlockId = id
-    local smokeId = aeroSmokesList.value.findvalue(@(p) p.unlockId == unlockId)?.id
+    let unlockId = id
+    let smokeId = aeroSmokesList.value.findvalue(@(p) p.unlockId == unlockId)?.id
     if (!smokeId)
       return ::script_net_assert_once("Wrong smoke option value",
         "ItemSmoke: No option has such index")
@@ -162,8 +162,8 @@ class ::items_classes.Smoke extends ::BaseItem
 
   function setCurrOption()
   {
-    local data = getOptionData()
-    local idx = data?.currIdx
+    let data = getOptionData()
+    let idx = data?.currIdx
     if (!idx)
       return
 
@@ -194,7 +194,7 @@ class ::items_classes.Smoke extends ::BaseItem
     if (tags.len() == 0)
       return ""
 
-    local tagsLoc = tags.map(@(t) ::colorize("activeTextColor", ::loc($"content/tag/{t}")))
+    let tagsLoc = tags.map(@(t) ::colorize("activeTextColor", ::loc($"content/tag/{t}")))
     return $"{::loc("ugm/tags")}{::loc("ui/colon")}{::loc("ui/comma").join(tagsLoc)}"
   }
 }

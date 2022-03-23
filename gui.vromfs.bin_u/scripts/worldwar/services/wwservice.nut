@@ -1,18 +1,18 @@
-local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
-local curSubscribeOperationId = persist("curSubscribeOperationId", @() ::Watched(-1))
+let curSubscribeOperationId = persist("curSubscribeOperationId", @() ::Watched(-1))
 
-local function unsubscribeOperationNotify(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
+let function unsubscribeOperationNotify(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
   ::request_matching("worldwar.unsubscribe_operation_notify", successCallback,
     errorCallback, { operationId = operationId }, requestOptions)
 }
 
-local function subscribeOperationNotify(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
+let function subscribeOperationNotify(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
   ::request_matching("worldwar.subscribe_operation_notify", successCallback,
     errorCallback, { operationId = operationId }, requestOptions)
 }
 
-local function unsubscribeCurOperation() {
+let function unsubscribeCurOperation() {
   if (curSubscribeOperationId.value == -1)
     return
 
@@ -20,7 +20,7 @@ local function unsubscribeCurOperation() {
   curSubscribeOperationId(-1)
 }
 
-local function subscribeOperationNotifyOnce(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
+let function subscribeOperationNotifyOnce(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
   if (operationId == curSubscribeOperationId.value)
     return
 

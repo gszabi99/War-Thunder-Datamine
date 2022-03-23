@@ -1,27 +1,27 @@
-local function getPrizeChanceConfig(prize) {
-  local res = {
+let function getPrizeChanceConfig(prize) {
+  let res = {
     chanceIcon = null
     chanceTooltip = ""
   }
 
-  local weight = prize?.weight
+  let weight = prize?.weight
   if (weight == null)
     return res
 
   res.chanceIcon = ::get_game_settings_blk()?.visualizationTrophyWeights[weight].icon
-  local chanceName = ::loc($"item/chance/{weight}")
+  let chanceName = ::loc($"item/chance/{weight}")
   res.chanceTooltip = $"{::loc("item/chance")}{::loc("ui/colon")}{chanceName}"
   return res
 }
 
-local function getPrizeChanceLegendMarkup() {
-  local chancesBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
+let function getPrizeChanceLegendMarkup() {
+  let chancesBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
   if (chancesBlk == null)
     return ""
 
-  local chances = []
+  let chances = []
   for(local i = 0; i < chancesBlk.blockCount(); i++) {
-    local chanceBlk = chancesBlk.getBlock(i)
+    let chanceBlk = chancesBlk.getBlock(i)
     chances.append({
       chanceName = ::loc($"item/chance/{chanceBlk.getBlockName()}")
       chanceIcon = chanceBlk?.icon
@@ -30,7 +30,7 @@ local function getPrizeChanceLegendMarkup() {
   if (chances.len() == 0)
     return ""
 
-  return ::handyman.renderCached("gui/items/prizeChanceLegend", { chances = chances })
+  return ::handyman.renderCached("%gui/items/prizeChanceLegend", { chances = chances })
 }
 
 

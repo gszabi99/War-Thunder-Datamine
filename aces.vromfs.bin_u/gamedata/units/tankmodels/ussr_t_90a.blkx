@@ -175,7 +175,8 @@
           "genericArmorQuality": 1.3
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 20.0,
+          "createSecondaryShatters": true
         }
       },
       "ufp_inner_35mm_composite_armor": {
@@ -367,6 +368,7 @@
       },
       "ex_fuel_tanks": {
         "armorClass": "tank_structural_steel",
+        "createSecondaryShatters": false,
         "hp": 500.0,
         "armorThickness": 5.0,
         "ex_armor_l_01_dm": [],
@@ -382,6 +384,7 @@
       },
       "turret_screens": {
         "armorClass": "tank_structural_steel",
+        "createSecondaryShatters": false,
         "hp": 500.0,
         "armorThickness": 5.0,
         "ex_decor_03_dm": [],
@@ -393,7 +396,9 @@
         "turret_07_side_dm": [],
         "turret_03_bottom_dm": [],
         "turret_09_top_dm": [],
-        "turret_09_front_dm": []
+        "turret_09_front_dm": [],
+        "ex_decor_07_dm": [],
+        "ex_decor_02_dm": []
       },
       "RHA_hull_turret": {
         "turret_02_side_dm": {
@@ -409,8 +414,9 @@
           "armorThickness": 85.0
         },
         "turret_05_side_dm": {
+          "armorClass": "tank_structural_steel",
           "armorThickness": 6.0,
-          "armorClass": "tank_structural_steel"
+          "secondaryShatterArmorQuality": 0.8
         },
         "superstructure_side_dm": {
           "armorThickness": 80.0
@@ -514,13 +520,11 @@
       "optics": {
         "armorClass": "optics_tank",
         "armorThickness": 3.0,
-        "armorThrough": 200.0,
         "optic_gun_dm": {
           "armorThickness": 10.0,
           "hp": 50.0
         },
         "optic_turret_01_dm": {
-          "armorThrough": 50.0,
           "armorThickness": 20.0,
           "hp": 20.0
         },
@@ -2122,6 +2126,22 @@
             "track_l_dm": 1.0
           }
         }
+      },
+      {
+        "part": {
+          "name": "ex_armor_turret_r_02_dm",
+          "onKill": {
+            "ex_decor_02_dm": 1.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "ex_armor_turret_l_02_dm",
+          "onKill": {
+            "ex_decor_07_dm": 1.0
+          }
+        }
       }
     ]
   },
@@ -2894,6 +2914,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": [
             {
               "head": "bone_mg_aa_h_01"
@@ -3935,6 +3956,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": [
                   {
                     "head": "bone_mg_aa_h_01"

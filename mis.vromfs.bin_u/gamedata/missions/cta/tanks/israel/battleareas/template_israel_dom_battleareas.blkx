@@ -1,0 +1,224 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/israel/mainareas/template_israel_Dom_mainareas.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t2_killarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2007.45,209.601,2373.08]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_block02"
+          },
+          {
+            "squad_members": "t2_killarea_block01"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2024.89,209.601,2373.08]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_block02"
+          },
+          {
+            "squad_members": "t2_killarea_block01"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t1_killarea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1905.43,232.114,949.825]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_block01"
+          },
+          {
+            "squad_members": "t1_killarea_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1920.7,232.114,949.825]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_block01"
+          },
+          {
+            "squad_members": "t1_killarea_block02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "dom_battle_area_arcade": {
+      "type": "Box",
+      "tm": [
+        [-1600.0,0.0,0.0],
+        [0.0,300.0,0.0],
+        [0.0,0.0,-1600.0],
+        [1768.69,-8.96289,1840.7]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "dom_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [-1600.0,0.0,0.0],
+        [0.0,300.0,0.0],
+        [0.0,0.0,-1600.0],
+        [1768.69,-8.96289,1840.7]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t2_killarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [100.0,0.0,0.0],
+        [0.0,32.2325,0.0],
+        [0.0,0.0,100.0],
+        [1456.69,30.6143,2463.11]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [100.0,0.0,0.0],
+        [0.0,32.2325,0.0],
+        [0.0,0.0,100.0],
+        [2044.93,22.2283,2495.13]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [100.0,0.0,0.0],
+        [0.0,32.2325,0.0],
+        [0.0,0.0,100.0],
+        [1478.56,13.2189,1221.54]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [100.0,0.0,0.0],
+        [0.0,32.2325,0.0],
+        [0.0,0.0,100.0],
+        [2030.66,5.75269,1217.21]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

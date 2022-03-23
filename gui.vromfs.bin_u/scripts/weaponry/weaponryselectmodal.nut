@@ -21,13 +21,13 @@
     ]
   }
 */
-local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponryVisual.nut")
-local { getLastWeapon,
+let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
+let { getLastWeapon,
         setLastWeapon,
         isWeaponVisible,
         isWeaponEnabled,
-        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
+        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config)
 {
@@ -46,16 +46,16 @@ local CHOOSE_WEAPON_PARAMS = {
 {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
-  local curWeaponName = params.getLastWeapon(unit.name)
-  local hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
-  local isForcedAvailable = params.isForcedAvailable
-  local onChangeValueCb = function(weapon) {
+  let curWeaponName = params.getLastWeapon(unit.name)
+  let hasOnlySelectable = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
+  let isForcedAvailable = params.isForcedAvailable
+  let onChangeValueCb = function(weapon) {
     params.setLastWeapon(unit.name, weapon.name)
     cb?(unit.name, weapon.name)
   }
 
-  local list = []
-  foreach(weapon in unit.weapons)
+  let list = []
+  foreach(weapon in unit.getWeapons())
   {
     if (!isForcedAvailable && !isWeaponVisible(unit, weapon, hasOnlySelectable))
       continue
@@ -86,10 +86,10 @@ local CHOOSE_WEAPON_PARAMS = {
     })
 }
 
-class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.WeaponrySelectModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType      = handlerType.MODAL
-  sceneTplName = "gui/weaponry/weaponrySelectModal"
+  sceneTplName = "%gui/weaponry/weaponrySelectModal"
   needVoiceChat = false
 
   unit = null
@@ -111,15 +111,15 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!unit || !list)
       return null
 
-    local cols = ::ceil(::sqrt(list.len().tofloat() / rowsToClumnsProportion)).tointeger()
-    local rows = cols ? ::ceil(list.len().tofloat() / cols).tointeger() : 0
+    let cols = ::ceil(::sqrt(list.len().tofloat() / rowsToClumnsProportion)).tointeger()
+    let rows = cols ? ::ceil(list.len().tofloat() / cols).tointeger() : 0
 
     wasSelIdx = -1
-    local params = { posX = 0, posY = 0 }
+    let params = { posX = 0, posY = 0 }
     local weaponryListMarkup = ""
     foreach(idx, config in list)
     {
-      local weaponryItem = ::getTblValue("weaponryItem", config)
+      let weaponryItem = ::getTblValue("weaponryItem", config)
       if (!weaponryItem)
       {
         ::script_net_assert_once("cant load weaponry",
@@ -137,7 +137,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     selIdx = ::max(wasSelIdx, 0)
-    local res = {
+    let res = {
       weaponryList = weaponryListMarkup
       columns = cols
       rows = rows
@@ -159,13 +159,13 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateItems()
   {
-    local listObj = scene.findObject("weapons_list")
-    local total = ::min(list.len(), listObj.childrenCount())
+    let listObj = scene.findObject("weapons_list")
+    let total = ::min(list.len(), listObj.childrenCount())
     for(local i = 0; i < total; i++)
     {
-      local config = list[i]
-      local itemObj = listObj.getChild(i)
-      local enabled = ::getTblValue("enabled", config, true)
+      let config = list[i]
+      let itemObj = listObj.getChild(i)
+      let enabled = ::getTblValue("enabled", config, true)
       itemObj.enable(enabled)
 
       weaponItemParams.visualDisabled <- !enabled || ::getTblValue("visualDisabled", config, false)
@@ -176,10 +176,10 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateOpenAnimParams()
   {
-    local animObj = scene.findObject("anim_block")
+    let animObj = scene.findObject("anim_block")
     if (!animObj)
       return
-    local size = animObj.getSize()
+    let size = animObj.getSize()
     if (!size[0] || !size[1])
       return
 
@@ -204,7 +204,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onModItemClick(obj)
   {
-    local idx = ::to_integer_safe(obj?.holderId, -1)
+    let idx = ::to_integer_safe(obj?.holderId, -1)
     if (idx < 0)
       return
     selIdx = idx

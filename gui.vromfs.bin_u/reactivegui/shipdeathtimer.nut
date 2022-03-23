@@ -1,9 +1,9 @@
-local {timeToDeath} = require("shipState.nut")
-local {alert} = require("style/colors.nut").hud.damageModule
-local {secondsToTimeFormatString} = require("std/time.nut")
-local timeLocTable = require("timeLocTable.nut")
+let {timeToDeath} = require("shipState.nut")
+let {alert} = require("style/colors.nut").hud.damageModule
+let {secondsToTimeFormatString} = require("%sqstd/time.nut")
+let timeLocTable = require("timeLocTable.nut")
 
-local showTimeToDeath = Computed(@() timeToDeath.value > 0)
+let showTimeToDeath = Computed(@() timeToDeath.value > 0)
 
 return @(){
   watch = showTimeToDeath

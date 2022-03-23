@@ -1,14 +1,14 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
-local { getBoostersEffectsArray, sortBoosters } = require("scripts/items/boosterEffect.nut")
+let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
 
-local function fillItemTable(item, holderObj)
+let function fillItemTable(item, holderObj)
 {
-  local containerObj = holderObj.findObject("item_table_container")
+  let containerObj = holderObj.findObject("item_table_container")
   if (!::checkObj(containerObj))
     return false
 
-  local tableData = item && item?.getTableData ? item.getTableData() : null
-  local show = tableData != null
+  let tableData = item && item?.getTableData ? item.getTableData() : null
+  let show = tableData != null
   containerObj.show(show)
 
   if (show)
@@ -16,7 +16,7 @@ local function fillItemTable(item, holderObj)
   return show
 }
 
-local function fillItemTableInfo(item, holderObj)
+let function fillItemTableInfo(item, holderObj)
 {
   if (!::check_obj(holderObj))
     return
@@ -38,29 +38,35 @@ local function fillItemTableInfo(item, holderObj)
   ::showBtn("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
 }
 
-local function getDescTextAboutDiv(item, preferMarkup = true)
+let function getDescTextAboutDiv(item, preferMarkup = true)
 {
   local desc = ""
   if (!item)
     return desc
 
   desc = item.getShortItemTypeDescription()
-  local descText = preferMarkup ? item.getLongDescription() : item.getDescription()
+  let descText = preferMarkup ? item.getLongDescription() : item.getDescription()
   if (descText.len() > 0)
     desc = $"{desc}{desc.len() ? "\n\n" : ""}{descText}"
-  local itemLimitsDesc = item?.getLimitsDescription ? item.getLimitsDescription() : ""
+  let itemLimitsDesc = item?.getLimitsDescription ? item.getLimitsDescription() : ""
   if (itemLimitsDesc.len() > 0)
     desc = $"{desc.len() ? "\n" : ""}{itemLimitsDesc}"
 
   return desc
 }
 
-local function fillDescTextAboutDiv(item, descObj)
+let function fillDescTextAboutDiv(item, descObj)
 {
-  local isDescTextBeforeDescDiv = item?.isDescTextBeforeDescDiv ?? false
-  local obj = descObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
+  let isDescTextBeforeDescDiv = item?.isDescTextBeforeDescDiv ?? false
+  let obj = descObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
   if (obj?.isValid())
     obj.setValue(getDescTextAboutDiv(item))
+}
+
+let function fillItemDescUnderTable(item, descObj) {
+  let obj = descObj.findObject("item_desc_under_table")
+  if (obj?.isValid())
+    obj.setValue(item.getDescriptionUnderTable())
 }
 
 local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null)
@@ -72,19 +78,19 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   if (::checkObj(obj))
     obj.setValue(item? item.getDescriptionTitle() : "")
 
-  local addDescObj = holderObj.findObject("item_desc_under_title")
+  let addDescObj = holderObj.findObject("item_desc_under_title")
   if (::checkObj(addDescObj))
     addDescObj.setValue(item?.getDescriptionUnderTitle?() ?? "")
 
-  local helpObj = holderObj.findObject("item_type_help")
+  let helpObj = holderObj.findObject("item_type_help")
   if (::checkObj(helpObj))
   {
-    local helpText = item && item?.getItemTypeDescription? item.getItemTypeDescription() : ""
+    let helpText = item && item?.getItemTypeDescription? item.getItemTypeDescription() : ""
     helpObj.tooltip = helpText
     helpObj.show(shopDesc && helpText != "")
   }
 
-  local isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv || false
+  let isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv || false
   obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
 
   if (obj?.isValid())
@@ -95,11 +101,11 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
       params.rawdelete("descModifyFunc")
     }
 
-    local warbondId = params?.wbId
+    let warbondId = params?.wbId
     if (warbondId)
     {
-      local warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
-      local award = warbond? warbond.getAwardById(item.id) : null
+      let warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
+      let award = warbond? warbond.getAwardById(item.id) : null
       if (award)
         desc = award.addAmountTextToDesc(desc)
     }
@@ -110,7 +116,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   obj = holderObj.findObject("item_desc_div")
   if (::checkObj(obj))
   {
-    local longdescMarkup = (preferMarkup && item?.getLongDescriptionMarkup)
+    let longdescMarkup = (preferMarkup && item?.getLongDescriptionMarkup)
       ? item.getLongDescriptionMarkup((params ?? {}).__merge({ shopDesc = shopDesc })) : ""
 
     obj.show(longdescMarkup != "")
@@ -128,7 +134,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
   obj.show(item != null)
   if (item)
   {
-    local iconSetParams = {
+    let iconSetParams = {
       bigPicture = item?.allowBigPicture || false
       addItemName = !shopDesc
     }
@@ -141,8 +147,8 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
       if (!timerData.needTimer.call(item))
         continue
 
-      local timerObj = holderObj.findObject(timerData.id)
-      local tData = timerData
+      let timerObj = holderObj.findObject(timerData.id)
+      let tData = timerData
       if (::check_obj(timerObj))
         SecondsUpdater(timerObj, function(tObj, params)
         {
@@ -152,18 +158,18 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
     }
 }
 
-local function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null)
+let function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null)
 {
   if (!boostersArray || boostersArray.len() == 0)
     return ""
 
-  local getColoredNumByType = (@(effectType) function(num) {
+  let getColoredNumByType = (@(effectType) function(num) {
     return "".concat(::colorize("activeTextColor", $"+{num.tointeger()}%"), effectType.currencyMark)
   })(effectType)
 
-  local separateBoosters = []
+  let separateBoosters = []
 
-  local itemsArray = []
+  let itemsArray = []
   foreach(booster in boostersArray)
   {
     if (booster.showBoosterInSeparateList)
@@ -174,36 +180,36 @@ local function getActiveBoostersDescription(boostersArray, effectType, selectedI
   if (separateBoosters.len())
     separateBoosters.append("\n")
 
-  local sortedItemsTable = sortBoosters(itemsArray, effectType)
-  local detailedDescription = []
+  let sortedItemsTable = sortBoosters(itemsArray, effectType)
+  let detailedDescription = []
   for (local i = 0; i <= sortedItemsTable.maxSortOrder; i++)
   {
-    local arraysList = ::getTblValue(i, sortedItemsTable)
+    let arraysList = ::getTblValue(i, sortedItemsTable)
     if (!arraysList || arraysList.len() == 0)
       continue
 
-    local personalTotal = arraysList.personal.len() == 0
+    let personalTotal = arraysList.personal.len() == 0
       ? 0
       : ::calc_personal_boost(getBoostersEffectsArray(arraysList.personal, effectType))
 
-    local publicTotal = arraysList.public.len() == 0
+    let publicTotal = arraysList.public.len() == 0
       ? 0
       : ::calc_public_boost(getBoostersEffectsArray(arraysList.public, effectType))
 
-    local isBothBoosterTypesAvailable = personalTotal != 0 && publicTotal != 0
+    let isBothBoosterTypesAvailable = personalTotal != 0 && publicTotal != 0
 
     local header = ""
-    local detailedArray = []
+    let detailedArray = []
     local insertedSubHeader = false
 
     foreach(j, arrayName in ["personal", "public"])
     {
-      local arr = arraysList[arrayName]
+      let arr = arraysList[arrayName]
       if (arr.len() == 0)
         continue
 
-      local personal = arr[0].personal
-      local boostNum = personal? personalTotal : publicTotal
+      let personal = arr[0].personal
+      let boostNum = personal? personalTotal : publicTotal
 
       header = ::loc("mainmenu/boosterType/common")
       if (arr[0].eventConditions)
@@ -218,12 +224,12 @@ local function getActiveBoostersDescription(boostersArray, effectType, selectedI
 
       detailedArray.append(subHeader)
 
-      local effectsArray = []
+      let effectsArray = []
       foreach(idx, item in arr)
       {
-        local effOld = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
+        let effOld = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
         effectsArray.append(item[effectType.name])
-        local effNew = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
+        let effNew = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
 
         local string = arr.len() == 1 ? "" : $"{idx+1}) "
         string = $"{string}{item.getEffectDesc(false)}{::loc("ui/comma")}"
@@ -238,7 +244,7 @@ local function getActiveBoostersDescription(boostersArray, effectType, selectedI
 
       if (!insertedSubHeader)
       {
-        local totalBonus = publicTotal + personalTotal
+        let totalBonus = publicTotal + personalTotal
         header = $"{header}{::loc("ui/colon")}{getColoredNumByType(totalBonus)}"
         detailedArray.insert(0, header)
         insertedSubHeader = true
@@ -247,21 +253,21 @@ local function getActiveBoostersDescription(boostersArray, effectType, selectedI
     detailedDescription.append(::g_string.implode(detailedArray, "\n"))
   }
 
-  local description = $"{::loc("mainmenu/boostersTooltip", effectType)}{::loc("ui/colon")}\n"
+  let description = $"{::loc("mainmenu/boostersTooltip", effectType)}{::loc("ui/colon")}\n"
   return $"{description}{::g_string.implode(separateBoosters, "\n")}{::g_string.implode(detailedDescription, "\n\n")}"
 }
 
-local function updateExpireAlarmIcon(item, itemObj)
+let function updateExpireAlarmIcon(item, itemObj)
 {
   if (!itemObj?.isValid())
     return
 
-  local expireType = item.getExpireType()
+  let expireType = item.getExpireType()
   if (!expireType)
     return
 
   ::showBtn("alarm_icon", true, itemObj)
-  local borderObj = itemObj.findObject("rarity_border")
+  let borderObj = itemObj.findObject("rarity_border")
   if (!borderObj?.isValid())
     return
 
@@ -274,4 +280,5 @@ return {
   fillDescTextAboutDiv
   getActiveBoostersDescription
   updateExpireAlarmIcon
+  fillItemDescUnderTable
 }

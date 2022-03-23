@@ -1,8 +1,8 @@
-local scrollbarBase = require("%darg/components/scrollbar.nut")
-local colors = require("reactiveGui/style/colors.nut")
+let scrollbarBase = require("%darg/components/scrollbar.nut")
+let colors = require("%rGui/style/colors.nut")
 
 
-local styling = {
+let styling = {
   Knob = class {
     rendObj = ROBJ_SOLID
     colorCalc = @(sf) (sf & S_ACTIVE) ? colors.menu.scrollbarSliderColorHover
@@ -37,19 +37,19 @@ local styling = {
 }
 
 
-local scrollbar = function(scroll_handler) {
+let scrollbar = function(scroll_handler) {
   return scrollbarBase.scroll(scroll_handler, {styling=styling})
 }
 
 
-local makeSideScroll = function(content, options={}) {
+let makeSideScroll = function(content, options={}) {
   if (!("styling" in options))
     options.styling <- styling
   return scrollbarBase.makeSideScroll(content, options)
 }
 
 
-local export = class {
+let export = class {
   scrollbar = scrollbar
   makeSideScroll = makeSideScroll
   styling = styling

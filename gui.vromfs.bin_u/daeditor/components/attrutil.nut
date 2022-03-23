@@ -1,22 +1,22 @@
 from "%darg/ui_imports.nut" import *
 from "ecs" import *
-local string = require("string")
-local dagorMath = require("dagor.math")
-local {tostring_r} = require("%sqstd/string.nut")
-local {logerr} = require("dagor.debug")
+let string = require("string")
+let dagorMath = require("dagor.math")
+let {tostring_r} = require("%sqstd/string.nut")
+let {logerr} = require("dagor.debug")
 
-local rexFloat = string.regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
-local rexInt = string.regexp(@"[\+\-]?[0-9]+")
-local tofloat = @(v) v.tofloat()
-local tointeger = @(v) v.tointeger()
-local isStrInt = @(v) rexInt.match(string.strip(v))
-local isStrFloat = @(v) rexFloat.match(string.strip(v))
-local function isStrBool(text){
-  local s = string.strip(text)
+let rexFloat = string.regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
+let rexInt = string.regexp(@"[\+\-]?[0-9]+")
+let tofloat = @(v) v.tofloat()
+let tointeger = @(v) v.tointeger()
+let isStrInt = @(v) rexInt.match(string.strip(v))
+let isStrFloat = @(v) rexFloat.match(string.strip(v))
+let function isStrBool(text){
+  let s = string.strip(text)
   return (s == "true" || s == "1" || s == "false" || s == "0")
 }
-local function isValueTextValid(comp_type, text) {
-  local simpleTypeFunc = {
+let function isValueTextValid(comp_type, text) {
+  let simpleTypeFunc = {
     string = @(v) true
     integer = isStrInt
     float = isStrFloat
@@ -26,13 +26,13 @@ local function isValueTextValid(comp_type, text) {
   if (simpleTypeFunc)
     return simpleTypeFunc(text)
 
-  local nFields = {Point2=2, Point3=3, DPoint3=3, Point4=4}.map(@(v) [v, isStrFloat]).__update(
+  let nFields = {Point2=2, Point3=3, DPoint3=3, Point4=4}.map(@(v) [v, isStrFloat]).__update(
         {IPoint2=2, IPoint3=3, E3DCOLOR=4}
         .map(@(v) [v, isStrInt])
       )?[comp_type]
 
   if (nFields) {
-    local fields = text.split(",")
+    let fields = text.split(",")
     if (fields.len()!=nFields[0])
       return false
     return fields.reduce(@(a,b) a && nFields[1](b))
@@ -40,7 +40,7 @@ local function isValueTextValid(comp_type, text) {
   return false
 }
 
-local function call_strfunc(str, func){
+let function call_strfunc(str, func){
   local ret = str
   try {
     ret = func.pcall(str)
@@ -51,11 +51,11 @@ local function call_strfunc(str, func){
   return ret
 }
 
-local function safe_cvt_txt(str, func, empty){
+let function safe_cvt_txt(str, func, empty){
   return str!="" ? call_strfunc(str, func) : empty
 }
 
-local dagorMathClassFields = {
+let dagorMathClassFields = {
   Point2 = ["x", "y"],
   Point3 = ["x", "y", "z"],
   DPoint3 = ["x", "y", "z"],
@@ -65,16 +65,16 @@ local dagorMathClassFields = {
 }
 
 
-local function convertTextToValForDagorClass(name, fields){
-  local classFields = dagorMathClassFields?[name]
+let function convertTextToValForDagorClass(name, fields){
+  let classFields = dagorMathClassFields?[name]
   if (fields.len()!=classFields?.len?())
     return null
-  local res = dagorMath[name]()
+  let res = dagorMath[name]()
   classFields.each(@(key, idx) res[key] = fields[idx])
   return res
 }
 
-local convertTextToValFuncs = {
+let convertTextToValFuncs = {
   string = @(v) v,
   integer = @(v) safe_cvt_txt(v, "".tointeger, 0),
   float = @(v) safe_cvt_txt(v, "".tofloat, 0.0)
@@ -88,24 +88,24 @@ local convertTextToValFuncs = {
   }
 }
 
-local function convertTextToVal(comp_type, text) {
+let function convertTextToVal(comp_type, text) {
   if (convertTextToValFuncs?[comp_type] != null)
     return convertTextToValFuncs[comp_type](text)
 
-  local fields = text.split(",")
-  local floatDagorMathTypes = ["Point2", "Point3", "DPoint3", "Point4"]
+  let fields = text.split(",")
+  let floatDagorMathTypes = ["Point2", "Point3", "DPoint3", "Point4"]
   if (floatDagorMathTypes.indexof(comp_type) != null)
     return convertTextToValForDagorClass(comp_type, fields.map(pipe(string.strip, tofloat)))
 
-  local intDagorMathTypes = ["IPoint2", "IPoint3"]
+  let intDagorMathTypes = ["IPoint2", "IPoint3"]
   if (intDagorMathTypes.indexof(comp_type) != null)
     return convertTextToValForDagorClass(comp_type, fields.map(pipe(string.strip, tointeger)))
 
   if (comp_type == "E3DCOLOR") {
     if (fields.len()!=4)
       return null
-    local f = fields.map(pipe(string.strip, tointeger, @(v) clamp(v, 0, 255)))
-    local res = dagorMath.E3DCOLOR()
+    let f = fields.map(pipe(string.strip, tointeger, @(v) clamp(v, 0, 255)))
+    let res = dagorMath.E3DCOLOR()
     foreach (idx, field in ["r","g","b","a"]) {
       res[field] = f[idx]
     }
@@ -115,14 +115,14 @@ local function convertTextToVal(comp_type, text) {
   return null
 }
 
-local map_type_to_str = {
+let map_type_to_str = {
   float =  function(v){
-    local tf = v.tostring()
+    let tf = v.tostring()
     return (tf.indexof(".") != null || tf.indexof("e") != null) ? tf : $"{tf}.0"
   },
   ["null"] = @(v) "null",
 }
-local map_class_to_str = {
+let map_class_to_str = {
   [dagorMath.Point2] = @(v) string.format("%.4f, %.4f", v.x, v.y),
   [dagorMath.Point3] = @(v) string.format("%.4f, %.4f, %.4f", v.x, v.y, v.z),
   [dagorMath.DPoint3] = @(v) string.format("%.4f, %.4f, %.4f", v.x, v.y, v.z),
@@ -131,18 +131,18 @@ local map_class_to_str = {
   [dagorMath.IPoint3] = @(v) string.format("%d, %d, %d", v.x, v.y, v.z),
   [dagorMath.E3DCOLOR] = @(v) string.format("%d, %d, %d, %d", v.r, v.g, v.b, v.a),
   [dagorMath.TMatrix] = function(v){
-    local pos = v[3]
+    let pos = v[3]
     return string.format("TM: [3]=%.2f, %.2f, %.2f", pos.x, pos.y, pos.z)
   },
 }
 
-local function compValToString(v, max_cvstr_len = 80){
-  local compValToString_ = callee()
-  local function instance_to_str(v){
-    local function objToStr(v){
+let function compValToString(v, max_cvstr_len = 80){
+  let compValToString_ = callee()
+  let function instance_to_str(v){
+    let function objToStr(v){
       local s = string.format("[%d]={", v.len())
       foreach (val in v) {
-        local nexts = "{0}{{1}},".subst(s, compValToString_(val, max_cvstr_len))
+        let nexts = "{0}{{1}},".subst(s, compValToString_(val, max_cvstr_len))
         if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
           s = $"{s}..."
           break
@@ -154,12 +154,12 @@ local function compValToString(v, max_cvstr_len = 80){
       return s
     }
 
-    local function arrayToStr(v){
+    let function arrayToStr(v){
       local s = ""
       foreach (fieldName, fieldVal in v.getAll()) {
         if (s.len()>0)
           s = $"{s}|"
-        local nexts = $"{s}{fieldName} = {tostring_r(fieldVal)}"
+        let nexts = $"{s}{fieldName} = {tostring_r(fieldVal)}"
         if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
           s = $"{s}..."
           break
@@ -186,8 +186,13 @@ local function compValToString(v, max_cvstr_len = 80){
     : (map_type_to_str?[type(v)]?(v) ?? v.tostring())
 }
 
-local function getValFromObj(eid, comp_name, path=null){
-  local object = obsolete_dbg_get_comp_val(eid, comp_name)
+let function isCompReadOnly(eid, comp_name){
+  local object = _dbg_get_comp_val_inspect(eid, comp_name)
+  return object?.isReadOnly() ?? false
+}
+
+let function getValFromObj(eid, comp_name, path=null){
+  local object = _dbg_get_comp_val_inspect(eid, comp_name)
   object = object?.getAll() ?? object
   local res = object
   foreach (key in (path ?? [])) {
@@ -200,29 +205,31 @@ local function getValFromObj(eid, comp_name, path=null){
   return res
 }
 
-local function setValToObj(eid, comp_name, path, val){
-  local object = obsolete_dbg_get_comp_val(eid, comp_name).getAll()
+let function setValToObj(eid, comp_name, path, val){
+  let comp = _dbg_get_comp_val_inspect(eid, comp_name)
+  if (comp?.isReadOnly() ?? false)
+    return
+  let object = comp.getAll()
   local res = object
-  local lastkey = path?[path.len()-1]
-  local lasfoundIdx = -1
+  let lastkey = path?[path.len()-1]
   if (lastkey == null)
     return
   foreach (idx, key in path) {
-    if (idx < path.len()-1 && (res?[key] != null || key in object || object?.indexof(key)!=null)) {
-      lasfoundIdx = idx
+    if (idx < path.len()-1) {
+      if (!(res?[key] != null || key in object || object?.indexof(key)!=null))
+        return
       res = res[key]
     }
-    else
+    else {
+      res[lastkey] = val
+      obsolete_dbg_set_comp_val(eid, comp_name, object)
       break
+    }
   }
-  res[lastkey] = val
-  if (lasfoundIdx == path.len()-1) {
-    res[lastkey] = val
-  }
-  obsolete_dbg_set_comp_val(eid, comp_name, object)
 }
 
-local exports = {
+let exports = {
+  isCompReadOnly
   getValFromObj
   setValToObj
   isValueTextValid

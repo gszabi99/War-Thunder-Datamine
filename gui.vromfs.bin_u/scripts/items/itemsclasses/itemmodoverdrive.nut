@@ -1,6 +1,6 @@
-local BaseItemModClass = require("scripts/items/itemsClasses/itemModBase.nut")
+let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 
-class ::items_classes.ModOverdrive extends BaseItemModClass
+::items_classes.ModOverdrive <- class extends BaseItemModClass
 {
   static iType = itemType.MOD_OVERDRIVE
   static defaultLocId = "modOverdrive"
@@ -43,20 +43,20 @@ class ::items_classes.ModOverdrive extends BaseItemModClass
 
   function activate(cb, handler = null)
   {
-    local uid = uids?[0]
+    let uid = uids?[0]
     if (uid == null)
       return false
 
-    local item = this
-    local successCb = function() {
+    let item = this
+    let successCb = function() {
       if (cb)
         cb({ success = true, item = item })
       ::broadcastEvent("OverdriveActivated")
     }
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     blk.uid = uid
-    local taskId = ::char_send_blk("cln_activate_mod_overdrive_item", blk)
+    let taskId = ::char_send_blk("cln_activate_mod_overdrive_item", blk)
     return ::g_tasker.addTask(
       taskId,
       {

@@ -1,8 +1,8 @@
-local {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("reactiveGui/missionState.nut")
-local teamColors = require("reactiveGui/style/teamColors.nut")
-local { secondsToTimeSimpleString } = require("std/time.nut")
+let {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("%rGui/missionState.nut")
+let teamColors = require("%rGui/style/teamColors.nut")
+let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
-local scoreParamsByTeam = {
+let scoreParamsByTeam = {
   localTeam = {
     score = ::Computed(@() localTeam.value == 2 ? scoreTeamB.value : scoreTeamA.value)
     fillColor = "teamBlueColor"
@@ -15,8 +15,8 @@ local scoreParamsByTeam = {
   }
 }
 
-local function getScoreObj(teamName) {
-  local scoreParams = scoreParamsByTeam[teamName]
+let function getScoreObj(teamName) {
+  let scoreParams = scoreParamsByTeam[teamName]
   return @() {
     watch = teamColors
     rendObj = ROBJ_BOX

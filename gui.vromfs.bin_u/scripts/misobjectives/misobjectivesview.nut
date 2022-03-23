@@ -2,15 +2,15 @@
 {
   return ::handlersManager.loadHandler(::gui_handlers.misObjectivesView,
                                        { scene = nestObj,
-                                         sceneBlkName = leftAligned ? "gui/missions/misObjective.blk" : "gui/missions/misObjectiveRight.blk"
+                                         sceneBlkName = leftAligned ? "%gui/missions/misObjective.blk" : "%gui/missions/misObjectiveRight.blk"
                                          objTypeMask = typesMask || ::gui_handlers.misObjectivesView.typesMask
                                        })
 }
 
-class ::gui_handlers.misObjectivesView extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.misObjectivesView <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
-  sceneBlkName = "gui/missions/misObjective.blk"
+  sceneBlkName = "%gui/missions/misObjective.blk"
 
   objTypeMask = (1 << ::OBJECTIVE_TYPE_PRIMARY) + (1 << ::OBJECTIVE_TYPE_SECONDARY)
 
@@ -36,8 +36,8 @@ class ::gui_handlers.misObjectivesView extends ::gui_handlers.BaseGuiHandlerWT
 
   function getNewList()
   {
-    local fullList = ::get_objectives_list()
-    local res = []
+    let fullList = ::get_objectives_list()
+    let res = []
     foreach(misObj in fullList)
       if (misObj.status > 0 && (objTypeMask & (1 << misObj.type)))
         res.append(misObj)
@@ -54,16 +54,16 @@ class ::gui_handlers.misObjectivesView extends ::gui_handlers.BaseGuiHandlerWT
 
   function refreshList()
   {
-    local newList = getNewList()
-    local total = ::max(newList.len(), curList.len())
+    let newList = getNewList()
+    let total = ::max(newList.len(), curList.len())
     local lastObj = null
     for(local i = 0; i < total; i++)
     {
-      local newObjective = ::getTblValue(i, newList)
+      let newObjective = ::getTblValue(i, newList)
       if (::u.isEqual(::getTblValue(i, curList), newObjective))
         continue
 
-      local obj = updateObjective(i, newObjective)
+      let obj = updateObjective(i, newObjective)
       if (obj) lastObj = obj
     }
 
@@ -75,13 +75,13 @@ class ::gui_handlers.misObjectivesView extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateObjective(idx, objective)
   {
-    local obj = getMisObjObject(idx)
-    local show = objective != null
+    let obj = getMisObjObject(idx)
+    let show = objective != null
     obj.show(show)
     if (!show)
       return null
 
-    local status = ::g_objective_status.getObjectiveStatusByCode(objective.status)
+    let status = ::g_objective_status.getObjectiveStatusByCode(objective.status)
     obj.findObject("obj_img")["background-image"] = status.missionObjImg
 
     local text = ::loc(objective.text)
@@ -96,7 +96,7 @@ class ::gui_handlers.misObjectivesView extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMisObjObject(idx)
   {
-    local id = "objective_" + idx
+    let id = "objective_" + idx
     local obj = scene.findObject(id)
     if (::checkObj(obj))
       return obj

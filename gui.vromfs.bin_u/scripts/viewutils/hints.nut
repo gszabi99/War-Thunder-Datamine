@@ -19,14 +19,14 @@ enum HINT_PIECE_TYPE
   * timeoffset  //0 - only to show time in text
 */
 g_hints.buildHintMarkup <- function buildHintMarkup(text, params = {}) {
-  return ::handyman.renderCached("gui/hint", getHintSlices(text, params))
+  return ::handyman.renderCached("%gui/hint", getHintSlices(text, params))
 }
 
 g_hints.getHintSlices <- function getHintSlices(text, params = {})
 {
-  local rows = ::split(text, "\n")
-  local isWrapInRowAllowed = params?.isWrapInRowAllowed ?? false
-  local view = {
+  let rows = ::split(text, "\n")
+  let isWrapInRowAllowed = params?.isWrapInRowAllowed ?? false
+  let view = {
     id = ::getTblValue("id", params)
     style = ::getTblValue("style", params, "")
     isOrderPopup = ::getTblValue("isOrderPopup", params, false)
@@ -36,13 +36,13 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
     rows = []
   }
 
-  local colors = [] //array of opened color tags, contains color itself
+  let colors = [] //array of opened color tags, contains color itself
 
   foreach (row in rows)
   {
-    local slices = []
-    local rawRowPieces = splitRowToPieces(row)
-    local needSplitByWords = isWrapInRowAllowed && rawRowPieces.len() > 1
+    let slices = []
+    let rawRowPieces = splitRowToPieces(row)
+    let needSplitByWords = isWrapInRowAllowed && rawRowPieces.len() > 1
 
     foreach (rawRowPiece in rawRowPieces)
     {
@@ -56,8 +56,8 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
 
         while (true)
         {
-          local openingColorTagStartIndex = piece.indexof(colorTags[0], carriage)
-          local closingColorTagStartIndex = piece.indexof(colorTags[1], carriage)
+          let openingColorTagStartIndex = piece.indexof(colorTags[0], carriage)
+          let closingColorTagStartIndex = piece.indexof(colorTags[1], carriage)
 
           if (openingColorTagStartIndex == null && closingColorTagStartIndex == null)
             break
@@ -81,7 +81,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
               unclosedTags--
             else
             {
-              local lenBefore = piece.len()
+              let lenBefore = piece.len()
               piece = "<color=" + colors.top() + ">" + piece
               carriage += piece.len() - lenBefore
             }
@@ -97,8 +97,8 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
           else if ((closingColorTagStartIndex == null && openingColorTagStartIndex != null) ||
             openingColorTagStartIndex < closingColorTagStartIndex)
           {
-            local colorEnd = piece.indexof(">", openingColorTagStartIndex)
-            local colorStart = openingColorTagStartIndex + colorTags[0].len()
+            let colorEnd = piece.indexof(">", openingColorTagStartIndex)
+            let colorStart = openingColorTagStartIndex + colorTags[0].len()
             colors.append(piece.slice(colorStart, colorEnd))
             unclosedTags++
           }
@@ -115,7 +115,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
           if (colors.len() > 0 || !needSplitByWords)
             textsArray = [piece]
           else {
-            local lastPiece = piece.slice(lastIdxOfSlicedPiece, piece.len())
+            let lastPiece = piece.slice(lastIdxOfSlicedPiece, piece.len())
             if (lastPiece != "")
               textsArray.extend(lastPiece.split(" "))
           }
@@ -125,7 +125,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
       }
       else if (rawRowPiece.type == HINT_PIECE_TYPE.TAG)
       {
-        local tagType = ::g_hint_tag.getHintTagType(rawRowPiece.piece)
+        let tagType = ::g_hint_tag.getHintTagType(rawRowPiece.piece)
         slices.extend(tagType.getViewSlices(rawRowPiece.piece, params))
       }
     }
@@ -145,10 +145,10 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
  */
 g_hints.splitRowToPieces <- function splitRowToPieces(row)
 {
-  local slices = []
+  let slices = []
   while (row.len() > 0)
   {
-    local tagStartIndex = row.indexof(hintTags[0])
+    let tagStartIndex = row.indexof(hintTags[0])
 
     //no tags on current row
     //put entire row in one piece and exit
@@ -161,7 +161,7 @@ g_hints.splitRowToPieces <- function splitRowToPieces(row)
       break
     }
 
-    local tagEndIndex = row.indexof(hintTags[1], tagStartIndex)
+    let tagEndIndex = row.indexof(hintTags[1], tagStartIndex)
     //there is unclosed tag
     //flush current row content to one piece and exit
     if (tagEndIndex == null)

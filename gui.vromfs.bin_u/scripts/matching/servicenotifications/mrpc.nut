@@ -1,10 +1,10 @@
-local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 foreach (notificationName, callback in
           {
             ["mrpc.generic_notify"] = function (params)
               {
-                local from = ::getTblValue("from", params)
+                let from = ::getTblValue("from", params)
                 if (from == "web-service")
                   ::handle_web_rpc(params)
                 else if (from == "inventory")
@@ -13,10 +13,10 @@ foreach (notificationName, callback in
 
             ["mrpc.generic_rpc"] = function (params, cb)
               {
-                local from = ::getTblValue("from", params)
+                let from = ::getTblValue("from", params)
                 if (from == "web-service")
                 {
-                  local res = ::handle_web_rpc(params)
+                  let res = ::handle_web_rpc(params)
                   if (typeof(res) == "table")
                     cb(res)
                   else

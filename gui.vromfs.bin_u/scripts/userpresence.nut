@@ -1,4 +1,4 @@
-local { isInBattleState } = require("scripts/clientState/clientStates.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 ::g_user_presence <- {
   inited = false
@@ -31,8 +31,8 @@ g_user_presence.updateBattlePresence <- function updateBattlePresence()
     setBattlePresence("in_game", ::SessionLobby.getRoomEvent())
   else if (::queues.isAnyQueuesActive())
   {
-    local queue = ::queues.findQueue({})
-    local event = ::events.getEvent(::getTblValue("name", queue, null))
+    let queue = ::queues.findQueue({})
+    let event = ::events.getEvent(::getTblValue("name", queue, null))
     setBattlePresence("in_queue", event)
   }
   else
@@ -57,7 +57,7 @@ g_user_presence.setBattlePresence <- function setBattlePresence(presenceName = n
 
 g_user_presence.updateClanTagPresence <- function updateClanTagPresence()
 {
-  local clanTag = ::getTblValue("tag", ::my_clan_info, null) || ""
+  let clanTag = ::getTblValue("tag", ::my_clan_info, null) || ""
   setPresence({ clanTag = clanTag })
 }
 

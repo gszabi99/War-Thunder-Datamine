@@ -832,6 +832,22 @@
     }
   },
   {
+    "chainIK": {
+      "points": [
+        {
+          "point": {
+            "nameTemplate": "bone_gun_01"
+          }
+        },
+        {
+          "point": {
+            "nameTemplate": "bone_roll_01"
+          }
+        }
+      ]
+    }
+  },
+  {
     "DamageEffects": [
       {
         "part": [
@@ -1808,7 +1824,12 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
+          "barrel": "bone_gun_barrel",
+          "linkedAnimPart": {
+            "verNode": "bone_gun_02",
+            "verLimits": [-10.0,80.0],
+            "verOriginLimits": [-10.0,90.0]
+          }
         },
         "limits": {
           "yaw": [-150.0,150.0],

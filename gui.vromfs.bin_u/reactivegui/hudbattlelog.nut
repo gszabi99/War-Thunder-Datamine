@@ -1,10 +1,10 @@
-local state = require("battleLogState.nut")
-local scrollableData = require("components/scrollableData.nut")
-local hudLog = require("components/hudLog.nut")
-local teamColors = require("style/teamColors.nut")
-local fontsState = require("reactiveGui/style/fontsState.nut")
+let state = require("battleLogState.nut")
+let scrollableData = require("components/scrollableData.nut")
+let hudLog = require("components/hudLog.nut")
+let teamColors = require("style/teamColors.nut")
+let fontsState = require("%rGui/style/fontsState.nut")
 
-local logEntryComponent = function (log_entry) {
+let logEntryComponent = function (log_entry) {
   return function () {
     return  {
       watch = teamColors
@@ -19,7 +19,7 @@ local logEntryComponent = function (log_entry) {
   }
 }
 
-local logBox = hudLog({
+let logBox = hudLog({
   logComponent = scrollableData.make(state.log)
   messageComponent = logEntryComponent
 })

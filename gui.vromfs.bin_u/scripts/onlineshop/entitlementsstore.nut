@@ -1,9 +1,9 @@
-local { isPlatformSony,
+let { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC,
-        canSpendRealMoney } = require("scripts/clientState/platform.nut")
+        canSpendRealMoney } = require("%scripts/clientState/platform.nut")
 
-local {
+let {
   getEntStoreLocId = @() "#msgbox/btn_onlineShop",
   getEntStoreIcon = @() "#ui/gameuiskin#store_icon.svg",
   isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !::has_feature("SpendGold") || !::isInMenu() || !canSpendRealMoney(),
@@ -15,9 +15,9 @@ local {
   haveDiscount = @() false,
   openIngameStore = @(...) false,
   canUseIngameShop = @(...) false
-} = isPlatformSony? require("scripts/onlineShop/ps4Shop.nut")
-  : isPlatformXboxOne? require("scripts/onlineShop/xboxShop.nut")
-  : ::epic_is_running() ? require("scripts/onlineShop/epicShop.nut")
+} = isPlatformSony? require("%scripts/onlineShop/ps4Shop.nut")
+  : isPlatformXboxOne? require("%scripts/onlineShop/xboxShop.nut")
+  : ::epic_is_running() ? require("%scripts/onlineShop/epicShop.nut")
   : null
 
 return {

@@ -1,10 +1,10 @@
-local { canInteractCrossConsole,
+let { canInteractCrossConsole,
         isXBoxPlayerName,
-        isPlatformSony } = require("scripts/clientState/platform.nut")
-local crossplayModule = require("scripts/social/crossplay.nut")
-local { updateContacts } = require("scripts/contacts/contactsManager.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
+        isPlatformSony } = require("%scripts/clientState/platform.nut")
+let crossplayModule = require("%scripts/social/crossplay.nut")
+let { updateContacts } = require("%scripts/contacts/contactsManager.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer()
 {
@@ -18,10 +18,10 @@ local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
   ::handlersManager.loadHandler(::gui_handlers.SearchForSquadHandler)
 }
 
-class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
+::gui_handlers.SearchForSquadHandler <- class extends ::ContactsHandler
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/contacts/contacts.blk"
+  sceneBlkName = "%gui/contacts/contacts.blk"
 
   curGroup = ::EPL_FRIENDLIST
   searchGroup = ::EPLX_SEARCH
@@ -36,7 +36,7 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
 
     fillDefaultSearchList()
 
-    local fObj = scene.findObject("contacts_wnd")
+    let fObj = scene.findObject("contacts_wnd")
     fObj.pos = "0.5(sw-w), 0.4(sh-h)"
     fObj["class"] = "wnd"
     if (::contacts_sizes)
@@ -75,13 +75,13 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
 
   function updateSquadButton()
   {
-    local contactName = curPlayer?.name ?? ""
-    local isBlock = curPlayer? curPlayer.isInBlockGroup() : false
-    local isXBoxOnePlayer = isXBoxPlayerName(contactName)
-    local canInteractCrossPlatform = isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
-    local canInvite = curPlayer? curPlayer.canInvite() : true
+    let contactName = curPlayer?.name ?? ""
+    let isBlock = curPlayer? curPlayer.isInBlockGroup() : false
+    let isXBoxOnePlayer = isXBoxPlayerName(contactName)
+    let canInteractCrossPlatform = isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
+    let canInvite = curPlayer? curPlayer.canInvite() : true
 
-    local showSquadInvite = !::show_console_buttons
+    let showSquadInvite = !::show_console_buttons
       && ::has_feature("SquadInviteIngame")
       && !isBlock
       && canInteractCrossConsole(contactName)
@@ -132,14 +132,14 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
 
 addPromoAction("squad_contacts", @(handler, params, obj) ::open_search_squad_player())
 
-local promoButtonId = "invite_squad_mainmenu_button"
+let promoButtonId = "invite_squad_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   updateFunctionInHandler = function() {
-    local id = promoButtonId
-    local show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
-    local buttonObj = ::showBtn(id, show, scene)
+    let id = promoButtonId
+    let show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
+    let buttonObj = ::showBtn(id, show, scene)
     if (!show || !::checkObj(buttonObj))
       return
 

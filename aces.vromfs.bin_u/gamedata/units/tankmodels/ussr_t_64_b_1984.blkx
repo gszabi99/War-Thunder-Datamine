@@ -1878,6 +1878,9 @@
         },
         "turret_08_bottom_dm": {
           "armorThickness": 5.0
+        },
+        "turret_07_side_dm": {
+          "armorThickness": 5.0
         }
       },
       "hull_composite_armor": {
@@ -2014,6 +2017,16 @@
         },
         "turret_10_side_dm": {
           "armorThickness": 40.0
+        },
+        "turret_06_bottom_dm": {
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 6.0,
+          "secondaryShatterArmorQuality": 0.8
+        },
+        "turret_05_back_dm": {
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 6.0,
+          "secondaryShatterArmorQuality": 0.8
         }
       },
       "body_side_screens": {
@@ -2149,16 +2162,7 @@
         "ex_decor_l_06_dm": [],
         "ex_decor_09_dm": [],
         "ex_decor_10_dm": [],
-        "ex_decor_13_dm": [],
-        "turret_07_side_dm": [],
-        "turret_06_bottom_dm": {
-          "armorThickness": 6.0,
-          "secondaryShatterArmorQuality": 0.8
-        },
-        "turret_05_back_dm": {
-          "armorThickness": 6.0,
-          "secondaryShatterArmorQuality": 0.8
-        }
+        "ex_decor_13_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -3600,6 +3604,7 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "forestallTime": 0.1,
           "turret": [
             {
               "head": "bone_mg_aa_h_01"
@@ -4060,6 +4065,7 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
+                "forestallTime": 0.1,
                 "turret": [
                   {
                     "head": "bone_mg_aa_h_01"
@@ -4216,6 +4222,9 @@
                 },
                 {
                   "errExplTime": 0.0
+                },
+                {
+                  "forestallTime": 0.1
                 },
                 {
                   "turret": {
@@ -4616,6 +4625,17 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "fin_camo_black_green_dark*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ussr_modern_green",
+      "nameLocId": "skin/ussr_modern_green",
+      "descLocId": "skin/ussr_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_modern_green*"
       }
     }
   }

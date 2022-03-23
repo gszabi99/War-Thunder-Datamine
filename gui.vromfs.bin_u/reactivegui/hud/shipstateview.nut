@@ -1,7 +1,7 @@
-local {speed, portSideMachine, sideboardSideMachine, stopping } = require("reactiveGui/shipState.nut")
-local { isInitializedMeasureUnits } = require("reactiveGui/options/optionsMeasureUnits.nut")
+let {speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
+let { isInitializedMeasureUnits } = require("%rGui/options/optionsMeasureUnits.nut")
 
-local machineDirectionLoc = [
+let machineDirectionLoc = [
   ::loc("HUD/ENGINE_REV_BACK_SHORT")
   ::loc("HUD/ENGINE_REV_BACK_SHORT")
   ::loc("HUD/ENGINE_REV_BACK_SHORT")
@@ -16,7 +16,7 @@ local machineDirectionLoc = [
   ""
 ]
 
-local machineSpeedLoc = [
+let machineSpeedLoc = [
   ::loc("HUD/ENGINE_REV_FULL_SHORT")
   ::loc("HUD/ENGINE_REV_TWO_THIRDS_SHORT")
   ::loc("HUD/ENGINE_REV_ONE_THIRD_SHORT")
@@ -31,7 +31,7 @@ local machineSpeedLoc = [
   "R"
 ]
 
-local machineSpeedDirection = [
+let machineSpeedDirection = [
   "back"
   "back"
   "back"
@@ -50,19 +50,19 @@ local fitTextToBox = ::kwarg(function(box, text, font, fontSize=null, minSize = 
   local sz = ::calc_comp_size({rendObj = ROBJ_DTEXT, text, font, fontSize})
   fontSize = fontSize ?? ::calc_comp_size({rendObj = ROBJ_DTEXT, text = "A", font, fontSize})
   sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]
-  local scale = min(box[0]/sz[0], box[1]/sz[1])
+  let scale = min(box[0]/sz[0], box[1]/sz[1])
   if (scale >= 1.0)
     return fontSize
-  local res = fontSize*scale
+  let res = fontSize*scale
   if (res < minSize)
     return minSize
   return res
 })
 
-local defFont = Fonts.tiny_text_hud
+let defFont = Fonts.tiny_text_hud
 
-local function speedValue(params = {}) {
-  local { font = defFont, margin = [0,0,0,sh(1)], fontSize = null } = params
+let function speedValue(params = {}) {
+  let { font = defFont, margin = [0,0,0,sh(1)], fontSize = null } = params
   return @() {
     watch = speed
     rendObj = ROBJ_DTEXT
@@ -73,10 +73,10 @@ local function speedValue(params = {}) {
   }
 }
 
-local function speedUnits(params = {}) {
-  local { fontSize = null, box = null, font = defFont } = params
+let function speedUnits(params = {}) {
+  let { fontSize = null, box = null, font = defFont } = params
   return function() {
-    local text = isInitializedMeasureUnits.value ? ::cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
+    let text = isInitializedMeasureUnits.value ? ::cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
     return {
       watch = isInitializedMeasureUnits
       rendObj = ROBJ_DTEXT
@@ -88,13 +88,13 @@ local function speedUnits(params = {}) {
   }
 }
 
-local averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
+let averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
 
-local machineSpeed = @(params = {}) function() {
-  local { fontSize = null, box = null, font = defFont, fontColor = Color(200, 200, 200) } = params
-  local speedLoc = machineSpeedLoc[averageSpeed.value]
-  local directionLoc = machineDirectionLoc[averageSpeed.value]
-  local text = "  ".join([speedLoc, directionLoc], true)
+let machineSpeed = @(params = {}) function() {
+  let { fontSize = null, box = null, font = defFont, fontColor = Color(200, 200, 200) } = params
+  let speedLoc = machineSpeedLoc[averageSpeed.value]
+  let directionLoc = machineDirectionLoc[averageSpeed.value]
+  let text = "  ".join([speedLoc, directionLoc], true)
   return {
     watch = [averageSpeed, stopping]
     rendObj = ROBJ_DTEXT

@@ -1,18 +1,18 @@
-local { isXBoxPlayerName,
+let { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
         isPlatformXboxOne,
-        isPlayerFromPS4 } = require("scripts/clientState/platform.nut")
-local { hasAllFeatures } = require("scripts/user/features.nut")
-local externalIDsService = require("scripts/user/externalIdsService.nut")
-local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
-local psnSocial = require("sony.social")
-local { openPopupFilter } = require("scripts/popups/popupFilter.nut")
-local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-local { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
-local { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
-local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
+        isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
+let { hasAllFeatures } = require("%scripts/user/features.nut")
+let externalIDsService = require("%scripts/user/externalIdsService.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { openUrl } = require("%scripts/onlineShop/url.nut")
+let psnSocial = require("sony.social")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
+let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
@@ -21,10 +21,10 @@ local { shopCountriesList } = require("scripts/shop/shopCountriesList.nut")
   ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, {info = playerInfo})
 }
 
-class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
+::gui_handlers.UserCardHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/profile/userCard.blk"
+  sceneBlkName = "%gui/profile/userCard.blk"
 
   isOwnStats = false
 
@@ -44,7 +44,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   statsType = ::ETTI_VALUE_INHISORY
   statsMode = ""
   countryStats = null
-  unitStats = []
+  unitStats = null
   availableUTypes = null
   availableCountries = null
   statsSortBy = ""
@@ -96,7 +96,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     else if ("id" in player)
     {
       taskId = ::req_player_public_statinfo_by_player_id(player.id)
-      local selfPlayerId = ::getTblValue("uid", ::get_local_mplayer())
+      let selfPlayerId = ::getTblValue("uid", ::get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == player.id)
         isMyPage = true
       else
@@ -125,7 +125,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initTabs()
   {
-    local view = { tabs = [] }
+    let view = { tabs = [] }
     foreach(idx, sheet in sheetsList)
     {
       view.tabs.append({
@@ -136,8 +136,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       })
     }
 
-    local data = ::handyman.renderCached("gui/frameHeaderTabs", view)
-    local sheetsListObj = scene.findObject("profile_sheet_list")
+    let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
+    let sheetsListObj = scene.findObject("profile_sheet_list")
     guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(0)
     sheetsListObj.show(false)
@@ -189,7 +189,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return;
 
-    local blk = ::DataBlock()
+    let blk = ::DataBlock()
     ::get_player_public_stats(blk)
 
     if (!blk?.nick || blk.nick == "") //!!FIX ME: Check incorrect user by no uid in answer.
@@ -216,8 +216,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     foreach(div in ["profile", "stats"])
     {
-      local show = div == name
-      local divObj = scene.findObject(div + "-container")
+      let show = div == name
+      let divObj = scene.findObject(div + "-container")
       if (::checkObj(divObj))
       {
         divObj.show(show)
@@ -277,7 +277,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(scene))
       return
-    local value = obj.getValue()
+    let value = obj.getValue()
 
     curMode = value
     ::set_current_wnd_difficulty(curMode)
@@ -298,7 +298,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (player?.uid != params?.request?.uid && player?.id != params?.request?.playerId)
       return
 
-    local isMe = ::my_user_id_str == player?.uid
+    let isMe = ::my_user_id_str == player?.uid
     updateExternalIdsData(params.externalIds, isMe)
   }
 
@@ -318,7 +318,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    local nameObj = scene.findObject("profile-currentUser-" + link)
+    let nameObj = scene.findObject("profile-currentUser-" + link)
     if (!::check_obj(nameObj))
       return
 
@@ -330,11 +330,11 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::has_feature("Clans"))
       return
 
-    local clanTagObj = scene.findObject("profile-clanTag");
+    let clanTagObj = scene.findObject("profile-clanTag");
     if (clanTagObj)
     {
-      local clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
-      local text = ::checkClanTagForDirtyWords(playerData.clanTag);
+      let clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
+      let text = ::checkClanTagForDirtyWords(playerData.clanTag);
       clanTagObj.setValue(::colorize(clanType.color, text));
       clanTagObj.tooltip = ::ps4CheckAndReplaceContentDisabledText(playerData.clanName);
     }
@@ -342,17 +342,17 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillShortCountryStats(profile)
   {
-    local countryStatsNest = scene.findObject("country_stats_nest")
+    let countryStatsNest = scene.findObject("country_stats_nest")
     if (!::checkObj(countryStatsNest))
       return
 
-    local columns = shopCountriesList.map(@(c) {
+    let columns = shopCountriesList.map(@(c) {
       icon            = ::get_country_icon(c)
       unitsCount      = profile.countryStats[c].unitsCount
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
     })
 
-    local blk = ::handyman.renderCached(("gui/profile/country_stats_table"), {
+    let blk = ::handyman.renderCached(("%gui/profile/country_stats_table"), {
       columns = columns,
       tableName = ::loc("lobby/vehicles")
     })
@@ -369,11 +369,11 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(parentObj))
       return
 
-    local switchObj = parentObj.findObject("modes_list")
+    let switchObj = parentObj.findObject("modes_list")
     if (!::checkObj(switchObj))
       return
 
-    local childrenCount = switchObj.childrenCount()
+    let childrenCount = switchObj.childrenCount()
     if (childrenCount <= 0)
       return
 
@@ -385,7 +385,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    local value = obj.getValue()
+    let value = obj.getValue()
     if (curMode == value)
       return
 
@@ -412,7 +412,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       maxMedals = pl.countryStats[curCountryId].medalsCount
       foreach(idx, countryId in shopCountriesList)
       {
-        local medalsCount = pl.countryStats[countryId].medalsCount
+        let medalsCount = pl.countryStats[countryId].medalsCount
         if (maxMedals < medalsCount)
         {
           curCountryId = countryId
@@ -423,8 +423,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     // Filling country tabs
     local curValue = 0
-    local view = { items = [] }
-    local countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
+    let view = { items = [] }
+    let countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
     foreach(idx, countryId in shopCountriesList)
     {
       view.items.append({
@@ -438,31 +438,31 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
         curValue = idx
     }
 
-    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
-    local countriesObj = scene.findObject("medals_country_tabs")
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
+    let countriesObj = scene.findObject("medals_country_tabs")
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
   }
 
   function onMedalsCountrySelect(obj)
   {
-    local nestObj = scene.findObject("medals_nest")
+    let nestObj = scene.findObject("medals_nest")
     if (!::check_obj(obj) || !::check_obj(nestObj))
       return
 
-    local countryId = shopCountriesList?[obj.getValue()]
+    let countryId = shopCountriesList?[obj.getValue()]
     if (!countryId)
       return
 
-    local medalsList = getCountryMedals(countryId, player)
+    let medalsList = getCountryMedals(countryId, player)
     showSceneBtn("medals_empty", !medalsList.len())
 
-    local view = {
+    let view = {
       ribbons = getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
       medals = getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
     }
 
-    local markup = ::handyman.renderCached("gui/profile/profileRibbons", view)
+    let markup = ::handyman.renderCached("%gui/profile/profileRibbons", view)
     guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
   }
 
@@ -501,14 +501,14 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("medals_block", false)
     showSceneBtn("titles_block", true)
 
-    local titles = []
+    let titles = []
     foreach (id in pl.titles)
     {
-      local titleUnlock = ::g_unlocks.getUnlockById(id)
+      let titleUnlock = ::g_unlocks.getUnlockById(id)
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 
-      local locText = ::loc("title/" + id)
+      let locText = ::loc("title/" + id)
       titles.append({
         name = id
         text = locText
@@ -518,17 +518,17 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     titles.sort(@(a, b) a.lowerText <=> b.lowerText)
 
-    local titlesTotal = titles.len()
+    let titlesTotal = titles.len()
     showSceneBtn("titles_empty", !titlesTotal)
     if (!titlesTotal)
       return
 
     local markup = ""
-    local cols = 2
-    local rows = ::ceil(titlesTotal * 1.0 / cols)
+    let cols = 2
+    let rows = ::ceil(titlesTotal * 1.0 / cols)
     for (local r = 0; r < rows; r++)
     {
-      local rowData = []
+      let rowData = []
       for (local c = 0; c < cols; c++)
         rowData.append(titles?[rows * c + r] ?? {})
       markup += ::buildTableRow("", rowData)
@@ -555,7 +555,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj) || lbModesList == null)
       return
 
-    local newLbMode = lbModesList?[obj.getValue()]
+    let newLbMode = lbModesList?[obj.getValue()]
     if (newLbMode == null || lbMode == newLbMode)
       return
 
@@ -597,14 +597,14 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initAirStatsScene(airStats)
   {
-    local sObj = scene.findObject("stats-container")
+    let sObj = scene.findObject("stats-container")
 
     sObj.findObject("stats_loading").show(false)
 
-    local modesObj = sObj.findObject("modes_list")
+    let modesObj = sObj.findObject("modes_list")
     local selDiff = null
     local selIdx = -1
-    local view = { items = [] }
+    let view = { items = [] }
     foreach(diff in ::g_difficulty.types)
     {
       if (!diff.isAvailable())
@@ -618,48 +618,46 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     statsMode = selDiff.egdLowercaseName
 
-    local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
+    let data = ::handyman.renderCached("%gui/commonParts/shopFilter", view)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(selIdx)
 
-    fillUnitListCheckBoxes(sObj)
-    fillCountriesCheckBoxes(sObj)
+    fillUnitListCheckBoxes()
+    fillCountriesCheckBoxes()
 
-    local nestObj = scene.findObject("filter_nest")
+    let nestObj = scene.findObject("filter_nest")
     openPopupFilter({
       scene = nestObj
       onChangeFn = onFilterCbChange.bindenv(this)
       filterTypes = getFiltersView()
+      isRight = true
     })
 
     airStatsInited = true
     fillAirStats()
   }
 
-  function fillUnitListCheckBoxes(sObj)
+  function fillUnitListCheckBoxes()
   {
     availableUTypes = {}
-    local fillStatsUnits = unitStats.len() == 0
+    unitStats = []
 
     foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
-      local armyId = unitType.armyId
-      local typeIdx = unitType.esUnitType
+      let typeIdx = unitType.esUnitType
       availableUTypes[unitType.armyId] <- {
         id    = $"unit_{typeIdx}"
         idx   = typeIdx
         image = unitType.testFlightIcon
         text  = unitType.getArmyLocName()
       }
-      if (fillStatsUnits)
-        unitStats.append(armyId)
     }
   }
 
-  function fillCountriesCheckBoxes(sObj)
+  function fillCountriesCheckBoxes()
   {
     availableCountries = {}
     foreach (idx, inst in shopCountriesList)
@@ -676,36 +674,21 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getFiltersView()
   {
-    local res = []
+    let res = []
     foreach (tName in ["country", "unit"])
     {
-      local isUnitType = tName == "unit"
-      local selectedArr = this[$"{tName}Stats"]
-      local referenceArr = isUnitType ? availableUTypes : availableCountries
-      local isAllSelected = true
-      foreach (idx, inst in referenceArr)
-        if (!::isInArray(idx, selectedArr))
-        {
-          isAllSelected = false
-          break
-        }
-
-      local cbView = {
-        id = "all_items"
-        idx = -1
-        image = $"#ui/gameuiskin#{isUnitType ? "all_unit_types" : "flag_all_nations"}.svg"
-        text = ::loc($"all_{isUnitType ? "units" : "countries"}")
-        value = isAllSelected
-      }
-      local view = { checkbox = [cbView]}
+      let isUnitType = tName == "unit"
+      let selectedArr = this[$"{tName}Stats"]
+      let referenceArr = isUnitType ? availableUTypes : availableCountries
+      let view = {checkbox = []}
       foreach(idx, inst in referenceArr)
-        view.checkbox.append(cbView.__merge({
+        view.checkbox.append({
           id = inst.id
           idx = inst.idx
           image = inst.image
           text = inst.text
-          value = ::isInArray(idx, selectedArr)
-        }))
+          value = !isUnitType && ::isInArray(idx, selectedArr)
+        })
 
       view.checkbox.sort(@(a,b) a.idx <=> b.idx)
       res.append(view)
@@ -716,14 +699,14 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFilterCbChange(objId, tName, value)
   {
-    local selectedArr = this[$"{tName}Stats"]
-    local isUnitType = tName == "unit"
-    local referenceArr = isUnitType ? availableUTypes : availableCountries
-    local isAllObj = objId == "all_items"
+    let selectedArr = this[$"{tName}Stats"]
+    let isUnitType = tName == "unit"
+    let referenceArr = isUnitType ? availableUTypes : availableCountries
+    let isReset = objId == RESET_ID
 
     foreach (idx, inst in referenceArr)
     {
-      if (!isAllObj && inst.id != objId)
+      if (!isReset && inst.id != objId)
         continue
 
       if (value)
@@ -741,16 +724,21 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     airStatsList = []
+    // Show all items if filters list is empty
+    let filterUnits = unitStats.len() > 0 ? unitStats
+      : unitTypes.types.map(@(t) t.isAvailable() ? t.armyId : null).filter(@(t) t)
+    let filterCountry = countryStats.len() > 0 ? countryStats : shopCountriesList
+
     local checkList = []
-    local typeName = "total"
-    local modeName = statsMode
+    let typeName = "total"
+    let modeName = statsMode
     if ((modeName in airStats) && (typeName in airStats[modeName]))
       checkList = airStats[modeName][typeName]
     foreach(item in checkList)
     {
-      local air = ::getAircraftByName(item.name)
-      local unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
-      if (!::isInArray(unitTypeShopId, unitStats))
+      let air = ::getAircraftByName(item.name)
+      let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
+      if (!::isInArray(unitTypeShopId, filterUnits))
           continue
       if (!("country" in item))
       {
@@ -759,17 +747,17 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
       if ( ! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
-      if (::isInArray(item.country, countryStats))
+      if (::isInArray(item.country, filterCountry))
         airStatsList.append(item)
     }
 
     if (statsSortBy=="")
       statsSortBy = "victories"
 
-    local sortBy = statsSortBy
-    local sortReverse = statsSortReverse == (sortBy != "locName")
+    let sortBy = statsSortBy
+    let sortReverse = statsSortReverse == (sortBy != "locName")
     airStatsList.sort(function(a,b) {
-      local res = b[sortBy] <=> a[sortBy]
+      let res = b[sortBy] <=> a[sortBy]
       if (res != 0)
         return sortReverse ? -res : res
       return a.locName <=> b.locName || a.name <=> b.name
@@ -784,9 +772,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (statsPerPage > 0)
       return
 
-    local listObj = scene.findObject("airs_stats_table")
-    local size = listObj.getSize()
-    local rowsHeigt = size[1] -guiScene.calcString("@leaderboardHeaderHeight", null)
+    let listObj = scene.findObject("airs_stats_table")
+    let size = listObj.getSize()
+    let rowsHeigt = size[1] -guiScene.calcString("@leaderboardHeaderHeight", null)
     statsPerPage =   ::max(1, (rowsHeigt / guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
   }
 
@@ -798,10 +786,10 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     initStatsPerPage()
 
     local data = ""
-    local posWidth = "0.05@scrn_tgt"
-    local rcWidth = "0.04@scrn_tgt"
-    local nameWidth = "0.2@scrn_tgt"
-    local headerRow = [
+    let posWidth = "0.05@scrn_tgt"
+    let rcWidth = "0.04@scrn_tgt"
+    let nameWidth = "0.2@scrn_tgt"
+    let headerRow = [
       { width=posWidth }
       { id="rank", width=rcWidth, text="#sm_rank", tdalign="split", cellType="splitRight", callback = "onStatsCategory", active = statsSortBy=="rank" }
       { id="rank", width=rcWidth, cellType="splitLeft", callback = "onStatsCategory" }
@@ -825,18 +813,18 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     data += buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
-    local tooltips = {}
-    local fromIdx = curStatsPage*statsPerPage
+    let tooltips = {}
+    let fromIdx = curStatsPage*statsPerPage
     local toIdx = (curStatsPage+1)*statsPerPage-1
     if (toIdx >= airStatsList.len()) toIdx = airStatsList.len()-1
 
     for(local idx = fromIdx; idx <= toIdx; idx++)
     {
-      local airData = airStatsList[idx]
-      local unitTooltipId = UNIT.getTooltipId(airData.name)
+      let airData = airStatsList[idx]
+      let unitTooltipId = UNIT.getTooltipId(airData.name)
 
-      local rowName = "row_"+idx
-      local rowData = [
+      let rowName = "row_"+idx
+      let rowData = [
         { text = (idx+1).tostring(), width=posWidth }
         { id="rank", width=rcWidth, text = airData.rank.tostring(), tdalign="right", cellType="splitRight", active = statsSortBy=="rank" }
         { id="country", width=rcWidth, image=::get_country_icon(airData.country), cellType="splitLeft", needText = false }
@@ -857,7 +845,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
         if (isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         {
-          local cell = ::getLbItemCell(item.id, airData[item.id], item.type)
+          let cell = ::getLbItemCell(item.id, airData[item.id], item.type)
           cell.active <- statsSortBy == item.id
           if ("tooltip" in cell)
           {
@@ -871,16 +859,16 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       data += buildTableRow(rowName, rowData, idx%2==0)
     }
 
-    local tblObj = scene.findObject("airs_stats_table")
+    let tblObj = scene.findObject("airs_stats_table")
     guiScene.replaceContentFromText(tblObj, data, data.len(), this)
     foreach(rowName, row in tooltips)
     {
-      local rowObj = tblObj.findObject(rowName)
+      let rowObj = tblObj.findObject(rowName)
       if (rowObj)
         foreach(name, value in row)
           rowObj.findObject(name).tooltip = value
     }
-    local nestObj = scene.findObject("paginator_place")
+    let nestObj = scene.findObject("paginator_place")
     ::generatePaginator(nestObj, this, curStatsPage, ::floor((airStatsList.len() - 1)/statsPerPage))
     updateButtons()
   }
@@ -898,24 +886,24 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillLeaderboard()
   {
-    local stats = getPlayerStats()
+    let stats = getPlayerStats()
     if (!stats || !("leaderboard" in stats) || !stats.leaderboard.len())
       return
 
-    local typeProfileObj = scene.findObject("stats_type_profile")
+    let typeProfileObj = scene.findObject("stats_type_profile")
     if (::checkObj(typeProfileObj))
     {
       typeProfileObj.show(true)
       typeProfileObj.setValue(statsType == ::ETTI_VALUE_INHISORY)
     }
 
-    local tblObj = scene.findObject("profile_leaderboard")
+    let tblObj = scene.findObject("profile_leaderboard")
     local rowIdx = 0
     local data = ""
-    local tooltips = {}
+    let tooltips = {}
 
     //add header row
-    local headerRow = [""]
+    let headerRow = [""]
     foreach(lbCategory in ::leaderboards_list)
       if (checkLbRowVisibility(lbCategory))
         headerRow.append({
@@ -928,7 +916,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     data = buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
-    local rows = [
+    let rows = [
       {
         text = "#mainmenu/btnLeaderboards"
         showLbPlaces = false
@@ -939,11 +927,11 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
     ]
 
-    local valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
+    let valueFieldName = (statsType == ::ETTI_VALUE_TOTAL)
                            ? LEADERBOARD_VALUE_TOTAL
                            : LEADERBOARD_VALUE_INHISTORY
-    local lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
-    local standartRow = {}
+    let lb = ::getTblValue(valueFieldName, ::getTblValue(lbMode, stats.leaderboard), {})
+    let standartRow = {}
 
     foreach (idx, fieldTbl in lb)
     {
@@ -952,8 +940,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach (row in rows)
     {
-      local rowName = "row_" + rowIdx
-      local rowData = [{ text = row.text, tdalign="left" }]
+      let rowName = "row_" + rowIdx
+      let rowData = [{ text = row.text, tdalign="left" }]
       local res = {}
 
       foreach(lbCategory in ::leaderboards_list)
@@ -965,7 +953,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
               res = lbCategory.getItemCell(standartRow[lbCategory.field], standartRow)
             else
             {
-              local value = (lb[lbCategory.field].idx < 0) ? -1 : lb[lbCategory.field].idx + 1
+              let value = (lb[lbCategory.field].idx < 0) ? -1 : lb[lbCategory.field].idx + 1
               res = lbCategory.getItemCell(value, null, false, ::g_lb_data_type.PLACE)
             }
           }
@@ -1002,8 +990,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getCurSheet()
   {
-    local obj = scene.findObject("profile_sheet_list")
-    local sheetIdx = obj.getValue()
+    let obj = scene.findObject("profile_sheet_list")
+    let sheetIdx = obj.getValue()
     if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
       return ""
 
@@ -1019,10 +1007,10 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     foreach(idx, mode in ::leaderboard_modes)
     {
-      local diffCode = ::getTblValue("diffCode", mode)
+      let diffCode = ::getTblValue("diffCode", mode)
       if (!::g_difficulty.isDiffCodeAvailable(diffCode, ::GM_DOMINATION))
         continue
-      local reqFeature = ::getTblValue("reqFeature", mode)
+      let reqFeature = ::getTblValue("reqFeature", mode)
       if (!hasAllFeatures(reqFeature))
         continue
 
@@ -1030,7 +1018,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    local modesObj = showSceneBtn("leaderboard_modes_list", true)
+    let modesObj = showSceneBtn("leaderboard_modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
@@ -1040,22 +1028,22 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(scene))
       return
 
-    local hasFeatureFriends = ::has_feature("Friends")
+    let hasFeatureFriends = ::has_feature("Friends")
 
-    local contact = ::getContact(player?.uid, player.name)
-    local isMe = contact?.isMe() ?? false
-    local canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
-    local isFriend = contact?.isInFriendGroup() ?? false
-    local isBlock = contact?.isInBlockGroup() ?? false
+    let contact = ::getContact(player?.uid, player.name)
+    let isMe = contact?.isMe() ?? false
+    let canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
+    let isFriend = contact?.isInFriendGroup() ?? false
+    let isBlock = contact?.isInBlockGroup() ?? false
 
-    local isPS4Player = isPlayerFromPS4(player.name)
-    local isXBoxOnePlayer = isXBoxPlayerName(player.name)
-    local canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
-    local canInteractCC = canInteractCrossConsole(player.name)
+    let isPS4Player = isPlayerFromPS4(player.name)
+    let isXBoxOnePlayer = isXBoxPlayerName(player.name)
+    let canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
+    let canInteractCC = canInteractCrossConsole(player.name)
 
-    local sheet = getCurSheet()
-    local showStatBar = infoReady && sheet=="Statistics"
-    local showProfBar = infoReady && !showStatBar
+    let sheet = getCurSheet()
+    let showStatBar = infoReady && sheet=="Statistics"
+    let showProfBar = infoReady && !showStatBar
 
     ::showBtnTable(scene, {
       paginator_place = showStatBar && (airStatsList != null) && (airStatsList.len() > statsPerPage)
@@ -1072,9 +1060,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onBlacklistBan()
   {
-    local clanTag = ::getTblValue("clanTag", player, "")
-    local playerName = ::getTblValue("name", player, "")
-    local userId = ::getTblValue("uid", player, "")
+    let clanTag = ::getTblValue("clanTag", player, "")
+    let playerName = ::getTblValue("name", player, "")
+    let userId = ::getTblValue("uid", player, "")
 
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
@@ -1111,7 +1099,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onOpenPSNProfile() {
-    local psnId = curPlayerExternalIds?.psnId ?? ""
+    let psnId = curPlayerExternalIds?.psnId ?? ""
     if (psnId == "")
       return
 
@@ -1125,7 +1113,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function removeItemFromList(value, list)
   {
-    local idx = list.findindex(@(v) v == value)
+    let idx = list.findindex(@(v) v == value)
     if (idx != null)
       list.remove(idx)
   }
@@ -1133,7 +1121,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onStatsCategory(obj)
   {
     if (!obj) return
-    local value = obj.id
+    let value = obj.id
     if (statsSortBy==value)
       statsSortReverse = !statsSortReverse
     else

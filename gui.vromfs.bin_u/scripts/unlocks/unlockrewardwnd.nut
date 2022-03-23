@@ -1,4 +1,4 @@
-class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
+::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
 {
   wndType = handlerType.MODAL
 
@@ -25,7 +25,7 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
   }
 
   function checkConfigsArray() {
-    local unlockType = ::g_unlock_view.getUnlockType(unlockData)
+    let unlockType = ::g_unlock_view.getUnlockType(unlockData)
     if (unlockType == ::UNLOCKABLE_AIRCRAFT)
       unit = ::getAircraftByName(unlockData.id)
     else if (unlockType == ::UNLOCKABLE_DECAL
@@ -40,7 +40,7 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!opened)
       return ""
 
-    local imgConfig = ::g_unlock_view.getUnlockImageConfig(unlockData)
+    let imgConfig = ::g_unlock_view.getUnlockImageConfig(unlockData)
 
     return "{0}{1}".subst(
       ::LayersIcon.getIconData($"{chestDefaultImg}_opened"),
@@ -55,11 +55,11 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!opened)
       return
 
-    local obj = scene.findObject("prize_desc_div")
+    let obj = scene.findObject("prize_desc_div")
     if (!::checkObj(obj))
       return
 
-    local data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__merge({
+    let data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__merge({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true
@@ -76,14 +76,14 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
 
 return {
   showUnlock = function(unlockId, viewParams = {}) {
-    local config = ::g_unlocks.getUnlockById(unlockId)
+    let config = ::g_unlocks.getUnlockById(unlockId)
     if (!config)
     {
       ::dagor.logerr($"Unlock Reward: Could not find unlock config {unlockId}")
       return
     }
 
-    local unlockConditions = ::build_conditions_config(config)
+    let unlockConditions = ::build_conditions_config(config)
     ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, {
       unlockConfig = config
       unlockConditions = unlockConditions

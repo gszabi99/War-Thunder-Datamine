@@ -2370,18 +2370,18 @@
   {
     "breaches": {
       "repairSpeed": 21.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 120.0,
+      "waterMassVel": -7000.0,
+      "waterMassMult": 70.0,
       "sizeToRepair": [0.01,3.0,10.0,370.0],
-      "additionalWaterDeathThreshold": 300000.0,
-      "additionalWaterShouldDiePercent": 0.45,
+      "additionalWaterDeathThreshold": 215000.0,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 36.0,
       "maxHeelingTime": 8.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.25
     }
   },
   {
@@ -2389,14 +2389,14 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 1.0,
+          "weight": 0.7,
           "maxWaterAlive": 1.0
         }
       },
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.5,
+          "weight": 0.8,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -2409,19 +2409,19 @@
       {
         "cover": {
           "part": "compartment_03_dm",
-          "weight": 0.6,
+          "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": [
             {
               "part": {
                 "partNo": "engine_01_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.3
               }
             },
             {
               "part": {
                 "partNo": "engine_02_dm",
-                "critWaterLevel": 0.5
+                "critWaterLevel": 0.7
               }
             },
             {
@@ -2433,7 +2433,7 @@
             {
               "part": {
                 "partNo": "ammunition_storage_03_dm",
-                "critWaterLevel": 0.6
+                "critWaterLevel": 0.8
               }
             }
           ]
@@ -2442,7 +2442,7 @@
       {
         "cover": {
           "part": "compartment_04_dm",
-          "weight": 0.3,
+          "weight": 0.5,
           "maxWaterAlive": 1.0
         }
       }
@@ -2466,7 +2466,7 @@
           "explosionEvent": "ammo_explosion_1",
           "fireEvent": "ammo_fire_1",
           "ammunition_storage_01_dm": {
-            "count": 100
+            "count": 180
           }
         }
       },
@@ -2478,7 +2478,7 @@
           "explosionEvent": "ammo_explosion_2",
           "fireEvent": "ammo_fire_2",
           "ammunition_storage_02_dm": {
-            "count": 100
+            "count": 180
           }
         }
       },
@@ -2499,7 +2499,7 @@
             "explosionEvent": "ammo_explosion_2",
             "fireEvent": "ammo_fire_2",
             "ammunition_storage_03_dm": {
-              "count": 9500
+              "count": 10000
             }
           }
         }
@@ -3011,9 +3011,6 @@
           "breechDP": "main_caliber_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 25.0,
-          "speedPitch": 8.0,
-          "bullets": 100,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3030,6 +3027,13 @@
           "errMeasureVelDir": 1.5,
           "errTargetting": 5.0,
           "errExplTime": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 8.0,
+          "bullets": 180,
+          "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.06,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -3044,23 +3048,6 @@
             "lim1": [-156.0,-30.0,-5.0,77.0],
             "lim2": [-30.0,30.0,-1.0,77.0],
             "lim3": [30.0,156.0,-5.0,77.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
           }
         }
       },
@@ -3076,9 +3063,6 @@
           "breechDP": "main_caliber_gun_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 25.0,
-          "speedPitch": 8.0,
-          "bullets": 100,
           "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3095,6 +3079,13 @@
           "errMeasureVelDir": 1.5,
           "errTargetting": 5.0,
           "errExplTime": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 8.0,
+          "bullets": 180,
+          "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
+          "turretLongSalvo": true,
+          "salvoRndK": 0.06,
           "turret": {
             "head": "main_caliber_turret_02",
             "gun": "main_caliber_gun_02",
@@ -3109,23 +3100,6 @@
             "lim1": [-150.0,-12.0,-3.0,77.0],
             "lim2": [-12.0,12.0,-1.0,77.0],
             "lim3": [12.0,150.0,-3.0,77.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
           }
         }
       },
@@ -3139,12 +3113,8 @@
           "useEmitter": true,
           "barrelDP": "auxiliary_caliber_gun_01_dm",
           "breechDP": "auxiliary_caliber_gun_01_dm",
-          "useGunnerTargetingQuality": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "speedYaw": 35.0,
-          "speedPitch": 45.0,
-          "bullets": 1500,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3161,6 +3131,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 19.6,
+          "speedPitch": 15.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
@@ -3179,6 +3153,23 @@
             "lim5": [25.0,110.0,-5.0,85.0],
             "lim6": [110.0,170.0,30.0,85.0],
             "lim7": [170.0,180.0,70.0,85.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 80.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 80.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.01]
+              },
+              {
+                "row": [70.0,0.05]
+              }
+            ]
           }
         }
       },
@@ -3190,15 +3181,11 @@
           "emitter": "emtr_gun_flame_04",
           "flash": "emtr_gun_flame_04",
           "useEmitter": true,
-          "useGunnerTargetingQuality": false,
           "barrelDP": "aa_gun_01_dm",
           "breechDP": "aa_gun_01_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "isBulletBelt": true,
-          "speedYaw": 55.0,
-          "speedPitch": 70.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3215,6 +3202,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "aa_turret_01",
             "gun": "aa_gun_01",
@@ -3259,13 +3250,9 @@
           "useEmitter": true,
           "barrelDP": "aa_gun_01_dm",
           "breechDP": "aa_gun_01_dm",
-          "useGunnerTargetingQuality": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "isBulletBelt": true,
-          "speedYaw": 55.0,
-          "speedPitch": 70.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3282,6 +3269,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "aa_turret_01",
             "gun": "aa_gun_01",
@@ -3326,13 +3317,9 @@
           "useEmitter": true,
           "barrelDP": "aa_gun_02_dm",
           "breechDP": "aa_gun_02_dm",
-          "useGunnerTargetingQuality": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "isBulletBelt": true,
-          "speedYaw": 55.0,
-          "speedPitch": 70.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3349,6 +3336,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "aa_turret_02",
             "gun": "aa_gun_02",
@@ -3393,13 +3384,9 @@
           "useEmitter": true,
           "barrelDP": "aa_gun_02_dm",
           "breechDP": "aa_gun_02_dm",
-          "useGunnerTargetingQuality": false,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "isBulletBelt": true,
-          "speedYaw": 55.0,
-          "speedPitch": 70.0,
-          "bullets": 2000,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -3416,6 +3403,10 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
+          "speedYaw": 60.0,
+          "speedPitch": 55.0,
+          "bullets": 2000,
+          "useGunnerTargetingQuality": false,
           "turret": {
             "head": "aa_turret_02",
             "gun": "aa_gun_02",

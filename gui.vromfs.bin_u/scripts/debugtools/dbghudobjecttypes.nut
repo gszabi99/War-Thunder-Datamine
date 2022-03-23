@@ -1,4 +1,5 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let { GO_FAIL, GO_WIN } = require_native("guiMission")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_dbg_hud_object_type <- {
   types = []
 }
@@ -11,7 +12,7 @@ local enums = require("sqStdLibs/helpers/enums.nut")
   {
     if (!hudEventsList)
       return
-    local hudEventData = ::u.map(::u.chooseRandom(hudEventsList), @(val) ::u.isFunction(val) ? val() : val)
+    let hudEventData = ::u.map(::u.chooseRandom(hudEventsList), @(val) ::u.isFunction(val) ? val() : val)
     ::g_hud_event_manager.onHudEvent(hudEventData.eventId, hudEventData)
   }
 }
@@ -20,7 +21,7 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
   REWARD_MESSAGE = { //visible by prioriy
     eventChance = 50
     genNewEvent = function() {
-      local ignoreIdx = ::g_hud_reward_message.types.indexof(::g_hud_reward_message.UNKNOWN)
+      let ignoreIdx = ::g_hud_reward_message.types.indexof(::g_hud_reward_message.UNKNOWN)
       ::g_hud_event_manager.onHudEvent("InBattleReward", {
         messageCode = ::u.chooseRandomNoRepeat(::g_hud_reward_message.types, ignoreIdx).code
         warpoints = 10 * (::math.rnd() % 40)
@@ -35,7 +36,7 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
     eventNames = ["MissionResult", "MissionContinue"]
     genNewEvent = function() {
       ::g_hud_event_manager.onHudEvent(::u.chooseRandom(eventNames), {
-        resultNum = (::math.rnd() % 2) ? ::GO_FAIL : ::GO_WIN
+        resultNum = (::math.rnd() % 2) ? GO_FAIL : GO_WIN
       })
     }
   }
@@ -104,7 +105,7 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
       }
     ]
     genNewEvent = function() {
-      local hudEvent = ::u.chooseRandom(hudEventsList)
+      let hudEvent = ::u.chooseRandom(hudEventsList)
       local eventName = hudEvent.eventName
       if (::u.isArray(eventName))
         eventName = ::u.chooseRandom(eventName)
@@ -134,13 +135,13 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
     }
 
     genNewEvent = function() {
-      local drop = math.frnd()
-      local eventId = drop < 0.7 ? ::MISSION_CAPTURING_ZONE
+      let drop = math.frnd()
+      let eventId = drop < 0.7 ? ::MISSION_CAPTURING_ZONE
         : drop < 0.9 ? ::MISSION_CAPTURED_ZONE
         : ::MISSION_CAPTURING_STOP
 
-      local hudEventData = { eventId = eventId }
-      local data = hudEventsTbl[eventId]
+      let hudEventData = { eventId = eventId }
+      let data = hudEventsTbl[eventId]
       foreach(key, val in data)
         hudEventData[key] <- ::u.isFunction(val) ? val() : val
 
@@ -231,7 +232,7 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
     textsList = ["hints/event_start_time", "hints/event_can_join_ally", "hints/event_can_join_enemy", "hints/event_player_start_on"]
     genNewEvent = function()
     {
-      local eventData = {
+      let eventData = {
         participant = []
         timeSeconds = ::math.rnd() % 15 + 1
         locId = ::u.chooseRandom(textsList)
@@ -240,7 +241,7 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
         playerId = 0
       }
 
-      local pTotal = ::math.rnd() % 6 + 1
+      let pTotal = ::math.rnd() % 6 + 1
       for(local i = 0; i < pTotal; i++)
         eventData.participant.append({
           image = ::u.chooseRandom(iconsList)
@@ -248,7 +249,7 @@ enums.addTypesByGlobalName("g_dbg_hud_object_type", {
         })
 
       //override function get_mplayer_by_id to simulate colors for not exist players
-      local _get_mplayer_by_id = ::get_mplayer_by_id
+      let _get_mplayer_by_id = ::get_mplayer_by_id
       ::get_mplayer_by_id = @(id) {
         name = "somebodyName"
         clanTag = "<WWWWW>"

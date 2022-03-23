@@ -1,7 +1,7 @@
-local shortcuts = require("shortcuts.nut")
-local colors = require("reactiveGui/style/colors.nut")
+let shortcuts = require("shortcuts.nut")
+let colors = require("%rGui/style/colors.nut")
 
-local hintTags = {
+let hintTags = {
   shortcut = function(config, override){
     return shortcuts(config, override)
   }
@@ -20,7 +20,7 @@ local hintTags = {
   }
 }
 
-local getSlice = function(slice, override) {
+let getSlice = function(slice, override) {
   if("shortcut" in slice)
     return hintTags.shortcut(slice.shortcut, override)
   if("text" in slice)
@@ -29,7 +29,7 @@ local getSlice = function(slice, override) {
   return null
 }
 
-local getHintBySlices = function(slices, override) {
+let getHintBySlices = function(slices, override) {
   return {
     size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL

@@ -1998,6 +1998,13 @@
     ]
   },
   {
+    "sensors": {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_25.blk"
+      }
+    }
+  },
+  {
     "commonWeapons": [
       {
         "hideNodes": [
@@ -2615,10 +2622,10 @@
               {
                 "Weapon": [
                   {
-                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
                   },
                   {
-                    "iconType": "missile_air_to_air"
+                    "iconType": "missile_type_b_air_to_air"
                   },
                   {
                     "amountPerTier": 1.0
@@ -2966,13 +2973,6 @@
             "reqModification": "us_aim_9e"
           }
         ]
-      },
-      {
-        "preset": {
-          "name": "f_5a_rockets_aim_9",
-          "blk": "gameData/FlightModels/weaponPresets/f_5a_rockets_aim_9.blk",
-          "reqModification": "us_aim_9e"
-        }
       },
       {
         "preset": [
@@ -3853,67 +3853,6 @@
       "new_compressor_jet": {
         "tier": 1
       },
-      "q_5b": {
-        "turn_it_off": false,
-        "invertEnableLogic": false,
-        "tier": 1,
-        "group": "q_5b_group",
-        "effects": {
-          "commonWeapons": [
-            {
-              "hideNodes": [
-                {
-                  "node": "fuse_2"
-                },
-                {
-                  "node": "fuse_3"
-                }
-              ]
-            },
-            {
-              "hideDmParts": [
-                {
-                  "node": "armor1_dm"
-                },
-                {
-                  "node": "armor2_dm"
-                }
-              ]
-            },
-            {
-              "Weapon": {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM39A2.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 280,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM39A2.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 280,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              }
-            }
-          ],
-          "sensors": {
-            "sensor": {
-              "blk": "gameData/sensors/us_an_apr_25.blk"
-            }
-          }
-        }
-      },
       "q5_countermeasures_launcher_chaff_only": [],
       "q5_countermeasures_launcher_flare_only": [],
       "q5_countermeasures_launcher_chaff_priority": [],
@@ -3922,7 +3861,6 @@
         "turn_it_off": false,
         "invertEnableLogic": false,
         "tier": 2,
-        "reqModification": "q_5b",
         "group": "q_5b_group",
         "effects": {
           "commonWeapons": [

@@ -53,11 +53,13 @@ weaponryPreset {
         warning_icon{
           position:t='relative'
           size:t='@cIco, @cIco'
-          background-image:t='#ui/gameuiskin#new_icon'
+          background-image:t='#ui/gameuiskin#new_icon.svg'
+          background-svg-size:t='@cIco, @cIco'
           bgcolor:t='#FFFFFF'
         }
         <</hideWarningIcon>>
         textareaNoTab {
+          id:t='header_name_txt'
           width:t='pw<<^hideWarningIcon>>-1@cIco<</hideWarningIcon>>'
           position:t='relative'
           pos:t='0, 30@sf/@pf-0.5h'
@@ -68,6 +70,16 @@ weaponryPreset {
           <<#hideWarningIcon>>
           padding:t='1@blockInterval, 0'
           <</hideWarningIcon>>
+        }
+        EditBox{
+          id:t='header_name_edit'
+          size:t='pw, ph'
+          position:t='relative'
+          multiline:t='yes'
+          max-len:t='40'
+          text:t='<<nameTextWithPrice>>'
+          display:t='hide'
+          on_cancel_edit:t = 'onCancelPresetNameEdit'
         }
         img{
           id:t='image'

@@ -1,9 +1,9 @@
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
-local ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
-local SVG_EXT = ".svg"
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
+let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
+let SVG_EXT = ".svg"
 
-local controlsList = { //table for faster check existance
+let controlsList = { //table for faster check existance
   button_a = true
   button_a_pressed = true
   button_b = true
@@ -61,7 +61,7 @@ local controlsList = { //table for faster check existance
   touchpad_pressed = true
 }
 
-local btnNameByIndex = [
+let btnNameByIndex = [
   "dirpad_up"     //  0 JOY_XBOX_REAL_BTN_D_UP
   "dirpad_down"   //  1 JOY_XBOX_REAL_BTN_D_DOWN
   "dirpad_left"   //  2 JOY_XBOX_REAL_BTN_D_LEFT
@@ -92,18 +92,18 @@ local btnNameByIndex = [
   "r_stick_center" // 27 JOY_XBOX_REAL_BTN_R_THUMB_CENTER
 ]
 
-local mouseButtonTextures = [
+let mouseButtonTextures = [
   "mouse_left"
   "mouse_right"
   "mouse_center"
 ]
 
-local ps4TouchpadImagesByMouseIdx = [
+let ps4TouchpadImagesByMouseIdx = [
   "touchpad"
   "touchpad_pressed"
 ]
 
-local gamepadAxesImages = {
+let gamepadAxesImages = {
   [GAMEPAD_AXIS.NOT_AXIS] = "",
   [GAMEPAD_AXIS.LEFT_STICK_HORIZONTAL] = "l_stick_to_left_n_right",
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL] = "l_stick_to_up_n_down",
@@ -128,7 +128,7 @@ local gamepadAxesImages = {
   [GAMEPAD_AXIS.BOTH_TRIGGER_PS4 | AXIS_MODIFIERS.MAX] = "r_trigger",
 }
 
-local mouseAxesImages = {
+let mouseAxesImages = {
   [MOUSE_AXIS.NOT_AXIS] = "",
   [MOUSE_AXIS.HORIZONTAL_AXIS] = "mouse_move_l_r",
   [MOUSE_AXIS.VERTICAL_AXIS] = "mouse_move_up_down",
@@ -143,13 +143,13 @@ local mouseAxesImages = {
   [MOUSE_AXIS.VERTICAL_AXIS | AXIS_MODIFIERS.MAX] = "mouse_move_up",
 }
 
-local curPreset = isPlatformSony ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
+let curPreset = isPlatformSony ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
 
-local getTexture = @(id, preset = curPreset) (id in controlsList) ? preset + id + SVG_EXT : ""
-local getTextureByButtonIdx = @(idx) getTexture(btnNameByIndex?[idx])
+let getTexture = @(id, preset = curPreset) (id in controlsList) ? preset + id + SVG_EXT : ""
+let getTextureByButtonIdx = @(idx) getTexture(btnNameByIndex?[idx])
 
 local cssString = null
-local getCssString = function()
+let getCssString = function()
 {
   if (cssString)
     return cssString
@@ -160,9 +160,9 @@ local getCssString = function()
   return cssString
 }
 
-local getGamepadAxisTexture = @(axisVal, preset = curPreset) getTexture(gamepadAxesImages?[axisVal])
+let getGamepadAxisTexture = @(axisVal, preset = curPreset) getTexture(gamepadAxesImages?[axisVal])
 
-local getMouseTexture = function(idx, preset = curPreset)
+let getMouseTexture = function(idx, preset = curPreset)
 {
   if (preset == ICO_PRESET_PS4 && idx in ps4TouchpadImagesByMouseIdx)
     return preset + ps4TouchpadImagesByMouseIdx[idx] + SVG_EXT
@@ -173,7 +173,7 @@ local getMouseTexture = function(idx, preset = curPreset)
   return getTextureByButtonIdx(idx)
 }
 
-local getMouseAxisTexture = @(axisVal)
+let getMouseAxisTexture = @(axisVal)
   axisVal in mouseAxesImages ? "#ui/gameuiskin#"+mouseAxesImages[axisVal] : ""
 
 ::cross_call_api.getTextureName <- getTexture

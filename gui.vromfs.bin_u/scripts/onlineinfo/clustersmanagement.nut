@@ -1,24 +1,24 @@
-local { startLogout } = require("scripts/login/logout.nut")
-local { isDataBlock, eachParam } = require("std/datablock.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 local unstableClusters = null
 
-local function cacheUnstableClustersOnce() {
+let function cacheUnstableClustersOnce() {
   if (unstableClusters != null)
     return
   unstableClusters = []
-  local blk = ::get_network_block()?[::get_cur_circuit_name()].unstableClusters[::get_country_code()]
+  let blk = ::get_network_block()?[::get_cur_circuit_name()].unstableClusters[::get_country_code()]
   if (isDataBlock(blk))
     eachParam(blk, @(v, k) v ? unstableClusters.append(k) : null)
 }
 
-local function isClusterUnstable(clusterName)
+let function isClusterUnstable(clusterName)
 {
   cacheUnstableClustersOnce()
   return unstableClusters.contains(clusterName)
 }
 
-local mkCluster = @(name) {
+let mkCluster = @(name) {
   name
   isUnstable = isClusterUnstable(name)
 }
@@ -43,7 +43,7 @@ local mkCluster = @(name) {
     dagor.debug("[MM] clusters loaded")
     debugTableData(params)
 
-    local clusters = ::getTblValue("clusters", params)
+    let clusters = ::getTblValue("clusters", params)
     if (!::u.isArray(clusters))
       return false
 

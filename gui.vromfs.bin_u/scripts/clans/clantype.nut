@@ -1,12 +1,12 @@
-local enums = require("sqStdLibs/helpers/enums.nut")
+let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_clan_type <- {
   types = []
 }
 
 g_clan_type._getCreateCost <- function _getCreateCost()
 {
-  local blk = ::get_warpoints_blk()
-  local cost = ::Cost()
+  let blk = ::get_warpoints_blk()
+  let cost = ::Cost()
   cost.gold = blk?[::clan_get_gold_cost_param_name(code)] ?? 0
   cost.wp = blk?[::clan_get_wp_cost_param_name(code)] ?? 0
   return cost
@@ -14,8 +14,8 @@ g_clan_type._getCreateCost <- function _getCreateCost()
 
 g_clan_type._getPrimaryInfoChangeCost <- function _getPrimaryInfoChangeCost()
 {
-  local blk = ::get_warpoints_blk()
-  local cost = ::Cost()
+  let blk = ::get_warpoints_blk()
+  let cost = ::Cost()
   if (!::clan_get_admin_editor_mode())
   {
     cost.gold = blk?[::clan_get_primary_info_gold_cost_param_name(code)] ?? 0
@@ -26,8 +26,8 @@ g_clan_type._getPrimaryInfoChangeCost <- function _getPrimaryInfoChangeCost()
 
 g_clan_type._getSecondaryInfoChangeCost <- function _getSecondaryInfoChangeCost()
 {
-  local blk = ::get_warpoints_blk()
-  local cost = ::Cost()
+  let blk = ::get_warpoints_blk()
+  let cost = ::Cost()
   if (!::clan_get_admin_editor_mode())
   {
     cost.gold = blk?[::clan_get_secondary_info_gold_cost_param_name(code)] ?? 0
@@ -75,7 +75,7 @@ g_clan_type._isEnabled <- function _isEnabled()
 
 g_clan_type._getNextType <- function _getNextType()
 {
-  local nextType = ::g_clan_type.getTypeByCode(nextTypeCode)
+  let nextType = ::g_clan_type.getTypeByCode(nextTypeCode)
   if (nextType == ::g_clan_type.UNKNOWN || !::g_clan_type.isUpgradeAllowed(this, nextType))
     return ::g_clan_type.UNKNOWN
   return nextType
@@ -199,7 +199,7 @@ g_clan_type.getTypeByCode <- function getTypeByCode(code)
 
 g_clan_type.getTypeByName <- function getTypeByName(typeName)
 {
-  local code = ::string_to_clan_type(typeName)
+  let code = ::string_to_clan_type(typeName)
   return getTypeByCode(code)
 }
 
@@ -210,8 +210,8 @@ g_clan_type.isUpgradeAllowed <- function isUpgradeAllowed(oldType, newType)
 
 g_clan_type.getUpgradeCost <- function getUpgradeCost(oldType, newType)
 {
-  local blk = ::get_warpoints_blk()
-  local cost = ::Cost()
+  let blk = ::get_warpoints_blk()
+  let cost = ::Cost()
   if (!::clan_get_admin_editor_mode())
   {
     cost.gold = blk?[::clan_get_upgrade_gold_cost_param_name(oldType.code, newType.code)] ?? 0

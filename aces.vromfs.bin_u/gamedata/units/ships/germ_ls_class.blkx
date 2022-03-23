@@ -1862,9 +1862,6 @@
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 85.0,
-        "speedPitch": 85.0,
-        "bullets": 1200,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -1881,6 +1878,9 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
+        "speedYaw": 75.0,
+        "speedPitch": 65.0,
+        "bullets": 2000,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "main_caliber_turret_01",
@@ -1899,19 +1899,19 @@
           "lim5": [150.0,180.0,-10.0,80.0]
         },
         "gunStabilizer": {
-          "hasVerticalGunFreeMode": false,
+          "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
           "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 120.0,
+          "horizontalSpeedLimitKPH": 80.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 120.0,
+          "verticalSpeedLimitKPH": 80.0,
           "errorKPHToDegrees": [
             {
-              "row": [2.0,0.01]
+              "row": [5.0,0.01]
             },
             {
-              "row": [50.0,0.05]
+              "row": [70.0,0.05]
             }
           ]
         }
@@ -2724,8 +2724,8 @@
   },
   {
     "breaches": {
-      "repairSpeed": 20.0,
-      "waterMassVel": -14000.0,
+      "repairSpeed": 15.0,
+      "waterMassVel": -3500.0,
       "waterMassMult": 40.0,
       "sizeToRepair": [0.01,2.0,10.0,300.0],
       "additionalWaterDeathThreshold": 80000.0,
@@ -2736,7 +2736,7 @@
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.5
+      "sideCenterOfMassOffsetPercent": 0.35
     }
   },
   {
@@ -2802,7 +2802,7 @@
           "fireEvent": "ammo_fire_1",
           "explosionEvent": "ammo_explosion_1",
           "ammunition_storage_01_dm": {
-            "count": 1200
+            "count": 2000
           }
         }
       }

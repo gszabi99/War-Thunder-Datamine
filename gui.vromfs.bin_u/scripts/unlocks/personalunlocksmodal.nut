@@ -1,13 +1,13 @@
-local { getBattleTaskUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
-local { eachParam } = require("std/datablock.nut")
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { eachParam } = require("%sqstd/datablock.nut")
+let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "personal_unlocks_collapsed_chapters"
 
 local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
-  sceneBlkName = "gui/unlocks/personalUnlocksModal.blk"
-  unlocksItemTpl = "gui/unlocks/battleTasksItem"
+  sceneBlkName = "%gui/unlocks/personalUnlocksModal.blk"
+  unlocksItemTpl = "%gui/unlocks/battleTasksItem"
 
   unlocksArray = null
   unlocksConfigByChapter = null
@@ -40,8 +40,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     unlocksArray = getBattleTaskUnlocks()
     unlocksConfigByChapter = {}
     foreach (unlock in unlocksArray) {
-      local chapter = unlock?.chapter
-      local group = unlock?.group
+      let chapter = unlock?.chapter
+      let group = unlock?.group
       if (chapter == null || group == null)
         continue
 
@@ -70,7 +70,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function fillChapterList() {
-    local view = { items = [] }
+    let view = { items = [] }
     local curChapterIdx = -1
     collapsibleChaptersIdx = {}
     local idx = 0
@@ -86,8 +86,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
 
       foreach (group in chapters) {
         idx++
-        local isUnlockedGroup = group.unlocks.len() > 0
-        local groupId = group.id
+        let isUnlockedGroup = group.unlocks.len() > 0
+        let groupId = group.id
         curChapterIdx = ((curChapterId == -1 && isUnlockedGroup) ||  curChapterId == groupId)
           ? view.items.len()
           : curChapterIdx
@@ -95,11 +95,11 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
           itemTag = isUnlockedGroup ? "mission_item_unlocked" : "mission_item_locked"
           id = groupId
           itemText = group.name
-          itemIcon = isUnlockedGroup ? "" : "#ui/gameuiskin#locked"
+          itemIcon = isUnlockedGroup ? "" : "#ui/gameuiskin#locked.svg"
         })
       }
     }
-    local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
+    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(chaptersObj, data, data.len(), this)
 
     eachParam(getCollapsedChapters(), @(_, chapterId) collapseChapter(chapterId), this)
@@ -116,7 +116,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   function fillUnlocksList() {
     local currentChapterConfig = unlocksConfigByChapter?[curChapterId]
     if (currentChapterConfig == null) {
-      local chapterId = curChapterId
+      let chapterId = curChapterId
       foreach (chapter in unlocksConfigByChapter) {
         currentChapterConfig = chapter.findvalue(@(g) g.id == chapterId)
         if (currentChapterConfig != null)
@@ -124,25 +124,25 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
       }
     }
 
-    local unlocks = currentChapterConfig?.unlocks ?? []
-    local needShowUnlocksList = unlocks.len() > 0
-    local needShowChapterDescr = !needShowUnlocksList && currentChapterConfig?.name != null
+    let unlocks = currentChapterConfig?.unlocks ?? []
+    let needShowUnlocksList = unlocks.len() > 0
+    let needShowChapterDescr = !needShowUnlocksList && currentChapterConfig?.name != null
     unlocksObj.show(needShowUnlocksList)
-    local capterDescrObj = showSceneBtn("chapter_descr", needShowChapterDescr)
+    let capterDescrObj = showSceneBtn("chapter_descr", needShowChapterDescr)
     if (needShowChapterDescr) {
       capterDescrObj.findObject("descr_name").setValue(currentChapterConfig?.name ?? "")
       capterDescrObj.findObject("descr_img")["background-image"] = currentChapterConfig?.image ?? ""
       return
     }
 
-    local view = { items = unlocks.map(
+    let view = { items = unlocks.map(
       @(config) ::g_battle_tasks.generateItemView(config))
     }
-    local data = ::handyman.renderCached(unlocksItemTpl, view)
+    let data = ::handyman.renderCached(unlocksItemTpl, view)
     guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
 
-    local unlockId = curUnlockId
-    local curUnlockIdx = unlocks.findindex(@(unlock) unlock.id == unlockId) ?? 0
+    let unlockId = curUnlockId
+    let curUnlockIdx = unlocks.findindex(@(unlock) unlock.id == unlockId) ?? 0
     isFillingUnlocksList = true
     unlocksObj.setValue(curUnlockIdx)
     isFillingUnlocksList = false
@@ -174,9 +174,9 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    local canShow = !::show_console_buttons || chaptersObj.isHovered()
-    local isHeader = canShow && unlocksConfigByChapter?[curChapterId] != null
-    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
+    let canShow = !::show_console_buttons || chaptersObj.isHovered()
+    let isHeader = canShow && unlocksConfigByChapter?[curChapterId] != null
+    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
     if (isHeader)
       collapsedButtonObj.setValue(
         ::loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))
@@ -195,18 +195,18 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function collapseChapter(chapterId) {
-    local chapterObj = chaptersObj.findObject(chapterId)
+    let chapterObj = chaptersObj.findObject(chapterId)
     if (!chapterObj)
       return
-    local isCollapsed = chapterObj.collapsed == "yes"
-    local chapterGroups = unlocksConfigByChapter?[chapterId]
+    let isCollapsed = chapterObj.collapsed == "yes"
+    let chapterGroups = unlocksConfigByChapter?[chapterId]
     if(chapterGroups == null)
       return
 
     local isHiddenGroupSelected = false
     foreach (group in chapterGroups)
     {
-      local groupObj = chaptersObj.findObject(group.id)
+      let groupObj = chaptersObj.findObject(group.id)
       if(!::check_obj(groupObj))
         continue
 

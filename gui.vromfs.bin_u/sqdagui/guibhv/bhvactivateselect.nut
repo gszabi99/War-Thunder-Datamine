@@ -1,4 +1,4 @@
-class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
+gui_bhv.ActivateSelect <- class extends gui_bhv.posNavigator
 {
   bhvId = "ActivateSelect"
   valuePID = ::dagui_propid.add_name_id("value")  //values by bits   chosen:yes;
@@ -27,16 +27,16 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
 
   function chooseItemImpl(obj, idx, needSound = true, needActivateChoosenItem = true)
   {
-    local idxObj = getChildObj(obj, idx)
+    let idxObj = getChildObj(obj, idx)
     if (!idxObj)
       return false
 
     local needNotify = false
-    local prevIdx = getValue(obj)
+    let prevIdx = getValue(obj)
     if (prevIdx!=idx)
     {
       needNotify = true
-      local prevObj = getChildObj(obj, prevIdx)
+      let prevObj = getChildObj(obj, prevIdx)
       if (prevObj)
         prevObj["chosen"] = "no"
     }
@@ -57,7 +57,7 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    local value = getHoveredChild(obj).hoveredIdx ?? -1
+    let value = getHoveredChild(obj).hoveredIdx ?? -1
     if (is_down) {
       if (value < 0)
         return ::RETCODE_NOTHING
@@ -66,10 +66,10 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
       return ::RETCODE_HALT
     }
 
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
+    let wasHoldStarted = onActivateUnpushed(obj)
     if ((!wasHoldStarted || needActionAfterHold(obj)) && pushedIdx == value)
       chooseItem(obj, value)
     return ::RETCODE_HALT

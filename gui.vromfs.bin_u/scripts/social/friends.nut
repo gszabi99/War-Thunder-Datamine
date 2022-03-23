@@ -1,4 +1,4 @@
-local editContactsList = require("scripts/contacts/editContacts.nut")
+let editContactsList = require("%scripts/contacts/editContacts.nut")
 
 ::no_dump_facebook_friends <- {}
 
@@ -6,11 +6,11 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
 
 ::addSocialFriends <- function addSocialFriends(blk, groupName, silent = false)
 {
-  local players = []
+  let players = []
 
   foreach(userId, info in blk)
   {
-    local contact = ::getContact(userId, info.nick)
+    let contact = ::getContact(userId, info.nick)
     if (contact)
       players.append(contact)
   }
@@ -41,11 +41,11 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
     return
   }
 
-  local inBlk = ::DataBlock()
+  let inBlk = ::DataBlock()
   foreach(id, block in ::no_dump_facebook_friends)
     inBlk.id <- id.tostring()
 
-  local taskId = ::facebook_find_friends(inBlk, ::EPL_MAX_PLAYERS_IN_LIST)
+  let taskId = ::facebook_find_friends(inBlk, ::EPL_MAX_PLAYERS_IN_LIST)
   if(taskId < 0)
   {
     ::on_facebook_destroy_waitbox()
@@ -53,7 +53,7 @@ local editContactsList = require("scripts/contacts/editContacts.nut")
   }
   else
     ::add_bg_task_cb(taskId, function(){
-        local resultBlk = ::facebook_find_friends_result()
+        let resultBlk = ::facebook_find_friends_result()
         ::addSocialFriends(resultBlk, ::EPL_FACEBOOK)
         ::addContactGroup(::EPL_FACEBOOK)
       })

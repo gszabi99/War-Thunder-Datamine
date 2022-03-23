@@ -1,7 +1,7 @@
-local { getRollIndicator = @() null, getIsVisibleRollIndicator = @() ::Watched(false) } = require("hudTankStates")
-local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { getRollIndicator = @() null, getIsVisibleRollIndicator = @() ::Watched(false) } = require("hudTankStates")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
-local iconedHintsConfig = [{
+let iconedHintsConfig = [{
   id = "roll_indicator"
   hintIcons = [{
     id = "roll_indicator"
@@ -20,7 +20,7 @@ local iconedHintsConfig = [{
   {
     watch = getRollIndicator()
     updateFunc = function(obj, value) {
-      local { isCritical = false, rollAngle = 0 } = value
+      let { isCritical = false, rollAngle = 0 } = value
       obj.overlayTextColor = isCritical ? "bad" : "active"
       obj.findObject("hint_text").setValue(::abs(rollAngle).tostring())
       obj.findObject("roll_indicator").rotation = rollAngle
@@ -28,12 +28,12 @@ local iconedHintsConfig = [{
   }]
 }]
 
-local function initIconedHints(scene, esUnitType) {
-  local hintsObj = scene.findObject("iconed_hints")
+let function initIconedHints(scene, esUnitType) {
+  let hintsObj = scene.findObject("iconed_hints")
   if (!hintsObj?.isValid())
     return
 
-  local blk = ::handyman.renderCached("gui/hud/iconedHints", {
+  let blk = ::handyman.renderCached("%gui/hud/iconedHints", {
     iconedHints = iconedHintsConfig.filter(@(v) v.esUnitType == esUnitType)
       .map(@(v) {
         hintValue = stashBhvValueConfig(v.updateConfigs)

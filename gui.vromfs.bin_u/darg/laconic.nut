@@ -6,7 +6,7 @@ laconic framework
 make layout less nested and allow short way to setup properties (like flow, flex, and so on)
 
 compare
-local foo = {
+let foo = {
   flow = FLOW_VERTICAL
   children = [
     {rendObj = ...}
@@ -18,24 +18,24 @@ local foo = {
   ]
 }
 and
-local foo = comp(
+let foo = comp(
   FlowV,
   {rendObj = ...},
   {...}
   comp(FlowV, child1, child2)
 )
 or
-local foo = comp(Style({flow = FLOW_HORIZONTAL}, child1, child2))
+let foo = comp(Style({flow = FLOW_HORIZONTAL}, child1, child2))
 
 todo:
   correct combine watch and behaviors (do not override)
 */
 
-local Style = class { //to be able distinguish style elements from components
+let Style = class { //to be able distinguish style elements from components
   value = null
   constructor(...) {
     //I do not know the way to return instance of the same class if it is passed here
-    local val = {}
+    let val = {}
     foreach(v in vargv){
       if (typeof v == "instance" && "value" in v) { //to create Style from Styles
         val.__update(v.value)
@@ -49,10 +49,10 @@ local Style = class { //to be able distinguish style elements from components
   }
 }
 
-local extendable = ["watch", "behavior"]
-local toArray = @(v) typeof(v) == "array" ? v : [v]
+let extendable = ["watch", "behavior"]
+let toArray = @(v) typeof(v) == "array" ? v : [v]
 
-local function comp(...) {
+let function comp(...) {
   local [styles, children] = partition(flatten(vargv), @(v) v instanceof Style)
   local ret = styles.reduce(function(a,b) {
     foreach (k, v in b.value){
@@ -94,25 +94,25 @@ local function comp(...) {
   return ("watch" in ret) ? @() ret : ret
 }
 
-local FlowV = Style({flow = FLOW_VERTICAL})
-local FlowH = Style({flow = FLOW_HORIZONTAL})
-local Flex = @(p=null) Style({size = p!=null ? flex(p) : flex()})
-local vflow = @(...) comp(FlowV, vargv)
-local hflow = @(...) comp(FlowH, vargv)
-local Text = Style({rendObj = ROBJ_DTEXT})
-local Image = Style({rendObj = ROBJ_IMAGE})
-local Gap = @(gap) Style({gap})
-local FillColr = @(...) Style({fillColor = Color.acall([null].extend(vargv))})
-local BorderColr = @(...) Style({borderColor = Color.acall([null].extend(vargv))})
-local BorderWidth = @(...) Style({borderWidth = vargv})
-local BorderRadius = @(...) Style({borderRadius = vargv})
-local ClipChildren = Style({clipChildren = true})
-local Bhv = @(...) Style({behaviors = flatten(vargv)})
-local Watch = @(...) Style({watch = flatten(vargv)})
-local OnClick = @(func) Style({onClick = func})
-local Button = Style({behavior = Behaviors.Button})
+let FlowV = Style({flow = FLOW_VERTICAL})
+let FlowH = Style({flow = FLOW_HORIZONTAL})
+let Flex = @(p=null) Style({size = p!=null ? flex(p) : flex()})
+let vflow = @(...) comp(FlowV, vargv)
+let hflow = @(...) comp(FlowH, vargv)
+let Text = Style({rendObj = ROBJ_DTEXT})
+let Image = Style({rendObj = ROBJ_IMAGE})
+let Gap = @(gap) Style({gap})
+let FillColr = @(...) Style({fillColor = Color.acall([null].extend(vargv))})
+let BorderColr = @(...) Style({borderColor = Color.acall([null].extend(vargv))})
+let BorderWidth = @(...) Style({borderWidth = vargv})
+let BorderRadius = @(...) Style({borderRadius = vargv})
+let ClipChildren = Style({clipChildren = true})
+let Bhv = @(...) Style({behaviors = flatten(vargv)})
+let Watch = @(...) Style({watch = flatten(vargv)})
+let OnClick = @(func) Style({onClick = func})
+let Button = Style({behavior = Behaviors.Button})
 
-local function Size(...) {
+let function Size(...) {
   assert(vargv.len()<3)
   local size = vargv
   if (size.len()==1 && typeof size?[0] != "array")
@@ -122,13 +122,13 @@ local function Size(...) {
   return Style({size})
 }
 
-local Padding = @(...) Style({padding = vargv.len() > 1 ? vargv : vargv[0]})
-local Margin = @(...) Style({margin = vargv.len() > 1 ? vargv : vargv[0]})
-local Pos = @(...) Style({pos=vargv})
-local YOfs = @(y) Style({pos=[0,y]})
-local XOfs = @(x) Style({pos=[0,x]})
+let Padding = @(...) Style({padding = vargv.len() > 1 ? vargv : vargv[0]})
+let Margin = @(...) Style({margin = vargv.len() > 1 ? vargv : vargv[0]})
+let Pos = @(...) Style({pos=vargv})
+let YOfs = @(y) Style({pos=[0,y]})
+let XOfs = @(x) Style({pos=[0,x]})
 
-local function updateWithStyle(obj, style){
+let function updateWithStyle(obj, style){
   if (typeof style == "table"){
     foreach (k in style)
       assert(k not in obj)
@@ -145,34 +145,34 @@ local function updateWithStyle(obj, style){
     return obj
 }
 
-local function txt(text, style = null) {
-  local obj = (typeof text == "table")
+let function txt(text, style = null) {
+  let obj = (typeof text == "table")
     ? text.__merge({rendObj = ROBJ_DTEXT})
     : {rendObj = ROBJ_DTEXT text}
   return updateWithStyle(obj, style)
 }
 
-local function img(image, style = null) {
-  local obj = (typeof image == "table") ? image.__merge({rendObj = ROBJ_IMAGE}) : {rendObj = ROBJ_IMAGE image}
+let function img(image, style = null) {
+  let obj = (typeof image == "table") ? image.__merge({rendObj = ROBJ_IMAGE}) : {rendObj = ROBJ_IMAGE image}
   return updateWithStyle(obj, style)
 }
 
-local RendObj = @(rendObj) Style({rendObj})
-local Colr = @(...) Style({color=Color.acall([null].extend(vargv))})
+let RendObj = @(rendObj) Style({rendObj})
+let Colr = @(...) Style({color=Color.acall([null].extend(vargv))})
 
-local HALeft = Style({halign = ALIGN_LEFT})
-local HARight = Style({halign = ALIGN_RIGHT})
-local HACenter = Style({halign = ALIGN_CENTER})
-local VATop = Style({valign = ALIGN_TOP})
-local VABottom = Style({valign = ALIGN_BOTTOM})
-local VACenter = Style({valign = ALIGN_CENTER})
+let HALeft = Style({halign = ALIGN_LEFT})
+let HARight = Style({halign = ALIGN_RIGHT})
+let HACenter = Style({halign = ALIGN_CENTER})
+let VATop = Style({valign = ALIGN_TOP})
+let VABottom = Style({valign = ALIGN_BOTTOM})
+let VACenter = Style({valign = ALIGN_CENTER})
 
-local Left = Style({hplace = ALIGN_LEFT})
-local Right = Style({hplace = ALIGN_RIGHT})
-local HCenter = Style({hplace = ALIGN_CENTER})
-local Top = Style({vplace = ALIGN_TOP})
-local Bottom = Style({vplace = ALIGN_BOTTOM})
-local VCenter = Style({vplace = ALIGN_CENTER})
+let Left = Style({hplace = ALIGN_LEFT})
+let Right = Style({hplace = ALIGN_RIGHT})
+let HCenter = Style({hplace = ALIGN_CENTER})
+let Top = Style({vplace = ALIGN_TOP})
+let Bottom = Style({vplace = ALIGN_BOTTOM})
+let VCenter = Style({vplace = ALIGN_CENTER})
 
 return {
   Style

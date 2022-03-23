@@ -14,5 +14,5 @@ activateSelect {
 
   coloredTexts:t='yes'
 
-  include "gui/commonParts/shopFilter"
+  include "%gui/commonParts/shopFilter"
 }

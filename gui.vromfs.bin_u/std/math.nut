@@ -1,23 +1,23 @@
-local math = require("math")
+let math = require("math")
 
 const GOLDEN_RATIO = 1.618034
 
-local function minByAbs(a, b) { return (math.fabs(a) < math.fabs(b))? a : b }
-local function maxByAbs(a, b) { return (math.fabs(a) > math.fabs(b))? a : b }
+let function minByAbs(a, b) { return (math.fabs(a) < math.fabs(b))? a : b }
+let function maxByAbs(a, b) { return (math.fabs(a) > math.fabs(b))? a : b }
 
 //round @value to valueble @digits amount
 // roundToDigits(1.23, 2) = 1.2
 // roundToDigits(123, 2) = 120
-local function roundToDigits(value, digits) {
+let function roundToDigits(value, digits) {
   if (value==0) return value
-  local log = math.log10(math.fabs(value))
-  local mul = math.pow(10, math.floor(log)-digits+1)
+  let log = math.log10(math.fabs(value))
+  let mul = math.pow(10, math.floor(log)-digits+1)
   return mul*math.floor(0.5+value.tofloat()/mul)
 }
 
 //round @value by @roundValue
 //round_by_value(1.56, 0.1) = 1.6
-local function round_by_value(value, roundValue) {
+let function round_by_value(value, roundValue) {
   return math.floor(value.tofloat() / roundValue + 0.5) * roundValue
 }
 
@@ -29,15 +29,15 @@ local function number_of_set_bits(i) {
 }
 
 
-local function is_bit_set(bitMask, bitIdx) {
+let function is_bit_set(bitMask, bitIdx) {
   return (bitMask & 1 << bitIdx) > 0
 }
 
-local function change_bit(bitMask, bitIdx, value) {
+let function change_bit(bitMask, bitIdx, value) {
   return (bitMask & ~(1 << bitIdx)) | (value? (1 << bitIdx) : 0)
 }
 
-local function change_bit_mask(bitMask, bitMaskToSet, value) {
+let function change_bit_mask(bitMask, bitMaskToSet, value) {
   return (bitMask & ~bitMaskToSet) | (value? bitMaskToSet : 0)
 }
 
@@ -46,19 +46,28 @@ local function change_bit_mask(bitMask, bitMaskToSet, value) {
 * f(valueMin) = resMin
 * f(valueMax) = resMax
 */
-local function lerp(valueMin, valueMax, resMin, resMax, value) {
+let function lerp(valueMin, valueMax, resMin, resMax, value) {
   if (valueMin == valueMax)
     return 0.5 * (resMin + resMax)
   return resMin + (resMax - resMin) * (value - valueMin) / (valueMax - valueMin)
 }
+
+/**
+* Linear interpolation of f(value) where:
+* f(valueMin) = resMin
+* f(valueMax) = resMax
+* but result is clamped by min/max values
+*/
+let lerpClamped = @(valueMin, valueMax, resMin, resMax, value)
+  lerp(valueMin, valueMax, resMin, resMax, clamp(value, valueMin, valueMax))
 
 /*
 * return columns amount for the table with <total> same size items
 * with a closer table size to golden ratio
 * <widthToHeight> is a item size ratio (width / height)
 */
-local function calc_golden_ratio_columns(total, widthToHeight = 1.0) {
-  local rows = (math.sqrt(total.tofloat() / GOLDEN_RATIO * widthToHeight) + 0.5).tointeger() || 1
+let function calc_golden_ratio_columns(total, widthToHeight = 1.0) {
+  let rows = (math.sqrt(total.tofloat() / GOLDEN_RATIO * widthToHeight) + 0.5).tointeger() || 1
   return math.ceil(total.tofloat() / rows).tointeger()
 }
 local function color2uint(r,g=0,b=0,a=255){
@@ -71,16 +80,16 @@ local function color2uint(r,g=0,b=0,a=255){
   return clamp(r+g*256+b*65536+a*16777216, 0, 4294967295)
 }
 
-local romanNumeralLookup = [
+let romanNumeralLookup = [
   "","I","II","III","IV","V","VI","VII","VIII","IX",
   "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
   "","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"
 ]
-local maxRomanDigit = 3
+let maxRomanDigit = 3
 
 //Function from http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
 local function getRomanNumeral(num) {
-  local t = typeof num
+  let t = typeof num
   if ((t != "integer" && t != "float") || num < 0)
     return ""
 
@@ -88,14 +97,14 @@ local function getRomanNumeral(num) {
   if (num >= 4000)
     return num.tostring()
 
-  local thousands = []
+  let thousands = []
   for (local n = 0; n < num / 1000; n++)
     thousands.append("M")
 
-  local roman = []
+  let roman = []
   local i = -1
   while (num > 0 && i++ < maxRomanDigit) {
-    local digit = num % 10
+    let digit = num % 10
     num = num / 10
     roman.insert(0, romanNumeralLookup?[digit + (i * 10)])
   }
@@ -103,7 +112,7 @@ local function getRomanNumeral(num) {
 }
 
 //EXPORT content for require
-local export = math.__merge({
+let export = math.__merge({
   GOLDEN_RATIO
   minByAbs
   maxByAbs
@@ -114,6 +123,7 @@ local export = math.__merge({
   change_bit
   change_bit_mask
   lerp
+  lerpClamped
   calc_golden_ratio_columns
   color2uint
   getRomanNumeral

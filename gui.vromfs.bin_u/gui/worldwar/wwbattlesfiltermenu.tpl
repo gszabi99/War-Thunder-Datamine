@@ -16,7 +16,7 @@ popup_menu {
       text:t='<<title>>'
     }
     options_nest {
-      include "gui/commonParts/multiSelect"
+      include "%gui/commonParts/multiSelect"
     }
   }
   <</rows>>
