@@ -247,9 +247,14 @@ local ItemExternal = class extends ::BaseItem
     return true
   }
 
-  isCanBuy = @() canBuy && checkPurchaseFeature()
-    && ::has_feature(itemDef?.tags.purchaseForGoldFeature ?? "PurchaseMarketItemsForGold")
-    && !inventoryClient.getItemCost(id).isZero()
+ function isCanBuy()
+ {
+    let inventoryItemCost = inventoryClient.getItemCost(id)
+    if(!canBuy || !checkPurchaseFeature() || inventoryItemCost.isZero())
+      return false
+
+  return inventoryItemCost.gold == 0 || ::has_feature(itemDef?.tags.purchaseForGoldFeature ?? "PurchaseMarketItemsForGold")
+  }
 
   function getCost(ignoreCanBuy = false)
   {
@@ -827,11 +832,12 @@ local ItemExternal = class extends ::BaseItem
       ::g_popups.add(null, ::loc("items/msg/waitPreviousGoldTransaction"), null, null, null, "waitPrevGoldTrans")
       return true
     }
-
+    let cost = getCost()
     let blk = ::DataBlock()
     blk.key = ::inventory_generate_key()
     blk.itemDefId = id
-    blk.goldCost = getCost().gold
+    blk.goldCost = cost.gold
+    blk.wpCost = cost.wp
     // other fields of blk: wpCost, amount
 
     let onSuccess = function() {

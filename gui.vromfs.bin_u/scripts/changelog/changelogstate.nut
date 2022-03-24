@@ -11,7 +11,7 @@ let { get_time_msec } = require("dagor.time")
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
 const SAVE_SEEN_ID = "changelog/lastSeenVersionInfoNum"
-const SAVE_LOADED_ID = "changelog/lastLoadedVersionInfoNum"
+const SAVE_LOADED_ID = "changelog/lastLoadedVersionNum"
 const BASE_URL = "https://warthunder.com/"
 const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
@@ -258,9 +258,8 @@ let function openChangelog() {
   if(haveNewVersions.value)
   {
     curr = versions.value[0]
-    let loadedVersionInfoNum = versionToInt(curr.tVersion)
-    ::save_local_account_settings(SAVE_LOADED_ID, loadedVersionInfoNum)
-    lastLoadedVersionInfoNum(loadedVersionInfoNum)
+    ::save_local_account_settings(SAVE_LOADED_ID, curr.iVersion)
+    lastLoadedVersionInfoNum(curr.iVersion)
   }
   choosePatchnote(curr)
   emptySceneWithDarg({ widgetId = DargWidgets.CHANGE_LOG })

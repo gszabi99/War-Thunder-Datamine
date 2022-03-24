@@ -1,5 +1,6 @@
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
-let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
+let progressMsg = require("sqDagui/framework/progressMsg.nut")
+let contentSignKeys = require("scripts/inventory/inventoryContentSign.nut")
+let mkWatched = require("globalScripts/mkWatched.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -15,6 +16,7 @@ enum validationCheckBitMask {
 
 const INVENTORY_PROGRESS_MSG_ID = "INVENTORY_REQUEST"
 const WAR_THUNDER_EAGLES = "WTE"
+const WAR_THUNDER_WARPOINTS = "WTS"
 
 let function getPremultipliedAlphaIcon(icon) {
   if (icon == "" || icon.slice(0,1) == "!")
@@ -43,11 +45,30 @@ let requestInternal = function(requestData, data, callback, progressBoxData = nu
 }
 
 let getErrorId = @(result) result.error.split(":")[0]
+let priceEagles = mkWatched(persist, "priceEagles", {})
+let priceWarPoint = mkWatched(persist, "priceWarPoint", {})
+let prices = ::Computed(function(){
+  let res = clone priceWarPoint.value
+
+  foreach(key, value in priceEagles.value){
+    if(key in res){
+      res[key] = res[key] + value
+    }else{
+      res[key] <- value
+    }
+  }
+  return res
+})
+
+let function notifyPricesChanged()
+{
+  ::broadcastEvent("ExtPricesChanged")
+}
+prices.subscribe(@(_) notifyPricesChanged())
 
 local InventoryClient = class {
   items = {}
   itemdefs = {}
-  prices = {}
 
   REQUEST_TIMEOUT_MSEC = 15000
   lastUpdateTime = -1
@@ -483,7 +504,7 @@ local InventoryClient = class {
 
   getItems             = @() items
   getItemdefs          = @() itemdefs
-  getItemCost          = @(itemdefid) prices?[itemdefid] ?? ::zero_money
+  getItemCost          = @(itemdefid) prices.value?[itemdefid] ?? ::zero_money
 
   function addItemDefIdToRequest(itemdefid)
   {
@@ -707,47 +728,50 @@ local InventoryClient = class {
     }, true)
   }
 
+  function updatePrice(watch, result, typeOfPrice) {
+    let itemPrices = result?.response?.itemPrices
+    if (!::u.isArray(itemPrices))
+    {
+      notifyPricesChanged()
+      return
+    }
+    let res = {}
+    local shouldRequestItemdefs = false
+    foreach(data in itemPrices)
+    {
+      let itemdefid = data?.itemdefid
+      if (itemdefid == null)
+        continue
+      res[itemdefid] <- typeOfPrice == WAR_THUNDER_EAGLES ? ::Cost(0, data?.price) : ::Cost(data?.price, 0)
+      shouldRequestItemdefs = addItemDefIdToRequest(itemdefid) || shouldRequestItemdefs
+    }
+    watch(res)
+
+    if (shouldRequestItemdefs)
+      requestItemDefs(notifyPricesChanged)
+  }
+
   function requestPrices()
   {
     request("GetItemPrices",
       { currency = WAR_THUNDER_EAGLES },
       null,
-      function(result) {
-        let itemPrices = result?.response?.itemPrices
-        if (!::u.isArray(itemPrices))
-        {
-          notifyPricesChanged()
-          return
-        }
+      @(result) updatePrice(priceEagles, result, WAR_THUNDER_EAGLES)
+    )
 
-        prices.clear()
-        local shouldRequestItemdefs = false
-        foreach(data in itemPrices)
-        {
-          let itemdefid = data?.itemdefid
-          if (itemdefid == null)
-            continue
-          prices[itemdefid] <- ::Cost(0, data?.price)
-          shouldRequestItemdefs = addItemDefIdToRequest(itemdefid) || shouldRequestItemdefs
-        }
-
-        if (shouldRequestItemdefs)
-          requestItemDefs(notifyPricesChanged)
-        else
-          notifyPricesChanged()
-      })
-  }
-
-  function notifyPricesChanged()
-  {
-    ::broadcastEvent("ExtPricesChanged")
+    request("GetItemPrices",
+      { currency = WAR_THUNDER_WARPOINTS },
+      null,
+      @(result) updatePrice(priceWarPoint, result, WAR_THUNDER_WARPOINTS)
+    )
   }
 
   function onEventSignOut(p)
   {
     lastUpdateTime = -1
     firstProfileLoadComplete = false
-    prices.clear()
+    priceEagles.value.clear()
+    priceWarPoint.value.clear()
     items.clear()
   }
 

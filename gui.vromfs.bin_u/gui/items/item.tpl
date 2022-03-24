@@ -176,28 +176,6 @@ itemDiv {
     }
     <</unseenIcon>>
 
-    itemTimerPlace{
-      id:t='timePlace'
-      css-hier-invalidate:t='yes'
-
-      <<#craftTime>>
-      textareaNoTab {
-        id:t='craft_time'
-        shadeStyle:t='textOnIcon'
-        text:t='<<craftTime>>'
-        overlayTextColor:t='goodTextColor'
-      }
-      <</craftTime>>
-
-      <<#expireTime>>
-      textareaNoTab {
-        id:t='expire_time'
-        shadeStyle:t='textOnIcon'
-        text:t='<<expireTime>>'
-        overlayTextColor:t='disabled'
-      }
-      <</expireTime>>
-    }
     <<#amount>>
     itemAmountText {
       text:t='<<amount>>'
@@ -235,57 +213,88 @@ itemDiv {
       <</alarmIcon>>
     }
 
-    <<^isAllBought>>
-    <<#price>>
     tdiv {
-      id:t='price'
       position:t='absolute'
-      left:t='-1@itemPadding'
-      top:t='ph -0.5@dIco -1@dp +1@itemPadding -h/2'
-      width:t='pw + 2@itemPadding'
-      height:t='1@dIco'
-      <<#needPriceFadeBG>>
-        background-color:t='@shadeBackgroundColor2'
-      <</needPriceFadeBG>>
+      pos:t='0, ph-h'
+      width:t='pw'
+      flow:t='vertical';
 
-      tdiv {
+      itemTimerPlace {
+        id:t='timePlace'
+        css-hier-invalidate:t='yes'
         position:t='relative'
-        pos:t='pw-w -2@itemPadding, 50%ph-50%h'
-        flow:t='vertical'
+        pos:t='pw-w, 0'
+
+        <<#craftTime>>
+        textareaNoTab {
+          id:t='craft_time'
+          position:t='relative'
+          shadeStyle:t='textOnIcon'
+          left:t='pw-w'
+          text:t='<<craftTime>>'
+          overlayTextColor:t='goodTextColor'
+        }
+        <</craftTime>>
+
+        <<#expireTime>>
+        textareaNoTab {
+          id:t='expire_time'
+          position:t='relative'
+          shadeStyle:t='textOnIcon'
+          left:t='pw-w'
+          text:t='<<expireTime>>'
+          overlayTextColor:t='disabled'
+        }
+        <</expireTime>>
 
         <<#remainingLifetime>>
         textareaNoTab {
           id:t='remaining_lifetime'
           position:t='relative'
-          pos:t='pw-w, -6@dp'
           shadeStyle:t='textOnIcon'
+          left:t='pw-w'
           text:t='<<remainingLifetime>>'
           overlayTextColor:t='disabled'
         }
         <</remainingLifetime>>
+      }
+
+      <<^isAllBought>>
+      <<#price>>
+      tdiv {
+        id:t='price'
+        size:t='pw, 0'
+        <<#needPriceFadeBG>>
+          background-color:t='@shadeBackgroundColor2'
+        <</needPriceFadeBG>>
 
         tdiv {
-          pos:t='pw-w, 0'
           position:t='relative'
+          pos:t='pw-w, 0'
+          flow:t='vertical'
+          tdiv {
+            pos:t='pw-w, 0'
+            position:t='relative'
 
-          <<#havePsPlusDiscount>>
-          cardImg {
-            type:t='small'
-            background-image:t='#ui/gameuiskin#ps_plus.svg'
-            margin-right:t='0.005@scrn_tgt'
-          }
-          <</havePsPlusDiscount>>
+            <<#havePsPlusDiscount>>
+            cardImg {
+              type:t='small'
+              background-image:t='#ui/gameuiskin#ps_plus.svg'
+              margin-right:t='0.005@scrn_tgt'
+            }
+            <</havePsPlusDiscount>>
 
-          textareaNoTab {
-            id:t='price'
-            shadeStyle:t='textOnIcon'
-            text:t='<<price>>'
+            textareaNoTab {
+              id:t='price'
+              shadeStyle:t='textOnIcon'
+              text:t='<<price>>'
+            }
           }
         }
       }
+      <</price>>
+      <</isAllBought>>
     }
-    <</price>>
-    <</isAllBought>>
 
     <<#needAllBoughtIcon>>
     img{

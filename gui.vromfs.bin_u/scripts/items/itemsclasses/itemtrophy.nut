@@ -140,6 +140,11 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     let t = getRemainingLifetime()
     if (t == -1)
       return false
+    if ((::get_trophy_info(id)?.openCount ?? 0) == 0)
+      return false
+
+    if (!(::getAircraftByName(getTopPrize()?.unit)?.isBought() ?? false))
+      return false
 
     return t <= TIME_WEEK_IN_SECONDS
   }
