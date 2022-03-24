@@ -133,55 +133,31 @@
             },
             "clearTargets": []
           },
-          "setSearchMode": [
-            {
-              "setModeName": {
-                "name": "search"
-              }
+          "setSearchMode": {
+            "setModeName": {
+              "name": "search"
             },
-            {
-              "setEnabled": {
-                "value": true
-              }
+            "setEnabled": {
+              "value": true
             },
-            {
-              "clearTargets": []
+            "clearTargets": [],
+            "setFsmActive": {
+              "fsm": "search",
+              "active": true
             },
-            {
-              "setFsmActive": {
-                "fsm": "search",
-                "active": true
-              }
-            },
-            {
-              "setCueEnabled": {
-                "value": true
-              }
-            },
-            {
-              "setCueEnabled": {
-                "value": true
-              }
+            "setCueEnabled": {
+              "value": true
             }
-          ],
-          "resetSearchMode": [
-            {
-              "setFsmActive": {
-                "fsm": "search",
-                "active": false
-              }
+          },
+          "resetSearchMode": {
+            "setFsmActive": {
+              "fsm": "search",
+              "active": false
             },
-            {
-              "setCueEnabled": {
-                "value": true
-              }
-            },
-            {
-              "setCueEnabled": {
-                "value": false
-              }
+            "setCueEnabled": {
+              "value": false
             }
-          ]
+          }
         }
       },
       {

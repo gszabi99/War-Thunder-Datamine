@@ -2182,6 +2182,93 @@
       }
     }
   },
+  "weapon_presets": {
+    "preset": {
+      "name": "us_m551_football_default",
+      "blk": "gameData/units/tankModels/weaponPresets/us_m551_football_default.blk"
+    }
+  },
+  "modifications": {
+    "new_race_tank_tracks": [],
+    "new_tank_suspension": [],
+    "new_tank_filter": [],
+    "new_tank_brakes": [],
+    "new_tank_transmission": [],
+    "new_tank_engine": [],
+    "tank_camouflage": [],
+    "manual_extinguisher": [],
+    "tank_tool_kit": [],
+    "new_tank_horizontal_aiming": [],
+    "new_tank_vertical_aiming": [],
+    "tank_new_gun": [],
+    "152mm_football": [],
+    "152mm_football_additional": [],
+    "152mm_football_jump": [],
+    "tank_additional_armor": {
+      "modClass": "protection",
+      "invertEnableLogic": true,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 1.01,
+        "hideNodes": [
+          {
+            "node": "ex_decor_02"
+          },
+          {
+            "node": "ex_decor_03"
+          },
+          {
+            "node": "ex_decor_10"
+          },
+          {
+            "node": "ex_decor_11"
+          },
+          {
+            "node": "ex_decor_08"
+          },
+          {
+            "node": "ex_decor_07"
+          },
+          {
+            "node": "ex_decor_09"
+          },
+          {
+            "node": "ex_decor_06"
+          },
+          {
+            "node": "ex_decor_01"
+          },
+          {
+            "node": "ex_decor_02"
+          },
+          {
+            "node": "ex_decor_12"
+          },
+          {
+            "node": "ex_decor_13"
+          },
+          {
+            "node": "antenna_01"
+          },
+          {
+            "node": "antenna_02"
+          },
+          {
+            "node": "ex_smoke_r"
+          },
+          {
+            "node": "ex_smoke_l"
+          }
+        ]
+      }
+    },
+    "tank_medical_kit": {
+      "image": "#ui/gameuiskin#tank_reinforcement_us"
+    },
+    "tank_medical_kit_expendable": {
+      "image": "#ui/gameuiskin#tank_reinforcement_us"
+    }
+  },
   "commonWeapons": [
     {
       "Weapon": {
@@ -2209,7 +2296,7 @@
     {
       "Weapon": {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_football_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_football_user_cannon_orange.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.2,
@@ -2298,7 +2385,7 @@
       "Weapon": {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_football_user_cannon_jump.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_football_user_cannon_orange_jump.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "gun_barrel_02_dm",
         "recoilMultiplier": 1.3,
@@ -2340,93 +2427,6 @@
       }
     }
   ],
-  "weapon_presets": {
-    "preset": {
-      "name": "us_m551_football_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m551_football_default.blk"
-    }
-  },
-  "modifications": {
-    "new_race_tank_tracks": [],
-    "new_tank_suspension": [],
-    "new_tank_filter": [],
-    "new_tank_brakes": [],
-    "new_tank_transmission": [],
-    "new_tank_engine": [],
-    "tank_camouflage": [],
-    "manual_extinguisher": [],
-    "tank_tool_kit": [],
-    "new_tank_horizontal_aiming": [],
-    "new_tank_vertical_aiming": [],
-    "tank_new_gun": [],
-    "152mm_football": [],
-    "152mm_football_additional": [],
-    "152mm_football_jump": [],
-    "tank_additional_armor": {
-      "modClass": "protection",
-      "invertEnableLogic": true,
-      "turn_it_off": false,
-      "effects": {
-        "rcostAddParam": 1.01,
-        "hideNodes": [
-          {
-            "node": "ex_decor_02"
-          },
-          {
-            "node": "ex_decor_03"
-          },
-          {
-            "node": "ex_decor_10"
-          },
-          {
-            "node": "ex_decor_11"
-          },
-          {
-            "node": "ex_decor_08"
-          },
-          {
-            "node": "ex_decor_07"
-          },
-          {
-            "node": "ex_decor_09"
-          },
-          {
-            "node": "ex_decor_06"
-          },
-          {
-            "node": "ex_decor_01"
-          },
-          {
-            "node": "ex_decor_02"
-          },
-          {
-            "node": "ex_decor_12"
-          },
-          {
-            "node": "ex_decor_13"
-          },
-          {
-            "node": "antenna_01"
-          },
-          {
-            "node": "antenna_02"
-          },
-          {
-            "node": "ex_smoke_r"
-          },
-          {
-            "node": "ex_smoke_l"
-          }
-        ]
-      }
-    },
-    "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_us"
-    },
-    "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_us"
-    }
-  },
   "default_skin": [
     {
       "name": "football_orange"
