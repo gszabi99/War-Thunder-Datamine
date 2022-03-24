@@ -234,6 +234,17 @@
         "aps_sensor_01_dm": [],
         "aps_sensor_02_dm": []
       },
+      "aps_launchers": {
+        "armorClass": "RHA_tank",
+        "hp": 200.0,
+        "armorThickness": 15.0,
+        "restrainDamage": 0.5,
+        "createSecondaryShatters": false,
+        "aps_launcher_01_dm": [],
+        "aps_launcher_02_dm": [],
+        "aps_launcher_03_dm": [],
+        "aps_launcher_04_dm": []
+      },
       "body_side_screens": {
         "armorClass": "t_90_rubber_fabric_screens",
         "hp": 100.0,
@@ -4145,141 +4156,14 @@
       "model": "drozd",
       "verAngles": [-6.0,20.0],
       "horAngles": [-40.0,40.0],
-      "reactionTime": 0.05,
-      "reloadTime": 0.3,
+      "reactionTime": 0.06,
+      "reloadTime": 0.35,
       "targetSpeed": [70.0,700.0],
       "shotCount": 8,
-      "LeftModule_0": {
-        "sensorPos": [0.0,0.3,0.5],
-        "dmPart": "aps_sensor_02_dm",
-        "horAngles": [-30.0,10.0],
-        "emitterGenRange": [7.0,8.0],
-        "emitterGenFmt": "bone_rocket_%02d",
-        "verAngles": [-6.0,20.0],
-        "distance": 9.6,
-        "sensorDistance": 60.0,
-        "reloadTime": 0.35,
-        "shotCount": 2,
-        "inaccuracy": [0.05,0.05,0.05],
-        "additionalHeight": 4.0,
-        "shotFx": "muzzle_ground_40mm",
-        "explosionFx": "hit_81_105mm_metal_he",
-        "mountNode": "bone_grenade",
-        "mesh": "3uof_14_rocket",
-        "reactionTime": 0.06,
-        "aiming": true,
-        "targets": {
-          "all": {
-            "speed": [70.0,700.0],
-            "size": [0.05,0.5],
-            "self": false,
-            "ally": false
-          }
-        },
-        "ammo": {
-          "mass": 9.3,
-          "explosiveType": "tg_40",
-          "explosiveMass": 2.2,
-          "damage": {
-            "shatter": [
-              {
-                "useRealShatters": true
-              },
-              {
-                "countPortion": 0.2
-              },
-              {
-                "segment": {
-                  "radiusScale": 0.2,
-                  "penetrationScale": 1.5,
-                  "damageScale": 1.0,
-                  "angles": [45.0,135.0],
-                  "countPortion": 0.5
-                }
-              },
-              {
-                "segment": {
-                  "radiusScale": 0.2,
-                  "penetrationScale": 1.0,
-                  "damageScale": 1.0,
-                  "angles": [225.0,315.0],
-                  "countPortion": 0.5
-                }
-              }
-            ],
-            "shatterDamage": {
-              "breachConeAngle": 45.0
-            }
-          }
-        }
-      },
-      "RightModule_0": {
-        "sensorPos": [0.0,0.3,-0.5],
-        "dmPart": "aps_sensor_01_dm",
-        "horAngles": [-10.0,30.0],
-        "emitterGenRange": [3.0,4.0],
-        "emitterGenFmt": "bone_rocket_%02d",
-        "verAngles": [-6.0,20.0],
-        "distance": 9.6,
-        "sensorDistance": 60.0,
-        "reloadTime": 0.35,
-        "shotCount": 2,
-        "inaccuracy": [0.05,0.05,0.05],
-        "additionalHeight": 4.0,
-        "shotFx": "muzzle_ground_40mm",
-        "explosionFx": "hit_81_105mm_metal_he",
-        "mountNode": "bone_grenade",
-        "mesh": "3uof_14_rocket",
-        "reactionTime": 0.06,
-        "aiming": true,
-        "targets": {
-          "all": {
-            "speed": [70.0,700.0],
-            "size": [0.05,0.5],
-            "self": false,
-            "ally": false
-          }
-        },
-        "ammo": {
-          "mass": 9.3,
-          "explosiveType": "tg_40",
-          "explosiveMass": 2.2,
-          "damage": {
-            "shatter": [
-              {
-                "useRealShatters": true
-              },
-              {
-                "countPortion": 0.2
-              },
-              {
-                "segment": {
-                  "radiusScale": 0.2,
-                  "penetrationScale": 1.5,
-                  "damageScale": 1.0,
-                  "angles": [45.0,135.0],
-                  "countPortion": 0.5
-                }
-              },
-              {
-                "segment": {
-                  "radiusScale": 0.2,
-                  "penetrationScale": 1.0,
-                  "damageScale": 1.0,
-                  "angles": [225.0,315.0],
-                  "countPortion": 0.5
-                }
-              }
-            ],
-            "shatterDamage": {
-              "breachConeAngle": 45.0
-            }
-          }
-        }
-      },
       "LeftModule_1": {
-        "sensorPos": [0.0,0.3,0.5],
+        "sensorPos": [-1.5,0.0,0.5],
         "dmPart": "aps_sensor_02_dm",
+        "launcherDmPart": "aps_launcher_02_dm",
         "horAngles": [-40.0,-10.0],
         "emitterGenRange": [5.0,6.0],
         "emitterGenFmt": "bone_rocket_%02d",
@@ -4342,10 +4226,141 @@
         }
       },
       "RightModule_1": {
-        "sensorPos": [0.0,0.3,-0.5],
+        "sensorPos": [-1.5,0.0,-0.5],
         "dmPart": "aps_sensor_01_dm",
+        "launcherDmPart": "aps_launcher_01_dm",
         "horAngles": [10.0,40.0],
         "emitterGenRange": [1.0,2.0],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "verAngles": [-6.0,20.0],
+        "distance": 9.6,
+        "sensorDistance": 60.0,
+        "reloadTime": 0.35,
+        "shotCount": 2,
+        "inaccuracy": [0.05,0.05,0.05],
+        "additionalHeight": 4.0,
+        "shotFx": "muzzle_ground_40mm",
+        "explosionFx": "hit_81_105mm_metal_he",
+        "mountNode": "bone_grenade",
+        "mesh": "3uof_14_rocket",
+        "reactionTime": 0.06,
+        "aiming": true,
+        "targets": {
+          "all": {
+            "speed": [70.0,700.0],
+            "size": [0.05,0.5],
+            "self": false,
+            "ally": false
+          }
+        },
+        "ammo": {
+          "mass": 9.3,
+          "explosiveType": "tg_40",
+          "explosiveMass": 2.2,
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.2
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.2,
+                  "penetrationScale": 1.5,
+                  "damageScale": 1.0,
+                  "angles": [45.0,135.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.2,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [225.0,315.0],
+                  "countPortion": 0.5
+                }
+              }
+            ],
+            "shatterDamage": {
+              "breachConeAngle": 45.0
+            }
+          }
+        }
+      },
+      "LeftModule_0": {
+        "sensorPos": [-1.5,0.0,0.5],
+        "dmPart": "aps_sensor_02_dm",
+        "launcherDmPart": "aps_launcher_04_dm",
+        "horAngles": [-30.0,10.0],
+        "emitterGenRange": [7.0,8.0],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "verAngles": [-6.0,20.0],
+        "distance": 9.6,
+        "sensorDistance": 60.0,
+        "reloadTime": 0.35,
+        "shotCount": 2,
+        "inaccuracy": [0.05,0.05,0.05],
+        "additionalHeight": 4.0,
+        "shotFx": "muzzle_ground_40mm",
+        "explosionFx": "hit_81_105mm_metal_he",
+        "mountNode": "bone_grenade",
+        "mesh": "3uof_14_rocket",
+        "reactionTime": 0.06,
+        "aiming": true,
+        "targets": {
+          "all": {
+            "speed": [70.0,700.0],
+            "size": [0.05,0.5],
+            "self": false,
+            "ally": false
+          }
+        },
+        "ammo": {
+          "mass": 9.3,
+          "explosiveType": "tg_40",
+          "explosiveMass": 2.2,
+          "damage": {
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
+                "countPortion": 0.2
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.2,
+                  "penetrationScale": 1.5,
+                  "damageScale": 1.0,
+                  "angles": [45.0,135.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 0.2,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [225.0,315.0],
+                  "countPortion": 0.5
+                }
+              }
+            ],
+            "shatterDamage": {
+              "breachConeAngle": 45.0
+            }
+          }
+        }
+      },
+      "RightModule_0": {
+        "sensorPos": [-1.5,0.0,-0.5],
+        "dmPart": "aps_sensor_01_dm",
+        "launcherDmPart": "aps_launcher_03_dm",
+        "horAngles": [-10.0,30.0],
+        "emitterGenRange": [3.0,4.0],
         "emitterGenFmt": "bone_rocket_%02d",
         "verAngles": [-6.0,20.0],
         "distance": 9.6,

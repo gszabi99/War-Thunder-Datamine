@@ -52,6 +52,7 @@ expandable {
       pos:t='0, ph/2-h/2'
       position:t='relative'
       background-image:t='<<rewardIcon>>'
+      background-svg-size:t='@cIco, @cIco'
     }
     textareaNoTab {
       text:t='<<rewardText>>'

@@ -14,7 +14,6 @@ let { isModResearched,
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { canOpenPlayerReviewDialog, openPlayerReviewDialog } = require("%scripts/social/psnMatches.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { boosterEffectType, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { fillItemDescr, getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
@@ -2657,7 +2656,6 @@ let statTooltipColumnParamByType = {
       btn_save_replay = isAnimDone && isReplayReady && !::is_replay_saved()
       btn_user_options = isAnimDone && (curTab == "players_stats") && player && !player.isBot && ::show_console_buttons
       btn_view_highlights = isAnimDone && ::is_highlights_inited()
-      btn_psn_match_review = isAnimDone && canOpenPlayerReviewDialog()
     }
 
     foreach(btn, show in buttonsList)
@@ -2666,8 +2664,6 @@ let statTooltipColumnParamByType = {
     let showFacebookBtn = isAnimDone && (curTab == "my_stats" || curTab == "players_stats")
     ::show_facebook_screenshot_button(scene, showFacebookBtn)
   }
-
-  function onBtnPsnMatchReview() { openPlayerReviewDialog() }
 
   function onChatLinkClick(obj, itype, link)
   {

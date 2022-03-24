@@ -176,7 +176,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
   if (!missionBlk.paramExists("environment") || (gm == ::GM_TEAMBATTLE) || (gm == ::GM_DOMINATION) || (gm == ::GM_SKIRMISH))
     optionItems.append([::USEROPT_TIME, "spinner"])
   if (!missionBlk.paramExists("weather") || (gm == ::GM_TEAMBATTLE) || (gm == ::GM_DOMINATION) || (gm == ::GM_SKIRMISH))
-    optionItems.append([::USEROPT_WEATHER, "spinner"])
+    optionItems.append([::USEROPT_CLIME, "spinner"])
 
   if (!missionBlk.paramExists("isLimitedFuel"))
     optionItems.append([::USEROPT_LIMITED_FUEL, "spinner"])
@@ -708,7 +708,7 @@ let function get_mission_desc_text(missionBlk)
     if (value!=null)
       misBlk.setStr("environment", value)
 
-    value = getOptValue(::USEROPT_WEATHER, false)
+    value = getOptValue(::USEROPT_CLIME, false)
     if (value!=null)
       misBlk.setStr("weather", value)
 

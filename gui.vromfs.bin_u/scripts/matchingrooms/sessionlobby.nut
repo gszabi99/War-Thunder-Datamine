@@ -83,7 +83,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
      difficulty = "arcade"
      custDifficulty = "0"
      environment = "Day"
-     weather = "clear"
+     weather = "cloudy"
 
      maxRespawns = -1
      timeLimit = 0

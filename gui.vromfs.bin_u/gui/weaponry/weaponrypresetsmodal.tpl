@@ -77,7 +77,7 @@ root {
         }
         Button_text{
           id:t='copyPresetBtn'
-          text:t='Copy'
+          text:t='#gblk/saveError/copy'
           on_click:t='onPresetCopy'
           display:t='hide'
           ButtonImg {}

@@ -131,7 +131,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
     if (!("type" in visualItem))
       visualItem.type <- weaponsItem.bundle
   }
-  res.nameText = getModItemName(unit, visualItem, params?.limitedName ?? true)
+  res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
   let isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
   res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({
     hasPlayerInfo = (params?.hasPlayerInfo ?? true) && !isForceHidePlayerInfo

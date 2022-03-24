@@ -183,6 +183,7 @@ itemDiv {
       <<#craftTime>>
       textareaNoTab {
         id:t='craft_time'
+        shadeStyle:t='textOnIcon'
         text:t='<<craftTime>>'
         overlayTextColor:t='goodTextColor'
       }
@@ -191,6 +192,7 @@ itemDiv {
       <<#expireTime>>
       textareaNoTab {
         id:t='expire_time'
+        shadeStyle:t='textOnIcon'
         text:t='<<expireTime>>'
         overlayTextColor:t='disabled'
       }
@@ -256,6 +258,7 @@ itemDiv {
           id:t='remaining_lifetime'
           position:t='relative'
           pos:t='pw-w, -6@dp'
+          shadeStyle:t='textOnIcon'
           text:t='<<remainingLifetime>>'
           overlayTextColor:t='disabled'
         }
@@ -275,6 +278,7 @@ itemDiv {
 
           textareaNoTab {
             id:t='price'
+            shadeStyle:t='textOnIcon'
             text:t='<<price>>'
           }
         }

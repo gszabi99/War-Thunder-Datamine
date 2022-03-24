@@ -186,7 +186,7 @@ let function validateLastWeapon(unitName)
     return ""
 
   let curWeapon = getWeaponByName(unit, weaponName)
-  if (isWeaponVisible(unit, curWeapon) && isWeaponEnabled(unit, curWeapon))
+  if (curWeapon != null && isWeaponVisible(unit, curWeapon) && isWeaponEnabled(unit, curWeapon))
     return weaponName
 
   foreach (weapon in unit.getWeapons())
@@ -352,10 +352,12 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         }
 
     let hasWeaponSlots = "slot" in weapon
-    if (hasWeaponSlots) {
-      item.tiers[weapon.tier] <- { presetId = weapon.presetId, slot = weapon.slot }
-      item.iconType = weapon?.iconType
-    }
+    if (hasWeaponSlots)
+      item.tiers[weapon.tier] <- {
+        presetId = weapon.presetId
+        slot = weapon.slot
+        iconType = weapon?.iconType
+      }
 
     let needBulletParams = !::isInArray(currentTypeName,
       [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])

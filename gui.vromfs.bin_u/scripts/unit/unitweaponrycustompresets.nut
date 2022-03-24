@@ -60,9 +60,7 @@ let function deleteCustomPresets(unit, id) {
 
   presets.removeBlock(id)
   updateLocalCustomPresets(unit, presets)
-  let blk = DataBlock()
-  blk.addBlock(id)
-  savePresetInProfile(unit, id, blk)
+  savePresetInProfile(unit, id, DataBlock())
 }
 
 let function initCustomPreset(unit) {
@@ -75,7 +73,8 @@ let function initCustomPreset(unit) {
       tags = []
       cost = 0
       type = weaponsItem.weapon
-      nameTextWithPrice = preset?.name ?? ""
+      customNameText = preset?.name ?? ""
+      image = "#ui/gameuiskin#rocket_bomb"
       torpedo = false
       cannon = false
       additionalGuns = false

@@ -857,7 +857,7 @@ mSettings = {
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
   }
   compatibilityShadowQuality = { widgetType="list" def="low" blk="graphics/compatibilityShadowQuality" restart=false
-    values = [ "ultralow", "low", "medium" ]
+    values = [ "low", "medium" ]
   }
   fxResolutionQuality= { widgetType="list" def="high" blk="graphics/fxTarget" restart=false
     onChanged = "fxResolutionClick"

@@ -40,7 +40,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
       [::USEROPT_ENEMY_SKILL, "spinner"],
       [::USEROPT_DIFFICULTY, "spinner"],
       [::USEROPT_TIME, "spinner"],
-      [::USEROPT_WEATHER, "spinner"],
+      [::USEROPT_CLIME, "spinner"],
       [::USEROPT_TAKEOFF_MODE, "combobox"],
       [::USEROPT_LIMITED_FUEL, "spinner"],
       [::USEROPT_LIMITED_AMMO, "spinner"],
@@ -284,7 +284,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
           ENEMY_SKILL = getSceneOptValue(::USEROPT_ENEMY_SKILL),
           DIFFICULTY = getSceneOptValue(::USEROPT_DIFFICULTY),
           TIME = getSceneOptValue(::USEROPT_TIME),
-          WEATHER = getSceneOptValue(::USEROPT_WEATHER),
+          WEATHER = getSceneOptValue(::USEROPT_CLIME),
           TAKEOFF_MODE = getSceneOptValue(::USEROPT_TAKEOFF_MODE),
           LIMITED_FUEL = scene.findObject(::get_option(::USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
           LIMITED_AMMO = scene.findObject(::get_option(::USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
@@ -318,7 +318,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
       {
         if (!isValid())
           return
-        foreach(o in [::USEROPT_TIME, ::USEROPT_WEATHER, ::USEROPT_DYN_SURROUND])
+        foreach(o in [::USEROPT_TIME, ::USEROPT_CLIME, ::USEROPT_DYN_SURROUND])
           setRandomOpt(o)
 
         onSectorChange(scene.findObject("dyn_zone"))
@@ -362,7 +362,7 @@ local { getCdBaseDifficulty } = ::require_native("guiOptions")
     settings.setInt("allySkill",  getSceneOptValue(::USEROPT_FRIENDLY_SKILL))
     settings.setInt("enemySkill", getSceneOptValue(::USEROPT_ENEMY_SKILL))
     settings.setStr("dayTime",    getSceneOptValue(::USEROPT_TIME))
-    settings.setStr("weather",    getSceneOptValue(::USEROPT_WEATHER))
+    settings.setStr("weather",    getSceneOptValue(::USEROPT_CLIME))
 
     ::mission_settings.coop = (::enable_coop_in_QMB && ::g_squad_manager.isInSquad())
     ::mission_settings.friendOnly = false

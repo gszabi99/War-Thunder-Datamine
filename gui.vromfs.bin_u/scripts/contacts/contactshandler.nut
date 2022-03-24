@@ -5,6 +5,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
+let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -282,7 +283,7 @@ let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
     {
       if (::has_feature("Invites"))
         playerListView.playerButton.append(createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
-      if (::has_feature("Facebook"))
+      if (isAvailableFacebook())
         playerListView.playerButton.append(createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add", "onFacebookFriendsAdd"))
     }
 
@@ -413,7 +414,7 @@ let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
       updateButtonInviteText(btnObj, contact.uidInt64)
 
     showBtn("btn_usercard", ::has_feature("UserCards"), contact_buttons_holder)
-    showBtn("btn_facebookFriends", ::has_feature("Facebook") && !platformModule.isPlatformSony, contact_buttons_holder)
+    showBtn("btn_facebookFriends", isAvailableFacebook() && !platformModule.isPlatformSony, contact_buttons_holder)
     showBtn("btn_squadInvite_bottom", false, contact_buttons_holder)
   }
 

@@ -1462,7 +1462,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = [0, 1, 2]
       break
 
-    case ::USEROPT_WEATHER:
+    case ::USEROPT_CLIME:
       descr.id = "weather"
       descr.items = ["#options/weatherclear",
                      "#options/weathergood",
@@ -1476,6 +1476,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
                      "#options/weatherstorm"
                     ]
       descr.values = ["clear", "good", "hazy", "thin_clouds","cloudy","poor","blind",/*"shower"*/"rain","thunder"]
+      defaultValue = "cloudy"
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getMissionParam("weather", null)
       break
@@ -4967,7 +4968,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_DYN_FL_ADVANTAGE:
     case ::USEROPT_DYN_WINS_TO_COMPLETE:
     case ::USEROPT_TIME:
-    case ::USEROPT_WEATHER:
+    case ::USEROPT_CLIME:
     case ::USEROPT_YEAR:
     case ::USEROPT_DIFFICULTY:
     case ::USEROPT_ALTITUDE:
@@ -5425,24 +5426,23 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   }
 }
 
-::units_img_preset <- null
+local unitsImgPreset = null
 ::get_unit_preset_img <- function get_unit_preset_img(unitName /*or unit group name*/)
 {
-  if (!::units_img_preset)
-  {
-    ::units_img_preset = {}
+  if (unitsImgPreset == null) {
+    unitsImgPreset = {}
     let guiBlk = GUI.get()
     let blk = guiBlk?.units_presets?[::get_country_flags_preset()]
     if (blk)
       for (local i = 0; i < blk.paramCount(); i++)
-        ::units_img_preset[blk.getParamName(i)] <- blk.getParamValue(i)
+        unitsImgPreset[blk.getParamName(i)] <- blk.getParamValue(i)
   }
 
-  return ::getTblValue(unitName, ::units_img_preset)
+  return unitsImgPreset?[unitName]
 }
 
 ::is_tencent_unit_image_reqired <- function is_tencent_unit_image_reqired(unit)
 {
-  return ::is_vendor_tencent() && unit.shopCountry == "country_japan"
-         && unit.unitType == unitTypes.AIRCRAFT
+  return unit.shopCountry == "country_japan" && unit.unitType == unitTypes.AIRCRAFT
+    && ::is_vendor_tencent()
 }

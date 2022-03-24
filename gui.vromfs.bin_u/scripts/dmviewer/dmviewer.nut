@@ -1344,39 +1344,22 @@ const AFTERBURNER_CHAMBER = 3
       case "aps_sensor":
         let activeProtectionSystemBlk = unitBlk?.ActiveProtectionSystem
         if (activeProtectionSystemBlk)
-        {
-          let deg = ::loc("measureUnits/deg")
-          let {
-            model = null, reactionTime = null,
-            reloadTime = null, targetSpeed = null,
-            shotCount = null, horAngles = null,
-            verAngles = null
-          } = activeProtectionSystemBlk
+          desc.extend(getAPSDesc(activeProtectionSystemBlk))
+        break
 
-          if (model)
-            desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), ::loc($"aps/{model}")))
-          if (horAngles)
-            desc.append("".concat(::loc("xray/aps/protected_sector/hor"), ::loc("ui/colon"),
-              ( horAngles.x + horAngles.y == 0
-                ? ::format("±%d%s", ::abs(horAngles.y), deg)
-                : ::format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg) ) ) )
-          if (verAngles)
-            desc.append("".concat(::loc("xray/aps/protected_sector/vert"), ::loc("ui/colon"),
-              ( verAngles.x + verAngles.y == 0
-                ? ::format("±%d%s", ::abs(verAngles.y), deg)
-                : ::format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg) ) ) )
-          if (reloadTime)
-            desc.append("".concat(::loc("xray/aps/reloadTime"), ::loc("ui/colon"),
-              reloadTime, " ", ::loc("measureUnits/seconds") ) )
-          if (reactionTime)
-            desc.append("".concat(::loc("xray/aps/reactionTime"), ::loc("ui/colon"),
-              reactionTime * 1000, " ", ::loc("measureUnits/milliseconds") ) )
-          if (targetSpeed)
-            desc.append("".concat(::loc("xray/aps/targetSpeed"), ::loc("ui/colon"),
-              $"{targetSpeed.x}-{targetSpeed.y}", " ", ::loc("measureUnits/metersPerSecond_climbSpeed") ) )
-          if (shotCount)
-            desc.append("".concat(::loc("xray/aps/shotCount"), ::loc("ui/colon"),
-              shotCount, " " , ::loc("measureUnits/pcs") ) )
+      case "aps_launcher":
+        let activeProtectionSystemBlk = unitBlk?.ActiveProtectionSystem
+        if (activeProtectionSystemBlk)
+        {
+          for (local i = 0; i < activeProtectionSystemBlk.blockCount(); i++)
+          {
+            let moduleBlk = activeProtectionSystemBlk.getBlock(i)
+            if (moduleBlk?.launcherDmPart == partName)
+            {
+              desc.extend(getAPSDesc(moduleBlk))
+              break
+            }
+          }
         }
         break
 
@@ -1723,6 +1706,44 @@ const AFTERBURNER_CHAMBER = 3
       desc.append("".concat(::loc("optic/zoom"), ::loc("ui/colon"), optics.zoom))
     if (optics.fov != "")
       desc.append("".concat(::loc("optic/fov"), ::loc("ui/colon"), optics.fov))
+    return desc
+  }
+
+  function getAPSDesc(info) {
+    let desc = []
+
+    let deg = ::loc("measureUnits/deg")
+    let {
+      model = null, reactionTime = null,
+      reloadTime = null, targetSpeed = null,
+      shotCount = null, horAngles = null,
+      verAngles = null
+    } = info
+
+    if (model)
+      desc.append("".concat(::loc("xray/model"), ::loc("ui/colon"), ::loc($"aps/{model}")))
+    if (horAngles)
+      desc.append("".concat(::loc("xray/aps/protected_sector/hor"), ::loc("ui/colon"),
+        ( horAngles.x + horAngles.y == 0
+          ? ::format("±%d%s", ::abs(horAngles.y), deg)
+          : ::format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg) ) ) )
+    if (verAngles)
+      desc.append("".concat(::loc("xray/aps/protected_sector/vert"), ::loc("ui/colon"),
+        ( verAngles.x + verAngles.y == 0
+          ? ::format("±%d%s", ::abs(verAngles.y), deg)
+          : ::format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg) ) ) )
+    if (reloadTime)
+      desc.append("".concat(::loc("xray/aps/reloadTime"), ::loc("ui/colon"),
+        reloadTime, " ", ::loc("measureUnits/seconds") ) )
+    if (reactionTime)
+      desc.append("".concat(::loc("xray/aps/reactionTime"), ::loc("ui/colon"),
+        reactionTime * 1000, " ", ::loc("measureUnits/milliseconds") ) )
+    if (targetSpeed)
+      desc.append("".concat(::loc("xray/aps/targetSpeed"), ::loc("ui/colon"),
+        $"{targetSpeed.x}-{targetSpeed.y}", " ", ::loc("measureUnits/metersPerSecond_climbSpeed") ) )
+    if (shotCount)
+      desc.append("".concat(::loc("xray/aps/shotCount"), ::loc("ui/colon"),
+        shotCount, " " , ::loc("measureUnits/pcs") ) )
     return desc
   }
 

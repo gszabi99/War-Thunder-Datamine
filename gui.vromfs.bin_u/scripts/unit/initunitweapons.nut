@@ -18,6 +18,8 @@ let function addReqParamsToWeaponry(weaponry, blk) {
 
   foreach(rp in reqNames) {
     let reqData = []
+    if (rp not in blk)
+      continue
     foreach (req in (blk % rp))
       if (isString(req) && req.len())
         reqData.append(req)
@@ -28,15 +30,16 @@ let function addReqParamsToWeaponry(weaponry, blk) {
 
 let function initWeaponry(weaponry, blk, esUnitType) {
   let weaponBlk = ::get_modifications_blk()?.modifications?[weaponry.name]
+  weaponry.cost <- weaponry?.cost ?? 0
   if (blk?.value != null)
-    weaponry.cost <- blk.value
+    weaponry.cost = blk.value
   if (blk?.costGold) {
     weaponry.costGold <- blk.costGold
-    weaponry.cost <- 0
+    weaponry.cost = 0
   }
-  weaponry.tier <- blk?.tier? blk.tier.tointeger() : 1
-  weaponry.modClass <- blk?.modClass || weaponBlk?.modClass || ""
-  weaponry.image <- ::get_weapon_image(esUnitType, weaponBlk, blk)
+  weaponry.tier <- (blk?.tier.tointeger() ?? 1) || 1
+  weaponry.modClass <- blk?.modClass ?? weaponBlk?.modClass ?? ""
+  weaponry.image <- weaponry?.image ?? ::get_weapon_image(esUnitType, weaponBlk, blk)
   weaponry.requiresModelReload <- weaponBlk?.requiresModelReload ?? false
   weaponry.isHidden <- blk?.isHidden ?? weaponBlk?.isHidden ?? false
   weaponry.weaponmask <- blk?.weaponmask ?? 0
@@ -51,7 +54,7 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   }
 
   foreach (param in ["prevModification", "reqInstalledModification"]) {
-    let val = blk?[param] || weaponBlk?[param]
+    let val = blk?[param] ?? weaponBlk?[param]
     if (isString(val) && val.len())
       weaponry[param] <- val
   }

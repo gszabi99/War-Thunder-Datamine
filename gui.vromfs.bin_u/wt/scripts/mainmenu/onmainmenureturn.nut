@@ -8,6 +8,7 @@ let { systemOptionsMaintain } = require("%scripts/options/systemOptions.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
+let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 
 let { checkInvitesAfterFlight } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
@@ -95,7 +96,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   if (!guiScene.hasModalObject() && isAllowPopups)
     handler.doWhenActive(@() checkAutoShowEmailRegistration())
 
-  if (isAllowPopups && !guiScene.hasModalObject() && !isPlatformSony && ::has_feature("Facebook"))
+  if (isAllowPopups && !guiScene.hasModalObject() && !isPlatformSony && isAvailableFacebook())
     handler.doWhenActive(show_facebook_login_reminder)
   if (isAllowPopups)
     handler.doWhenActive(function () { ::checkRemnantPremiumAccount() })

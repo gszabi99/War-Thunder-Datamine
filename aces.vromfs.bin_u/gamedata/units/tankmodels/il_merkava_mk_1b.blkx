@@ -132,15 +132,6 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "CHA_tank",
@@ -286,11 +277,11 @@
         "ex_armor_body_09_dm": {
           "armorThickness": 10.0
         },
-        "turret_09_bottom_dm": {
+        "turret_08_bottom_dm": {
           "armorThickness": 5.0
         },
         "turret_10_back_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 10.0
         }
       },
       "turret": {
@@ -398,12 +389,6 @@
         "turret_08_front_dm": {
           "armorThickness": 25.0
         },
-        "turret_09_back_dm": {
-          "armorThickness": 5.0
-        },
-        "turret_09_top_dm": {
-          "armorThickness": 5.0
-        },
         "composite_armor_turret_03_dm": {
           "armorThickness": 100.0,
           "hidableInXrayViewer": true
@@ -505,10 +490,6 @@
         "turret_top_dm": {
           "armorThickness": 25.0,
           "hidableInViewer": true
-        },
-        "turret_09_front_dm": {
-          "armorThickness": 25.0,
-          "hidableInViewer": true
         }
       },
       "body_shields": {
@@ -526,7 +507,12 @@
         "ex_armor_body_07_dm": [],
         "ex_armor_body_10_dm": [],
         "ex_armor_body_12_dm": [],
-        "ex_armor_body_13_dm": []
+        "ex_armor_body_13_dm": [],
+        "ex_decor_l_03_dm": [],
+        "ex_decor_r_03_dm": [],
+        "ex_armor_turret_01_dm": {
+          "armorThickness": 6.0
+        }
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -598,6 +584,16 @@
           "armorThickness": 3.0,
           "hp": 20.0
         }
+      },
+      "body_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 300.0,
+        "armorThickness": 10.0,
+        "hidableInViewer": true,
+        "turret_09_top_dm": [],
+        "turret_09_bottom_dm": [],
+        "turret_09_front_dm": [],
+        "turret_09_back_dm": []
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -2697,7 +2693,7 @@
           "speedYaw": 40.0,
           "speedPitch": 10.0,
           "fireConeAngle": 1.0,
-          "bullets": 62,
+          "bullets": 54,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -4147,30 +4143,6 @@
             },
             "ammo_body_48_dm": {
               "count": 1
-            },
-            "ammo_body_49_dm": {
-              "count": 1
-            },
-            "ammo_body_50_dm": {
-              "count": 1
-            },
-            "ammo_body_51_dm": {
-              "count": 1
-            },
-            "ammo_body_52_dm": {
-              "count": 1
-            },
-            "ammo_body_53_dm": {
-              "count": 1
-            },
-            "ammo_body_54_dm": {
-              "count": 1
-            },
-            "ammo_body_55_dm": {
-              "count": 1
-            },
-            "ammo_body_56_dm": {
-              "count": 1
             }
           }
         }
@@ -4226,7 +4198,7 @@
                 "speedYaw": 40.0,
                 "speedPitch": 10.0,
                 "fireConeAngle": 1.0,
-                "bullets": 62,
+                "bullets": 54,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,

@@ -2475,7 +2475,7 @@ let function getWeaponFeatures(weaponsList)
   }
   else if (unitType == unitTypes.HELICOPTER)
   {
-    controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll", "helicopter_sensor_cue_x", "helicopter_sensor_cue_y" ]
+    controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll" ]
 
     if (::is_xinput_device())
       controls.append("helicopter_mouse_aim_x", "helicopter_mouse_aim_y")

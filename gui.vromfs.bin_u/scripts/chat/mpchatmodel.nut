@@ -100,6 +100,12 @@ local mpChatModel = {
     if (mpChatState.currentModeId == modeId)
       return
 
+    if (!::g_mp_chat_mode.getModeById(modeId).isEnabled()) {
+       if (::g_mp_chat_mode.getModeById(mpChatState.currentModeId).isEnabled())
+         ::chat_set_mode(mpChatState.currentModeId, "")
+       return
+    }
+
     mpChatState.currentModeId = modeId
     ::call_darg("hudChatModeIdUpdate", modeId)
     ::broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId})

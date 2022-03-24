@@ -441,6 +441,10 @@ let function getBodyItemsTitles(titlesConfig, itemSizes) {
   return titlesView
 }
 
+let getAvailableRecipe = @(genId) ::ItemsManager.findItemById(genId)
+  ?.getVisibleRecipes()
+  .findvalue(@(r) r.isUsable && !r.isRecipeLocked())
+
 let getTextBlocksView = @(textBlocks, itemSizes)  textBlocks.map(
   @(textBlock) sizeAndPosViewConfig.textBlock(textBlock.__merge({ itemSizes = itemSizes})))
 
@@ -452,7 +456,13 @@ let bodyButtonsConfig = {
     link = ""
     isLink = true
     isFeatured = true
-    isHidden = @() !isMarketplaceEnabled()
+    isButtonHidden = @(_) !isMarketplaceEnabled()
+  }
+  exchange = {
+    id = "exchange"
+    text = "#item/assemble"
+    onClick = "onExchangeRecipe"
+    isButtonHidden = @(btn) getAvailableRecipe(btn?.generatorId.tointeger()) == null
   }
 }
 let buttonViewParams = {
@@ -467,14 +477,15 @@ let function getButtonView(bodyConfig, itemSizes) {
     return null
 
   let buttonConfig = bodyButtonsConfig?[button?.type ?? ""]
-  if (buttonConfig?.isHidden() ?? true)
+  if (buttonConfig?.isButtonHidden(button) ?? true)
     return null
 
   let buttonView = buttonConfig.__merge(button).__merge(buttonViewParams)
   let posY = itemSizes.itemsOffsetByBodies[bodyConfig.bodyIdx]
     + itemSizes.visibleItemsCountYByBodies[bodyConfig.bodyIdx] * itemSizes.itemBlockHeight
     + itemSizes.headerBlockInterval
-  buttonView.actionParamsMarkup = $"pos:t='0.5pw - 0.5w, {posY}'; position:t='absolute'; noMargin:t='yes'"
+  let genId = button?.generatorId ? $"generatorId:t='{button.generatorId}'" : ""
+  buttonView.actionParamsMarkup = $"pos:t='0.5pw - 0.5w, {posY}'; position:t='absolute'; noMargin:t='yes';{genId}"
   return buttonView
 }
 
@@ -611,7 +622,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       curBodiesOffset += isShowHeaderPlace || idx == 0 || visibleItemsCountYByBodies[idx-1] == 0 ? 0
         : (bodiesConfig[idx-1].bodyTitlesCount * titleHeight
             + visibleItemsCountYByBodies[idx-1] * itemBlockHeight + headerBlockInterval
-            + (!(bodyButtonsConfig?[bodiesConfig[idx-1].button?.type].isHidden() ?? true) ? buttonHeight : 0)
+            + (!(bodyButtonsConfig?[bodiesConfig[idx-1].button?.type]
+              .isButtonHidden(bodiesConfig[idx-1].button) ?? true) ? buttonHeight : 0)
           )
       let curBodyTitlesCount = bodiesConfig[idx].bodyTitlesCount
       itemsOffsetByBodies.append(curBodiesOffset
@@ -1018,6 +1030,20 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onToMarketplaceButton() {
     goToMarketplace()
+  }
+
+  function onExchangeRecipe(obj) {
+    let gen = itemsList?[obj?.generatorId.tointeger()]
+    if (!gen)
+      return
+
+    let recipe = gen?.getVisibleRecipes()
+      .findvalue(@(r) r.isUsable && !r.isRecipeLocked())
+
+    gen.assemble(null, {
+      recipes = [recipe]
+      shouldSkipMsgBox = true
+    })
   }
 }
 

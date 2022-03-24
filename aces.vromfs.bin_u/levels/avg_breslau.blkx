@@ -278,86 +278,8 @@
         "max_slope": 0.22
       },
       {
-        "useGrassMaskBiomes": true
-      },
-      {
-        "density": 3.0
-      },
-      {
-        "maxRadius": 300.0
-      },
-      {
-        "sowPerlinFreq": 0.1
-      },
-      {
-        "fadeDelta": 100.0
-      },
-      {
-        "lodFadeDelta": 30.0
-      },
-      {
-        "minLodDensity": 0.2
-      },
-      {
-        "blendToLandDelta": 100.0
-      },
-      {
-        "texSize": 1024
-      },
-      {
-        "noise_first_rnd": 23.1407
-      },
-      {
-        "noise_first_val_mul": 1.0
-      },
-      {
-        "noise_first_val_add": 0.0
-      },
-      {
-        "noise_second_rnd": 0.05
-      },
-      {
-        "noise_second_val_mul": 1.0
-      },
-      {
-        "noise_second_val_add": 0.0
-      },
-      {
-        "directWindMul": 1.0
-      },
-      {
-        "noiseWindMul": 1.0
-      },
-      {
-        "windPerlinFreq": 50000.0
-      },
-      {
-        "directWindFreq": 1.0
-      },
-      {
-        "directWindModulationFreq": 1.0
-      },
-      {
-        "windWaveLength": 100.0
-      },
-      {
-        "windToColor": 0.2
-      },
-      {
-        "helicopterHorMul": 2.0
-      },
-      {
-        "helicopterVerMul": 1.0
-      },
-      {
-        "helicopterToDirectWindMul": 2.0
-      },
-      {
-        "helicopterFalloff": 0.001
-      },
-      {
         "small_grass": {
-          "grass_grid_size": 0.75,
+          "grass_grid_size": 0.5,
           "grass_distance": 200.0,
           "hor_size_mul": 1.5,
           "alphaSuffix": "_a",
@@ -410,9 +332,9 @@
               "diffuse": "grass_generic_bush_a_tex_d",
               "normal": "grass_generic_bush_a_tex_n",
               "variations": 1,
-              "height": 0.6,
-              "ht_rnd_add": 0.4,
-              "hor_size": 0.7,
+              "height": 0.35,
+              "ht_rnd_add": 0.2,
+              "hor_size": 0.37,
               "hor_size_rnd_add": 0.2,
               "stiffness": 0.4,
               "color_mask_r_from": "#1833015a",
@@ -428,11 +350,33 @@
               "vertical_angle_add": -0.2,
               "vertical_angle_mul": 0.5
             },
+            "generic_bush_dead_a": {
+              "diffuse": "grass_generic_bush_dead_a_tex_d",
+              "normal": "grass_generic_bush_dead_a_tex_n",
+              "variations": 1,
+              "height": 0.4,
+              "ht_rnd_add": 0.4,
+              "hor_size": 0.4,
+              "hor_size_rnd_add": 0.2,
+              "stiffness": 0.4,
+              "color_mask_r_from": "#1833015a",
+              "color_mask_r_to": "#3540055a",
+              "color_mask_g_from": "#0505055a",
+              "color_mask_g_to": "#c8c8c85a",
+              "color_mask_b_from": "#2f0b085a",
+              "color_mask_b_to": "#2d26225a",
+              "height_from_weight_mul": 0.3,
+              "height_from_weight_add": 0.7,
+              "density_from_weight_mul": 0.2,
+              "density_from_weight_add": 0.0,
+              "vertical_angle_add": -0.2,
+              "vertical_angle_mul": 0.5
+            },
             "generic_grass_small_a": {
               "diffuse": "grass_generic_grass_small_a_tex_d",
               "normal": "grass_generic_grass_small_a_tex_n",
               "variations": 1,
-              "height": 0.25,
+              "height": 0.3,
               "ht_rnd_add": 0.2,
               "hor_size": 0.4,
               "hor_size_rnd_add": 0.2,
@@ -450,166 +394,124 @@
               "vertical_angle_add": 0.6,
               "vertical_angle_mul": 0.7
             },
-            "rye_a": {
-              "diffuse": "grass_rye_tex_d",
-              "normal": "grass_rye_tex_n",
-              "variations": 1,
-              "height": 0.45,
-              "ht_rnd_add": 0.4,
-              "hor_size": 0.5,
-              "hor_size_rnd_add": 0.4,
-              "color_mask_r_from": "#7d78595a",
-              "color_mask_r_to": "#5735145a",
-              "color_mask_g_from": "#4f4f4f5a",
-              "color_mask_g_to": "#ecece65a",
-              "color_mask_b_from": "#5a45175a",
-              "color_mask_b_to": "#874d2e54",
-              "height_from_weight_mul": 0.4,
-              "height_from_weight_add": 0.6,
-              "density_from_weight_mul": 0.45,
-              "density_from_weight_add": 0.0
-            },
-            "wheat_a": {
-              "diffuse": "grass_wheat_tex_d",
-              "normal": "grass_wheat_tex_n",
-              "variations": 1,
-              "height": 0.8,
-              "ht_rnd_add": 0.3,
-              "hor_size": 0.8,
-              "hor_size_rnd_add": 0.3,
-              "color_mask_r_from": "#556a0a5a",
-              "color_mask_r_to": "#7c5d0a5a",
-              "color_mask_g_from": "#5555555a",
-              "color_mask_g_to": "#bcbcbc5a",
-              "color_mask_b_from": "#59621a5a",
-              "color_mask_b_to": "#9873535a",
-              "height_from_weight_mul": 0.4,
-              "height_from_weight_add": 0.6,
-              "density_from_weight_mul": 0.45,
-              "density_from_weight_add": 0.0
-            },
             "nograss": {
               "density_from_weight_mul": 0.0,
               "density_from_weight_add": 0.0
             }
           },
           "decals": {
-            "filling_grass": {
+            "red_channel_grass": {
               "id": 0,
-              "generic_grass_tall_a": 1.0,
+              "generic_grass_small_a": 5.0,
+              "generic_bush_dead_a": 1.0
+            },
+            "green_channel_grass": {
+              "id": 1,
+              "generic_grass_small_a": 2.0,
+              "generic_grass_tall_a": 3.0,
               "generic_bush_a": 1.5,
+              "generic_grass_tall_b": 2.5
+            },
+            "blue_channel_grass": {
+              "id": 2,
+              "generic_grass_small_a": 3.0,
+              "generic_grass_tall_a": 2.0,
+              "generic_bush_a": 2.5,
               "generic_grass_tall_b": 2.0
             }
           }
         }
       },
       {
+        "layer": {
+          "maskChannel": [0.0,0.0,1.0,0.0],
+          "res": "grass_reed_a",
+          "density": 0.7,
+          "horScale": 1.2,
+          "horMinScale": 0.9,
+          "verScale": 1.2,
+          "verMinScale": 0.9,
+          "windMul": 0.05,
+          "radiusMul": 0.8,
+          "color_mask_r_from": "#e6d087ff",
+          "color_mask_r_to": "#bfa377ff",
+          "color_mask_b_from": "#8db356ff",
+          "color_mask_b_to": "#a8a548ff",
+          "color_mask_g_from": "#332521ff",
+          "color_mask_g_to": "#f7f2baff"
+        }
+      },
+      {
+        "layer": {
+          "maskChannel": [0.0,0.0,1.0,0.0],
+          "res": "grass_sword_a",
+          "density": 0.5,
+          "horScale": 1.2,
+          "horMinScale": 0.9,
+          "verScale": 1.2,
+          "verMinScale": 0.9,
+          "windMul": 0.05,
+          "radiusMul": 2.0,
+          "color_mask_r_from": "#9e7357ff",
+          "color_mask_r_to": "#6e5646ff",
+          "color_mask_b_from": "#558c3aff",
+          "color_mask_b_to": "#1c6b1dff",
+          "color_mask_g_from": "#332521ff",
+          "color_mask_g_to": "#f7f2baff"
+        }
+      },
+      {
         "layer": [
           {
-            "id": 0
-          },
-          {
-            "id": 1
-          },
-          {
-            "id": 2
+            "maskChannel": [0.0,1.0,1.0,0.0]
           },
           {
             "res": "grass_tavolga_a"
           },
           {
-            "density": 0.5
+            "density": 0.4
           },
           {
-            "horScale": 1.7
+            "horScale": 1.1
           },
           {
-            "horMinScale": 1.3
+            "horMinScale": 0.5
           },
           {
-            "verScale": 1.7
+            "verScale": 1.1
           },
           {
-            "verMinScale": 1.3
+            "verMinScale": 0.5
           },
           {
             "windMul": 0.05
+          },
+          {
+            "radiusMul": 2.0
+          },
+          {
+            "color_mask_r_from": "#fee977ff"
           },
           {
             "color_mask_r_from": "#d8ecf2ff"
           },
           {
-            "color_mask_r_to": "#a7c3ccff"
+            "color_mask_r_to": "#ae9404ff"
           },
           {
-            "color_mask_b_from": "#fcb130ff"
+            "color_mask_r_to": "#a7c3eaff"
           },
           {
-            "color_mask_b_to": "#ed9d47ff"
+            "color_mask_b_from": "#459636ff"
           },
           {
-            "color_mask_g_from": "#332521ff"
+            "color_mask_b_from": "#459636ff"
           },
           {
-            "color_mask_g_to": "#f7f2baff"
-          }
-        ]
-      },
-      {
-        "layer": [
-          {
-            "id": 0
+            "color_mask_b_to": "#4e7a3aff"
           },
           {
-            "id": 1
-          },
-          {
-            "id": 18
-          },
-          {
-            "res": "grass_sword_a"
-          },
-          {
-            "density": 0.1
-          },
-          {
-            "horScale": 1.6
-          },
-          {
-            "horMinScale": 1.2
-          },
-          {
-            "verScale": 1.6
-          },
-          {
-            "verMinScale": 1.2
-          },
-          {
-            "windMul": 0.05
-          },
-          {
-            "color_mask_r_from": "#9b852fff"
-          },
-          {
-            "color_mask_r_from": "#9e7357ff"
-          },
-          {
-            "color_mask_r_to": "#b9801eff"
-          },
-          {
-            "color_mask_r_to": "#6e5646ff"
-          },
-          {
-            "color_mask_b_from": "#2c552fff"
-          },
-          {
-            "color_mask_b_from": "#558c3aff"
-          },
-          {
-            "color_mask_b_to": "#8dc857ff"
-          },
-          {
-            "color_mask_b_to": "#1c6b1dff"
+            "color_mask_b_to": "#4e7a3aff"
           },
           {
             "color_mask_g_from": "#332521ff"
@@ -621,119 +523,95 @@
       },
       {
         "layer": {
-          "id": 30,
-          "res": "grass_cane_a",
-          "density": 2.4,
-          "horScale": 1.1,
-          "horMinScale": 0.5,
-          "verScale": 1.1,
-          "verMinScale": 0.5,
+          "maskChannel": [0.0,1.0,0.0,0.0],
+          "res": "grass_daisies_a",
+          "density": 0.6,
+          "horScale": 1.3,
+          "horMinScale": 0.9,
+          "verScale": 1.3,
+          "verMinScale": 0.9,
           "windMul": 0.05,
-          "color_mask_r_from": "#fee977ff",
-          "color_mask_r_to": "#ae9404ff",
-          "color_mask_b_from": "#323c0aff",
-          "color_mask_b_to": "#282007ff",
+          "radiusMul": 2.0,
+          "color_mask_r_from": "#d8ecf2ff",
+          "color_mask_r_to": "#a7c3ccff",
+          "color_mask_b_from": "#fcb130ff",
+          "color_mask_b_to": "#ed9d47ff",
           "color_mask_g_from": "#332521ff",
           "color_mask_g_to": "#f7f2baff"
         }
       },
       {
-        "layer": [
-          {
-            "id": 0
-          },
-          {
-            "id": 55
-          },
-          {
-            "res": "grass_daisies_a"
-          },
-          {
-            "density": 1.5
-          },
-          {
-            "horScale": 1.4
-          },
-          {
-            "horMinScale": 1.1
-          },
-          {
-            "verScale": 1.4
-          },
-          {
-            "verMinScale": 1.1
-          },
-          {
-            "windMul": 0.05
-          },
-          {
-            "color_mask_r_from": "#d8ecf2ff"
-          },
-          {
-            "color_mask_r_to": "#a7c3ccff"
-          },
-          {
-            "color_mask_b_from": "#fcb130ff"
-          },
-          {
-            "color_mask_b_to": "#ed9d47ff"
-          },
-          {
-            "color_mask_g_from": "#332521ff"
-          },
-          {
-            "color_mask_g_to": "#f7f2baff"
-          }
-        ]
+        "layer": {
+          "maskChannel": [0.0,1.0,1.0,0.0],
+          "res": "grass_simple_a",
+          "density": 0.5,
+          "horScale": 1.4,
+          "horMinScale": 0.9,
+          "verScale": 1.2,
+          "verMinScale": 0.6,
+          "windMul": 0.05,
+          "radiusMul": 2.0,
+          "color_mask_r_from": "#9da2027f",
+          "color_mask_r_to": "#1f4b0a7f",
+          "color_mask_b_from": "#10610e7f",
+          "color_mask_b_to": "#0314037f",
+          "color_mask_g_from": "#332521ff",
+          "color_mask_g_to": "#f7f2baff"
+        }
       },
       {
-        "layer": [
-          {
-            "id": 0
-          },
-          {
-            "id": 2
-          },
-          {
-            "id": 55
-          },
-          {
-            "res": "grass_fill_a"
-          },
-          {
-            "density": 2.0
-          },
-          {
-            "horScale": 1.2
-          },
-          {
-            "horMinScale": 0.5
-          },
-          {
-            "verScale": 1.2
-          },
-          {
-            "verMinScale": 0.5
-          },
-          {
-            "color_mask_r_from": "#43ad1cff"
-          },
-          {
-            "color_mask_r_to": "#599428ff"
-          },
-          {
-            "color_mask_g_from": "#2b1e1bff"
-          },
-          {
-            "color_mask_g_to": "#f7f2baff"
-          },
-          {
-            "color_mask_b_from": "#2c552fff"
-          },
-          {
-            "color_mask_b_to": "#8dc857ff"
-          }
-        ]
+        "layer": {
+          "maskChannel": [0.0,0.0,1.0,0.0],
+          "res": "grass_fill_a",
+          "density": 0.5,
+          "horScale": 1.5,
+          "horMinScale": 0.5,
+          "verScale": 1.5,
+          "verMinScale": 0.5,
+          "windMul": 0.05,
+          "color_mask_r_from": "#43ad1cff",
+          "color_mask_r_to": "#599428ff",
+          "color_mask_b_from": "#ccb452ff",
+          "color_mask_b_to": "#9e5c23ff",
+          "color_mask_g_from": "#332521ff",
+          "color_mask_g_to": "#f7f2baff"
+        }
+      },
+      {
+        "layer": {
+          "maskChannel": [0.0,1.0,0.0,0.0],
+          "res": "grass_fill_a",
+          "density": 0.5,
+          "horScale": 1.2,
+          "horMinScale": 0.5,
+          "verScale": 1.6,
+          "verMinScale": 0.9,
+          "windMul": 0.05,
+          "color_mask_r_from": "#43ad1cff",
+          "color_mask_r_to": "#599428ff",
+          "color_mask_b_from": "#ccb452ff",
+          "color_mask_b_to": "#9e5c23ff",
+          "color_mask_g_from": "#332521ff",
+          "color_mask_g_to": "#f7f2baff"
+        }
+      },
+      {
+        "layer": {
+          "maskChannel": [1.0,0.0,0.0,0.0],
+          "res": "grass_ivantea_a",
+          "density": 0.3,
+          "horScale": 1.1,
+          "horMinScale": 0.6,
+          "verScale": 1.1,
+          "verMinScale": 0.6,
+          "windMul": 0.05,
+          "color_mask_r_from": "#ba3254ff",
+          "color_mask_r_to": "#9c3a67ff",
+          "color_mask_b_from": "#34452dff",
+          "color_mask_b_to": "#4d5942ff",
+          "color_mask_g_from": "#332521ff",
+          "color_mask_g_to": "#f7f2baff"
+        }
       }
     ]
   },
@@ -1311,6 +1189,12 @@
       },
       {
         "tex": "wood_rough_tex_e_n*"
+      },
+      {
+        "tex": "baroque_buildings_trim_wood_tex_d"
+      },
+      {
+        "tex": "fabric_patches_a_tex_d"
       }
     ]
   },
@@ -1498,6 +1382,18 @@
       },
       {
         "tex": "sandbags_tex_n*"
+      },
+      {
+        "tex": "baroque_buildings_trim_concrete_tex_d"
+      },
+      {
+        "tex": "decal_bullet_holes_tex_d"
+      },
+      {
+        "tex": "decal_moss_leaks_a_tex_m"
+      },
+      {
+        "tex": "decal_moss_bottom_a_tex_m"
       }
     ]
   }

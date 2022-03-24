@@ -2,10 +2,17 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "player": {
-      "army": 1,
-      "wing": "player"
-    },
+    "player": [
+      {
+        "army": 1
+      },
+      {
+        "wing": "player_a"
+      },
+      {
+        "wing": "player_b"
+      }
+    ],
     "player_teamB": {
       "army": 2
     },
@@ -586,7 +593,7 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
-            "object": "player",
+            "object": "@player",
             "move_type": "teleport",
             "lookat": "capture_zone"
           }
@@ -917,7 +924,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint01",
           "object_var_value": 0
         }
@@ -1017,7 +1024,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint02",
           "object_var_value": 0
         }
@@ -1109,7 +1116,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint03",
           "object_var_value": 0
         }
@@ -1271,7 +1278,7 @@
       },
       "conditions": {
         "unitWhenProperties": {
-          "object": "player",
+          "object": "@player",
           "func": "less",
           "value": 5.0,
           "property": "speed",
@@ -2753,7 +2760,22 @@
         },
         {
           "wait": {
-            "time": 0.6
+            "time": 0.4
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
           }
         },
         {
@@ -2764,6 +2786,24 @@
         {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "player_b"
+          }
+        },
+        {
+          "playerSwapWithUnit": {
+            "from": "@player",
+            "to": "player_b",
+            "animViscosity": 0.1
+          }
+        },
+        {
+          "varSetString": {
+            "value": "player_b",
+            "var": "player"
           }
         },
         {
@@ -2784,14 +2824,14 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
-            "object": "player",
+            "object": "@player",
             "move_type": "teleport",
             "lookat": "target_ship03"
           }
         },
         {
-          "triggerDisable": {
-            "target": "set_sero_torpedoes"
+          "unitPutToSleep": {
+            "target": "player_a"
           }
         },
         {
@@ -2799,7 +2839,7 @@
             "target_marking": 0,
             "ressurectIfDead": false,
             "fullRestore": false,
-            "target": "player",
+            "target": "@player",
             "ammoRestore": true
           }
         },
@@ -4279,7 +4319,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint04",
           "object_var_value": 0
         }
@@ -4364,7 +4404,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint05",
           "object_var_value": 0
         }
@@ -4544,7 +4584,7 @@
       },
       "conditions": {
         "unitWhenProperties": {
-          "object": "player",
+          "object": "@player",
           "func": "less",
           "value": 5.0,
           "property": "speed",
@@ -4635,7 +4675,7 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
-            "object": "player",
+            "object": "@player",
             "move_type": "teleport",
             "lookat": "waypoint06"
           }
@@ -6079,7 +6119,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint06",
           "object_var_value": 0
         }
@@ -6164,7 +6204,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "waypoint07",
           "object_var_value": 0
         }
@@ -6249,7 +6289,7 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "player",
+          "object": "@player",
           "target": "capture_zone"
         }
       },
@@ -6549,7 +6589,7 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "player",
+          "object": "@player",
           "target": "capture_zone"
         }
       },
@@ -6640,7 +6680,7 @@
           "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "player",
+          "object": "@player",
           "target": "capture_zone"
         },
         "missionIsZoneCaptured": {
@@ -7490,7 +7530,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         },
         {
@@ -7503,7 +7543,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         },
         {
@@ -7516,7 +7556,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         }
       ],
@@ -7554,7 +7594,7 @@
           "unitRespawn": {
             "delay": 1.0,
             "offset": [0.0,0.0,0.0],
-            "object": "player",
+            "object": "@player",
             "target": "player_centering_point01"
           }
         },
@@ -7576,7 +7616,7 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
-            "object": "player",
+            "object": "@player",
             "move_type": "teleport",
             "lookat": "target_ship03"
           }
@@ -7613,7 +7653,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         },
         {
@@ -7626,7 +7666,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         },
         {
@@ -7639,7 +7679,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         }
       ],
@@ -7677,7 +7717,7 @@
           "unitRespawn": {
             "delay": 1.0,
             "offset": [0.0,0.0,0.0],
-            "object": "player",
+            "object": "@player",
             "target": "player_centering_point01"
           }
         },
@@ -7699,7 +7739,7 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
-            "object": "player",
+            "object": "@player",
             "move_type": "teleport",
             "lookat": "target_ship03"
           }
@@ -7738,7 +7778,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "check_objects": "any",
-          "object": "player",
+          "object": "@player",
           "target": "@waypoint_name"
         }
       },
@@ -7797,7 +7837,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         },
         {
@@ -7810,7 +7850,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         },
         {
@@ -7823,7 +7863,7 @@
             "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
-            "object": "player"
+            "object": "@player"
           }
         }
       ],
@@ -7866,7 +7906,7 @@
           "unitRespawn": {
             "delay": 1.0,
             "offset": [0.0,0.0,0.0],
-            "object": "player",
+            "object": "@player",
             "target": "@waypoint_spawn_name"
           }
         },
@@ -7888,7 +7928,7 @@
             "horizontalDirectionForTeleport": true,
             "fastClimb": false,
             "destTimeMode": false,
-            "object": "player",
+            "object": "@player",
             "move_type": "teleport",
             "lookat": "@waypoint_name"
           }
@@ -8028,28 +8068,6 @@
         }
       ],
       "else_actions": []
-    },
-    "set_sero_torpedoes": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": [],
-      "actions": {
-        "unitSetZeroAmmo": {
-          "target": "player",
-          "triggerGroup": "torpedoes"
-        }
-      },
-      "else_actions": []
     }
   },
   "mission_objectives": {
@@ -8115,7 +8133,8 @@
     "waypoint_name": "waypoint01",
     "waypoint_number": 1,
     "lookat_point_name": "target_ship03",
-    "waypoint_spawn_name": "waypoint01"
+    "waypoint_spawn_name": "waypoint01",
+    "player": "player_a"
   },
   "dialogs": [],
   "airfields": [],
@@ -8123,7 +8142,7 @@
   "units": [
     {
       "ships": {
-        "name": "player",
+        "name": "player_a",
         "tm": [
           [-0.880257,0.0,0.474496],
           [0.0,1.0,0.0],
@@ -8954,6 +8973,46 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "player_b",
+        "tm": [
+          [-0.880257,0.0,0.474496],
+          [0.0,1.0,0.0],
+          [-0.474496,0.0,-0.880257],
+          [2904.9,0.0,917.65]
+        ],
+        "unit_class": "us_elco_80ft_pt_boat_mod01",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "torpedoes",
+        "bullets0": "40mm_bofors_l60_navy_universal",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 10000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "40mm_bofors_l60_navy_universal",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
         },
         "way": []
       }

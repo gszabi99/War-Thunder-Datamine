@@ -222,6 +222,7 @@ let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
   ::broadcastEvent("MissionStarted")
 }
 
+let airTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]
 ::get_weapon_image <- function get_weapon_image(unitType, weaponBlk, costBlk)
 {
   if (unitType == ::ES_UNIT_TYPE_TANK)
@@ -232,7 +233,7 @@ let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
            ?? weaponBlk?.image
            ?? ""
   }
-  else if (::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]))
+  else if (airTypes.contains(unitType))
   {
     return costBlk?.image_aircraft
            ?? weaponBlk?.image_aircraft

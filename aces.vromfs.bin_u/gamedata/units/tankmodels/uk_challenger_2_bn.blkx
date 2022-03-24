@@ -477,6 +477,15 @@
         "aps_sensor_01_dm": [],
         "aps_sensor_02_dm": []
       },
+      "aps_launchers": {
+        "armorClass": "RHA_tank",
+        "hp": 200.0,
+        "armorThickness": 15.0,
+        "restrainDamage": 0.5,
+        "createSecondaryShatters": false,
+        "aps_launcher_01_dm": [],
+        "aps_launcher_02_dm": []
+      },
       "optics": {
         "armorClass": "optics_tank",
         "armorThickness": 10.0,
@@ -4571,15 +4580,52 @@
     }
   },
   {
-    "skin": {
-      "name": "uk_camo_challenger_black_night",
-      "nameLocId": "skin/uk_camo_challenger_black_night",
-      "descLocId": "skin/uk_camo_challenger_black_night/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_challenger_black_night*"
+    "skin": [
+      {
+        "name": "uk_camo_challenger_black_night"
+      },
+      {
+        "nameLocId": "skin/uk_camo_challenger_black_night"
+      },
+      {
+        "descLocId": "skin/uk_camo_challenger_black_night/desc"
+      },
+      {
+        "set_tex": {
+          "from": "challenger_2_bn_body_c*",
+          "to": "challenger_2_bn_skin_bn_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "challenger_2_bn_turret_c*",
+          "to": "challenger_2_bn_skin_bn_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "challenger_2_body_c*",
+          "to": "challenger_2_skin_bn_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "challenger_2_gun_c*",
+          "to": "challenger_2_skin_bn_gun_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "uk_mg_mount_vfm_5_c*",
+          "to": "uk_mg_mount_skin_bn_vfm_5_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
+    ]
   },
   {
     "ActiveProtectionSystem": {
@@ -4594,6 +4640,7 @@
       "LeftModule": {
         "sensorPos": [0.0,0.5,1.5],
         "dmPart": "aps_sensor_02_dm",
+        "launcherDmPart": "aps_launcher_01_dm",
         "horAngles": [-195.0,15.0],
         "emitterGenRange": [23.0,24.0],
         "emitterGenFmt": "emtr_mortar_flame_%02d",
@@ -4740,6 +4787,7 @@
       "RightModule": {
         "sensorPos": [0.0,0.5,-1.5],
         "dmPart": "aps_sensor_01_dm",
+        "launcherDmPart": "aps_launcher_02_dm",
         "horAngles": [-15.0,195.0],
         "emitterGenRange": [21.0,22.0],
         "emitterGenFmt": "emtr_mortar_flame_%02d",

@@ -1,5 +1,4 @@
 let psn = require("%sonyLib/webApi.nut")
-let { open_player_review, PlayerReviewMode } = require("sony.social")
 let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { getActivityByGameMode } = require("%scripts/gameModes/psnActivities.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
@@ -161,15 +160,6 @@ let function enableMatchesReporting() {
   ::add_event_listener("BattleEnded", onBattleEnded)
 }
 
-let function openPlayerReviewDialog() {
-  // Currently we only have Team matches set up
-  let id = match.lastId || match.id
-  if (id != null)
-    open_player_review(id, PlayerReviewMode.TEAM_ONLY, "", {})
-}
-
 return {
   enableMatchesReporting
-  canOpenPlayerReviewDialog = @() match.lastId != null
-  openPlayerReviewDialog
 }

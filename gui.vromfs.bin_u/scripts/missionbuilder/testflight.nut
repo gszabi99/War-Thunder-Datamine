@@ -204,7 +204,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     options.append(
       [::USEROPT_MODIFICATIONS, "spinner"],
       [::USEROPT_TIME, "spinner"],
-      [::USEROPT_WEATHER, "spinner"]
+      [::USEROPT_CLIME, "spinner"]
     )
     return options
   }
@@ -360,7 +360,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
         name      = misName
         chapter   = "training"
         takeOffOnStart = false
-        weather     = getSceneOptValue(::USEROPT_WEATHER)
+        weather     = getSceneOptValue(::USEROPT_CLIME)
         environment = getSceneOptValue(::USEROPT_TIME)
       }, misBlk)
 

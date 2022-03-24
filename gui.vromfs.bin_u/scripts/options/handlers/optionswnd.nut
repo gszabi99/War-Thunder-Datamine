@@ -9,6 +9,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
+let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -112,7 +113,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
   {
     guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/socialOptions.blk", this)
 
-    let hasFacebook = ::has_feature("Facebook")
+    let hasFacebook = isAvailableFacebook()
     let fObj = showSceneBtn("facebook_frame", hasFacebook)
     if (hasFacebook && fObj)
     {

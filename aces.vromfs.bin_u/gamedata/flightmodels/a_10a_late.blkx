@@ -2,6 +2,7 @@
   "model": "a_10a_late",
   "fmFile": "fm/a-10a_late.blk",
   "harmonizationSuffix": "_tomoe",
+  "viewDistKInSight": 4.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.422,
   "gearSinkRangeC": 0.278,
@@ -14,7 +15,11 @@
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
+  "haveCCRPForBombs": true,
+  "havePointOfInterestDesignator": true,
   "ilsKaiserA10": true,
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -75,16 +80,16 @@
       "fin2_dm": {
         "hp": 30.5
       },
+      "flap_l_dm": {
+        "hp": 30.5
+      },
+      "flap_r_dm": {
+        "hp": 30.5
+      },
       "flap1_l_dm": {
         "hp": 30.5
       },
       "flap1_r_dm": {
-        "hp": 30.5
-      },
-      "flap2_l_dm": {
-        "hp": 30.5
-      },
-      "flap2_r_dm": {
         "hp": 30.5
       },
       "rudder0_dm": {
@@ -753,6 +758,120 @@
     {
       "part": [
         {
+          "name": "flap_l_dm"
+        },
+        {
+          "onHit": {
+            "damage": 10.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0,
+            "nothing": 9.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "flap_r_dm"
+        },
+        {
+          "onHit": {
+            "damage": 10.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0,
+            "nothing": 9.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
           "name": "flap1_l_dm"
         },
         {
@@ -811,120 +930,6 @@
       "part": [
         {
           "name": "flap1_r_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "flap2_l_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "flap2_r_dm"
         },
         {
           "onHit": {
@@ -2429,7 +2434,7 @@
       "mirrorNode": "blister14"
     },
     {
-      "lightPos": [5.264,0.037,0.003]
+      "lightPos": [5.119,0.032,-0.001]
     },
     {
       "lightColor": [0.01,0.6,0.1]
@@ -2438,7 +2443,7 @@
       "lightRadius": 0.4
     },
     {
-      "lightPos1": [5.153,-0.157,0.459]
+      "lightPos1": [4.993,-0.138,0.529]
     },
     {
       "lightColor1": [0.01,0.6,0.1]
@@ -2447,13 +2452,22 @@
       "lightRadius1": 0.3
     },
     {
-      "lightPos2": [5.153,-0.157,-0.459]
+      "lightPos2": [5.013,-0.147,-0.511]
     },
     {
       "lightColor2": [0.01,0.6,0.1]
     },
     {
       "lightRadius2": 0.3
+    },
+    {
+      "lightPos3": [5.109,0.238,-0.006]
+    },
+    {
+      "lightColor3": [0.01,0.6,0.1]
+    },
+    {
+      "lightRadius3": 0.3
     },
     {
       "devices": {
@@ -2522,6 +2536,17 @@
     },
     {
       "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.0,0.5,0.5],
+            "monoDisplayColor": [0.37,0.45,0.4],
+            "cameraFromShell": true,
+            "page": {
+              "type": "thermal",
+              "turretIdx": 0
+            }
+          }
+        },
         {
           "display": {
             "textureArea": [0.5,0.5,1.0,1.0],
@@ -2602,6 +2627,12 @@
     },
     {
       "preset": {
+        "name": "a_10a_late_aim_9l_default",
+        "blk": "gameData/FlightModels/weaponPresets/a_10a_late_aim_9l_default.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "a_10a_late_aero_131a",
         "blk": "gameData/FlightModels/weaponPresets/a_10a_late_aero_131a.blk"
       }
@@ -2610,6 +2641,12 @@
       "preset": {
         "name": "a_10a_late_3x_aero_131a",
         "blk": "gameData/FlightModels/weaponPresets/a_10a_late_3x_aero_131a.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "a_10a_late_3x_aero_131a_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/a_10a_late_3x_aero_131a_aim_9l.blk"
       }
     },
     {
@@ -2626,14 +2663,32 @@
     },
     {
       "preset": {
+        "name": "a_10a_late_x3_500lb_mk_82_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/a_10a_late_x3_500lb_mk_82_aim_9l.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "a_10a_late_2000lb_mk_84",
         "blk": "gameData/FlightModels/weaponPresets/a_10a_late_2000lb_mk_84.blk"
       }
     },
     {
       "preset": {
+        "name": "a_10a_late_2000lb_mk_84_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/a_10a_late_2000lb_mk_84_aim_9l.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "a_10a_late_3x_agm_65d",
         "blk": "gameData/FlightModels/weaponPresets/a_10a_late_3x_agm_65d.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "a_10a_late_3x_agm_65d_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/a_10a_late_3x_agm_65d_aim_9l.blk"
       }
     },
     {
@@ -2679,6 +2734,9 @@
         },
         {
           "node": "cannon3_dm"
+        },
+        {
+          "node": "cover7_dm"
         }
       ]
     },
@@ -2845,6 +2903,22 @@
         },
         {
           "WeaponPreset": {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "us_aim9l_sidewinder_lm_default",
+            "ShowNodes": {
+              "node": "bomb_pylon1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/dra_lau_105a_aim_9l_lm.blk",
+              "emitter": "dra_lau105a_1"
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
             "iconType": "missile_type_b_air_to_air_group",
             "name": "us_aim9l_sidewinder",
             "reqModification": "us_aim_9l",
@@ -2980,7 +3054,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "bombs_middle_group",
+            "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3047,7 +3121,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/lau_88a_agm_65d_x_3.blk",
-              "emitter": "lau_88a_2",
+              "emitter": "lau_88a_1",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -3099,7 +3173,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247_x3.blk",
-              "emitter": "pylon_ter9a_3",
+              "emitter": "pylon_ter9a_2",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -3107,7 +3181,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "bombs_middle_group",
+            "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3315,7 +3389,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247_x3.blk",
-              "emitter": "pylon_ter9a_2",
+              "emitter": "pylon_ter9a_3",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -3323,7 +3397,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "bombs_middle_group",
+            "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3420,7 +3494,7 @@
               "trigger": "rockets",
               "external": true,
               "blk": "gameData/Weapons/containers/lau_131a_hydra_70_m247_x3.blk",
-              "emitter": "pylon_ter9a_1",
+              "emitter": "pylon_ter9a_4",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -3428,7 +3502,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "bombs_middle_group",
+            "iconType": "bombs_middle",
             "name": "us_500lb_mk_82_ldgp",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3495,7 +3569,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/lau_88a_agm_65d_x_3.blk",
-              "emitter": "lau_88a_1",
+              "emitter": "lau_88a_2",
               "mass": 0.01,
               "dragCx": 0.01
             }
@@ -3563,6 +3637,22 @@
         },
         {
           "order": 2
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "us_aim9l_sidewinder_rm_default",
+            "ShowNodes": {
+              "node": "bomb_pylon11"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/dra_lau_105a_aim_9l_rm.blk",
+              "emitter": "dra_lau105a_2"
+            }
+          }
         },
         {
           "WeaponPreset": {
@@ -3712,6 +3802,12 @@
     "maxSpeed": 142.779,
     "turnTime": 21.6518
   },
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [500.0,300.0],
+      "noiseFactor": 0.05
+    }
+  },
   "modifications": {
     "new_compressor_jet": {
       "tier": 1
@@ -3770,6 +3866,10 @@
             "lightMult": 8.0,
             "ghosting": 0.75,
             "noiseFactor": 0.2
+          },
+          "sightThermal": {
+            "resolution": [500.0,300.0],
+            "noiseFactor": 0.05
           }
         }
       }

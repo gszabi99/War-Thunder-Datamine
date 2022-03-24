@@ -2812,77 +2812,6 @@
             ]
           }
         }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner2",
-          "triggerGroup": "rockets",
-          "blk": "gameData/Weapons/navalModels_weapons/320mm_mk108_weapon_alfa_rocket_launcher.blk",
-          "weaponType": "rockets",
-          "emitter": "bone_rocket_01",
-          "flash": "emtr_gun_flame_05",
-          "useEmitter": true,
-          "barrelDP": "auxiliary_caliber_gun_01_dm",
-          "breechDP": "auxiliary_caliber_gun_01_dm",
-          "useGunnerTargetingQuality": false,
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "speedYaw": 25.0,
-          "speedPitch": 25.0,
-          "fireConeAngle": 1.0,
-          "bullets": 22,
-          "allowableDelta": 2.0,
-          "ChainfireTime": 60.0,
-          "DelayAfterShoot": 0.0,
-          "aimMinDist": 20.0,
-          "aimMaxDist": 4500.0,
-          "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.55,
-          "accuracyAir": 1.0,
-          "accuracyGnd": 0.8,
-          "errMeasureVel": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 0.5,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "turret": {
-            "head": "auxiliary_caliber_turret_01",
-            "gun": "auxiliary_caliber_gun_01",
-            "gunnerDm": "auxiliary_caliber_turret_01_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [0.0,85.0]
-          },
-          "limitsTable": {
-            "lim1": [-180.0,-164.0,43.0,85.0],
-            "lim2": [-164.0,-141.0,28.0,85.0],
-            "lim3": [-141.0,-23.0,0.0,85.0],
-            "lim4": [-23.0,23.0,22.0,85.0],
-            "lim5": [23.0,141.0,0.0,85.0],
-            "lim6": [141.0,164.0,28.0,85.0],
-            "lim7": [164.0,180.0,43.0,85.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 80.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 80.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.01]
-              },
-              {
-                "row": [70.0,0.05]
-              }
-            ]
-          }
-        }
       }
     ]
   },
@@ -2903,8 +2832,34 @@
       },
       {
         "preset": {
+          "name": "rocket_launcher",
+          "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_rocket_launcher.blk"
+        }
+      },
+      {
+        "preset": {
           "name": "bomb_mortar_torpedoes",
           "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_torpedoes.blk",
+          "reqModification": "ship_bomb_mortar"
+        }
+      },
+      {
+        "preset": {
+          "name": "bomb_mortar_rocket_launcher",
+          "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_rocket_launcher.blk",
+          "reqModification": "ship_bomb_mortar"
+        }
+      },
+      {
+        "preset": {
+          "name": "rocket_launcher_torpedoes",
+          "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_rocket_launcher_torpedoes.blk"
+        }
+      },
+      {
+        "preset": {
+          "name": "bomb_mortar_rocket_launcher_torpedoes",
+          "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_rocket_launcher_torpedoes.blk",
           "reqModification": "ship_bomb_mortar"
         }
       },
@@ -4256,7 +4211,7 @@
   },
   {
     "breaches": {
-      "repairSpeed": 35.0,
+      "repairSpeed": 32.0,
       "waterMassVel": -40000.0,
       "waterMassMult": 200.0,
       "sizeToRepair": [0.01,4.0,10.0,450.0],

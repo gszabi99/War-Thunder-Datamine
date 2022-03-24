@@ -132,15 +132,6 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "CHA_tank",
@@ -224,10 +215,6 @@
         },
         "turret_01_side_dm": {
           "armorThickness": 10.0
-        },
-        "turret_03_back_dm": {
-          "armorThickness": 10.0,
-          "hidableInViewer": true
         },
         "turret_07_back_dm": {
           "armorThickness": 30.0
@@ -480,7 +467,16 @@
         "ex_armor_body_03_dm": [],
         "ex_armor_body_04_dm": [],
         "ex_armor_body_07_dm": [],
-        "ex_armor_body_06_dm": []
+        "ex_armor_body_06_dm": [],
+        "ex_armor_turret_01_dm": {
+          "armorThickness": 6.0
+        },
+        "ex_armor_turret_02_dm": {
+          "armorThickness": 6.0
+        },
+        "turret_03_back_dm": {
+          "armorThickness": 15.0
+        }
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -1019,7 +1015,8 @@
       "turret_07_top_dm": true,
       "ex_decor_04_dm": true,
       "ex_decor_05_dm": true,
-      "turret_08_back_dm": true
+      "turret_08_back_dm": true,
+      "turret_03_back_dm": true
     }
   },
   {
@@ -2809,30 +2806,6 @@
             },
             "ammo_body_48_dm": {
               "count": 1
-            },
-            "ammo_body_49_dm": {
-              "count": 1
-            },
-            "ammo_body_50_dm": {
-              "count": 1
-            },
-            "ammo_body_51_dm": {
-              "count": 1
-            },
-            "ammo_body_52_dm": {
-              "count": 1
-            },
-            "ammo_body_53_dm": {
-              "count": 1
-            },
-            "ammo_body_54_dm": {
-              "count": 1
-            },
-            "ammo_body_55_dm": {
-              "count": 1
-            },
-            "ammo_body_56_dm": {
-              "count": 1
             }
           }
         }
@@ -2854,7 +2827,7 @@
           "speedYaw": 40.0,
           "speedPitch": 10.0,
           "fireConeAngle": 1.0,
-          "bullets": 62,
+          "bullets": 54,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -4077,7 +4050,7 @@
                 "speedYaw": 40.0,
                 "speedPitch": 10.0,
                 "fireConeAngle": 1.0,
-                "bullets": 62,
+                "bullets": 54,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,

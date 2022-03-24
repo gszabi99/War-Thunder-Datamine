@@ -386,7 +386,7 @@ let function getTierWeaponsParams(weapons, tierId) {
 
 let function convertPresetToBlk(preset) {
   let presetBlk = DataBlock()
-  presetBlk["name"] = preset.nameTextWithPrice ?? ""
+  presetBlk["name"] = preset.customNameText ?? ""
   foreach (tier in preset.tiers) {
     let weaponBlk = presetBlk.addNewBlock("Weapon")
     weaponBlk["preset"] = tier.presetId
@@ -408,7 +408,7 @@ let function getPresetView(unit, preset, weaponry, pType) {
     isDefault         = preset.isDefault
     isEnabled         = preset.isEnabled
     rank              = getReqRankByMod(preset?.reqModification, modifications)
-    nameTextWithPrice = preset?.nameTextWithPrice
+    customNameText    = preset?.customNameText
     tiers             = {}
   }
   foreach (weaponType, triggers in weaponry)

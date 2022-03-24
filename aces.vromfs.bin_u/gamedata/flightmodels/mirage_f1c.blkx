@@ -23,7 +23,7 @@
   "advancedMouseAim": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
@@ -2120,40 +2120,40 @@
       "mirrorNode": "blister5"
     },
     {
-      "lightPos": [5.918697,0.034877,0.002895]
+      "lightPos": [5.051,0.116,-0.0]
     },
     {
       "lightColor": [0.7,0.01,0.0]
     },
     {
-      "lightRadius": 0.28
+      "lightRadius": 0.31
     },
     {
-      "lightPos1": [5.922685,-0.272331,0.312176]
+      "lightPos1": [5.066,-0.074,0.345]
     },
     {
-      "lightColor1": [0.8,0.25,0.1]
+      "lightColor1": [0.7,0.01,0.0]
     },
     {
-      "lightRadius1": 0.15
+      "lightRadius1": 0.3
     },
     {
-      "lightPos2": [5.875638,-0.249553,-0.333255]
+      "lightPos2": [5.066,-0.074,-0.345]
     },
     {
-      "lightColor2": [0.8,0.25,0.1]
+      "lightColor2": [0.7,0.01,0.0]
     },
     {
-      "lightRadius2": 0.15
+      "lightRadius2": 0.3
     },
     {
-      "lightPos3": [5.61156,-0.268665,-0.336118]
+      "lightPos3": [5.095,-0.263,-0.008]
     },
     {
-      "lightColor3": [0.8,0.25,0.01]
+      "lightColor3": [0.7,0.01,0.0]
     },
     {
-      "lightRadius3": 0.2
+      "lightRadius3": 0.3
     },
     {
       "devices": {
@@ -2348,6 +2348,12 @@
     },
     {
       "preset": {
+        "name": "mirage_f1c_gunpods_r550_r530e",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_gunpods_r550_r530e.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "mirage_f1c_2xmagic_2x530",
         "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_2xmagic_2x530.blk"
       }
@@ -2362,6 +2368,18 @@
       "preset": {
         "name": "mirage_f1c_2x_magic_4x_ir_f1",
         "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_2x_magic_4x_ir_f1.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_1000kg_mk84_sneb23_r550",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_1000kg_mk84_sneb23_r550.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_fr_400_samp_r550_gunpod_sneb",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_fr_400_samp_r550_gunpod_sneb.blk"
       }
     }
   ],
@@ -2556,6 +2574,7 @@
         "WeaponPreset": {
           "iconType": "missile_type_b_air_to_air",
           "name": "wing_left_rocket_r550_magic_1",
+          "reqModification": "fr_matra_r_550_magic_1",
           "ShowNodes": {
             "node": "pylon_lm39_001"
           },
@@ -2656,7 +2675,7 @@
         {
           "WeaponPreset": {
             "iconType": "nar_ap_large",
-            "name": "wing_left_containers_matra_lr_f1",
+            "name": "containers_matra_lr_f1",
             "reqModification": "fr_lr_f1",
             "ShowNodes": {
               "node": "pylon_amd_001"
@@ -2672,8 +2691,8 @@
         {
           "WeaponPreset": {
             "iconType": "nar_ap_small",
-            "name": "wing_left_containers_matra_lr_f4",
-            "reqModification": "fr_lr_f1",
+            "name": "containers_matra_lr_f4",
+            "reqModification": "fr_jl_100r",
             "ShowNodes": {
               "node": "pylon_amd_001"
             },
@@ -2736,7 +2755,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "missile_type_b_air_to_air",
+            "iconType": "missile_air_to_air_midrange_special",
             "name": "wing_right_2_rocket_matra_super_530f",
             "reqModification": "fr_matra_r_530_f",
             "ShowNodes": {
@@ -2878,7 +2897,7 @@
         {
           "WeaponPreset": {
             "iconType": "nar_ap_large",
-            "name": "wing_left_containers_matra_lr_f1",
+            "name": "containers_matra_lr_f1",
             "reqModification": "fr_lr_f1",
             "ShowNodes": {
               "node": "pylon_916_001"
@@ -2893,9 +2912,9 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "nar_ap_large",
-            "name": "wing_left_middle_containers_matra_lr_f4",
-            "reqModification": "fr_lr_f1",
+            "iconType": "nar_ap_small",
+            "name": "containers_matra_lr_f4",
+            "reqModification": "fr_jl_100r",
             "ShowNodes": {
               "node": "pylon_916_001"
             },
@@ -3100,7 +3119,7 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "missile_type_b_air_to_air",
+            "iconType": "missile_air_to_air_midrange_special",
             "name": "wing_right_2_rocket_matra_super_530f",
             "reqModification": "fr_matra_r_530_f",
             "ShowNodes": {
@@ -3242,7 +3261,7 @@
         {
           "WeaponPreset": {
             "iconType": "nar_ap_large",
-            "name": "wing_right_containers_matra_lr_f1",
+            "name": "containers_matra_lr_f1",
             "reqModification": "fr_lr_f1",
             "ShowNodes": {
               "node": "pylon_916_002"
@@ -3258,8 +3277,8 @@
         {
           "WeaponPreset": {
             "iconType": "nar_ap_small",
-            "name": "wing_right_middle_containers_matra_lr_f4",
-            "reqModification": "fr_lr_f1",
+            "name": "containers_matra_lr_f4",
+            "reqModification": "fr_jl_100r",
             "ShowNodes": {
               "node": "pylon_916_002"
             },
@@ -3359,7 +3378,7 @@
         {
           "WeaponPreset": {
             "iconType": "nar_ap_large",
-            "name": "wing_right_containers_matra_lr_f1",
+            "name": "containers_matra_lr_f1",
             "reqModification": "fr_lr_f1",
             "ShowNodes": {
               "node": "pylon_amd_002"
@@ -3374,9 +3393,9 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "nar_ap_large",
-            "name": "wing_left_containers_matra_lr_f4",
-            "reqModification": "fr_lr_f1",
+            "iconType": "nar_ap_small",
+            "name": "containers_matra_lr_f4",
+            "reqModification": "fr_jl_100r",
             "ShowNodes": {
               "node": "pylon_amd_002"
             },
@@ -3385,30 +3404,6 @@
               "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_004",
               "external": true
-            }
-          }
-        },
-        {
-          "WeaponPreset": {
-            "iconType": "ltc",
-            "name": "chaff_right",
-            "ShowNodes": [
-              {
-                "node": "pylon_pec_002"
-              },
-              {
-                "node": "phimat_container"
-              }
-            ],
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 16,
-              "external": true,
-              "separate": false,
-              "capName": "cap_1"
             }
           }
         }
@@ -3422,6 +3417,7 @@
         "WeaponPreset": {
           "iconType": "missile_type_b_air_to_air",
           "name": "wing_right_rocket_r550_magic_1",
+          "reqModification": "fr_matra_r_550_magic_1",
           "ShowNodes": {
             "node": "pylon_lm39_002"
           },
@@ -3544,6 +3540,14 @@
       "prevModification": "aden_new_gun",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "aden_gunpod_air_targets": [],
+    "aden_gunpod_ground_targets": [],
+    "aden_gunpod_stealth": [],
+    "aden_gunpod_belt_pack": {
+      "tier": 4,
+      "prevModification": "fr_mirage_f1c_cc_420_gunpod",
+      "reqModification": "fr_mirage_f1c_cc_420_gunpod"
     },
     "fr_250kg_type_25c": {
       "modClass": "weapon",

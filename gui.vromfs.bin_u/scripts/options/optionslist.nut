@@ -10,6 +10,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -310,7 +311,7 @@ let getOptionsList = function() {
   if (::has_feature("Radio"))
     options.append(getInternetRadioOptions())
 
-  if (::has_feature("Facebook"))
+  if (isAvailableFacebook())
     options.append(getSocialOptions())
 
   return options

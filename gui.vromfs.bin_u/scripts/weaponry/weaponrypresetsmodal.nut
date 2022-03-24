@@ -161,8 +161,6 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
           isActive      = t?.isActive || "img" in t
         })
       })
-      if (presetsList?[idx].nameTextWithPrice)
-        wpParams.nameTextWithPrice = presetsList[idx].nameTextWithPrice
       res.append({
         presetId  = idx
         chosen = idx == chosenPresetIdx ? "yes" : "no"
@@ -273,7 +271,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let headerTextObj = ::showBtn("header_name_txt", true, headerObj)
     headerTextObj.setValue(name)
     let presetId = headerObj.presetId.tointeger()
-    presetsList[presetId].nameTextWithPrice <- name
+    presetsList[presetId].customNameText <- name
   }
 
   function onCancelPresetNameEdit(obj) {
@@ -756,11 +754,11 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   function onPresetCopy(obj){
     let idx = customIdx++
     let id = $"{CUSTOM_PRESET_PREFIX}{idx}"
-    let nameTextWithPrice = createNameCustomPreset(idx)
-    presets.append(presets[curPresetIdx].__merge({id, nameTextWithPrice, chapterOrd = CHAPTER_NEW_IDX}))
+    let customNameText = createNameCustomPreset(idx)
+    presets.append(presets[curPresetIdx].__merge({id, customNameText, chapterOrd = CHAPTER_NEW_IDX}))
     local newListItem = ::u.copy(presetsList[curPresetIdx]).__update({
       name = id
-      nameTextWithPrice
+      customNameText
     })
     updateTiersActivity(newListItem.tiers, availableWeapons)
     presetsList.append(newListItem)
@@ -777,7 +775,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let curUnit = unit
     let presetIdx = curPresetIdx
     msgBox("question_delete_preset",
-      ::loc("msgbox/genericRequestDelete", { item = curPreset.nameTextWithPrice }),
+      ::loc("msgbox/genericRequestDelete", { item = curPreset.customNameText }),
       [
         ["delete", function() {
           deleteCustomPresets(curUnit, curPreset.id)
@@ -797,8 +795,11 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (!isEdit) {
       cancelPresetNameEdit(scene.findObject($"presetHeader_{curPresetIdx}"))
       let curPreset = presets?[curPresetIdx]
-      if (curPreset != null)
+      if (curPreset != null) {
         addCustomPresets(unit, curPreset.id, convertPresetToBlk(curPreset))
+        if (curPresetIdx == chosenPresetIdx)
+          ::hangar_force_reload_model()
+      }
     }
     isEditMode = isEdit
     let editBtmObj = scene.findObject("editPresetBtn")

@@ -111,15 +111,6 @@
     "canReloadNonGuns": true
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
-  },
-  {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "CHA_tank",
@@ -221,6 +212,7 @@
         "ex_armor_body_l_01_dm": [],
         "ex_armor_body_r_01_dm": [],
         "ex_armor_body_r_02_dm": [],
+        "ex_armor_body_l_02_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": []
       },
@@ -872,7 +864,15 @@
       "ex_armor_body_l_02_dm": true,
       "ex_decor_l_08_dm": true,
       "ex_decor_r_06_dm": true,
-      "ex_decor_l_06_dm": true
+      "ex_decor_l_06_dm": true,
+      "ex_decor_l_09_dm": true,
+      "ex_decor_r_08_dm": true,
+      "ex_decor_r_09_dm": true,
+      "ex_armor_turret_r_03_dm": true,
+      "ex_armor_turret_r_01_dm": true,
+      "ex_armor_turret_l_03_dm": true,
+      "ex_armor_turret_l_01_dm": true,
+      "ex_armor_turret_l_02_dm": true
     }
   },
   {
@@ -2739,9 +2739,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 49116.0,
-        "Fuel": 750.0,
-        "TakeOff": 49866.0,
+        "Empty": 45800.0,
+        "Fuel": 400.0,
+        "TakeOff": 46200.0,
         "momentOfInertia": [2.5,2.5,5.0],
         "CenterOfGravity": [-0.3,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -2776,33 +2776,36 @@
       "mechanics": {
         "maxBrakeForce": 195000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 6.04,
-        "sideGearRatio": 4.25,
-        "neutralGearRatio": 3.5,
+        "mainGearRatio": 5.42,
+        "sideGearRatio": 1.0,
+        "neutralGearRatio": 9.0,
         "gearRatios": [
           {
-            "ratio": -1.45
+            "ratio": -6.89
           },
           {
-            "ratio": -2.0
+            "ratio": -8.4
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 2.0
+            "ratio": 6.0
           },
           {
-            "ratio": 1.5
+            "ratio": 4.5
           },
           {
-            "ratio": 1.0
+            "ratio": 3.0
           },
           {
-            "ratio": 0.428
+            "ratio": 2.16
           },
           {
-            "ratio": 0.244
+            "ratio": 1.62
+          },
+          {
+            "ratio": 1.145
           }
         ]
       },

@@ -91,7 +91,7 @@ local ExchangeRecipes = class {
         .map(@(component) component.quantity).reduce(@(res, value) res + value, 0)
     requirement = parsedRecipe.requirement
 
-    let recipeStr = (requirement != null || reqItems.len() > 0) ? getRecipeStr() : parsedRecipe.recipeStr
+    let recipeStr = requirement != null ? getRecipeStr() : parsedRecipe.recipeStr
     uid = $"{generatorId};{recipeStr}"
 
     updateComponents()
@@ -122,7 +122,7 @@ local ExchangeRecipes = class {
       let shopItem = ::ItemsManager.findItemById(component.itemdefid)
       local cost = null
       if (shopItem?.isCanBuy() ?? false) {
-        cost = shopItem.getCost()
+        cost = ::Cost() + shopItem.getCost()
         cost = cost.setFromTbl({
           wp = cost.wp * reqQuantity
           gold = cost.gold * reqQuantity
@@ -639,7 +639,7 @@ local ExchangeRecipes = class {
     if (effectOnStartCraft?.showImage != null)
       startCraftWnd(effectOnStartCraft)
     if (effectOnStartCraft?.playSound != null)
-      guiScene.playSound(effectOnStartCraft.playSound)
+      ::get_cur_gui_scene()?.playSound(effectOnStartCraft.playSound)
 
     asyncActions.callAsyncActionsList(exchangeActions)
   }

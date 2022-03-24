@@ -120,13 +120,10 @@
     "type": "typeSPAA"
   },
   {
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg"
+    "rearmTimeOnField": 70.0
   },
   {
-    "customImage": "!#ui/unitskin#image_in_progress"
-  },
-  {
-    "customTooltipImage": "ui/aircrafts/image_in_progress"
+    "canReloadNonGuns": true
   },
   {
     "ikGunner": [
@@ -2938,10 +2935,10 @@
             "brokenBarrelAllowShoot": false
           },
           {
-            "speedYaw": 100.0
+            "speedYaw": 75.0
           },
           {
-            "speedPitch": 40.0
+            "speedPitch": 60.0
           },
           {
             "fireConeAngle": 1.0
@@ -3012,35 +3009,6 @@
               "yaw": [-180.0,180.0],
               "pitch": [-10.0,70.0]
             }
-          },
-          {
-            "gunStabilizer": {
-              "hasVerticalGunFreeMode": false,
-              "hasHorizontal": true,
-              "horizontalOmegaMult": 1.0,
-              "horizontalSpeedLimitKPH": 75.0,
-              "hasVertical": true,
-              "verticalOmegaMult": 1.0,
-              "verticalSpeedLimitKPH": 75.0,
-              "speedFromVehicleVerticalMult": -1.0,
-              "errorKPHToDegrees": [
-                {
-                  "row": [5.0,0.0]
-                },
-                {
-                  "row": [25.0,0.015]
-                },
-                {
-                  "row": [35.0,0.02]
-                },
-                {
-                  "row": [45.0,0.1]
-                },
-                {
-                  "row": [50.0,0.3]
-                }
-              ]
-            }
           }
         ]
       },
@@ -3062,7 +3030,7 @@
   {
     "sensors": {
       "sensor": {
-        "blk": "gameData/sensors/us_adats_track.blk",
+        "blk": "gameData/sensors/il_machbet_optics.blk",
         "turretIndex": 0,
         "dmPart": "optic_gun_dm"
       }
@@ -3773,7 +3741,34 @@
       "70mm_stinger_block1_aam": [],
       "70mm_stinger_block2_aam": [],
       "70mm_stinger_block2_aam_ammo_pack": [],
-      "modern_tank_laser_rangefinder": [],
+      "modern_tank_laser_rangefinder": {
+        "effects": {
+          "rangefinderMounted": true,
+          "isLaser": true,
+          "distanceError": [1.0,1.0,5.0,10.0],
+          "distanceThresholdMin": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMax": [1000.0,3000.0,5000.0,9999.0],
+          "distanceErrorRealistic": [1.0,1.0,5.0,10.0],
+          "distanceThresholdMinRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
+          "timeMeasurementRange": [0.5,0.5],
+          "rcostAddParam": 0.98,
+          "sensors": [
+            {
+              "sensor": {
+                "blk": "gameData/sensors/il_machbet_optics.blk",
+                "turretIndex": 0,
+                "dmPart": "optic_gun_dm"
+              }
+            },
+            {
+              "sensor": {
+                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              }
+            }
+          ]
+        }
+      },
       "night_vision_system": {
         "image": "#ui/gameuiskin#thermal_sight",
         "effects": {
