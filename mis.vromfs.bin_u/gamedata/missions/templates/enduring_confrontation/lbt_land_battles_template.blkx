@@ -1422,6 +1422,11 @@
               "randomSpawn": true,
               "resetFormation": true
             },
+            "unitSetVar": {
+              "object_var_name": "aaa",
+              "object": "@lbt_battle_t1_modern_aaa_name",
+              "object_var_value": 1
+            },
             "comment": {
               "value": ""
             },
@@ -1486,6 +1491,11 @@
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
+            },
+            "unitSetVar": {
+              "object_var_name": "aaa",
+              "object": "@lbt_battle_t1_outdated_aaa_name",
+              "object_var_value": 1
             },
             "comment": {
               "value": ""
@@ -1850,6 +1860,11 @@
               "randomSpawn": true,
               "resetFormation": true
             },
+            "unitSetVar": {
+              "object_var_name": "aaa",
+              "object": "@lbt_battle_t2_modern_aaa_name",
+              "object_var_value": 1
+            },
             "comment": {
               "value": ""
             },
@@ -1914,6 +1929,11 @@
               "isStealth": true,
               "randomSpawn": true,
               "resetFormation": true
+            },
+            "unitSetVar": {
+              "object_var_name": "aaa",
+              "object": "@lbt_battle_t2_outdated_aaa_name",
+              "object_var_value": 1
             },
             "comment": {
               "value": ""
@@ -2144,7 +2164,17 @@
             },
             {
               "comment": {
-                "value": "enable shooting and set visibility"
+                "value": "enable shooting and set visibility for NON AAA units"
+              }
+            },
+            {
+              "comment": {
+                "value": "enable shooting and set visibility for AAA units"
+              }
+            },
+            {
+              "comment": {
+                "value": ""
               }
             },
             {
@@ -2466,7 +2496,7 @@
                   "targetGnd": true
                 },
                 {
-                  "accuracy": 0.1
+                  "accuracy": 0.3
                 },
                 {
                   "airAccuracy": 0.1
@@ -2476,6 +2506,73 @@
                 },
                 {
                   "checkVisibilityTarget": false
+                },
+                {
+                  "effShootingRate": 0.3
+                },
+                {
+                  "airEffShootingRate": 0.12
+                },
+                {
+                  "adaptiveAccuracyTime": 10.0
+                },
+                {
+                  "fireRandom": true
+                },
+                {
+                  "targetChangeInterval": 5.0
+                },
+                {
+                  "targetChangeProb": 0.25
+                }
+              ]
+            },
+            {
+              "unitSetProperties": [
+                {
+                  "object_marking": 0
+                },
+                {
+                  "object_var_name": "aaa"
+                },
+                {
+                  "object_var_comp_op": "equal"
+                },
+                {
+                  "object_var_value": 1
+                },
+                {
+                  "object": "@lbt_battle_t1_army_squad_name"
+                },
+                {
+                  "object": "@lbt_battle_t2_army_squad_name"
+                },
+                {
+                  "stealthRadius": 128000.0
+                },
+                {
+                  "attack_type": "fire_at_will"
+                },
+                {
+                  "targetAir": true
+                },
+                {
+                  "targetGnd": true
+                },
+                {
+                  "accuracy": 0.1
+                },
+                {
+                  "airAccuracy": 0.1
+                },
+                {
+                  "maxDeviationAngle": 30.0
+                },
+                {
+                  "checkVisibilityTarget": true
+                },
+                {
+                  "visibilityTreeTransparencyThreshold": 0.1
                 },
                 {
                   "effShootingRate": 0.12

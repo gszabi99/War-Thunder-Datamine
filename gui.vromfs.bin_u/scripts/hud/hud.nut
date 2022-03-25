@@ -286,6 +286,7 @@ globalCallbacks.addTypes({
 
   function onHudSwitched()
   {
+    ::handlersManager.updateWidgets()
     updateHudVisMode(::FORCE_UPDATE)
     ::g_hud_hitcamera.init(scene.findObject("hud_hitcamera"))
 

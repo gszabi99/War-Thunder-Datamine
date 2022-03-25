@@ -350,7 +350,7 @@ handlersManager._updateControlsAllowMask <- function _updateControlsAllowMask()
   //dlog(::format("GP: controls changed to 0x%X", curControlsAllowMask))
 }
 
-handlersManager._updateWidgets <- function _updateWidgets()
+handlersManager.updateWidgets <- function updateWidgets()
 {
   let widgetsList = []
   local hasActiveDargScene = false
@@ -426,7 +426,7 @@ handlersManager._updateSceneVrParams <- function _updateSceneVrParams()
 handlersManager.onActiveHandlersChanged <- function onActiveHandlersChanged()
 {
   _updateControlsAllowMask()
-  _updateWidgets()
+  updateWidgets()
   _updateSceneBgBlur()
   _updateSceneVrParams()
   ::broadcastEvent("ActiveHandlersChanged")
@@ -435,7 +435,7 @@ handlersManager.onActiveHandlersChanged <- function onActiveHandlersChanged()
 handlersManager.onEventWaitBoxCreated <- function onEventWaitBoxCreated(p)
 {
   _updateControlsAllowMask()
-  _updateWidgets()
+  updateWidgets()
   _updateSceneBgBlur()
   _updateSceneVrParams()
 }
