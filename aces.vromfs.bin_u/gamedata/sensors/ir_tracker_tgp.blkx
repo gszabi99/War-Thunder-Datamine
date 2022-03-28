@@ -122,22 +122,33 @@
     "main": {
       "stateInit": "init",
       "actionsTemplates": {
-        "init": {
-          "setEnabled": {
-            "value": false
+        "init": [
+          {
+            "setEnabled": {
+              "value": false
+            }
           },
-          "setTransiver": {
-            "transiver": "track"
+          {
+            "setTargetDesignationRange": []
           },
-          "setSignal": {
-            "signal": "track"
+          {
+            "setTargetDesignationRange": {
+              "azimuthRange": [-180.0,180.0],
+              "elevationRange": [-180.0,180.0],
+              "distanceRange": [0.0,15000.0]
+            }
           },
-          "setTargetDesignationRange": {
-            "azimuthRange": [-180.0,180.0],
-            "elevationRange": [-180.0,180.0],
-            "distanceRange": [0.0,15000.0]
+          {
+            "setTransiver": {
+              "transiver": "track"
+            }
+          },
+          {
+            "setSignal": {
+              "signal": "track"
+            }
           }
-        },
+        ],
         "setStandbyMode": [
           {
             "setModeName": {
