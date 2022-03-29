@@ -139,10 +139,12 @@
       "hull": {
         "armorClass": "RHA_tank_modern",
         "body_front_dm": {
-          "armorThickness": 135.0
+          "armorThickness": 135.0,
+          "armorClass": "CHA_tank_modern"
         },
         "superstructure_front_dm": {
-          "armorThickness": 108.0
+          "armorThickness": 108.0,
+          "armorClass": "CHA_tank_modern"
         },
         "superstructure_side_dm": {
           "armorThickness": 30.0
@@ -195,13 +197,15 @@
           "hidableInViewer": true
         },
         "turret_06_side_dm": {
-          "armorThickness": 128.0
+          "armorThickness": 128.0,
+          "armorClass": "CHA_tank_modern"
         },
         "turret_06_top_dm": {
           "armorThickness": 5.0
         },
         "turret_04_top_dm": {
-          "armorThickness": 165.0
+          "armorThickness": 165.0,
+          "armorClass": "CHA_tank_modern"
         },
         "turret_08_bottom_dm": {
           "armorThickness": 10.0
@@ -258,7 +262,8 @@
           "armorThickness": 43.0
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 12.7
+          "armorThickness": 12.7,
+          "armorClass": "RHA_tank"
         },
         "turret_03_bottom_dm": {
           "armorThickness": 36.0
@@ -375,29 +380,14 @@
           "armorClass": "leopard_2a5_turret_nera"
         }
       },
-      "turret_add_armor": [
-        {
-          "armorThickness": 10.0
-        },
-        {
-          "hidableInViewer": true
-        },
-        {
-          "hidableInViewer": true
-        },
-        {
-          "createSecondaryShatters": false
-        },
-        {
-          "turret_02_back_dm": []
-        },
-        {
-          "turret_01_top_dm": []
-        },
-        {
-          "turret_01_side_dm": []
-        }
-      ],
+      "turret_add_armor": {
+        "armorThickness": 10.0,
+        "hidableInViewer": true,
+        "createSecondaryShatters": false,
+        "turret_02_back_dm": [],
+        "turret_01_top_dm": [],
+        "turret_01_side_dm": []
+      },
       "body_armor": {
         "armorClass": "RHA_tank_modern",
         "hp": 400.0,
@@ -2789,7 +2779,7 @@
             "useEmitter": true
           },
           {
-            "barrelDP": "gun_barrel_02_dm"
+            "barrelDP": "gun_barrel_04_dm"
           },
           {
             "defaultYaw": 0.0
@@ -2978,7 +2968,7 @@
           "emitter": "emtr_mg_aa_flame_02",
           "flash": "emtr_mg_aa_flame_02",
           "useEmitter": true,
-          "barrelDP": "gun_barrel_04_dm",
+          "barrelDP": "gun_barrel_02_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
@@ -4064,7 +4054,7 @@
                   "useEmitter": true
                 },
                 {
-                  "barrelDP": "gun_barrel_02_dm"
+                  "barrelDP": "gun_barrel_04_dm"
                 },
                 {
                   "defaultYaw": 0.0
@@ -4253,7 +4243,7 @@
                 "emitter": "emtr_mg_aa_flame_02",
                 "flash": "emtr_mg_aa_flame_02",
                 "useEmitter": true,
-                "barrelDP": "gun_barrel_04_dm",
+                "barrelDP": "gun_barrel_02_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,

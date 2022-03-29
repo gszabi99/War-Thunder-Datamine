@@ -190,9 +190,20 @@
       "dynamicRange": [40.0,15.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 90000.0,
+        "width": 500.0
+      }
+    },
+    "pulseTrack": {
+      "dynamicRange": [40.0,15.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "friendFoeId": true,
       "track": true,
       "distance": {
         "presents": true,
@@ -208,6 +219,29 @@
       "friendFoeId": false,
       "absDopplerSpeed": true,
       "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 90000.0,
+        "width": 500.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 30.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 10.0,
+        "width": 0.0
+      }
+    },
+    "MTITrack": {
+      "dynamicRange": [40.0,12.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
@@ -292,7 +326,7 @@
         "setPulseTrackModeCommon": {
           "setPulseModeCommon": [],
           "setSignal": {
-            "signal": "pulseShort"
+            "signal": "pulseTrack"
           }
         },
         "setPulseDopplerModeCommon": {
@@ -301,6 +335,14 @@
           },
           "setSignal": {
             "signal": "MTI"
+          }
+        },
+        "setPulseDopplerTrackModeCommon": {
+          "setTransiver": {
+            "transiver": "MTI"
+          },
+          "setSignal": {
+            "signal": "MTITrack"
           }
         },
         "setOLSModeCommon": {
@@ -914,7 +956,7 @@
         },
         "setBSVBoresightLockMode": {
           "setBoresightLockModeRadarCommon": [],
-          "setPulseTrackModeCommon": [],
+          "setPulseSearchShortModeCommon": [],
           "setHighAltModeCommon": [],
           "setModeName": {
             "name": "ACM"
@@ -922,7 +964,7 @@
         },
         "setBSVdHBoresightLockMode": {
           "setBoresightLockModeRadarCommon": [],
-          "setPulseTrackModeCommon": [],
+          "setPulseSearchShortModeCommon": [],
           "setHighAltModeCommon": [],
           "setModeName": {
             "name": "LD ACM"
@@ -930,7 +972,7 @@
         },
         "setSMVBoresightLockMode": {
           "setBoresightLockModeRadarCommon": [],
-          "setPulseTrackModeCommon": [],
+          "setPulseSearchShortModeCommon": [],
           "setLowAltModeCommon": [],
           "setModeName": {
             "name": "ACM"
@@ -1069,7 +1111,7 @@
         },
         "setMVTrackMode": {
           "setRadarTrackModeCommon": [],
-          "setPulseDopplerModeCommon": [],
+          "setPulseDopplerTrackModeCommon": [],
           "setLowAltModeCommon": [],
           "setModeName": {
             "name": "MTI track"

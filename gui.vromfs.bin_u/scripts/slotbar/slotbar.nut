@@ -1061,7 +1061,8 @@ let function selectAvailableCrew(countryId)
 ::select_crew <- function select_crew(countryId, idInCountry, airChanged = false)
 {
   init_selected_crews()
-  if (::selected_crews[countryId] == idInCountry && !airChanged)
+  if ((countryId not in ::selected_crews)
+      || (::selected_crews[countryId] == idInCountry && !airChanged))
     return
 
   ::select_crew_silent_no_check(countryId, idInCountry)

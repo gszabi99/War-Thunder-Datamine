@@ -89,9 +89,20 @@
       "dynamicRange": [40.0,15.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 111000.0,
+        "width": 300.0
+      }
+    },
+    "pulseTrack": {
+      "dynamicRange": [40.0,15.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "friendFoeId": true,
       "track": true,
       "distance": {
         "presents": true,
@@ -107,6 +118,29 @@
       "friendFoeId": false,
       "absDopplerSpeed": true,
       "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 45000.0,
+        "width": 300.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 30.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 10.0,
+        "width": 0.0
+      }
+    },
+    "MTITrack": {
+      "dynamicRange": [40.0,12.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
@@ -160,12 +194,28 @@
             "signal": "pulse"
           }
         },
+        "setPulseTrackModeCommon": {
+          "setTransiver": {
+            "transiver": "pulse"
+          },
+          "setSignal": {
+            "signal": "pulseTrack"
+          }
+        },
         "setPulseDopplerModeCommon": {
           "setTransiver": {
             "transiver": "MTI"
           },
           "setSignal": {
             "signal": "MTI"
+          }
+        },
+        "setPulseDopplerTrackModeCommon": {
+          "setTransiver": {
+            "transiver": "MTI"
+          },
+          "setSignal": {
+            "signal": "MTITrack"
           }
         },
         "setMediumAltModeCommon": {
@@ -213,7 +263,7 @@
         },
         "setLowAltStandbyMode": {
           "setStandbyModeCommon": [],
-          "setPulseModeCommon": [],
+          "setPulseDopplerModeCommon": [],
           "setLowAltModeCommon": [],
           "setModeName": {
             "name": "MTI standby"
@@ -458,7 +508,7 @@
         ],
         "setMediumAltTrackMode": {
           "setTrackModeCommon": [],
-          "setPulseModeCommon": [],
+          "setPulseTrackModeCommon": [],
           "setMediumAltModeCommon": [],
           "setModeName": {
             "name": "track"
@@ -466,7 +516,7 @@
         },
         "setLowAltTrackMode": {
           "setTrackModeCommon": [],
-          "setPulseDopplerModeCommon": [],
+          "setPulseDopplerTrackModeCommon": [],
           "setLowAltModeCommon": [],
           "setModeName": {
             "name": "MTI track"

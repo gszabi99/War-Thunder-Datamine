@@ -13,7 +13,7 @@
       "timeGainControl": true,
       "antenna": {
         "angleHalfSens": 4.2,
-        "sideLobesSensitivity": -27.0
+        "sideLobesSensitivity": -28.0
       }
     },
     "MTI": {
@@ -26,7 +26,7 @@
       "timeGainControl": true,
       "antenna": {
         "angleHalfSens": 4.2,
-        "sideLobesSensitivity": -27.0
+        "sideLobesSensitivity": -28.0
       }
     }
   },
@@ -49,7 +49,7 @@
       "elevationLimits": [-15.0,15.0],
       "rollStabLimit": 70.0,
       "period": 0.5,
-      "width": 3.0,
+      "width": 2.0,
       "indicate": true
     },
     "boresightLock": {
@@ -57,7 +57,7 @@
       "azimuthLimits": [-60.0,60.0],
       "elevationLimits": [-15.0,15.0],
       "period": 0.5,
-      "width": 3.0,
+      "width": 2.0,
       "indicate": true
     },
     "track": {
@@ -71,9 +71,20 @@
       "dynamicRange": [40.0,15.0],
       "groundClutter": true,
       "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 74000.0,
+        "width": 300.0
+      }
+    },
+    "pulseTrack": {
+      "dynamicRange": [40.0,15.0],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
-      "friendFoeId": true,
       "track": true,
       "distance": {
         "presents": true,
@@ -84,11 +95,34 @@
     },
     "MTI": {
       "dynamicRange": [40.0,12.0],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": false,
       "absDopplerSpeed": true,
       "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 45000.0,
+        "width": 300.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 30.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 10.0,
+        "width": 0.0
+      }
+    },
+    "MTITrack": {
+      "dynamicRange": [40.0,12.0],
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.06,
+      "distanceAccuracy": 15.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "track": true,
       "distance": {
         "presents": true,
         "minValue": 300.0,
@@ -140,12 +174,28 @@
             "signal": "pulse"
           }
         },
+        "setPulseTrackModeCommon": {
+          "setTransiver": {
+            "transiver": "pulse"
+          },
+          "setSignal": {
+            "signal": "pulseTrack"
+          }
+        },
         "setPulseDopplerModeCommon": {
           "setTransiver": {
             "transiver": "MTI"
           },
           "setSignal": {
             "signal": "MTI"
+          }
+        },
+        "setPulseDopplerTrackModeCommon": {
+          "setTransiver": {
+            "transiver": "MTI"
+          },
+          "setSignal": {
+            "signal": "MTITrack"
           }
         },
         "setMediumAltModeCommon": {
@@ -189,7 +239,7 @@
         },
         "setLowAltStandbyMode": {
           "setStandbyModeCommon": [],
-          "setPulseModeCommon": [],
+          "setPulseDopplerModeCommon": [],
           "setLowAltModeCommon": [],
           "setModeName": {
             "name": "MTI standby"
@@ -422,7 +472,7 @@
         ],
         "setMediumAltTrackMode": {
           "setTrackModeCommon": [],
-          "setPulseModeCommon": [],
+          "setPulseTrackModeCommon": [],
           "setMediumAltModeCommon": [],
           "setModeName": {
             "name": "track"
@@ -430,7 +480,7 @@
         },
         "setLowAltTrackMode": {
           "setTrackModeCommon": [],
-          "setPulseDopplerModeCommon": [],
+          "setPulseDopplerTrackModeCommon": [],
           "setLowAltModeCommon": [],
           "setModeName": {
             "name": "MTI track"
