@@ -238,6 +238,8 @@ let targetsComponent = function(createTargetDistFunc) {
     for(local i = 0; i < targets.len(); ++i) {
       if (!targets[i])
         continue
+      else if (targets[i].signalRel < 0.1)
+        continue
       targetsRes.append(createTargetDistFunc(i))
     }
     return targetsRes
