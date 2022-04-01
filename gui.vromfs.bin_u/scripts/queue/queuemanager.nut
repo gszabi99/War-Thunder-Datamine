@@ -1,6 +1,7 @@
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 
 global enum queueStates
 {
@@ -265,7 +266,7 @@ foreach (fn in [
     joinQueue({
       mode = eventId
       country = ::get_profile_country_sq()
-      slots = ::getSelSlotsTable()
+      slots = getSelSlotsData().slots
       clusters = clustersModule.getCurrentClusters()
       queueSelfActivated = true
       team = inGameEx.team.tointeger()

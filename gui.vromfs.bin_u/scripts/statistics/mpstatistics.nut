@@ -5,6 +5,7 @@ let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mou
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadIcon.nut")
+let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -396,7 +397,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (!isTeamplay)
       {
-        let commonTbl = getMplayersList(::GET_MPLAYERS_LIST)
+        let commonTbl = getMplayersList()
         sortTable(commonTbl)
         if (commonTbl.len() > 0)
         {
@@ -491,7 +492,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!isTeamplay)
     {
-      let tbl1 = getMplayersList(::GET_MPLAYERS_LIST)
+      let tbl1 = getMplayersList()
       sortTable(tbl1)
 
       let tbl2 = []
@@ -532,8 +533,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       }
       else
       {
-        let tbl1 = getMplayersList(1)
-        let tbl2 = getMplayersList(2)
+        let tbl1 = getMplayersList(::g_team.A.code)
+        let tbl2 = getMplayersList(::g_team.B.code)
         let num_in_one_row = ::global_max_players_versus / 2
         if (tbl1.len() <= num_in_one_row && tbl2.len() <= num_in_one_row)
         {
@@ -574,7 +575,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     {
       numRows1 = (gameType & ::GT_COOPERATIVE)? ::global_max_players_coop : numMaxPlayers
       numRows2 = 0
-      let tbl = getMplayersList(::GET_MPLAYERS_LIST)
+      let tbl = getMplayersList()
       createKillsTbl(tblObj2, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
 
       tblObj1.show(false)
@@ -1128,7 +1129,6 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
       tblObj.getChild(i).show(false)
     }
-
   }
 
   function getChatLog()
@@ -1137,7 +1137,6 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats()
-  getMplayersList = @(team) ::get_mplayers_list(team, true)
   getOverrideCountryIconByTeam = @(team)
     ::g_mis_custom_state.getCurMissionRules().getOverrideCountryIconByTeam(team)
 }

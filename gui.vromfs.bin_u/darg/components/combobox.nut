@@ -119,15 +119,30 @@ let function combobox(watches, options, combo_style=comboStyle) {
     wdata = watches.value
     wdisable = watches?.disable ?? {value=false}
     wupdate = watches?.update ?? @(v) wdata(v)
-    changeVarOnListUpdate = watches?.changeVarOnListUpdate ?? true
+    changeVarOnListUpdate = watches?.changeVarOnListUpdate ?? changeVarOnListUpdate
   } else {
     wdata = watches
     wdisable = {value=false}
     wupdate = @(v) wdata(v)
   }
 
-  if (changeVarOnListUpdate)
-    options.subscribe(@(opts) setValueByOptions(opts, wdata, wupdate))
+
+  local onAttachRoot, onDetachRoot
+  if (changeVarOnListUpdate) {
+    let function inputWatchesChangeListener(_) {
+      setValueByOptions(options.value, wdata, wupdate)
+    }
+
+    onAttachRoot = function onAttachRootImpl() {
+      options.subscribe(inputWatchesChangeListener)
+      wdata.subscribe(inputWatchesChangeListener)
+    }
+
+    onDetachRoot = function onDetachRootImpl() {
+      options.unsubscribe(inputWatchesChangeListener)
+      wdata.unsubscribe(inputWatchesChangeListener)
+    }
+  }
 
 
   let function dropdownList() {
@@ -145,12 +160,12 @@ let function combobox(watches, options, combo_style=comboStyle) {
       return combo_style.listItem(text, handler, isCurrent, { xmbNode = xmbNodes[idx] })
     })
 
-    local onAttach = null
-    local onDetach = null
+    local onAttachPopup = null
+    local onDetachPopup = null
     if (combo_style?.onOpenDropDown)
-      onAttach = @() combo_style.onOpenDropDown(curXmbNode)
+      onAttachPopup = @() combo_style.onOpenDropDown(curXmbNode)
     if (combo_style?.onCloseDropDown)
-      onDetach = @() combo_style.onCloseDropDown(xmbNode)
+      onDetachPopup = @() combo_style.onCloseDropDown(xmbNode)
 
     let popupContent = {
       size = [flex(), SIZE_TO_CONTENT]
@@ -177,8 +192,8 @@ let function combobox(watches, options, combo_style=comboStyle) {
         pivot = [0.5, dropDirDown ? 0 : 1]
       }
       animations = popupContentAnim
-      onAttach
-      onDetach
+      onAttach = onAttachPopup
+      onDetach = onDetachPopup
     }
 
 
@@ -195,9 +210,6 @@ let function combobox(watches, options, combo_style=comboStyle) {
       animations = popupWrapperAnim
     }
   }
-
-  if (changeVarOnListUpdate)
-    wdata.subscribe(@(_) setValueByOptions(options.value, wdata, wupdate))
 
 
   return function combo() {
@@ -221,6 +233,9 @@ let function combobox(watches, options, combo_style=comboStyle) {
       children
       onClick
       xmbNode
+
+      onAttach = onAttachRoot
+      onDetach = onDetachRoot
     })
   }
 }

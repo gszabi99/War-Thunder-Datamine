@@ -1,5 +1,6 @@
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 enum qTypeCheckOrder {
@@ -23,7 +24,7 @@ enum qTypeCheckOrder {
   {
     if (useSlots)
       if(!("slots" in params))
-        params.slots <- ::getSelSlotsTable()
+        params.slots <- getSelSlotsData().slots
 
     if(!("clusters" in params))
       params.clusters <- clustersModule.getCurrentClusters()

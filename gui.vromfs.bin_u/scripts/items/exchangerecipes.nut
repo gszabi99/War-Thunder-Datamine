@@ -53,7 +53,6 @@ local ExchangeRecipes = class {
 
   isUsable = false
   isMultipleItems = false
-  isMultipleExtraItems = false
   isFake = false
   hasChestInComponents = false
 
@@ -146,8 +145,6 @@ local ExchangeRecipes = class {
       if (isVisible && component.itemdefid != generatorId)
         extraItemsCount++
     }
-
-    isMultipleExtraItems = extraItemsCount - (isDisassemble ? 1 : 0) > 1
   }
 
   function isEnabled()
@@ -388,8 +385,11 @@ local ExchangeRecipes = class {
     local headerNext = ""
     if (needShowHeader)
     {
-      foreach (recipe in recipesToShow)
-        isMultiExtraItems = isMultiExtraItems || recipe.isMultipleExtraItems
+      foreach (recipe in recipesToShow){
+        let multipleExtraItems = recipe.visibleComponents.filter(
+          @(c) c.itemdefId!=recipe.generatorId && componentItem.id!=c.itemdefId )
+        isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
+      }
 
       headerFirst = ::colorize("grayOptionColor",
         componentItem.getDescRecipeListHeader(recipesToShow.len(), recipes.len(),

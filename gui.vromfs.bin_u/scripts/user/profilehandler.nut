@@ -20,7 +20,6 @@ let { getUnlockIds, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMa
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip
 } = require("%scripts/user/suggestionEmailRegistration.nut")
@@ -1180,7 +1179,7 @@ let selMedalIdx = {}
   function showUnlockPrizes(obj) {
     let trophy = ::ItemsManager.findItemById(obj.trophyId)
     let content = trophy.getContent()
-      .map(@(i) blk2SquirrelObjNoArrays(i))
+      .map(@(i) ::buildTableFromBlk(i))
       .sort(::trophyReward.rewardsSortComparator)
 
     ::gui_start_open_trophy_rewards_list({ rewardsArray = content })

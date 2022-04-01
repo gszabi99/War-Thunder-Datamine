@@ -18,6 +18,20 @@ let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
 let getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
+local controlsHelpShownBits = 0
+let function maybeOfferControlsHelp() {
+  let unit = getPlayerCurUnit()
+  if (![ "combat_track_a", "combat_track_h", "combat_tank_a", "combat_tank_h",
+      "mlrs_tank_a", "mlrs_tank_h", "acoustic_heavy_tank_a", "destroyer_heavy_tank_h",
+      "dragonfly_a", "dragonfly_h" ].contains(unit?.name))
+    return
+  let utBit = unit?.unitType.bit ?? 0
+  if ((controlsHelpShownBits & utBit) != 0)
+    return
+  controlsHelpShownBits = controlsHelpShownBits | utBit
+  ::g_hud_event_manager.onHudEvent("hint:f1_controls_scripted:show", {})
+}
+
 ::air_hud_actions <- {
   flaps = {
     id     = "flaps"
@@ -798,6 +812,7 @@ globalCallbacks.addTypes({
     ::g_hud_tank_debuffs.reinit()
     ::g_hud_crew_state.reinit()
     updateShowHintsNest()
+    maybeOfferControlsHelp()
   }
 
   function updateDamageIndicatorBackground()
@@ -839,6 +854,7 @@ globalCallbacks.addTypes({
   {
     actionBar.reinit()
     ::hudEnemyDamage.reinit()
+    maybeOfferControlsHelp()
   }
 }
 

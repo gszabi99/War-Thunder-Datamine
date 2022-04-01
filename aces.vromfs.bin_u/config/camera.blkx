@@ -4074,6 +4074,15 @@
     "cameraUpOffset": 0.0,
     "cameraFwdOffset": 0.1
   },
+  "worm_eaten": {
+    "type": "WormEatCamera",
+    "fov": 85.0,
+    "rotationPeriod": 60.0,
+    "viscosity": 0.2,
+    "condition": {
+      "wormEaten": []
+    }
+  },
   "cameraLists": {
     "plane": [
       {
@@ -4131,6 +4140,9 @@
       "camName": "target_tps_shake_diary"
     },
     "dead": [
+      {
+        "camName": "worm_eaten"
+      },
       {
         "camName": "loose"
       },

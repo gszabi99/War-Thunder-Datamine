@@ -15,6 +15,8 @@ let function isCountryHasAnyEsUnitType(country, esUnitTypeMask)
   return false
 }
 
+let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[idInCountry]
+
 ::g_crew <- {
   crewLevelBySkill = 5 //crew level from any maxed out skill
   totalSkillsSteps = 5 //steps available for leveling.
@@ -337,10 +339,7 @@ g_crew.getCrewName <- function getCrewName(crew)
 
 g_crew.getCrewUnit <- function getCrewUnit(crew)
 {
-  let unitName = ::getTblValue("aircraft", crew)
-  if (!unitName || unitName == "")
-    return null
-  return ::getAircraftByName(unitName)
+  return ::getAircraftByName(crew?.aircraft ?? "")
 }
 
 g_crew.getCrewCountry <- function getCrewCountry(crew)
@@ -855,4 +854,8 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
       return idx
 
   return -1
+}
+
+return {
+  getCrew
 }

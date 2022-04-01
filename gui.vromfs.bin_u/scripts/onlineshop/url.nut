@@ -43,17 +43,19 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
   let shouldLogin = ::isInArray(URL_TAG_AUTO_LOGIN, urlTags)
   if (!isAlreadyAuthenticated && shouldLogin && canAutoLogin()) {
     let shouldEncode = !::isInArray(URL_TAG_NO_ENCODING, urlTags)
+    local autoLoginUrl = url
     if (shouldEncode)
-      url = base64.encodeString(url)
+      autoLoginUrl = base64.encodeString(autoLoginUrl)
 
     let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
     let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
-    let authData = ::get_authenticated_url_sso(url, ssoService)
+    let authData = ::get_authenticated_url_sso(autoLoginUrl, ssoService)
 
     if (authData.yuplayResult == ::YU2_OK)
       url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
-    else ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
-      false, AUTH_ERROR_LOG_COLLECTION)
+    else
+      ::send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
+        false, AUTH_ERROR_LOG_COLLECTION)
   }
 
   return {

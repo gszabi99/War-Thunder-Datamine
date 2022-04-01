@@ -14,10 +14,7 @@ return @(filterString, selectedCompName) nameFilter(filterString, {
   }
 
   function onEscape() {
-    if (filterString.value != "")
-      filterString("")
-    else
-      set_kb_focus(null)
+    set_kb_focus(null)
   }
 })
 

@@ -18,7 +18,7 @@ let function loadCustomPresets(unitName) {
   customPresetsConfigByUnit.mutate(@(val) val[unitName] <- blk)
 }
 
-let invalidateUnitCustomPresetsCache  = @(unit) customPresetsByUnit.mutate(@(val) delete val[unit.name])
+let invalidateUnitCustomPresetsCache  = @(unit) customPresetsByUnit.mutate(@(val) val.rawdelete(unit.name))
 
 let function invalidateCache() {
   customPresetsConfigByUnit({})
@@ -75,16 +75,10 @@ let function initCustomPreset(unit) {
       type = weaponsItem.weapon
       customNameText = preset?.name ?? ""
       image = "#ui/gameuiskin#rocket_bomb"
-      torpedo = false
-      cannon = false
-      additionalGuns = false
-      frontGun = false
-      bomb = false
-      rocket = false
     })
   }
 
-  initUnitWeapons(weapons, null, unit.esUnitType, unit.weaponsContainers)
+  initUnitWeapons(unit, weapons)
   customPresetsByUnit.mutate(@(val) val[unit.name] <- weapons)
 }
 

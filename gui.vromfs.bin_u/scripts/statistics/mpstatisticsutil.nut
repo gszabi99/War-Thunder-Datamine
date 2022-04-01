@@ -5,7 +5,6 @@ let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, getSquadInfo,isShowSquad,
   getSquadInfoByMemberName, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
-let { updateNameMapping } = require("%scripts/user/nameMapping.nut")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) // used from native code
 {
@@ -159,12 +158,8 @@ let function guiStartMPStatScreenFromGame()
       else if (hdr[j] == "name")
       {
         local nameText = item
-        if (!isEmpty && !isHeader && !table[i].isBot) {
-          if (table[i]?.realName && table[i].realName != "")
-            updateNameMapping(table[i].realName, nameText)
-
+        if (!isEmpty && !isHeader && !table[i].isBot)
           nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
-        }
 
         nameText = ::g_string.stripTags(nameText)
 
@@ -446,12 +441,8 @@ let function guiStartMPStatScreenFromGame()
         local nameText = item
         if (!isEmpty)
         {
-          if (!table[i].isBot) {
-            if (table[i]?.realName && table[i].realName != "")
-              updateNameMapping(table[i].realName, nameText)
-
+          if (!table[i].isBot)
             nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
-          }
 
           if (table[i]?.invitedName && table[i].invitedName != item)
           {

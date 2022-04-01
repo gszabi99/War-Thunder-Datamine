@@ -229,6 +229,7 @@ let cfg = {
       { shortcut = [ "ID_FLAPS_DOWN_HELICOPTER" ], enable = hasFlaps }
       { shortcut = [ "ID_FLAPS_HELICOPTER" ], enable = hasFlaps }
       { shortcut = [ "ID_FLAPS_UP_HELICOPTER" ], enable = hasFlaps }
+      { shortcut = [ "ID_AIR_BRAKE_HELICOPTER" ], enable = hasAirbrake }
       { shortcut = [ "ID_GEAR_HELICOPTER" ], enable = hasGear }
       { shortcut = [ "ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER" ] }
       null

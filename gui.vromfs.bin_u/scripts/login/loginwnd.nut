@@ -9,6 +9,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
 local { setGuiOptionsMode } = ::require_native("guiOptions")
 let { havePlayerTag } = require("scripts/user/userUtils.nut")
+let { getDistr } = require("auth_wt")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
@@ -628,7 +629,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
     else
       urlLocId = "url/signUp"
 
-    openUrl(::loc(urlLocId), false, false, "login_wnd")
+    openUrl(::loc(urlLocId, {distr = getDistr()}), false, false, "login_wnd")
   }
 
   function onForgetPassword()

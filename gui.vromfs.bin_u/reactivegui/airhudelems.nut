@@ -11,7 +11,7 @@ let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
   AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
   IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsRangefinderEnabled, RangefinderDist,
-  Rpm, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
+  Rpm, IsRpmVisible, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
   AlertColorLow, AlertColorMedium, AlertColorHigh, OilAlert,
   PassivColor, IsLaserDesignatorEnabled, IsInsideLaunchZoneDist, GunInDeadZone,
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
@@ -594,8 +594,8 @@ agmBlinkComputed.subscribe(@(v) v ? ::anim_start(agmBlinkTrigger) : ::anim_reque
 
 let textParamsMapMain = {
   [AirParamsMain.RPM] = {
-    titleComputed = Computed (@() generateRpmTitleFunction(TrtModeForRpm.value))
-    valueComputed = Computed (@() generateRpmTextFunction(TrtModeForRpm.value, Rpm.value))
+    titleComputed = Computed (@() IsRpmVisible.value ? generateRpmTitleFunction(TrtModeForRpm.value) : "")
+    valueComputed = Computed (@() IsRpmVisible.value ? generateRpmTextFunction(TrtModeForRpm.value, Rpm.value) : "")
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsRpmCritical.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)

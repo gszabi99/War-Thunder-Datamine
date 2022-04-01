@@ -361,7 +361,7 @@ local expireTypes = {
   function getLongDescription() { return getDescription() }
 
   function getShortDescription(colored = true) { return getName(colored) }
-  getPrizeDescription = @(count) null
+  getPrizeDescription = @(count, colored = true) null
 
   function isActive(...) { return false }
 
@@ -457,7 +457,7 @@ local expireTypes = {
     }
 
     if (!res?.isItemLocked)
-      res.isItemLocked <- isInventoryItem && !amount
+      res.isItemLocked <- isInventoryItem && !amount && !showAlwaysAsEnabledAndUnlocked()
 
     let boostEfficiency = getBoostEfficiency()
     if(params?.hasBoostEfficiency && boostEfficiency)
@@ -848,4 +848,5 @@ local expireTypes = {
     ? lottie({ image = lottieAnimation, width })
     : null
   isEveryDayAward = @() id.tostring().split(everyDayAwardPrefix).len() > 1
+  showAlwaysAsEnabledAndUnlocked = @() false
 }

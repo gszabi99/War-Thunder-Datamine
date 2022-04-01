@@ -9,7 +9,17 @@ let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let selectedEntities = Watched({}) // table used as set
 
 const SETTING_EDITOR_WORKMODE = "daEditor4/workMode"
+const SETTING_EDITOR_TPLGROUP = "daEditor4/templatesGroup"
+const SETTING_EDITOR_PROPS_ON_SELECT = "daEditor4/showPropsOnSelect"
 let { save_settings=null, get_setting_by_blk_path=null, set_setting_by_blk_path=null } = require_optional("settings")
+
+let selectedTemplatesGroup = mkWatched(persist, "selectedTemplatesGroup", (get_setting_by_blk_path?(SETTING_EDITOR_TPLGROUP) ?? ""))
+selectedTemplatesGroup.subscribe(function(v) { set_setting_by_blk_path?(SETTING_EDITOR_TPLGROUP, v ?? ""); save_settings?() })
+
+let propPanelVisible = mkWatched(persist, "propPanelVisible", false)
+let propPanelClosed  = mkWatched(persist, "propPanelClosed", (get_setting_by_blk_path?(SETTING_EDITOR_PROPS_ON_SELECT) ?? true)==false)
+propPanelClosed.subscribe(function(v) { set_setting_by_blk_path?(SETTING_EDITOR_PROPS_ON_SELECT, (v ?? false)==false); save_settings?() })
+
 let de4workMode = Watched("")
 let de4workModes = Watched([""])
 de4workMode.subscribe(function(v) {
@@ -59,9 +69,10 @@ return {
   editorFreeCam = Watched(isFreeCamMode?())
   selectedEntity
   selectedEntities
+  selectedTemplatesGroup
   scenePath = Watched(get_scene_filepath?())
-  propPanelVisible = mkWatched(persist, "propPanelVisible", false)
-  propPanelClosed  = mkWatched(persist, "propPanelClosed", false)
+  propPanelVisible
+  propPanelClosed
   filterString = mkWatched(persist, "filterString", "")
   selectedCompName = Watched()
   showEntitySelect = mkWatched(persist, "showEntitySelect", false)

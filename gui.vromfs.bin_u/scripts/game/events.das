@@ -113,3 +113,7 @@ struct EventOnSupportUnitSpawn
 [cpp_event(broadcast, with_scheme)]
 struct EventFlightStart
 {}
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventSandUnitDead
+{}

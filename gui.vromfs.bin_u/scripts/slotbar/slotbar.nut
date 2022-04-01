@@ -14,9 +14,9 @@ let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsData.nut")
 let { RANDOM_UNIT } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
+let { selectAvailableCrew } = require("%scripts/slotbar/slotbarState.nut")
 
 /*
 if need - put commented in array above
@@ -48,12 +48,6 @@ if need - put commented in array above
     ]
   }
 */
-
-//=============================  module functions  =============================
-
-let function isCountrySlotbarHasUnits(countryId) {
-  return ::get_crews_list_by_country(countryId).findvalue(@(crew) (crew?.aircraft ?? "") != "") != null
-}
 
 //=============================  global functions  =============================
 
@@ -903,20 +897,6 @@ let function isCountrySlotbarHasUnits(countryId) {
   return count
 }
 
-
-::getSlotItem <- function getSlotItem(countryId, idInCountry)
-{
-  return ::g_crews_list.get()?[countryId]?.crews?[idInCountry]
-}
-
-::getSlotAircraft <- function getSlotAircraft(countryId, idInCountry)
-{
-  let crew = getSlotItem(countryId, idInCountry)
-  let airName = ("aircraft" in crew)? crew.aircraft : ""
-  let air = getAircraftByName(airName)
-  return air
-}
-
 ::get_crew_by_id <- function get_crew_by_id(id)
 {
   foreach(cId, cList in ::g_crews_list.get())
@@ -965,43 +945,6 @@ let function isCountrySlotbarHasUnits(countryId) {
   return []
 }
 
-let function getAvailableCrewId(countryId)
-{
-  local id=-1
-  let curUnitId = getShowedUnitName()
-  if ((countryId in ::g_crews_list.get()) && ("crews" in ::g_crews_list.get()[countryId]))
-    for(local i=0; i<::g_crews_list.get()[countryId].crews.len(); i++)
-    {
-      let crew = ::g_crews_list.get()[countryId].crews[i]
-      if (("aircraft" in crew) && crew.aircraft!="")
-      {
-        if (id<0) id=i
-        if (curUnitId != "" && crew.aircraft == curUnitId)
-        {
-          id=i
-          break
-        }
-      }
-    }
-  return id
-}
-
-let function selectAvailableCrew(countryId)
-{
-  local isAnyUnitInSlotbar = false
-  if ((countryId in ::g_crews_list.get()) && (countryId in ::selected_crews))
-  {
-    local id = getAvailableCrewId(countryId)
-    isAnyUnitInSlotbar = id >= 0
-
-    if (!isAnyUnitInSlotbar)
-      id = 0
-
-    ::selected_crews[countryId] = id
-  }
-  return isAnyUnitInSlotbar
-}
-
 ::save_selected_crews <- function save_selected_crews()
 {
   if (!::g_login.isLoggedIn())
@@ -1025,11 +968,8 @@ let function selectAvailableCrew(countryId)
   foreach(cIdx, country in ::g_crews_list.get())
   {
     let crewIdx = selCrewsBlk?[country.country] ?? 0
-    if (("crews" in country)
-        && (crewIdx in country.crews)
-        && ("aircraft" in country.crews[crewIdx])
-        && country.crews[crewIdx].aircraft != "")
-          ::selected_crews[cIdx] = crewIdx
+    if ((country?.crews[crewIdx].aircraft ?? "") != "")
+      ::selected_crews[cIdx] = crewIdx
     else
     {
       if (!selectAvailableCrew(cIdx))
@@ -1075,7 +1015,7 @@ let function selectAvailableCrew(countryId)
   init_selected_crews()
   foreach(cIdx, c in ::g_crews_list.get())
     if (c.country == country)
-      return getSlotAircraft(cIdx, ::selected_crews[cIdx])
+      return ::g_crew.getCrewUnit(c.crews?[::selected_crews[cIdx]])
   return null
 }
 
@@ -1129,39 +1069,6 @@ let function selectAvailableCrew(countryId)
     return false
 
   return params?.customUnitsList ? unit.name in params.customUnitsList : true
-}
-
-::getSelSlotsTable <- function getSelSlotsTable()
-{
-  init_selected_crews()
-  let slots = {}
-  foreach(cIdx, country in ::g_crews_list.get())
-  {
-    let unit = getSlotAircraft(cIdx, ::selected_crews[cIdx])
-    if (unit == null && isCountrySlotbarHasUnits(country.country))
-    {
-      dagor.debug("selected crews = ")
-      debugTableData(::selected_crews)
-      dagor.debug("crews list = ")
-      debugTableData(::g_crews_list.get())
-//      dagor.assertf(false, "Incorrect selected_crews list on getSelSlotsTable")
-      selectAvailableCrew(cIdx)
-    }
-    slots[country.country] <- ::selected_crews[cIdx]
-  }
-  return slots
-}
-
-::getSelAirsTable <- function getSelAirsTable()
-{
-  init_selected_crews()
-  let airs = {}
-  foreach(cIdx, country in ::g_crews_list.get())
-  {
-    let air = getSlotAircraft(cIdx, ::selected_crews[cIdx])
-    airs[country.country] <- air? air.name : ""
-  }
-  return airs
 }
 
 ::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show)
@@ -1269,9 +1176,4 @@ let function selectAvailableCrew(countryId)
   msg = ::loc(msg) + "\n" + ::loc("cbt_tanks/supported_game_modes") + "\n" + ::loc("cbt_tanks/temporary_restriction_release")
   ::showInfoMsgBox(msg, "cbt_tanks_forbidden")
   return true
-}
-
-//======================  module return (keep it last) =========================
-return {
-  isCountrySlotbarHasUnits
 }

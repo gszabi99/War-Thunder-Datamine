@@ -7,7 +7,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
   getWarpoints         = @() metaBlk?.warpoints ?? 0
   canConsume           = @() isInventoryItem && getWarpoints() > 0
 
-  function getPrizeDescription(count)
+  function getPrizeDescription(count, colored = true)
   {
     if (!shouldAutoConsume)
       return null

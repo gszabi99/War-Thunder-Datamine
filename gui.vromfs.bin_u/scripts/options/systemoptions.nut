@@ -40,7 +40,6 @@ let compModeGraphicsOptions = {
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
-    shadows           = { compMode = true }
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
@@ -111,7 +110,6 @@ local mUiStruct = [
     container = "sysopt_bottom_right"
     items = [
       "mirrorQuality"
-      "shadows"
       "rendinstGlobalShadows"
       "staticShadowsOnEffects"
       "advancedShore"

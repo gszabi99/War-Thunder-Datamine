@@ -8,7 +8,7 @@ let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWe
 let { getBulletsSetData, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
 let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.nut")
-let { getWeaponsByPresetName } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
 let function getReloadTimeByCaliber(caliber, ediff = null)
@@ -228,7 +228,8 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 
   local weaponTypes = {}
   weaponTypes = addWeaponsFromBlk(weaponTypes, getCommonWeapons(unitBlk, primaryWeapon), unit)
-  weaponTypes = addWeaponsFromBlk(weaponTypes, getWeaponsByPresetName(unitBlk, secondaryWeapon), unit)
+  let curWeapon = unit.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
+  weaponTypes = addWeaponsFromBlk(weaponTypes, getPresetWeapons(unitBlk, curWeapon), unit)
 
   if (weaponTypes?[triggerGroup])
     foreach (weapons in weaponTypes[triggerGroup])

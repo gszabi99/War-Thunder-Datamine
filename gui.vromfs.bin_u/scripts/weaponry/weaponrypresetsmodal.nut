@@ -213,24 +213,36 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let tierIdInt = tierId.tointeger()
     weapons = addWeaponsFromBlk(weapons, availableWeapons.filter(@(_) _?.tier == tierIdInt), unit)
     let params = getTierWeaponsParams(weapons, tierIdInt)
+    let curTier = presets[curPresetIdx].tiers?[tierId.tointeger()]
+    let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
     foreach (p in params)
       maxWidth = ::max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
     maxWidth += ::to_pixels("1@cIco")
     foreach (p in params)
-      buttons.append({
-        id = p.id
+      if (p.id != curPresetId)
+        buttons.append({
+          id = p.id
+          holderId = tierId
+          image = p.img
+          funcName = "onItemClick"
+          buttonClass = "image"
+          visualStyle = "noFrame"
+          text = p.name
+          btnWidth = maxWidth
+        })
+
+    return {
+      buttonsList = curTier == null ? buttons : buttons.append({
+        id = "empty"
         holderId = tierId
-        image = p.img
+        image = "#ui/gameuiskin#btn_close.svg"
         funcName = "onItemClick"
         buttonClass = "image"
         visualStyle = "noFrame"
-        text = p.name
+        text = "#ui/empty"
         btnWidth = maxWidth
       })
-
-    return {
-      buttonsList = buttons
       parentPos = pos
       onClickCb  = ::Callback(@(obj) onWeaponChoose(obj), this)
     }
@@ -293,8 +305,13 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let curPreset = presets[curPresetIdx]
     let presetId = obj.id
     let tierId = obj.holderId.tointeger()
-    let wBlk = availableWeapons.findvalue(@(_) _.presetId == presetId && _.tier == tierId)
-    curPreset.tiers[tierId] <- { slot = wBlk.slot, presetId = wBlk.presetId}
+    if (presetId != "empty"){
+      let wBlk = availableWeapons.findvalue(@(_) _.presetId == presetId && _.tier == tierId)
+      curPreset.tiers[tierId] <- {slot = wBlk.slot, presetId = wBlk.presetId}
+    }
+    else
+      delete curPreset.tiers[tierId]
+
     presets[curPresetIdx] = prepareWeaponsPresetForView(unit, curListItem,
       getCustomPresetWeaponry(convertPresetToBlk(curPreset) , unit), favoriteArr, availableWeapons)
     let presetIdx = curPresetIdx

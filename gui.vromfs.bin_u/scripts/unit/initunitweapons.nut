@@ -1,6 +1,10 @@
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { TRIGGER_TYPE, TRIGGER_TYPE_TO_BIT, ROCKETS_WEAPON_MASK,
+  BOMBS_WEAPON_MASK, getTriggerType, isGunnerTrigger
+} = require("%scripts/weaponry/weaponryInfo.nut")
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
@@ -26,6 +30,25 @@ let function addReqParamsToWeaponry(weaponry, blk) {
     if (reqData.len() > 0)
       weaponry[rp] <- reqData
   }
+}
+
+let function initWeaponsMask(unit, weapon) {
+  let weponryConfig = getPresetWeapons(::get_full_unit_blk(unit.name), weapon)
+  local weaponmask = 0
+  foreach(weaponBlk in weponryConfig) {
+    let trigger = getTriggerType(weaponBlk)
+    if (trigger in TRIGGER_TYPE_TO_BIT)
+      weaponmask = weaponmask | TRIGGER_TYPE_TO_BIT[trigger]
+    else if (isGunnerTrigger(trigger))
+      weaponmask = weaponmask | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.GUNNER]
+  }
+  weapon.weaponmask <- weaponmask
+  weapon.torpedo <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.TORPEDOES]) != 0
+  weapon.cannon <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.CANNON]) != 0
+  weapon.additionalGuns <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ADD_GUN]) != 0
+  weapon.frontGun <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MACHINE_GUN]) != 0
+  weapon.bomb <- (weaponmask & BOMBS_WEAPON_MASK) != 0
+  weapon.rocket <- (weaponmask & ROCKETS_WEAPON_MASK) != 0
 }
 
 let function initWeaponry(weaponry, blk, esUnitType) {
@@ -61,10 +84,14 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   addReqParamsToWeaponry(weaponry, blk)
 }
 
-let function initUnitWeapons(weapons, weaponsBlk, esUnitType, weaponsContainers) {
+let function initUnitWeapons(unit, weapons, weaponsBlk = null) {
+  let { weaponsContainers, esUnitType } = unit
   foreach (weapon in weapons) {
     let weaponBlk = weaponsBlk?[weapon.name]
     initWeaponry(weapon, weaponBlk, esUnitType)
+
+    if (unit.hasWeaponSlots) //for weapons by slot weapons mask is not inited
+      initWeaponsMask(unit, weapon)
     if (weaponsContainers.len() == 0 || (weaponBlk?.sum_weapons == null))
       continue
 

@@ -450,7 +450,7 @@ let function prepareWeaponsPresetForView(unit, preset, weaponry, favoriteArr, av
 }
 
 let getCustomPresetWeaponry = @(weaponsBlk, unit) addWeaponsFromBlk({},
-  getWeaponsByTypes(weaponsBlk, ::get_full_unit_blk(unit.name)), unit)
+  getWeaponsByTypes(::get_full_unit_blk(unit.name), weaponsBlk), unit)
 
 let function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 {
@@ -463,8 +463,7 @@ let function getWeaponryByPresetInfo(unit, chooseMenuList = null)
   let availableWeapons = unit.hasWeaponSlots ? getUnitWeapons(::get_full_unit_blk(unit.name)) : null
 
   foreach(preset in presetsList) {
-    let weaponry = isCustomPreset(preset) ? getCustomPresetWeaponry(preset.weaponsBlk , unit)
-      : getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
+    let weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
     presets.append(prepareWeaponsPresetForView(unit, preset, weaponry, res.favoriteArr, availableWeapons))
   }
 

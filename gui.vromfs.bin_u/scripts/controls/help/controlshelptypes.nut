@@ -417,7 +417,7 @@ enums.addTypes(result, {
     subTabName = "#event/war2077"
 
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
-    helpPattern = CONTROL_HELP_PATTERN.IMAGE
+    helpPattern = CONTROL_HELP_PATTERN.SPECIAL_EVENT
 
     specificCheck = @() ::is_dev_version
     showByUnit = @(unit, unitTag)
@@ -437,6 +437,49 @@ enums.addTypes(result, {
         { start = "target_locked_gg_label", end = "target_locked_gg_point" }
         { start = "target_locked_ga_label", end = "target_locked_ga_point" }
       ]
+    }
+  }
+  IMAGE_ARACHIS = {
+    subTabName = "#missions/arachis_Dom"
+
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+    helpPattern = CONTROL_HELP_PATTERN.SPECIAL_EVENT
+
+    showByUnit = @(unit, unitTag) [ "combat_track_a", "combat_track_h", "combat_tank_a", "combat_tank_h",
+      "mlrs_tank_a", "mlrs_tank_h", "acoustic_heavy_tank_a", "destroyer_heavy_tank_h",
+      "dragonfly_a", "dragonfly_h" ].contains(unit?.name)
+
+    pageBlkName = "%gui/help/controlsArachis.blk"
+
+    defaultValues = { country = "usa" }
+    imagePattern = "#ui/images/help/help_arachis.jpg?P1"
+    hasImageByCountries = ["usa"]
+    countryRelatedObjs = { usa = [] }
+    linkLines = {
+      links = [
+        { start = "worm_label", end = "worm_point" }
+        { start = "sonicwave_label", end = "sonicwave_point" }
+        { start = "target_search_label", end = "target_search_point" }
+        { start = "target_locked_label", end = "target_locked_point" }
+        { start = "cannon_aim_label", end = "cannon_aim_point" }
+      ]
+    }
+    customUpdateSheetFunc = function(obj) {
+      let wBlk = ::DataBlock()
+      if (!wBlk.tryLoad("gameData/weapons/groundModels_weapons/acoustic_heavy_user_cannon.blk"))
+        return
+      let sdBlk = wBlk?.sonic_wave.bullet.sonicDamage ?? wBlk?.bullet.sonicDamage
+      let soundwaveDescTextObj = obj.findObject("soundwave_txt")
+      if (soundwaveDescTextObj?.isValid())
+        soundwaveDescTextObj.setValue(::loc("controls/help/arachis/soundwave", {
+        unitName = ::colorize("userlogColoredText", ::loc("acoustic_heavy_tank_a_shop"))
+        angles = ::colorize("activeTextColor",
+          "".concat("±", ::abs(::round(sdBlk?.horAngles.y ?? 3.0)), ::loc("measureUnits/deg")))
+        speed = ::colorize("activeTextColor",
+          " ".concat(::round(sdBlk?.speed ?? 300.0), ::loc("measureUnits/metersPerSecond_climbSpeed")))
+        distance = ::colorize("activeTextColor",
+          " ".concat(::round(sdBlk?.distance ?? 1000.0), ::loc("measureUnits/meters_alt")))
+      }))
     }
   }
   CONTROLLER_AIRCRAFT = {

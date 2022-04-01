@@ -3,6 +3,7 @@ let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
+let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 
 ::items_classes.Chest <- class extends ItemExternal {
   static iType = itemType.CHEST
@@ -267,6 +268,23 @@ let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
     return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
   }
 
+  function validateCategoryTypeArray(paramsArray) { //To correctly display weights for items that have "_" in their name
+    if (paramsArray.len() <= 2)
+      return paramsArray
+
+    let prizeType = paramsArray[0]
+    let weight = paramsArray[1]
+    if (prizeType in inventoryItemTypeByTag
+        || $"{prizeType}_{weight}" not in inventoryItemTypeByTag)
+      return paramsArray
+
+    let res = [$"{prizeType}_{weight}"]
+    for (local i = 2;i < paramsArray.len();i++)
+      res.append(paramsArray[i])
+
+    return res
+  }
+
   function getCategoryWeight() {
     if (categoryWeight != null)
       return categoryWeight
@@ -276,10 +294,11 @@ let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
       return categoryWeight
 
     foreach (category in (itemDef.tags % "categoryWeight")) {
-      let paramsArray = category.split("_")
+      local paramsArray = category.split("_")
       if (paramsArray.len() < 2)
         continue
 
+      paramsArray = validateCategoryTypeArray(paramsArray)
       let prizeType = paramsArray[0]
       let weight = paramsArray[1]
       let rarity = paramsArray?[2]

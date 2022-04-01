@@ -14,7 +14,6 @@ let { getDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
 
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -106,7 +105,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 ::debug_trophy_rewards_list <- function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
   let trophy = ::ItemsManager.findItemById(id)
   local content = trophy.getContent()
-    .map(@(i) blk2SquirrelObjNoArrays(i))
+    .map(@(i) ::buildTableFromBlk(i))
     .sort(::trophyReward.rewardsSortComparator)
 
   ::gui_start_open_trophy_rewards_list({ rewardsArray = content })

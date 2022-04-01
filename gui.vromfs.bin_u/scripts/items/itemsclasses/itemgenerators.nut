@@ -159,6 +159,8 @@ local ItemGenerator = class {
         let rank = contentRank != null ? ::min(cfg.quantity, contentRank) : cfg.quantity
         if (item)
         {
+          if (item.isHiddenItem())
+            continue
           let b = ::DataBlock()
           b.item =  item.id
           b.rank = rank

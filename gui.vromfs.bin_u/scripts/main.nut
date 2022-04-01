@@ -372,6 +372,9 @@ foreach(name in [
   if (name not in ::getroottable())
     ::getroottable()[name] <- guiOptions[name]
 
+::add_big_query_record <- require("chard")?.addBigQueryRecord
+  ?? ::add_big_query_record // Compatibility with 2.15.0.X
+
 foreach(fn in [
   "%scripts/debugTools/dbgToString.nut"
   "%sqDagui/framework/framework.nut"

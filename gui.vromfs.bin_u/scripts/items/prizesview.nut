@@ -173,7 +173,7 @@ let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     params.categoryId <- 0
 
     let notFoundPrizes = []
-    let prizeListView = []
+    local prizeListView = []
     foreach(category in categoryWeight) {
       let itemBlkType = category.prizeType
       let byTypeLists = getFilteredListsData(stacksList,
@@ -257,6 +257,12 @@ let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
       prizeListView.extend(getPrizesViewArrayByWeightCategory(
         stacksList, { weight = "low" }, ::loc("attachables/category/other"), params))
     }
+
+    let maxButtonsCount = prizeListView.reduce(@(res, p) ::max(p?.buttonsCount ?? 0, res), 0)
+    prizeListView = prizeListView.map(@(p) p.__update({
+      buttonsCount = maxButtonsCount
+      buttons = (p?.buttons ?? []).resize(maxButtonsCount, { emptyButton = true })
+    }))
 
     view.list <- prizeListView
     return ::handyman.renderCached(template, view)
@@ -457,7 +463,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
           item = item.makeEmptyInventoryItem()
           item.setDisguise(true)
         }
-        name = item.getPrizeDescription(prize?.count ?? 1)
+        name = item.getPrizeDescription(prize?.count ?? 1, colored)
         if (name)
           showCount = false
         else
@@ -1072,7 +1078,7 @@ PrizesView.getViewDataItem <- function getViewDataItem(prize, showCount, params 
     title = params?.needShowItemName ?? true
       ? getPrizeText(prize, !params?.isLocked, false, showCount, true)
       : prize?.commentText ?? ""
-    tooltipId = showTooltip && item && !item.shouldAutoConsume ? ::g_tooltip.getIdItem(prize?.item, params) : null
+    tooltipId = showTooltip ? ::g_tooltip.getIdItem(prize?.item) : null
     buttons = buttons
     buttonsCount = buttons.len()
   }

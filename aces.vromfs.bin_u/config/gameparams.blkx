@@ -17,6 +17,7 @@
   "instructorSpeedRestrictionBelowBuoyancy": 0.7,
   "loaderWoundPenalty": 1.25,
   "loaderMaxPenalty": 2.0,
+  "maxSpeedForTankRearm": 1.5,
   "hmap_detail_tex_ofs": [0.0,0.0],
   "hmap_detail_tex_mul": [0.6,0.6],
   "maxIntroVideoPlayed": 2,
@@ -272,6 +273,7 @@
   "rendinstRadiusMultForBlast": 4.0,
   "isBlastEffectActivated": true,
   "supportShowHintBattleCnt": 5,
+  "showWaveHitcam": true,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [400.0,900.0,0.1,1.0],
@@ -2189,6 +2191,17 @@
       "color1": "#fa7878fa",
       "color2": "#ff0000c8",
       "hdrK": 5.0
+    },
+    "beamBlue": {
+      "halfSize": 4.0,
+      "distScaleStart": 50.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.35,
+      "beam": true,
+      "color1": "#508cfffa",
+      "color2": "#1941fffa",
+      "hdrK": 3.0
     }
   },
   "tracerTrails": {
@@ -4741,6 +4754,7 @@
   },
   "common": {
     "explosionWreckageSpeed": 24.0,
+    "maxTimeToShowWorm": 12.0,
     "controlsIdleTime": 10000.0,
     "rumble": true,
     "wind": true,
@@ -13665,6 +13679,30 @@
         "p": {
           "name": "wheel_l_03_",
           "modelNames": "lav_ad"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "dac"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "dac"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "dac"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "dac"
         }
       }
     ],

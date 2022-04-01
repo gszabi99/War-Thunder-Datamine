@@ -262,7 +262,6 @@ let defaults = ::Watched({  //def value when feature not found in game_settings.
 
   everyDayLoginAward = true
   DebugLogPS4ShopData = false //For debug purpose, to see ps4 shop data on retail console
-  ShowWeapPresetsMenu = false
   Changelog = false
   ShowUrlQrCode = false
 

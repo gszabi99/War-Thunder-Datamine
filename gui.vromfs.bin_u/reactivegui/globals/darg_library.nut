@@ -20,6 +20,10 @@ let tostringfuncTbl = [
     compare = @(val) val instanceof Watched
     tostring = @(val) "Watched: {0}".subst(tostring_r(val.value,{maxdeeplevel = 3, splitlines=false}))
   }
+  {
+    compare = @(val) type(val) == "instance" && val?.formatAsString != null
+    tostring = @(val) val.formatAsString()
+  }
 ]
 
 let log = logLib(tostringfuncTbl)

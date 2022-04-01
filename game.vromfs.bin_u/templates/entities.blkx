@@ -1364,5 +1364,185 @@
     "_singleton": true,
     "missionObject:tag": [],
     "disable__targets_list:list<t>": []
-  }
+  },
+  "sand_unit": {
+    "sand_unit__noise": 0.0,
+    "sand_unit__moveNoiseK": 0.0,
+    "sand_unit__noiseDecSpd": 20.0,
+    "sand_unit__deathAnimVarId": -1,
+    "sand_unit__deathAnimTimer": -1.0,
+    "sand_unit__deathAnimTime": -1.0
+  },
+  "sand_worm": [
+    {
+      "_extends": "root"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "sand_worm__position": [0.0,0.0]
+    },
+    {
+      "sand_worm__delayed": true
+    },
+    {
+      "sand_worm__radius": 100.0
+    },
+    {
+      "sand_worm__borderColor": "#ff1e00d2"
+    },
+    {
+      "sand_worm__curInactive": 0.0
+    },
+    {
+      "_tracked": "sand_worm__delayed"
+    },
+    {
+      "_tracked": "sand_worm__radius"
+    },
+    {
+      "sand_worm__needSync": false
+    },
+    {
+      "_group": {
+        "_tags": "server",
+        "sand_worm__delayTimer": -1.0,
+        "sand_worm__radiusDecK": 1.4,
+        "sand_worm__inactiveTime": 30.0,
+        "sand_worm__attackRadius": 120.0,
+        "sand_worm__activateTime": [30.0,45.0],
+        "sand_worm__respawnTimeout": [20.0,40.0],
+        "sand_worm__speedK:list<p2>": [
+          {
+            "n": [50.0,10.0]
+          },
+          {
+            "n": [5000.0,1.5]
+          }
+        ],
+        "sand_worm__noiseExcludeAreas:list<t>": [],
+        "sand_worm__excludeAreasId:list<i>": []
+      }
+    },
+    {
+      "_group": {
+        "_tags": "gameClient",
+        "sand_worm__cameraShake": [15.0,10.0,10.0],
+        "sand_worm__cameraShakeTimer": -1.0,
+        "sand_worm__appearSound": "desert/creature_appear",
+        "sand_worm__nearSound": "desert/creature_move",
+        "sand_worm__near_dist": 600.0,
+        "sand_worm__near_shake:list<p3>": [
+          {
+            "n": [600.0,5.0,3.0]
+          },
+          {
+            "n": [500.0,7.0,5.0]
+          },
+          {
+            "n": [400.0,10.0,6.0]
+          },
+          {
+            "n": [300.0,15.0,7.0]
+          },
+          {
+            "n": [250.0,20.0,8.0]
+          },
+          {
+            "n": [200.0,30.0,10.0]
+          },
+          {
+            "n": [170.0,40.0,15.0]
+          },
+          {
+            "n": [140.0,55.0,20.0]
+          },
+          {
+            "n": [100.0,70.0,25.0]
+          }
+        ],
+        "sand_worm__nearSoundEvent:SoundEvent": {
+          "_tags": "sound"
+        }
+      }
+    }
+  ],
+  "sky_laser": [
+    {
+      "_extends": "root"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "sky_laser__weaponIdx": -1
+    },
+    {
+      "sky_laser__uid": -1
+    },
+    {
+      "sky_laser__lastShootAt": -1.0
+    },
+    {
+      "sky_laser__timer": 0.2
+    },
+    {
+      "sky_laser__direction": [0.0,-1.0,0.0]
+    },
+    {
+      "sky_laser__positions:list<p3>": []
+    },
+    {
+      "sky_laser__timings:list<r>": []
+    }
+  ],
+  "sand_worm_render": [
+    {
+      "_extends": "root"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "sand_worm__victimUid": -1
+    },
+    {
+      "transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ]
+    },
+    {
+      "_tracked": "sand_worm__victimUid"
+    },
+    {
+      "_replicated": "sand_worm__victimUid"
+    },
+    {
+      "_group": {
+        "_tags": "render",
+        "worm_visual__res": "shai_char",
+        "sand_worm__animVarId": -1,
+        "sand_worm__animValue": -1.0,
+        "sand_worm__animTime": 10.0,
+        "sand_worm__animName": "shai_action",
+        "sand_worm__linkNodeId": -1,
+        "sand_worm__linkNodeName": "trigger",
+        "sand_worm__attackSfx": "desert/creature_attack",
+        "sand_worm__attackFxId": -1,
+        "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
+        "worm_visual": []
+      }
+    },
+    {
+      "_group": {
+        "_tags": "server",
+        "sand_worm__delayedTimer": -1.0,
+        "sand_worm__delayedTime": 12.0
+      }
+    }
+  ]
 }

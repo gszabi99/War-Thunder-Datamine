@@ -22,7 +22,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
-let { getUnitPresets, getWeaponsByPresetName } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -2380,9 +2380,9 @@ let function getWeaponFeatures(weaponsList)
 
   let curWeaponPresetId = ::is_in_flight() ? ::get_cur_unit_weapon_preset() : getLastWeapon(unitId)
 
-  let presets = getUnitPresets(unitBlk)
-  weaponPreset = getWeaponsByPresetName(
-    unitBlk, (curWeaponPresetId == "" ? presets?[0].name : curWeaponPresetId))
+  let unitWeapons = unit.getWeapons()
+  let curWeapon = unitWeapons.findvalue(@(w) w.name == curWeaponPresetId) ?? unitWeapons?[0]
+  weaponPreset = getPresetWeapons(unitBlk, curWeapon)
 
   local hasControllableRadar = false
   if (unitBlk?.sensors)

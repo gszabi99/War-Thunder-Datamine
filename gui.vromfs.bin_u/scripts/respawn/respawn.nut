@@ -31,6 +31,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { guiStartMPStatScreenFromGame,
   guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 local { onSpectatorMode, switchSpectatorTarget } = require_native("guiSpectator")
+let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
+let { getCrew } = require("%scripts/crew/crew.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -293,6 +295,7 @@ enum ESwitchSpectatorTarget
     includeMissionInfoBlocksToGamercard()
     updateLeftPanelBlock()
     initTeamUnitsLeftView()
+    getMplayersList()
 
     tmapBtnObj  = scene.findObject("tmap_btn")
     tmapHintObj = scene.findObject("tmap_hint")
@@ -762,8 +765,8 @@ enum ESwitchSpectatorTarget
       return
     }
 
-    let unit = ::getSlotAircraft(selSlot.countryId, selSlot.crewIdInCountry)
-    let crew = ::getSlotItem(selSlot.countryId, selSlot.crewIdInCountry)
+    let crew = getCrew(selSlot.countryId, selSlot.crewIdInCountry)
+    let unit = ::g_crew.getCrewUnit(crew)
     let isAvailable = ::is_crew_available_in_session(selSlot.crewIdInCountry, false)
       && missionRules.isUnitEnabledBySessionRank(unit)
     if (crew == null) {

@@ -17,7 +17,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
-let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbar.nut")
+let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
@@ -363,7 +363,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     {
       foreach(cIdx, c in ::g_crews_list.get())
         if (c.country == country)
-          return getSlotAircraft(cIdx, slots[country])
+          return ::g_crew.getCrewUnit(country.crews?[slots[country]])
       return null
     }
     return getSelAircraftByCountry(country)

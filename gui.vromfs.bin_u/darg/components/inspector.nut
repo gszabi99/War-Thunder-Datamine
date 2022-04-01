@@ -3,7 +3,7 @@ from "%darg/ui_imports.nut" import *
 //let {locate_element_source, sh, ph} = require("daRg")
 let {format} = require("string")
 let utf8 = require_optional("utf8")
-let clipboard = require("daRg.clipboard")
+let {set_clipboard_text} = require("daRg.clipboard")
 let fieldsMap = require("inspectorViews.nut")
 let cursors = require("simpleCursors.nut")
 
@@ -186,7 +186,7 @@ let function propPanel(desc) {
       size = [flex(), SIZE_TO_CONTENT]
       behavior = Behaviors.Button
       onElemState = @(sf) stateFlags(sf)
-      onClick = @() clipboard.set_text(getPropValueTexts(desc, k).text)
+      onClick = @() set_clipboard_text(getPropValueTexts(desc, k).text)
       children = mkPropContent(desc, k, stateFlags.value)
     }
   })
@@ -211,7 +211,7 @@ let function details() {
     rendObj = ROBJ_TEXTAREA
     behavior = [Behaviors.TextArea, Behaviors.WheelScroll, Behaviors.Button]
     onElemState = @(sf) summarySF(sf)
-    onClick = @() clipboard.set_text(sel.locationText)
+    onClick = @() set_clipboard_text(sel.locationText)
     text = prepareCallstackText(sel.locationText)
     fontSize
     color = textColor(summarySF.value)
@@ -230,7 +230,7 @@ let function details() {
       animHighlight(sf & S_HOVER ? bb : null)
     }
     onDetach = @() animHighlight(null)
-    onClick = @() clipboard.set_text(bbText)
+    onClick = @() set_clipboard_text(bbText)
     fontSize
     color = textColor(bboxSF.value)
     text = $"bbox = <color={valColor}>{bbText}</color>"

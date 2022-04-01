@@ -1656,6 +1656,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
     shortcuts = "ID_SHOW_VOICE_MESSAGE_LIST"
     lifeTime = 5.0
   }
+
+  SHOT_FAILED_APS_WORKING = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/shot_failed_aps_working"
+    showEvent = "hint:shot_failed_aps_working:show"
+    lifeTime = 3.0
+    isHideOnDeath = true
+  }
 },
 function() {
   name = "hint_" + typeName.tolower()

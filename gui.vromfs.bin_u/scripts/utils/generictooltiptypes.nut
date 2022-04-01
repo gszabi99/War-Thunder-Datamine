@@ -10,6 +10,7 @@ let { fillItemDescr, fillDescTextAboutDiv,
   fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
 let { getUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getCrew } = require("%scripts/crew/crew.nut")
 
 let tooltipTypes = {
   types = []
@@ -386,7 +387,7 @@ let exportTypes = addTooltipTypes({
       let skillCategory = getSkillCategoryByName(categoryName)
       let crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
       let crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
-      let crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
+      let crewData = getCrew(crewCountryId, crewIdInCountry)
       if (skillCategory != null && crewUnitType != ::CUT_INVALID && crewData != null)
         return getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, unit)
       return ""

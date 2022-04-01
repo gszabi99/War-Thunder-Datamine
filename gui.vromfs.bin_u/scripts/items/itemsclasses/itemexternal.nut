@@ -34,6 +34,7 @@ let defaultLocIdsList = {
   maxAmountIcon                         = "check_mark/green"
   reUseItemLocId                        = "item/consume/again"
   openingRewardTitle                    = "mainmenu/itemConsumed/title"
+  cantConsumeYet                        = "item/cant_consume_yet"
 }
 
 local ItemExternal = class extends ::BaseItem
@@ -405,6 +406,7 @@ local ItemExternal = class extends ::BaseItem
   getTagsLoc          = @() rarity.tag && !isDisguised ? [ rarity.tag ] : []
 
   canConsume          = @() false
+  cantConsumeYet      = @() isInventoryItem && itemDef?.tags.cantConsumeYet
   canAssemble         = @() !isExpired() && getVisibleRecipes().len() > 0
   canConvertToWarbonds = @() isInventoryItem && !isExpired() && ::has_feature("ItemConvertToWarbond") && amount > 0 && getWarbondRecipe() != null
   canDisassemble       = @() isInventoryItem && itemDef?.tags?.canBeDisassembled
@@ -424,6 +426,7 @@ local ItemExternal = class extends ::BaseItem
     if (amount && canConsume() && (params?.canConsume ?? true))
       return {
         btnName = ::loc("item/consume")
+        isInactive = cantConsumeYet()
       }
     if (isCrafting())
       return {
@@ -480,6 +483,11 @@ local ItemExternal = class extends ::BaseItem
   {
     if (!uids || !uids.len() || !metaBlk || !canConsume() || !(params?.canConsume ?? true))
       return false
+
+    if (cantConsumeYet()) {
+      ::scene_msg_box("cant_consume_yet", null, ::loc(getLocIdsList().cantConsumeYet), [["cancel"]], "cancel")
+      return false
+    }
 
     if (shouldAutoConsume || (params?.needConsumeImpl ?? false))
     {
@@ -1041,6 +1049,8 @@ local ItemExternal = class extends ::BaseItem
 
   function getViewData(params = {})
   {
+    if (itemDef?.tags.showAsEmptyItem)
+      return { hideBackgroundBorder = true }
     let item = getSubstitutionItem()
     if(item != null)
       return getSubstitutionViewData(item.getViewData(params), params)
@@ -1163,6 +1173,7 @@ local ItemExternal = class extends ::BaseItem
   canRecraftFromRewardWnd = @() itemDef?.tags?.allowRecraftFromRewardWnd ?? false
   getQuality = @() itemDef?.tags?.quality ?? "common"
   getExpireType = @() null
+  showAlwaysAsEnabledAndUnlocked = @() itemDef?.tags.showAlwaysAsEnabledAndUnlocked ?? false
 }
 
 return ItemExternal

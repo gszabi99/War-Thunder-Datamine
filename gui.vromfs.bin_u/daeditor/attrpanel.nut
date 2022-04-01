@@ -27,6 +27,7 @@ let {showMsgbox} = require("editor_msgbox.nut")
 let infoBox = @(text) showMsgbox({text})
 
 let cursors = require("components/cursors.nut")
+let {mkTemplateTooltip, mkCompMetaInfoText} = require("components/templateHelp.nut")
 let {getCompSqTypePropEdit, getCompNamePropEdit} = require("propPanelControls.nut")
 let scrollbar = require("%darg/components/scrollbar.nut")
 
@@ -62,6 +63,8 @@ local function get_tags(comp_flags){
 let function get_tagged_comp_name(comp_flags, comp_name) {
   local tags = get_tags(comp_flags).map(@(v) $"[{v}]")
   tags = "".join(tags)
+  if (tags.len() <= 0)
+    return comp_name
   return $"{tags} {comp_name}"
 }
 
@@ -74,6 +77,48 @@ let function makeBgToggle(initial=true) {
   return toggleBg
 }
 
+
+let getModComps = function() {
+  let comps = entity_editor?.get_saved_components(selectedEntity.value ?? INVALID_ENTITY_ID)
+  if (comps == null) // non-scene entity
+    return null
+  let compsObj = {}
+  comps.map(@(v) compsObj[v] <- true)
+  return compsObj
+}
+let modifiedComponents = Watched(getModComps())
+let updateModComps = @() modifiedComponents(getModComps())
+
+let function isNonSceneEntity() {
+  return modifiedComponents.value == null
+}
+let function isModifiedComponent(cname, cpath) {
+  if (cname == null || (cpath?.len()??0) > 0)
+    return false
+  if (cname == "transform")
+    return false
+  if (isNonSceneEntity())
+    return true
+  return modifiedComponents.value?[cname] == true
+}
+
+let function doResetComponent(eid, comp_name) {
+  entity_editor.reset_component(eid, comp_name)
+  selectedCompName(null)
+  selectedCompComp(null)
+  selectedCompPath(null)
+  selectedCompName.trigger()
+}
+let function doResetSelectedComponent() {
+  let eid = selectedEntity.value ?? INVALID_ENTITY_ID
+  if (eid == INVALID_ENTITY_ID)
+    return
+  if (selectedCompComp.value == null)
+    return
+  doResetComponent(eid, selectedCompComp.value)
+}
+
+
 let function panelRowColorC(comp_fullname, stateFlags, selectedCompNameVal, isOdd){
   local color = 0
   if (comp_fullname == selectedCompNameVal) {
@@ -84,19 +129,60 @@ let function panelRowColorC(comp_fullname, stateFlags, selectedCompNameVal, isOd
   return color
 }
 
-let mkCompNameText = @(comp_name_text, group=null) {
-  rendObj = ROBJ_DTEXT
-  text = comp_name_text
-  size = [flex(), fontH(100)]
-  margin = fsh(0.5)
-  group = group
-  behavior = Behaviors.Marquee
-  scrollOnHover = true
-  delay = 1.0
-  speed = 50
+let metaComponentPrefix     = "· "
+let metaContainerPrefix     = "· "
+let modifiedComponentPrefix = "• "
+let modifiedContainerPrefix = "• "
+let modifiedNoMetaPrefix    = "• "
+let transformPrefix         = "¤ "
+let modifiedSuffix          = ""
+
+let mkCompNameText = function(comp_name_text, metaInfo, modified, group=null) {
+  let prefix = (comp_name_text=="transform") ? transformPrefix :
+               modified ? (metaInfo ? modifiedComponentPrefix : modifiedNoMetaPrefix)
+               : (metaInfo ? metaComponentPrefix : "")
+  let suffix = modified ? modifiedSuffix : ""
+  return {
+    rendObj = ROBJ_DTEXT
+    text = $"{prefix}{comp_name_text}{suffix}"
+    size = [flex(), fontH(100)]
+    margin = fsh(0.5)
+    group = group
+    behavior = Behaviors.Marquee
+    scrollOnHover = true
+    delay = 1.0
+    speed = 50
+  }
 }
 
 local toggleBg = makeBgToggle()
+
+let function mkCompTooltip(metaInfo) {
+  local text = metaInfo?.desc
+  if (text == null)
+    return null
+
+  return {
+    rendObj = ROBJ_WORLD_BLUR_PANEL
+    fillColor = Color(30, 30, 30, 200)
+    children = {
+      rendObj = ROBJ_FRAME
+      color =  Color(50, 50, 50, 20)
+      borderWidth = hdpx(1)
+      padding = fsh(1)
+      flow = FLOW_VERTICAL
+      children = {
+        maxWidth = hdpx(480)
+        rendObj = ROBJ_TEXTAREA
+        halign = ALIGN_LEFT
+        behavior = Behaviors.TextArea
+        text = mkCompMetaInfoText(metaInfo, "multiLine")
+        fontSize = hdpx(14)
+        color = Color(180,180,180)
+      }
+    }
+  }
+}
 
 let function panelCompRow(params={}) {
   let comp_name_ext = params?.comp_name_ext
@@ -111,8 +197,9 @@ let function panelCompRow(params={}) {
   local comp_fullname = clone rawComponentName
   foreach (comp_key in (path ?? []))
     comp_fullname = $"{comp_fullname}.{comp_key}"
+  let metaInfo = path==null ? g_entity_mgr.getTemplateDB().getComponentMetaInfo(comp_name) : null
+  let modified = !isNonSceneEntity() && isModifiedComponent(comp_name, path)
   return function() {
-
     return {
       size = [flex(), gridHeight]
       behavior = Behaviors.Button
@@ -123,8 +210,9 @@ let function panelCompRow(params={}) {
         selectedCompComp(deselect ? null : rawComponentName)
         selectedCompPath(deselect ? null : path)
       }
+      onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
       eventPassThrough = true
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.update(sf & S_HOVER)
       group = group
 
       children = [
@@ -142,7 +230,7 @@ let function panelCompRow(params={}) {
           size = [flex(), gridHeight]
           flow = FLOW_HORIZONTAL
           children = [
-            mkCompNameText(comp_name_text, group)
+            mkCompNameText(comp_name_text, metaInfo, modified, group)
             fieldEditCtor(params.__merge({eid, obj, comp_name, rawComponentName}))
           ]
         }
@@ -252,7 +340,9 @@ let function openDelTemplateDialog() {
   })
 }
 
-let function panelCaption(text) {
+let templateTooltip = Watched(null)
+
+let function panelCaption(text, tpl_name) {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
@@ -263,6 +353,7 @@ let function panelCaption(text) {
     scrollOnHover = true
     eventPassThrough = true
     behavior = [Behaviors.Marquee, Behaviors.Button]
+    onHover = @(on) templateTooltip(on && tpl_name ? mkTemplateTooltip(tpl_name) : null)
 
     children = {
       halign = ALIGN_CENTER
@@ -288,6 +379,7 @@ let function panelButtons() {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_CENTER
       children = [
+        isModifiedComponent(selectedCompComp.value, selectedCompPath.value) ? textButton("R", doResetSelectedComponent) : null
         textButton("-", openDelTemplateDialog)
         textButton("+", openAddTemplateDialog)
         textButton("Close", function() {
@@ -699,7 +791,13 @@ let collapsibleButtonsStyleDark = {
 local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = null, eid=null, rawComponentName=null, path=null){
   let empty = len==0
   tags = tags ?? []
-  let captionText = {rendObj = ROBJ_DTEXT, text = caption, color = Color(180,180,180)}
+  let isRoot = (path?.len()??0) < 1
+  let metaInfo = isRoot ? g_entity_mgr.getTemplateDB().getComponentMetaInfo(rawComponentName) : null
+  let modified = isRoot && !isNonSceneEntity() ? isModifiedComponent(rawComponentName, null) : false
+  let prefix = modified ? (metaInfo ? modifiedContainerPrefix : modifiedNoMetaPrefix)
+               : (metaInfo ? metaContainerPrefix : "")
+  let suffix = modified ? modifiedSuffix : ""
+  let captionText = {rendObj = ROBJ_DTEXT, text = $"{prefix}{caption}{suffix}", color = Color(180,180,180)}
   let padding = [hdpx(5), hdpx(5)]
   let gap = hdpx(4)
   let isOdd = toggleBg()
@@ -720,8 +818,9 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
           hplace = ALIGN_RIGHT
           flow = FLOW_HORIZONTAL
           children = [
-            isConst || ((path?.len()??0)<1) ? null : textButton("X", @() doContainerOp(eid, rawComponentName, path, "delself"), collapsibleButtonsStyleDark)
-            isConst                         ? null : textButton("+", @() doContainerOp(eid, rawComponentName, path, "insert"), collapsibleButtonsStyle)
+            isConst || !isModifiedComponent(rawComponentName, path) ? null : textButton("R", @() doResetComponent(eid, rawComponentName), collapsibleButtonsStyleDark)
+            isConst || isRoot  ? null : textButton("X", @() doContainerOp(eid, rawComponentName, path, "delself"), collapsibleButtonsStyleDark)
+            isConst            ? null : textButton("+", @() doContainerOp(eid, rawComponentName, path, "insert"), collapsibleButtonsStyle)
           ]
         }
 
@@ -730,6 +829,7 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
       gap = gap
       rendObj = ROBJ_SOLID
       color = isOdd ? colors.GridBg[0] : colors.GridBg[1]
+      onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
     }
   }
   let isOpened = getOpenedCacheEntry(eid, rawComponentName, path)
@@ -755,6 +855,7 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
         hplace = ALIGN_RIGHT
         flow = FLOW_HORIZONTAL
         children = [
+          isConst || !isModifiedComponent(rawComponentName, path) ? null : textButton("R", @() doResetComponent(eid, rawComponentName), collapsibleButtonsStyleDark)
           !isOpened.value || isConst ? null : textButton("-", @() doContainerOp(eid, rawComponentName, path, "delete"), collapsibleButtonsStyle)
           !isOpened.value || isConst ? null : textButton("+", @() doContainerOp(eid, rawComponentName, path, "insert"), collapsibleButtonsStyle)
         ]
@@ -763,6 +864,7 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
     flow = FLOW_HORIZONTAL
     behavior = Behaviors.Button
     onClick = @() isOpened(!isOpened.value)
+    onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
     size = [flex(), SIZE_TO_CONTENT]
     margin = [hdpx(1),0]
   }
@@ -788,11 +890,16 @@ let mkCompFlagTag = memoize(@(text) mkTagFromTextColor(text, Color(40,90,90, 50)
 let mkFlagTags = @(eid, rawComponentName)
   get_tags(get_comp_flags(eid, rawComponentName)).map(mkCompFlagTag)
 
+let function updateAttrComponent(eid, cname) {
+  update_component(eid, cname)
+  gui_scene.resetTimeout(0.1, @() selectedCompName.trigger())
+}
+
 mkCompObject = function(eid, rawComponentName, rawObject, caption=null, onChange = null, path = null){
   local isFirst = caption==null
   caption = caption ?? rawComponentName
   isFirst = isFirst || rawComponentName==caption
-  onChange = onChange ?? (@() update_component(eid, rawComponentName) ?? true)
+  onChange = @() updateAttrComponent(eid, rawComponentName)
   let object = getValFromObj(eid, rawComponentName, path)
   let objData = object?.getAll() ?? object
   let objLen = objData.len()
@@ -839,7 +946,7 @@ let compTypeName = function(object){
 mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=null, path = null){
   let isFirst = caption == null
   caption = caption ?? rawComponentName
-  onChange = onChange ?? (@() update_component(eid, rawComponentName) ?? true)
+  onChange = @() updateAttrComponent(eid, rawComponentName)
   let object = getValFromObj(eid, rawComponentName, path)
   let len = object?.len() ?? 0
   path = path ?? []
@@ -860,7 +967,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
 
 
 mkComp = function(eid, rawComponentName, rawObject, caption=null, onChange = null, path = null){
-  onChange = path != null ? @() update_component(eid, rawComponentName) : null
+  onChange = @() updateAttrComponent(eid, rawComponentName)
   let object = getValFromObj(eid, rawComponentName, path)
   let comp_sq_type = typeof object
 
@@ -907,6 +1014,8 @@ let filteredCurComponents = Computed(function(){
   foreach(compName, compObj in curEntityComponents.value) {
     if (isComponentHidden(compName))
       continue
+    if (compObj.tostring() == "ecs::Tag")
+      continue
     if (isKeyInFilter(compName, filterString.value))
       res.append({compName, compObj, eid = selectedEntity.value})
     }
@@ -922,6 +1031,8 @@ let function compPanel() {
     }
   }
   else {
+    updateModComps()
+
     toggleBg = makeBgToggle() // achtung!: implicit state reset - better pass it via arguments
 
     let eid = selectedEntity.value
@@ -942,14 +1053,16 @@ let function compPanel() {
       })
     }
 
-    let captionText = eid!=INVALID_ENTITY_ID ? "{0}: {1}".subst(eid, removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(eid))) :
+    let templName = eid!=INVALID_ENTITY_ID ? removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(eid)) : null
+    let captionText = eid!=INVALID_ENTITY_ID ? "{0}: {1}".subst(eid, templName) :
       selectedEntities.value.len() == 0 ? "No entity selected"
       : $"{selectedEntities.value.len()} entities selected"
 
     return {
       watch = [
         selectedEntity, selectedEntities, propPanelVisible, filterString,
-        windowState, isCurEntityComponents, filteredCurComponents, selectedCompName
+        windowState, isCurEntityComponents, filteredCurComponents, selectedCompName,
+        templateTooltip
       ]
       size = [sw(100), sh(100)]
 
@@ -970,6 +1083,7 @@ let function compPanel() {
           rendObj = ROBJ_FRAME
           color = colors.ControlBg
           borderWidth = [0, hdpx(2)]
+
           children = [
             {
               size = [flex(), sh(80)] // free some space for combo
@@ -979,7 +1093,7 @@ let function compPanel() {
 
               flow = FLOW_VERTICAL
               children = [
-                panelCaption(captionText)
+                panelCaption(captionText, templName)
                 isCurEntityComponents.value ? compNameFilter : null
                 scrolledGrid
                 panelButtons
@@ -987,6 +1101,11 @@ let function compPanel() {
             }
             modalWindowsComponent
           ]
+        }
+        {
+          pos = windowState.value.pos
+          hplace = ALIGN_CENTER
+          children = templateTooltip.value
         }
       ]
     }

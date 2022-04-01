@@ -12,6 +12,7 @@ let IsWeaponHudVisible = Watched(false)
 let LaserPoint = [0, 0]
 let LaserAgmName = Watched("")
 let LaserAgmCnt = Watched(0)
+let LaserAgmSelectedCnt = Watched(-1)
 let ShellCnt = Watched(0)
 
 let planeState = {
@@ -27,6 +28,7 @@ let planeState = {
   LaserPoint,
   LaserAgmName,
   LaserAgmCnt,
+  LaserAgmSelectedCnt,
   ShellCnt,
 }
 

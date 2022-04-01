@@ -5,7 +5,7 @@ let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItem
 let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
   getModificationInfo, getModificationName
 } = require("%scripts/weaponry/bulletsInfo.nut")
-let { addBulletsParamToDesc, buildPiercingData } = require("%scripts/weaponry/bulletsVisual.nut")
+let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
@@ -77,10 +77,10 @@ let function getTierDescTbl(unit, params)
   let descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
   descArr[0] = header
   let res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
-  if(::isInArray(tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
-    buildPiercingData({
-      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, blk, true, false),
-      descTbl = res})
+  if(::isInArray(tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM])) {
+    let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, blk, true, false))
+    addArmorPiercingToDesc(bulletsData, res)
+  }
 
   if (addWeaponry != null)
   {
@@ -163,12 +163,10 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = item.name,
       detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
 
-    if((item.rocket || item.bomb) &&
-      (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED)
+    if((item.rocket || item.bomb) && (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED)
     {
-      buildPiercingData({
-        bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, item.name, true, true),
-        descTbl = res})
+      let bulletsData = buildBulletsData(::calculate_tank_bullet_parameters(unit.name, item.name, true, true))
+      addArmorPiercingToDesc(bulletsData, res)
     }
 
     if (effect)

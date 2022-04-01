@@ -178,6 +178,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     fillFunc()
 
     showTabSpecificControls(tab)
+    tab?.customUpdateSheetFunc(sheetObj)
     guiScene.performDelayed(this, function() {
       if (!isValid())
         return

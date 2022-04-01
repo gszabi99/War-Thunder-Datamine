@@ -49,6 +49,7 @@ let filteredEntites = Computed(function() {
  return entities
 })
 
+let filteredEntitiesCount = Computed(@() filteredEntites.value.len())
 
 let function applySelection(cb) {
   selectionState.mutate(function(value) {
@@ -101,15 +102,26 @@ let function statusLine() {
   statusAnimTrigger.lastN = nSel
 
   return {
-    watch = numSelectedEntities
+    watch = [numSelectedEntities, filteredEntitiesCount]
     size = [flex(), SIZE_TO_CONTENT]
-    children = {
-      rendObj = ROBJ_DTEXT
-      text = string.format("%d %s selected", nSel, nSel==1 ? "entity" : "entities")
-      animations = [
-        { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=statusAnimTrigger }
-      ]
-    }
+    flow = FLOW_HORIZONTAL
+    children = [
+      {
+         rendObj = ROBJ_DTEXT
+         size = [flex(), SIZE_TO_CONTENT]
+         text = string.format("%d %s selected", nSel, nSel==1 ? "entity" : "entities")
+         animations = [
+           { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=statusAnimTrigger }
+         ]
+      }
+      {
+        rendObj = ROBJ_DTEXT
+        halign = ALIGN_RIGHT
+        size = [flex(), SIZE_TO_CONTENT]
+        text = string.format("%d listed   ", filteredEntitiesCount.value)
+        color = Color(170,170,170)
+     }
+    ]
   }
 }
 
@@ -122,10 +134,7 @@ let filter = nameFilter(filterString, {
   }
 
   function onEscape() {
-    if (filterString.value != "")
-      filterString("")
-    else
-      set_kb_focus(null)
+    set_kb_focus(null)
   }
 })
 

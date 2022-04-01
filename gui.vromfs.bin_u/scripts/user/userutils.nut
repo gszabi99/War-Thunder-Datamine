@@ -3,6 +3,7 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getMyCrewUnitsState } = require("%scripts/slotbar/crewsListInfo.nut")
+let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 
 let function getMyStateData() {
   let profileInfo = ::get_profile_info()
@@ -11,6 +12,7 @@ let function getMyStateData() {
     : ::game_mode_manager.getCurrentGameModeId()
   let event = ::events.getEvent(gameModeId)
   let prefParams = mapPreferencesParams.getParams(event)
+  let slotsData = getSelSlotsData()
   let myData = {
     name = profileInfo.name,
     clanTag = profileInfo.clanTag,
@@ -18,8 +20,8 @@ let function getMyStateData() {
     rank = 0,
     country = profileInfo.country,
     crewAirs = null,
-    selAirs = ::getSelAirsTable(),
-    selSlots = getSelSlotsTable(),
+    selAirs = slotsData.units,
+    selSlots = slotsData.slots,
     brokenAirs = null,
     cyberCafeId = ::get_cyber_cafe_id()
     unallowedEventsENames = ::events.getUnallowedEventEconomicNames(),

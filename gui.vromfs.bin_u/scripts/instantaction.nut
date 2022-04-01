@@ -5,6 +5,7 @@ let { AMMO,
         getAmmoCost,
         getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
+let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null)
 {
@@ -29,7 +30,7 @@ let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nu
   let unreadyAmmo = []
   if (!respawn)
   {
-    let selList = getSelAirsTable()
+    let selList = getSelSlotsData().units
     foreach(c, airName in selList)
       if ((::isInArray(c, countries)) && airName!="")
       {

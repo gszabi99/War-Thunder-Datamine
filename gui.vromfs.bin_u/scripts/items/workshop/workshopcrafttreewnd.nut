@@ -184,8 +184,8 @@ let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
       || (((item?.maxAmount ?? -1) == 1) && isCraftingOrHasCraftResult)
     itemId = itemId
     isDisabledAction = isDisabledAction
-    isDisabled = item != null && !hasItemInInventory
-      && (!item.hasUsableRecipeOrNotRecipes() || isDisabledAction)
+    isDisabled = item != null && !item.showAlwaysAsEnabledAndUnlocked()
+      && !hasItemInInventory && (!item.hasUsableRecipeOrNotRecipes() || isDisabledAction)
     overrideMainActionData = hasAltAction ? {
       isInactive = false
       btnName = altActionName

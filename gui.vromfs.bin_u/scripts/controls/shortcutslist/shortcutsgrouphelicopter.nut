@@ -609,6 +609,12 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_AIR_BRAKE_HELICOPTER"
+    checkGroup = ctrlGroups.HELICOPTER
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false

@@ -1,4 +1,4 @@
-let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbar.nut")
+let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")

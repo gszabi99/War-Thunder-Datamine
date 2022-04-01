@@ -12,7 +12,7 @@ let { getLastWeapon,
 let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getWeaponsByPresetName, getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getPresetWeapons, getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
 let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers
 } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
@@ -200,7 +200,7 @@ local Unit = class
     if (uWpCost?.weapons != null) {
       if (hasWeaponSlots)
         initUnitWeaponsContainers(weaponsContainers, uWpCost.weapons)
-      initUnitWeapons(weapons, uWpCost.weapons, esUnitType, weaponsContainers)
+      initUnitWeapons(this, weapons, uWpCost.weapons)
       initWeaponryUpgrades(this, uWpCost)
     }
 
@@ -515,7 +515,8 @@ local Unit = class
     let weaponsBlkArray = []
     availableWeapons = clone defaultAvailableWeapons
 
-    let curPresetWeapons = getWeaponsByPresetName(unitBlk, secondaryWep)
+    let weapon = getWeapons().findvalue(@(w) w.name == secondaryWep)
+    let curPresetWeapons = getPresetWeapons(unitBlk, weapon)
     if (curPresetWeapons.len() > 0) {
       local nbrBomb = 0
       dagor.debug("check unit weapon :")

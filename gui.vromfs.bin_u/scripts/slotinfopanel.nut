@@ -7,6 +7,7 @@ let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButt
 let { SKILL_CATEGORY } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getCrew } = require("%scripts/crew/crew.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
@@ -379,12 +380,11 @@ let function getSkillCategoryView(crewData, unit) {
 
     let crewCountryId = ::find_in_array(shopCountriesList, ::get_profile_country_sq(), -1)
     let crewIdInCountry = ::getTblValue(crewCountryId, ::selected_crews, -1)
-    let crewData = ::getSlotItem(crewCountryId, crewIdInCountry)
+    let crewData = getCrew(crewCountryId, crewIdInCountry)
     if (crewData == null)
       return
 
-    let unitName = ::getTblValue("aircraft", crewData, null)
-    let unit = ::getAircraftByName(unitName)
+    let unit = ::g_crew.getCrewUnit(crewData)
     if (unit == null)
       return
 

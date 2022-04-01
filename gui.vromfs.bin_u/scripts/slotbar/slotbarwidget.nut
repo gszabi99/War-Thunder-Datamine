@@ -6,7 +6,8 @@ let { getNearestSelectableChildIndex } = require("%sqDagui/guiBhv/guiBhvUtils.nu
 let { getBitStatus, isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("%scripts/unit/unitInfoTexts.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbar.nut")
+let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrew } = require("%scripts/crew/crew.nut")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getAvailableRespawnBases } = require_native("guiRespawn")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
@@ -337,7 +338,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
     else if (forcedCountry && curSlotIdInCountry >= 0)
     {
-      let curCrew = ::getSlotItem(curSlotCountryId, curSlotIdInCountry)
+      let curCrew = getCrew(curSlotCountryId, curSlotIdInCountry)
       if (curCrew)
         curCrewId = curCrew.id
     }
@@ -589,12 +590,12 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function getCurSlotUnit()
   {
-    return ::getSlotAircraft(curSlotCountryId, curSlotIdInCountry)
+    return ::g_crew.getCrewUnit(getCrew(curSlotCountryId, curSlotIdInCountry))
   }
 
   function getCurCrew() //will return null when selected recruitCrew
   {
-    return getSlotItem(curSlotCountryId, curSlotIdInCountry)
+    return getCrew(curSlotCountryId, curSlotIdInCountry)
   }
 
   function getCurCountry()
@@ -729,7 +730,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   function applySlotSelectionDefault(prevSlot, restorePrevSelection) {
-    let crew = getSlotItem(curSlotCountryId, curSlotIdInCountry)
+    let crew = getCrew(curSlotCountryId, curSlotIdInCountry)
     if (crew)
     {
       let unit = getCrewUnit(crew)

@@ -1,5 +1,6 @@
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getCrew } = require("%scripts/crew/crew.nut")
 
 local curPreset = {
   groupsList = {} //groups config by country
@@ -257,7 +258,7 @@ let function getCurCraftsInfo() {
 }
 
 let function getSlotItem(idCountry, idInCountry) {
-  return ::getSlotItem(idCountry, idInCountry) ?? {
+  return getCrew(idCountry, idInCountry) ?? {
     country = shopCountriesList[idCountry]
     idCountry = idCountry
     idInCountry = idInCountry

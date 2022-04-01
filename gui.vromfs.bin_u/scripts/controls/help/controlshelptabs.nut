@@ -54,6 +54,12 @@ let tabGroups = [
     ]
   }
   {
+    title = "#missions/arachis_Dom"
+    list = [
+      helpTypes.IMAGE_ARACHIS
+    ]
+  }
+  {
     title = "#mission_objectives"
     list = [
       helpTypes.MISSION_OBJECTIVES
@@ -88,6 +94,7 @@ let function getPrefferableType(contentSet)
   let unitTag = unit?.isSubmarine() ? "submarine" : null
 
   foreach (pattern in [
+    CONTROL_HELP_PATTERN.SPECIAL_EVENT,
     CONTROL_HELP_PATTERN.HOTAS4,
     CONTROL_HELP_PATTERN.MISSION,
     CONTROL_HELP_PATTERN.IMAGE,

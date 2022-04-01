@@ -37,9 +37,9 @@ return function() {
 
     children = [
       mainToolbar,
-      attrPanel,
       (showEntitySelect.value ? entitySelect : null),
       (showTemplateSelect.value ? templateSelect : null),
+      attrPanel,
       (showHelp.value ? help : null),
       modalWindowsComponent,
       msgboxComponent,

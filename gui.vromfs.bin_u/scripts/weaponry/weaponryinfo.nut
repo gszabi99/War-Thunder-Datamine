@@ -9,7 +9,7 @@ let { AMMO,
         getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getUnitPresets, getWeaponsByTypes, getWeaponsByPresetName
+let { getUnitPresets, getWeaponsByTypes, getPresetWeapons
 } = require("%scripts/weaponry/weaponryPresets.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
@@ -40,7 +40,29 @@ let TRIGGER_TYPE = {
   AGM             = "agm"
   ATGM            = "atgm"
   GUIDED_BOMBS    = "guided bombs"
+  GUNNER          = "gunner"
 }
+
+let TRIGGER_TYPE_TO_BIT = {
+  [TRIGGER_TYPE.MACHINE_GUN]      = 1<<0,
+  [TRIGGER_TYPE.CANNON]           = 1<<1,
+  [TRIGGER_TYPE.GUNNER]           = 1<<2,
+  [TRIGGER_TYPE.BOMBS]            = 1<<3,
+  [TRIGGER_TYPE.TORPEDOES]        = 1<<4,
+  [TRIGGER_TYPE.ROCKETS]          = 1<<5,
+  [TRIGGER_TYPE.ATGM]             = 1<<6,
+  [TRIGGER_TYPE.AAM]              = 1<<7,
+  [TRIGGER_TYPE.MINES]            = 1<<8,
+  [TRIGGER_TYPE.GUIDED_BOMBS]     = 1<<9,
+  [TRIGGER_TYPE.ADD_GUN]          = 1<<10,
+}
+
+let ROCKETS_WEAPON_MASK = TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ROCKETS]
+  | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ATGM]
+  | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.AAM]
+
+let BOMBS_WEAPON_MASK = TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.BOMBS]
+  | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.GUIDED_BOMBS]
 
 let WEAPON_TYPE = {
   GUNS            = "guns"
@@ -723,7 +745,7 @@ let function getLastPrimaryWeapon(unit)
 let function getCommonWeapons(unitBlk, primaryMod) {
   let res = []
   if (primaryMod == "" && unitBlk?.commonWeapons)
-    return getWeaponsByTypes(unitBlk.commonWeapons, unitBlk)
+    return getWeaponsByTypes(unitBlk, unitBlk.commonWeapons)
 
   if (unitBlk?.modifications == null)
     return res
@@ -733,7 +755,7 @@ let function getCommonWeapons(unitBlk, primaryMod) {
     let modification = unitBlk.modifications.getBlock(i)
     if (modification.getBlockName() == primaryMod){
       if (modification?.effects.commonWeapons)
-        return getWeaponsByTypes(modification.effects.commonWeapons, unitBlk)
+        return getWeaponsByTypes(unitBlk, modification.effects.commonWeapons)
 
       break
     }
@@ -777,11 +799,10 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
     weapons = addWeaponsFromBlk({}, getCommonWeapons(unitBlk, primaryMod), unit, p.weaponsFilterFunc)
 
   if (!p.isPrimary) {
-    let weaponName = unit.getWeapons()?[weaponPresetIdx].name
-    let curPreset = getUnitPresets(unitBlk).findvalue(@(_) _.name == weaponName)
-    if (curPreset)
-      weapons = addWeaponsFromBlk(weapons, getWeaponsByPresetName(unitBlk, curPreset.name),
-        unit, p.weaponsFilterFunc, curPreset?.weaponConfig)
+    let weapon = unit.getWeapons()?[weaponPresetIdx]
+    let curPreset = weapon != null ? getUnitPresets(unitBlk).findvalue(@(_) _.name == weapon.name) : null
+    weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, weapon),
+      unit, p.weaponsFilterFunc, curPreset?.weaponConfig)
   }
 
   return weapons
@@ -922,7 +943,13 @@ let function getOverrideBullets(unit)
   return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
 }
 
-let needSecondaryWeaponsWnd = @(unit) (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
+let needSecondaryWeaponsWnd = @(unit) unit.isAir() || unit.isHelicopter()
+
+let getTriggerType = @(w) (w?.triggerGroup == "torpedoes" || w?.triggerGroup == "commander")
+  ? w.triggerGroup
+  : w?.weaponType ?? w?.trigger ?? ""
+
+let isGunnerTrigger = @(trigger) trigger.indexof(TRIGGER_TYPE.GUNNER, 0) == 0
 
 let cachedTriggerGroupImageByUnitName = {}
 let function getImageByTriggerFromUnit(unitName, triggerGroup) {
@@ -945,6 +972,9 @@ return {
   WEAPON_TAG
   CONSUMABLE_TYPES
   WEAPON_TEXT_PARAMS
+  TRIGGER_TYPE_TO_BIT
+  ROCKETS_WEAPON_MASK
+  BOMBS_WEAPON_MASK
   getLastWeapon
   validateLastWeapon
   setLastWeapon
@@ -973,4 +1003,6 @@ return {
   getOverrideBullets
   needSecondaryWeaponsWnd
   getWeaponDisabledMods
+  getTriggerType
+  isGunnerTrigger
 }

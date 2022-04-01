@@ -64,7 +64,25 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   showAsContentItem = @() itemDef?.tags?.showAsContentItem ?? false
 
+  function getPrizeDescription(count = 1, colored = true)
+  {
+    let itemText = getShortDescription(colored)
+    let quantity = count * (metaBlk?.count ?? 1)
+    let quantityText = quantity == 1
+      ? ""
+      : $"x{quantity}"
+    return  $"{itemText} {quantityText}"
+  }
+
   getShortDescription = @(colored = true) showAsContentItem()
     ? getContentItem()?.getShortDescription(colored) ?? base.getShortDescription(colored)
     : base.getShortDescription(colored)
+
+  function getSubstitutionItem()
+  {
+    if (showAsContentItem())
+      return getContentItem()
+
+    return base.getSubstitutionItem()
+  }
 }

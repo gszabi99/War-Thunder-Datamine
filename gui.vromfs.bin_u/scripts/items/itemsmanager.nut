@@ -8,6 +8,7 @@ let { boosterEffectType }= require("%scripts/items/boosterEffect.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
+let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 
 // Independent Modules
 require("%scripts/items/roulette/bhvRoulette.nut")
@@ -496,29 +497,8 @@ local lastItemDefsUpdatedelayedCall = 0
 ::ItemsManager.getInventoryItemType <- function getInventoryItemType(blkType)
 {
   if (typeof(blkType) == "string") {
-    switch (blkType)
-    {
-      case "skin":                return itemType.SKIN
-      case "decal":               return itemType.DECAL
-      case "attachable":          return itemType.ATTACHABLE
-      case "key":                 return itemType.KEY
-      case "chest":               return itemType.CHEST
-      case "aircraft":
-      case "tank":
-      case "helicopter":
-      case "ship":                return itemType.VEHICLE
-      case "warbonds":            return itemType.WARBONDS
-      case "craft_part":          return itemType.CRAFT_PART
-      case "craft_process":       return itemType.CRAFT_PROCESS
-      case "internal_item":       return itemType.INTERNAL_ITEM
-      case "entitlement":         return itemType.ENTITLEMENT
-      case "warpoints":           return itemType.WARPOINTS
-      case "unlock":              return itemType.UNLOCK
-      case "battlePass":          return itemType.BATTLE_PASS
-      case "rented_unit":         return itemType.RENTED_UNIT
-      case "unit_coupon_mod":     return itemType.UNIT_COUPON_MOD
-      case "profile_icon":        return itemType.PROFILE_ICON
-    }
+    if (blkType in inventoryItemTypeByTag)
+      return inventoryItemTypeByTag[blkType]
 
     blkType = ::item_get_type_id_by_type_name(blkType)
   }

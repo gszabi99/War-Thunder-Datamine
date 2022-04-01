@@ -9,7 +9,7 @@ let { isModResearched, isModAvailableOrFree, getModificationByName,
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let { getGuiOptionsMode } = ::require_native("guiOptions")
 let { unique } = require("%sqstd/underscore.nut")
-let { getWeaponsByPresetName, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -286,6 +286,16 @@ let function getBulletsSetData(air, modifName, noModList = null)
       {
         res.proximityFuseArmDistance <- paramsBlk.proximityFuse?.armDistance ?? 0
         res.proximityFuseRadius      <- paramsBlk.proximityFuse?.radius ?? 0
+      }
+
+      if ("sonicDamage" in paramsBlk)
+      {
+        res.sonicDamage <- {
+          distance  = paramsBlk.sonicDamage?.distance
+          speed     = paramsBlk.sonicDamage?.speed
+          horAngles = paramsBlk.sonicDamage?.horAngles
+          verAngles = paramsBlk.sonicDamage?.verAngles
+        }
       }
     }
 
@@ -973,12 +983,10 @@ let function getActiveBulletsGroupInt(air, params = null)
     }
 
     if (!(secondaryWeapon in air.secondaryBullets)) {
-      local secondary = 0
-      let airBlk = ::get_full_unit_blk(air.name)
-      secondary = getActiveBulletsIntByWeaponsBlk(air,
-        getWeaponsByPresetName(airBlk, secondaryWeapon), weaponToFakeBulletMask)
-
-      air.secondaryBullets[secondaryWeapon] <- secondary
+      let weapon = air.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
+      air.secondaryBullets[secondaryWeapon] <- getActiveBulletsIntByWeaponsBlk(air,
+        getPresetWeapons(::get_full_unit_blk(air.name), weapon),
+        weaponToFakeBulletMask)
     }
   }
 

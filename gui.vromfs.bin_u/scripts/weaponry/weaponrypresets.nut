@@ -12,7 +12,7 @@ let getTierIdxBySlot = @(slot) TIERS_NUMBER - 1 - slot
 let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots % "WeaponSlot")
 // For now weapon data can be two different types
 // depends of whether or not unit config contains the weaponPilons block.
-let function getWeaponsByTypes(weaponsBlk, unitBlk, isCommon = true) {
+let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   let res = []
   local slots = getUnitWeaponSlots(unitBlk)             // All unit weapons
   if (!isCommon)
@@ -47,14 +47,18 @@ let function getWeaponsByTypes(weaponsBlk, unitBlk, isCommon = true) {
   return res
 }
 
-let getPresetWeapons = @(blkPath, unitBlk)(blkPath == "" || blkPath == null) ? []
-  : getWeaponsByTypes(blkOptFromPath(blkPath), unitBlk, false)
+let getPresetWeaponsByPath = @(unitBlk, blkPath) (blkPath == "" || blkPath == null) ? []
+  : getWeaponsByTypes(unitBlk, blkOptFromPath(blkPath), false)
 
 let getUnitPresets = @(unitBlk)  (unitBlk?.weapon_presets != null)
   ? (unitBlk.weapon_presets % "preset") : []
 
-let getWeaponsByPresetName = @(unitBlk, name)
-  getPresetWeapons(getUnitPresets(unitBlk)?.findvalue(@(_) _.name == name).blk, unitBlk)
+let getPresetWeaponsByName = @(unitBlk, name)
+  getPresetWeaponsByPath(unitBlk, getUnitPresets(unitBlk).findvalue(@(_) _.name == name)?.blk)
+
+let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
+  : "weaponsBlk" in weapon ? getWeaponsByTypes(unitBlk, weapon.weaponsBlk)
+  : getPresetWeaponsByName(unitBlk, weapon.name)
 
 let function getSlotWeapons(slotBlk) {
   let res = []
@@ -77,7 +81,7 @@ let function getUnitWeapons(unitBlk) {// Pesets weapon only
       res.extend(getSlotWeapons(slot))
   else
     foreach (preset in getUnitPresets(unitBlk))
-      foreach (weapon in getPresetWeapons(preset.blk, unitBlk)) {
+      foreach (weapon in getPresetWeaponsByPath(unitBlk, preset.blk)) {
           let w = ::u.copy(weapon)
           w.presetId <- preset.name
           ::u.appendOnce(w, res)
@@ -145,7 +149,7 @@ return {
   getUnitWeapons
   getUnitPresets
   getWeaponsByTypes
-  getWeaponsByPresetName
+  getPresetWeapons
   getDefaultPresetId
   getUnitWeaponSlots
   getSlotWeapons

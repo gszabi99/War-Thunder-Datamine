@@ -60,7 +60,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   curChallengeId = ""
   hoverChallengeId = ""
   isFillingChallengesList = false
-  needCalculateCurPage = true
+  needCalculateCurPage = false
 
   function initScreen() {
     updateButtons()
@@ -94,15 +94,15 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function calculateCurPage() {
     stageIndexOffsetAddedByPages = {}
     let stagesList = seasonStages.value
-    let curStageIdx = stagesList.findindex(@(stageData) stageData.prizeStatus == "available"
-      || stageData.stage >= seasonLevel.value) ?? 0
-    let middleIdx = ::ceil(stagesPerPage.tofloat()/2) - 1
+    let curStageIdx = stagesList.findvalue(@(stageData) stageData.prizeStatus == "available"
+      || stageData.stage >= seasonLevel.value)?.stage ?? 0
+    let middleIdx = ::ceil(stagesPerPage.tofloat() / 2) - 1
     let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < curStageIdx ? 1 : 0), 0)
     stageIndexOffset = curStageIdx <= middleIdx ? 0
-      : ((curStageIdx % stagesPerPage) - middleIdx + doubleStagesCount)
+      : (((curStageIdx + doubleStagesCount) % stagesPerPage) - middleIdx)
     let pageOffset = stageIndexOffset > 0 ? 0 : -1
     curPage = curStageIdx <= middleIdx ? 0
-      : ::ceil((curStageIdx.tofloat() - stageIndexOffset)/ stagesPerPage).tointeger() + pageOffset
+      : ::ceil((curStageIdx.tofloat() + doubleStagesCount - stageIndexOffset) / stagesPerPage).tointeger() + pageOffset
   }
 
   function goToPage(obj) {

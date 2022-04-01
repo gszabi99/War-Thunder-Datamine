@@ -27,7 +27,6 @@ def rnd_point_on_ring(radius_from, radius_to: float): float2
   sincos(2f * PI * rndAngle, s, c)
   return float2(radius * c, radius * s)
 
-[generic]
 def choose_index_by_weight(list)
   var totalWeight = .0
   for item in list
@@ -38,3 +37,25 @@ def choose_index_by_weight(list)
     if rnd <= .0
       return idx
   return length(list) - 1
+
+def random_horz_matrix()
+  let angle = gfrnd() * 2f * PI
+  let c = cos(angle)
+  let s = sin(angle)
+  var tm = IDENT_TM
+  tm[0] = float3(c, 0f, s)
+  tm[1] = float3(0, 1, 0)
+  tm[2] = float3(-s, 0f, c)
+  return tm
+
+def shuffle(var list)
+  let size = length(list)
+  for i in iter_range(list)
+    let idx = grnd() % (size - i)
+    swap(list[i], list[i + idx])
+
+//for the case when the list itself cannot be shuffled
+def get_shuffled_indexes(list)
+  var indexes <- [{for idx in iter_range(list); idx}]
+  shuffle(indexes)
+  return <- indexes

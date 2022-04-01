@@ -1,17 +1,19 @@
 from "%darg/ui_imports.nut" import *
 
-let {showTemplateSelect, editorIsActive, showDebugButtons} = require("state.nut")
+let {showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup} = require("state.nut")
 let {colors} = require("components/style.nut")
 let txt = require("%darg/components/text.nut").dtext
+
 let textButton = require("components/textButton.nut")
 let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%darg/components/combobox.nut")
 let scrollbar = require("%darg/components/scrollbar.nut")
+let {mkTemplateTooltip} = require("components/templateHelp.nut")
+
 let entity_editor = require("entity_editor")
 let daEditor4 = require("daEditor4")
 let {DE4_MODE_SELECT} = daEditor4
 
-let selectedGroup = Watched("")
 let selectedItem = Watched(null)
 let filterText = Watched("")
 let templatePostfixText = Watched("")
@@ -54,10 +56,7 @@ let filter = nameFilter(filterText, {
   }
 
   function onEscape() {
-    if (filterText.value != "")
-      filterText("")
-    else
-      set_kb_focus(null)
+    set_kb_focus(null)
   }
 })
 
@@ -75,6 +74,8 @@ let templPostfix = nameFilter(templatePostfixText, {
       set_kb_focus(null)
   }
 })
+
+let templateTooltip = Watched(null)
 
 let function listRow(tpl_name, idx) {
   let stateFlags = Watched(0)
@@ -97,8 +98,9 @@ let function listRow(tpl_name, idx) {
       tpl_name = tpl_name
 
       watch = stateFlags
+      onHover = @(on) templateTooltip(on ? mkTemplateTooltip(tpl_name) : null)
       onClick = @() doSelectTemplate(tpl_name)
-      onElemState = @(sf) stateFlags.update(sf)
+      onElemState = @(sf) stateFlags.update(sf & S_HOVER)
 
       children = {
         rendObj = ROBJ_DTEXT
@@ -109,7 +111,7 @@ let function listRow(tpl_name, idx) {
   }
 }
 
-let selectedGroupTemplates = Computed(@() editorIsActive.value ? entity_editor.get_instance()?.getEcsTemplates(selectedGroup.value) ?? [] : [])
+let selectedGroupTemplates = Computed(@() editorIsActive.value ? entity_editor.get_instance()?.getEcsTemplates(selectedTemplatesGroup.value) ?? [] : [])
 
 let filteredTemplates = Computed(function() {
   let result = []
@@ -198,41 +200,54 @@ let function dialogRoot() {
 
 
   return {
-    size = [sw(17), sh(75)]
-    hplace = ALIGN_LEFT
-    vplace = ALIGN_CENTER
-    rendObj = ROBJ_SOLID
-    color = colors.ControlBg
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    behavior = Behaviors.Button
-    key = "template_select"
-    padding = fsh(0.5)
-    gap = fsh(0.5)
+    size = [flex(), flex()]
+    flow = FLOW_HORIZONTAL
 
-    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons]
+    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip]
 
     children = [
-      txt($"CREATE ENTITY ({filteredTemplatesCount.value}/{selectedGroupTemplatesCount.value})", {fontSize = hdpx(15) hplace = ALIGN_CENTER})
       {
-        size = [flex(),fontH(100)]
-        children = combobox(selectedGroup, templatesGroups)
-      }
-      filter
-      {
-        size = flex()
-        children = scrollList
-      }
-      templPostfix
-      {
-        flow = FLOW_HORIZONTAL
-        size = [flex(), SIZE_TO_CONTENT]
+        size = [sw(17), sh(75)]
+        hplace = ALIGN_LEFT
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_SOLID
+        color = colors.ControlBg
+        flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
+        behavior = Behaviors.Button
+        key = "template_select"
+        padding = fsh(0.5)
+        gap = fsh(0.5)
+
         children = [
-          textButton("Close", doCancel, {hotkeys=["^Esc"]})
-          showDebugButtons.value ? textButton("Validate", @() doValidateTemplates(0), {boxStyle={normal={borderColor=Color(50,50,50,50)}} textStyle={normal={color=Color(80,80,80,80) fontSize=hdpx(12)}}}) : null
+          txt($"CREATE ENTITY ({filteredTemplatesCount.value}/{selectedGroupTemplatesCount.value})", {fontSize = hdpx(15) hplace = ALIGN_CENTER})
+          {
+            size = [flex(),fontH(100)]
+            children = combobox(selectedTemplatesGroup, templatesGroups)
+          }
+          filter
+          {
+            size = flex()
+            children = scrollList
+          }
+          templPostfix
+          {
+            flow = FLOW_HORIZONTAL
+            size = [flex(), SIZE_TO_CONTENT]
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = [
+              textButton("Close", doCancel, {hotkeys=["^Esc"]})
+              showDebugButtons.value ? textButton("Validate", @() doValidateTemplates(0), {boxStyle={normal={borderColor=Color(50,50,50,50)}} textStyle={normal={color=Color(80,80,80,80) fontSize=hdpx(12)}}}) : null
+            ]
+          }
         ]
+      }
+      {
+        size = [sw(17), sh(60)]
+        hplace = ALIGN_LEFT
+        vplace = ALIGN_CENTER
+        children = templateTooltip.value
       }
     ]
   }

@@ -95,6 +95,7 @@ global enum MOUSE_AXIS {
 
 global enum CONTROL_HELP_PATTERN {
   NONE,
+  SPECIAL_EVENT,
   MISSION,
   IMAGE,
   GAMEPAD,

@@ -1,6 +1,6 @@
 let { turretAngles } = require("airHudElems.nut")
 let lineWidth = hdpx(LINE_WIDTH)
-let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt } = require("planeState/planeWeaponState.nut")
+let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("planeState/planeWeaponState.nut")
 let { GuidanceLockState } = require("agmAimState.nut")
 let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 
@@ -51,7 +51,7 @@ let status = @() {
     },
     @() {
       size = SIZE_TO_CONTENT
-      watch = LaserAgmCnt
+      watch = [LaserAgmCnt, LaserAgmSelectedCnt]
       rendObj = ROBJ_DTEXT
       hplace = ALIGN_LEFT
       font = Fonts.hud
@@ -59,7 +59,9 @@ let status = @() {
       fontFxFactor = fontOutlineFxFactor
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
-      text = LaserAgmCnt.value.tostring()
+      text = LaserAgmSelectedCnt.value > 0
+        ? string.format("%d/%d", LaserAgmCnt.value, LaserAgmSelectedCnt.value)
+        : LaserAgmCnt.value.tostring()
     },
     @() {
       size = SIZE_TO_CONTENT

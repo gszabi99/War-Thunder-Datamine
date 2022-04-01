@@ -184,6 +184,7 @@ let IsChaffsEmpty = Watched(false)
 
 let IsHighRateOfFire = Watched(false)
 
+let IsRpmVisible = Watched(false)
 let IsRpmCritical = Watched(false)
 
 let FixedGunDirectionX = Watched(-100)
@@ -351,6 +352,7 @@ let helicopterState = {
 
   IsHighRateOfFire,
 
+  IsRpmVisible,
   IsRpmCritical,
 
   FixedGunDirectionX,

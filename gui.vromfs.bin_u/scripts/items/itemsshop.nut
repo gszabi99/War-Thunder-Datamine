@@ -551,6 +551,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     doWhenActiveOnce("updateInventoryItemsList")
   }
 
+  function onEventItemsShopUpdate(p)
+  {
+    doWhenActiveOnce("updateItemsList")
+  }
+
   function onEventUnitBought(params)
   {
     updateItemInfo()

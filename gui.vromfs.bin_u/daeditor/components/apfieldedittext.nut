@@ -16,7 +16,6 @@ let function fieldEditText_(params={}) {
   let compType = typeof compVal
   let stateFlags = Watched(0)
   let function onChange(text){
-    params?.onChange?()
     curText.update(text)
   }
 
@@ -125,8 +124,9 @@ local function fieldEditText(params={}){
     else {
       local ok = false
       try {
-        let onChangeLocal = onChange ?? (@() obsolete_dbg_set_comp_val(eid, comp_name, val) ?? true)
-        ok = onChangeLocal()
+        obsolete_dbg_set_comp_val(eid, comp_name, val)
+        onChange?()
+        ok = true
       }
       catch (e) {
         ok = false

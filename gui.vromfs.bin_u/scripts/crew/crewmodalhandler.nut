@@ -6,6 +6,7 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getCrew } = require("%scripts/crew/crew.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {})
 {
@@ -823,7 +824,7 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
   }
 
   getCrewUnit = @(slotCrew) ::g_crew.getCrewUnit(slotCrew)
-  getSlotCrew = @() ::getSlotItem(countryId, idInCountry)
+  getSlotCrew = @() getCrew(countryId, idInCountry)
   onRecruitCrew = @() null
 
   function updateButtons()
