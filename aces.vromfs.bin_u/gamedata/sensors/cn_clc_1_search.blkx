@@ -1,20 +1,20 @@
 {
   "type": "radar",
-  "name": "ADATS",
+  "name": "CLC-1",
   "transivers": {
     "search": {
-      "power": 400.0,
-      "band": 8,
+      "power": 100.0,
+      "band": 4,
       "rcs": 3.0,
-      "range": 20000.0,
-      "rangeMax": 25000.0,
+      "range": 10000.0,
+      "rangeMax": 10000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 5.0,
           "sideLobesSensitivity": -30.0
         },
         "elevation": {
-          "angleHalfSens": 18.0,
+          "angleHalfSens": 15.0,
           "sideLobesSensitivity": -30.0
         }
       }
@@ -24,12 +24,12 @@
     "search": {
       "type": "cylinder",
       "azimuthLimits": [-180.0,180.0],
-      "elevationLimits": [9.0,9.0],
+      "elevationLimits": [7.5,7.5],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "barHeight": 18.0,
+      "barHeight": 15.0,
       "barsCount": 1,
       "rowMajor": true
     }
@@ -41,9 +41,8 @@
       "absDopplerSpeed": true,
       "distance": {
         "presents": true,
-        "minValue": 300.0,
-        "maxValue": 25000.0,
-        "maxUnambiguousValue": 100000.0
+        "minValue": 500.0,
+        "maxValue": 10000.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -55,8 +54,7 @@
     }
   },
   "scopeRanges": {
-    "range1": 10000.0,
-    "range2": 25000.0
+    "range1": 10000.0
   },
   "fsms": {
     "main": {
@@ -77,11 +75,13 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 9.0
+            "value": 7.5
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-5.0,5.0],
-            "distanceRange": [0.0,15000.0]
+            "azimuthRange": [-90.0,90.0],
+            "azimuthWidth": 6.0,
+            "distanceRange": [0.0,10000.0],
+            "distanceRelWidthMin": 0.05
           }
         },
         "setStandbyMode": {
