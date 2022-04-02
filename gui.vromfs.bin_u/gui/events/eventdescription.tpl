@@ -149,6 +149,8 @@ tdiv {
           btnName:t='start'
           display:t='hide'
           enable:t='no'
+          visualStyle:t="purchase"
+          buttonWink{}
           ButtonImg{}
         }
         Button_text {
