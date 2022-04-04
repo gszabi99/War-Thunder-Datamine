@@ -37706,12 +37706,6 @@
     }
   },
   {
-    "dmg": {
-      "name": "desert_building_walls",
-      "immortal": true
-    }
-  },
-  {
     "DamageParts": {
       "adobe_brick": {
         "armorClass": "RHA_tank",
@@ -51795,6 +51789,16 @@
       },
       "desert_building_turret_b": {
         "nextRes": "desert_building_turret_b_dmg",
+        "hp": 5000.0,
+        "impulseThreshold": 1.5,
+        "fx": "ad_buildings_destructions_part",
+        "fxScale": 1.0,
+        "apexDestructible": false,
+        "isParent": true,
+        "dmPreset": "stone_house"
+      },
+      "desert_building_walls": {
+        "physRes": "desert_building_walls_destr_phobj",
         "hp": 5000.0,
         "impulseThreshold": 1.5,
         "fx": "ad_buildings_destructions_part",

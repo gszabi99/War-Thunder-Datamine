@@ -126,7 +126,7 @@
     "maxEngineTemperature": 40.0
   },
   {
-    "rearmTimeOnField": 45.0
+    "rearmTimeOnField": 30.0
   },
   {
     "crosshairPreset": "mlrs_tank_sight"
@@ -155,7 +155,8 @@
           "variableThickness": true
         },
         "body_side_dm": {
-          "armorThickness": 180.0
+          "armorThickness": 180.0,
+          "genericArmorQuality": 0.3
         },
         "turret_01_side_dm": {
           "armorThickness": 100.0
@@ -344,6 +345,7 @@
         "armorThickness": 200.0,
         "hp": 300.0,
         "stopChanceOnDeadPart": 0.0,
+        "genericArmorQuality": 0.1,
         "ex_armor_r_01_dm": [],
         "ex_armor_r_02_dm": [],
         "ex_armor_r_03_dm": [],
@@ -2006,62 +2008,130 @@
     "class_tags": []
   },
   {
-    "commonWeapons": {
-      "Weapon": {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/mlrs_tank_rocket_launcher.blk",
-        "weaponType": "rockets",
-        "flash": "emtr_gun_flame_01",
-        "useEmitter": true,
-        "emitter": "bone_rocket_01",
-        "emitterGenRange": [1.0,30.0],
-        "emitterGenFmt": "bone_rocket_%02d",
-        "ammoDpGenFmt": "ammo_turret_%02d_dm",
-        "startFx": "duna_tank_rocket_muzzle",
-        "startFxOffset": [1.5,0.0,0.0],
-        "createGunEffects": true,
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_dm",
-        "brokenBarrelAllowShoot": true,
-        "speedYaw": 15.0,
-        "speedPitch": 5.0,
-        "fireConeAngle": 1.0,
-        "bullets": 30,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "gunnerDm": "gunner_dm"
-        },
-        "limits": {
-          "yaw": [-180.0,180.0],
-          "pitch": [-5.0,5.0]
+    "commonWeapons": [
+      {
+        "Weapon": {
+          "trigger": "gunner0",
+          "blk": "gameData/Weapons/groundModels_weapons/mlrs_tank_rocket_launcher.blk",
+          "weaponType": "rockets",
+          "flash": "emtr_gun_flame_01",
+          "useEmitter": true,
+          "emitter": "bone_rocket_01",
+          "emitterGenRange": [1.0,30.0],
+          "emitterGenFmt": "bone_rocket_%02d",
+          "ammoDpGenFmt": "ammo_turret_%02d_dm",
+          "startFx": "duna_tank_rocket_muzzle",
+          "startFxOffset": [1.5,0.0,0.0],
+          "createGunEffects": true,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "barrelDP": "gun_barrel_dm",
+          "brokenBarrelAllowShoot": true,
+          "speedYaw": 15.0,
+          "speedPitch": 15.0,
+          "fireConeAngle": 1.0,
+          "bullets": 30,
+          "salvoAmount": 100.0,
+          "ChainfireTime": 0.0,
+          "DelayAfterShoot": 5.0,
+          "AttackMaxDistance": 1000.0,
+          "AttackMaxRadius": 1000.0,
+          "AttackMaxHeight": 1000.0,
+          "accuracyAir": 0.0,
+          "accuracyGnd": 1.5,
+          "errMeasureVel": 0.0,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_gun",
+            "gunnerDm": "gunner_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,5.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": false,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 100.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 100.0,
+            "speedFromVehicleVerticalMult": -1.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.0]
+              },
+              {
+                "row": [45.0,0.01]
+              },
+              {
+                "row": [100.0,0.015]
+              }
+            ]
+          }
         }
       },
-      "animatedBones": [
-        {
-          "node": "bone_gun"
-        },
-        {
-          "node": "bone_gun_01"
+      {
+        "Weapon": {
+          "trigger": "gunner1",
+          "triggerGroup": "smoke",
+          "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
+          "weaponType": "rockets",
+          "startFx": "",
+          "useEmitter": true,
+          "emitter": "bone_gun_piston",
+          "createGunEffects": true,
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "allowableDelta": 360.0,
+          "salvo": 1,
+          "speedYaw": 24.0,
+          "speedPitch": 15.0,
+          "fireConeAngle": 1.0,
+          "bullets": 10,
+          "salvoAmount": 100.0,
+          "ChainfireTime": 0.0,
+          "DelayAfterShoot": 5.0,
+          "AttackMaxDistance": 1000.0,
+          "AttackMaxRadius": 1000.0,
+          "AttackMaxHeight": 1000.0,
+          "accuracyAir": 0.0,
+          "accuracyGnd": 1.5,
+          "errMeasureVel": 0.0,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "turret": {
+            "head": "bone_gun",
+            "gun": "bone_gun"
+          },
+          "limits": {
+            "yaw": [-0.0,0.0],
+            "pitch": [0.0,0.0]
+          }
         }
-      ]
-    }
+      },
+      {
+        "animatedBones": [
+          {
+            "node": "bone_gun"
+          },
+          {
+            "node": "bone_gun_01"
+          }
+        ]
+      }
+    ]
   },
   {
     "weapon_presets": {
@@ -2849,26 +2919,6 @@
       },
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_desert"
-      },
-      "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight",
-        "tier": 3,
-        "effects": {
-          "nightVision": {
-            "gunnerThermal": {
-              "resolution": [1200.0,800.0],
-              "noiseFactor": 0.04
-            },
-            "commanderViewThermal": {
-              "resolution": [1200.0,800.0],
-              "noiseFactor": 0.04
-            },
-            "driverThermal": {
-              "resolution": [500.0,300.0],
-              "noiseFactor": 0.05
-            }
-          }
-        }
       }
     }
   },

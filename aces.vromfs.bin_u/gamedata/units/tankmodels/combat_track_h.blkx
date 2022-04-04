@@ -10,7 +10,7 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "additionalEcsTemplate": "sand_unit",
-  "moveNoiseK": 1.0,
+  "moveNoiseK": 0.65,
   "useSimpleDeathConditionsAndEffects": false,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -1470,26 +1470,20 @@
           "hasVerticalGunFreeMode": false,
           "hasHorizontal": true,
           "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
+          "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
+          "verticalSpeedLimitKPH": 100.0,
           "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": [
             {
               "row": [5.0,0.0]
             },
             {
-              "row": [25.0,0.015]
+              "row": [45.0,0.01]
             },
             {
-              "row": [35.0,0.02]
-            },
-            {
-              "row": [45.0,0.1]
-            },
-            {
-              "row": [50.0,0.3]
+              "row": [120.0,0.015]
             }
           ]
         }
@@ -1540,26 +1534,20 @@
           "hasVerticalGunFreeMode": false,
           "hasHorizontal": true,
           "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
+          "horizontalSpeedLimitKPH": 100.0,
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
+          "verticalSpeedLimitKPH": 100.0,
           "speedFromVehicleVerticalMult": -1.0,
           "errorKPHToDegrees": [
             {
               "row": [5.0,0.0]
             },
             {
-              "row": [25.0,0.015]
+              "row": [45.0,0.01]
             },
             {
-              "row": [35.0,0.02]
-            },
-            {
-              "row": [45.0,0.1]
-            },
-            {
-              "row": [50.0,0.3]
+              "row": [120.0,0.015]
             }
           ]
         }
@@ -2382,26 +2370,20 @@
                 "hasVerticalGunFreeMode": false,
                 "hasHorizontal": true,
                 "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 75.0,
+                "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 75.0,
+                "verticalSpeedLimitKPH": 100.0,
                 "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": [
                   {
                     "row": [5.0,0.0]
                   },
                   {
-                    "row": [25.0,0.015]
+                    "row": [45.0,0.01]
                   },
                   {
-                    "row": [35.0,0.02]
-                  },
-                  {
-                    "row": [45.0,0.1]
-                  },
-                  {
-                    "row": [50.0,0.3]
+                    "row": [120.0,0.015]
                   }
                 ]
               }
@@ -2452,26 +2434,20 @@
                 "hasVerticalGunFreeMode": false,
                 "hasHorizontal": true,
                 "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 75.0,
+                "horizontalSpeedLimitKPH": 100.0,
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 75.0,
+                "verticalSpeedLimitKPH": 100.0,
                 "speedFromVehicleVerticalMult": -1.0,
                 "errorKPHToDegrees": [
                   {
                     "row": [5.0,0.0]
                   },
                   {
-                    "row": [25.0,0.015]
+                    "row": [45.0,0.01]
                   },
                   {
-                    "row": [35.0,0.02]
-                  },
-                  {
-                    "row": [45.0,0.1]
-                  },
-                  {
-                    "row": [50.0,0.3]
+                    "row": [120.0,0.015]
                   }
                 ]
               }
@@ -2574,23 +2550,6 @@
             }
           }
         ]
-      }
-    },
-    "night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
-      "effects": {
-        "nightVision": {
-          "gunnerThermal": {
-            "resolution": [800.0,600.0],
-            "noiseFactor": 0.04
-          },
-          "driverIr": {
-            "resolution": [800.0,600.0],
-            "lightMult": 5.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
-          }
-        }
       }
     }
   },

@@ -10,7 +10,7 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "additionalEcsTemplate": "sand_unit",
-  "moveNoiseK": 1.0,
+  "moveNoiseK": 1.25,
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -62,7 +62,9 @@
         "variableThickness": true
       },
       "body_side_dm": {
-        "armorThickness": 300.0
+        "armorThickness": 300.0,
+        "genericArmorQuality": 0.2,
+        "createSecondaryShatters": true
       },
       "turret_01_side_dm": {
         "armorThickness": 100.0
@@ -235,6 +237,7 @@
       "armorClass": "fcv_medium_composite_armor",
       "armorThickness": 300.0,
       "hp": 500.0,
+      "genericArmorQuality": 0.1,
       "stopChanceOnDeadPart": 0.0,
       "hidableInViewer": true,
       "turret_02_back_dm": [],
@@ -2160,26 +2163,6 @@
       "image": "#ui/gameuiskin#tank_reinforcement_desert"
     },
     "180mm_mphe": [],
-    "night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
-      "tier": 3,
-      "effects": {
-        "nightVision": {
-          "gunnerThermal": {
-            "resolution": [1200.0,800.0],
-            "noiseFactor": 0.04
-          },
-          "commanderViewThermal": {
-            "resolution": [1200.0,800.0],
-            "noiseFactor": 0.04
-          },
-          "driverThermal": {
-            "resolution": [500.0,300.0],
-            "noiseFactor": 0.05
-          }
-        }
-      }
-    },
     "tank_smoke_screen_system_mod": {
       "tier": 2,
       "effects": {

@@ -2,7 +2,7 @@
   "rocketGun": true,
   "preset_cost": 10,
   "bullets": 1,
-  "shotFreq": 2.4,
+  "shotFreq": 4.0,
   "sound_path": "tanks/weapon_tanks/rockets",
   "sound_pathStudio": "desert/weapon",
   "sound": "launcher",
@@ -41,7 +41,7 @@
     "mass": 180.0,
     "massEnd": 130.0,
     "explosiveType": "rdx_tnt",
-    "explosiveMass": 25.0,
+    "explosiveMass": 28.0,
     "maxDeltaAngle": 1.5,
     "dragCx": 0.027,
     "length": 2.85,
@@ -70,6 +70,7 @@
     "midArmorPower": [2.0,400.0],
     "farArmorPower": [0.2,700.0],
     "relativeVelArmorShift": [200.0,1000.0],
+    "hasProximityFuse": true,
     "distanceFuse": false,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_161_205mm_metal_he",
@@ -108,6 +109,14 @@
       "distance": 6.0,
       "damage": 500.0,
       "onHitChanceMultFire": 15.0
+    },
+    "proximityFuse": {
+      "radius": 1.0,
+      "armDistance": 200.0,
+      "detectAirUnits": true,
+      "detectGroundUnits": true,
+      "detectGround": false,
+      "minimalAltitude": 1.0
     },
     "collisions": {
       "default": {
