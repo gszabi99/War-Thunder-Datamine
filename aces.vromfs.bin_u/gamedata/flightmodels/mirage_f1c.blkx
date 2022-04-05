@@ -2330,6 +2330,12 @@
     },
     {
       "preset": {
+        "name": "mirage_f1c_fr_r_550_magic2",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_fr_r_550_magic2.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "mirage_f1c_3x_matra_530",
         "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_3x_matra_530.blk"
       }
@@ -2350,6 +2356,18 @@
       "preset": {
         "name": "mirage_f1c_gunpods_r550_r530e",
         "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_gunpods_r550_r530e.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_2x_550_magic2_2x_530f_1x_530r",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_2x_550_magic2_2x_530f_1x_530r.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_gunpods_r550_magic2_r530e",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_gunpods_r550_magic2_r530e.blk"
       }
     },
     {
@@ -2380,6 +2398,36 @@
       "preset": {
         "name": "mirage_f1c_fr_400_samp_r550_gunpod_sneb",
         "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_fr_400_samp_r550_gunpod_sneb.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_2xmagic2_2x530",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_2xmagic2_2x530.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_2xmagic2_5x_400",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_2xmagic2_5x_400.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_2x_magic2_4x_ir_f1",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_2xmagic2_4x_ir_f1.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_1000kg_mk84_sneb23_r550_magic2",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_1000kg_mk84_sneb23_r550_magic2.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "mirage_f1c_fr_400_samp_r550_magic2_gunpod_sneb",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_f1c_fr_400_samp_r550_magic2_gunpod_sneb.blk"
       }
     }
   ],
@@ -2567,26 +2615,52 @@
       ]
     },
     {
-      "WeaponSlot": {
-        "index": 1,
-        "tier": 9,
-        "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "wing_left_rocket_r550_magic_1",
-          "ShowNodes": {
-            "node": "pylon_lm39_001"
-          },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-            "emitter": "rocket_r550_magic_001",
-            "bullets": 1
+      "WeaponSlot": [
+        {
+          "index": 1
+        },
+        {
+          "tier": 9
+        },
+        {
+          "order": 1
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "wing_left_rocket_r550_magic_1",
+            "ShowNodes": {
+              "node": "pylon_lm39_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
+              "emitter": "rocket_r550_magic_001",
+              "bullets": 1
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "wing_left_rocket_r550_magic_2",
+            "reqModification": "fr_matra_r_550_magic_2",
+            "ShowNodes": {
+              "node": "pylon_lm39_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2.blk",
+              "emitter": "rocket_r550_magic_001",
+              "bullets": 1
+            }
           }
         }
-      }
+      ]
     },
     {
       "WeaponSlot": [
@@ -3409,26 +3483,52 @@
       ]
     },
     {
-      "WeaponSlot": {
-        "index": 7,
-        "tier": 3,
-        "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "wing_right_rocket_r550_magic_1",
-          "ShowNodes": {
-            "node": "pylon_lm39_002"
-          },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
-            "emitter": "rocket_r550_magic_002",
-            "bullets": 1
+      "WeaponSlot": [
+        {
+          "index": 7
+        },
+        {
+          "tier": 3
+        },
+        {
+          "order": 2
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "wing_right_rocket_r550_magic_1",
+            "ShowNodes": {
+              "node": "pylon_lm39_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
+              "emitter": "rocket_r550_magic_002",
+              "bullets": 1
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "wing_right_rocket_r550_magic_2",
+            "reqModification": "fr_matra_r_550_magic_2",
+            "ShowNodes": {
+              "node": "pylon_lm39_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2.blk",
+              "emitter": "rocket_r550_magic_002",
+              "bullets": 1
+            }
           }
         }
-      }
+      ]
     }
   ],
   "turbulence": {
@@ -3571,9 +3671,14 @@
       "modClass": "weapon"
     },
     "fr_matra_r_530_f": {
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon",
       "reqModification": "fr_matra_r_530"
+    },
+    "fr_matra_r_550_magic_2": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_r_530_f"
     },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],
