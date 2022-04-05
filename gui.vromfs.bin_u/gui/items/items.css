@@ -131,7 +131,7 @@ awardItemDiv, itemDiv {
   width:1@itemWidth;
 }
 
-craftBranchBody[itemsSize = small] > itemBlock {
+craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock {
   smallItems:yes;
 }
 
@@ -610,22 +610,22 @@ craftBranchBody > itemBlock[hasComponent = yes] {
   width:1@itemHeight + 1@craftTreeResourceWidth;
 }
 
-craftBranchBody[itemsSize = compact] > itemBlock,
-craftBranchBody[itemsSize = compact] > itemBlock > itemDiv {
+craftTreeScrollDiv[itemsSize = compact] > craftBranchBody > itemBlock,
+craftTreeScrollDiv[itemsSize = compact] > craftBranchBody > itemBlock > itemDiv {
   width:1@compactItemHeight;
   height:1@compactItemHeight;
 }
 
-craftBranchBody[itemsSize = compact] > itemBlock[hasComponent = yes] {
+craftTreeScrollDiv[itemsSize = compact] > craftBranchBody > itemBlock[hasComponent = yes] {
   width:1@compactItemHeight + 1@craftTreeResourceWidth;
 }
 
-craftBranchBody[itemsSize = small] > itemBlock {
+craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock {
   width:1@smallItemHeight;
   height:1@smallItemHeight;
 }
 
-craftBranchBody[itemsSize = small] > itemBlock[hasComponent = yes] {
+craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock[hasComponent = yes] {
   width:1@smallItemHeight + 1@craftTreeResourceWidth;
 }
 
@@ -670,9 +670,6 @@ itemBlock > itemDiv[enableBackground = no] {
   background-color:@transparent;
   border-color:@tableHeaderSeparatorColor;
   border:yes;
-}
-itemBlock > itemDiv[hideBackgroundBorder = yes] {
-  border:no;
 }
 
 prizeNest > img,

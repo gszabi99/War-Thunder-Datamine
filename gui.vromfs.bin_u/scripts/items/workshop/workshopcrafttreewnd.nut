@@ -164,7 +164,9 @@ let sizeAndPosViewConfig = {
 
 let function getConfigByItemBlock(itemBlock, itemsList, workshopSet)
 {
-  let item = itemsList?[itemBlock?.id]
+  local item = itemsList?[itemBlock?.id]
+  if (item?.showAsEmptyItem() ?? false)
+    item = null
   let hasComponent = itemBlock?.showResources
   let itemId = item?.id ?? "-1"
   let hasReachedMaxAmount = item?.hasReachedMaxAmount() ?? false
@@ -839,6 +841,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onItemHover(obj) {
+    if (!obj.isHovered())
+      return
+
     let id = obj?.holderId ?? "-1"
     let item = itemsList?[id.tointeger()]
     setFocusItem(item)
@@ -871,7 +876,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
     if (item.isCrafting() || item.hasCraftResult()
         || (!workshopSet.needReqItems(itemBlock, itemsList)
-          && workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)))
+          && !workshopSet.isRequireItemsForCrafting(itemBlock, itemsList)))
       doMainAction(item, itemObj)
     else if (item.getAltActionName() != "")
       doAltAction(item, itemObj)
@@ -881,8 +886,10 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     let item = tutorialItem
     let {childObj, childIdx} = findChild(itemsListObj, @(c) c?.itemId == item.id.tostring())
-    itemsListObj.setValue(childIdx)
+    if (childObj == null)
+      return
 
+    itemsListObj.setValue(childIdx)
     let actionBtnObj = childObj.findObject("actionBtn")
     actionBtnObj.scrollToView()
 

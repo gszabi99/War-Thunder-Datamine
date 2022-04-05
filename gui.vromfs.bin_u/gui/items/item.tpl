@@ -12,7 +12,6 @@ itemDiv {
   <</active>>
 
   enableBackground:t='<<#enableBackground>>yes<</enableBackground>><<^enableBackground>>no<</enableBackground>>'
-  hideBackgroundBorder:t='<<#hideBackgroundBorder>>yes<</hideBackgroundBorder>><<^hideBackgroundBorder>>no<</hideBackgroundBorder>>'
   <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
 
   <<#today>>

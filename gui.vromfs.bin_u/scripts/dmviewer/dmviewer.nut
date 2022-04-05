@@ -1,4 +1,4 @@
-let { blkOptFromPath, blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { KGF_TO_NEWTON,
@@ -263,7 +263,7 @@ const AFTERBURNER_CHAMBER = 3
   function collectArmorClassToSteelMuls()
   {
     let res = {}
-    let armorClassesBlk = blkFromPath("gameData/damage_model/armor_classes.blk")
+    let armorClassesBlk = blkOptFromPath("gameData/damage_model/armor_classes.blk")
     let steelArmorQuality = armorClassesBlk?.ship_structural_steel.armorQuality ?? 0
     if (unitBlk?.DamageParts == null || steelArmorQuality == 0)
       return res
@@ -1436,7 +1436,7 @@ const AFTERBURNER_CHAMBER = 3
         else {
           let status = getWeaponStatus(weaponPartName, weaponInfoBlk)
           desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status))
-          desc.append(getMassInfo(blkFromPath(weaponBlkLink)))
+          desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
           if (status?.isPrimary || status?.isSecondary)
           {
             if (weaponInfoBlk?.autoLoader)
@@ -1855,11 +1855,11 @@ const AFTERBURNER_CHAMBER = 3
 
   function getWeaponStatus(weaponPartName, weaponInfoBlk)
   {
-    let blkPath = weaponInfoBlk?.blk ?? ""
-    let blk = blkFromPath(blkPath)
     switch (unit.esUnitType)
     {
       case ::ES_UNIT_TYPE_TANK:
+        let blkPath = weaponInfoBlk?.blk ?? ""
+        let blk = blkOptFromPath(blkPath)
         let isRocketGun = blk?.rocketGun
         let isMachinegun = !!blk?.bullet?.caliber && !isCaliberCannon(1000 * blk.bullet.caliber)
         local isPrimary = !isRocketGun && !isMachinegun

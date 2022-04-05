@@ -468,13 +468,15 @@ local ItemExternal = class extends ::BaseItem
     && !canConvertToWarbonds()
     && !hasMainActionDisassemble() && canDisassemble() && !isCrafting() && !hasCraftResult()
 
-  getAltActionName   = @() (amount && canConsume() && canAssemble()) ? ::loc(getLocIdsList().assemble)
+  getAltActionName   = @(params = null) (params?.canConsume && amount && canConsume()) ? ::loc("item/consume")
+    : (amount && canConsume() && canAssemble()) ? ::loc(getLocIdsList().assemble)
     : canConvertToWarbonds() ? ::loc("items/exchangeTo", { currency = getWarbondExchangeAmountText() })
     : (!hasMainActionDisassemble() && canDisassemble() && amount > 0 && !isCrafting() && !hasCraftResult())
       ? getDisassembleText()
     : (canBeModified() && amount > 0) ? getModifiedText()
     : ""
-  doAltAction        = @(params) (canConsume() && assemble(null, params))
+  doAltAction        = @(params = null) (params?.canConsume && canConsume() && consume(null, params))
+    || (canConsume() && assemble(null, params))
     || convertToWarbonds(params)
     || (!hasMainActionDisassemble() && disassemble(params))
     || modify(params)
@@ -1049,8 +1051,6 @@ local ItemExternal = class extends ::BaseItem
 
   function getViewData(params = {})
   {
-    if (itemDef?.tags.showAsEmptyItem)
-      return { hideBackgroundBorder = true }
     let item = getSubstitutionItem()
     if(item != null)
       return getSubstitutionViewData(item.getViewData(params), params)
@@ -1174,6 +1174,15 @@ local ItemExternal = class extends ::BaseItem
   getQuality = @() itemDef?.tags?.quality ?? "common"
   getExpireType = @() null
   showAlwaysAsEnabledAndUnlocked = @() itemDef?.tags.showAlwaysAsEnabledAndUnlocked ?? false
+  showAsEmptyItem = @() (getSubstitutionItem() ?? this).itemDef?.tags.showAsEmptyItem
+
+  function getCountriesWithBuyRestrict() {
+    let countryDenyPurchase = itemDef?.tags.countryDenyPurchase ?? ""
+    if (countryDenyPurchase == "")
+      return []
+
+    return countryDenyPurchase.split("_").map(@(c) c.toupper())
+  }
 }
 
 return ItemExternal

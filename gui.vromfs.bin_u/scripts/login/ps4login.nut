@@ -82,7 +82,8 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
       }
     }
 
-    abortLogin(isUpdateAvailable)
+    if (isValid())
+      abortLogin(isUpdateAvailable)
     if (isUpdateAvailable)
       msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
     else if (loginStatus == -1)

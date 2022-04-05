@@ -375,10 +375,11 @@ let function getTierWeaponsParams(weapons, tierId) {
       foreach(id, inst in weapon.weaponBlocks) {
         inst.id <- id
         inst.tType <- triggerType
+        inst.iconType = inst.tiers?[tierId].iconType ?? inst.iconType
         res.append({
           id = inst.tiers?[tierId].presetId ?? id
-          name = ::loc($"weapons/{id}")
-          img = getTierIcon(inst, inst.num)
+          name = "".concat(::loc($"weapons/{id}"), ::format(::loc("weapons/counter"), inst.ammo))
+          img = getTierIcon(inst, inst.ammo)
         })
       }
   return res

@@ -213,6 +213,9 @@ let function generateRows(branchBlk, treeRows, treeBlk)
   maxPosX = maxPosX ?? 0
   let headerItems = getHeaderItems(branchBlk)
   headerItems.each(@(itemId) itemsIdList[itemId] <- true)
+  let buttonConfig = ("button" in branchBlk) ? ::buildTableFromBlk(branchBlk.button) : null
+  if (buttonConfig?.generatorId != null)
+    itemsIdList[buttonConfig.generatorId] <- true
   return {
     treeRows = treeRows
     branch = DEFAULT_BRANCH_CONFIG.__merge({
@@ -225,7 +228,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
       columnWithResourcesCount = resourcesInColumn.reduce(@(res, value) res + value, 0)
       bodyIdx = bodyIdx
       textBlocks = textBlocks
-      buttonConfig = ("button" in branchBlk) ? ::buildTableFromBlk(branchBlk.button) : null
+      buttonConfig
       itemsIdList = itemsIdList
     })
   }

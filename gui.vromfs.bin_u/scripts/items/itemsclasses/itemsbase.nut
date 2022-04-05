@@ -537,7 +537,7 @@ local expireTypes = {
       return false
     }
 
-    checkLegalRestrictions(restrictedInCountries, ::Callback(@() showBuyConfirm(cb, handler, params), this))
+    checkLegalRestrictions(getCountriesWithBuyRestrict(), ::Callback(@() showBuyConfirm(cb, handler, params), this))
     return true
   }
 
@@ -589,7 +589,7 @@ local expireTypes = {
   }
 
   getActivateInfo    = @() ""
-  getAltActionName   = @() ""
+  getAltActionName   = @(params = null) ""
   doAltAction        = @(params = null) false
 
   getExpireDeltaSec  = @() (expiredTimeSec - ::dagor.getCurTime() * 0.001).tointeger()
@@ -849,4 +849,5 @@ local expireTypes = {
     : null
   isEveryDayAward = @() id.tostring().split(everyDayAwardPrefix).len() > 1
   showAlwaysAsEnabledAndUnlocked = @() false
+  getCountriesWithBuyRestrict = @() (restrictedInCountries ?? "") != "" ? restrictedInCountries.split(",") : []
 }

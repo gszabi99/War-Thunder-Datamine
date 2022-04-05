@@ -1,4 +1,3 @@
-let { isString } = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let legalRestrictionsChecked = persist("legalRestrictionsChecked", @() ::Watched(false))
@@ -10,14 +9,14 @@ let countryCodeToLocId = {
   RU = "country_russia"
 }
 
-// restrictedInCountries - comma-separated country codes
+// restrictedInCountries - array of countries codes
 let function hasLegalRestictions(restrictedInCountries)
 {
-  if (!isString(restrictedInCountries) || restrictedInCountries.len() == 0)
+  if (restrictedInCountries.len() == 0)
     return false
 
   let userCountry = ::get_country_code()
-  return restrictedInCountries.split(",").findindex(@(c) c == userCountry) != null
+  return restrictedInCountries.findindex(@(c) c == userCountry) != null
 }
 
 let function showLegalRestrictionsNotice()

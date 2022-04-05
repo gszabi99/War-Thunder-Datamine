@@ -66,7 +66,7 @@ let BOMBS_WEAPON_MASK = TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.BOMBS]
 
 let WEAPON_TYPE = {
   GUNS            = "guns"
-  CANNONS         = "cannons"
+  CANNON          = "cannon"
   TURRETS         = "turrets"
   SMOKE           = "smoke"
   FLARES          = "flares"    // Flares (countermeasure)
@@ -332,7 +332,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
           && isCaliberCannon(1000 * ::getTblValue("caliber", weaponBlk?.bullet, 0)))
-        currentTypeName = WEAPON_TYPE.CANNONS
+        currentTypeName = WEAPON_TYPE.CANNON
     }
     else if (weaponBlk?.fuelTankGun || weaponBlk?.boosterGun || weaponBlk?.airDropGun || weaponBlk?.undercarriageGun)
       continue
@@ -387,7 +387,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag])
     {
       let itemBlk = weaponBlk[weaponTag]
-      let isGun = ::isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNONS])
+      let isGun = ::isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON])
       item.isGun = isGun
       item.caliber = itemBlk?.caliber ?? item.caliber
       item.massKg = itemBlk?.mass ?? item.massKg

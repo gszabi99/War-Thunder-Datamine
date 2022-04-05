@@ -59,7 +59,8 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   {
     let val = obj.getValue()
     let reward_config = rewardsArray[val]
-    let isItem = reward_config?.item != null
+    let rewardType = ::trophyReward.getType(reward_config)
+    let isItem = ::trophyReward.isRewardItem(rewardType)
     infoHandler?.setHandlerVisible(isItem)
     let infoTextObj = showSceneBtn("item_info_text", !isItem)
     if (isItem)
@@ -67,7 +68,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
       if (!infoHandler)
         return
 
-      let item = ::ItemsManager.findItemById(reward_config.item)
+      let item = ::ItemsManager.findItemById(reward_config[rewardType])
       infoHandler.updateHandlerData(item, true, true, reward_config)
     } else
     {

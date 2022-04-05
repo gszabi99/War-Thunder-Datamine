@@ -209,9 +209,12 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       return null
 
     let buttons = []
-    local weapons = {}
     let tierIdInt = tierId.tointeger()
-    weapons = addWeaponsFromBlk(weapons, availableWeapons.filter(@(_) _?.tier == tierIdInt), unit)
+    local weapons = {}
+    foreach(wBlk in availableWeapons.filter(@(_) _?.tier == tierIdInt))
+      foreach(key, val in addWeaponsFromBlk({}, [wBlk], unit))
+        weapons[key] <- (weapons?[key] ?? []).extend(val)
+
     let params = getTierWeaponsParams(weapons, tierIdInt)
     let curTier = presets[curPresetIdx].tiers?[tierId.tointeger()]
     let curPresetId = curTier?.presetId ?? ""
@@ -248,12 +251,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
   }
 
-  function editPreset(obj) {
-    let presetId = obj.presetId.tointeger()
-    if (!isCustomPreset(presets[presetId]))
-      return
-
-    let value = obj.getValue()
+  function editPreset(presetId, value) {
     if (value < 0 || !presetNest?.isValid())
       return
 
@@ -269,6 +267,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       let view = getWeaponsPopupView(tierObj.getPos(), tierObj.tierId)
       if (view)
         openPopupList(view)
+      cancelPresetNameEdit(scene.findObject($"presetHeader_{presetId}"))
     }
     else             // Preset header
       editPresetName(presetId)
@@ -314,9 +313,8 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     presets[curPresetIdx] = prepareWeaponsPresetForView(unit, curListItem,
       getCustomPresetWeaponry(convertPresetToBlk(curPreset) , unit), favoriteArr, availableWeapons)
-    let presetIdx = curPresetIdx
+    endEditPreset()
     updateAllByFilters()
-    selectPreset(presetIdx)
   }
 
   function onPresetSelect(obj) {
@@ -326,6 +324,15 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   function onCellSelect(obj) {
     let presetId = obj.presetId.tointeger()
     let value = obj.getValue()
+
+    if (isEditMode) {
+      if(curPresetIdx == presetId && isCustomPreset(presets[presetId])) {
+        editPreset(presetId, value)
+        return
+      }
+      switchEditMode(false)
+    }
+
     if (value < 0) {
       if (presetId == curPresetIdx) {
         selectPreset(null)
@@ -336,8 +343,6 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
     selectPreset(presetId)
     selectTier(value - 1)
-    if (isEditMode)
-      editPreset(obj)
   }
 
   function onPresetUnhover(obj) {
@@ -542,7 +547,8 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       firstIdx = idx
       break
     }
-    selectPreset(chosenPresetIdx in presetIdxToChildIdx ? chosenPresetIdx : firstIdx, true)
+    selectPreset(isEditMode ? curPresetIdx : chosenPresetIdx in presetIdxToChildIdx
+      ? chosenPresetIdx : firstIdx, true)
 
     // Enable/disable filter options depends on whether filtering result exist.
     let popupObj = filterObj.findObject("filter_popup")
@@ -808,16 +814,20 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     switchEditMode(!isEditMode)
   }
 
-  function switchEditMode(isEdit) {
-    if (!isEdit) {
-      cancelPresetNameEdit(scene.findObject($"presetHeader_{curPresetIdx}"))
-      let curPreset = presets?[curPresetIdx]
-      if (curPreset != null) {
-        addCustomPresets(unit, curPreset.id, convertPresetToBlk(curPreset))
-        if (curPresetIdx == chosenPresetIdx)
-          ::hangar_force_reload_model()
-      }
+  function endEditPreset() {
+    cancelPresetNameEdit(scene.findObject($"presetHeader_{curPresetIdx}"))
+    let curPreset = presets?[curPresetIdx]
+    if (curPreset != null) {
+      addCustomPresets(unit, curPreset.id, convertPresetToBlk(curPreset))
+      if (curPresetIdx == chosenPresetIdx)
+        ::hangar_force_reload_model()
     }
+    updateDesc()
+  }
+
+  function switchEditMode(isEdit) {
+    if (!isEdit)
+      endEditPreset()
     isEditMode = isEdit
     let editBtmObj = scene.findObject("editPresetBtn")
     editBtmObj.setValue(isEditMode ? ::loc("filesystem/btnSave") : ::loc("msgbox/btn_edit"))

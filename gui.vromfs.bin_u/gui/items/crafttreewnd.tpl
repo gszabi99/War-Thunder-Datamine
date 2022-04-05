@@ -17,12 +17,13 @@ root {
       }
       Button_close {}
     }
-    tdiv {
+    craftTreeScrollDiv {
       id:t='craft_tree'
       position:t='relative'
       flow:t='vertical'
       overflow-y:t='auto'
       scrollbarShortcuts:t='yes'
+      <<#itemsSize>>itemsSize:t='<<itemsSize>>'<</itemsSize>>
       tdiv {
         id:t='craft_header'
         include "%gui/items/craftTreeHeader"
@@ -33,7 +34,6 @@ root {
         size:t='<<bodyWidth>>, <<bodyHeight>>'
         flow:t='h-flow'
         total-input-transparent:t='yes'
-        <<#itemsSize>>itemsSize:t='<<itemsSize>>'<</itemsSize>>
 
         behaviour:t='posNavigator'
         navigatorShortcuts:t='yes'

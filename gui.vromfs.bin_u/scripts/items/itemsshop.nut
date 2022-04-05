@@ -676,7 +676,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     scene.findObject("activate_info_text").setValue(activateText)
     showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
 
-    let altActionText = item ? item.getAltActionName() : ""
+    let altActionText = item ? item.getAltActionName({ canConsume = canCraftOnlyInCraftTree }) : ""
     showSceneBtn("btn_alt_action", altActionText != "")
     setColoredDoubleTextToButton(scene, "btn_alt_action", altActionText)
 
@@ -761,8 +761,13 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function onAltAction(obj)
   {
     let item = getCurItem()
-    if (item)
-      item.doAltAction({ obj = obj, align = "top" })
+    if (!item)
+      return
+
+    let canConsume = item.canCraftOnlyInCraftTree()
+      && curSheet?.getSet().getCraftTree() != null
+
+    item.doAltAction({ obj, canConsume, align = "top" })
   }
 
   function onJumpToDescPanelAccessKey(obj)
@@ -997,7 +1002,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       text = ::loc("workshop/accentCraftTreeButton", {
         buttonName = ::loc(curSet.getCraftTree()?.openButtonLocId ?? "")
       })
-      shortcut = ::SHORTCUT.GAMEPAD_RSTICK_PRESS
+      shortcut = ::GAMEPAD_ENTER_SHORTCUT
       actionType = tutorAction.OBJ_CLICK
       cb = @() openCraftTree(null, tutorialItem)
     }]

@@ -130,8 +130,10 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
     if (::is_respawn_screen())
     {
-      ::gui_start_respawn();
-      ::update_gamercards()
+      guiScene.performDelayed({}, function() {
+        ::gui_start_respawn()
+        ::update_gamercards()
+      })
     }
   }
 

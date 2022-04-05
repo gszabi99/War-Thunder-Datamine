@@ -163,3 +163,15 @@ slotsScrollDiv.tournamentDiv > ScrollBar > ScrollButtonUp{
 slotsScrollDiv.tournamentDiv > ScrollBar > ScrollButtonDown {
   pos:pw, 50%ph-50%h;
 }
+
+craftTreeScrollDiv > ScrollBar {
+  step:1@itemHeight + 2@craftTreeBlockInterval;
+}
+
+craftTreeScrollDiv[itemsSize = small] > ScrollBar {
+  step:1@smallItemHeight + 2@compactCraftTreeBlockInterval;
+}
+
+craftTreeScrollDiv[itemsSize = compact] > ScrollBar {
+  step:1@compactItemHeight + 1@smallCraftTreeBlockInterval;
+}

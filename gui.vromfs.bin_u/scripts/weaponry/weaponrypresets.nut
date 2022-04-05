@@ -68,6 +68,7 @@ let function getSlotWeapons(slotBlk) {
       w.presetId <- preset.name
       w.slot <- slotBlk.index
       w.tier <- slotBlk?.tier
+      w.iconType <- preset?.iconType
       ::u.appendOnce(w, res)
     }
   return res
