@@ -40,6 +40,19 @@ let cfgMenuTank = [
     null,
 ]
 
+// April Fools Day 2022 Event
+let cfgMenuTankArachisCombatTrack = [
+  // Page #1
+    EII_SMOKE_GRENADE,
+    EII_SMOKE_SCREEN,
+    EII_ARTILLERY_TARGET,
+    null,
+    EII_LOCK,           // Event
+    null,
+    EII_MEDICALKIT,
+    [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
+]
+
 let cfgMenuShip = [
   // Page #1
     EII_SMOKE_GRENADE,
@@ -90,7 +103,8 @@ let cfgMenuAircraft = [
 /******************************** CONFIGS END *********************************/
 
 let function getCfgByUnit(unit) {
-  return unit?.isTank()       ? cfgMenuTank
+  return [ "combat_track_a", "combat_track_h" ].contains(unit?.name) ? cfgMenuTankArachisCombatTrack
+       : unit?.isTank()       ? cfgMenuTank
        : unit?.isShipOrBoat() ? cfgMenuShip
        : unit?.isAir()        ? cfgMenuAircraft
        : unit?.isSubmarine()  ? cfgMenuSubmarine
