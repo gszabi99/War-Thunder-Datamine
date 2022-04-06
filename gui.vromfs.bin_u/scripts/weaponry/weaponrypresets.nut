@@ -7,7 +7,27 @@ let CHAPTER_ORDER = ["NONE", "FAVORITE", "UNIVERSAL", "AIR_TO_AIR", "AIR_TO_GROU
 let CHAPTER_FAVORITE_IDX = CHAPTER_ORDER.findindex(@(p) p == "FAVORITE")
 let CHAPTER_NEW_IDX = CHAPTER_ORDER.findindex(@(p) p == "CUSTOM")
 
+let isEqualWeapon = @(a, b) a.slot == b.slot
+  && a.tier == b.tier
+  && a.presetId == b.presetId
+  && a?.blk == b?.blk
+
 let getTierIdxBySlot = @(slot) TIERS_NUMBER - 1 - slot
+
+let function addSlotWeaponsFromPreset(res, slotBlk, preset) {
+  foreach (weapon in (preset % "Weapon")) {
+    let slotWeapon = ::u.copy(weapon)
+    slotWeapon.presetId = preset.name
+    slotWeapon.slot = slotBlk.index
+    slotWeapon.tier = slotBlk?.tier ?? getTierIdxBySlot(slotBlk.index)
+    slotWeapon.iconType = preset?.iconType
+    let idx = res.findindex(@(w) isEqualWeapon(w, slotWeapon))
+    if (idx == null)
+      res.append(slotWeapon)
+    else
+      res[idx].bullets = (res[idx].bullets ?? 1) + (slotWeapon?.bullets ?? 1)
+  }
+}
 
 let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots % "WeaponSlot")
 // For now weapon data can be two different types
@@ -30,14 +50,7 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
         continue
       }
 
-      foreach (weapon in (curPreset % "Weapon")) {
-        let slotWeapon = ::u.copy(weapon)
-        slotWeapon.slot = wp.slot
-        slotWeapon.presetId = wp.preset
-        slotWeapon.tier = slot?.tier ?? getTierIdxBySlot(wp.slot)
-        slotWeapon.iconType = curPreset?.iconType
-        ::u.appendOnce(slotWeapon, res)
-      }
+      addSlotWeaponsFromPreset(res, slot, curPreset)
     }
   // !!!FIX ME: Processing old format of weapons data should be removed over time when all units presets get ability to be customized.
   else// PLAIN data type
@@ -63,14 +76,7 @@ let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
 let function getSlotWeapons(slotBlk) {
   let res = []
   foreach (preset in ((slotBlk % "WeaponPreset")))
-    foreach (weapon in (preset % "Weapon")) {
-      let w = ::u.copy(weapon)
-      w.presetId <- preset.name
-      w.slot <- slotBlk.index
-      w.tier <- slotBlk?.tier
-      w.iconType <- preset?.iconType
-      ::u.appendOnce(w, res)
-    }
+    addSlotWeaponsFromPreset(res, slotBlk, preset)
   return res
 }
 
@@ -153,7 +159,6 @@ return {
   getPresetWeapons
   getDefaultPresetId
   getUnitWeaponSlots
-  getSlotWeapons
   createNewPreset
   createNameCustomPreset
   createNewTiers

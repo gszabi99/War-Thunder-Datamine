@@ -3,6 +3,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let Set = require("workshopSet.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
+let { isArray } = require("%sqstd/underscore.nut")
 
 let OUT_OF_DATE_DAYS_WORKSHOP = 28
 
@@ -150,6 +151,12 @@ let getEffectOnOpenChestPresetById = function(name) {
   return effectOnOpenChestPresets?[name] ?? {}
 }
 
+let function getRandomEffect(effects) {
+  return isArray(effects)
+    ? effects?[(::math.frnd() * effects.len()).tointeger()] ?? ""
+    : effects
+}
+
 subscriptions.addListenersWithoutEnv({
   SignOut = @(p) invalidateCache()
   InventoryUpdate = @(p) invalidateItemsCache()
@@ -161,7 +168,7 @@ seenWorkshop.setCanBeNewFunc(canSeenIdBeNew)
 
 return {
   emptySet = emptySet
-
+  getRandomEffect
   isAvailable = @() u.search(getSetsList(), @(s) s.isVisible()) != null
   getSetsList = getSetsList
   getMarkingPresetsById = getMarkingPresetsById

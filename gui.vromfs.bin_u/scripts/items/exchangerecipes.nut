@@ -2,7 +2,8 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let asyncActions = require("%sqStdLibs/helpers/asyncActions.nut")
 let time = require("%scripts/time.nut")
-let { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
+let { getCustomLocalizationPresets, getRandomEffect,
+  getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
 let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId, userstatRewardTitleLocId
@@ -639,7 +640,7 @@ local ExchangeRecipes = class {
     if (effectOnStartCraft?.showImage != null)
       startCraftWnd(effectOnStartCraft)
     if (effectOnStartCraft?.playSound != null)
-      ::get_cur_gui_scene()?.playSound(effectOnStartCraft.playSound)
+      ::get_cur_gui_scene()?.playSound(getRandomEffect(effectOnStartCraft.playSound))
 
     asyncActions.callAsyncActionsList(exchangeActions)
   }
@@ -656,6 +657,8 @@ local ExchangeRecipes = class {
     let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
+
+    let effectOnOpenChest = componentItem.getEffectOnOpenChest()
 
     if (resultItemsShowOpening.len() > 0) {
       let userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
@@ -674,13 +677,12 @@ local ExchangeRecipes = class {
         count = extItem?.quantity ?? 0
       })
 
-      let effectOnOpenChest = componentItem.getEffectOnOpenChest()
       ::gui_start_open_trophy({ [componentItem.id] = openTrophyWndConfigs,
         rewardTitle = ::loc(rewardTitle),
         rewardListLocId = rewardListLocId
         isDisassemble = isDisassemble
         isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false
-        singleAnimationGuiSound = effectOnOpenChest?.playSound
+        singleAnimationGuiSound = getRandomEffect(effectOnOpenChest?.playSound)
         rewardImage = effectOnOpenChest?.showImage
         rewardImageRatio = effectOnOpenChest?.imageRatio
         rewardImageShowTimeSec = effectOnOpenChest?.showTimeSec ?? -1
@@ -688,6 +690,8 @@ local ExchangeRecipes = class {
       })
       removeUserstatItemRewardToShow(componentItem.id)
     }
+    else if (effectOnOpenChest?.playSound != null)
+      ::get_cur_gui_scene()?.playSound(getRandomEffect(effectOnOpenChest.playSound))
 
     autoConsumeItems()
   }

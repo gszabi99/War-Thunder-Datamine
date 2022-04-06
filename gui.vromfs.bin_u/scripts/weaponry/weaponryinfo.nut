@@ -373,12 +373,14 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
           break
         }
 
+    let bulletCount = weapon?.bullets ?? bulletsCount
     let hasWeaponSlots = "slot" in weapon
     if (hasWeaponSlots)
       item.tiers[weapon.tier] <- {
         presetId = weapon.presetId
         slot = weapon.slot
         iconType = weapon?.iconType
+        amountPerTier = bulletCount
       }
 
     let needBulletParams = !::isInArray(currentTypeName,
@@ -554,7 +556,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     else if (hasWeaponSlots)
       currentType.weaponBlocks[weaponName].tiers.__update(item.tiers)
 
-    currentType.weaponBlocks[weaponName].ammo += weapon?.bullets ?? bulletsCount
+    currentType.weaponBlocks[weaponName].ammo += bulletCount
     currentType.weaponBlocks[weaponName].num += 1
   }
 
