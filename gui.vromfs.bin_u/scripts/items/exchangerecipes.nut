@@ -690,8 +690,11 @@ local ExchangeRecipes = class {
       })
       removeUserstatItemRewardToShow(componentItem.id)
     }
-    else if (effectOnOpenChest?.playSound != null)
-      ::get_cur_gui_scene()?.playSound(getRandomEffect(effectOnOpenChest.playSound))
+    else if (effectOnOpenChest?.playSound != null) {
+      let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null
+      if (!isDelayedExchange)
+        ::get_cur_gui_scene()?.playSound(getRandomEffect(effectOnOpenChest.playSound))
+    }
 
     autoConsumeItems()
   }
