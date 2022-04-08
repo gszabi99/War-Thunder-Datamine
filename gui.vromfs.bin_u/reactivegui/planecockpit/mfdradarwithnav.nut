@@ -221,13 +221,15 @@ let createTarget = @(index) function(){
     commands = Distance.value == 1.0 ? [
       [VECTOR_ELLIPSE, 100 * angleRel, 100 * (1 - distanceRel), 1.5, 1.5],
       (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) - 2, 100 * angleRel - 3, 100 * (1 - distanceRel) + 2] : []),
-      (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRel + 3, 100 * (1 - distanceRel) - 2, 100 * angleRel + 3, 100 * (1 - distanceRel) + 2] : [])
+      (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRel + 3, 100 * (1 - distanceRel) - 2, 100 * angleRel + 3, 100 * (1 - distanceRel) + 2] : []),
+      (!target.isEnemy ? [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) - 3, 100 * angleRel + 3, 100 * (1 - distanceRel) - 3] : [])
     ] : [
       [VECTOR_ELLIPSE, 10, 100 * (1 - distanceRel), 1, 1],
       [VECTOR_LINE, 100 * angleRel - 1.5, 100 * (1 - distanceRel) - 2, 100 * angleRel - 1.5, 100 * (1 - distanceRel) + 2],
       [VECTOR_LINE, 100 * angleRel + 1.5, 100 * (1 - distanceRel) - 2, 100 * angleRel + 1.5, 100 * (1 - distanceRel) + 2],
       [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) - 1, 100 * angleRel + 3, 100 * (1 - distanceRel) - 1],
-      [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) + 1, 100 * angleRel + 3, 100 * (1 - distanceRel) + 1]
+      [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) + 1, 100 * angleRel + 3, 100 * (1 - distanceRel) + 1],
+      (!target.isEnemy ? [VECTOR_LINE, 100 * angleRel - 3, 100 * (1 - distanceRel) - 3, 100 * angleRel + 3, 100 * (1 - distanceRel) - 3] : [])
     ]
   }
 }

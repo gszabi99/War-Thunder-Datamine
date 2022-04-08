@@ -122,7 +122,7 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   else if (::trophyReward.isRewardItem(rewardType))
   {
     let item = ::ItemsManager.findItemById(rewardValue)
-    if (!item)
+    if (item?.isHiddenItem() ?? true)
       return ""
 
     if (onlyImage)

@@ -252,7 +252,14 @@ let function createTargetDistASP23(index) {
         100 * (1 - distanceRel) + 5,
         100 * angleRight + 2,
         100 * (1 - distanceRel) + 5
-      ] : [])
+      ] : []),
+      (!target.isEnemy ?
+        [VECTOR_LINE,
+          !RadarTargetPosValid.value ? 100 * angleLeft : 10,
+          100 * (1 - distanceRel) - 3,
+          !RadarTargetPosValid.value ? 100 * angleRight : 15,
+          100 * (1 - distanceRel) - 3
+        ] : [])
     ]
   }
 }

@@ -645,6 +645,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
         key = "body_" + key
       log[key] <- blk.body.getParamValue(j)
     }
+    local hasVisibleItem = false
     for (local j = 0, c = blk.body.blockCount(); j < c; j++)
     {
       let block = blk.body.getBlock(j)
@@ -675,9 +676,14 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
       {
         if (haveHiddenItem(block?.itemDefId))
           continue
+        hasVisibleItem = hasVisibleItem || block?.itemDefId != null
         log[name] <- ::buildTableFromBlk(block)
       }
     }
+
+    if (!hasVisibleItem
+        && (log.type == ::EULT_INVENTORY_ADD_ITEM || log.type == ::EULT_INVENTORY_FAIL_ITEM))
+      continue
 
     local skip = false
     if ("filters" in filter)
