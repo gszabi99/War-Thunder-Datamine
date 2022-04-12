@@ -108,12 +108,6 @@
     "rearmSmokeTimeOnField": 60.0
   },
   {
-    "rearmSmokeTimeOnField": 60.0
-  },
-  {
-    "canReloadNonGuns": true
-  },
-  {
     "canReloadNonGuns": true
   },
   {
@@ -2085,6 +2079,8 @@
         "animationMultiplier": -0.68,
         "height": 0.1,
         "width": 0.58,
+        "fricSideRot": [5.0,0.0,0.6,0.3],
+        "fricFrontal": [1.0,0.8],
         "tracksTensionK": [8.0,10.0,6.0],
         "trackMesh": "us_sherman_hvss_t_80_phys_track_line",
         "trackLen": 0.154,
@@ -2136,11 +2132,11 @@
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.18,-0.16,0.11],
+        "suspensionOffsets": [-0.16,-0.16,0.11],
         "defaultGearRadius": 0.25,
         "topGearRadius": 0.13,
         "frontBackGearRadius": 0.28,
-        "defaultDampeningForce": [120000.0,120000.0],
+        "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }
