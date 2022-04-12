@@ -555,7 +555,11 @@ let function openOnlineShopFromPromo(handler, params) {
     if (bundleId != "")
     {
       if (isPlatformSony || isPlatformXboxOne)
-        openIngameStore({ curItemId = bundleId, openedFrom = "promo" })
+        openIngameStore({
+          curItemId = bundleId,
+          openedFrom = "promo",
+          forceExternalShop = params?[2] == "forceExternalBrowser"
+        })
       else
         ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])
       return

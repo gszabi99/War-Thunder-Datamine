@@ -64,8 +64,10 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   function reinitScreen(params)
   {
     itemsCatalog = params?.itemsCatalog
+    curItem = params?.curItem ?? curItem
     itemsListValid = false
     applyFilters()
+    moveMouseToMainList()
   }
 
   function fillItemsList()
@@ -168,6 +170,18 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
         ::u.search(navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
+  function recalcCurPage() {
+    curPage = 0
+    if (!curItem)
+      return
+
+    let lastIdx = itemsList.findindex(function(item) { return item.id == curItem.id}.bindenv(this)) ?? -1
+    if (lastIdx >= 0)
+      curPage = (lastIdx / itemsPerPage).tointeger()
+    else if (curPage * itemsPerPage > itemsCatalog.len())
+      curPage = ::max(0, ((itemsCatalog.len() - 1) / itemsPerPage).tointeger())
+  }
+
   function applyFilters()
   {
     initItemsListSizeOnce()
@@ -178,15 +192,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
       updateSortingList()
     }
 
-    curPage = 0
-    if (curItem)
-    {
-      let lastIdx = itemsList.findindex(function(item) { return item.id == curItem.id}.bindenv(this)) ?? -1
-      if (lastIdx >= 0)
-        curPage = (lastIdx / itemsPerPage).tointeger()
-      else if (curPage * itemsPerPage > itemsCatalog.len())
-        curPage = ::max(0, ((itemsCatalog.len() - 1) / itemsPerPage).tointeger())
-    }
+    recalcCurPage()
     fillPage()
   }
 
@@ -228,13 +234,13 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     let emptyListTextObj = scene.findObject("empty_items_list_text")
     emptyListTextObj.setValue(::loc($"items/shop/emptyTab/default{isLoadingInProgress ? "/loading" : ""}"))
 
-    updateItemInfo()
-
     if (isLoadingInProgress)
       ::hidePaginator(scene.findObject("paginator_place"))
-    else
+    else {
+      recalcCurPage()
       generatePaginator(scene.findObject("paginator_place"), this,
         curPage, ::ceil(itemsList.len().tofloat() / itemsPerPage) - 1, null, true /*show last page*/)
+    }
 
     if (!itemsList?.len() && sheetsArray.len())
       focusSheetsList()

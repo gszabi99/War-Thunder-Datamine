@@ -11,6 +11,7 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a.tier == b.tier
   && a.presetId == b.presetId
   && a?.blk == b?.blk
+  && a?.dm == b?.dm
 
 let getTierIdxBySlot = @(slot) TIERS_NUMBER - 1 - slot
 

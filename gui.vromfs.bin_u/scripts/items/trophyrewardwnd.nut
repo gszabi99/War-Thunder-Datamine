@@ -6,6 +6,34 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { findGenByReceptUid } = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
+let { register_command } = require("console")
+
+register_command(
+  function () {
+    let item = ::ItemsManager.getItemsList()?[0]
+    if (item == null)
+      return console_print("Not found any shop item to show window")
+
+    return gui_start_open_trophy({
+      rewardImageRatio = 1.778
+      isDisassemble = false
+      rewardTitle = "workshop/craft_2022_spring/craft_tree/btn_victory"
+      rewardListLocId = ""
+      rewardImage = "https://static-ggc.gaijin.net/events/craft_battle_for_arachis/craft_win.jpg"
+      singleAnimationGuiSound = "gui_music_win",
+      [2905356] = [
+        {
+          item = ::ItemsManager.getItemsList()[0]
+          id = ::ItemsManager.getItemsList()[0].id
+          count = 1
+        }
+      ]
+      reUseRecipeUid = null
+      rewardImageShowTimeSec = 6
+      isHidePrizeActionBtn = false
+    })
+  },
+  "ui.debug_trophy_reward_with_image")
 
 ::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {})
 {
@@ -110,6 +138,9 @@ let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsM
     configsArray = configsArray ?? []
     rewardTitle = configsArray?[0].rewardTitle ?? rewardTitle
     rewardListLocId = configsArray?[0].rewardListLocId ?? rewardListLocId
+
+    if (rewardImage != null)
+      scene.findObject("reward_frame").width = "@chestRewardFrameWidth"
 
     prepareParams()
 
@@ -229,6 +260,8 @@ let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsM
     if (!::check_obj(imageObjPlace))
       return
 
+    imageObjPlace.show(true)
+
     let layersData = getIconData()
     guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
   }
@@ -242,15 +275,7 @@ let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsM
 
     let imageObj = showSceneBtn("reward_image", true)
     imageObj["background-image"] = rewardImage
-    imageObj.width = $"{rewardImageRatio}@chestRewardHeight"
-    if (rewardImageShowTimeSec > 0)
-      ::Timer(scene, rewardImageShowTimeSec, function() {
-          if (!isValid())
-            return
-
-          showSceneBtn("reward_image", false)
-          updateTrophyImage()
-        }, this)
+    imageObj.height = $"{1.0 / rewardImageRatio}pw"
   }
 
   function updateRewardPostscript()

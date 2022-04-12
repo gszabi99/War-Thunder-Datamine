@@ -107,18 +107,19 @@ foreach (sh in sheetsArray)
 }
 
 let openIngameStore = ::kwarg(
-  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
+  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", forceExternalShop = false) {
     if (!::isInArray(chapter, [null, "", "eagles"]))
       return false
 
-    if (shopData.canUseIngameShop())
+    local curItem = curItemId != "" ? shopData.getShopItem(curItemId) : null
+    if (shopData.canUseIngameShop() && !forceExternalShop)
     {
       shopData.requestData(
         false,
         @() ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
           itemsCatalog = shopData.xboxProceedItems
           chapter = chapter
-          curItem = curItemId != "" ? shopData.getShopItem(curItemId) : null
+          curItem
           afterCloseFunc = afterCloseFunc
           titleLocId = "topmenu/xboxIngameShop"
           storeLocId = "items/openIn/XboxStore"
@@ -135,7 +136,12 @@ let openIngameStore = ::kwarg(
     ::queues.checkAndStart(::Callback(function() {
       xboxSetPurchCb(afterCloseFunc)
       ::get_gui_scene().performDelayed(::getroottable(),
-        @() ::xbox_show_marketplace(chapter == "eagles")
+        function() {
+          if (curItem)
+            curItem.showDetails(statsdMetric)
+          else
+            ::xbox_show_marketplace(chapter == "eagles")
+        }
       )
     }, this),
     null,

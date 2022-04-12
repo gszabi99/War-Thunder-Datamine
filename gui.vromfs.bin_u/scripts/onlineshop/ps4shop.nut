@@ -181,14 +181,14 @@ subscriptions.addListenersWithoutEnv({
 }
 
 let openIngameStore = ::kwarg(
-  function (chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown") {
+  function (chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown", forceExternalShop = false) {
     if (!::isInArray(chapter, [null, "", "eagles"]))
       return false
 
-    if (shopData.canUseIngameShop())
+    let item = curItemId != "" ? shopData.getShopItem(curItemId) : null
+    if (shopData.canUseIngameShop() && !forceExternalShop)
     {
       statsd.send_counter("sq.ingame_store.open", 1, {origin = openedFrom})
-      let item = shopData.getShopItem(curItemId)
       ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
         itemsCatalog = shopData.getShopItemsTable()
         isLoadingInProgress = !shopData.isItemsUpdated()
@@ -209,13 +209,13 @@ let openIngameStore = ::kwarg(
     ::queues.checkAndStart(function() {
       ::get_gui_scene().performDelayed(::getroottable(),
         function() {
-          if (chapter == null || chapter == "")
-          {
+          if (item)
+            item.showDescription(openedFrom)
+          else if (chapter == null || chapter == "") {
             let res = ::ps4_open_store("WARTHUNDERAPACKS", false)
             ::update_purchases_return_mainmenu(afterCloseFunc, res)
           }
-          else if (chapter == "eagles")
-          {
+          else if (chapter == "eagles") {
             let res = ::ps4_open_store("WARTHUNDEREAGLES", false)
             ::update_purchases_return_mainmenu(afterCloseFunc, res)
           }
