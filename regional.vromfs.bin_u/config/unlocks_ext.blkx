@@ -1882,7 +1882,7 @@
       "chapter": "battlepass_season1",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/missionsWon"
@@ -1909,22 +1909,10 @@
           "unlock": "hidden_battlepass_season_1_challenge_12_ship_realistic"
         },
         {
-          "condition": {
+          "visualCondition": {
             "type": "timeRange",
             "beginDate": "2021-02-03 00:00:00",
             "endDate": "2021-02-24 12:00:00"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerHasFeature",
-            "feature": "BattlePass"
-          }
-        },
-        {
-          "condition": {
-            "type": "battlepassSeason",
-            "season": 1
           }
         },
         {
@@ -1975,6 +1963,18 @@
             "minMRank": 5,
             "inSession": true,
             "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 1
           }
         }
       ]
@@ -3339,7 +3339,7 @@
       "chapter": "battlepass_season1",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/missionsWon"
@@ -3376,13 +3376,13 @@
         },
         {
           "condition": {
-            "type": "battlepassProgress",
-            "progress": 400
+            "type": "battlepassLevel",
+            "level": 40
           }
         },
         {
           "condition": {
-            "type": "playerHasFeature",
+            "type": "char_player_has_feature",
             "feature": "BattlePass"
           }
         },
@@ -3562,7 +3562,7 @@
       "chapter": "battlepass_season1",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/battlepassChallenges"
@@ -3620,7 +3620,7 @@
         },
         {
           "condition": {
-            "type": "playerHasFeature",
+            "type": "char_player_has_feature",
             "feature": "BattlePass"
           }
         },
@@ -3850,7 +3850,7 @@
       "chapter": "battlepass_season2",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/char_unlocks"
@@ -3869,7 +3869,7 @@
         },
         {
           "condition": {
-            "type": "playerHasFeature",
+            "type": "char_player_has_feature",
             "feature": "BattlePass"
           }
         },
@@ -4841,7 +4841,7 @@
       "chapter": "battlepass_season2",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/char_unlocks"
@@ -4856,22 +4856,10 @@
           "unlock": "battlepass_season_2_challenge_8_kill_aircraft_on_ground_or_waterborne"
         },
         {
-          "condition": {
+          "visualCondition": {
             "type": "timeRange",
             "beginDate": "2021-03-31 12:00:00",
             "endDate": "2021-05-12 12:00:00"
-          }
-        },
-        {
-          "condition": {
-            "type": "playerHasFeature",
-            "feature": "BattlePass"
-          }
-        },
-        {
-          "condition": {
-            "type": "battlepassSeason",
-            "season": 2
           }
         },
         {
@@ -4921,6 +4909,18 @@
             "type": "playerUnitRank",
             "minRank": 3,
             "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "battlepassSeason",
+            "season": 2
           }
         }
       ]
@@ -5829,7 +5829,7 @@
       "chapter": "battlepass_season2",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/killedPlayersScore"
@@ -5857,14 +5857,14 @@
         },
         {
           "condition": {
-            "type": "playerHasFeature",
+            "type": "char_player_has_feature",
             "feature": "BattlePass"
           }
         },
         {
           "condition": {
-            "type": "battlepassProgress",
-            "progress": 210
+            "type": "battlepassLevel",
+            "level": 21
           }
         },
         {
@@ -6539,7 +6539,7 @@
       "chapter": "battlepass_season2",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/char_unlocks"
@@ -6555,14 +6555,14 @@
         },
         {
           "condition": {
-            "type": "playerHasFeature",
+            "type": "char_player_has_feature",
             "feature": "BattlePass"
           }
         },
         {
           "condition": {
-            "type": "battlepassProgress",
-            "progress": 600
+            "type": "battlepassLevel",
+            "level": 60
           }
         },
         {
@@ -6837,7 +6837,7 @@
       "chapter": "battlepass_season2",
       "mode": [
         {
-          "type": "unlockStageCount"
+          "type": "char_unlocks"
         },
         {
           "typeLocID": "conditions/battlepassChallenges"
@@ -6895,7 +6895,7 @@
         },
         {
           "condition": {
-            "type": "playerHasFeature",
+            "type": "char_player_has_feature",
             "feature": "BattlePass"
           }
         },
@@ -28170,6 +28170,39 @@
           "type": "char_time_range",
           "beginDate": "2020-10-13 11:00:00",
           "endDate": "2020-10-19 09:30:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "spitfire_ix_ussr_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-04-13 00:00:00",
+        "endDate": "2022-04-17 20:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "spitfire_ix_ussr_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "spitfire_ix_ussr_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "spitfire_ix_ussr",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2022-04-13 00:00:00",
+          "endDate": "2022-04-17 20:00:00"
         }
       }
     }

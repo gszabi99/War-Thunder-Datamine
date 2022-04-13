@@ -17,6 +17,7 @@ excludesdata =
     key = "d",
     arr =
     [
+      "dagon",
       "dicker" // Dicker Max
     ]
   },
