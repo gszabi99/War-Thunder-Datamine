@@ -73,7 +73,6 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   function fillItemsList()
   {
     initNavigation()
-    markCurrentPageSeen()
     initSheets()
   }
 
@@ -171,15 +170,11 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   }
 
   function recalcCurPage() {
-    curPage = 0
-    if (!curItem)
-      return
-
-    let lastIdx = itemsList.findindex(function(item) { return item.id == curItem.id}.bindenv(this)) ?? -1
-    if (lastIdx >= 0)
-      curPage = (lastIdx / itemsPerPage).tointeger()
-    else if (curPage * itemsPerPage > itemsCatalog.len())
-      curPage = ::max(0, ((itemsCatalog.len() - 1) / itemsPerPage).tointeger())
+    let lastIdx = itemsList.findindex(function(item) { return item.id == curItem?.id}.bindenv(this)) ?? -1
+    if (lastIdx > 0)
+      curPage = getPageNum(lastIdx)
+    else if (curPage * itemsPerPage > itemsList.len())
+      curPage = ::max(0, getPageNum(itemsList.len() - 1))
   }
 
   function applyFilters()
@@ -239,7 +234,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
     else {
       recalcCurPage()
       generatePaginator(scene.findObject("paginator_place"), this,
-        curPage, ::ceil(itemsList.len().tofloat() / itemsPerPage) - 1, null, true /*show last page*/)
+        curPage, getPageNum(itemsList.len() - 1), null, true /*show last page*/)
     }
 
     if (!itemsList?.len() && sheetsArray.len())
@@ -277,6 +272,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
   function goToPage(obj)
   {
     markCurrentPageSeen()
+    curItem = null
     curPage = obj.to_page.tointeger()
     fillPage()
   }
@@ -516,6 +512,8 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 
     return itemListObj.getChild(value)
   }
+
+  getPageNum = @(itemsIdx) ::ceil(itemsIdx.tofloat() / itemsPerPage).tointeger() - 1
 
   onTabChange = @() null
   onToShopButton = @(obj) null

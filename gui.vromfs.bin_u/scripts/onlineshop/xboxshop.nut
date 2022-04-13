@@ -111,7 +111,6 @@ let openIngameStore = ::kwarg(
     if (!::isInArray(chapter, [null, "", "eagles"]))
       return false
 
-    local curItem = curItemId != "" ? shopData.getShopItem(curItemId) : null
     if (shopData.canUseIngameShop() && !forceExternalShop)
     {
       shopData.requestData(
@@ -119,7 +118,7 @@ let openIngameStore = ::kwarg(
         @() ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
           itemsCatalog = shopData.xboxProceedItems
           chapter = chapter
-          curItem
+          curItem = shopData.getShopItem(curItemId)
           afterCloseFunc = afterCloseFunc
           titleLocId = "topmenu/xboxIngameShop"
           storeLocId = "items/openIn/XboxStore"
@@ -137,6 +136,7 @@ let openIngameStore = ::kwarg(
       xboxSetPurchCb(afterCloseFunc)
       ::get_gui_scene().performDelayed(::getroottable(),
         function() {
+          local curItem = shopData.getShopItem(curItemId)
           if (curItem)
             curItem.showDetails(statsdMetric)
           else
