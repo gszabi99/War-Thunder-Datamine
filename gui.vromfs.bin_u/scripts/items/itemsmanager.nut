@@ -274,6 +274,8 @@ foreach (fn in [
     for (local i = 0; i < trophyBlk.blockCount(); i++)
     {
       let blk = trophyBlk.getBlock(i)
+      if (blk?.shouldNotBeDisplayedOnClient)
+        continue
       let item = createItem(itemType.TROPHY, blk)
       itemsListInternal.append(item)
       dbgTrophiesListInternal.append(item)
