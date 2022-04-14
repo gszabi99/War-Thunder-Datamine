@@ -70,6 +70,11 @@ enum decalTwoSidedMode
   ::handlersManager.loadHandler(::gui_handlers.DecalMenuHandler, params)
 }
 
+::hangar_add_popup <- function hangar_add_popup(text) // called from client
+{
+  ::g_popups.add("", ::loc(text))
+}
+
 ::delayed_download_enabled_msg <- function delayed_download_enabled_msg()
 {
   if (!::g_login.isProfileReceived())
