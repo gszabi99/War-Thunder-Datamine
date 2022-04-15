@@ -61,6 +61,32 @@ const UNITS_STACK_BY_TYPE_COUNT  = 6
 
 let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
+let unlockAddProgressView = {
+  battlpass_progress = {
+    image = "#ui/gameuiskin#item_type_bp.svg"
+    function getText(prize, _typeName) {
+      let progressArray = prize.unlockAddProgress.split("_")
+      let value = progressArray.top()
+      let typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
+      return _typeName ? ::loc(typeName)
+        : ::loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
+    }
+  }
+  battlepass_add_warbonds = {
+    function getText(prize, _typeName) {
+      let unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
+      if (unlock == null)
+        return ""
+
+      let config = ::build_conditions_config(unlock)
+      return config.maxVal <= (prize?.count ?? 1) ? get_unlock_rewards_text(config)
+        : ""
+    }
+  }
+}
+
+let getUnlockAddProgressViewConfig = @(unlockId) unlockAddProgressView.findvalue(@(_, key) unlockId.indexof(key) != null)
+
 ::PrizesView <- {
   template = "%gui/items/trophyDesc"
 
@@ -544,21 +570,8 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   }
   else if (prize?.unlockAddProgress)
   {
-    let unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
-    if (unlock != null) {
-      let config = ::build_conditions_config(unlock)
-      if (config.maxVal <= (prize?.count ?? 1)) //show reward only for item what open unlock
-        name = get_unlock_rewards_text(config)
-    }
-    if (name == "") {
-      let progressArray = prize.unlockAddProgress.split("_")
-      let value = progressArray.top()
-      let typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
-      if (_typeName)
-        name = ::loc(typeName)
-      else
-        name = ::loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
-    }
+    let viewProgreesConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
+    name = viewProgreesConfig?.getText(prize, _typeName) ?? ""
     showCount = false
   }
   else
@@ -636,11 +649,8 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
   if (prize?.warbonds)
     return "#ui/gameuiskin#item_type_warbonds"
   if (prize?.unlockAddProgress) {
-    let unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
-    local rewardText = ""
-    if (unlock != null)
-      rewardText = ::get_unlock_rewards_text(::build_conditions_config(unlock))
-    return rewardText != "" ? "" : "#ui/gameuiskin#item_type_bp.svg"
+    let viewProgreesConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
+    return viewProgreesConfig?.image ?? ""
   }
   return "#ui/gameuiskin#item_type_placeholder"
 }
