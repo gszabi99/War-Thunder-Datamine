@@ -86,6 +86,8 @@ let unlockAddProgressView = {
 }
 
 let getUnlockAddProgressViewConfig = @(unlockId) unlockAddProgressView.findvalue(@(_, key) unlockId.indexof(key) != null)
+let isUnlockAddProgressPrize = @(prize) prize?.unlockAddProgress != null
+  && unlockAddProgressView.findvalue(@(_, key) prize.unlockAddProgress.indexof(key) != null)
 
 ::PrizesView <- {
   template = "%gui/items/trophyDesc"
@@ -369,6 +371,8 @@ let getUnlockAddProgressViewConfig = @(unlockId) unlockAddProgressView.findvalue
     title = getPrizeText(prize)
     icon = getPrizeTypeIcon(prize)
   }
+
+  hasKnowPrize = @(prize) getPrizeType(prize) != PRIZE_TYPE.UNKNOWN
 }
 
 PrizesView.getPrizeType <- function getPrizeType(prize)
@@ -405,9 +409,7 @@ PrizesView.getPrizeType <- function getPrizeType(prize)
     return PRIZE_TYPE.WARBONDS
   if (prize?.resource)
     return PRIZE_TYPE.RESOURCE
-  if (prize?.resource)
-    return PRIZE_TYPE.RESOURCE
-  if (prize?.unlockAddProgress)
+  if (isUnlockAddProgressPrize(prize))
     return PRIZE_TYPE.UNLOCK_PROGRESS
   return PRIZE_TYPE.UNKNOWN
 }
@@ -1164,7 +1166,7 @@ PrizesView.getPrizesViewData <- function getPrizesViewData(prize, showCount = tr
     return getViewDataItem(prize, showCount, params)
   if (prize?.warbonds)
     return getViewDataDefault(prize, false, params)
-  if (prize?.unlockAddProgress)
+  if (isUnlockAddProgressPrize(prize))
     return getViewDataUnlockProgress(prize, showCount, params)
   return getViewDataDefault(prize, showCount, params)
 }

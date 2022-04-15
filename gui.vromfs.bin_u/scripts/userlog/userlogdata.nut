@@ -587,6 +587,8 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     return false
   if (haveHiddenItem(blk?.body.itemDefId))
     return false
+  if (blk.type == ::EULT_OPEN_TROPHY && !PrizesView.hasKnowPrize(blk.body))
+    return false
   return true
 }
 
