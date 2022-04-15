@@ -850,4 +850,5 @@ local expireTypes = {
   isEveryDayAward = @() id.tostring().split(everyDayAwardPrefix).len() > 1
   showAlwaysAsEnabledAndUnlocked = @() false
   getCountriesWithBuyRestrict = @() (restrictedInCountries ?? "") != "" ? restrictedInCountries.split(",") : []
+  getOpeningCaption = @() ::loc("mainmenu/trophyReward/title")
 }
