@@ -17473,7 +17473,23 @@
   },
   {
     "unlockable": {
+      "id": "title_olyst_champion_2",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
       "id": "title_olyst_contender",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "title_olyst_contender_2",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -28214,6 +28230,39 @@
           "type": "char_time_range",
           "beginDate": "2022-04-13 00:00:00",
           "endDate": "2022-04-17 20:00:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "hunter_f9_rhodesia_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2022-04-18 00:00:00",
+        "endDate": "2022-04-22 20:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "hunter_f9_rhodesia_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "hunter_f9_rhodesia_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "spitfire_ix_ussr",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2022-04-18 00:00:00",
+          "endDate": "2022-04-22 20:00:00"
         }
       }
     }
