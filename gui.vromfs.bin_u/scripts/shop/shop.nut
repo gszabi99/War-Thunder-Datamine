@@ -1724,13 +1724,17 @@ shopData = [
       return
 
     let unit = ::getAircraftByName(unitId)
-    if (!unit || !unit.isVisibleInShop() || unitId == curAirName)
+    if (!unit || !unit.isVisibleInShop())
       return
 
     curAirName = unitId
     setUnitType(unit.unitType)
     ::switch_profile_country(::getUnitCountry(unit))
+    searchBoxWeak?.searchCancel()
     selectCellByUnitName(unitId)
+    // In mouse mode, mouse pointer don't move to slot, so we need a highlight.
+    if (!::show_console_buttons || ::is_mouse_last_time_used())
+      highlightUnitsInTree([ unitId ])
   }
 
   function selectCellByUnitName(unitName)

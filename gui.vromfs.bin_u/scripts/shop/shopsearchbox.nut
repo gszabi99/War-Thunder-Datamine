@@ -47,8 +47,12 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
     isClear = true
 
     let obj = scene.findObject("search_edit_box")
-    if (::check_obj(obj))
+    if (::check_obj(obj)) {
       obj.setValue("")
+      // Toggling enable status to make it lose focus.
+      obj.enable(false)
+      obj.enable(true)
+    }
     updateHint(isClear, 0, 0)
   }
 
@@ -104,7 +108,7 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 
   function onSearchEditBoxCancelEdit(obj)
   {
-    if (obj.getValue() != "")
+    if (isActive)
       searchCancel()
     else
       cbOwnerClose()
@@ -165,6 +169,8 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 
   function onEventShopUnitTypeSwitched(p)
   {
+    if (curEsUnitType == p.esUnitType)
+      return
     curEsUnitType = p.esUnitType
     searchCancel()
   }
@@ -172,6 +178,11 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
   function onEventCountryChanged(p)
   {
     curCountry = ::get_profile_country_sq()
+    searchCancel()
+  }
+
+  function onEventShopWndSwitched(p)
+  {
     searchCancel()
   }
 

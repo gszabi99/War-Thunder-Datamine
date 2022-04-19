@@ -2,6 +2,7 @@ let sonyUser = require("sony.user")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
@@ -175,6 +176,23 @@ let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
   : @() null
 
 addPromoAction("email_registration", @(handler, params, obj) launchEmailRegistration())
+
+let promoButtonId = "email_registration_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  getText = @() ::loc("promo/btnXBOXAccount_linked")
+  image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo.jpg?P1"
+    : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo.jpg?P1"
+    : ::steam_is_running() ? "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo.jpg?P1"
+    : ""
+  aspect_ratio = 2.07
+  updateFunctionInHandler = function() {
+    let isVisible = isShowAllCheckBoxEnabled()
+      || (canEmailRegistration() && ::g_promo.getVisibilityById(promoButtonId))
+    ::showBtn(promoButtonId, isVisible, scene)
+  }
+})
 
 return {
   launchEmailRegistration

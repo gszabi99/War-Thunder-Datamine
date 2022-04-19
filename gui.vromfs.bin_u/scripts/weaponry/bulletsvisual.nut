@@ -9,9 +9,13 @@ let { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { startswith } = require("string")
 
-let bulletIcons = {}
-let bulletAspectRatio = {}
+const USE_SMALLER_TEXTURES_UNDER_ICON_SIZE_PX = 50
+
+local bulletIcons = {}
+local bulletAspectRatio = {}
 
 let bulletsFeaturesImg = [
   { id = "damage", values = [] }
@@ -23,7 +27,18 @@ let getBulletsFeaturesImg = @() bulletsFeaturesImg
 const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
 
-local function initBulletIcons(blk = null)
+let function resetBulletIcons() {
+  bulletIcons.clear()
+  bulletAspectRatio.clear()
+  foreach (v in bulletsFeaturesImg)
+    v.values.clear()
+}
+
+addListenersWithoutEnv({
+  GuiSceneCleared = @(p) resetBulletIcons() // Resolution or UI Scale could change
+})
+
+let function initBulletIcons(blk = null)
 {
   if (bulletIcons.len())
     return
@@ -31,13 +46,34 @@ local function initBulletIcons(blk = null)
   if (!blk)
     blk = GUI.get()
 
-  copyParamsToTable(blk?.bullet_icons, bulletIcons)
-  copyParamsToTable(blk?.bullet_icon_aspect_ratio, bulletAspectRatio)
+  let smallIconsMap = {}
+  let useSmallIcons = ::to_pixels("1@modItemHeight") <= USE_SMALLER_TEXTURES_UNDER_ICON_SIZE_PX
+  if (useSmallIcons)
+    copyParamsToTable(blk?.bullet_and_mod_icons_small, smallIconsMap)
 
+  copyParamsToTable(blk?.bullet_icons, bulletIcons)
+  if (useSmallIcons)
+    bulletIcons = bulletIcons.map(@(ico) smallIconsMap?[ico] ?? ico)
+
+  copyParamsToTable(blk?.bullet_icon_aspect_ratio, bulletAspectRatio)
+  if (useSmallIcons) {
+    let bulletArPairs = bulletAspectRatio.topairs()
+    bulletArPairs.each(@(v) v[0] = smallIconsMap?[v[0]] ?? v[0])
+    bulletAspectRatio = bulletArPairs.totable()
+  }
+
+  let pathPrefix = "#ui/gameuiskin#"
   let bf = blk?.bullets_features_icons
   if (bf)
-    foreach(item in bulletsFeaturesImg)
+    foreach(item in bulletsFeaturesImg) {
       item.values = bf % item.id
+      if (useSmallIcons)
+        item.values = item.values.map(function(icoPath) {
+          let prefix = startswith(icoPath, pathPrefix) ? pathPrefix : ""
+          let ico = icoPath.slice(prefix.len())
+          return "".concat(prefix, smallIconsMap?[ico] ?? ico)
+        })
+    }
 }
 
 let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)

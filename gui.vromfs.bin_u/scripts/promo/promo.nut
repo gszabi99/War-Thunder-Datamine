@@ -196,7 +196,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
   view.type <- ::g_promo.getType(block)
   view.collapsed <- ::g_promo.isCollapsed(id)? "yes" : "no"
   view.fillBlocks <- []
-  view.h_ratio <- 1 / (block?.aspect_ratio ?? 1.0)
+  view.h_ratio <- 1 / (block?.aspect_ratio ?? promoButtonConfig?.aspect_ratio ?? 1.0)
 
   let unseenIcon = promoButtonConfig?.getCustomSeenId()
   if (unseenIcon)
@@ -255,7 +255,9 @@ g_promo.generateBlockView <- function generateBlockView(block)
       view.collapsedAction <- PERFORM_ACTON_NAME
     }
 
-    let image = getImage(fillBlock)
+    local image = getImage(fillBlock)
+    if (image == "" && i == 0)
+      image = getImage(promoButtonConfig)
     if (image != "")
     {
       fillBlock.image <- image
