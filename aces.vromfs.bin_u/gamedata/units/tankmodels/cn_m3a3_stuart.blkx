@@ -186,7 +186,9 @@
         "ex_decor_r_03_dm": [],
         "ex_decor_l_04_dm": [],
         "ex_decor_r_04_dm": [],
-        "turret_01_side_dm": []
+        "turret_01_side_dm": {
+          "hidableInViewer": false
+        }
       },
       "mask": {
         "armorClass": "CHA_tank",
@@ -653,7 +655,10 @@
         "createSecondaryShatters": false,
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": [],
-        "ex_decor_13_dm": []
+        "ex_decor_13_dm": [],
+        "turret_03_front_dm": {
+          "hidableInViewer": false
+        }
       }
     }
   },
@@ -2207,85 +2212,6 @@
     "class_tags": []
   },
   {
-    "VehiclePhys": {
-      "Mass": {
-        "Empty": 12400.0,
-        "Fuel": 200.0,
-        "TakeOff": 12600.0,
-        "momentOfInertia": [0.87,0.87,1.4],
-        "CenterOfGravity": [0.2,0.4,0.0],
-        "CenterOfGravityClampY": [0.0,0.7],
-        "AdvancedMass": false,
-        "trackMass": 400.0
-      },
-      "tracks": {
-        "animationMultiplier": 0.56,
-        "height": 0.08,
-        "width": 0.294,
-        "tracksTensionK": [6.5,8.0,3.0],
-        "trackMesh": "us_t16e1_phys_track_line",
-        "trackLen": 0.1398,
-        "trackCount": 66,
-        "trackFadeTime": 1.1,
-        "trackConnector": true,
-        "trackEmitSparks": false,
-        "trackMaxHeight": 1.12,
-        "trackStartOffset": 0.19
-      },
-      "engine": {
-        "horsePowers": 262.0,
-        "maxRPM": 2400.0,
-        "minRPM": 900.0
-      },
-      "mechanics": {
-        "maxBrakeForce": 30000.0,
-        "driveGearRadius": 0.29,
-        "mainGearRatio": 1.17,
-        "sideGearRatio": 5.2,
-        "gearRatios": [
-          {
-            "ratio": -6.19
-          },
-          {
-            "ratio": 0.0
-          },
-          {
-            "ratio": 5.37
-          },
-          {
-            "ratio": 2.82
-          },
-          {
-            "ratio": 1.72
-          },
-          {
-            "ratio": 1.09
-          },
-          {
-            "ratio": 0.738
-          }
-        ]
-      },
-      "suspension": {
-        "suspensionOffsets": [-0.14,-0.11,0.07],
-        "defaultGearRadius": 0.26,
-        "topGearRadius": 0.09,
-        "defaultDampeningForce": [27000.0,27000.0],
-        "frontBackGearRadius": 0.35,
-        "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "offsets": {
-          "wheel_l_back": [-0.14,-0.11,0.07],
-          "wheel_r_back": [-0.14,-0.11,0.07]
-        }
-      },
-      "collisionProps": {
-        "cls_turret": "convex_hull",
-        "cls_body": "convex_hull"
-      }
-    }
-  },
-  {
     "PhysSys": [
       {
         "group": {
@@ -3222,6 +3148,85 @@
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
         "role": "radio_gunner"
+      }
+    }
+  },
+  {
+    "VehiclePhys": {
+      "Mass": {
+        "Empty": 14000.0,
+        "Fuel": 400.0,
+        "TakeOff": 14400.0,
+        "momentOfInertia": [0.87,0.87,1.4],
+        "CenterOfGravity": [0.2,0.4,0.0],
+        "CenterOfGravityClampY": [0.0,0.7],
+        "AdvancedMass": false,
+        "trackMass": 400.0
+      },
+      "tracks": {
+        "animationMultiplier": 0.56,
+        "height": 0.08,
+        "width": 0.294,
+        "tracksTensionK": [6.5,8.0,3.0],
+        "trackMesh": "us_t16e1_phys_track_line",
+        "trackLen": 0.1398,
+        "trackCount": 66,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.12,
+        "trackStartOffset": 0.19
+      },
+      "engine": {
+        "horsePowers": 262.0,
+        "maxRPM": 2400.0,
+        "minRPM": 900.0
+      },
+      "mechanics": {
+        "maxBrakeForce": 30000.0,
+        "driveGearRadius": 0.29,
+        "mainGearRatio": 1.17,
+        "sideGearRatio": 5.2,
+        "gearRatios": [
+          {
+            "ratio": -6.19
+          },
+          {
+            "ratio": 0.0
+          },
+          {
+            "ratio": 5.37
+          },
+          {
+            "ratio": 2.82
+          },
+          {
+            "ratio": 1.72
+          },
+          {
+            "ratio": 1.09
+          },
+          {
+            "ratio": 0.738
+          }
+        ]
+      },
+      "suspension": {
+        "suspensionOffsets": [-0.14,-0.11,0.07],
+        "defaultGearRadius": 0.26,
+        "topGearRadius": 0.09,
+        "defaultDampeningForce": [27000.0,27000.0],
+        "frontBackGearRadius": 0.35,
+        "dampeningRelaxationRatio": 0.4,
+        "dampeningCompressionRatio": 0.15,
+        "offsets": {
+          "wheel_l_back": [-0.14,-0.11,0.07],
+          "wheel_r_back": [-0.14,-0.11,0.07]
+        }
+      },
+      "collisionProps": {
+        "cls_turret": "convex_hull",
+        "cls_body": "convex_hull"
       }
     }
   },

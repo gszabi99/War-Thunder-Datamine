@@ -2,6 +2,33 @@
   "worldWarUrlBtnKey": "wikiMainPage",
   "unlockOnStartEmailBind": "hidden_linked_account_unlock",
   "popupItems": {
+    "2022_olyst_cup_2_popup": {
+      "name": "OlySt CUP II and Twitch Drops",
+      "name_ru": "Кубок OlySt CUP II и Twitch Drops",
+      "name_fr": "OlySt CUP II et Twitch Drops",
+      "image": "https://static.warthunder.com/upload/image/Promo/2022_olyst_cup_2_popup.jpg?P1",
+      "imageRatio": 0.56,
+      "desc": "“OlySt” cup is back, doubling the prize pool! We welcome commanders to the mixed tournament 7x7 with the total prize fund of $ 2,000 and over 200,000 Golden Eagles!\\n\\nWatch live streams on 5 multi-language channels and catch the Twitch drops for the “OlySt CUP II” battles.",
+      "desc_ru": "Кубок команды «OlySt» возвращается, а призовой фонд турнира теперь в два раза больше! Бойцы, приглашаем вас принять участие в смешанном турнире в формате «7 на 7». Сразитесь за призовой фонд в $2000 и более 200 000 Золотых орлов.\\n\\nСмотрите трансляции соревнований, которые пройдут одновременно на 5 мультиязычных каналах, и получайте призы за просмотр боёв кубка «OlySt CUP II».",
+      "desc_fr": "La coupe de l’équipe “OlySt” est de retour, doublant les prix! Nous accueillons les commandants au tournoi combiné 7x7 avec une cagnotte totale de $2,000 et de plus de 200 000 Golden Eagles!\\n\\nRegardez les diffusions en direct sur 5 chaînes avec plusieurs langues disponibles et obtenez les Twitch Drops de “OlySt Cup II”.",
+      "link": "https://warthunder.com/en/news/7651-esport-olyst-cup-ii-and-twitch-drops-en",
+      "link_ru": "https://warthunder.ru/ru/news/15704-kibersport-kubok-olyst-cup-ii-i-twitch-drops-ru",
+      "link_fr": "https://warthunder.com/fr/news/4521-esport-olyst-cup-ii-et-twitch-drops-fr",
+      "viewType": "once",
+      "linkText": "More details",
+      "linkText_ru": "Подробности",
+      "linkText_cs": "Další detaily",
+      "linkText_it": "Più dettagli",
+      "linkText_pl": "Więcej informacji",
+      "linkText_fr": "Plus de détails",
+      "linkText_de": "Mehr Infos",
+      "linkText_es": "Mas detalles",
+      "linkText_ko": "더 자세한 정보",
+      "reqFeature": "pc_only_events",
+      "startTime": "2022-04-18 00:00:00",
+      "endTime": "2022-04-22 20:00:00",
+      "forceExternalBrowser": true
+    },
     "2022_hunter_f9_rhodesia_popup": {
       "name": "Flash sale! Hunter FGA.9",
       "name_ru": "Hunter FGA.9 временно в продаже!",
@@ -9,12 +36,11 @@
       "imageRatio": 0.56,
       "desc": "From April 18th to April 22nd, players will be able to purchase a premium fighter Hunter FGA.9 from the British research tree for Golden Eagles.\\n\\nThese aircraft were used by the Rhodesian Air Force, renamed to Zimbabwe after it had declared independence from the United Kingdom on April 18th, 1980.",
       "desc_ru": "С 18 по 22 апреля за Золотые орлы доступен для покупки Hunter FGA.9 — премиум-истребитель из ветки Великобритании.\\n\\nЭти самолёты долгое время находились на службе ВВС Родезии, которая 18 апреля 1980 года объявила о своей независимости от Великобритании и переименовалась в Зимбабве.",
-      "viewType": "once",
+      "viewType": "every_session",
       "action": "show_unit; hunter_f9_rhodesia",
       "actionText": "#hunter_f9_rhodesia_shop",
       "startTime": "2022-04-18 00:00:00",
       "endTime": "2022-04-22 20:00:00",
-      "reqUnlock": "hunter_f9_rhodesia_check_popup",
       "forceExternalBrowser": true
     },
     "2022_spitfire_ix_ussr_popup": {
@@ -750,15 +776,44 @@
       "startTime": "2022-04-01 12:00",
       "endTime": "2022-05-02 12:00"
     },
-    "2022_04_arachis_promo": {
-      "aspect_ratio": 2.07,
-      "text": "Children of Arachis",
-      "text_ru": "Дети Арахиса",
-      "image": "https://static.warthunder.com/upload/image/Promo/promo_desert.jpg?P1",
-      "action": "events; april_2022_arachis_ab",
-      "startTime": "2022-04-01 09:00",
-      "endTime": "2022-04-25 00:00"
-    },
+    "2022_04_arachis_promo": [
+      {
+        "aspect_ratio": 2.07
+      },
+      {
+        "multiple": true
+      },
+      {
+        "startTime": "2022-04-01 09:00"
+      },
+      {
+        "endTime": "2022-04-25 00:00"
+      },
+      {
+        "forceExternalBrowser": true
+      },
+      {
+        "reqFeature": "pc_only_events"
+      },
+      {
+        "block": {
+          "image": "https://static.warthunder.com/upload/image/Promo/promo_desert.jpg?P1",
+          "text": "Children of Arachis",
+          "text_ru": "Дети Арахиса",
+          "forceExternalBrowser": true,
+          "action": "events; april_2022_arachis_ab"
+        }
+      },
+      {
+        "block": {
+          "image": "https://static.warthunder.com/upload/image/Promo/2022_olyst_cup_2_promo.jpg?P1",
+          "link": "auto_local auto_login https://tss.warthunder.com/index.php?action=tournament&id=15203",
+          "text": "OlySt CUP II",
+          "text_ru": "Кубок OlySt CUP II",
+          "forceExternalBrowser": true
+        }
+      }
+    ],
     "2022_03_check_XBOXAccount_linked_promo": {
       "color": "#DAAD5C",
       "image": "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo.jpg?P1",

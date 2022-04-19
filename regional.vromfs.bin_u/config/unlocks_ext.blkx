@@ -1,6 +1,41 @@
 [
   {
     "unlockable": {
+      "id": "gift_booster_rp_20_5mp_after_5mp_trophy",
+      "userLogId": "booster_rp_20_5mp_unlock_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "unlock_booster_rp_20_5mp_after_5mp",
+      "locDescId": "unlock_booster_rp_20_5mp_after_5mp/desc",
+      "type": "achievement",
+      "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "unlock_booster_rp_20_5mp_after_5mp_hidden",
+      "locDescId": "unlock_booster_rp_20_5mp_after_5mp/desc",
+      "userLogId": "booster_rp_20_5mp_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_mission",
+        "num": 5,
+        "condition": {
+          "type": "char_unlocked",
+          "unlock": "gift_booster_rp_20_5mp_after_5mp_trophy"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "battlepass_season_1_challenge_1",
       "type": "achievement",
       "amount_exp": 0,
