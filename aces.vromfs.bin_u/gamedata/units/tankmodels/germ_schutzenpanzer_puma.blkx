@@ -114,9 +114,6 @@
     "canReloadNonGuns": true
   },
   {
-    "canReloadNonGuns": true
-  },
-  {
     "rearmTimeOnField": 70.0
   },
   {
@@ -151,7 +148,9 @@
           "armorThickness": 15.0
         },
         "superstructure_top_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 15.0,
+          "hp": 150.0,
+          "ignoreDeadWithSplash": true
         },
         "superstructure_side_dm": {
           "armorThickness": 15.0
@@ -209,10 +208,6 @@
         },
         "turret_11_top_dm": {
           "armorThickness": 20.0
-        },
-        "composite_armor_hull_18_dm": {
-          "armorThickness": 5.0,
-          "hidableInXrayViewer": true
         },
         "turret_09_top_dm": {
           "armorThickness": 5.0
@@ -297,7 +292,9 @@
         "turret_07_bottom_dm": [],
         "turret_03_front_dm": [],
         "turret_07_side_dm": [],
-        "turret_04_bottom_dm": [],
+        "turret_04_bottom_dm": {
+          "ignoreDeadWithSplash": true
+        },
         "turret_15_back_dm": [],
         "turret_15_bottom_dm": [],
         "turret_08_front_dm": [],
@@ -545,7 +542,12 @@
         "ex_armor_body_l_08_dm": [],
         "ex_armor_body_l_06_dm": [],
         "ex_armor_body_l_05_dm": [],
-        "ex_armor_body_l_02_dm": []
+        "ex_armor_body_l_02_dm": [],
+        "composite_armor_hull_18_dm": {
+          "armorClass": "leopard_2a5_turret_nera",
+          "armorThickness": 0.01,
+          "hidableInXrayViewer": true
+        }
       },
       "grille": {
         "armorClass": "grille_structural_steel",
@@ -1289,7 +1291,7 @@
           "cumulativeProtectionEquivalent": 450.0,
           "armorArrayText": {
             "layer": {
-              "dmPart": "turret_12_side_dm",
+              "dmPart": "composite_armor_hull_18_dm",
               "xrayTextThickness": 430.0
             }
           }
@@ -2703,7 +2705,7 @@
         "minRPM": 1250.0
       },
       "mechanics": {
-        "maxBrakeForce": 120000.0,
+        "maxBrakeForce": 280000.0,
         "driveGearRadius": 0.315,
         "mainGearRatio": 1.0,
         "sideGearRatio": 6.3,
@@ -3364,22 +3366,42 @@
   },
   {
     "ammoStowages": {
-      "ammo1": {
-        "weaponTrigger": "gunner0",
-        "removeLoadedAmmo": false,
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "shells": {
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "ammo_body_01_dm": {
-            "count": 200
-          },
-          "ammo_turret_01_dm": {
-            "count": 200
+      "ammo1": [
+        {
+          "weaponTrigger": "gunner0"
+        },
+        {
+          "removeLoadedAmmo": false
+        },
+        {
+          "fatalFire": true
+        },
+        {
+          "fatalExplosion": true
+        },
+        {
+          "shells": {
+            "fireParamsPreset": "turret_bustle",
+            "fatalFire": false,
+            "fatalExplosion": false,
+            "ammo_turret_01_dm": {
+              "count": 200
+            }
+          }
+        },
+        {
+          "shells": {
+            "fatalFire": true,
+            "fatalExplosion": true,
+            "fireEvent": "ammo_fire",
+            "explosionEvent": "ammo_explosion",
+            "wreckedPartId": 0,
+            "ammo_body_01_dm": {
+              "count": 200
+            }
           }
         }
-      }
+      ]
     }
   },
   {
