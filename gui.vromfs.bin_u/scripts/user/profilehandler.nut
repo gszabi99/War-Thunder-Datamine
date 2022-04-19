@@ -144,11 +144,11 @@ let selMedalIdx = {}
     mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
+    unlocksTree = {}
+
     initStatsParams()
     initSheetsList()
     initTabs()
-
-    unlocksTree = {}
 
     //fill decals categories
     if ("UnlockDecal" in unlockFilters)
@@ -178,8 +178,6 @@ let selMedalIdx = {}
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
     initLeaderboardModes()
-
-    onSheetChange(null)
     initShortcuts()
   }
 
@@ -713,11 +711,12 @@ let selMedalIdx = {}
     if (pageTypeId == ::UNLOCKABLE_MEDAL)
       curIndex = selMedalIdx?[curFilter] ?? 0
 
+    collapse(curAchievementGroupName != "" ? curAchievementGroupName : null)
+
     let total = unlocksObj.childrenCount()
     curIndex = total ? ::clamp(curIndex, 0, total - 1) : -1
     unlocksObj.setValue(curIndex)
 
-    collapse()
     itemSelectFunc?(unlocksObj)
 
     isPageFilling = false
@@ -748,7 +747,7 @@ let selMedalIdx = {}
 
       let groupId = chapter.groups.findindex(@(g) g.contains(unlockId))
       if (groupId != null)
-        return groupId
+        return $"{chapterName}/{groupId}"
     }
     return ""
   }
@@ -1272,10 +1271,10 @@ let selMedalIdx = {}
       currentItemNum++
     }
 
+    guiScene.setUpdatesEnabled(true, true)
+
     if (unlocksListObj.childrenCount() > 0)
       unlocksListObj.setValue(selIdx)
-
-    guiScene.setUpdatesEnabled(true, true)
 
     seenList.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
   }

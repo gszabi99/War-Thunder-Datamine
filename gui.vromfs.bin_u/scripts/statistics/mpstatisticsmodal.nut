@@ -24,6 +24,8 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     isSpectate = false
     isTeam  = true
 
+    guiScene.setUpdatesEnabled(false, false)
+
     let tblObj1 = scene.findObject("table_kills_team1")
     if (tblObj1.childrenCount() == 0)
       initStats()
@@ -59,6 +61,8 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
     }
     showMissionResult()
+
+    guiScene.setUpdatesEnabled(true, true)
   }
 
   function reinitScreen(params)

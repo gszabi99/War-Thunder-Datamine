@@ -18,6 +18,18 @@ curSeasonChallenges.subscribe(function(value) {
   }
 })
 
+let function getLevelFromConditions(conditions) {
+  let battlepassLevel = conditions.findvalue(@(cond) cond?.type == "battlepassLevel")
+  if (battlepassLevel)
+    return battlepassLevel.level
+
+  let battlepassProgress = conditions.findvalue(@(cond) cond?.type == "battlepassProgress")
+  if (battlepassProgress)
+    return getLevelByExp(battlepassProgress.progress)
+
+  return null
+}
+
 let curSeasonChallengesByStage = ::Computed(function() {
   let res = {}
   foreach (challenge in curSeasonChallenges.value) {
@@ -25,11 +37,10 @@ let curSeasonChallengesByStage = ::Computed(function() {
     if (mode == null)
       continue
 
-    let battlepassProgress = (mode % "condition").findvalue(@(cond) cond?.type == "battlepassProgress")
-    if (battlepassProgress == null)
+    let level = getLevelFromConditions(mode % "condition")
+    if (level == null)
       continue
 
-    let level = getLevelByExp(battlepassProgress.progress)
     res[level] <- challenge
   }
   return res
@@ -74,9 +85,8 @@ let function getConditionInTitleConfig(unlockBlk) {
     return res
 
   let condition = (mode % "condition").extend(mode % "visualCondition")
-  let battlepassProgress = condition.findvalue(@(cond) cond.type == "battlepassProgress")
-  if (battlepassProgress != null) {
-    let level = getLevelByExp(battlepassProgress.progress)
+  let level = getLevelFromConditions(condition)
+  if (level != null) {
     if (level > seasonLevel.value)
       return {
         addTitle = ::loc("ui/parentheses/space", {
