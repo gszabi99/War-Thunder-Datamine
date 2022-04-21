@@ -80,7 +80,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 
   skipRoulette              = @() isContentPack()
   isContentPack             = @() getGenerator()?.isPack ?? false
-  isAllowSkipOpeningAnim    = @() ::is_dev_version
+  isAllowSkipOpeningAnim    = @() itemDef.tags?.isAllowSkipOpeningAnim || ::is_dev_version
   getOpeningAnimId          = @() itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
   getConfirmMessageData    = @(recipe) getEmptyConfirmMessageData().__update({
     text = ::loc(getLocIdsList().msgBoxConfirm, { itemName = ::colorize("activeTextColor", getName()) })

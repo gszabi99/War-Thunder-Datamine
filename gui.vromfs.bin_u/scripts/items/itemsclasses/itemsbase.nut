@@ -537,9 +537,12 @@ local expireTypes = {
       return false
     }
 
-    checkLegalRestrictions(getCountriesWithBuyRestrict(), ::Callback(@() showBuyConfirm(cb, handler, params), this))
+    let onCheck = ::Callback(@() onCheckLegalRestrictions(cb, handler, params), this)
+    checkLegalRestrictions(getCountriesWithBuyRestrict(), onCheck)
     return true
   }
+
+  onCheckLegalRestrictions = @(cb, handler, params) showBuyConfirm(cb, handler, params)
 
   function showBuyConfirm(cb, handler, params)
   {
@@ -547,10 +550,14 @@ local expireTypes = {
       handler = ::get_cur_base_gui_handler()
 
     let name = getName()
-    let cost = getCost()
+    let numItems = params?.amount ?? 1
+    let cost = numItems == 1 ? getCost() : (::Cost() + getCost()).multiply(numItems)
     let price = cost.getTextAccordingToBalance()
+    let msgTextLocKey = numItems == 1
+      ? "onlineShop/needMoneyQuestion"
+      : "onlineShop/needMoneyQuestion/multiPurchase"
     let msgText = ::warningIfGold(
-      ::loc("onlineShop/needMoneyQuestion",{purchase = name, cost = price }),
+      ::loc(msgTextLocKey, { purchase = name, cost = price, amount = numItems }),
       cost)
     local item = this
     params["cost"] <- cost.wp

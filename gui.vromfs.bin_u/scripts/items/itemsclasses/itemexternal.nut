@@ -70,6 +70,7 @@ local ItemExternal = class extends ::BaseItem
   aditionalConfirmationMsg = null
   locIdsList = null
   substitutionItemData = []
+  allowToBuyAmount = -1
 
   constructor(itemDefDesc, itemDesc = null, slotData = null)
   {
@@ -77,10 +78,11 @@ local ItemExternal = class extends ::BaseItem
 
     itemDef = itemDefDesc
     id = itemDef.itemdefid
-    blkType = itemDefDesc?.tags?.type ?? ""
-    maxAmount = (itemDefDesc?.tags?.maxCount ?? -1).tointeger()
-    requirement = itemDefDesc?.tags?.showWithFeature
-    lottieAnimation = itemDefDesc?.tags?.lottieAnimation
+    blkType = itemDefDesc?.tags.type ?? ""
+    maxAmount = itemDefDesc?.tags.maxCount.tointeger() ?? -1
+    requirement = itemDefDesc?.tags.showWithFeature
+    lottieAnimation = itemDefDesc?.tags.lottieAnimation
+    allowToBuyAmount = itemDefDesc?.tags.allowToBuyAmount.tointeger() ?? -1
     updateSubstitutionItemDataOnce()
 
     aditionalConfirmationMsg = {}
@@ -832,6 +834,36 @@ local ItemExternal = class extends ::BaseItem
 
   isGoldPurchaseInProgress = @() ::u.search(itemTransfer.getSendingList(), @(data) (data?.goldCost ?? 0) > 0) != null
 
+  isMultiPurchaseAvailable = @() allowToBuyAmount > 1
+
+  onCheckLegalRestrictions = @(cb, handler, params) isMultiPurchaseAvailable()
+    ? showChooseAmountWnd(cb, handler, params)
+    : showBuyConfirm(cb, handler, params)
+
+  function showChooseAmountWnd(cb, handler, params) {
+    let item = this
+    chooseAmountWnd.open({
+      parentObj = params?.obj
+      minValue = 1
+      maxValue = allowToBuyAmount
+      headerText = ::loc("onlineShop/purchase", { purchase = getName() })
+      buttonText = ::loc("msgbox/btn_purchase")
+      getValueText = function(amount) {
+        let cost = ::Cost() + item.getCost()
+        let mult = cost.getUncoloredText()
+        let product = cost.multiply(amount).getTextAccordingToBalance()
+        return $"{amount} x {mult} = {product}"
+      }
+      onAcceptCb = @(amount) item.onAmountAccept(cb, handler, params.__merge({amount}))
+    })
+  }
+
+  function onAmountAccept(cb, handler, params) {
+    let cost = (::Cost() + getCost()).multiply(params.amount)
+    if (check_balance_msgBox(cost))
+      showBuyConfirm(cb, handler, params)
+  }
+
   function _buy(cb = null, params = null)
   {
     if (!isCanBuy())
@@ -848,7 +880,8 @@ local ItemExternal = class extends ::BaseItem
     blk.itemDefId = id
     blk.goldCost = cost.gold
     blk.wpCost = cost.wp
-    // other fields of blk: wpCost, amount
+    if ("amount" in params)
+      blk.amount = params.amount
 
     let onSuccess = function() {
       if (cb)

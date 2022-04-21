@@ -4,55 +4,53 @@ let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
-let function isTutorialComplete(tutorialName) {
-  let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(::GM_TRAINING)  //req to check progress
-  let progress = ::get_mission_progress($"tutorial/{tutorialName}")
-  ::set_mp_mode(mainGameMode)
-  return progress >= 0 && progress < 3
-}
-
 let checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
   {
     id = "fighter"
     tutorial = "tutorialB_fighter"
     canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) (unit?.isAir() ?? false) || (unit?.isHelicopter() ?? false)
+    isNeedAskInMainmenu = true
   }
   {
     id = "assaulter"
     tutorial = "tutorialB_assaulter"
+    suitableForUnit = @(unit) unit?.isAir() ?? false
   }
   {
     id = "bomber"
     tutorial = "tutorialB_bomber"
+    suitableForUnit = @(unit) unit?.isAir() ?? false
   }
   {
     id = "lightTank"
     tutorial = "tutorial_tank_basics_arcade"
     canSkipByFeature = "AllowedToSkipBaseTankTutorials"
     requiresFeature = "Tanks"
+    suitableForUnit = @(unit) unit?.isTank() ?? false
+    isNeedAskInMainmenu = true
   }
   {
     id = "lightTank_part2"
     tutorial = "tutorial_tank_basics_arcade_part2"
     requiresFeature = "Tanks"
-    isNeedAskInMainmenu = function()
-    {
-      return  ::is_unlocked(-1, "player_is_out_of_tank_sandbox")
-              && isTutorialComplete("tutorial_tank_basics_arcade_part1")
-    }
+    suitableForUnit = @(unit) unit?.isTank() ?? false
   }
   {
     id = "boat"
     tutorial = "tutorial_boat_basic_arcade"
     canSkipByFeature = "AllowedToSkipBaseTutorials"
     requiresFeature = "Ships"
+    suitableForUnit = @(unit) unit?.isBoat() ?? false
+    isNeedAskInMainmenu = true
   }
   {
     id = "ship"
     tutorial = "tutorial_destroyer_basics_arcade"
     canSkipByFeature = "AllowedToSkipBaseTutorials"
     requiresFeature = "Ships"
+    suitableForUnit = @(unit) unit?.isShip() ?? false
+    isNeedAskInMainmenu = true
   }
 ]
 
@@ -238,24 +236,16 @@ let function getSuitableUncompletedTutorialData(unit, diff = -1) {
 
   let tutorialsTbl = getTutorialsTblWithMissions(diff)
   local tutorialData = null
-  if (unit?.isTank() && ::has_feature("Tanks")
-    && tutorialsTbl?.tutorial_tank_basics_arcade.mission != null)
-      tutorialData = tutorialsTbl.tutorial_tank_basics_arcade
-  else if (unit?.isBoat() && ::has_feature("Ships")
-    && tutorialsTbl?.tutorial_boat_basic_arcade.mission != null)
-      tutorialData = tutorialsTbl.tutorial_boat_basic_arcade
-  else if (unit?.isShip() && ::has_feature("Ships")
-    && tutorialsTbl?.tutorial_destroyer_basics_arcade.mission != null)
-      tutorialData = tutorialsTbl.tutorial_destroyer_basics_arcade
+  foreach (tutorial in checkTutorialsList) {
+    if (isRequireFeature(tutorial, "requiresFeature") || tutorialsTbl?[tutorial.tutorial].mission == null)
+      continue
 
-  if (tutorialData == null)
-    foreach (tutorial in checkTutorialsList) {
-      if (isRequireFeature(tutorial, "requiresFeature") || tutorialsTbl?[tutorial.tutorial].mission == null)
-        continue
+    if (tutorial.suitableForUnit(unit))
+      return tutorialsTbl[tutorial.tutorial]
 
+    if (tutorialData == null)
       tutorialData = tutorialsTbl[tutorial.tutorial]
-      break
-    }
+  }
 
   return tutorialData
 }

@@ -11,7 +11,7 @@ popup_menu {
   pos:t='50%sw-50%w, 50%sh-50%h'
   position:t='root'
   total-input-transparent:t='yes'
-  width:t='0.325*@scrn_tgt'
+  chooseAmount:t='yes'
   height:t='0.185*@scrn_tgt'
   flow:t='vertical'
 

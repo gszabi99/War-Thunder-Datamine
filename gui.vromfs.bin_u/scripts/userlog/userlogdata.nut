@@ -419,7 +419,7 @@ local logNameByType = {
         if (!item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
         {
           let locId = "userlog/" + ::getLogNameByType(blk.type)
-          let numItems = blk.body?.quantity ?? 1
+          let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
           let name = ::loc(locId, {
             numItemsColored = numItems
             numItems = numItems

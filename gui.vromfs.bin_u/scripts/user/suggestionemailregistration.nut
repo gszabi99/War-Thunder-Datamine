@@ -181,6 +181,7 @@ let promoButtonId = "email_registration_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
+  buttonType = "imageButton"
   getText = @() ::loc("promo/btnXBOXAccount_linked")
   image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo.jpg?P1"
     : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo.jpg?P1"

@@ -41,26 +41,15 @@ let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::check_tutorial_on_start <- function check_tutorial_on_start()
 {
-  local tutorial = "fighter"
+  let unit = getShowedUnit()
+  foreach (tutorial in checkTutorialsList) {
+    if (!(tutorial?.isNeedAskInMainmenu ?? false))
+      continue
 
-  let curUnit = getShowedUnit()
-  if (curUnit?.isTank() && ::has_feature("Tanks"))
-    tutorial = "lightTank"
-  else if (curUnit?.isBoat() && ::has_feature("Ships"))
-    tutorial = "boat"
-  else if (curUnit?.isShip() && ::has_feature("Ships"))
-    tutorial = "ship"
+    if (("requiresFeature" in tutorial) && !::has_feature(tutorial.requiresFeature))
+      continue
 
-  if (!tryOpenNextTutorialHandler(tutorial))
-  {
-    foreach(t in checkTutorialsList)
-    {
-      let func = ::getTblValue("isNeedAskInMainmenu", t)
-      if (!func || !func())
-        continue
-
-      if (tryOpenNextTutorialHandler(t.id))
-        return
-    }
+    if (tutorial.suitableForUnit(unit) && tryOpenNextTutorialHandler(tutorial.id))
+      return
   }
 }
