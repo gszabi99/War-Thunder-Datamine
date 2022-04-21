@@ -36,11 +36,12 @@
       "imageRatio": 0.56,
       "desc": "From April 18th to April 22nd, players will be able to purchase a premium fighter Hunter FGA.9 from the British research tree for Golden Eagles.\\n\\nThese aircraft were used by the Rhodesian Air Force, renamed to Zimbabwe after it had declared independence from the United Kingdom on April 18th, 1980.",
       "desc_ru": "С 18 по 22 апреля за Золотые орлы доступен для покупки Hunter FGA.9 — премиум-истребитель из ветки Великобритании.\\n\\nЭти самолёты долгое время находились на службе ВВС Родезии, которая 18 апреля 1980 года объявила о своей независимости от Великобритании и переименовалась в Зимбабве.",
-      "viewType": "every_session",
+      "viewType": "once",
       "action": "show_unit; hunter_f9_rhodesia",
       "actionText": "#hunter_f9_rhodesia_shop",
       "startTime": "2022-04-18 00:00:00",
       "endTime": "2022-04-22 20:00:00",
+      "reqUnlock": "hunter_f9_rhodesia_check_popup",
       "forceExternalBrowser": true
     },
     "2022_spitfire_ix_ussr_popup": {
@@ -768,6 +769,12 @@
     }
   },
   "promo_block": {
+    "email_registration_mainmenu_button": {
+      "action": "email_registration",
+      "showForLangs": "Russian",
+      "startTime": "2022-03-01 00:00:00",
+      "endTime": "2022-07-01 00:00:00"
+    },
     "craft_event_2022_spring_promo": {
       "action": "items; craft_event_2022_spring; WORKSHOP",
       "aspect_ratio": 2.07,
@@ -814,39 +821,6 @@
         }
       }
     ],
-    "2022_03_check_XBOXAccount_linked_promo": {
-      "color": "#DAAD5C",
-      "image": "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo.jpg?P1",
-      "action": "email_registration; Xbox",
-      "text": "#promo/btnXBOXAccount_linked",
-      "showForLangs": "Russian",
-      "aspect_ratio": 2.07,
-      "startTime": "2022-03-01 00:00:00",
-      "endTime": "2022-03-16 00:00:00",
-      "reqUnlock": "2022_03_check_XBOXAccount_linked"
-    },
-    "2022_03_check_PSNAccount_linked_promo": {
-      "color": "#DAAD5C",
-      "image": "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo.jpg?P1",
-      "action": "email_registration; PS4",
-      "text": "#promo/btnXBOXAccount_linked",
-      "showForLangs": "Russian",
-      "aspect_ratio": 2.07,
-      "startTime": "2022-03-01 00:00:00",
-      "endTime": "2022-03-16 00:00:00",
-      "reqUnlock": "2022_03_check_PSNAccount_linked"
-    },
-    "2022_03_check_STEAMAccount_linked_promo": {
-      "color": "#DAAD5C",
-      "image": "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo.jpg?P1",
-      "action": "email_registration; Steam",
-      "text": "#promo/btnXBOXAccount_linked",
-      "showForLangs": "Russian",
-      "aspect_ratio": 2.07,
-      "startTime": "2022-03-01 00:00:00",
-      "endTime": "2022-07-01 00:00:00",
-      "reqUnlock": "2022_03_check_STEAMAccount_need_to_link"
-    },
     "2022_03_13_a_10_order_pc_promo": {
       "color": "#DAAD5C",
       "image": "https://static.warthunder.com/upload/image/Promo/a-10a_560h270.jpg?P1",
