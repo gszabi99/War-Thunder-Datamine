@@ -374,7 +374,7 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
     )
   }
   if (!target.isEnemy) {
-    let iffMarkDistanceRel = distanceRel + iffDistRelMult * 2.0 * distanceGateHalfWidthRel
+    let iffMarkDistanceRel = distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
     frameCommands.append(
       [ VECTOR_LINE,
         100 * angleLeft,
@@ -980,7 +980,7 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   }
 
   if (!target.isEnemy) {
-    let iffMarkDistanceRel = distanceRel + iffDistRelMult * 2.0 * distanceGateHalfWidthRel
+    let iffMarkDistanceRel = distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
     frameCommands.append(
       [ VECTOR_SECTOR, 50, 50, 50 * iffMarkDistanceRel, 50 * iffMarkDistanceRel, angleLeftDeg, angleRightDeg ]
     )
