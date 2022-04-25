@@ -408,17 +408,23 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return (allowedUnitTypes.len() == 0 || allowedUnitTypes.indexof(unitType) != null)
   }
 
-  function getVehicleDesc()
-  {
+  function getLocAllowedUnitTypes() {
     if (blk == null)
       return ""
 
     let processedUnitTypes = processUnitTypeArray(blk % "unitType")
     if (processedUnitTypes.len() == 0)
       return ""
-    let locUnitTypes = ::colorize("activeTextColor",
-      ::loc("ui/comma").join(
-        processedUnitTypes.map(@(unitType) ::loc($"mainmenu/type_{unitType}"))))
+
+    return ::colorize("activeTextColor", ::loc("ui/comma").join(
+      processedUnitTypes.map(@(unitType) ::loc($"mainmenu/type_{unitType}"))))
+  }
+
+  function getVehicleDesc()
+  {
+    let locUnitTypes = getLocAllowedUnitTypes()
+    if (locUnitTypes == "")
+      return ""
     return $"{::loc("mainmenu/btnUnits")}{::loc("ui/colon")}{locUnitTypes}"
   }
 }

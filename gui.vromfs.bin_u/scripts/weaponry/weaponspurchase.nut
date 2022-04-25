@@ -25,7 +25,7 @@ let function canBuyForEagles(cost, unit)
   return true
 }
 
-let function canBuyItem(cost, unit, afterRefillFunc = null)
+let function canBuyItem(cost, unit, afterRefillFunc = null, silent = false)
 {
   if (cost.isZero())
     return false
@@ -128,7 +128,7 @@ local class WeaponsPurchaseProcess
   {
     fillModItemSpecificParams(amount)
 
-    if (!canBuyItem(cost, unit))
+    if (!canBuyItem(cost, unit, null, silent))
     {
       if (completeOnCancel)
         complete()
@@ -171,7 +171,7 @@ local class WeaponsPurchaseProcess
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null)
   {
     let repairCost = unit.getRepairCost()
-    if (!canBuyItem(repairCost, unit, afterBalanceRefillFunc))
+    if (!canBuyItem(repairCost, unit, afterBalanceRefillFunc, silent))
       complete()
     else
       unitActions.repair(unit, afterSuccessFunc)

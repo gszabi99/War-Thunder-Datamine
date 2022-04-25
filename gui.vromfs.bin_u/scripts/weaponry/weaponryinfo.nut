@@ -355,6 +355,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       isGun = null
       bulletType = null
       tiers = {}
+      dependentWeaponPreset = {}
       blk = ""
     }
 
@@ -375,14 +376,22 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     let bulletCount = weapon?.bullets ?? bulletsCount
     let hasWeaponSlots = "slot" in weapon
-    if (hasWeaponSlots)
+    if (hasWeaponSlots) {
       item.tiers[weapon.tier] <- {
         presetId = weapon.presetId
         slot = weapon.slot
         iconType = weapon?.iconType
         amountPerTier = bulletCount
       }
-
+      foreach (dependentWeapon in (weapon % "dependentWeaponPreset")) {
+        let dependentWeapons = item.dependentWeaponPreset?[dependentWeapon.preset] ?? []
+        item.dependentWeaponPreset[dependentWeapon.preset] <-dependentWeapons.append({
+          slot = dependentWeapon.slot
+          reqForPresetId = weapon.presetId
+          reqForTier = weapon.tier
+        })
+      }
+    }
     let needBulletParams = !::isInArray(currentTypeName,
       [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])
 
@@ -553,8 +562,10 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       if (item.caliber > currentType.caliber)
         currentType.caliber = item.caliber
     }
-    else if (hasWeaponSlots)
+    else if (hasWeaponSlots) {
       currentType.weaponBlocks[weaponName].tiers.__update(item.tiers)
+      currentType.weaponBlocks[weaponName].dependentWeaponPreset.__update(item.dependentWeaponPreset)
+    }
 
     currentType.weaponBlocks[weaponName].ammo += bulletCount
     currentType.weaponBlocks[weaponName].num += 1
@@ -1007,4 +1018,5 @@ return {
   getWeaponDisabledMods
   getTriggerType
   isGunnerTrigger
+  getWeaponBlkParams
 }

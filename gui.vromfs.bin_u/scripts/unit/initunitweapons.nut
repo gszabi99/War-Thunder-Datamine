@@ -84,28 +84,57 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   addReqParamsToWeaponry(weaponry, blk)
 }
 
-let function initUnitWeapons(unit, weapons, weaponsBlk = null) {
+let function addReqParamsByContainers(weaponsContainers, name, reqParams) {
+  foreach(rp in reqNames)
+    if (rp in weaponsContainers[name]) {
+      reqParams[rp] <- reqParams?[rp] ?? []
+      foreach (req in weaponsContainers[name][rp])
+        appendOnce(req, reqParams[rp])
+    }
+}
+
+let function initUnitWeapons(unit, weapons, weaponsBlk) {
   let { weaponsContainers, esUnitType } = unit
   foreach (weapon in weapons) {
     let weaponBlk = weaponsBlk?[weapon.name]
     initWeaponry(weapon, weaponBlk, esUnitType)
-
-    if (unit.hasWeaponSlots) //for weapons by slot weapons mask is not inited
-      initWeaponsMask(unit, weapon)
     if (weaponsContainers.len() == 0 || (weaponBlk?.sum_weapons == null))
+      continue
+    let reqParams = {}
+    eachParam(weaponBlk?.sum_weapons,
+      @(_, name) addReqParamsByContainers(weaponsContainers, name, reqParams))
+    weapon.__update(reqParams)
+  }
+}
+
+let function getCustomSumWeapons(weaponBlk, weaponsBlk) {
+  let res = []
+  if (weaponBlk == null || weaponsBlk?.custom_presets == null)
+    return res
+
+  let weapons = weaponBlk % "Weapon"
+  let slots = weaponsBlk.custom_presets % "slot"
+  foreach(wBlk in weapons) {
+    let blk = slots.findvalue(@(_) _.index == wBlk.slot)?[wBlk.preset]
+    if (blk != null)
+      eachParam(blk, function(_, param) { appendOnce(param, res) })
+  }
+  return res
+}
+
+let function initUnitCustomPresetsWeapons(unit, weapons) {
+  let weaponsBlk = ::get_wpcost_blk()?[unit.name].weapons
+  let { weaponsContainers, esUnitType } = unit
+  foreach (weapon in weapons) {
+    let weaponBlk = weapon?.weaponsBlk
+    initWeaponry(weapon, weaponBlk, esUnitType)
+    initWeaponsMask(unit, weapon)
+    if (weaponsContainers.len() == 0)
       continue
 
     let reqParams = {}
-    eachParam(weaponBlk.sum_weapons, function(count, name) {
-      if (name not in weaponsContainers)
-        return
-      foreach(rp in reqNames)
-        if (rp in weaponsContainers[name]) {
-          reqParams[rp] <- reqParams?[rp] ?? []
-          foreach (req in weaponsContainers[name][rp])
-            appendOnce(req, reqParams[rp])
-        }
-    })
+    getCustomSumWeapons(weaponBlk, weaponsBlk).each(
+      @(name) addReqParamsByContainers(weaponsContainers, name, reqParams))
     weapon.__update(reqParams)
   }
 }
@@ -159,6 +188,7 @@ return {
   initWeaponryUpgrades
   initUnitModifications
   initUnitWeaponsContainers
+  initUnitCustomPresetsWeapons
 }
 
 

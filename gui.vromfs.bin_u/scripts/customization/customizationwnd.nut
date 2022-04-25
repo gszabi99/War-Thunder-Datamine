@@ -390,12 +390,26 @@ enum decalTwoSidedMode
       ::hangar_force_reload_model()
   }
 
+  function switchUnit(unitName) {
+    unit = ::getAircraftByName(unitName)
+    if (unit == null) {
+      ::script_net_assert_once("not found loaded model unit", "customization: not found unit after model loaded")
+      return goBack()
+    }
+    ::cur_aircraft_name = unit.name
+    initMainParams()
+  }
+
   function onEventHangarModelLoaded(params = {})
   {
     if (previewMode)
       removeAllDecorators(false)
 
-    updateMainGuiElements()
+    let { modelName } = params
+    if (modelName != unit.name)
+      switchUnit(modelName)
+    else
+      updateMainGuiElements()
     if (::hangar_get_loaded_unit_name() == unit.name
         && !::is_loaded_model_high_quality())
       ::check_package_and_ask_download("pkg_main", null, null, this, "air_in_hangar", goBack)
@@ -1356,7 +1370,7 @@ enum decalTwoSidedMode
     if (decorator.isLockedByCountry(unit))
       return "country"
 
-    if (decorator.isLockedByUnit(unit))
+    if (decorator.isLockedByUnit(unit) || !decorator.isAllowedByUnitTypes(unit.unitType.tag))
       return "achievement"
 
     if (decorator.lockedByDLC)
@@ -1386,6 +1400,12 @@ enum decalTwoSidedMode
         decoratorName = ::colorize("activeTextColor", decorator.getName()),
         unitsList = ::g_string.implode(unitsList, ",")}))
     }
+
+    if (!decorator.isAllowedByUnitTypes(unit.unitType.tag))
+      text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnitTypes", {
+        decoratorName = ::colorize("activeTextColor", decorator.getName()),
+        unitTypesList = decorator.getLocAllowedUnitTypes()
+      }))
 
     if (decorator.lockedByDLC != null)
       text.append(::format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decorator.lockedByDLC)))

@@ -22,6 +22,8 @@ let function addSlotWeaponsFromPreset(res, slotBlk, preset) {
     slotWeapon.slot = slotBlk.index
     slotWeapon.tier = slotBlk?.tier ?? getTierIdxBySlot(slotBlk.index)
     slotWeapon.iconType = preset?.iconType
+    foreach (dependentWeapon in (preset % "DependentWeaponPreset"))
+      slotWeapon.dependentWeaponPreset <- dependentWeapon
     let idx = res.findindex(@(w) isEqualWeapon(w, slotWeapon))
     if (idx == null)
       res.append(slotWeapon)
@@ -105,47 +107,15 @@ let function getDefaultPresetId(unitBlk) {
   return null
 }
 
-let function updateTiersActivity(tiers, weapons) {
-  for (local i = 0; i < TIERS_NUMBER; i++)
-    tiers[i].__update({
-      isActive = weapons.findvalue(@(_)_.tier == i) != null
-    })
-}
-
-let function createNewTiers(weapons) {
-  local res = []
-  for (local i = 0; i < TIERS_NUMBER; i++)
-    res.append({
-      tierId = i
-      isActive = weapons.findvalue(@(_)_.tier == i) != null
-    })
-  return res
-}
-
 let createNameCustomPreset = @(idx) ::loc("shop/slotbarPresets/item", { number = idx + 1 })
 
-let createNewPreset = @(idx) {
-  id                = $"{CUSTOM_PRESET_PREFIX}{idx}"
-  cost              = null
-  image             = ""
-  totalItemsAmount  = 0
-  totalMass         = 0
-  purposeType       = null
-  chapterOrd        = CHAPTER_NEW_IDX
-  isDefault         = false
-  isEnabled         = false
-  rank              = null
+let getDefaultCustomPresetParams = @(idx) {
+  name              = $"{CUSTOM_PRESET_PREFIX}{idx}"
   customNameText    = createNameCustomPreset(idx)
-  torpedo           = false
-  cannon            = false
-  additionalGuns    = false
-  frontGun          = false
-  bomb              = false
-  rocket            = false
   tiers             = {}
 }
 
-let isCustomPreset = @(preset) (preset?.id ?? preset.name ?? "").indexof(CUSTOM_PRESET_PREFIX) != null
+let isCustomPreset = @(preset) (preset.name ?? "").indexof(CUSTOM_PRESET_PREFIX) != null
 
 return {
   TIERS_NUMBER
@@ -160,9 +130,6 @@ return {
   getPresetWeapons
   getDefaultPresetId
   getUnitWeaponSlots
-  createNewPreset
-  createNameCustomPreset
-  createNewTiers
-  updateTiersActivity
+  getDefaultCustomPresetParams
   isCustomPreset
 }

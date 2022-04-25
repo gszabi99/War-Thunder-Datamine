@@ -1,14 +1,15 @@
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
-  isWeaponEnabled, isWeaponUnlocked } = require("%scripts/weaponry/weaponryInfo.nut")
+  isWeaponEnabled, isWeaponUnlocked, getWeaponBlkParams, getWeaponNameByBlkPath
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, getUnitWeapons,
-  getUnitPresets, isCustomPreset, getWeaponsByTypes, updateTiersActivity
+  getUnitPresets, isCustomPreset, getWeaponsByTypes
 } = require("%scripts/weaponry/weaponryPresets.nut")
-let DataBlock = require("DataBlock")
+let { getCustomPresetByPresetBlk, convertPresetToBlk
+} = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -159,11 +160,11 @@ let function getWeaponryDistribution(weaponry, preset, isCentral = false)
   {
     if (!isCentral && isEvenCount)
     {
-      let tier = createTier(weaponry, preset.id, weaponry.num / 2)
+      let tier = createTier(weaponry, preset.name, weaponry.num / 2)
       return [tier, clone tier]
     }
     else
-      return [createTier(weaponry, preset.id)]
+      return [createTier(weaponry, preset.name)]
   }
   // Place one weapon item per one tier when tiers amount is enough
   let res = []
@@ -172,7 +173,7 @@ let function getWeaponryDistribution(weaponry, preset, isCentral = false)
     // Set empty tier in center when count is EVEN
     if (isCentral && isEvenCount && i == weaponry.num / 2)
       res.append({tierId = -1})
-    res.append(createTier(weaponry, preset.id, 1))
+    res.append(createTier(weaponry, preset.name, 1))
   }
 
   return res
@@ -251,7 +252,7 @@ let function getPredefinedTiers(preset)
                 currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
                   itemsNum = weaponry.num / (tier?.amountPerTier ?? amountPerTier)}))
                 currTier.tierTooltipId = WEAPON_PRESET_TIER.getTooltipId(unit.name,
-                  getTierTooltipParams(currTier.weaponry, preset.id, tierId))
+                  getTierTooltipParams(currTier.weaponry, preset.name, tierId))
               }
 
               continue
@@ -260,7 +261,7 @@ let function getPredefinedTiers(preset)
               filledTiers[tierId] <- weaponry
 
             res.append(createTier(weaponry.__merge(params),
-              preset.id, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
+              preset.name, weaponry.num / (tier?.amountPerTier ?? amountPerTier)))
           }
         }
         else
@@ -333,14 +334,11 @@ let function setFavoritePresets(unitName, favoriteArr=[]) {
   ::save_local_account_settings(savePath, data)
 }
 
-let function sortPresetLists(listArr) {
-  foreach (list in listArr)
-    list.sort(@(a, b)
-      a.chapterOrd <=> b.chapterOrd
-      || b.isEnabled <=> a.isEnabled
-      || b.isDefault <=> a.isDefault
-      || b.totalMass <=> a.totalMass)
-}
+let sortPresetsList = @(a, b)
+  a.chapterOrd <=> b.chapterOrd
+  || b.isEnabled <=> a.isEnabled
+  || b.isDefault <=> a.isDefault
+  || b.totalMass <=> a.totalMass
 
 let function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here and why modify weapons get from wpcost
   if (!unit)
@@ -362,9 +360,11 @@ let function getReqRankByMod(reqMod, modifications) {
   local res = 1
   if (!reqMod)
     return res
-  foreach(mod in reqMod)
-    if (modifications?[mod] && modifications[mod].tier > res)
-      res = modifications[mod].tier
+  foreach(modName in reqMod) {
+    let mod = modifications.findvalue(@(m) m.name == modName)
+    if (mod != null)
+      res = max(mod.tier, res)
+  }
   return res
 }
 
@@ -373,112 +373,183 @@ let function getTierWeaponsParams(weapons, tierId) {
   foreach (triggerType in TRIGGER_TYPE)
     foreach (weapon in (weapons?[triggerType] ?? []))
       foreach(id, inst in weapon.weaponBlocks) {
-        inst.id <- id
-        inst.tType <- triggerType
-        inst.iconType = inst.tiers?[tierId].iconType ?? inst.iconType
+        let tierWeaponConfig = inst.__merge({
+          tType = triggerType
+          iconType = inst.tiers?[tierId].iconType ?? inst.iconType
+        })
         res.append({
           id = inst.tiers?[tierId].presetId ?? id
           name = "".concat(::loc($"weapons/{id}"), ::format(::loc("weapons/counter"), inst.ammo))
-          img = getTierIcon(inst, inst.ammo)
+          img = getTierIcon(tierWeaponConfig, inst.ammo)
         })
       }
   return res
 }
 
-let function convertPresetToBlk(preset) {
-  let presetBlk = DataBlock()
-  presetBlk["name"] = preset.customNameText ?? ""
-  foreach (tier in preset.tiers) {
-    let weaponBlk = presetBlk.addNewBlock("Weapon")
-    weaponBlk["preset"] = tier.presetId
-    weaponBlk["slot"] = tier.slot
-  }
-  return presetBlk
+let function updateTiersActivity(tiers, weapons) {
+  for (local i = 0; i < TIERS_NUMBER; i++)
+    tiers[i].__update({
+      isActive = weapons.findvalue(@(_)_.tier == i) != null
+    })
 }
 
-let function getPresetView(unit, preset, weaponry, pType) {
+let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = null) {
   let modifications = unit.modifications
-  let res = {
-    id                = preset.name
+  let pType = preset?.presetType ?? getTypeByPurpose(weaponry)
+  let isFavorite = favoriteArr.contains(preset.name)
+  let isCustom = isCustomPreset(preset)
+  let chapterOrd = isFavorite ? CHAPTER_FAVORITE_IDX
+    : isCustom ? CHAPTER_NEW_IDX
+    : CHAPTER_ORDER.findindex(@(p) p == pType)
+  let presetView = {
+    name              = preset.name
+    type              = preset.type
     cost              = preset.cost
     image             = preset.image
     totalItemsAmount  = 0
     totalMass         = 0
     purposeType       = pType
-    chapterOrd        = preset.chapterOrd
-    isDefault         = preset.isDefault
-    isEnabled         = preset.isEnabled
+    chapterOrd        = chapterOrd
+    isDefault         = preset.name.indexof("default") != null
+    isEnabled         = preset?.isEnabled
+      ?? (isWeaponEnabled(unit, preset) || (::isUnitUsable(unit) && isWeaponUnlocked(unit, preset)))
     rank              = getReqRankByMod(preset?.reqModification, modifications)
     customNameText    = preset?.customNameText
     tiers             = {}
+    dependentWeaponPreset = {}
+    tiersView         = {}
+    weaponPreset      = ::u.copy(preset)
   }
   foreach (weaponType, triggers in weaponry)
     foreach (t in triggers) {
       let tType = weaponType == TRIGGER_TYPE.TURRETS ? weaponType : t.trigger
-      res[tType] <- res?[tType] ?? {}
-      res[tType].weaponBlocks <- res[tType]?.weaponBlocks ?? {}
-      let w = res[tType].weaponBlocks
+      presetView[tType] <- presetView?[tType] ?? {}
+      presetView[tType].weaponBlocks <- presetView[tType]?.weaponBlocks ?? {}
+      let w = presetView[tType].weaponBlocks
       foreach (weaponName, weapon in t.weaponBlocks) {
-        w[weaponName] <- (weapon.__merge({name = weaponName, purposeType = res.purposeType}))
-        res.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
-        res.totalMass += weapon.num * weapon.massKg
-        res.tiers.__update(weapon.tiers)
+        w[weaponName] <- (weapon.__merge({name = weaponName, purposeType = presetView.purposeType}))
+        presetView.totalItemsAmount += weapon.num / (weapon.amountPerTier ?? 1)
+        presetView.totalMass += weapon.num * weapon.massKg
+        presetView.tiers.__update(weapon.tiers)
+        presetView.dependentWeaponPreset.__update(weapon.dependentWeaponPreset)
       }
     }
-
-  return res
-}
-
-let function prepareWeaponsPresetForView(unit, preset, weaponry, favoriteArr, availableWeapons = null) {
-  let isOwn = ::isUnitUsable(unit)
-  let pType = preset?.presetType ?? getTypeByPurpose(weaponry)
-  let isFavorite = ::isInArray(preset.name, favoriteArr)
-  if(preset?.presetType && !::isInArray(preset.presetType, CHAPTER_ORDER))
-    CHAPTER_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
-  if (preset?.isEnabled == null)
-    preset.isEnabled <- isWeaponEnabled(unit, preset) || (isOwn && isWeaponUnlocked(unit, preset))
-  preset.isDefault <- preset.name.indexof("default") != null
-  let isCustom = isCustomPreset(preset)
-  preset.chapterOrd <- isFavorite ? CHAPTER_FAVORITE_IDX
-    : isCustom ? CHAPTER_NEW_IDX
-    : CHAPTER_ORDER.findindex(@(p) p == pType)
-  let presetView = getPresetView(unit, preset, weaponry, pType)
-  preset.totalMass <- presetView.totalMass
-  preset.tiers <- getTiers(unit, presetView)
+  presetView.tiersView = getTiers(unit, presetView)
   if (isCustom && unit.hasWeaponSlots && availableWeapons != null)
-    updateTiersActivity(preset.tiers, availableWeapons)
+    updateTiersActivity(presetView.tiersView, availableWeapons)
+
+  if((preset?.presetType != null) && !CHAPTER_ORDER.contains(preset.presetType))
+    CHAPTER_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
+
   return presetView
 }
 
-let getCustomPresetWeaponry = @(weaponsBlk, unit) addWeaponsFromBlk({},
-  getWeaponsByTypes(::get_full_unit_blk(unit.name), weaponsBlk), unit)
+let function getCustomWeaponryPresetView(unit, curPreset, favoriteArr, availableWeapons) {
+  let presetBlk = convertPresetToBlk(curPreset)
+  let preset =  getCustomPresetByPresetBlk(unit, curPreset.name, presetBlk)
+  let weaponry = addWeaponsFromBlk({}, getWeaponsByTypes(::get_full_unit_blk(unit.name), presetBlk), unit)
+  return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
+}
+
+let function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons) {
+  let weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
+  return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
+}
 
 let function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 {
   updateUnitWeaponsByPreset(unit)
-  let res = {presets = [],
-    presetsList = deep_clone(getPresetsList(unit, chooseMenuList)),
-    favoriteArr = getFavoritePresets(unit.name)}
-  let presets = res.presets
-  let presetsList = res.presetsList
-  let availableWeapons = unit.hasWeaponSlots ? getUnitWeapons(::get_full_unit_blk(unit.name)) : null
+  let res = {
+    presets = []
+    favoriteArr = getFavoritePresets(unit.name)
+    availableWeapons = unit.hasWeaponSlots ? getUnitWeapons(::get_full_unit_blk(unit.name)) : null
+  }
+  let presetsList = getPresetsList(unit, chooseMenuList)
 
-  foreach(preset in presetsList) {
-    let weaponry = getUnitWeaponry(unit, {isPrimary = false, weaponPreset = preset.name})
-    presets.append(prepareWeaponsPresetForView(unit, preset, weaponry, res.favoriteArr, availableWeapons))
+  foreach(preset in presetsList)
+    res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
+
+  res.presets.sort(sortPresetsList)
+  return res
+}
+
+let function editSlotInPresetImpl(preset, slots, cb) {
+  foreach (slot in slots)
+    if ("presetId" not in slot) {
+      if (slot.tierId in preset.tiers)
+        delete preset.tiers[slot.tierId]
+    }
+    else
+      preset.tiers[slot.tierId] <- {slot = slot.slot, presetId = slot.presetId}
+  cb()
+}
+
+let findAvailableWeapon = @(availableWeapons, presetId, tierId)
+  availableWeapons.findvalue(@(w) w.presetId == presetId && w.tier == tierId)
+
+let function getAvailableWeaponName(availableWeapons, presetId, tierId) {
+  let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
+  if (wBlk == null)
+    return presetId
+  let weaponBlkCache = {}
+  return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, weaponBlkCache).weaponBlkPath)
+}
+
+let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
+  let slots = []
+  if (presetId == "")
+    slots.append({tierId})
+  else {
+    let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
+    if (wBlk != null) {
+      slots.append({slot = wBlk.slot, presetId = wBlk.presetId, tierId})
+      foreach (slot in (wBlk % "dependentWeaponPreset")) {
+        let dependWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
+        if (dependWBlk != null)
+          slots.append({slot = dependWBlk.slot, presetId = dependWBlk.presetId, tierId = dependWBlk.tier})
+      }
+    }
   }
 
-  sortPresetLists([presets, presetsList])
-  return res
+  local msgText = ""
+  let curPresetInTier = preset.tiers?[tierId]
+  let curPresetIdInTier = curPresetInTier?.presetId ?? ""
+  if (curPresetIdInTier != "" && (curPresetIdInTier in preset.dependentWeaponPreset)) {
+    let dependentWeapon = preset.dependentWeaponPreset[curPresetIdInTier].findvalue(
+      @(w) w.slot == curPresetInTier?.slot)
+    if (dependentWeapon != null) {
+      slots.append({tierId = dependentWeapon.reqForTier})
+      let dependWeaponName = getAvailableWeaponName(availableWeapons, dependentWeapon.reqForPresetId,
+        dependentWeapon.reqForTier)
+      let curWeaponName = getAvailableWeaponName(availableWeapons, curPresetIdInTier, tierId)
+      msgText = ::loc("msg/also_remove_depended_weapon", {
+        currentWeapon = ::loc($"weapons/{curWeaponName}")
+        dependWeapon = ::loc($"weapons/{dependWeaponName}")
+        tierNum = dependentWeapon.reqForTier
+      })
+    }
+  }
+
+  if (msgText == "") {
+    editSlotInPresetImpl(preset, slots, cb)
+    return
+  }
+
+  ::scene_msg_box("question_edit_slots_in_preset", null, msgText,
+    [
+      ["ok", @() editSlotInPresetImpl(preset, slots, cb) ],
+      ["cancel", @() null ]
+    ],
+    "ok", { cancel_fn = @() null })
 }
 
 return {
   getWeaponryByPresetInfo
   setFavoritePresets
-  sortPresetLists
+  sortPresetsList
   getTierTooltipParams
   getTierWeaponsParams
-  convertPresetToBlk
-  prepareWeaponsPresetForView
-  getCustomPresetWeaponry
+  getCustomWeaponryPresetView
+  getWeaponryPresetView
+  editSlotInPreset
 }

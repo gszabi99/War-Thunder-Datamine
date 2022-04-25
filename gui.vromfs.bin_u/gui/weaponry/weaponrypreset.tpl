@@ -29,7 +29,7 @@ weaponryPreset {
       position:t='absolute'
       skip-navigation:t='yes'
       on_click:t='onPresetSelect'
-      _on_dbl_click:t='onModItemDblClick'
+      on_dbl_click:t='onModItemDblClick'
     }
     tdiv {
       id:t='tiersNest_<<presetId>>'
@@ -42,7 +42,9 @@ weaponryPreset {
       css-hier-invalidate:t='yes'
       total-input-transparent:t='yes'
       on_select:t='onCellSelect'
-      _on_dbl_click:t='onModItemDblClick'
+      on_r_click:t='onPresetMenuOpen'
+      on_dbl_click:t='onModItemDblClick'
+      on_click:t='onTierClick'
       on_unhover:t='onPresetUnhover'
       presetHeader {
         id:t='presetHeader_<<presetId>>'
@@ -71,16 +73,6 @@ weaponryPreset {
           padding:t='1@blockInterval, 0'
           <</hideWarningIcon>>
         }
-        EditBox{
-          id:t='header_name_edit'
-          size:t='pw, ph'
-          position:t='relative'
-          multiline:t='yes'
-          max-len:t='40'
-          text:t='<<nameTextWithPrice>>'
-          display:t='hide'
-          on_cancel_edit:t = 'onCancelPresetNameEdit'
-        }
         img{
           id:t='image'
           size:t='pw-2@weaponIconPadding, ph-2@weaponIconPadding'
@@ -95,9 +87,9 @@ weaponryPreset {
         }
         focus_border {}
       }
-      <<#tiers>>
+      <<#tiersView>>
       weaponryTier{
-        id:t='tier'
+        id:t='tier_<<tierId>>'
         tierId:t='<<tierId>>'
         size:t='@tierIconSize, @tierIconSize'
         <<^isActive>>enable:t='no'<</isActive>>
@@ -120,7 +112,7 @@ weaponryPreset {
         <</tierTooltipId>>
         focus_border {}
       }
-      <</tiers>>
+      <</tiersView>>
     }
     <</weaponryItem>>
   }

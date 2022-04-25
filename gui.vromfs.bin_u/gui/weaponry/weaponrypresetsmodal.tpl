@@ -60,32 +60,18 @@ root {
           margin-top:t="1@buttonMargin"
           margin-bottom:t="1@buttonMargin"
         }
-        Button_text{
-          id:t='newPresetBtn'
-          text:t='#chat/create'
-          on_click:t='onPresetNew'
+        Button_text {
+          id:t='openPresetMenuBtn'
+          text:t='#msgbox/presetActions'
+          on_click:t='onPresetMenuOpen'
           btnName:t='R3'
           display:t='hide'
           ButtonImg {}
         }
-        Button_text{
-          id:t='editPresetBtn'
-          text:t='#msgbox/btn_edit'
-          on_click:t='onPresetEdit'
-          display:t='hide'
-          ButtonImg {}
-        }
-        Button_text{
-          id:t='copyPresetBtn'
-          text:t='#gblk/saveError/copy'
-          on_click:t='onPresetCopy'
-          display:t='hide'
-          ButtonImg {}
-        }
-        Button_text{
-          id:t='deletePresetBtn'
-          text:t='#msgbox/btn_delete'
-          on_click:t='onPresetDelete'
+        Button_text {
+          id:t='newPresetBtn'
+          text:t='#chat/create'
+          on_click:t='onPresetNew'
           display:t='hide'
           ButtonImg {}
         }
