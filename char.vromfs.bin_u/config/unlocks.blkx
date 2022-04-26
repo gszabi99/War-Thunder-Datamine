@@ -5178,6 +5178,13 @@
   },
   {
     "unlockable": {
+      "id": "cardicon_gasmask",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    }
+  },
+  {
+    "unlockable": {
       "id": "hardcoded_initial_warpoints",
       "type": "award",
       "amount_warpoints": 10000,
@@ -196649,14 +196656,14 @@
         {
           "condition": {
             "type": "battlepassSeason",
-            "season": 5
+            "season": 6
           }
         },
         {
           "condition": {
             "type": "char_time_range",
-            "beginDate": "2022-01-12 12:00:00",
-            "endDate": "2022-04-27 11:59:00"
+            "beginDate": "2022-04-27 12:00:00",
+            "endDate": "2022-07-27 11:59:00"
           }
         }
       ]
@@ -197248,6 +197255,81 @@
             "type": "char_time_range",
             "beginDate": "2022-02-23 12:00:00",
             "endDate": "2022-04-27 12:00:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season7_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season7_purchased_entitlement",
+      "userLogId": "battlepass_season7_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season7_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season7_purchased_item",
+      "type": "inventory",
+      "userLogId": "730005",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season7_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season7_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season7_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_always_progress"
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season7_allow_skip_all_stages",
+            "invertResult": true
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason7Purchased"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_time_range",
+            "beginDate": "2022-05-25 12:00:00",
+            "endDate": "2022-07-27 12:00:00"
           }
         }
       ]
