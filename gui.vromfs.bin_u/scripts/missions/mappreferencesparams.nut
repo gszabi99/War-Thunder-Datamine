@@ -2,6 +2,7 @@ let mapPreferences = require("mapPreferences")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 let mapsListByEvent = {}
 
@@ -229,24 +230,23 @@ let function getCounters(curEvent)
     return {}
 
   let banData = getProfileBanData(curEvent)
-  let hasPremium  = ::havePremium()
   return {
     banned = {
-      maxCounter = hasPremium
+      maxCounter = havePremium.value
         ? curEvent?.maxBannedMissions ?? 0
         : 0,
       maxCounterWithPremium = curEvent?.maxBannedMissions ?? 0
       curCounter = banData.banned.len()
     },
     disliked = {
-      maxCounter = hasPremium
+      maxCounter = havePremium.value
         ? curEvent?.maxPremDislikedMissions ?? 0
         : curEvent?.maxDislikedMissions ?? 0,
       maxCounterWithPremium = curEvent?.maxPremDislikedMissions ?? 0
       curCounter = banData.disliked.len()
     },
     liked = {
-      maxCounter = hasPremium
+      maxCounter = havePremium.value
         ? curEvent?.maxPremLikedMissions ?? 0
         : curEvent?.maxLikedMissions ?? 0,
       maxCounterWithPremium = curEvent?.maxPremLikedMissions ?? 0

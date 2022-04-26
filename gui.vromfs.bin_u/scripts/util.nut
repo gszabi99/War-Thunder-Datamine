@@ -11,6 +11,7 @@ let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -310,10 +311,9 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::get_current_bonuses_text <- function get_current_bonuses_text(effectType)
 {
-  let havePremium = ::havePremium()
   let tooltipText = []
 
-  if (havePremium)
+  if (havePremium.value)
   {
     local rate = ""
     if (effectType == boosterEffectType.WP)
@@ -350,7 +350,7 @@ foreach (i, v in ::cssColorsMapDark)
   let boostersArray = getActiveBoostersArray(effectType)
   let boostersDescription = getActiveBoostersDescription(boostersArray, effectType)
   if (boostersDescription != "")
-    tooltipText.append((havePremium? "\n" : "") + boostersDescription)
+    tooltipText.append((havePremium.value? "\n" : "") + boostersDescription)
 
   local bonusText = "\n".join(tooltipText, true)
   if (bonusText != "")
@@ -365,12 +365,6 @@ foreach (i, v in ::cssColorsMapDark)
     ::call_for_handler(handler, actionFunc)
   })(actionFunc, handler), handler)
   ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
-}
-
-::havePremium <- function havePremium()
-{
-  let premAccName = ::shop_get_premium_account_ent_name()
-  return ::entitlement_expires_in(premAccName) > 0
 }
 
 ::getCountryByAircraftName <- function getCountryByAircraftName(airName) //used in code

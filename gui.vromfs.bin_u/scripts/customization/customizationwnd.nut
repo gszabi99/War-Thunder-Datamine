@@ -18,6 +18,7 @@ let { isCollectionPrize, isCollectionItem } = require("%scripts/collections/coll
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -568,7 +569,7 @@ enum decalTwoSidedMode
     let skinDecorator = skinList?.decorators[skinIndex]
     let canScaleAndRotate = skinDecorator?.getCouponItemdefId() == null
 
-    let have_premium = ::havePremium()
+    let have_premium = havePremium.value
     local option = null
 
     option = ::get_option(::USEROPT_TANK_SKIN_CONDITION)
@@ -621,7 +622,7 @@ enum decalTwoSidedMode
     if (oldValue == newValue)
       return
 
-    if (!::havePremium())
+    if (!havePremium.value)
     {
       obj.setValue(oldValue)
       guiScene.performDelayed(this, @()
@@ -1929,7 +1930,7 @@ enum decalTwoSidedMode
 
   function checkPremium()
   {
-    if (!::havePremium())
+    if (!havePremium.value)
       return
 
     ::update_gamercards()

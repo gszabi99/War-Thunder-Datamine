@@ -31,6 +31,7 @@ let { getGoToBattleAction } = require("%scripts/debriefing/toBattleAction.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1085,7 +1086,7 @@ let statTooltipColumnParamByType = {
       let objTarget = objPlace.findObject("bonus_ico")
       if (::checkObj(objTarget))
       {
-        objTarget["background-image"] = ::havePremium() ?
+        objTarget["background-image"] = havePremium.value ?
           "#ui/gameuiskin#medal_premium" : "#ui/gameuiskin#medal_bonus"
         objTarget.tooltip = ::g_string.implode(textArray, "\n\n")
       }
@@ -1847,7 +1848,7 @@ let statTooltipColumnParamByType = {
 
   function canSuggestBuyPremium()
   {
-    return !::havePremium() && ::has_feature("SpendGold") && ::has_feature("EnablePremiumPurchase") && isDebriefingResultFull()
+    return !havePremium.value && ::has_feature("SpendGold") && ::has_feature("EnablePremiumPurchase") && isDebriefingResultFull()
   }
 
   function updateBuyPremiumAwardButton()
@@ -1893,7 +1894,7 @@ let statTooltipColumnParamByType = {
 
   function onBuyPremiumAward()
   {
-    if (::havePremium())
+    if (havePremium.value)
       return
     let entName = getEntitlementWithAward()
     if (!entName)
@@ -1928,7 +1929,7 @@ let statTooltipColumnParamByType = {
 
   function addPremium()
   {
-    if (!::havePremium())
+    if (!havePremium.value)
       return
 
     debriefingAddVirtualPremAcc()

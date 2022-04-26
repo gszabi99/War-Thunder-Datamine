@@ -414,6 +414,7 @@ foreach (fn in [
   "%scripts/options/fonts.nut"
   "%scripts/options/consoleMode.nut"
   "%scripts/options/optionsBeforeLogin.nut"
+  "%scripts/options/privacyOptionsManager.nut"
 
   //probably used before login on ps4
   "%scripts/controls/controlsConsts.nut"

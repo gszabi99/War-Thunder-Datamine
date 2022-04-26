@@ -11,6 +11,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -21,8 +22,27 @@ let getSystemOptions = @() {
 
 local overrideMainOptionsFn = null
 
-let getMainOptions = function()
-{
+let privacyOptionsList = Computed(function() {
+  let havePrem = havePremium.value
+  let hasFeature = ::has_feature("PrivacySettings")
+  return [
+    ["options/header/privacy", null, hasFeature && havePrem],
+    [::USEROPT_REPLACE_MY_NICK_LOCAL, "editbox", hasFeature && havePrem],
+    [::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeature && havePrem],
+    [::USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeature && havePrem],
+    [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeature && havePrem]
+  ]
+})
+
+let otherOptionsList = @() [
+  ["options/header/otherOptions"],
+  [::USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
+  [::USEROPT_SUBTITLES, "spinner"],
+  [::USEROPT_HUD_SCREENSHOT_LOGO, "spinner", ::is_platform_pc],
+  [::USEROPT_SAVE_ZOOM_CAMERA, "spinner", !::u.isNull(::get_option_save_zoom_camera())] //compatibility with wop_1_77_2_X
+]
+
+let getMainOptions = function() {
   if (overrideMainOptionsFn != null)
     return overrideMainOptionsFn()
 
@@ -216,20 +236,8 @@ let getMainOptions = function()
       [::USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, "combobox",
         contentPreset.getContentPresets().len() &&
         ::g_difficulty.SIMULATOR.isAvailable(::GM_DOMINATION)],
-      [::USEROPT_DELAYED_DOWNLOAD_CONTENT, "spinner", ::has_feature("delayedDownloadContent")],
-
-      ["options/header/privacy", null, ::has_feature("PrivacySettings")],
-      [::USEROPT_REPLACE_MY_NICK_LOCAL, "editbox", ::has_feature("PrivacySettings")],
-      [::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", ::has_feature("PrivacySettings")],
-      [::USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", ::has_feature("PrivacySettings")],
-      [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", ::has_feature("PrivacySettings")],
-
-      ["options/header/otherOptions"],
-      [::USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
-      [::USEROPT_SUBTITLES, "spinner"],
-      [::USEROPT_HUD_SCREENSHOT_LOGO, "spinner", ::is_platform_pc],
-      [::USEROPT_SAVE_ZOOM_CAMERA, "spinner", !::u.isNull(::get_option_save_zoom_camera())] //compatibility with wop_1_77_2_X
-    ]
+      [::USEROPT_DELAYED_DOWNLOAD_CONTENT, "spinner", ::has_feature("delayedDownloadContent")]
+    ].extend(privacyOptionsList.value, otherOptionsList())
   }
 }
 

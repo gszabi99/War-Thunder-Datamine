@@ -4,6 +4,7 @@ let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("%scripts/debriefing/rewardSour
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { money_type } = require("%scripts/money.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 global enum debrState {
   init
@@ -1099,7 +1100,7 @@ let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
  * Emulates last mission rewards gain (by adding virtPremAccWp/virtPremAccExp) on byuing Premium Account from Debriefing window.
  */
 let function debriefingAddVirtualPremAcc() {
-  if (!::havePremium())
+  if (!havePremium.value)
     return
 
   debriefingAddVirtualPremAccToStatTbl(debriefingResult.exp, true)

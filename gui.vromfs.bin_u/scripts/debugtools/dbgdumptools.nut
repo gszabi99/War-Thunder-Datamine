@@ -8,6 +8,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getDebriefingResult, getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { getPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 ::debug_dump_unload <- dbg_dump.unload
 ::debug_dump_is_loaded <- dbg_dump.isLoaded
@@ -55,7 +56,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     "ww_get_operation_id"
     "ww_get_operation_winner"
     "ww_get_player_side"
-    "havePremium"
+    { id = "havePremium", value = havePremium.value }
     "shop_get_countries_list_with_autoset_units"
     "shop_get_units_list_with_autoset_modules"
     { id = "abandoned_researched_items_for_session", value = [] }

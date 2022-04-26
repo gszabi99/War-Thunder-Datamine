@@ -1,6 +1,7 @@
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
@@ -43,7 +44,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     return {
       wndTitle = title
       maxCountX = maxCountX
-      premium = ::havePremium()
+      premium = havePremium.value
       maps = mapsList
       isListEmpty = mapsList.len() == 0
       listTitle = title
@@ -124,8 +125,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
   function getCounterTextByType(typeName)
   {
-    let hasPremium  = ::havePremium()
-    let maxCountertextWithPremium = !hasPremium
+    let maxCountertextWithPremium = !havePremium.value
       && counters[typeName].maxCounter < counters[typeName].maxCounterWithPremium
         ? " {0}".subst(::loc("ui/parentheses", { text = ::loc("maps/preferences/counter/withPremium",
           { count = counters[typeName].maxCounterWithPremium }) }))
@@ -153,7 +153,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   {
     let mapListObj = scene.findObject("maps_list")
     let mapsObjParams = {
-      hasPremium = ::havePremium() ? "yes" : "no"
+      hasPremium = havePremium.value ? "yes" : "no"
       hasMaxBanned = hasMaxCount("banned") ? "yes" : "no"
       hasMaxDisliked = hasMaxCount("disliked") ? "yes" : "no"
       hasMaxLiked = hasMaxCount("liked") ? "yes" : "no"
@@ -215,7 +215,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     count.curCounter += value ? 1 : -1
     if(value && (count.curCounter > count.maxCounter || isDislikeBannedMap))
     {
-      let needPremium  = objType == "banned" && !::havePremium()
+      let needPremium  = objType == "banned" && !havePremium.value
       if(needPremium)
         ::scene_msg_box("need_money", null, ::loc("mainmenu/onlyWithPremium"),
           [ ["purchase", (@() onOnlineShopPremium()).bindenv(this)],

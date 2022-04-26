@@ -4,6 +4,7 @@ let { getCurLoadingBgData,
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { isLoadingScreenBanned,
         toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -49,12 +50,11 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateListItems()
   {
-    let hasPremium = ::havePremium()
     let itemsListObj = scene.findObject("items_list")
     let numItems = itemsListObj.childrenCount()
     for (local i = 0; i < numItems; i++) {
       let itemObj = itemsListObj.getChild(i)
-      itemObj.banned = hasPremium && isLoadingScreenBanned(itemObj.id) ? "yes" : "no"
+      itemObj.banned = havePremium.value && isLoadingScreenBanned(itemObj.id) ? "yes" : "no"
     }
   }
 
@@ -76,7 +76,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("btn_select", !isMouseMode && hoveredId != selectedId && isHovered)
     showSceneBtn("btn_ban", isBanBtnVisible)
-      .setValue(isBanBtnVisible && ::havePremium() && isLoadingScreenBanned(selectedId)
+      .setValue(isBanBtnVisible && havePremium.value && isLoadingScreenBanned(selectedId)
         ? ::loc("maps/preferences/removeBan")
         : ::loc("maps/preferences/ban"))
   }
@@ -88,7 +88,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     if (!isValid())
       return
 
-    if (!::havePremium())
+    if (!havePremium.value)
       return msgBox("need_money", ::loc("mainmenu/onlyWithPremium"), [
         ["purchase", (@() onOnlineShopPremium()).bindenv(this)],
         ["cancel"]], "purchase")

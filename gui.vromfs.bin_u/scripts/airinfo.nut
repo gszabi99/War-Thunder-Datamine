@@ -24,6 +24,7 @@ let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -1529,7 +1530,7 @@ let isEventUnit = @(unit) unit.event != null
   let wpTimedRewardObj = ::showBtn("aircraft-reward_wp_timed-tr", showRewardsInfo, holderObj)
   if (showRewardsInfo && (rpRewardObj != null || wpRewardObj != null || wpTimedRewardObj != null))
   {
-    let hasPremium  = ::havePremium()
+    let hasPremium  = havePremium.value
     let hasTalisman = special || ::shop_is_modification_enabled(air.name, "premExpMul")
     let boosterEffects = ::getTblValue("boosterEffects", params,
       getBoostersEffects(getActiveBoostersArray()))

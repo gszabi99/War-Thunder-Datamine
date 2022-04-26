@@ -3932,6 +3932,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <-"editbox"
       descr.charMask <- "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
       descr.value = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY, "")
+      defaultValue = ""
+      descr.defVal <- defaultValue
       break
 
     case ::USEROPT_SHOW_SOCIAL_NOTIFICATIONS:
@@ -3939,6 +3941,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       defaultValue = true
+      descr.defVal <- defaultValue
       break
 
     case ::USEROPT_ALLOW_ADDED_TO_CONTACTS:
@@ -3946,6 +3949,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_allow_to_be_added_to_contacts()
+      defaultValue = true
+      descr.defVal <- defaultValue
       break
 
     case ::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS:
@@ -3953,6 +3958,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_allow_to_be_added_to_lb()
+      defaultValue = true
+      descr.defVal <- defaultValue
       break
 
     case ::USEROPT_PS4_ONLY_LEADERBOARD:

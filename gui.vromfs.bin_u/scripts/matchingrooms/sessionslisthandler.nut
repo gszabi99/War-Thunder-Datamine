@@ -5,6 +5,7 @@ let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setGuiOptionsMode } = ::require_native("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+let { havePremium } = require("%scripts/user/premium.nut")
 
 ::match_search_gm <- -1
 
@@ -128,12 +129,11 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       if(::has_feature("ModeDynamic"))
       {
         showBtn("btn_dynamic", true)
-        let have_premium = ::havePremium()
         let dynBtn = guiScene["btn_dynamic"]
         if(::checkObj(dynBtn))
         {
-          dynBtn.inactiveColor = have_premium? "no" : "yes"
-          dynBtn.tooltip = have_premium? "" : ::loc("mainmenu/onlyWithPremium")
+          dynBtn.inactiveColor = havePremium.value? "no" : "yes"
+          dynBtn.tooltip = havePremium.value? "" : ::loc("mainmenu/onlyWithPremium")
         }
       }
 
