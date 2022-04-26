@@ -4,9 +4,10 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
   needVoiceChat        = false
   sceneTplName         = "%gui/popup/popupList"
   btnWidth             = null
+  align                = ALIGN.BOTTOM
 
   //init params
-  parentPos            = null
+  parentObj            = null
   buttonsList          = null
   onClickCb            = null
   visualStyle          = null
@@ -16,11 +17,14 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
       buttons = buttonsList
       underPopupClick    = "hidePopupList"
       underPopupDblClick = "hidePopupList"
-      posX = parentPos[0]
-      posY = parentPos[1]
       btnWidth = btnWidth
       visualStyle = visualStyle
     }
+  }
+
+  function initScreen() {
+    align = ::g_dagui_utils.setPopupMenuPosAndAlign(
+      parentObj, align, scene.findObject("popup_list"))
   }
 
   function onItemClick(obj) {

@@ -4,8 +4,9 @@ root {
   frame {
     width:t='13@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval'
     class:t='wndNav'
+    pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+    position:t='absolute'
     css-hier-invalidate:t='yes'
-    isCenteredUnderLogo:t='yes'
     frame_header {
       activeText {
         caption:t='yes'

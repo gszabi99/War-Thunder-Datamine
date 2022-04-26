@@ -1,8 +1,9 @@
 popup_menu {
-  pos:t='<<posX>>, <<posY>>-h-1@blockInterval'
-  position:t='relative'
-  flow:t='vertical'
+  id:t='popup_list'
   not-input-transparent:t='yes'
+  css-hier-invalidate:t='yes'
+  position:t='root'
+  flow:t='vertical'
 
   rootUnderPopupMenu {
     on_click:t='<<underPopupClick>>'
@@ -10,4 +11,5 @@ popup_menu {
   }
 
   include "%gui/commonParts/buttonsList"
+  popup_menu_arrow {}
 }

@@ -54,21 +54,20 @@ let function openEditPresetName(name, okFunc) {
     }]
   }
 
-  function getWeaponsPopupView(pos, tierId) {
+  function getWeaponsPopupView(parentObj, tierId, weaponsBlk) {
     let buttons = []
     let tierIdInt = tierId.tointeger()
     local weapons = {}
-    foreach(wBlk in availableWeapons.filter(@(_) _?.tier == tierIdInt))
+    foreach(wBlk in weaponsBlk)
       foreach(key, val in addWeaponsFromBlk({}, [wBlk], unit))
         weapons[key] <- (weapons?[key] ?? []).extend(val)
 
     let params = getTierWeaponsParams(weapons, tierIdInt)
-    let curTier = preset.tiers?[tierId.tointeger()]
+    let curTier = preset.tiers?[tierIdInt]
     let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
     foreach (p in params)
       maxWidth = ::max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
-    maxWidth += ::to_pixels("1@cIco")
     foreach (p in params)
       if (p.id != curPresetId)
         buttons.append({
@@ -81,9 +80,8 @@ let function openEditPresetName(name, okFunc) {
           text = p.name
           btnWidth = maxWidth
         })
-
-    return {
-      buttonsList = curTier == null ? buttons : buttons.append({
+    if (curTier != null)
+      buttons.append({
         id = ""
         holderId = tierId
         image = "#ui/gameuiskin#btn_close.svg"
@@ -93,7 +91,10 @@ let function openEditPresetName(name, okFunc) {
         text = "#ui/empty"
         btnWidth = maxWidth
       })
-      parentPos = pos
+
+    return {
+      buttonsList = buttons
+      parentObj = parentObj
       onClickCb  = ::Callback(@(obj) onWeaponChoose(obj), this)
     }
   }
@@ -116,7 +117,11 @@ let function openEditPresetName(name, okFunc) {
     if (!isTierObj(tierObj))
       return
     // Preset tier
-    let view = getWeaponsPopupView(tierObj.getPos(), tierObj.tierId)
+    let weaponsBlk = availableWeapons.filter(@(_) _?.tier == tierObj.tierId.tointeger())
+    if (weaponsBlk.len() == 0)
+      return
+
+    let view = getWeaponsPopupView(tierObj, tierObj.tierId, weaponsBlk)
     if (view)
       openPopupList(view)
   }
@@ -148,8 +153,10 @@ let function openEditPresetName(name, okFunc) {
       return
 
     let tierObj = getCurrenTierObj()
+    let isWeaponsAvailable = isTierObj(tierObj)
+      && availableWeapons.filter(@(_) _?.tier == tierObj.tierId.tointeger()).len() > 0
     showSceneBtn("editTier", presetNest.findObject("tiersNest_").isHovered()
-      && isTierObj(tierObj))
+      && isWeaponsAvailable)
   }
 
   isTierObj = @(obj) obj != null && ("tierId" in obj)

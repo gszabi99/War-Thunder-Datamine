@@ -19,6 +19,7 @@ let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
+let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
@@ -75,7 +76,9 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
     presets = weaponryByPresetInfo.presets
     favoriteArr = weaponryByPresetInfo.favoriteArr
-    availableWeapons = weaponryByPresetInfo.availableWeapons
+    let unitName = unit.name
+    availableWeapons = weaponryByPresetInfo.availableWeapons?.filter(
+      @(w) w?.reqModification == null || isModAvailableOrFree(unitName, w.reqModification))
     lastWeapon = initLastWeapon ?? getLastWeapon(unit.name)
     chosenPresetName = lastWeapon
     presetsMarkup = getPresetsMarkup(presets)
@@ -386,7 +389,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
   }
 
   function getPresetActions() {
-    if (curPresetIdx == null || !canEditPresets())
+    if (curPresetIdx == null || !isCustomPresetsAvailable())
       return []
 
     let canCopyCurPreset = presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM
@@ -420,14 +423,13 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     ::gui_right_click_menu(getPresetActions(), this)
   }
 
-  canEditPresets = @() unit.hasWeaponSlots && ::has_feature("WeaponryCustomPresets")
-    && !::is_in_flight() && unit.isBought()
+  isCustomPresetsAvailable = @() unit.hasWeaponSlots  && availableWeapons.len() > 0
+    && ::has_feature("WeaponryCustomPresets") && !::is_in_flight() && unit.isBought()
 
   function updateButtons() {
-    let canEdit = canEditPresets()
-    let canCreatePreset = canEdit
-      && presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM
-    showSceneBtn("newPresetBtn", canCreatePreset)
+    let isAvailable = isCustomPresetsAvailable()
+    showSceneBtn("newPresetBtn", isAvailable
+      && presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM)
 
     if (curPresetIdx == null) {
       showSceneBtn("actionBtn", false)
@@ -437,8 +439,9 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       return
     }
 
-    showSceneBtn("openPresetMenuBtn", (canEdit && isCustomPreset(presets[curPresetIdx]))
-      || canCreatePreset)
+    let curPreset = presets[curPresetIdx]
+    showSceneBtn("openPresetMenuBtn", (isAvailable
+      && (isCustomPreset(curPreset) || curPreset.isEnabled)))
 
     let idx = curPresetIdx
     let params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
@@ -456,7 +459,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       altActionBtnObj.tooltip = params?.weaponryItem.altBtnTooltip ?? ""
     }
     let favoriteBtnObj = showSceneBtn("favoriteBtn", true)
-    favoriteBtnObj.setValue(::loc(presets[curPresetIdx].chapterOrd != 1
+    favoriteBtnObj.setValue(::loc(curPreset.chapterOrd != 1
       ? "mainmenu/btnFavorite" : "mainmenu/btnFavoriteUnmark"))
   }
 

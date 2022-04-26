@@ -24,6 +24,7 @@ let function addSlotWeaponsFromPreset(res, slotBlk, preset) {
     slotWeapon.iconType = preset?.iconType
     foreach (dependentWeapon in (preset % "DependentWeaponPreset"))
       slotWeapon.dependentWeaponPreset <- dependentWeapon
+    slotWeapon.reqModification = preset?.reqModification
     let idx = res.findindex(@(w) isEqualWeapon(w, slotWeapon))
     if (idx == null)
       res.append(slotWeapon)

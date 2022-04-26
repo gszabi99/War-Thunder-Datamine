@@ -382,6 +382,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         slot = weapon.slot
         iconType = weapon?.iconType
         amountPerTier = bulletCount
+        reqModification = weapon?.reqModification
       }
       foreach (dependentWeapon in (weapon % "dependentWeaponPreset")) {
         let dependentWeapons = item.dependentWeaponPreset?[dependentWeapon.preset] ?? []
