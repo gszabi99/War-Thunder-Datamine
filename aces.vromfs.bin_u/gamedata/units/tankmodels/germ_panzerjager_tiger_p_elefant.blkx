@@ -217,6 +217,18 @@
         },
         "turret_05_top_dm": {
           "armorThickness": 20.0
+        },
+        "turret_06_back_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_06_side_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_06_top_dm": {
+          "armorThickness": 80.0
         }
       },
       "body_shields": {
@@ -2121,7 +2133,7 @@
             "defaultPitch": 0.0
           },
           {
-            "barrelDP": "gun_barrel_01_dm"
+            "barrelDP": "gun_barrel_02_dm"
           },
           {
             "useAnimFlashNode": true
@@ -2177,7 +2189,7 @@
           {
             "turret": {
               "head": "bone_mg_h_01",
-              "gun": "bone_mg_h_01",
+              "gun": "bone_mg_v_01",
               "gunnerDm": "machine_gunner_dm"
             }
           },
@@ -2188,6 +2200,11 @@
             }
           }
         ]
+      },
+      {
+        "hideNodes": {
+          "node": "ex_decor_01"
+        }
       }
     ]
   },
@@ -2215,14 +2232,15 @@
         "animationMultiplier": -0.68,
         "width": 0.64,
         "height": 0.06,
-        "tracksTensionK": [7.5,9.0,3.0],
+        "tracksTensionK": [3.0,10.0,6.0],
         "trackMesh": "ger_elefant_phys_track_line",
         "trackLen": 0.26,
         "trackCount": 54,
-        "trackFadeTime": 1.1,
+        "trackFadeTime": 0.015,
         "trackConnector": true,
         "trackStartOffset": 0.03,
-        "trackMaxSinking": 0.1
+        "trackMaxSinking": 0.02,
+        "trackMaxHeight": 1.1
       },
       "collisionProps": {
         "cls_body_01": "convex_hull",
