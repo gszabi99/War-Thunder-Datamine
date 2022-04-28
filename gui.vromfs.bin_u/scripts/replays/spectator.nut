@@ -419,9 +419,11 @@ enum SPECTATOR_CHAT_TAB {
   {
     if (player == null)
       return  ""
-    let name = ::g_contacts.getPlayerFullName(
+    local name = ::g_contacts.getPlayerFullName(
       getPlayerName(player.name), // can add platform icon
       needClanTag && !player.isBot ? player.clanTag : "")
+    if (mode == SPECTATOR_MODE.REPLAY && player?.realName != "")
+      name = $"{name} ({player.realName})"
     return needColored ? ::colorize(getPlayerColor(player), name) : name
   }
 
