@@ -1,6 +1,5 @@
-let { warbondsShopLevelByStages, hasBattlePass, seasonLevel
-} = require("%scripts/battlePass/seasonState.nut")
-let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
+let { warbondsShopLevelByStages, seasonLevel } = require("%scripts/battlePass/seasonState.nut")
+let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass
 } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
 let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
@@ -121,7 +120,7 @@ let function getStageViewData(stageData, idxOnPage) {
     : null
     stageIcon = overrideStageIcon ?? (isChallengeStage ? "#ui/gameuiskin#item_challenge" : null)
     stageTooltipId = isChallengeStage ? getChallengeTooltipId(stage, stageChallenge)
-      : itemId != null && overrideStageIcon != null ? ITEM.getTooltipId(itemId)
+      : itemId != null && overrideStageIcon != null ? ITEM.getTooltipId(itemId.tointeger())
       : null
   }
 }

@@ -99,8 +99,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     chosenPresetIdx = presets.findindex(@(w) w.name == chpn) ?? 0
     presetNest = scene.findObject("presetNest")
     selectPreset(chosenPresetIdx)
-    customIdx = presets.filter(isCustomPreset).reduce(
-      @(res, value) max(res, cutPrefix(value.name, CUSTOM_PRESET_PREFIX).tointeger()+1), 0)
+    updateCustomIdx()
     updatePresetsByRanks()
     updateMultiPurchaseList()
     ::move_mouse_on_obj(scene.findObject($"presetHeader_{chosenPresetIdx}"))
@@ -118,6 +117,11 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       filterTypes = getFiltersView()
       isTop = true
     })
+  }
+
+  function updateCustomIdx() {
+    customIdx = presets.filter(isCustomPreset).reduce(
+      @(res, value) max(res, cutPrefix(value.name, CUSTOM_PRESET_PREFIX).tointeger()+1), 0)
   }
 
   function updatePresetsByRanks() {
@@ -704,13 +708,11 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     getCustomWeaponryPresetView(unit, newPreset, favoriteArr, availableWeapons))
 
   function onPresetNew(){
-    let idx = customIdx++
-    editNewPreset(getDefaultCustomPresetParams(idx))
+    editNewPreset(getDefaultCustomPresetParams(customIdx))
   }
 
   function onPresetCopy(){
-    let idx = customIdx++
-    let newPreset = getDefaultCustomPresetParams(idx)
+    let newPreset = getDefaultCustomPresetParams(customIdx)
     newPreset.tiers <- ::u.copy(presets[curPresetIdx].tiers)
     editNewPreset(newPreset)
   }
@@ -799,6 +801,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       return
 
     updatePreset(presetId)
+    updateCustomIdx()
   }
 
   function onEventCustomPresetRemoved(p) {
@@ -806,13 +809,17 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (unitName != unit.name)
       return
 
-    let presetIdx = weaponryByPresetInfo.presets.findindex(@(w) w.name == presetId)
+    let presetIdx = presets.findindex(@(w) w.name == presetId)
     if (presetIdx == null)
       return
 
-    weaponryByPresetInfo.presets.remove(presetIdx)
+    presets.remove(presetIdx)
+    if (chosenPresetIdx == presetIdx) {
+      setLastWeapon(unit.name, presets[0].weaponPreset.name)
+      ::check_secondary_weapon_mods_recount(unit)
+      checkSaveBulletsAndDo()
+    }
     updateAllByFilters()
-    selectPreset(presets.findindex(@(w) w.name == presetId))
   }
 }
 

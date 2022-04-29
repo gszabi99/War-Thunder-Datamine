@@ -1,5 +1,6 @@
 let { FRP_INITIAL } = require("frp")
-let { maxSeasonLvl, hasBattlePass, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
+let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
+let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { refreshUserstatUnlocks, isUserstatMissingData
 } = require("%scripts/userstat/userstat.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")

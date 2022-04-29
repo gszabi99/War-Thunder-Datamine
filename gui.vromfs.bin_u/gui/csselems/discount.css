@@ -39,7 +39,7 @@ discount[type=new] {
   font:@fontSmall;
   padding:10*@sf/@pf_outdated, 1*@sf/@pf_outdated, 3*@sf/@pf_outdated, 1*@sf/@pf_outdated;
   background-repeat:expand-svg;
-  background-position:6,2,2,2;
+  background-position:6@sf/@pf,2@sf/@pf,2@sf/@pf,2@sf/@pf;
 }
 
 discount[type=inTab] {
@@ -182,11 +182,12 @@ discount_notification[type=up] {
 discountIcon[type=slotbarCountry],
 discount[type=weaponryItem] {
   re-type:text;
+  min-width:0;
   background-image:#ui/gameuiskin#discount_box_down_bg.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBoxDownHeight;
+  background-svg-size:w, 1@discountBoxDownHeight;
   background-color:@discountBGColor;
   background-repeat:expand-svg;
-  background-position:21,2,2,6;
+  background-position:21@sf/@pf,2@sf/@pf,2@sf/@pf,6@sf/@pf;
   padding:1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
   height:1@discountBoxDownHeight;
   font:@fontSmall;
@@ -196,8 +197,8 @@ discount[type=weaponryItem] {
 discount_notification[type=line] {
   re-type:text;
   background-image:#ui/gameuiskin#discount_box_bg.svg;
-  background-svg-size:h, 1@discountBoxHeight+2@dp;
-  background-position:7,7,3,3;
+  background-svg-size:w, 1@discountBoxHeight+2@dp;
+  background-position:7@sf/@pf,7@sf/@pf,3@sf/@pf,3@sf/@pf;
   padding:2@dp,2@dp,0,0;
   height:1@discountBoxHeight+2@dp;
   min-width:h;
@@ -208,8 +209,8 @@ discount_notification[type=line] {
 discount_notification[type=lineText] {
   re-type:text;
   background-image:#ui/gameuiskin#discount_box_bg.svg;
-  background-position:7,7,3,3;
-  background-svg-size: 2h, 1@discountBoxHeight;
+  background-position:7@sf/@pf,7@sf/@pf,3@sf/@pf,3@sf/@pf;
+  background-svg-size:w, 1@discountBoxHeight;
   padding:2@dp,2@dp,0,0;
   height:1@discountBoxHeight;
   min-width:2h;
@@ -224,8 +225,8 @@ Button_text > discount_notification[type=lineText] {
 discount_notification[type=box_down] {
   re-type:text;
   background-image:#ui/gameuiskin#discount_box_down_bg.svg;
-  background-position:21,2,2,6;
-  background-svg-size: 2h, 1@discountBoxDownHeight;
+  background-position:21@sf/@pf,2@sf/@pf,2@sf/@pf,6@sf/@pf;
+  background-svg-size: w, 1@discountBoxDownHeight;
   padding:1@discountBoxPadding,1@discountBoxPadding,1@discountBoxPadding,1@discountBoxDownArrowHeight;
   height:1@discountBoxDownHeight;
   left:pw-w-8*@sf/@pf;
@@ -237,7 +238,7 @@ discount_notification[type=box_left] {
   re-type:text;
   background-image:#ui/gameuiskin#discount_box_bg.svg;
   background-svg-size: 2h, 1@discountBoxHeight+2@dp;
-  background-position:7,7,3,3;
+  background-position:7@sf/@pf,7@sf/@pf,3@sf/@pf,3@sf/@pf;
   padding:2@dp,2@dp,0,0;
   height:1@discountBoxHeight+2@dp;
   min-width:2h;
@@ -267,8 +268,8 @@ shopItem > markerContainer > discount_notification {
 discount_notification[type=box_up] {
   re-type:text;
   background-image:#ui/gameuiskin#discount_box_up_bg.svg;
-  background-svg-size: , 1@discountBoxDownHeight;
-  background-position:21,6,2,2;
+  background-svg-size:w , 1@discountBoxDownHeight;
+  background-position:21@sf/@pf,6@sf/@pf,2@sf/@pf,2@sf/@pf;
   padding:1@discountBoxPadding, 1@discountBoxDownArrowHeight, 1@discountBoxPadding, 0;
   height:1@discountBoxDownHeight;
   pos:50%pw-50%w, ph -h + 8*@sf/@pf;

@@ -18,6 +18,16 @@ root {
       id:t='presetNest'
       include "%gui/weaponry/weaponryPreset"
     }
+    tdiv {
+      size:t='pw, 1@buttonHeight'
+      textareaNoTab {
+        id:t='weightDisbalance'
+        pos:t='pw-w, 0.5ph-0.5h'
+        position:t='relative'
+        smallFont:t='yes'
+        overlayTextColor:t='bad'
+      }
+    }
     navBar {
       navLeft {
         Button_text{
@@ -44,6 +54,7 @@ root {
           ButtonImg {}
         }
         Button_text{
+          id:t='savePreset'
           text:t='#filesystem/btnSave'
           on_click:t='onPresetSave'
           btnName:t='X'

@@ -10,6 +10,7 @@ let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, getUni
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { abs } = require("%sqstd/math.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -379,7 +380,8 @@ let function getTierWeaponsParams(weapons, tierId) {
         })
         res.append({
           id = inst.tiers?[tierId].presetId ?? id
-          name = "".concat(::loc($"weapons/{id}"), ::format(::loc("weapons/counter"), inst.ammo))
+          name = "".concat(::loc($"weapons/{id}"), ::loc("ui/parentheses/space",
+            {text = $"{::loc("shop/ammo")}{::loc("ui/colon")}{inst.ammo}"}))
           img = getTierIcon(tierWeaponConfig, inst.ammo)
         })
       }
@@ -389,7 +391,7 @@ let function getTierWeaponsParams(weapons, tierId) {
 let function updateTiersActivity(tiers, weapons) {
   for (local i = 0; i < TIERS_NUMBER; i++)
     tiers[i].__update({
-      isActive = weapons.findvalue(@(_)_.tier == i) != null
+      isActive = weapons.findvalue(@(w) w.tier == i) != null
     })
 }
 
@@ -543,6 +545,32 @@ let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
     "ok", { cancel_fn = @() null })
 }
 
+let function getPresetDisbalanceText(preset, maxDisbalance) {
+  if (maxDisbalance < 0)
+    return ""
+
+  let massBySide = [0, 0]
+  let centerIdx = TIERS_NUMBER/2
+  foreach (idx, tier in preset.tiersView) {
+    if (idx == centerIdx)
+      continue
+
+    let sideIdx = idx < centerIdx ? 0 : 1
+    massBySide[sideIdx] += tier?.weaponry.massKg ?? 0.0
+  }
+
+  let disbalance = abs(massBySide[0]-massBySide[1])
+  if (disbalance <= maxDisbalance)
+    return ""
+
+  let kgMeasure = ::g_measure_type.getTypeByName("kg", true)
+  return ::loc("weapons/pylonsWeightDisbalance", {
+    side = ::loc($"side/{massBySide[0] > massBySide[1] ? "left" : "right"}")
+    disbalance = kgMeasure.getMeasureUnitsText(disbalance)
+    maxDisbalance = kgMeasure.getMeasureUnitsText(maxDisbalance)
+  })
+}
+
 return {
   getWeaponryByPresetInfo
   setFavoritePresets
@@ -552,4 +580,5 @@ return {
   getCustomWeaponryPresetView
   getWeaponryPresetView
   editSlotInPreset
+  getPresetDisbalanceText
 }

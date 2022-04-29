@@ -1,14 +1,9 @@
-let { activeUnlocks, receiveRewards, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { userstatStats, refreshUserstatDescList } = require("%scripts/userstat/userstat.nut")
-let { basicUnlock, basicProgress, premiumUnlock, premiumProgress
-} = require("%scripts/battlePass/unlocksRewardsState.nut")
+let { basicUnlock, premiumUnlock, hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 let expStatId = "battlepass_exp"
-let curSeasonBattlePassUnlockId = ::Computed(@() premiumUnlock.value?.requirement)
-
-let hasBattlePass = ::Computed(@() curSeasonBattlePassUnlockId.value != null
-  && (activeUnlocks.value?[curSeasonBattlePassUnlockId.value].isCompleted ?? false))
 
 let season = ::Computed(@() userstatStats.value?.stats.seasons["$index"] ?? 0)
 
@@ -123,23 +118,8 @@ let function getExpRangeTextOfLoginStreak() {
 
 let warbondsShopLevelByStages = ::Computed(@() basicUnlock.value?.meta.wbShopLevel ?? {})
 
-let function receiveEmtyRewards(unlock, progressData) {
-  if (!(unlock?.hasReward ?? false))
-    return
-
-  let curStageData = getStageByIndex(unlock, (progressData?.stage ?? 0) - 1)
-  if (curStageData != null && (curStageData?.rewards.len() ?? 0) == 0)
-    receiveRewards(unlock?.name, { showProgressBox = false }, false)
-}
-
 let seasonMainPrizesData = ::Computed(@() [].extend(premiumUnlock.value?.meta.promo ?? [],
   basicUnlock.value?.meta.promo ?? []))
-
-basicProgress.subscribe(@(progressData) receiveEmtyRewards(basicUnlock.value, progressData))
-premiumProgress.subscribe(function(progressData) {
-  if (hasBattlePass.value)
-    receiveEmtyRewards(premiumUnlock.value, progressData)
-})
 
 let battlePassShopConfig = ::Computed(@() basicUnlock.value?.meta.purchaseWndItems)
 

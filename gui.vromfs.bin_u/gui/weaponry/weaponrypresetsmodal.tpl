@@ -64,7 +64,7 @@ root {
           id:t='openPresetMenuBtn'
           text:t='#msgbox/presetActions'
           on_click:t='onPresetMenuOpen'
-          btnName:t='R3'
+          btnName:t='LB'
           display:t='hide'
           ButtonImg {}
         }
@@ -72,6 +72,7 @@ root {
           id:t='newPresetBtn'
           text:t='#chat/create'
           on_click:t='onPresetNew'
+          btnName:t='RB'
           display:t='hide'
           ButtonImg {}
         }
