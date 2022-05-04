@@ -1,4 +1,5 @@
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { interpolateArray } = require("%sqstd/math.nut")
 let format = require("string").format
 
 ::DS_UT_AIRCRAFT <- "Air"
@@ -280,6 +281,37 @@ global const EDIFF_SHIFT = 3
          ?? defaultNum
 }
 
+let function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
+  let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
+  return weaponMulBlk?[unitName][paramName]
+    ?? weaponMulBlk?[unitClass][paramName]
+    ?? weaponMulBlk?["Common"][paramName]
+}
+
+let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocketMass, atgmVisibilityTypeArr, maxRocketMass) {
+  local weaponMul = 1.0
+  if (totalBombRocketMass > 0) {
+    let bombRocketWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "BombRocketWeapon")
+    if (bombRocketWeaponBlk?.mass != null) {
+      weaponMul = interpolateArray((bombRocketWeaponBlk % "mass"), totalBombRocketMass)
+    }
+  }
+  if (atgmVisibilityTypeArr.len() > 0) {
+    let atgmVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AtgmVisibilityTypeMul")
+    foreach (atgmVisibilityType in atgmVisibilityTypeArr) {
+      weaponMul = max(weaponMul, atgmVisibilityTypeMulBlk?[atgmVisibilityType] ?? 0.0)
+    }
+  }
+  if (maxRocketMass > 0) {
+    let largeRocketMass = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMass")
+    let largeRocketMul = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMul")
+    if (largeRocketMass != null && largeRocketMul != null && maxRocketMass >= largeRocketMass) {
+      weaponMul = max(weaponMul, largeRocketMul)
+    }
+  }
+  return weaponMul
+}
+
 ::get_unit_spawn_score_weapon_mul <- function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray)
 {
   let wpcost = ::get_wpcost_blk()
@@ -295,8 +327,17 @@ global const EDIFF_SHIFT = 3
   }
 
   local weaponMul = 1.0
-  if (get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
-    weaponMul = wpcost?[unitname].weapons[weapon].spawnCostMul ?? 1.0
+  let weaponBlk = wpcost?[unitname].weapons[weapon]
+  if (weaponBlk != null && get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
+    weaponMul = weaponBlk?.spawnCostMul ?? 1.0 // temp for compatibility with prev wpcost format
+
+    let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
+    if (weaponMulBlk != null) {
+      let totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
+      let atgmVisibilityTypeArr = (weaponBlk % "atgmVisibilityType") ?? []
+      let maxRocketMass = weaponBlk?.maxRocketMass ?? 0
+      weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, totalBombRocketMass, atgmVisibilityTypeArr, maxRocketMass)
+    }
   }
 
   return 1.0 + (bulletsMul - 1.0) + (weaponMul - 1.0)

@@ -582,12 +582,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_BOMB_ACTIVATION_TIME:
-      let isBombActivationAssault = ::get_option_bomb_activation_type() == 1
       let assaultFuseTime = ::get_bomb_activation_auto_time()
       let diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(::get_mission_mode()).diffCode
-      let bombActivationTime = ::max(::load_local_account_settings(
+      let bombActivationTime = ::load_local_account_settings(
         $"useropt/bomb_activation_time/{diffCode}",
-          ::get_option_bomb_activation_time()), assaultFuseTime)
+        ::get_option_bomb_activation_time())
+      let isBombActivationAssault = bombActivationTime == 1
+      let curBombActivationTime = ::max(bombActivationTime, assaultFuseTime)
 
       descr.diffCode = diffCode
       descr.id = "bomb_activation_type"
@@ -597,7 +598,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       if (nearestFuseValue >= 0)
         descr.values.extend(activationTimeArray.slice(nearestFuseValue))
 
-      descr.value = ::find_nearest(isBombActivationAssault? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
+      descr.value = ::find_nearest(isBombActivationAssault? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : curBombActivationTime, descr.values)
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
       {
@@ -3926,13 +3927,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.value = crossplayModule.isCrossNetworkChatEnabled()
       descr.cb = "onChangeCrossNetworkChat"
       break
-    case ::USEROPT_REPLACE_MY_NICK_LOCAL:
-      descr.id = "replace_my_nick_local"
-      descr.controlType = optionControlType.EDITBOX
-      descr.controlName <-"editbox"
-      descr.charMask <- "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
-      descr.value = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY, "")
-      defaultValue = ""
+    case ::USEROPT_DISPLAY_MY_REAL_NICK:
+      descr.id = "display_my_real_nick"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY, true)
+      defaultValue = true
       descr.defVal <- defaultValue
       break
 
@@ -5221,7 +5221,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_PS4_CROSSNETWORK_CHAT:
       crossplayModule.setCrossNetworkChatStatus(value)
       break
-    case ::USEROPT_REPLACE_MY_NICK_LOCAL:
+    case ::USEROPT_DISPLAY_MY_REAL_NICK:
       ::set_gui_option_in_mode(optionId, value, ::OPTIONS_MODE_GAMEPLAY)
       ::update_gamercards()
       break

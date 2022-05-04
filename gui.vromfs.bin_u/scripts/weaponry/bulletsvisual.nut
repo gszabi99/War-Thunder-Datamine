@@ -423,7 +423,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
 }
 
 let function buildBulletsData(bullet_parameters, bulletsSet = null) {
-  let needAddParams = bullet_parameters.len() == 1
+  let needAddParams = bullet_parameters.len() == 1 || (bulletsSet?.isUniform ?? false)
 
   let isSmokeShell = bulletsSet?.weaponType == WEAPON_TYPE.GUNS
     && bulletsSet?.bullets?[0] == "smoke_tank"

@@ -255,7 +255,9 @@ let function getBulletsSetData(air, modifName, noModList = null)
       if (paramsBlk?.selfDestructionInAir)
         bulletType += "@s_d"
       res.bullets.append(bulletType)
-      res.bulletDataByType[_bulletType] <- {}
+      res.bulletDataByType[_bulletType] <- {
+        bulletAnimation = paramsBlk?.shellAnimation
+      }
 
       if (paramsBlk?.guiCustomIcon != null)
       {
@@ -299,18 +301,20 @@ let function getBulletsSetData(air, modifName, noModList = null)
       }
     }
 
-    if (res)
-    {
-      if (noModList)
-      {
+    if (res) {
+      if ((res?.bulletNames ?? []).len() > 1
+        && res.bulletNames.filter(@(v) v == res.bulletNames[0]).len() == res.bulletNames.len()){
+          res.mass <- bulletsList[0].mass
+          res.isUniform <- true
+        }
+      if (noModList) {
         if (!bulSetForIconParam && !noModList.len()
             && !res.isBulletBelt) //really first default bullet set. can have default icon params
           bulSetForIconParam = res
         fakeBulletsSets.append(res)
         res = null
       }
-      else
-      {
+      else {
         bulSetForIconParam = res
         break
       }

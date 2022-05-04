@@ -449,9 +449,13 @@
         "hidableInXrayViewer": true,
         "armorThickness": 30.0,
         "turret_front_dm": {
-          "variableThickness": true
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 5.0
         },
-        "composite_armor_turret_15_dm": [],
+        "composite_armor_turret_15_dm": {
+          "hp": 150.0,
+          "ignoreDeadWithSplash": true
+        },
         "ex_armor_turret_20_dm": []
       },
       "turret_external": {
@@ -500,7 +504,7 @@
       },
       "xray_parts": {
         "hidableInXrayViewer": true,
-        "armorThickness": 0.0,
+        "armorThickness": 0.01,
         "composite_armor_hull_01_dm": [],
         "composite_armor_turret_06_dm": [],
         "composite_armor_turret_07_dm": [],
@@ -3281,7 +3285,7 @@
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "parkInDeadzone": false,
-          "speedYaw": 90.0,
+          "speedYaw": 120.0,
           "speedPitch": 90.0,
           "turret": {
             "head": "bone_commander_sight_h",
@@ -3290,9 +3294,31 @@
             "verDriveDm": "commander_panoramic_sight_dm",
             "horDriveDm": "commander_panoramic_sight_dm"
           },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": false,
+            "forceEnabled": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 75.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 75.0,
+            "speedFromVehicleVerticalMult": -1.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.0]
+              },
+              {
+                "row": [45.0,0.00015]
+              },
+              {
+                "row": [80.0,0.0002]
+              }
+            ]
+          },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,15.0]
+            "pitch": [-20.0,60.0]
           }
         }
       },
@@ -4402,6 +4428,8 @@
         },
         {
           "shells": {
+            "fatalFire": false,
+            "fatalExplosion": false,
             "firstStage": true,
             "ammo_turret_01_dm": {
               "count": 1
@@ -4949,7 +4977,7 @@
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "parkInDeadzone": false,
-                "speedYaw": 90.0,
+                "speedYaw": 120.0,
                 "speedPitch": 90.0,
                 "turret": {
                   "head": "bone_commander_sight_h",
@@ -4958,9 +4986,31 @@
                   "verDriveDm": "commander_panoramic_sight_dm",
                   "horDriveDm": "commander_panoramic_sight_dm"
                 },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "forceEnabled": true,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [45.0,0.00015]
+                    },
+                    {
+                      "row": [80.0,0.0002]
+                    }
+                  ]
+                },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,15.0]
+                  "pitch": [-20.0,60.0]
                 }
               }
             },

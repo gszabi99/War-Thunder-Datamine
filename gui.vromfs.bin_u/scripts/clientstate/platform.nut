@@ -31,9 +31,8 @@ let getPlayerName = function(name)
 {
   if (name == ::my_user_name || getRealName(name) == ::my_user_name) //local usage
   {
-    let replaceName = ::get_gui_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY, "")
-    if (replaceName != "")
-      return replaceName
+    if (!::get_gui_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY, true))
+      return ::loc("multiplayer/name")
   }
 
   return getFakeName(name) ?? remapNick(name)

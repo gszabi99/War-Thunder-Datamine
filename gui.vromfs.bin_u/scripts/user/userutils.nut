@@ -30,7 +30,7 @@ let function getMyStateData() {
     dislikedMissions = prefParams.dislikedMissions
     craftsInfoByUnitsGroups = slotbarPresets.getCurCraftsInfo()
     platform = targetPlatform
-    fakeName = ::get_option_in_mode(::USEROPT_REPLACE_MY_NICK_LOCAL, ::OPTIONS_MODE_GAMEPLAY).value != ""
+    fakeName = !::get_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY).value
   }
 
   let airs = getMyCrewUnitsState(profileInfo.country)

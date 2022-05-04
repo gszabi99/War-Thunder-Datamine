@@ -27,7 +27,7 @@ let privacyOptionsList = Computed(function() {
   let hasFeature = ::has_feature("PrivacySettings")
   return [
     ["options/header/privacy", null, hasFeature && havePrem],
-    [::USEROPT_REPLACE_MY_NICK_LOCAL, "editbox", hasFeature && havePrem],
+    [::USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasFeature && havePrem],
     [::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeature && havePrem],
     [::USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeature && havePrem],
     [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeature && havePrem]

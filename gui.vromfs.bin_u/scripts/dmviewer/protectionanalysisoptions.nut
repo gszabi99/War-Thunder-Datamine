@@ -327,13 +327,10 @@ options.addTypes({
               ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
                 modName = value,
                 //Generate set of identical bullets by getting rid of all bullets excluding current.
-                bSet = (clone bulletsSet).map(
-                  @(val, p) p == "bullets"
-                    ? [bulletName]
-                    : (p != "bulletNames" && p != "bulletDataByType"
-                      && p != "explosiveType" && p != "explosiveMass")
-                        ? val
-                        : bulletsSet.bulletDataByType[bulletName]?[p]).filter(@(p) p != null),
+                bSet = bulletsSet.__merge(
+                  { bullets = [bulletName] },
+                  bulletsSet.bulletDataByType[bulletName]
+                ),
                 bulletParams })
               : MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
 

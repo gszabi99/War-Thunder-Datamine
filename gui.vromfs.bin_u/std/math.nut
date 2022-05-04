@@ -61,6 +61,26 @@ let function lerp(valueMin, valueMax, resMin, resMax, value) {
 let lerpClamped = @(valueMin, valueMax, resMin, resMax, value)
   lerp(valueMin, valueMax, resMin, resMax, clamp(value, valueMin, valueMax))
 
+
+let function interpolateArray(arr, value) {
+  let maxIdx = arr.len() - 1
+  foreach (idx, curElem in arr) {
+    if (value <= curElem.x || idx == maxIdx)
+      return curElem.y
+
+    let nextElem = arr[idx + 1]
+    if (value > nextElem.x)
+      continue
+
+    let valueMin = curElem.x
+    let resMin = curElem.y
+    let valueMax = nextElem.x
+    let resMax = nextElem.y
+    return lerp(valueMin, valueMax, resMin, resMax, value)
+  }
+  return 0
+}
+
 /*
 * return columns amount for the table with <total> same size items
 * with a closer table size to golden ratio
@@ -124,6 +144,7 @@ let export = math.__merge({
   change_bit_mask
   lerp
   lerpClamped
+  interpolateArray
   calc_golden_ratio_columns
   color2uint
   getRomanNumeral

@@ -1,7 +1,7 @@
 let { havePremium } = require("%scripts/user/premium.nut")
 
 local privacyOptionsList = [
-  ::USEROPT_REPLACE_MY_NICK_LOCAL,
+  ::USEROPT_DISPLAY_MY_REAL_NICK,
   ::USEROPT_SHOW_SOCIAL_NOTIFICATIONS,
   ::USEROPT_ALLOW_ADDED_TO_CONTACTS,
   ::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS
