@@ -21,7 +21,7 @@ let function getSuggestedSkin(unitName) {
   if (skinIds.len() == 0)
     return null
   let seenSuggestedSkins = getSeenSuggestedSkins(unitName)
-  let skinId = skinIds.findvalue(@(s, key) !(seenSuggestedSkins?[key] ?? false) && getSkin(s) != null)
+  let skinId = skinIds.findvalue(@(s, key) !(seenSuggestedSkins?[key] ?? false) && !(getSkin(s)?.isUnlocked() ?? true))
   return getSkin(skinId)
 }
 
