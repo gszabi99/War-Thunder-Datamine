@@ -1,12 +1,16 @@
 let guidParser = require("%scripts/guidParser.nut")
 
-let downloadableSkins = {} // { unitName = [] }
+let downloadableSkins = {} // { unitName = { skinIds = [], suggestedSkinIds = {} } }
 
-let function updateDownloadableSkins(unit) {
-  if (downloadableSkins?[unit.name] != null)
+let function updateDownloadableSkins(unitName) {
+  if (downloadableSkins?[unitName] != null)
     return
 
-  let res = []
+  let res = {
+    skinIds = []
+    suggestedSkinIds = {}
+  }
+
   local shouldCache = true
 
   if (::has_feature("MarketplaceSkinsInCustomization") && ::has_feature("Marketplace")
@@ -14,19 +18,14 @@ let function updateDownloadableSkins(unit) {
   {
     let marketSkinsBlk = ::DataBlock()
     marketSkinsBlk.load("config/skins_market.blk")
-    let blkList = marketSkinsBlk % unit.name
-    let itemdefIdsList = blkList.filter(function(blk) {
-      if (type(blk?.marketplaceItemdefId) != "integer")
-        return false
-      if (blk?.reqFeature != null && !::has_feature(blk.reqFeature))
-        return false
-      if (blk?.hideFeature != null && ::has_feature(blk.hideFeature))
-        return false
-      return true
-    }).map(@(blk) blk?.marketplaceItemdefId)
+    let blkList = marketSkinsBlk % unitName
+    let skinBlks = blkList.filter(@(blk) (type(blk?.marketplaceItemdefId) == "integer")
+      && (blk?.reqFeature == null || ::has_feature(blk.reqFeature))
+      && (blk?.hideFeature == null || !::has_feature(blk.hideFeature)))
 
-    foreach (itemdefId in itemdefIdsList)
+    foreach (blk in skinBlks)
     {
+      let itemdefId = blk?.marketplaceItemdefId
       let item = ::ItemsManager.findItemById(itemdefId)
       shouldCache = shouldCache && item != null
       if (item == null)
@@ -38,24 +37,33 @@ let function updateDownloadableSkins(unit) {
 
       let isLive = guidParser.isGuid(resource)
       if (isLive)
-        item.addResourcesByUnitId(unit.name)
-      let skinId = isLive ? ::g_unlocks.getSkinId(unit.name, resource) : resource
+        item.addResourcesByUnitId(unitName)
+
+      let skinId = isLive ? ::g_unlocks.getSkinId(unitName, resource) : resource
       ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)?.setCouponItemdefId(itemdefId)
 
-      res.append(itemdefId)
+      res.skinIds.append(itemdefId)
+      if (blk?.needShowPreviewSuggestion)
+        res.suggestedSkinIds[resource] <- skinId
     }
   }
 
   if (shouldCache)
-    downloadableSkins[unit.name] <- res
+    downloadableSkins[unitName] <- res
 }
 
-let function getDownloadableSkins(unit) {
-  updateDownloadableSkins(unit)
-  return downloadableSkins?[unit.name] ?? []
+let function getDownloadableSkins(unitName) {
+  updateDownloadableSkins(unitName)
+  return downloadableSkins?[unitName].skinIds ?? []
+}
+
+let function getSuggestedSkins(unitName) {
+  updateDownloadableSkins(unitName)
+  return downloadableSkins?[unitName].suggestedSkinIds ?? {}
 }
 
 return {
-  getDownloadableSkins = getDownloadableSkins
-  updateDownloadableSkins = updateDownloadableSkins
+  getDownloadableSkins
+  getSuggestedSkins
+  updateDownloadableSkins
 }

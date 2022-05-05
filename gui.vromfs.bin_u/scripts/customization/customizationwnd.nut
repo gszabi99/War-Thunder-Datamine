@@ -19,6 +19,7 @@ let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collecti
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { needSuggestSkin, saveSeenSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -881,6 +882,18 @@ enum decalTwoSidedMode
           dmg_skin_div = ::has_feature("DamagedSkinPreview") && !isInEditMode && !isDecoratorsListOpen
           dmg_skin_buttons_div = isDmgSkinPreviewMode && (unit.isAir() || unit.isHelicopter())
     })
+
+
+    let isVisibleSuggestedSkin = needSuggestSkin(unit.name, previewSkinId)
+    let suggestedSkinObj = showSceneBtn("suggested_skin", isVisibleSuggestedSkin)
+    if (isVisibleSuggestedSkin) {
+      ::showBtn("btn_suggested_skin_find", canFindSkinOnMarketplace, suggestedSkinObj)
+      ::showBtn("btn_suggested_skin_exchange", canConsumeSkinCoupon, suggestedSkinObj)
+      let textArr = [::loc("suggested_skin/info")]
+      if (canFindSkinOnMarketplace)
+        textArr.append(::loc("suggested_skin/find"))
+      suggestedSkinObj.findObject("suggested_skin_info_text").setValue("\n".join(textArr))
+    }
 
     if (unitInfoPanelWeak?.isValid() ?? false)
       unitInfoPanelWeak.onSceneActivate(!isInEditMode && !isDecoratorsListOpen && !isDmgSkinPreviewMode)
@@ -1964,6 +1977,7 @@ enum decalTwoSidedMode
       if (!previewSkinId && (skinId == curSkinId || (skinId == "" && curSkinId == "default")))
         return
 
+      saveSeenSuggestedSkin(unit.name, previewSkinId)
       resetUserSkin(false)
       applySkin(skinId)
     }
@@ -1974,6 +1988,7 @@ enum decalTwoSidedMode
     }
     else if (skinId != previewSkinId)
     {
+      saveSeenSuggestedSkin(unit.name, previewSkinId)
       resetUserSkin(false)
       applySkin(skinId, true)
     }
@@ -2438,6 +2453,7 @@ enum decalTwoSidedMode
 
       if (previewSkinId)
       {
+        saveSeenSuggestedSkin(unit.name, previewSkinId)
         applySkin(::hangar_get_last_skin(unit.name), true)
         previewSkinId = null
         if (initialUserSkinId != "")
@@ -2506,6 +2522,7 @@ enum decalTwoSidedMode
     updateDecalSlots()
     updateAttachablesSlots()
     updateSkinList()
+    updateButtons()
   }
 
   function initPreviewMode()

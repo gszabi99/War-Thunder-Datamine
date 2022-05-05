@@ -951,74 +951,157 @@
     ]
   },
   {
-    "tdiv": {
-      "pos": "50%pw-50%w, @battleBtnBottomOffset-1.5@battleButtonHeight-h",
-      "position": "absolute",
-      "flow": "vertical",
-      "animWaitMsg": {
-        "behavior": "bhvUpdater",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "value": "{\"viewId\": \"DL_DATA_WAIT_MSG\"}",
-        "css-hier-invalidate": "yes",
-        "fade": "out",
-        "tdiv": {
-          "flow": "vertical",
-          "pos": "0,50%ph-50%h",
+    "tdiv": [
+      {
+        "pos": "50%pw-50%w, @battleBtnBottomOffset-h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "animWaitMsg": {
+          "behavior": "bhvUpdater",
+          "pos": "50%pw-50%w, 0",
           "position": "relative",
+          "value": "{\"viewId\": \"DL_DATA_WAIT_MSG\"}",
           "css-hier-invalidate": "yes",
-          "animText": {
-            "id": "msgText",
-            "pos": "50%pw-50%w, 0",
-            "position": "relative",
-            "font": "@fontNormal",
-            "textShade": "yes",
-            "overlayTextColor": "active",
-            "text": "#loading/skin",
-            "color-factor": "0",
-            "fade": "out"
-          },
+          "fade": "out",
           "tdiv": {
-            "pos": "50%pw-50%w, 0",
+            "flow": "vertical",
+            "pos": "0,50%ph-50%h",
             "position": "relative",
-            "dlDataStat": {
-              "behavior": "bhvUpdater",
-              "pos": "50%pw-50%w,0",
+            "css-hier-invalidate": "yes",
+            "animText": {
+              "id": "msgText",
+              "pos": "50%pw-50%w, 0",
               "position": "relative",
-              "value": "{\"viewId\": \"DL_DATA_STATE_TEXT\"}",
-              "css-hier-invalidate": "yes",
-              "animText": {
-                "text": "",
-                "font": "@fontTiny",
-                "color-factor": "0",
-                "fade": "out"
+              "font": "@fontNormal",
+              "textShade": "yes",
+              "overlayTextColor": "active",
+              "text": "#loading/skin",
+              "color-factor": "0",
+              "fade": "out"
+            },
+            "tdiv": {
+              "pos": "50%pw-50%w, 0",
+              "position": "relative",
+              "dlDataStat": {
+                "behavior": "bhvUpdater",
+                "pos": "50%pw-50%w,0",
+                "position": "relative",
+                "value": "{\"viewId\": \"DL_DATA_STATE_TEXT\"}",
+                "css-hier-invalidate": "yes",
+                "animText": {
+                  "text": "",
+                  "font": "@fontTiny",
+                  "color-factor": "0",
+                  "fade": "out"
+                }
               }
             }
+          },
+          "animated_wait_icon": {
+            "pos": "0,50%ph-50%h",
+            "position": "relative",
+            "background-rotation": "0",
+            "color-factor": "0",
+            "fade": "out",
+            "_transp-timer": "0"
           }
-        },
-        "animated_wait_icon": {
-          "pos": "0,50%ph-50%h",
-          "position": "relative",
-          "background-rotation": "0",
-          "color-factor": "0",
-          "fade": "out",
-          "_transp-timer": "0"
         }
       },
-      "tdiv": {
-        "id": "unit_has_no_armoring",
-        "pos": "50%pw-50%w,0",
-        "position": "relative",
-        "display": "hide",
-        "activeText": {
-          "titleFont": "yes",
-          "text": "#armor_class/no_armoring/common",
-          "position": "relative",
+      {
+        "tdiv": {
+          "id": "unit_has_no_armoring",
           "pos": "50%pw-50%w,0",
-          "input-transparent": "yes"
+          "position": "relative",
+          "display": "hide",
+          "activeText": {
+            "titleFont": "yes",
+            "text": "#armor_class/no_armoring/common",
+            "position": "relative",
+            "pos": "50%pw-50%w,0",
+            "input-transparent": "yes"
+          }
         }
+      },
+      {
+        "tdiv": [
+          {
+            "id": "suggested_skin"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "pos": "50%(pw-w), 0"
+          },
+          {
+            "position": "relative"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "textAreaCentered": {
+              "id": "suggested_skin_info_text",
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative",
+              "max-width": "@rw - 2@maxPromoButtonWidth",
+              "text": "#suggested_skin/info",
+              "input-transparent": "yes",
+              "overlayTextColor": "active",
+              "textShade": "yes"
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_suggested_skin_exchange",
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative",
+              "text": "#item/consume/coupon",
+              "btnName": "X",
+              "on_click": "onBtnMarketplaceConsumeCouponSkin",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "skip-navigation": "yes",
+              "class": "image",
+              "display": "hide",
+              "enable": "no",
+              "buttonWink": [],
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_suggested_skin_find",
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative",
+              "text": "#msgbox/btn_find_on_marketplace",
+              "btnName": "X",
+              "on_click": "onBtnMarketplaceFindSkin",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "skip-navigation": "yes",
+              "class": "image",
+              "display": "hide",
+              "enable": "no",
+              "buttonWink": [],
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": []
+            }
+          }
+        ]
       }
-    }
+    ]
   },
   {
     "tdiv": {

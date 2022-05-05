@@ -29,7 +29,7 @@ const DEFAULT_SKIN_NAME = "default"
 
   addDownloadableLiveSkins = function(skins, unit)
   {
-    let downloadableSkins = getDownloadableSkins(unit)
+    let downloadableSkins = getDownloadableSkins(unit.name)
     if (downloadableSkins.len() == 0)
       return skins
 

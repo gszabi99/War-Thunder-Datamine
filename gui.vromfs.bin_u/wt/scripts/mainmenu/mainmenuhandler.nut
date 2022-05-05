@@ -6,8 +6,9 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
-let { getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
+let { getCrewUnlockTime, getCrewUnlockTimeByUnit } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 
 ::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination
 {
@@ -148,6 +149,31 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     updateUnitCrewLocked(unit)
     updateUnitRentInfo(unit)
     updateLowQualityModelWarning()
+    updateSuggestedSkin(unit)
+  }
+
+  function updateSuggestedSkin(unit) {
+    local isVisible = unit != null
+      && !unit.isRented()
+      && getCrewUnlockTimeByUnit(unit) <= 0
+    if (!isVisible) {
+      showSceneBtn("suggested_skin", isVisible)
+      return
+    }
+
+    let skin = getSuggestedSkin(unit.name)
+    isVisible = skin?.canPreview() ?? false
+    let containerObj = showSceneBtn("suggested_skin", isVisible)
+    if (!isVisible)
+      return
+
+    containerObj.findObject("info_text").setValue(
+      ::loc("suggested_skin/available", {
+        skinName = skin.decoratorType.getLocName(skin.id) }))
+  }
+
+  function onSkinPreview() {
+    getSuggestedSkin(::hangar_get_current_unit_name())?.doPreview()
   }
 
   function updateUnitRentInfo(unit)
@@ -207,5 +233,9 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
       })
       return false
     })
+  }
+
+  function onEventItemsShopUpdate(_) {
+    updateSuggestedSkin(::getAircraftByName(::hangar_get_current_unit_name()))
   }
 }

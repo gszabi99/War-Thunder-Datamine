@@ -498,7 +498,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (!unit)
         return
 
-      updateDownloadableSkins(unit)
+      updateDownloadableSkins(unitName)
     }
   }
 }, null, "name")

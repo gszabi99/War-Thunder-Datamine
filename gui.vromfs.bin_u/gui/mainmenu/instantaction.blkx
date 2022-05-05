@@ -332,6 +332,36 @@
               "input-transparent": "yes"
             }
           }
+        },
+        {
+          "tdiv": {
+            "id": "suggested_skin",
+            "flow": "vertical",
+            "pos": "50%(pw-w), 0",
+            "position": "relative",
+            "display": "hide",
+            "textAreaCentered": {
+              "id": "info_text",
+              "pos": "50%pw-50%w,0",
+              "position": "relative",
+              "max-width": "@rw - 2@maxPromoButtonWidth",
+              "text": "#suggested_skin/available",
+              "input-transparent": "yes",
+              "overlayTextColor": "active",
+              "textShade": "yes"
+            },
+            "Button_text": {
+              "pos": "50%(pw-w), 0",
+              "position": "relative",
+              "text": "#mainmenu/btnPreview",
+              "class": "image",
+              "showConsoleImage": "no",
+              "_on_click": "onSkinPreview",
+              "img": {
+                "background-image": "#ui/gameuiskin#btn_preview.svg"
+              }
+            }
+          }
         }
       ]
     },
