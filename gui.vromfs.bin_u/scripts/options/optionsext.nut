@@ -37,6 +37,9 @@ global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 ::SPEECH_COUNTRY_UNIT_VALUE <- 2
 
+const BOMB_ACT_TIME = 0
+const BOMB_ACT_ASSAULT = 1
+
 global enum misCountries
 {
   ALL
@@ -582,13 +585,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_BOMB_ACTIVATION_TIME:
-      let assaultFuseTime = ::get_bomb_activation_auto_time()
       let diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(::get_mission_mode()).diffCode
-      let bombActivationTime = ::load_local_account_settings(
+      let bombActivationType = ::load_local_account_settings($"useropt/bomb_activation_type/{diffCode}",
+        ::get_option_bomb_activation_type())
+      let isBombActivationAssault = bombActivationType == BOMB_ACT_ASSAULT
+      let assaultFuseTime = ::get_bomb_activation_auto_time()
+      let bombActivationTime = ::max(::load_local_account_settings(
         $"useropt/bomb_activation_time/{diffCode}",
-        ::get_option_bomb_activation_time())
-      let isBombActivationAssault = bombActivationTime == 1
-      let curBombActivationTime = ::max(bombActivationTime, assaultFuseTime)
+          ::get_option_bomb_activation_time()), assaultFuseTime)
 
       descr.diffCode = diffCode
       descr.id = "bomb_activation_type"
@@ -598,7 +602,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       if (nearestFuseValue >= 0)
         descr.values.extend(activationTimeArray.slice(nearestFuseValue))
 
-      descr.value = ::find_nearest(isBombActivationAssault? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : curBombActivationTime, descr.values)
+      descr.value = ::find_nearest(isBombActivationAssault ? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
       {
@@ -613,8 +617,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         })
       }
       let curValue = isBombActivationAssault? assaultFuseTime : descr.values[descr.value]
-      if (::get_option_bomb_activation_time() != curValue)
+      if (::get_option_bomb_activation_time() != curValue) {
+        ::set_option_bomb_activation_type(isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME)
         ::set_option_bomb_activation_time(curValue)
+      }
       break
 
     case ::USEROPT_BOMB_SERIES:
@@ -4124,9 +4130,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let isBombActivationAssault = descr.values[value] == ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
       let bombActivationDelay = isBombActivationAssault ?
         ::get_bomb_activation_auto_time() : descr.values[value]
-      ::set_option_bomb_activation_type(isBombActivationAssault ? 1 : 0)
+      let bombActivationType = isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME
+      ::set_option_bomb_activation_type(bombActivationType)
       ::set_option_bomb_activation_time(bombActivationDelay)
       ::save_local_account_settings($"useropt/bomb_activation_time/{descr.diffCode}", bombActivationDelay)
+      ::save_local_account_settings($"useropt/bomb_activation_type/{descr.diffCode}", bombActivationType)
       break
     case ::USEROPT_BOMB_SERIES:
       ::set_option_bombs_series(descr.values[value])

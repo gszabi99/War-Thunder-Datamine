@@ -154,6 +154,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
   function updateOptionsArray()
   {
+    if (optionsConfig == null) {
+      let diffOpt = ::get_option(::USEROPT_DIFFICULTY)
+      optionsConfig = { diffCode = diffOpt.diffCode[diffOpt.value]}
+    }
     options = [
       [::USEROPT_DIFFICULTY, "spinner"],
     ]
@@ -238,7 +242,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
     ::aircraft_for_weapons = unit.name
     ::set_gui_option(::USEROPT_AIRCRAFT, unit.name)
 
-    let container = create_options_container("testflight_options", options, true, 0.5)
+    let container = create_options_container("testflight_options", options, true, 0.5, true, optionsConfig)
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     optionsContainers = [container.descr]
@@ -440,9 +444,8 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     let diffOptionCont = findOptionInContainers(::USEROPT_DIFFICULTY)
     ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
+    optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
     updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
-    ::set_option(::USEROPT_BOMB_ACTIVATION_TIME, ::get_option(
-      ::USEROPT_BOMB_ACTIVATION_TIME, {diffCode = diffOptionCont.diffCode[obj.getValue()]}).value)
     updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
   }
 
