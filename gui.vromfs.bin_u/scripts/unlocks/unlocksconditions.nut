@@ -87,6 +87,20 @@ let function getOverrideCondType(condBlk, unlockMode) {
   return overrideCondType
 }
 
+let function getRankMultipliersTable(blk) {
+  let mulTable = {}
+  local hasAnyMulRank = false
+  if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
+    for (local rank = 1; rank <= ::max_country_rank; rank++) {
+      let curMul = blk?[$"mulRank{rank}"] ?? 1.0
+      mulTable[rank] <- curMul
+      if (!hasAnyMulRank && curMul != 1.0)
+        hasAnyMulRank = true
+    }
+  }
+  return hasAnyMulRank ? mulTable : {}
+}
+
 ::UnlockConditions <- {
   conditionsOrder = [
     "beginDate", "endDate",
@@ -448,6 +462,7 @@ UnlockConditions.loadMainProgressCondition <- function loadMainProgressCondition
     res.resourceType <- blk?.resourceType
 
   res.multiplier <- getMultipliersTable(blk)
+  res.rankMultiplier <- getRankMultipliersTable(blk)
   return res
 }
 
@@ -1155,7 +1170,8 @@ UnlockConditions.getMultipliersTable <- function getMultipliersTable(blk)
 UnlockConditions.getMultipliersText <- function getMultipliersText(condition)
 {
   let multiplierTable = condition?.multiplier ?? {}
-  if (multiplierTable.len() == 0)
+  let rankMultiplierTable = condition?.rankMultiplier ?? {}
+  if (multiplierTable.len() == 0 && rankMultiplierTable.len() == 0)
     return ""
 
   local mulText = ""
@@ -1180,10 +1196,29 @@ UnlockConditions.getMultipliersText <- function getMultipliersText(condition)
     mulText += $"{mulLocParam} (x{num})"
   }
 
-  if (mulText == "")
-    return ""
+  local mulRankText = ""
+  if (rankMultiplierTable.len() > 0) {
+    local lastAddedRank = 1
+    for (local rank = 1; rank <= ::max_country_rank; rank++) {
+      let curRankMul = rankMultiplierTable[rank]
+      let nextRankMul = rankMultiplierTable?[rank + 1]
+      if (nextRankMul != null && curRankMul == nextRankMul)
+        continue
+      let rankText = (rank == lastAddedRank + 1) ? ::get_roman_numeral(rank)
+        : getRangeString(::get_roman_numeral(lastAddedRank), ::get_roman_numeral(rank))
+      if (mulRankText.len() > 0)
+        mulRankText = $"{mulRankText}, "
+      mulRankText = $"{mulRankText}{rankText} (x{curRankMul})"
+      lastAddedRank = rank
+    }
+  }
 
-  return ::format("<color=@fadedTextColor>%s</color>", ::loc("conditions/multiplier") + ::loc("ui/colon") + mulText)
+  mulText = mulText.len() > 0 ? "{0}{1}{2}".subst(::loc("conditions/multiplier"), ::loc("ui/colon"), mulText) : ""
+  if (mulText.len() > 0 && mulRankText.len() > 0)
+    mulText = $"{mulText}\n"
+  mulRankText = mulRankText.len() > 0 ? "{0}{1}{2}".subst(::loc("conditions/rankMultiplier"), ::loc("ui/colon"), mulRankText) : ""
+
+  return ::colorize("fadedTextColor", "{0}{1}".subst(mulText, mulRankText))
 }
 
 UnlockConditions.getLocForBitValues <- function getLocForBitValues(modeType, values, hasCustomUnlockableList = false)
