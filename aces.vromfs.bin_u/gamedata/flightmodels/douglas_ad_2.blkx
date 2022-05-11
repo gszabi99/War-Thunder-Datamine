@@ -2039,33 +2039,22 @@
       "preset": {
         "name": "douglas_ad_2_2x1000lb",
         "blk": "gameData/FlightModels/weaponPresets/douglas_ad_2_2x1000lb.blk",
-        "reqModification": "btd_mbc"
+        "reqModification": "btd_mbc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_large"
+          }
+        }
       }
     },
     {
-      "preset": [
-        {
-          "name": "douglas_ad_2_1x2000lb"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/douglas_ad_2_1x2000lb.blk"
-        },
-        {
-          "reqModification": "frc_mk3"
-        },
-        {
-          "reqModification": "btd_lbc"
-        },
-        {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
-              "amountPerTier": 2.0,
-              "iconType": "rockets_he_middle_group"
-            }
-          }
-        }
-      ]
+      "preset": {
+        "name": "douglas_ad_2_1x2000lb",
+        "blk": "gameData/FlightModels/weaponPresets/douglas_ad_2_1x2000lb.blk",
+        "reqModification": "btd_lbc"
+      }
     },
     {
       "preset": [
@@ -2080,6 +2069,15 @@
         },
         {
           "reqModification": "btd_lbc"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large"
+            }
+          }
         }
       ]
     },
@@ -2096,6 +2094,15 @@
         },
         {
           "reqModification": "btd_lbc"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large"
+            }
+          }
         }
       ]
     },
@@ -2118,13 +2125,22 @@
         "name": "douglas_ad_2_2x1000lb_12hvar",
         "blk": "gameData/FlightModels/weaponPresets/douglas_ad_2_2x1000lb_12hvar.blk",
         "reqModification": "btd_mbc",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
-            "amountPerTier": 2.0,
-            "iconType": "rockets_he_middle_group"
+        "weaponConfig": [
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+              "amountPerTier": 2.0,
+              "iconType": "rockets_he_middle_group"
+            }
+          },
+          {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_large"
+            }
           }
-        }
+        ]
       }
     },
     {
@@ -2192,13 +2208,22 @@
           "reqModification": "btd_lbc"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
-              "amountPerTier": 2.0,
-              "iconType": "rockets_he_middle_group"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+                "amountPerTier": 2.0,
+                "iconType": "rockets_he_middle_group"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_large"
+              }
             }
-          }
+          ]
         }
       ]
     }

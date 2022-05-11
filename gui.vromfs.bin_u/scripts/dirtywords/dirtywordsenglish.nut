@@ -10,7 +10,7 @@ excludesdata =
     key = "a",
     arr =
     [
-      "ass[aiou]"
+      "ass[aeiou]"
     ]
   },
   {
