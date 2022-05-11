@@ -792,6 +792,13 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     for(local i=startIdx; i < lastIdx; i++)
     {
       let item = itemsList[i]
+
+      if (curTab == itemsTab.SHOP && item?.isExpired())
+      {
+        updateItemsList()
+        return
+      }
+
       if (!item.hasTimer() && !item?.hasLifetimeTimer())
         continue
 

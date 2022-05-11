@@ -445,6 +445,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.SPECIAL_EVENT
 
+    specificCheck = @() ::is_dev_version
     showByUnit = @(unit, unitTag) [ "combat_track_a", "combat_track_h", "combat_tank_a", "combat_tank_h",
       "mlrs_tank_a", "mlrs_tank_h", "acoustic_heavy_tank_a", "destroyer_heavy_tank_h",
       "dragonfly_a", "dragonfly_h" ].contains(unit?.name)

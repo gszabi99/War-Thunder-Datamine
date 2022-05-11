@@ -17,6 +17,8 @@ let function needSuggestSkin(unitName, skinId) {
 }
 
 let function getSuggestedSkin(unitName) {
+  if(!::g_login.isProfileReceived())
+    return null
   let skinIds = getSuggestedSkins(unitName)
   if (skinIds.len() == 0)
     return null
@@ -26,6 +28,8 @@ let function getSuggestedSkin(unitName) {
 }
 
 let function saveSeenSuggestedSkin(unitName, skinId) {
+  if(!::g_login.isProfileReceived())
+    return
   let skinIds = getSuggestedSkins(unitName)
   if (skinId not in skinIds)
     return

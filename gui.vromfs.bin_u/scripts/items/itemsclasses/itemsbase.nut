@@ -214,7 +214,7 @@ local expireTypes = {
 
   function isCanBuy()
   {
-    return canBuy && checkPurchaseFeature()
+    return canBuy && checkPurchaseFeature() && !isExpired()
   }
 
   function getCost(ignoreCanBuy = false)

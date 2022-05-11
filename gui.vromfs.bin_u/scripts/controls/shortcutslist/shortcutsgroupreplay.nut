@@ -105,7 +105,7 @@ return [
     id = "ID_REPLAY_AVI_WRITER"
     checkGroup = ctrlGroups.REPLAY
     checkAssign = false
-    showFunc = @() ::has_feature("ClientReplay")
+    showFunc = @() ::target_platform != "macosx" && ::has_feature("ClientReplay")
   }
   {
     id = "ID_REPLAY_SHOW_MARKERS"

@@ -250,13 +250,13 @@ local ItemExternal = class extends ::BaseItem
     return true
   }
 
- function isCanBuy()
- {
+  function isCanBuy()
+  {
     let inventoryItemCost = inventoryClient.getItemCost(id)
-    if(!canBuy || !checkPurchaseFeature() || inventoryItemCost.isZero())
+    if(!canBuy || !checkPurchaseFeature() || inventoryItemCost.isZero() || isExpired())
       return false
 
-  return inventoryItemCost.gold == 0 || ::has_feature(itemDef?.tags.purchaseForGoldFeature ?? "PurchaseMarketItemsForGold")
+    return inventoryItemCost.gold == 0 || ::has_feature(itemDef?.tags.purchaseForGoldFeature ?? "PurchaseMarketItemsForGold")
   }
 
   function getCost(ignoreCanBuy = false)
