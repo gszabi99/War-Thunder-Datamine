@@ -397,6 +397,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       return []
 
     let canCopyCurPreset = presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM
+      && presets[curPresetIdx].isEnabled
     let canEditCurPreset = isCustomPreset(presets[curPresetIdx])
 
     return [
@@ -420,11 +421,19 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         show = canEditCurPreset
         action = @() onPresetDelete()
       }
-    ]
+    ].filter(@(a) a.show)
   }
 
   function onPresetMenuOpen() {
     ::gui_right_click_menu(getPresetActions(), this)
+  }
+
+  function onPresetActionsMenuOpen() {
+    let actions = getPresetActions()
+    if (actions.len() == 1)
+      actions[0].action.call(this)
+    else
+      ::gui_right_click_menu(actions, this)
   }
 
   isCustomPresetsAvailable = @() unit.hasWeaponSlots  && availableWeapons.len() > 0
@@ -444,8 +453,16 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     }
 
     let curPreset = presets[curPresetIdx]
-    showSceneBtn("openPresetMenuBtn", (isAvailable
-      && (isCustomPreset(curPreset) || curPreset.isEnabled)))
+    let actions = getPresetActions()
+    let isVisibleActionsButton = actions.len() > 0
+    let bObj = showSceneBtn("openPresetMenuBtn", isVisibleActionsButton)
+    if (isVisibleActionsButton)
+    {
+      if (actions.len() == 1)
+        bObj.setValue(actions[0].text)
+      else
+        bObj.setValue(::loc("msgbox/presetActions"))
+    }
 
     let idx = curPresetIdx
     let params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)

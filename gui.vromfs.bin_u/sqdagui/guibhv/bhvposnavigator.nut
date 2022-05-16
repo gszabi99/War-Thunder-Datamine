@@ -264,14 +264,15 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return res
   }
 
-  function selectItemByClick(obj, mx, my) {
+  function selectItemByClick(obj, mx, my, isNeedSendClick = true) {
     let clicked = findClickedObj(obj, mx, my)
     if (!clicked)
       return -1
 
     selectItem(obj, clicked.idx, clicked.obj, !canChooseByMClick)
     resetFixedCoord(obj)
-    obj.sendNotify("click")
+    if (isNeedSendClick)
+      obj.sendNotify("click")
     if (canChooseByMClick)
       chooseItem(obj, clicked.idx, true)
     return clicked.idx
@@ -307,8 +308,12 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       return ::RETCODE_HALT
 
     if (bits & ::BITS_MOUSE_DBL_CLICK) {
-      if (getValue(obj) == -1)
-        selectItemByClick(obj, mx, my)
+      let curValue = getValue(obj)
+      if (curValue  == -1)
+        selectItemByClick(obj, mx, my, false)
+      else if (idx != curValue)
+        return ::RETCODE_NOTHING
+
       activateAction(obj)
       return ::RETCODE_HALT
     }
@@ -338,7 +343,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     }
     if (findClickedObj(obj, mx, my)?.idx == getValue(obj))
       return ::RETCODE_PROCESSED
-    return selectItemByClick(obj, mx, my) >= 0 ? ::RETCODE_HALT : ::RETCODE_NOTHING
+    return selectItemByClick(obj, mx, my, false) >= 0 ? ::RETCODE_HALT : ::RETCODE_NOTHING
   }
 
   function onShortcutLeft(obj, is_down)

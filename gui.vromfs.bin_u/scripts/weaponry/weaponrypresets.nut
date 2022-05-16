@@ -43,12 +43,12 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
     slots = slots.filter(@(_) _?.tier != null)// Pesets weapon only
   if (slots.len() > 0)// CUSTOM data type
     foreach (wp in (weaponsBlk % "Weapon")) {
-      let slot = slots.findvalue(@(_) _.index == wp.slot)
+      let slot = slots.findvalue(@(s) s.index == wp.slot)
       if (!slot) {
         ::script_net_assert_once("WeaponSlots", $"WeaponSlot index {wp.slot} does not exist")
         continue
       }
-      let curPreset = (slot % "WeaponPreset").findvalue(@(_) _.name == wp.preset)
+      let curPreset = (slot % "WeaponPreset").findvalue(@(s) s.name == wp.preset)
       if (curPreset == null) {
         ::script_net_assert_once("WeaponSlots", $"WeaponPreset name {wp.preset} does not exist")
         continue
@@ -79,6 +79,9 @@ let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
 
 let function getSlotWeapons(slotBlk) {
   let res = []
+  if (slotBlk == null)
+    return res
+
   foreach (preset in ((slotBlk % "WeaponPreset")))
     addSlotWeaponsFromPreset(res, slotBlk, preset)
   return res
@@ -133,4 +136,6 @@ return {
   getUnitWeaponSlots
   getDefaultCustomPresetParams
   isCustomPreset
+  getSlotWeapons
+  getPresetWeaponsByPath
 }

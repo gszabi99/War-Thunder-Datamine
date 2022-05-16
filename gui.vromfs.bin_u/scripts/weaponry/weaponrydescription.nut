@@ -30,7 +30,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
   if (!unit)
     return text
 
-  let weapons = getUnitWeaponry(unit, p)
+  let weapons = p?.weapons ?? getUnitWeaponry(unit, p)
   if (weapons == null)
     return text
 

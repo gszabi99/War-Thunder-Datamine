@@ -63,7 +63,7 @@ root {
         Button_text {
           id:t='openPresetMenuBtn'
           text:t='#msgbox/presetActions'
-          on_click:t='onPresetMenuOpen'
+          on_click:t='onPresetActionsMenuOpen'
           btnName:t='LB'
           display:t='hide'
           ButtonImg {}

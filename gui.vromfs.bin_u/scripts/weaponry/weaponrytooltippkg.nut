@@ -6,12 +6,14 @@ let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
   getModificationInfo, getModificationName
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
-let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
+  addWeaponsFromBlk, getWeaponBlkParams } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
 let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = ::require_native("hudActionBar")
+let { getUnitWeaponSlots, getPresetWeaponsByPath, getUnitPresets,
+  getSlotWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
 let function updateModType(unit, mod)
@@ -42,7 +44,6 @@ let function getTierTooltipParams(weaponry, presetName, tierId)
 {
   let tier = weaponry.tiers?[tierId]
   return {
-    presetName    = presetName
     tooltipLang   = tier?.tooltipLang
     amountPerTier = tier?.amountPerTier ?? weaponry.amountPerTier ?? 0
     name          = weaponry.name
@@ -51,21 +52,38 @@ let function getTierTooltipParams(weaponry, presetName, tierId)
     ammo          = weaponry.ammo
     isGun         = weaponry.isGun
     addWeaponry   = weaponry?.addWeaponry
+    presetName
     tierId
   }
 }
 
-let function getTierDescTbl(unit, params)
-{
-  let {presetName, tooltipLang, amountPerTier, name,
-    blk, tType, ammo, isGun, addWeaponry, tierId } = params
+let function getTierDescTbl(unit, params) {
+  let {tooltipLang, amountPerTier, name,
+    blk, tType, ammo, isGun, addWeaponry, presetName, tierId } = params
   if (tooltipLang != null)
     return { desc = ::loc(tooltipLang) }
 
-  let isBlock = amountPerTier > 1
   local header = ::loc($"weapons/{name}")
-  let desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
-    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, value) path == blk) })
+  let isBlock = amountPerTier > 1
+
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  local weaponsArr = []
+  if (unit.hasWeaponSlots) {
+    let slots = getUnitWeaponSlots(unitBlk)
+    weaponsArr = getSlotWeapons(slots.findvalue(@(s) s?.tier == tierId)).filter(
+      @(w) getWeaponBlkParams(w.blk, {}).weaponBlkPath == blk)
+  }
+  else
+    weaponsArr = getPresetWeaponsByPath(unitBlk,
+      getUnitPresets(unitBlk).findvalue(@(p) p.name == presetName).blk).filter(@(w) w.blk == blk)
+
+  let weapons = addWeaponsFromBlk({}, weaponsArr ?? [], unit)
+  let desc = getWeaponInfoText(unit, {
+    weapons
+    isPrimary = false
+    detail = INFO_DETAIL.EXTENDED
+  })
+
   if (::isInArray(tType, CONSUMABLE_TYPES))
     header = isBlock ?
       "".concat(header, ::format(::loc("weapons/counter"), amountPerTier)) : header

@@ -6,9 +6,8 @@ let contentPreview = require("%scripts/customization/contentPreview.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let stdMath = require("%sqstd/math.nut")
 let { targetPlatform, canSpendRealMoney } = require("%scripts/clientState/platform.nut")
-let { getLastWeapon,
-        isWeaponEnabled,
-        isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, getWeaponBlkParams, isWeaponEnabled,
+  isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -529,10 +528,14 @@ local Unit = class
         else if (weap?.trigger == "countermeasures")
           availableWeapons.hasCountermeasures = true
 
-        let weapBlk = blkFromPath(weap.blk)
+        let wBlk = blkFromPath(weap.blk)
+        let isContainer = wBlk?.container ?? false
+        let wParams = isContainer ? getWeaponBlkParams(wBlk.blk, {}, wBlk?.bullets) : {}
+        let weapBlk = isContainer ? wParams.weaponBlk : wBlk
+
         if (weapBlk?.bomb) {
           availableWeapons.hasBombs = true
-          nbrBomb++
+          nbrBomb += isContainer ? wParams.bulletsCount : 1
         }
         if (weapBlk?.rocket && (weapBlk.rocket?.distanceFuse ?? true))
           availableWeapons.hasRocketDistanceFuse = true
