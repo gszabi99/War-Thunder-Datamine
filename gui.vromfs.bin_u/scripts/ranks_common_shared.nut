@@ -312,7 +312,32 @@ let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocket
   return weaponMul
 }
 
-::get_unit_spawn_score_weapon_mul <- function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray)
+let function getCustomWeaponPresetParams(unitname, weaponTable) {
+  local resTable = {
+    totalBombRocketMass = 0
+    atgmVisibilityTypeArr = []
+    maxRocketMass = 0
+  }
+
+  let weaponsBlk = ::get_wpcost_blk()?[unitname].weapons
+  if (weaponsBlk == null)
+    return resTable
+
+  foreach (weaponName, count in weaponTable) {
+    let totalBombRocketMass = weaponsBlk?[weaponName].totalBombRocketMass ?? 0
+    let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
+    let maxRocketMass = weaponsBlk?[weaponName].maxRocketMass ?? 0
+
+    resTable.totalBombRocketMass += (totalBombRocketMass * count)
+    if (atgmVisibilityType != "" && resTable.atgmVisibilityTypeArr.indexof(atgmVisibilityType) == null)
+      resTable.atgmVisibilityTypeArr.append(atgmVisibilityType)
+    resTable.maxRocketMass = max(maxRocketMass, resTable.maxRocketMass)
+  }
+
+  return resTable
+}
+
+::get_unit_spawn_score_weapon_mul <- function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTbl = {})
 {
   let wpcost = ::get_wpcost_blk()
   let unitClass = wpcost?[unitname]?.unitClass
@@ -327,16 +352,31 @@ let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocket
   }
 
   local weaponMul = 1.0
-  let weaponBlk = wpcost?[unitname].weapons[weapon]
-  if (weaponBlk != null && get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
-    weaponMul = weaponBlk?.spawnCostMul ?? 1.0 // temp for compatibility with prev wpcost format
+  if (get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
+    let weaponBlk = wpcost?[unitname].weapons[weapon]
+    if (weaponBlk != null) {
+      weaponMul = weaponBlk?.spawnCostMul ?? 1.0 // temp for compatibility with prev wpcost format
 
-    let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
-    if (weaponMulBlk != null) {
-      let totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
-      let atgmVisibilityTypeArr = (weaponBlk % "atgmVisibilityType") ?? []
-      let maxRocketMass = weaponBlk?.maxRocketMass ?? 0
-      weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, totalBombRocketMass, atgmVisibilityTypeArr, maxRocketMass)
+      let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
+      if (weaponMulBlk != null) {
+        let totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
+        let atgmVisibilityTypeArr = (weaponBlk % "atgmVisibilityType") ?? []
+        let maxRocketMass = weaponBlk?.maxRocketMass ?? 0
+        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, totalBombRocketMass, atgmVisibilityTypeArr, maxRocketMass)
+      }
+    }
+    else if (presetTbl?.presetWeapons != null && presetTbl.presetWeapons.len() > 0) {
+      let customWeaponPresetParams = getCustomWeaponPresetParams(unitname, presetTbl.presetWeapons)
+      weaponMul = getSpawnScoreWeaponMulByParams(
+        unitname,
+        unitClass,
+        customWeaponPresetParams.totalBombRocketMass,
+        customWeaponPresetParams.atgmVisibilityTypeArr,
+        customWeaponPresetParams.maxRocketMass
+      )
+    }
+    else if (weapon != null && weapon != "") {
+      dagor.logerr($"getUnitSpawnScore: there is no weapon in wpcost and presetWeapons is empty for {unitname} {weapon}")
     }
   }
 
