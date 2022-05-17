@@ -2,6 +2,7 @@ let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -37,31 +38,6 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::g_contacts <- {
   findContactByPSNId = @(psnId) ::contacts_players.findvalue(@(player) player.psnId == psnId)
-
-  verifyContact = function(params)
-  {
-    let name = params?.playerName
-    local newContact = ::getContact(params?.uid, name, params?.clanTag)
-    if (!newContact && name)
-      newContact = ::Contact.getByName(name)
-
-    return newContact
-  }
-
-  addContact = function(_contact, groupName, params = {}) {
-    let contact = _contact || verifyContact(params)
-    if (!contact)
-      return null
-
-    ::addContactGroup(groupName) //Group can be not exist in list
-
-    let existContactIdx = ::contacts[groupName].findindex(@(c) c.isSameContact(contact.uid))
-    if (existContactIdx == null)
-      ::contacts[groupName].append(contact)
-
-    contact?.updateMuteStatus()
-    return contact
-  }
 }
 
 let editContactsList = require("%scripts/contacts/editContacts.nut")
@@ -541,17 +517,6 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   ::missed_contacts_data[uid][key] <- val
 }
 
-::addContactGroup <- function addContactGroup(group)
-{
-  if(!(::isInArray(group, ::contacts_groups)))
-  {
-    ::contacts_groups.insert(2, group)
-    ::contacts[group] <- []
-    if(::contacts_handler && "fillContactsList" in ::contacts_handler)
-      ::contacts_handler.fillContactsList.call(::contacts_handler)
-  }
-}
-
 ::isPlayerInFriendsGroup <- function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "")
 {
   if (::u.isEmpty(uid))
@@ -566,17 +531,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   return isFriend
 }
 
-::clear_contacts <- function clear_contacts()
-{
-  ::contacts_groups = []
-  foreach(num, group in ::contacts_groups_default)
-    ::contacts_groups.append(group)
-  ::contacts = {}
-  foreach(list in ::contacts_groups)
-    ::contacts[list] <- []
 
-  ::broadcastEvent("ContactsCleared")
-}
 
 ::get_contacts_array_by_filter_func <- function get_contacts_array_by_filter_func(groupName, filterFunc)
 {
@@ -595,7 +550,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 }
 
 if (!::contacts)
-  ::clear_contacts()
+  clear_contacts()
 
 ::subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)
 

@@ -8,7 +8,6 @@ let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, 
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
-let stdMath = require("%sqstd/math.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
@@ -281,9 +280,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let imgConf = ::g_unlock_view.getUnlockImageConfig(unlConf)
       let progressTxt = ::UnlockConditions._genMainConditionText(
         mainCond, unlConf.curVal, unlConf.maxVal, {isProgressTextOnly = true})
-      let isComplete = ::UnlockConditions.isBitModeType(unlConf.type)
-        ? stdMath.number_of_set_bits(unlConf.curVal) >= stdMath.number_of_set_bits(unlConf.maxVal)
-        : unlConf.curVal >= unlConf.maxVal
+      let isComplete = ::g_unlocks.isUnlockComplete(unlConf)
       res.append({
         descTooltipText = unlConf.locId != "" ? getUnlockLocName(unlConf)
           : ::get_unlock_name_text(unlConf.unlockType, unlConf.id)

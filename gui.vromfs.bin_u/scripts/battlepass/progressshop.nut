@@ -181,15 +181,22 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function buyGood(goodsConfig) {
     let { additionalTrophyItem, battlePassUnlock, rowIdx } = goodsConfig
     ::dagor.debug($"Buy Battle Pass goods. goodsIdx: {rowIdx}")
-    if (battlePassUnlock != null)
-      g_unlocks.buyUnlock(battlePassUnlock, function() {
-        refreshUserstatUnlocks()
-        ::broadcastEvent("BattlePassPurchased")
-      })
-    if (additionalTrophyItem != null) {
+
+    let function tryBuyAdditionalTrophy() {
+      if (additionalTrophyItem == null)
+        return
       let cost = additionalTrophyItem.getCost()
       additionalTrophyItem._buy(@(res) null, { cost = cost.wp, costGold = cost.gold })
     }
+
+    if (battlePassUnlock != null)
+      g_unlocks.buyUnlock(battlePassUnlock, function() {
+        tryBuyAdditionalTrophy()
+        refreshUserstatUnlocks()
+        ::broadcastEvent("BattlePassPurchased")
+      })
+    else
+      tryBuyAdditionalTrophy()
     markRowsSeen()
   }
 

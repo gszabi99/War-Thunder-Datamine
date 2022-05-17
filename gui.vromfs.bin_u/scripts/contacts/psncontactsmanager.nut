@@ -5,6 +5,7 @@ let logerr = stdLog.logerr
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
+let { addContact, addContactGroup } = require("%scripts/contacts/contactsManager.nut")
 
 let isContactsUpdated = persist("isContactsUpdated", @() ::Watched(false))
 
@@ -47,7 +48,7 @@ let tryUpdateContacts = function(contactsBlk)
           continue
 
         if (isAdding)
-          ::g_contacts.addContact(contact, group)
+          addContact(contact, group)
         else
           ::g_contacts.removeContact(contact, group)
 
@@ -178,7 +179,7 @@ let function onReceviedUsersList(groupName, responseInfoName, response, err) {
 
 let function fetchFriendlist() {
   checkGroups.append(::EPLX_PS4_FRIENDS)
-  ::addContactGroup(::EPLX_PS4_FRIENDS)
+  addContactGroup(::EPLX_PS4_FRIENDS)
   psn.fetch(
     psn.profile.listFriends(),
     @(response, err) onReceviedUsersList(::EPLX_PS4_FRIENDS, PSN_RESPONSE_FIELDS.friends, response, err),

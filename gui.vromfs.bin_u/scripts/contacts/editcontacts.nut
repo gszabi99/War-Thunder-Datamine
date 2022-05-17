@@ -54,9 +54,11 @@ return function(list, groupName, showNotification = false) {
           for (local i = 0; i < blk.body[groupName].paramCount(); i++)
           {
             let uid = blk.body[groupName].getParamValue(i)
-            contactsList.append(::getContact(uid.tostring()))
+            let contact = ::getContact(uid.tostring())
+            if(contact)
+              contactsList.append(contact)
           }
-          text = ::format(msg, ::g_string.implode(contactsList.map(@(c) c.getName()), ::loc("ui/comma") ))
+          text = ::format(msg, ::g_string.implode(contactsList.map(@(c) c?.getName()), ::loc("ui/comma") ))
         }
         else
           text = ::format(::loc("msgbox/added_friends_number"), added)

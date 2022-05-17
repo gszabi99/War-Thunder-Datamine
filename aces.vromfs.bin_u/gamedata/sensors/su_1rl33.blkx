@@ -41,6 +41,20 @@
       "barsCount": 240,
       "rowMajor": false
     },
+    "search30": {
+      "type": "pyramide",
+      "azimuthLimits": [-180.0,180.0],
+      "elevationLimits": [-9.0,87.0],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 1.4,
+      "width": 7.5,
+      "barHeight": 1.5,
+      "barsCount": 20,
+      "rowMajor": false,
+      "barsOneWay": false
+    },
     "search60": {
       "type": "pyramide",
       "azimuthLimits": [-180.0,180.0],
@@ -51,7 +65,21 @@
       "period": 3.0,
       "width": 7.5,
       "barHeight": 1.5,
-      "barsCount": 41,
+      "barsCount": 40,
+      "rowMajor": false,
+      "barsOneWay": false
+    },
+    "search90": {
+      "type": "pyramide",
+      "azimuthLimits": [-180.0,180.0],
+      "elevationLimits": [-9.0,87.0],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 4.3,
+      "width": 7.5,
+      "barHeight": 1.5,
+      "barsCount": 60,
       "rowMajor": false,
       "barsOneWay": false
     },
@@ -130,9 +158,11 @@
   },
   "scanPatternSets": {
     "search": {
-      "scanPattern1": "search60",
+      "scanPattern1": "search90",
+      "scanPattern3": "search60",
+      "scanPattern4": "search30",
       "scanPattern2": "search360",
-      "scanPattern3": "searchVertical"
+      "scanPattern5": "searchVertical"
     }
   },
   "scopeRangeSets": {
@@ -156,7 +186,7 @@
             "signal": "common"
           },
           "setTargetDesignationRange": {
-            "azimuthRange": [-30.0,30.0],
+            "azimuthRange": [-180.0,180.0],
             "azimuthWidth": 5.0,
             "distanceRange": [0.0,16000.0]
           },

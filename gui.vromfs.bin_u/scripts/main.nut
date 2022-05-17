@@ -297,6 +297,7 @@ global enum xboxMediaItemType { //values by microsoft IDE, others not used
 global enum contactEvent
 {
   CONTACTS_UPDATED = "ContactsUpdated"
+  CONTACTS_GROUP_ADDED = "ContactsGroupAdd"
   CONTACTS_GROUP_UPDATE = "ContactsGroupUpdate"
 }
 

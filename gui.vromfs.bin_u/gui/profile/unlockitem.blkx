@@ -46,11 +46,22 @@
         },
         {
           "textareaNoTab": {
+            "id": "conditions",
+            "width": "pw",
+            "overflow": "hidden",
+            "smallFont": "yes",
+            "text": "",
+            "margin-top": "1@blockInterval"
+          }
+        },
+        {
+          "textareaNoTab": {
             "id": "mult_desc",
             "width": "pw",
             "overflow": "hidden",
             "smallFont": "yes",
-            "text": ""
+            "text": "",
+            "margin-top": "1@blockInterval"
           }
         },
         {
@@ -73,20 +84,39 @@
           }
         },
         {
+          "challengeDescriptionProgress": {
+            "id": "progress_bar",
+            "value": "",
+            "display": "hide"
+          }
+        },
+        {
           "tdiv": [
             {
+              "width": "pw"
+            },
+            {
+              "left": "-1@blockInterval"
+            },
+            {
+              "position": "relative"
+            },
+            {
               "Button_text": {
-                "id": "show_units_btn",
-                "unlockId": "",
-                "text": "#mainmenu/showVehicles",
-                "margin-top": "1@blockInterval",
-                "margin-bottom": "1@blockInterval",
-                "btnName": "X",
+                "id": "purchase_button",
+                "hideText": "yes",
+                "visualStyle": "purchase",
                 "enableOn": "hoverOrSelect",
-                "display": "hide",
-                "on_click": "showUnlockUnits",
+                "on_click": "onBuyUnlock",
+                "unlockId": "",
+                "btnName": "Y",
+                "buttonWink": [],
                 "ButtonImg": {
                   "showOnSelect": "yes"
+                },
+                "textarea": {
+                  "id": "purchase_button_text",
+                  "class": "buttonText"
                 }
               }
             },
@@ -101,43 +131,34 @@
                 "enableOn": "hoverOrSelect",
                 "display": "hide",
                 "on_click": "showUnlockPrizes",
+                "visualStyle": "secondary",
+                "buttonWink": [],
+                "ButtonImg": {
+                  "showOnSelect": "yes"
+                }
+              }
+            },
+            {
+              "Button_text": {
+                "id": "show_units_btn",
+                "unlockId": "",
+                "text": "#mainmenu/showVehicles",
+                "margin-top": "1@blockInterval",
+                "margin-bottom": "1@blockInterval",
+                "btnName": "X",
+                "enableOn": "hoverOrSelect",
+                "display": "hide",
+                "on_click": "showUnlockUnits",
+                "visualStyle": "secondary",
+                "buttonWink": [],
                 "ButtonImg": {
                   "showOnSelect": "yes"
                 }
               }
             }
           ]
-        },
-        {
-          "challengeDescriptionProgress": {
-            "id": "progress_bar",
-            "value": "",
-            "display": "hide"
-          }
         }
       ],
-      "tdiv": {
-        "pos": "pw-w, 0.005@sf",
-        "position": "absolute",
-        "height": "1@buttonHeight",
-        "Button_text": {
-          "id": "purchase_button",
-          "hideText": "yes",
-          "visualStyle": "purchase",
-          "enableOn": "hoverOrSelect",
-          "on_click": "onBuyUnlock",
-          "unlockId": "",
-          "btnName": "Y",
-          "buttonWink": [],
-          "ButtonImg": {
-            "showOnSelect": "yes"
-          },
-          "textarea": {
-            "id": "purchase_button_text",
-            "class": "buttonText"
-          }
-        }
-      },
       "unlockStages": {
         "id": "stages",
         "margin-left": "0.05@sf",
@@ -149,7 +170,7 @@
       },
       "CheckBox": {
         "id": "checkbox_favorites",
-        "pos": "pw-w-@blockInterval, ph-h-@blockInterval",
+        "pos": "pw-w-@blockInterval, @blockInterval",
         "position": "absolute",
         "text": "#mainmenu/UnlockAchievementsToFavorite",
         "smallFont": "yes",

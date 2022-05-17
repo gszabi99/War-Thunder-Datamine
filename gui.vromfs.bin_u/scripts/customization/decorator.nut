@@ -2,7 +2,6 @@ let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 let contentPreview = require("%scripts/customization/contentPreview.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
-let stdMath = require("%sqstd/math.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 let { copyParamsToTable, eachParam } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -244,9 +243,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
     let descData = []
 
-    let isComplete = ::UnlockConditions.isBitModeType(config.type)
-                         ? stdMath.number_of_set_bits(config.curVal) >= stdMath.number_of_set_bits(config.maxVal)
-                         : config.curVal >= config.maxVal
+    let isComplete = ::g_unlocks.isUnlockComplete(config)
 
     if (showStages && !isComplete)
       descData.append(::loc("challenge/stage", {

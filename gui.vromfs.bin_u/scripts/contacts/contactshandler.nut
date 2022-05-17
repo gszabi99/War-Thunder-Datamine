@@ -638,10 +638,32 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
     onGroupSelectImpl(gObj)
   }
 
+  function isGroupListChanged() {
+    let gObj = scene.findObject("contacts_groups")
+    let groups = getContactsGroups()
+
+    if(groups.len() != gObj.childrenCount())
+      return true
+
+    for(local i = 0; i < groups.len(); i++){
+      local groupId = $"group_{groups[i]}"
+      let curGroupObj = gObj.getChild(i).findObject(groupId)
+      if (!(curGroupObj?.isValid() ?? false))
+        return true
+    }
+    return false
+  }
+
   function updateContactsGroup(groupName)
   {
     if (!isContactsWindowActive())
       return
+
+    if(isGroupListChanged())
+    {
+      fillContactsList()
+      return
+    }
 
     if (groupName && !(groupName in ::contacts))
     {
@@ -677,7 +699,7 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
       if (listObj)
       {
         if (::contacts[curGroup].len() > 0)
-          listObj.setValue(sel>0? sel : 0)
+          listObj.setValue(sel > 0 ? sel : 0)
         onPlayerSelect(listObj)
       }
     }
@@ -686,6 +708,11 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
   function onEventContactsGroupUpdate(params)
   {
     updateContactsGroup(params?.groupName)
+  }
+
+  function onEventContactsGroupAdd(_)
+  {
+    fillContactsList()
   }
 
   function onEventModalWndDestroy(params)

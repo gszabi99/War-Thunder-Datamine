@@ -22,8 +22,52 @@ let function getSubUnlockLocName(config) {
     return ""
 }
 
+let function getUnlockDesc(cfg, params = {}) {
+  let desc = [cfg?.stagesText ?? ""]
+
+  let hasDescInConds = cfg?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
+  if (!hasDescInConds)
+    if ((cfg?.locDescId ?? "") != "") {
+      let isBitMode = ::UnlockConditions.isBitModeType(cfg.type)
+      let maxVal = params?.maxVal ?? cfg.maxVal
+      let num = isBitMode ? number_of_set_bits(maxVal) : maxVal
+      desc.append(::loc(cfg.locDescId, { num }))
+    }
+    else if ((cfg?.desc ?? "") != "")
+      desc.append(cfg.desc)
+
+  return "\n".join(desc, true)
+}
+
+let function getUnlockConditions(cfg, params = {}) {
+  params.isExpired <- cfg.isExpired
+
+  let curVal = params?.curVal ?? (::g_unlocks.isUnlockComplete(cfg) ? null : cfg.curVal)
+  let maxVal = params?.maxVal ?? cfg.maxVal
+  let desc = [::UnlockConditions.getConditionsText(cfg.conditions, curVal, maxVal, params)]
+
+  if (params?.showCost ?? false) {
+    let cost = ::get_unlock_cost(cfg.id)
+    if (cost > ::zero_money)
+      desc.append("".concat(
+        ::loc("ugm/price"),
+        ::loc("ui/colon"),
+        ::colorize("unlockActiveColor", cost.getTextAccordingToBalance())))
+  }
+
+  return "\n".join(desc, true)
+}
+
+let function getFullUnlockDesc(cfg, params) {
+  return "\n".join([
+    getUnlockDesc(cfg, params),
+    getUnlockConditions(cfg, params)], true)
+}
 
 return {
   getUnlockLocName
   getSubUnlockLocName
+  getFullUnlockDesc
+  getUnlockDesc
+  getUnlockConditions
 }

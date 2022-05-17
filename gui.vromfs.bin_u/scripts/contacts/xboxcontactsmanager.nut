@@ -1,5 +1,6 @@
 let platformModule = require("%scripts/clientState/platform.nut")
 let extContactsService = require("%scripts/contacts/externalContactsService.nut")
+let { addContact } = require("%scripts/contacts/contactsManager.nut")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
@@ -72,7 +73,7 @@ let tryUpdateContacts = function(contactsBlk)
           continue
 
         if (isAdding)
-          ::g_contacts.addContact(contact, group)
+          addContact(contact, group)
         else
           ::g_contacts.removeContact(contact, group)
       }

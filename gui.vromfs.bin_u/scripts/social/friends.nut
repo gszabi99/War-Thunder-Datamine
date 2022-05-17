@@ -1,4 +1,5 @@
 let editContactsList = require("%scripts/contacts/editContacts.nut")
+let { addContactGroup } = require("%scripts/contacts/contactsManager.nut")
 
 ::no_dump_facebook_friends <- {}
 
@@ -17,7 +18,7 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
 
   if (players.len())
   {
-    ::addContactGroup(groupName)
+    addContactGroup(groupName)
     editContactsList({[true] = players}, groupName, !silent)
   }
 
@@ -55,7 +56,7 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
     ::add_bg_task_cb(taskId, function(){
         let resultBlk = ::facebook_find_friends_result()
         ::addSocialFriends(resultBlk, ::EPL_FACEBOOK)
-        ::addContactGroup(::EPL_FACEBOOK)
+        addContactGroup(::EPL_FACEBOOK)
       })
 }
 //-------------------- </Facebook> ----------------------------

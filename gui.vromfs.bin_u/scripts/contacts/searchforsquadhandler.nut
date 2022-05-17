@@ -2,7 +2,7 @@ let { canInteractCrossConsole,
         isXBoxPlayerName,
         isPlatformSony } = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { updateContacts } = require("%scripts/contacts/contactsManager.nut")
+let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 

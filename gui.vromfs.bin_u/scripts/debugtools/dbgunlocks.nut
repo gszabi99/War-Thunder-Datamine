@@ -1,5 +1,6 @@
 // warning disable: -file:forbidden-function
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
+let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {
@@ -61,8 +62,8 @@ let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
   let params = {showCost = showCost}
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
-    let data = ::build_conditions_config(unlock)
-    let desc = ::getUnlockDescription(data, params)
+    let cfg = ::build_conditions_config(unlock)
+    let desc = getFullUnlockDesc(cfg, params)
     res += "\n" + unlock.id + ":" + (desc != ""? "\n" : "") + desc
   }
   dlog("GP: res:")
@@ -118,8 +119,8 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
   {
-    let data = ::build_conditions_config(unlock)
-    let desc = ::getUnlockDescription(data, params)
+    let cfg = ::build_conditions_config(unlock)
+    let desc = getFullUnlockDesc(cfg, params)
 
     let blk = ::DataBlock()
     blk.name = ::get_unlock_name_text(data.unlockType, id)

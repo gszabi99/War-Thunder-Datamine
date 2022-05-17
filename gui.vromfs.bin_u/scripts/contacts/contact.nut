@@ -6,7 +6,7 @@ let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService
 let { getXboxChatEnableStatus,
         isChatEnabled,
         isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { updateContacts } = require("%scripts/contacts/contactsManager.nut")
+let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 

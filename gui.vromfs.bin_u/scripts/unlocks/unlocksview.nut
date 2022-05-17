@@ -4,7 +4,8 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { is_bit_set } = require("%sqstd/math.nut")
 let { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
 } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnlockLocName, getSubUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockLocName, getSubUnlockLocName,
+  getUnlockDesc, getUnlockConditions } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
@@ -298,8 +299,8 @@ g_unlock_view.fillUnlockProgressBar <- function fillUnlockProgressBar(unlockConf
 
 g_unlock_view.fillUnlockDescription <- function fillUnlockDescription(unlockConfig, unlockObj)
 {
-  unlockObj.findObject("description")
-    .setValue(::getUnlockDescription(unlockConfig, { showMult = false }))
+  unlockObj.findObject("description").setValue(getUnlockDesc(unlockConfig))
+  unlockObj.findObject("conditions").setValue(getUnlockConditions(unlockConfig, { showMult = false }))
 
   let showUnitsBtnObj = unlockObj.findObject("show_units_btn")
   showUnitsBtnObj.show(hasActiveUnlock(unlockConfig.id, getShopDiffCode())

@@ -2792,6 +2792,10 @@
               "external": true,
               "separate": true,
               "loadFactorLimit": 7.0
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "delta_ng"
             }
           }
         },
@@ -3129,6 +3133,27 @@
               "separate": true
             }
           }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "rls",
+            "name": "delta_ng",
+            "reqModification": "yak_38_x23m",
+            "ShowNodes": [
+              {
+                "node": "pylon_2"
+              },
+              {
+                "node": "delta_ng"
+              }
+            ],
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/su_delta_ng_station.blk",
+              "emitter": "ub_16_57_2",
+              "bullets": 1
+            }
+          }
         }
       ]
     },
@@ -3440,12 +3465,6 @@
               },
               {
                 "node": "apu_68um_004"
-              },
-              {
-                "node": "pylon_2"
-              },
-              {
-                "node": "delta_ng"
               }
             ],
             "Weapon": {
@@ -3456,6 +3475,10 @@
               "external": true,
               "separate": true,
               "loadFactorLimit": 7.0
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "delta_ng"
             }
           }
         },

@@ -1,5 +1,5 @@
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
-let stdMath = require("%sqstd/math.nut")
+let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasFeatureBasic } = require("%scripts/user/features.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { isPlatformSony,
@@ -10,7 +10,8 @@ let { isLoadingBgUnlock,
         getLoadingBgName,
         getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let { statsTanks } = require("%scripts/user/userInfoStats.nut")
-let { getUnlockLocName, getSubUnlockLocName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockLocName, getSubUnlockLocName,
+  getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 ::unlocks_punctuation_without_space <- ","
@@ -106,9 +107,7 @@ local unlockConditionUnitclasses = {
   if (!showStages && item.maxVal < 0)
     return item
 
-  let isComplete = ::UnlockConditions.isBitModeType(item.type)
-                       ? stdMath.number_of_set_bits(item.curVal) >= stdMath.number_of_set_bits(item.maxVal)
-                       : item.curVal >= item.maxVal
+  let isComplete = ::g_unlocks.isUnlockComplete(item)
   if (showStages && !isComplete)
     item.stagesText <- ::loc("challenge/stage", {
                          stage = ::colorize("unlockActiveColor", item.curStage + 1)
@@ -125,48 +124,8 @@ local unlockConditionUnitclasses = {
   if (showAsContent && ::getTblValue("isRevenueShare", item))
     item.text += (item.text.len() ? "\n" : "") + ::colorize("advertTextColor", ::loc("content/revenue_share"))
 
-  item.text += (item.text.len() ? "\n\n" : "") + ::getUnlockDescription(item, params)
+  item.text += (item.text.len() ? "\n\n" : "") + getFullUnlockDesc(item, params)
   return item
-}
-
-::getUnlockDescription <- function getUnlockDescription(data, params = {})
-{
-  let descData = [::getTblValue("stagesText", data, "")]
-
-  let isBitMode = ::UnlockConditions.isBitModeType(data.type)
-  local curVal = params?.curVal
-  if (curVal == null)
-  {
-    let isComplete = isBitMode
-      ? stdMath.number_of_set_bits(data.curVal) >= stdMath.number_of_set_bits(data.maxVal)
-      : data.curVal >= data.maxVal
-    curVal = isComplete ? null : data.curVal
-  }
-
-  local maxVal = params?.maxVal
-  if (maxVal == null)
-    maxVal = data.maxVal
-
-  let hasDescInConds = data?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
-  if (!hasDescInConds)
-    if ((data?.locDescId ?? "") != "") {
-      let descValue = isBitMode ? stdMath.number_of_set_bits(maxVal) : maxVal
-      descData.append(::loc(data.locDescId, { num = descValue }))
-    }
-    else if ((data?.desc ?? "") != "")
-      descData.append(data.desc)
-
-  params.isExpired <- data.isExpired
-  descData.append(::UnlockConditions.getConditionsText(data.conditions, curVal, maxVal, params))
-
-  if (::getTblValue("showCost", params, false))
-  {
-    let cost = ::get_unlock_cost(data.id)
-    if (cost > ::zero_money)
-      descData.append(::loc("ugm/price") + ::loc("ui/colon") + ::colorize("unlockActiveColor", cost.getTextAccordingToBalance()))
-  }
-
-  return ::g_string.implode(descData, "\n")
 }
 
 ::set_image_by_unlock_type <- function set_image_by_unlock_type(config, unlockBlk)
@@ -1672,6 +1631,12 @@ local unlockConditionUnitclasses = {
     let timeCond = getTimeCondition(unlockBlk)
     return timeCond && !::u.isEmpty(timeCond.endDate)
       && getTimestampFromStringUtc(timeCond.endDate) <= ::get_charserver_time_sec()
+  }
+
+  function isUnlockComplete(cfg) {
+    return ::UnlockConditions.isBitModeType(cfg.type)
+      ? number_of_set_bits(cfg.curVal) >= number_of_set_bits(cfg.maxVal)
+      : cfg.curVal >= cfg.maxVal
   }
 
   function getUnlockCost(unlockName) {

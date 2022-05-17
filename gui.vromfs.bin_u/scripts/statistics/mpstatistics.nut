@@ -666,9 +666,13 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         if (!isTeamplay)
           playerTeam = Team.A
 
-        setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, showAircrafts, customTbl) // warning disable: -param-pos
+        let showEnemyAirs = isShowEnemyAirs()
+        let isLeftPlayerTeam = playerTeam == friendlyTeam
+        setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, // warning disable: -param-pos
+          isLeftPlayerTeam ? showAircrafts : showEnemyAirs, customTbl)
         if (!showLocalTeamOnly && playerTeam > 0)
-          setKillsTbl(tblObj2, 3 - playerTeam, playerTeam, friendlyTeam, isShowEnemyAirs(), customTbl)
+          setKillsTbl(tblObj2, 3 - playerTeam, playerTeam, friendlyTeam,
+            isLeftPlayerTeam ? showEnemyAirs : showAircrafts, customTbl)
       }
       else
         setKillsTbl(tblObj2, -1, -1, -1, showAircrafts, customTbl)

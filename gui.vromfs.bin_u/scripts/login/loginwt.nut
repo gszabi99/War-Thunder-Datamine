@@ -14,6 +14,7 @@ let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -50,7 +51,7 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
     return
 
   ::resetChat()
-  ::clear_contacts()
+  clear_contacts()
   ::SessionLobby.leaveRoom()
   if (::g_battle_tasks)
     ::g_battle_tasks.reset()

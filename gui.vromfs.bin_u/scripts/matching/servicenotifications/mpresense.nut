@@ -1,7 +1,5 @@
 let avatars = require("%scripts/user/avatars.nut")
-let { isPs4XboxOneInteractionAvailable,
-        isPlatformSony } = require("%scripts/clientState/platform.nut")
-let editContactsList = require("%scripts/contacts/editContacts.nut")
+let { updateContactsGroups } = require("%scripts/contacts/contactsManager.nut")
 
 ::on_presences_update <- function on_presences_update(params)
 {
@@ -86,54 +84,7 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
   ::update_contacts_by_list(contactsDataList, false)
 
   if ("groups" in params)
-  {
-    ::clear_contacts()
-
-    let friendsToRemove = []
-    foreach(listName, list in params.groups)
-    {
-      if (list == null
-          || (
-              ::contacts_groups_default.findvalue(@(gr) gr == listName) == null
-              && (
-                  (listName == ::EPLX_PS4_FRIENDS && !isPlatformSony)
-                  || list.len() == 0
-                )
-            )
-         )
-        continue
-
-      foreach (p in list)
-      {
-        let playerUid = p?.userId
-        let playerName = p?.nick
-        let playerClanTag = p?.clanTag
-
-        let player = ::g_contacts.addContact(null, listName, {
-          uid = playerUid
-          playerName = playerName
-          clanTag = playerClanTag
-        })
-
-        if (!player)
-        {
-          let myUserId = ::my_user_id_int64 // warning disable: -declared-never-used
-          let errText = playerUid ? "player not found" : "not valid data"
-          ::script_net_assert_once("not found contact for group", errText)
-          continue
-        }
-
-        if (listName == ::EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(playerName))
-        {
-          friendsToRemove.append(player)
-          continue
-        }
-      }
-    }
-
-    if (friendsToRemove.len())
-      editContactsList({[false] = friendsToRemove}, ::EPL_FRIENDLIST)
-  }
+    updateContactsGroups(params)
 
   ::broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, {groupName = null})
   ::update_gamercards()

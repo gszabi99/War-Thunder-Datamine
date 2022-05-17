@@ -5,6 +5,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnabled, attemptShowOverlayMessage,
   isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContactsStatus.nut")
+let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
@@ -98,6 +99,8 @@ let getActions = function(contact, params)
   local chatLog = params?.chatLog ?? roomData?.getLogForBanhammer()
   let isInPsnBlockList = platformModule.isPlatformSony && contact.isInBlockGroup()
   let canInviteToSesson = (isXBoxOnePlayer == ::is_platform_xbox) && !isInPsnBlockList
+
+  local canComplain = !isMe && (params?.canComplain ?? false)
 
   let actions = []
 //---- <Session Join> ---------
@@ -370,6 +373,11 @@ let getActions = function(contact, params)
         action = @() ::editContactMsgBox(contact, ::EPL_FACEBOOK, false)
       }
       {
+        text = ::loc("contacts/steamlist/remove")
+        show = params?.curContactGroup == ::EPL_STEAM && ::isPlayerInContacts(uid, ::EPL_STEAM)
+        action = @() ::editContactMsgBox(contact, ::EPL_STEAM, false)
+      }
+      {
         text = ::loc("contacts/blacklist/add")
         show = !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
         action = @() ::editContactMsgBox(contact, ::EPL_BLOCKLIST, true)
@@ -451,7 +459,6 @@ let getActions = function(contact, params)
         }
       )
 
-    local canComplain = !isMe && (params?.canComplain ?? false)
     if (!isMe)
     {
       if (roomData) {
@@ -467,38 +474,40 @@ let getActions = function(contact, params)
           canComplain = true
       }
     }
-
-    if (canComplain)
-      actions.append({
-        text = ::loc("mainmenu/btnComplain")
-        action = function() {
-          let config = {
-            userId = uid,
-            name = name,
-            clanTag = clanTag,
-            roomId = roomId,
-            roomName = roomData ? roomData.getRoomName() : ""
-          }
-
-          if (!isMPChat)
-          {
-            let threadInfo = ::g_chat.getThreadInfo(roomId)
-            if (threadInfo) {
-              chatLog = chatLog != null ? chatLog : {}
-              chatLog.category   <- threadInfo.category
-              chatLog.title      <- threadInfo.title
-              chatLog.ownerUid   <- threadInfo.ownerUid
-              chatLog.ownerNick  <- threadInfo.ownerNick
-              if (!roomData)
-                config.roomName = ::g_chat_room_type.THREAD.getRoomName(roomId)
-            }
-          }
-
-          ::gui_modal_complain(config, chatLog)
-        }
-      })
   }
 //---- </Chat> ----------------------
+
+//---- <Complain> ------------------
+  if (canComplain)
+    actions.append({
+      text = ::loc("mainmenu/btnComplain")
+      action = function() {
+        let config = {
+          userId = uid,
+          name = name,
+          clanTag = clanTag,
+          roomId = roomId,
+          roomName = roomData ? roomData.getRoomName() : ""
+        }
+
+        if (!isMPChat)
+        {
+          let threadInfo = ::g_chat.getThreadInfo(roomId)
+          if (threadInfo) {
+            chatLog = chatLog != null ? chatLog : {}
+            chatLog.category   <- threadInfo.category
+            chatLog.title      <- threadInfo.title
+            chatLog.ownerUid   <- threadInfo.ownerUid
+            chatLog.ownerNick  <- threadInfo.ownerNick
+            if (!roomData)
+              config.roomName = ::g_chat_room_type.THREAD.getRoomName(roomId)
+          }
+        }
+
+        ::gui_modal_complain(config, chatLog)
+      }
+    })
+//---- </Complain> ------------------
 
 //---- <Moderator> ------------------
   if (::is_myself_anyof_moderators() && (roomId || isMPChat || isMPLobby))
@@ -523,7 +532,7 @@ let getActions = function(contact, params)
 
 let showMenu = function(_contact, handler, params = {})
 {
-  let contact = _contact || ::g_contacts.verifyContact(params)
+  let contact = _contact || verifyContact(params)
   let showMenu = ::callee()
   if (contact && contact.needCheckXboxId())
     return contact.getXboxId(@() showMenu(contact, handler, params))
