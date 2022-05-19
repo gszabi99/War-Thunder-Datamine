@@ -14,6 +14,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "hasMissileCommandLine": false,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2286,6 +2287,10 @@
               "blk": "gameData/Weapons/rocketGuns/it_aspide_1a.blk",
               "emitter": "aspid_001",
               "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "aspide_control_station"
             }
           }
         },
@@ -2558,47 +2563,68 @@
       ]
     },
     {
-      "WeaponSlot": {
-        "index": 5,
-        "tier": 7,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "multibarrel_box_cannon",
-          "name": "cannon_m61",
-          "ShowDmParts": {
-            "node": "cannon1_dm"
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon"
+      "WeaponSlot": [
+        {
+          "index": 5
+        },
+        {
+          "tier": 7
+        },
+        {
+          "notUseforDisbalanceCalculation": true
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "multibarrel_box_cannon",
+            "name": "cannon_m61",
+            "ShowDmParts": {
+              "node": "cannon1_dm"
             },
-            {
-              "blk": "gameData/Weapons/cannonM61.blk"
-            },
-            {
-              "emitter": "flare1"
-            },
-            {
-              "flash": "flare1"
-            },
-            {
-              "dm": "cannon1_dm"
-            },
-            {
-              "bullets": 750
-            },
-            {
-              "spread": 1.0
-            },
-            {
-              "counterIndex": 1
-            },
-            {
-              "counterIndex": 2
+            "Weapon": [
+              {
+                "trigger": "cannon"
+              },
+              {
+                "blk": "gameData/Weapons/cannonM61A1.blk"
+              },
+              {
+                "emitter": "flare1"
+              },
+              {
+                "flash": "flare1"
+              },
+              {
+                "dm": "cannon1_dm"
+              },
+              {
+                "bullets": 750
+              },
+              {
+                "spread": 1.0
+              },
+              {
+                "counterIndex": 1
+              },
+              {
+                "counterIndex": 2
+              }
+            ]
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "rls",
+            "name": "aspide_control_station",
+            "eqModification": "it_aspide",
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/it_aspide_control_station.blk",
+              "emitter": "flare1",
+              "bullets": 1
             }
-          ]
+          }
         }
-      }
+      ]
     },
     {
       "WeaponSlot": {
@@ -2852,6 +2878,10 @@
               "blk": "gameData/Weapons/rocketGuns/it_aspide_1a.blk",
               "emitter": "aspid_002",
               "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "aspide_control_station"
             }
           }
         },

@@ -81,9 +81,9 @@ let WEAPON_TYPE = {
   GUIDED_BOMBS    = "guided bombs"
 }
 
-let CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.GUIDED_BOMBS,
-  WEAPON_TYPE.ROCKETS, WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES,
-  WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES]
+let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.GUIDED_BOMBS,
+  TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.MINES,
+  TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]
 
 let WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -386,7 +386,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       }
       foreach (dependentWeapon in (weapon % "dependentWeaponPreset")) {
         let dependentWeapons = item.dependentWeaponPreset?[dependentWeapon.preset] ?? []
-        item.dependentWeaponPreset[dependentWeapon.preset] <-dependentWeapons.append({
+        item.dependentWeaponPreset[dependentWeapon.preset] <- dependentWeapons.append({
           slot = dependentWeapon.slot
           reqForPresetId = weapon.presetId
           reqForTier = weapon.tier
@@ -565,7 +565,11 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     }
     else if (hasWeaponSlots) {
       currentType.weaponBlocks[weaponName].tiers.__update(item.tiers)
-      currentType.weaponBlocks[weaponName].dependentWeaponPreset.__update(item.dependentWeaponPreset)
+      foreach (dependentWeaponName, dependentWeapon in item.dependentWeaponPreset) {
+        let dependentWeaponPreset = currentType.weaponBlocks[weaponName].dependentWeaponPreset?[dependentWeaponName] ?? []
+        currentType.weaponBlocks[weaponName].dependentWeaponPreset[dependentWeaponName] <-
+          dependentWeaponPreset.extend(dependentWeapon)
+      }
     }
 
     currentType.weaponBlocks[weaponName].ammo += bulletCount

@@ -11,6 +11,7 @@ let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, getUni
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { abs } = require("%sqstd/math.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -493,12 +494,14 @@ let function getAvailableWeaponName(availableWeapons, presetId, tierId) {
   let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
   if (wBlk == null)
     return presetId
-  let weaponBlkCache = {}
-  return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, weaponBlkCache).weaponBlkPath)
+  return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, {}).weaponBlkPath)
 }
 
 let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
   let slots = []
+  let msgTextArray = []
+  let removedWeapon = []
+  local removedWeaponCount = 0
   if (presetId == "")
     slots.append({tierId})
   else {
@@ -507,37 +510,63 @@ let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
       slots.append({slot = wBlk.slot, presetId = wBlk.presetId, tierId})
       foreach (slot in (wBlk % "dependentWeaponPreset")) {
         let dependWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
-        if (dependWBlk != null)
-          slots.append({slot = dependWBlk.slot, presetId = dependWBlk.presetId, tierId = dependWBlk.tier})
+        if (dependWBlk == null)
+          continue
+
+        let dependWeaponTier = dependWBlk.tier
+        slots.append({slot = dependWBlk.slot, presetId = dependWBlk.presetId, tierId = dependWeaponTier})
+        if (preset.tiers?[dependWeaponTier] == null || preset.tiers[dependWeaponTier].presetId == dependWBlk.presetId)
+          continue
+
+        let dependWeaponName = getAvailableWeaponName(availableWeapons, dependWBlk.presetId, dependWeaponTier)
+        let curWeaponName = getAvailableWeaponName(availableWeapons, preset.tiers[dependWeaponTier].presetId, dependWeaponTier)
+        let currentWeapon = ::loc($"weapons/{curWeaponName}")
+        msgTextArray.append(::loc("editWeaponsSlot/requiredDependedWeaponInOccupiedSlot", {
+          currentWeapon
+          dependWeapon = ::loc($"weapons/{dependWeaponName}")
+          tierNum = dependWeaponTier + 1
+        }))
+        appendOnce(currentWeapon, removedWeapon)
+        removedWeaponCount++
       }
     }
   }
 
-  local msgText = ""
   let curPresetInTier = preset.tiers?[tierId]
   let curPresetIdInTier = curPresetInTier?.presetId ?? ""
   if (curPresetIdInTier != "" && (curPresetIdInTier in preset.dependentWeaponPreset)) {
-    let dependentWeapon = preset.dependentWeaponPreset[curPresetIdInTier].findvalue(
-      @(w) w.slot == curPresetInTier?.slot)
-    if (dependentWeapon != null) {
+    let dependentWeapons = preset.dependentWeaponPreset[curPresetIdInTier].filter(
+      @(w) w.slot == curPresetInTier?.slot) ?? []
+    let dependetWeaponToRemove = []
+    foreach (dependentWeapon in dependentWeapons) {
       slots.append({tierId = dependentWeapon.reqForTier})
       let dependWeaponName = getAvailableWeaponName(availableWeapons, dependentWeapon.reqForPresetId,
         dependentWeapon.reqForTier)
-      let curWeaponName = getAvailableWeaponName(availableWeapons, curPresetIdInTier, tierId)
-      msgText = ::loc("msg/also_remove_depended_weapon", {
-        currentWeapon = ::loc($"weapons/{curWeaponName}")
-        dependWeapon = ::loc($"weapons/{dependWeaponName}")
-        tierNum = dependentWeapon.reqForTier
-      })
+      let dependWeapon = ::loc($"weapons/{dependWeaponName}")
+      appendOnce(dependWeapon, removedWeapon)
+      dependetWeaponToRemove.append({ dependWeapon, tierNum = dependentWeapon.reqForTier + 1})
+      removedWeaponCount++
     }
+    if (dependetWeaponToRemove.len() > 0)
+      msgTextArray.append(::loc("editWeaponsSlot/requiredForDependedWeapon", {
+        currentWeapon = ::loc($"weapons/{getAvailableWeaponName(availableWeapons, curPresetIdInTier, tierId)}")
+        dependWeapons = ::loc("ui/comma").join(dependetWeaponToRemove.map(@(w) ::loc("editWeaponsSlot/weaponInSlot", {
+          weapon = w.dependWeapon
+          tierNum = w.tierNum
+        })))
+      }))
   }
 
-  if (msgText == "") {
+  if (msgTextArray.len() == 0) {
     editSlotInPresetImpl(preset, slots, cb)
     return
   }
 
-  ::scene_msg_box("question_edit_slots_in_preset", null, msgText,
+  msgTextArray.append(::loc("editWeaponsSlot/removedDependedWeapons", {
+    weapons = ::loc("ui/comma").join(removedWeapon)
+    weaponsCount = removedWeaponCount
+  }))
+  ::scene_msg_box("question_edit_slots_in_preset", null, "\n".join(msgTextArray),
     [
       ["ok", @() editSlotInPresetImpl(preset, slots, cb) ],
       ["cancel", @() null ]
