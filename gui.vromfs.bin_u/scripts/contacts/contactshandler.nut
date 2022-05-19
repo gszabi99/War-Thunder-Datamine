@@ -707,6 +707,7 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 
   function onEventContactsGroupUpdate(params)
   {
+    validateCurGroup()
     updateContactsGroup(params?.groupName)
   }
 

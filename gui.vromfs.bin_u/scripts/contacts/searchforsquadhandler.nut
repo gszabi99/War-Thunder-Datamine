@@ -112,6 +112,13 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     validateCurGroup()
   }
 
+  function onEventContactsGroupUpdate(p)
+  {
+    if (p?.groupName == null) //update all groups
+      updateSearchContactsGroups()
+    base.onEventContactsGroupUpdate(p)
+  }
+
   function updateSearchContactsGroups() {
     sg_groups = [::EPLX_SEARCH, ::EPL_FRIENDLIST, ::EPL_RECENT_SQUAD]
     if(::is_in_clan()) {
