@@ -123,7 +123,7 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
     let desc = getFullUnlockDesc(cfg, params)
 
     let blk = ::DataBlock()
-    blk.name = ::get_unlock_name_text(data.unlockType, id)
+    blk.name = ::get_unlock_name_text(cfg.unlockType, id)
     blk.desc = desc
     res[id] = blk
   }
