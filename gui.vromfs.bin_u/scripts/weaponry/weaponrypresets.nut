@@ -45,12 +45,10 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
     foreach (wp in (weaponsBlk % "Weapon")) {
       let slot = slots.findvalue(@(s) s.index == wp.slot)
       if (!slot) {
-        ::script_net_assert_once("WeaponSlots", $"WeaponSlot index {wp.slot} does not exist")
         continue
       }
       let curPreset = (slot % "WeaponPreset").findvalue(@(s) s.name == wp.preset)
       if (curPreset == null) {
-        ::script_net_assert_once("WeaponSlots", $"WeaponPreset name {wp.preset} does not exist")
         continue
       }
 
