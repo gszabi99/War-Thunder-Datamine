@@ -417,7 +417,7 @@ let helicopterState = {
 
 ::interop.updateIsCannonEmpty <- function(index, is_empty) {
   if (is_empty != IsCannonEmpty.value[index])
-    IsCannonEmpty(@(v) v[index] = is_empty)
+    IsCannonEmpty.mutate(@(v) v[index] = is_empty)
 }
 
 ::interop.updateRwrPosSize <- @(x, y, w, h = null) RwrPosSize([x, y, w, h ?? w])
