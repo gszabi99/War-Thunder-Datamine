@@ -323,7 +323,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
       difficultyStr = "#multiplayer/difficultyShort"
       name = "#multiplayer/game_host"
     }]
-    let headerData = ::build_mp_table(header, getRoomsListMarkUpData(), getColumnsList(), 1)
+    let headerData = ::build_mp_table(header, getRoomsListMarkUpData(), getColumnsList())
     guiScene.replaceContentFromText(headerObj, headerData, headerData.len(), this)
   }
 
@@ -361,7 +361,8 @@ let { havePremium } = require("%scripts/user/premium.nut")
     if (selectedRow < 0 && curPageRoomsList.len())
       selectedRow = ::clamp(sessionsListObj.getValue(), 0, curPageRoomsList.len() - 1)
 
-    let data = ::build_mp_table(::SessionLobby.getRoomsInfoTbl(curPageRoomsList), getRoomsListMarkUpData(), getColumnsList(), 0)
+    let roomsInfoTbl = ::SessionLobby.getRoomsInfoTbl(curPageRoomsList)
+    let data = ::build_mp_table(roomsInfoTbl, getRoomsListMarkUpData(), getColumnsList(), roomsInfoTbl.len())
     sessionsListObj.deleteChildren()
     guiScene.appendWithBlk(sessionsListObj, data, this)
 

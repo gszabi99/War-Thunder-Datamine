@@ -119,11 +119,14 @@ tdiv {
 <</upgrade_members_new>>
 <<#comments>>
 tdiv {
+  width:t='pw'
   text {
     text:t='<<?clan/log/comment>><<?ui/colon>>'
   }
-  activeText {
+  textareaNoTab {
     text:t='<<comments>>'
+    width:t='fw'
+    overlayTextColor:t='active'
   }
 }
 <</comments>>

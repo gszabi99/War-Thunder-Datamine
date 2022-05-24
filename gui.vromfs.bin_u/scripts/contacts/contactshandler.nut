@@ -676,33 +676,18 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
       return
     }
 
-    local sel = 0
     if (groupName && groupName in ::contacts)
     {
       ::contacts[groupName].sort(::sortContacts)
-      sel = fillPlayersList(groupName)
+      fillPlayersList(groupName)
     }
     else
       foreach(group in getContactsGroups())
         if (group in ::contacts)
         {
           ::contacts[group].sort(::sortContacts)
-          let selected = fillPlayersList(group)
-          if (group == curGroup)
-            sel = selected
+          fillPlayersList(group)
         }
-
-    if (curGroup && (!groupName || curGroup == groupName))
-    {
-      let gObj = scene.findObject("contacts_groups")
-      let listObj = gObj.findObject("group_" + curGroup)
-      if (listObj)
-      {
-        if (::contacts[curGroup].len() > 0)
-          listObj.setValue(sel > 0 ? sel : 0)
-        onPlayerSelect(listObj)
-      }
-    }
   }
 
   function onEventContactsGroupUpdate(params)

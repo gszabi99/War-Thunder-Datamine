@@ -12,7 +12,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { startswith } = require("string")
 
-const USE_SMALLER_TEXTURES_UNDER_ICON_SIZE_PX = 50
+const USE_SMALLER_TEXTURES_UNDER_ICON_SIZE_PX = 60
 
 local bulletIcons = {}
 local bulletAspectRatio = {}

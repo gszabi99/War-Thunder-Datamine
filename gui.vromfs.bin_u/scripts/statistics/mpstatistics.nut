@@ -29,9 +29,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   missionTable = null
 
   tblSave1 = null
-  numRows1 = 0
   tblSave2 = null
-  numRows2 = 0
 
   gameMode = 0
   gameType = 0
@@ -292,7 +290,6 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
   function createKillsTbl(objTbl, tbl, tblConfig)
   {
     let team = ::getTblValue("team", tblConfig, -1)
-    let num_rows = ::getTblValue("num_rows", tblConfig, numMaxPlayers)
     let showUnits     = tblConfig?.showAircrafts ?? false
     let showAirIcons  = tblConfig?.showAirIcons  ?? showUnits
     let invert = ::getTblValue("invert", tblConfig, false)
@@ -366,7 +363,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (!isTeamplay)
         sortTable(tbl)
 
-      let data = ::build_mp_table(tbl, markupData, tblData, num_rows)
+      let data = ::build_mp_table(tbl, markupData, tblData)
       guiScene.replaceContentFromText(objTbl, data, data.len(), this)
     }
   }
@@ -455,18 +452,12 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       if (!customTbl && isTeamplay)
         sortTable(tbl)
 
-      local numRows = numRows1
-      if (team == 2)
-        numRows = numRows2
-
-      let params = {
-                       max_rows = numRows,
-                       showAirIcons = showAirIcons,
-                       continueRowNum = minRow,
-                       numberOfWinningPlaces = numberOfWinningPlaces
-                       playersInfo = customTbl?.playersInfo
-                     }
-      ::set_mp_table(objTbl, tbl, params)
+      ::set_mp_table(objTbl, tbl, {
+        showAirIcons
+        continueRowNum = minRow
+        numberOfWinningPlaces = numberOfWinningPlaces
+        playersInfo = customTbl?.playersInfo
+      })
       ::update_team_css_label(objTbl, getLocalTeam())
 
       if (friendlyTeam > 0 && team > 0)
@@ -496,13 +487,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       sortTable(tbl1)
 
       let tbl2 = []
-      numRows1 = tbl1.len()
-      numRows2 = 0
       if (tbl1.len() >= numMaxPlayers)
       {
-        numRows1 = numMaxPlayers
-        numRows2 = numMaxPlayers
-
         for(local i = tbl1.len()-1; i >= numMaxPlayers; --i)
         {
           if (!(i in tbl1))
@@ -515,8 +501,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         tbl2.reverse()
       }
 
-      createKillsTbl(tblObj1, tbl1, {num_rows = numRows1, team = Team.A, showAircrafts = showAircrafts})
-      createKillsTbl(tblObj2, tbl2, {num_rows = numRows2, team = Team.B, showAircrafts = showAircrafts})
+      createKillsTbl(tblObj1, tbl1, {team = Team.A, showAircrafts = showAircrafts})
+      createKillsTbl(tblObj2, tbl2, {team = Team.B, showAircrafts = showAircrafts})
 
       if (::checkObj(team1Root))
         team1Root.show(true)
@@ -527,41 +513,20 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       {
         let playerTeam = getLocalTeam()
         let tbl = getMplayersList(playerTeam)
-        numRows1 = numMaxPlayers
-        numRows2 = 0
-        createKillsTbl(tblObj1, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
+        createKillsTbl(tblObj1, tbl, {showAircrafts = showAircrafts})
       }
       else
       {
         let tbl1 = getMplayersList(::g_team.A.code)
         let tbl2 = getMplayersList(::g_team.B.code)
-        let num_in_one_row = ::global_max_players_versus / 2
-        if (tbl1.len() <= num_in_one_row && tbl2.len() <= num_in_one_row)
-        {
-          numRows1 = num_in_one_row
-          numRows2 = num_in_one_row
-        }
-        else if (tbl1.len() > num_in_one_row)
-          numRows2 = ::global_max_players_versus - tbl1.len()
-        else if (tbl2.len() > num_in_one_row)
-          numRows1 = ::global_max_players_versus - tbl2.len()
-
-        if (numRows1 > numMaxPlayers)
-          numRows1 = numMaxPlayers
-        if (numRows2 > numMaxPlayers)
-          numRows2 = numMaxPlayers
-
         let showEnemyAircrafts = isShowEnemyAirs()
-        let tblConfig1 = {tbl = tbl2, team = Team.A, num_rows = numRows2, showAircrafts = showAircrafts, invert = true}
-        let tblConfig2 = {tbl = tbl1, team = Team.B, num_rows = numRows1, showAircrafts = showEnemyAircrafts}
+        let tblConfig1 = {tbl = tbl2, team = Team.A, showAircrafts = showAircrafts, invert = true}
+        let tblConfig2 = {tbl = tbl1, team = Team.B, showAircrafts = showEnemyAircrafts}
 
         if (getLocalTeam() == Team.A)
         {
           tblConfig1.tbl = tbl1
-          tblConfig1.num_rows = numRows1
-
           tblConfig2.tbl = tbl2
-          tblConfig2.num_rows = numRows2
         }
 
         createKillsTbl(tblObj1, tblConfig1.tbl, tblConfig1)
@@ -573,10 +538,8 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     }
     else
     {
-      numRows1 = (gameType & ::GT_COOPERATIVE)? ::global_max_players_coop : numMaxPlayers
-      numRows2 = 0
       let tbl = getMplayersList()
-      createKillsTbl(tblObj2, tbl, {num_rows = numRows1, showAircrafts = showAircrafts})
+      createKillsTbl(tblObj2, tbl, {showAircrafts = showAircrafts})
 
       tblObj1.show(false)
 

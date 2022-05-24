@@ -1734,7 +1734,7 @@ shopData = [
     selectCellByUnitName(unitId)
     // In mouse mode, mouse pointer don't move to slot, so we need a highlight.
     if (!::show_console_buttons || ::is_mouse_last_time_used())
-      highlightUnitsInTree([ unitId ])
+      doWhenActive(@() highlightUnitsInTree([ unitId ]))
   }
 
   function selectCellByUnitName(unitName)

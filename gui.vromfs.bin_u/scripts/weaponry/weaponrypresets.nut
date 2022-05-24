@@ -29,7 +29,7 @@ let function addSlotWeaponsFromPreset(res, slotBlk, preset) {
     if (idx == null)
       res.append(slotWeapon)
     else
-      res[idx].bullets = (res[idx].bullets ?? 1) + (slotWeapon?.bullets ?? 1)
+      res[idx].bullets = (res[idx]?.bullets ?? 1) + (slotWeapon?.bullets ?? 1)
   }
 }
 

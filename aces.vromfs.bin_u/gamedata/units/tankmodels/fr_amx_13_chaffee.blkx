@@ -2475,14 +2475,35 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,15.0]
+            "pitch": [-8.0,15.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-22.0,-10.0,15.0],
+            "lim1": [-180.0,-22.0,-8.0,15.0],
             "lim2": [-22.0,-15.0,-8.0,15.0],
-            "lim3": [-15.0,15.0,-10.0,15.0],
+            "lim3": [-15.0,15.0,-8.0,15.0],
             "lim4": [15.0,22.0,-8.0,15.0],
-            "lim5": [22.0,180.0,-10.0,15.0]
+            "lim5": [22.0,180.0,-8.0,15.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": false,
+            "hasHorizontal": false,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 50.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 0.7,
+            "verticalSpeedLimitKPH": 24.0,
+            "speedFromVehicleVerticalMult": -1.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.0]
+              },
+              {
+                "row": [10.0,0.05]
+              },
+              {
+                "row": [12.0,0.4]
+              }
+            ]
           }
         }
       },
@@ -3477,14 +3498,35 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,15.0]
+                  "pitch": [-8.0,15.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-22.0,-10.0,15.0],
+                  "lim1": [-180.0,-22.0,-8.0,15.0],
                   "lim2": [-22.0,-15.0,-8.0,15.0],
-                  "lim3": [-15.0,15.0,-10.0,15.0],
+                  "lim3": [-15.0,15.0,-8.0,15.0],
                   "lim4": [15.0,22.0,-8.0,15.0],
-                  "lim5": [22.0,180.0,-10.0,15.0]
+                  "lim5": [22.0,180.0,-8.0,15.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "hasHorizontal": false,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 50.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 0.7,
+                  "verticalSpeedLimitKPH": 24.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [10.0,0.05]
+                    },
+                    {
+                      "row": [12.0,0.4]
+                    }
+                  ]
                 }
               }
             },

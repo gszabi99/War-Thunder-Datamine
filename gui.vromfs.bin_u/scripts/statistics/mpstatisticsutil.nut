@@ -79,13 +79,12 @@ let function guiStartMPStatScreenFromGame()
   return (team ?? ::get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
 }
 
-::build_mp_table <- function build_mp_table(table, markupData, hdr, max_rows)
+::build_mp_table <- function build_mp_table(table, markupData, hdr, numRows = 1)
 {
-  let numTblRows = table.len()
-  let numRows = ::max(numTblRows, max_rows)
   if (numRows <= 0)
     return ""
 
+  let numTblRows = table.len()
   let isHeader    = markupData?.is_header ?? false
   let trSize      = markupData?.tr_size   ?? "pw, @baseTrHeight"
   let isRowInvert = markupData?.invert    ?? false
@@ -308,14 +307,12 @@ let function guiStartMPStatScreenFromGame()
   nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
 }
 
-::set_mp_table <- function set_mp_table(obj_tbl, table, params)
+::set_mp_table <- function set_mp_table(obj_tbl, table, params = {})
 {
-  let max_rows = ::getTblValue("max_rows", params, 0)
   let numTblRows = table.len()
-  let numRows = numTblRows > max_rows ? numTblRows : max_rows
   let realTblRows = obj_tbl.childrenCount()
-
-  if ((numRows <= 0)||(realTblRows <= 0))
+  let numRows = max(numTblRows, realTblRows)
+  if (numRows <= 0)
     return
 
   let showAirIcons = ::getTblValue("showAirIcons", params, true)
@@ -336,18 +333,20 @@ let function guiStartMPStatScreenFromGame()
       objTr = obj_tbl.getChild(realTblRows-1).getClone()
       if (objTr?.rowIdx != null)
         objTr.rowIdx = i.tostring()
+      objTr.even = (i%2 == 0)? "yes" : "no"
+      objTr.selected = "no"
     }
     else
       objTr = obj_tbl.getChild(i)
 
     let isEmpty = i >= numTblRows
     objTr.inactive = isEmpty? "yes" : "no"
-    objTr.show(!isEmpty || i < max_rows)
-    if (i >= numRows)
+    objTr.show(!isEmpty)
+    if (isEmpty)
       continue
 
     local isInGame = true
-    if (!isEmpty && needColorizeNotInGame)
+    if (needColorizeNotInGame)
     {
       let state = table[i].state
       isInGame = state == ::PLAYER_IN_FLIGHT || state == ::PLAYER_IN_RESPAWN
@@ -365,10 +364,10 @@ let function guiStartMPStatScreenFromGame()
       let hdr = id.slice(3)
       local item = ""
 
-      if (!isEmpty && (hdr in table[i]))
+      if (hdr in table[i])
         item = table[i][hdr]
 
-      if (!isEmpty && isReplay)
+      if (isReplay)
       {
         table[i].isLocal = spectatorWatchedHero.id == table[i].id
         table[i].isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId,
@@ -394,13 +393,6 @@ let function guiStartMPStatScreenFromGame()
             teamStyle = ""
             break
         }
-
-        if (isEmpty)
-        {
-          teamText = ""
-          teamStyle = ""
-        }
-
         objTd.getChild(0).setValue(teamText)
         objTd["team"] = teamStyle
       }
@@ -410,12 +402,12 @@ let function guiStartMPStatScreenFromGame()
         if (hdr == "country")
           country = item
         else
-          if (!isEmpty && ("team" in table[i]))
+          if ("team" in table[i])
             country = get_mp_country_by_team(table[i].team)
 
         let objImg = objTd.getChild(0)
         local icon = ""
-        if (!isEmpty && country != "")
+        if (country != "")
           icon = ::get_country_icon(country)
         objImg["background-image"] = icon
       }
@@ -424,39 +416,31 @@ let function guiStartMPStatScreenFromGame()
         let objReady = objTd.findObject("ready-ico")
         if (::check_obj(objReady))
         {
-          if (isEmpty)
-            objReady["background-image"] = ""
-          else
-          {
-            let playerState = ::g_player_state.getStateByPlayerInfo(table[i])
-            objReady["background-image"] = playerState.getIcon(table[i])
-            objReady["background-color"] = playerState.getIconColor()
-            let desc = playerState.getText(table[i])
-            objReady.tooltip = (desc != "") ? (::loc("multiplayer/state") + ::loc("ui/colon") + desc) : ""
-          }
+          let playerState = ::g_player_state.getStateByPlayerInfo(table[i])
+          objReady["background-image"] = playerState.getIcon(table[i])
+          objReady["background-color"] = playerState.getIconColor()
+          let desc = playerState.getText(table[i])
+          objReady.tooltip = (desc != "") ? (::loc("multiplayer/state") + ::loc("ui/colon") + desc) : ""
         }
       }
       else if (hdr == "name")
       {
         local nameText = item
-        if (!isEmpty)
+        if (!table[i].isBot)
+          nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
+
+        if (table[i]?.invitedName && table[i].invitedName != item)
         {
-          if (!table[i].isBot)
-            nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
+          local color = ""
+          if (obj_tbl?.team) {
+            if (obj_tbl.team == "red")
+              color = "teamRedInactiveColor"
+            else if (obj_tbl.team == "blue")
+              color = "teamBlueInactiveColor"
+         }
 
-          if (table[i]?.invitedName && table[i].invitedName != item)
-          {
-            local color = ""
-            if (obj_tbl?.team) {
-              if (obj_tbl.team == "red")
-                color = "teamRedInactiveColor"
-              else if (obj_tbl.team == "blue")
-                color = "teamBlueInactiveColor"
-            }
-
-            local playerName = ::colorize(color, platformModule.getPlayerName(table[i].invitedName))
-            nameText = $"{platformModule.getPlayerName(nameText)}... {playerName}"
-          }
+          local playerName = ::colorize(color, platformModule.getPlayerName(table[i].invitedName))
+          nameText = $"{platformModule.getPlayerName(nameText)}... {playerName}"
         }
 
         let objName = objTd.findObject("name-text")
@@ -468,55 +452,52 @@ let function guiStartMPStatScreenFromGame()
           objDlcImg.show(false)
 
         local tooltip = nameText
-        if (!isEmpty)
+        let isLocal = table[i].isLocal
+        //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
+        let isInHeroSquad = table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadByName(item)
+        objTr.mainPlayer = isLocal ? "yes" : "no"
+        objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
+        objTr.spectator = table[i]?.spectator ? "yes" : "no"
+
+        let playerInfo = playersInfo?[(table[i].userId).tointeger()]
+        if (!isLocal && isInHeroSquad && playerInfo?.auto_squad)
+          tooltip = $"{tooltip}\n\n{::loc("squad/auto")}\n"
+
+        if (!table[i].isBot
+          && ::get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
+          && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
         {
-          let isLocal = table[i].isLocal
-          //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
-          let isInHeroSquad = table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadByName(item)
-          objTr.mainPlayer = isLocal ? "yes" : "no"
-          objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
-          objTr.spectator = table[i]?.spectator ? "yes" : "no"
-
-          let playerInfo = playersInfo?[(table[i].userId).tointeger()]
-          if (!isLocal && isInHeroSquad && playerInfo?.auto_squad)
-            tooltip = $"{tooltip}\n\n{::loc("squad/auto")}\n"
-
-          if (!table[i].isBot
-            && ::get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
-            && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
+          let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
+          if (data)
           {
-            let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
-            if (data)
-            {
-              let squadInfo = getSquadInfo(data.squad)
-              let isInSquad = squadInfo ? !squadInfo.autoSquad : false
-              let ratingTotal = ::calc_battle_rating_from_rank(data.rank)
-              tooltip += "\n" + ::loc("debriefing/battleRating/units") + ::loc("ui/colon")
-              local showLowBRPrompt = false
+            let squadInfo = getSquadInfo(data.squad)
+            let isInSquad = squadInfo ? !squadInfo.autoSquad : false
+            let ratingTotal = ::calc_battle_rating_from_rank(data.rank)
+            tooltip += "\n" + ::loc("debriefing/battleRating/units") + ::loc("ui/colon")
+            local showLowBRPrompt = false
 
-              let unitsForTooltip = []
-              for (local j = 0; j < min(data.units.len(), 3); ++j)
-                unitsForTooltip.append(data.units[j])
-              unitsForTooltip.sort(sort_units_for_br_tooltip)
-              for (local j = 0; j < unitsForTooltip.len(); ++j)
-              {
-                let rankUnused = unitsForTooltip[j].rankUnused
-                let formatString = rankUnused
-                  ? "\n<color=@disabledTextColor>(%.1f) %s</color>"
-                  : "\n<color=@disabledTextColor>(<color=@userlogColoredText>%.1f</color>) %s</color>"
-                if (rankUnused)
-                  showLowBRPrompt = true
-                tooltip += ::format(formatString, unitsForTooltip[j].rating, unitsForTooltip[j].name)
-              }
-              tooltip += "\n" + ::loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total") +
-                                ::loc("ui/colon") + ::format("%.1f", ratingTotal)
-              if (showLowBRPrompt)
-              {
-                let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
-                let rankCalcMode = ::SessionLobby.getRankCalcMode()
-                if (rankCalcMode)
-                  tooltip += "\n" + ::loc("multiplayer/lowBattleRatingPrompt/" + rankCalcMode, { maxBRDifference = ::format("%.1f", maxBRDifference) })
-              }
+            let unitsForTooltip = []
+            for (local j = 0; j < min(data.units.len(), 3); ++j)
+              unitsForTooltip.append(data.units[j])
+            unitsForTooltip.sort(sort_units_for_br_tooltip)
+            for (local j = 0; j < unitsForTooltip.len(); ++j)
+            {
+              let rankUnused = unitsForTooltip[j].rankUnused
+              let formatString = rankUnused
+                ? "\n<color=@disabledTextColor>(%.1f) %s</color>"
+                : "\n<color=@disabledTextColor>(<color=@userlogColoredText>%.1f</color>) %s</color>"
+              if (rankUnused)
+                showLowBRPrompt = true
+              tooltip += ::format(formatString, unitsForTooltip[j].rating, unitsForTooltip[j].name)
+            }
+            tooltip += "\n" + ::loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total") +
+                              ::loc("ui/colon") + ::format("%.1f", ratingTotal)
+            if (showLowBRPrompt)
+            {
+              let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
+              let rankCalcMode = ::SessionLobby.getRankCalcMode()
+              if (rankCalcMode)
+                tooltip += "\n" + ::loc("multiplayer/lowBattleRatingPrompt/" + rankCalcMode, { maxBRDifference = ::format("%.1f", maxBRDifference) })
             }
           }
         }
@@ -529,20 +510,17 @@ let function guiStartMPStatScreenFromGame()
         local unitId = ""
         local weapon = ""
 
-        if (!isEmpty)
+        let player = table[i]
+        if (isInFlight && !isInGame)
+          unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
+        else if (player?.isDead)
+          unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
+        else if (showAirIcons && ("aircraftName" in player))
         {
-          let player = table[i]
-          if (isInFlight && !isInGame)
-            unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
-          else if (player?.isDead)
-            unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
-          else if (showAirIcons && ("aircraftName" in player))
-          {
-            unitId = player.aircraftName
-            unitIco = ::getUnitClassIco(unitId)
-            unitIcoColorType = getUnitRole(unitId)
-            weapon = player?.weapon ?? ""
-          }
+          unitId = player.aircraftName
+          unitIco = ::getUnitClassIco(unitId)
+          unitIcoColorType = getUnitRole(unitId)
+          weapon = player?.weapon ?? ""
         }
 
         local obj = objTd.findObject("unit-ico")
@@ -566,19 +544,16 @@ let function guiStartMPStatScreenFromGame()
         {
           local text = ""
           local tooltip = ""
-          if (!isEmpty)
+          if (::getTblValue("spectator", table[i], false))
           {
-            if (::getTblValue("spectator", table[i], false))
-            {
-              text = ::loc("mainmenu/btnReferee")
-              tooltip = ::loc("multiplayer/state/player_referee")
-            }
-            else
-            {
-              let unitId = !isEmpty ? ::getTblValue("aircraftName", table[i], "") : ""
-              text = (unitId != "") ? ::loc(::getUnitName(unitId, true)) : "..."
-              tooltip = (unitId != "") ? ::loc(::getUnitName(unitId, false)) : ""
-            }
+            text = ::loc("mainmenu/btnReferee")
+            tooltip = ::loc("multiplayer/state/player_referee")
+          }
+          else
+          {
+            let unitId = ::getTblValue("aircraftName", table[i], "")
+            text = (unitId != "") ? ::loc(::getUnitName(unitId, true)) : "..."
+            tooltip = (unitId != "") ? ::loc(::getUnitName(unitId, false)) : ""
           }
           objText.setValue(text)
           objText.tooltip = tooltip
@@ -590,7 +565,7 @@ let function guiStartMPStatScreenFromGame()
         let pos = tablePos + continueRowNum
         objTd.getChild(0).setValue(pos.tostring())
         local winPlace = "none"
-        if (!isEmpty && numberOfWinningPlaces > 0 && ::getTblValue("raceLastCheckpoint", table[i], 0) > 0)
+        if (numberOfWinningPlaces > 0 && ::getTblValue("raceLastCheckpoint", table[i], 0) > 0)
         {
           if (tablePos == 1)
             winPlace = "1st"
@@ -605,7 +580,7 @@ let function guiStartMPStatScreenFromGame()
       }
       else if (::isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
       {
-        let paramType = isEmpty ? null : ::g_mplayer_param_type.getTypeById(hdr)
+        let paramType = ::g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
         objText.setValue(txt)
@@ -614,13 +589,13 @@ let function guiStartMPStatScreenFromGame()
       else if (hdr == "numPlayers")
       {
         local txt = item.tostring()
-        if (!isEmpty && "numPlayersTotal" in table[i])
+        if ("numPlayersTotal" in table[i])
           txt += "/" + table[i].numPlayersTotal
         objTd.getChild(0).setValue(txt)
       }
       else if (hdr == "squad")
       {
-        let squadInfo = (!isEmpty && isShowSquad()) ? getSquadInfoByMemberName(table[i]?.name ?? "") : null
+        let squadInfo = isShowSquad() ? getSquadInfoByMemberName(table[i]?.name ?? "") : null
         let squadId = ::getTblValue("squadId", squadInfo, INVALID_SQUAD_ID)
         let labelSquad = squadInfo ? squadInfo.label.tostring() : ""
         let needSquadIcon = labelSquad != ""

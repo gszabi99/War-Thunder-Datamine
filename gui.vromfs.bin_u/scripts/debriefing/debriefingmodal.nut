@@ -2103,12 +2103,6 @@ let statTooltipColumnParamByType = {
     if (needPlayersTbl)
       buildPlayersTable()
 
-    if (playersTbl)
-    {
-      numRows1 = ::min(numMaxPlayers + 1, playersTbl[0].len())//for animation visible row in debriefing
-      numRows2 = ::min(numMaxPlayers + 1, playersTbl[1].len())
-    }
-
     updatePlayersTable(0.0)
   }
 

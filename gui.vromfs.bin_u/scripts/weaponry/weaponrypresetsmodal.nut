@@ -227,6 +227,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     else
       weaponryByPresetInfo.presets[presetIdx] = presetView
 
+    presets.sort(sortPresetsList)
     updateAllByFilters()
     selectPreset(presets.findindex(@(w) w.name == presetId))
   }

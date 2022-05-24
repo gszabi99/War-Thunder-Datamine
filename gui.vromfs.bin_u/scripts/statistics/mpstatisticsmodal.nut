@@ -24,8 +24,6 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     isSpectate = false
     isTeam  = true
 
-    guiScene.setUpdatesEnabled(false, false)
-
     let tblObj1 = scene.findObject("table_kills_team1")
     if (tblObj1.childrenCount() == 0)
       initStats()
@@ -38,9 +36,6 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
     includeMissionInfoBlocksToGamercard()
     setSceneTitle(getCurMpTitle())
-    tblObj1.setValue(0)
-    scene.findObject("table_kills_team2").setValue(-1)
-
     refreshPlayerInfo()
 
     showSceneBtn("btn_back", true)
@@ -61,8 +56,8 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
     }
     showMissionResult()
-
-    guiScene.setUpdatesEnabled(true, true)
+    tblObj1.setValue(0)
+    scene.findObject("table_kills_team2").setValue(-1)
   }
 
   function reinitScreen(params)

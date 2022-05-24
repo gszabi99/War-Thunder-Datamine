@@ -58,7 +58,6 @@
         name = { width = "fw" }
       }
     }
-    let maxRows = ::SessionLobby.getMaxMembersCount(room)
     foreach(idx, team in teams)
     {
       markupData.invert <- idx == 0  && teams.len() == 2
@@ -66,7 +65,7 @@
       {
         isFirst = idx == 0
         tableId = getTeamTableId(team)
-        content = ::build_mp_table([], markupData, columnsList, maxRows)
+        content = ::build_mp_table([], markupData, columnsList)
       })
     }
     return view
@@ -130,21 +129,18 @@
     if (!::checkObj(objTbl))
       return
 
-    let totalRows = objTbl.childrenCount()
     let teamList = team == ::g_team.ANY ? playersList
       : ::u.filter(playersList, @(p) p.team.tointeger() == team.code)
-    ::set_mp_table(objTbl, teamList, { max_rows = totalRows })
+    ::set_mp_table(objTbl, teamList)
     ::update_team_css_label(objTbl)
 
-    for(local i = 0; i < totalRows; i++)
-      objTbl.getChild(i).show(i < teamList.len())
     playersInTeamTables[team] <- teamList
 
     //update cur value
-    if (teamList.len())
+    if (teamList.len() > 0)
     {
-      let curValue = objTbl.getValue()
-      let validValue = ::clamp(curValue, 0, teamList.len())
+      let curValue = objTbl.getValue() ?? -1
+      let validValue = ::clamp(curValue, 0, teamList.len()-1)
       if (curValue != validValue)
         objTbl.setValue(validValue)
     }

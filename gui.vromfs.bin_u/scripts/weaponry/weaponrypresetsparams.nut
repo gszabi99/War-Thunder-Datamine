@@ -5,13 +5,14 @@ let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, getUnitWeapons,
-  getUnitPresets, isCustomPreset, getWeaponsByTypes
+let { TIERS_NUMBER, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX,
+  getUnitWeapons, getUnitPresets, isCustomPreset, getWeaponsByTypes
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getCustomPresetByPresetBlk, convertPresetToBlk
 } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { abs } = require("%sqstd/math.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -338,6 +339,7 @@ let function setFavoritePresets(unitName, favoriteArr=[]) {
 
 let sortPresetsList = @(a, b)
   a.chapterOrd <=> b.chapterOrd
+  || a.customIdx <=> b.customIdx
   || b.isEnabled <=> a.isEnabled
   || b.isDefault <=> a.isDefault
   || b.totalMass <=> a.totalMass
@@ -417,6 +419,7 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
     isEnabled         = preset?.isEnabled
       ?? (isWeaponEnabled(unit, preset) || (::isUnitUsable(unit) && isWeaponUnlocked(unit, preset)))
     rank              = getReqRankByMod(preset?.reqModification, modifications)
+    customIdx         = isCustom ? cutPrefix(preset.name, CUSTOM_PRESET_PREFIX, -1).tointeger() : -1
     customNameText    = preset?.customNameText
     tiers             = {}
     dependentWeaponPreset = {}
