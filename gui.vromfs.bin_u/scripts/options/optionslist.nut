@@ -119,6 +119,7 @@ let getMainOptions = function() {
       [::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
 
       ["options/header/helicopter"],
+      [::USEROPT_HUE_HELICOPTER_CROSSHAIR, "spinner"],
       [::USEROPT_HUE_HELICOPTER_HUD, "spinner"],
       [::USEROPT_HUE_HELICOPTER_PARAM_HUD, "spinner"],
       [::USEROPT_HUE_HELICOPTER_HUD_ALERT, "spinner"],

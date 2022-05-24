@@ -3708,6 +3708,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_HUD))
       break;
 
+    case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
+      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_crosshair",
+        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_CROSSHAIR))
+      break;
+
     case ::USEROPT_HUE_HELICOPTER_HUD:
       optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_hud",
         122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD))
@@ -4734,6 +4739,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_HUE_AIRCRAFT_HUD_ALERT:
       colorCorrector.setAlertAircraftHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
+      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      break;
+
+    case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
+      let { sat = 0.7, val = 0.7 } = descr.items[value]
+      colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_CROSSHAIR, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
