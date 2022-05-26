@@ -17,7 +17,7 @@ require daslib/regex_boost
 
 let
     log_documentation = true
-    show_hidden_groups = true
+    show_hidden_groups = false
 
 var
     topic_root = ""
@@ -305,7 +305,7 @@ def document_typedef(doc_file:file;mod:Module?;name:string implicit;value)
         fwrite(doc_file," is a bitfield\n\n")
         document_bitfield(doc_file,value)
     elif value.baseType==Type tVariant
-        fwrite(doc_file,"is a variant type\n\n")
+        fwrite(doc_file," is a variant type\n\n")
         document_variant(doc_file,value)
     else
         var tp = describe(value,false,false,false)
@@ -331,6 +331,8 @@ def document_global_constant(doc_file:file;mod:Module?;value:VariablePtr)
     document_topic(doc_file,topic("variable",mod,string(value.name)))
 
 def private is_global_constant(value:VariablePtr)
+    if value.flags.private_variable
+        return false
     if !value._type.flags.constant
         return false
     if !value._type.isWorkhorseType
@@ -571,6 +573,8 @@ def document_annotations(doc_file:file;mod:Module?)
     module_for_each_annotation(mod) <| $(value)
         if !value.isTypeAnnotation || value.isBasicStructureAnnotation
             return
+        if string(value.name) |> starts_with("dasvector`")
+            return
         document_annotation(doc_file,mod,value)
 
 def document_call_macro(doc_file:file;mod:Module?;value:string implicit)
@@ -733,7 +737,7 @@ def hide_group(var group:DocGroup)
 def private generate_topic_stub(var tab:table<string;bool>;doc_file:file;topic:string implicit)
     if !tab[topic]
         tab[topic] = true
-        fwrite(doc_file,".. {topic} replace:: to be documented\n\n" )
+        fwrite(doc_file,".. {topic} replace:: to be documented in {topic}.rst\n\n" )
 
 def private generate_substitute_stub(mod:Module?;substname:string)
     var st : FStat
