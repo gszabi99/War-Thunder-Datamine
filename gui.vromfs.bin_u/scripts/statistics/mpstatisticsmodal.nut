@@ -38,7 +38,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     setSceneTitle(getCurMpTitle())
     refreshPlayerInfo()
 
-    showSceneBtn("btn_back", true)
+    this.showSceneBtn("btn_back", true)
 
     wasTimeLeft = -1
     scene.findObject("stat_update").setUserData(this)
@@ -48,7 +48,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
     updateStats()
 
-    showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
+    this.showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
     let ordersButton = scene.findObject("btn_activateorder")
     if (::checkObj(ordersButton))
     {
@@ -119,7 +119,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     }
 
     let text = ::loc("flightmenu/questionQuitMission")
-    msgBox("question_quit_mission", text,
+    this.msgBox("question_quit_mission", text,
       [
         ["yes", function()
           {

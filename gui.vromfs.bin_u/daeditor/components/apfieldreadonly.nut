@@ -9,7 +9,7 @@ let function fieldReadOnly(params = {}) {
   let valText = compValToString(val)
 
   return {
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     size = [flex(), SIZE_TO_CONTENT]
     text = valText
     margin = fsh(0.5)

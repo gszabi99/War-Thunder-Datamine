@@ -1,3 +1,4 @@
+let { format } = require("string")
 let subscriptions = require_optional("%sqStdLibs/helpers/subscriptions.nut")
 
 if ("g_script_reloader" in ::getroottable())
@@ -219,7 +220,7 @@ global enum TASK_CB_TYPE
       && result == ::EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
   {
     let notAllowedChars = ::get_char_extended_error()
-    text = ::format(text, notAllowedChars)
+    text = format(text, notAllowedChars)
   }
   return text
 }

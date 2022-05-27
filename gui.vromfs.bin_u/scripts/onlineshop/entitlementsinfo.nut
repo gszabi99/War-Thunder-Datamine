@@ -30,7 +30,7 @@ let function updateBundlesShopInfo() {
       },
       function() {
         ::dagor.debug("[ENTITLEMENTS INFO] Received failure result")
-        debugTableData(guidsList)
+        ::debugTableData(guidsList)
       }
     )
   else

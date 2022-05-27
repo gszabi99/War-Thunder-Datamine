@@ -1,4 +1,5 @@
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let regexp2 = require("regexp2")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_GROUP } = require("%scripts/missions/missionsFilterData.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -10,7 +11,7 @@ let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 ::g_mission_type.template <- {
   _typeName = "" //filled by type name
-  reMisName = ::regexp2(@"^$")
+  reMisName = regexp2(@"^$")
   objectives   = MISSION_OBJECTIVE.KILLS_AIR_OR_TANK
   objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI
   helpBlkPath = ""
@@ -25,7 +26,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   A_AD = {  // Air: Air Domination
-    reMisName = ::regexp2(@"_AD(n|to)?(_|$)")
+    reMisName = regexp2(@"_AD(n|to)?(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.ZONE_CAPTURE | MISSION_OBJECTIVE.KILLS_TOTAL_AI
     helpBlkPath = "%gui/help/missionAirDomination.blk"
@@ -33,7 +34,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   A_AFD = {  // Air: Airfield Domination
-    reMisName = ::regexp2(@"_AfD(n|to)?(_|$)")
+    reMisName = regexp2(@"_AfD(n|to)?(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionAirfieldCapture.blk"
@@ -41,7 +42,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   A_GS = {  // Air: Ground Strike
-    reMisName = ::regexp2(@"_GS(n|to)?(_|$)")
+    reMisName = regexp2(@"_GS(n|to)?(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI
                  | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
@@ -50,7 +51,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   A_BFD = {  // Air: Battlefront Domination
-    reMisName = ::regexp2(@"_BfD(n|to)?(_|$)")
+    reMisName = regexp2(@"_BfD(n|to)?(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI
                  | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
@@ -59,7 +60,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   A_I2M = {  // Air: Enduring Confrontation
-    reMisName = ::regexp2(@"_I2M(_|$)")
+    reMisName = regexp2(@"_I2M(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     helpBlkPath = "%gui/help/missionGroundStrikeComplete.blk"
@@ -67,40 +68,40 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   A_DUEL = {  // Air: Duel
-    reMisName = ::regexp2(@"_duel(_|$)")
+    reMisName = regexp2(@"_duel(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR
     filterGroup = MISSION_GROUP.DUEL
   }
 
   A_RACE = {  // Air: Race
-    reMisName = ::regexp2(@"_race(_|$)")
+    reMisName = regexp2(@"_race(_|$)")
     objectives = MISSION_OBJECTIVE.NONE
     objectivesWw = MISSION_OBJECTIVE.NONE
     filterGroup = MISSION_GROUP.RACE
   }
 
   H_GS = {  // Helicopter: Ground Strike
-    reMisName = ::regexp2(@"_HS(_|$)")
+    reMisName = regexp2(@"_HS(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI
     filterGroup = MISSION_GROUP.GROUND_STRIKE
   }
 
   H_BFD = {  // Helicopter: Battlefront Domination
-    reMisName = ::regexp2(@"_HfD(_|$)")
+    reMisName = regexp2(@"_HfD(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.DOMINATION
   }
 
   H_H2M = {  // Helicopter: Enduring Confrontation
-    reMisName = ::regexp2(@"_H2M(_|$)")
+    reMisName = regexp2(@"_H2M(_|$)")
     filterGroup = MISSION_GROUP.CONFRONTATION
   }
 
   G_DOM = {  // Ground: Domination
-    reMisName = ::regexp2(@"_Dom(_|$)")
+    reMisName = regexp2(@"_Dom(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionGroundCapture.blk"
@@ -108,7 +109,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   G_CONQ = {  // Ground: Conquest
-    reMisName = ::regexp2(@"_Conq\d*(_|$)")
+    reMisName = regexp2(@"_Conq\d*(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionGroundCapture.blk"
@@ -116,7 +117,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   G_BTTL = {  // Ground: Battle
-    reMisName = ::regexp2(@"_Bttl(_|$)")
+    reMisName = regexp2(@"_Bttl(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionGroundCapture.blk"
@@ -124,7 +125,7 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   G_BTO = {  // Ground: Break
-    reMisName = ::regexp2(@"_Bto(_|$)")
+    reMisName = regexp2(@"_Bto(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionGroundCapture.blk"
@@ -132,83 +133,83 @@ enums.addTypesByGlobalName("g_mission_type", {
   }
 
   G_CNV = {  // Ground: Convoy
-    reMisName = ::regexp2(@"_Cnv(A|B)(_|$)")
+    reMisName = regexp2(@"_Cnv(A|B)(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI
     filterGroup = MISSION_GROUP.CONVOY
   }
 
   G_BR = {  // Ground: Battle Royale
-    reMisName = ::regexp2(@"_BR(_|$)")
+    reMisName = regexp2(@"_BR(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.ALIVE_TIME
     filterGroup = MISSION_GROUP.BATTLE_ROYALE
   }
 
   G_CTF = {  // Ground: Capture the Flag
-    reMisName = ::regexp2(@"_ctf(_|$)")
+    reMisName = regexp2(@"_ctf(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_GROUND
     objectivesWw = MISSION_OBJECTIVE.KILLS_GROUND
     filterGroup = MISSION_GROUP.CAPTURE_THE_FLAG
   }
 
   N_DOM = {  // Naval: Domination
-    reMisName = ::regexp2(@"_NDom(_|$)")
+    reMisName = regexp2(@"_NDom(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.DOMINATION
   }
 
   N_BTTL = {  // Naval: Battle
-    reMisName = ::regexp2(@"_NBttl(_|$)")
+    reMisName = regexp2(@"_NBttl(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.BATTLE
   }
 
   N_CONQ = {  // Naval: Conquest
-    reMisName = ::regexp2(@"_NConq(_|$)")
+    reMisName = regexp2(@"_NConq(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.CONQUEST
   }
 
   N_CNV = {  // Naval: Convoy
-    reMisName = ::regexp2(@"_NCnv(A|B|_|$)(_|$)")
+    reMisName = regexp2(@"_NCnv(A|B|_|$)(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     filterGroup = MISSION_GROUP.CONVOY
   }
 
   N_TDM = {  // Naval: Team Deathmatch
-    reMisName = ::regexp2(@"_NTdm(_|$)")
+    reMisName = regexp2(@"_NTdm(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     filterGroup = MISSION_GROUP.DEATHMATCH
   }
 
   N_CTF = {  // Naval: Capture the Flag
-    reMisName = ::regexp2(@"_nctf(_|$)")
+    reMisName = regexp2(@"_nctf(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_NAVAL
     objectivesWw = MISSION_OBJECTIVE.KILLS_NAVAL
     filterGroup = MISSION_GROUP.CAPTURE_THE_FLAG
   }
 
   N_N2M = {  // Naval: Enduring Confrontation
-    reMisName = ::regexp2(@"_N2M(_|$)")
+    reMisName = regexp2(@"_N2M(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_BOMBING
     filterGroup = MISSION_GROUP.CONFRONTATION
   }
 
   PVE_T = { // PvE co-op: Tank
-    reMisName = ::regexp2(@"_pvet(_|$)")
+    reMisName = regexp2(@"_pvet(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_GROUND_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_GROUND_AI
     filterGroup = MISSION_GROUP.OTHER
   }
 
   PvE = {
-    reMisName = ::regexp2(@"_PvE")
+    reMisName = regexp2(@"_PvE")
     objectives = MISSION_OBJECTIVE.KILLS_ANY_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_ANY_AI
     filterGroup = MISSION_GROUP.OTHER

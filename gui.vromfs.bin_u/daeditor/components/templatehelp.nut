@@ -243,15 +243,15 @@ let function getTemplateInfo(templName) {
     tags.extend(templ.getTags())
   }
 
-  foreach(tpl,val in addedTempls) {
+  foreach(tpl, _val in addedTempls) {
     if (extendByTable?[tpl] != null)
       delete extendByTable[tpl]
     if (insertToTable?[tpl] != null)
       delete insertToTable[tpl]
   }
-  foreach(tpl,val in extendByTable)
+  foreach(tpl, _val in extendByTable)
     extendBy.append(tpl)
-  foreach(tpl,val in insertToTable)
+  foreach(tpl, _val in insertToTable)
     insertTo.append(tpl)
   extendBy.sort()
   insertTo.sort()
@@ -301,12 +301,31 @@ let mkTemplateInfoTag = @(text, fillColor = Color(100,100,200), size = SIZE_TO_C
   vplace = ALIGN_CENTER
   margin = [hdpx(2),0]
   children = {
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     size
     text
     fontSize = hdpx(12)
     color = textColor
   }
+}
+
+let function sliceLongText(inText, rowLen, cb) {
+  if (inText.len() <= rowLen) {
+    cb(true, inText)
+    return
+  }
+  local firstRow = true
+  local text = clone inText
+  while (text.len() >= rowLen) {
+    local sliceLen = rowLen
+    while (sliceLen < text.len() && (text[sliceLen] != ' ' || text[sliceLen+1] == '}'))
+      ++sliceLen
+    cb(firstRow, text.slice(0, sliceLen))
+    text = text.slice(sliceLen)
+    firstRow = false
+  }
+  if (text.len() > 0)
+    cb(firstRow, text)
 }
 
 let function mkTemplateTooltip(templName) {
@@ -348,8 +367,10 @@ let function mkTemplateTooltip(templName) {
         descTexts.append(txt("", skipStyle))
       }
       gotDescs = true;
-      descNames.append(txt($" {desc.name}   ", infoStyle))
-      descTexts.append(txt(desc.text, infoStyle))
+      sliceLongText(desc.text, 77, function(first, text) {
+        descNames.append(txt(first ? $" {desc.name}   " : "", infoStyle))
+        descTexts.append(txt(text, infoStyle))
+      })
       descNames.append(txt("", skipStyle))
       descTexts.append(txt("", skipStyle))
     }
@@ -358,8 +379,10 @@ let function mkTemplateTooltip(templName) {
       wasComps = true
       let hasNoMetaValue = templInfo.valued?[desc.name] ?? false
       if (!hasNoMetaValue) {
-        descNames.append(txt($"  {desc.name}  ", paramNameStyle))
-        descTexts.append(txt(desc.text, paramInfoStyle))
+        sliceLongText(desc.text, 90, function(first, text) {
+          descNames.append(txt(first ? $"  {desc.name}   " : "", paramNameStyle))
+          descTexts.append(txt(text, paramInfoStyle))
+        })
       }
       else {
         local compValue = null

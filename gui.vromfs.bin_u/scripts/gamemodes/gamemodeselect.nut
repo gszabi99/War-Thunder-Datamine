@@ -548,12 +548,12 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function updateEventDescriptionConsoleButton(gameMode)
   {
-    showSceneBtn("event_description_console_button", gameMode != null
+    this.showSceneBtn("event_description_console_button", gameMode != null
       && gameMode?.forClan
       && ::show_console_buttons
     )
 
-    let prefObj = showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
+    let prefObj = this.showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
       && ::show_console_buttons)
 
     if (!::check_obj(prefObj))

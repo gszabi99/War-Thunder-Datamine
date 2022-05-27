@@ -86,7 +86,7 @@ local teamColors = Watched({
 
 ::interop.recalculateTeamColors()
 
-localTeam.subscribe(function (new_val) {
+localTeam.subscribe(function (_new_val) {
   ::interop.recalculateTeamColors(teamColors.value.forcedTeamColors)
 })
 

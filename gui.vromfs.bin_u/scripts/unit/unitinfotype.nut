@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -275,7 +276,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
           let wpMuls = unit.getWpRewardMulList(diff)
           let value = (wpMuls.wpMul * wpMuls.premMul * 100.0 + 0.5).tointeger()
           blk.value[mode] = value
-          blk.valueText[mode] = ::format("%d%%", value)
+          blk.valueText[mode] = format("%d%%", value)
         }
     }
   }
@@ -294,7 +295,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         blk.hide = true
         return
       }
-      let valueText = ::format("%d%%", value)
+      let valueText = format("%d%%", value)
       blk.value = ::DataBlock()
       blk.valueText = ::DataBlock()
       foreach(diff in ::g_difficulty.types)
@@ -564,7 +565,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     addToExportDataBlock = function(blk, unit)
     {
       let value = unit.shop.climbTime
-      let valueText = ::format("%.1f %s", value, ::loc("measureUnits/seconds"))
+      let valueText = format("%.1f %s", value, ::loc("measureUnits/seconds"))
       addSingleValue(blk, unit, value, valueText)
     }
   }
@@ -646,7 +647,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         let horsePowersRPM = params.maxHorsePowersRPM;
 
         blk.value[mode] = horsePowers
-        blk.valueText[mode] = ::format("%s %s %d %s",
+        blk.valueText[mode] = format("%s %s %d %s",
           ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(horsePowers),
           ::loc("shop/unitValidCondition"), horsePowersRPM.tointeger(), ::loc("measureUnits/rpm"))
     }
@@ -853,7 +854,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     getHeader = function(unit)
     {
-      return ::format("%s (%s 100 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
+      return format("%s (%s 100 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
     }
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
@@ -883,7 +884,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     getHeader = function(unit)
     {
-      return ::format("%s (%s 500 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
+      return format("%s (%s 500 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
     }
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
     addToExportTankDataBlockValues = function(blk, params, mode)
@@ -913,7 +914,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     getHeader = function(unit)
     {
-      return ::format("%s (%s 1000 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
+      return format("%s (%s 1000 %s)", ::loc("shop/armorPiercing"), ::loc("shop/armorPiercingDist"), ::loc("measureUnits/meters_alt"))
     }
 
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
@@ -971,7 +972,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "bullet_properties/cooldown"
     getHeader = function(unit)
     {
-      return ::format("%s:", ::loc("bullet_properties/cooldown"))
+      return format("%s:", ::loc("bullet_properties/cooldown"))
     }
     compare = COMPARE_LESS_BETTER
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK

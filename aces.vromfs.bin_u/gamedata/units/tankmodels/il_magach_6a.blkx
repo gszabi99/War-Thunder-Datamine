@@ -171,13 +171,16 @@
           "armorThickness": 25.0
         },
         "ex_armor_body_02_dm": {
-          "armorThickness": 25.0
+          "armorThickness": 20.0
         },
         "turret_08_top_dm": {
           "armorThickness": 10.0
         },
         "turret_07_top_dm": {
           "armorThickness": 5.0
+        },
+        "turret_07_side_dm": {
+          "armorThickness": 10.0
         }
       },
       "turret": {
@@ -296,9 +299,6 @@
         },
         "turret_07_front_dm": {
           "armorThickness": 36.0
-        },
-        "turret_07_side_dm": {
-          "armorThickness": 10.0
         },
         "turret_08_back_dm": {
           "armorThickness": 128.8
@@ -529,6 +529,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1450,8 +1451,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1495,8 +1496,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1504,8 +1505,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1513,8 +1514,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1553,29 +1554,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2500,7 +2501,7 @@
           "speedYaw": 24.0,
           "speedPitch": 4.0,
           "fireConeAngle": 1.0,
-          "bullets": 57,
+          "bullets": 63,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -2644,7 +2645,7 @@
             "triggerGroup": "coaxial"
           },
           {
-            "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk"
+            "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk"
           },
           {
             "emitter": "bone_mg_twin_01"
@@ -2677,7 +2678,7 @@
             "fireConeAngle": 15.0
           },
           {
-            "bullets": 5950
+            "bullets": 900
           },
           {
             "isBulletBelt": true
@@ -2742,7 +2743,7 @@
             "triggerGroup": "machinegun"
           },
           {
-            "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk"
+            "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk"
           },
           {
             "emitter": "bone_gun_barrel_02"
@@ -2972,9 +2973,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 49116.0,
+        "Empty": 47250.0,
         "Fuel": 750.0,
-        "TakeOff": 49866.0,
+        "TakeOff": 48000.0,
         "momentOfInertia": [2.5,2.5,5.0],
         "CenterOfGravity": [-0.25,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -2983,8 +2984,6 @@
       },
       "tracks": {
         "animationMultiplier": 0.51,
-        "height": 0.12,
-        "width": 0.5,
         "tracksTensionK": [4.5,8.0,2.0],
         "trackMesh": "us_t97_phys_track_line",
         "trackLen": 0.176,
@@ -2994,7 +2993,9 @@
         "trackEmitSparks": false,
         "trackMaxHeight": 1.5,
         "trackStartOffset": 0.1,
-        "trackMaxSinking": 0.05
+        "trackMaxSinking": 0.05,
+        "height": 0.12,
+        "width": 0.5
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",

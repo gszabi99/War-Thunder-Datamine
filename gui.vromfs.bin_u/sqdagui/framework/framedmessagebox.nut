@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
 /*
@@ -42,13 +45,13 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function getSceneTplView()
   {
-    if (u.isEmpty(buttons))
-      buttons = closeButtonDefault
+    if (u.isEmpty(this.buttons))
+      this.buttons = this.closeButtonDefault
 
-    foreach(idx, button in buttons)
+    foreach(idx, button in this.buttons)
     {
-      buttons[idx].funcName <- "onButtonClick"
-      buttons[idx].id <- button?.id ?? ("button_" + idx)
+      button.funcName <- "onButtonClick"
+      button.id <- button?.id ?? ("button_" + idx)
     }
 
     return this
@@ -56,42 +59,42 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function initScreen()
   {
-    let obj = scene.findObject("framed_message_box")
+    let obj = this.scene.findObject("framed_message_box")
     if (!::checkObj(obj))
       return
 
-    align = ::g_dagui_utils.setPopupMenuPosAndAlign(pos || getDefaultPos(), align, obj, {
+    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.pos || this.getDefaultPos(), this.align, obj, {
       screenBorders = [ "1@bw", "1@bottomBarHeight" ]
     })
     obj.animation = "show"
 
-    let buttonsObj = scene.findObject("framed_message_box_buttons_place")
+    let buttonsObj = this.scene.findObject("framed_message_box_buttons_place")
     if (::check_obj(buttonsObj))
       buttonsObj.select()
 
-    if (!u.isEmpty(onOpenSound))
-      guiScene.playSound(onOpenSound)
+    if (!u.isEmpty(this.onOpenSound))
+      this.guiScene.playSound(this.onOpenSound)
   }
 
   function getDefaultPos()
   {
-    let buttonsObj = scene.findObject("framed_message_box_buttons_place")
+    let buttonsObj = this.scene.findObject("framed_message_box_buttons_place")
     if (!::check_obj(buttonsObj))
-      return array(2, 0)
+      return ::array(2, 0)
 
     return ::get_dagui_mouse_cursor_pos_RC()
   }
 
   function onButtonClick(obj)
   {
-    foreach(button in buttons)
+    foreach(button in this.buttons)
       if (button.id == obj?.id)
       {
-        performAction(button?.cb)
+        this.performAction(button?.cb)
         break
       }
 
-    goBack()
+    this.goBack()
   }
 
   function performAction(func = null)

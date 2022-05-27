@@ -10,7 +10,7 @@ def add_to_ecs_object(var obj : Object implicit; name : string; value)
     if value != null
       add_to_ecs_object(obj, name, *value)
   static_elif typeinfo(is_struct value)
-    using <| $(var child: Object#)
+    using <| $(var child : Object#)
       fill_ecs_object(child, value)
       set(obj, name, child)
   else
@@ -22,5 +22,5 @@ def fill_ecs_object(var obj : Object implicit; value)
     concept_assert(false, "EcsObject support only structs")
     return
 
-  apply(value) <| $(name: string; field)
+  apply(value) <| $(name : string; field)
     add_to_ecs_object(obj, name, field)

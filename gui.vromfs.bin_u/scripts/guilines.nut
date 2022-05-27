@@ -1,3 +1,4 @@
+let { format } = require("string")
 /* guiBox API
   isIntersect(box)      - (bool) return true if box intersect current
 
@@ -76,11 +77,11 @@ enum lines_priorities //lines intersect priority
   priority = 0
   isToStringForDebug = true
 
-  constructor(_x1 = 0, _y1 = 0, _x2 = 0, _y2 = 0, _priority = 0)
+  constructor(vx1 = 0, vy1 = 0, vx2 = 0, vy2 = 0, vpriority = 0)
   {
-    c1 = [_x1, _y1]
-    c2 = [_x2, _y2]
-    priority = _priority
+    c1 = [vx1, vy1]
+    c2 = [vx2, vy2]
+    priority = vpriority
   }
 
   function setFromDaguiObj(obj)
@@ -105,7 +106,7 @@ enum lines_priorities //lines intersect priority
 
   function _tostring()
   {
-    return ::format("GuiBox((%d,%d), (%d,%d)%s)", c1[0], c1[1], c2[0], c2[1],
+    return format("GuiBox((%d,%d), (%d,%d)%s)", c1[0], c1[1], c2[0], c2[1],
       priority ? (", priority = " + priority) : "")
   }
 
@@ -141,8 +142,8 @@ enum lines_priorities //lines intersect priority
     if (box.c2[0] > c2[0])
       cutList.append(::GuiBox(c2[0], box.c1[1], box.c2[0], box.c2[1]))
 
-    let offset1 = ::max(c1[0], box.c1[0])
-    let offset2 = ::min(c2[0], box.c2[0])
+    let offset1 = max(c1[0], box.c1[0])
+    let offset2 = min(c2[0], box.c2[0])
     if (box.c1[1] < c1[1])
       cutList.append(::GuiBox(offset1, box.c1[1], offset2, c1[1]))
     if (box.c2[1] > c2[1])
@@ -345,10 +346,10 @@ LinesGenerator.genMonoLines <- function genMonoLines(res, links, obstacles, inte
       {
         axis = a
         checkBox = ::GuiBox()
-        checkBox.c1[1-a] = ::min(link[0].c2[1-a], link[1].c2[1-a])
-        checkBox.c2[1-a] = ::max(link[0].c1[1-a], link[1].c1[1-a])
-        checkBox.c1[a] = ::max(link[0].c1[a], link[1].c1[a])
-        checkBox.c2[a] = ::min(link[0].c2[a], link[1].c2[a])
+        checkBox.c1[1-a] = min(link[0].c2[1-a], link[1].c2[1-a])
+        checkBox.c2[1-a] = max(link[0].c1[1-a], link[1].c1[1-a])
+        checkBox.c1[a] = max(link[0].c1[a], link[1].c1[a])
+        checkBox.c2[a] = min(link[0].c2[a], link[1].c2[a])
         break
       }
     if (!checkBox)
@@ -445,7 +446,7 @@ LinesGenerator.monoLineGetBestPos <- function monoLineGetBestPos(diapason, check
       continue
     }
 
-    let _pos = ::min(bestPos, segment[1] - lineWidth)
+    let _pos = min(bestPos, segment[1] - lineWidth)
     if (!found || (bestPos - _pos) < (pos - bestPos))
       pos = _pos
     found = true
@@ -537,8 +538,8 @@ LinesGenerator.doubleLineGetZones <- function doubleLineGetZones(link)
         zones.append({
           box = getBoxByAxis(j, link[1].c1[j], link[0].c1[j], link[0].c1[1-j], link[1].c1[1-j])
           zone = [{ start = link[1].c1[j]
-                    end   = ::min(link[0].c1[j],   link[1].c2[j])
-                    diapason = [[link[0].c1[1-j], ::min(link[1].c1[1-j], link[0].c2[1-j])]]
+                    end   = min(link[0].c1[j],   link[1].c2[j])
+                    diapason = [[link[0].c1[1-j], min(link[1].c1[1-j], link[0].c2[1-j])]]
                  }]
           axis = j
           wayAxis = false
@@ -548,8 +549,8 @@ LinesGenerator.doubleLineGetZones <- function doubleLineGetZones(link)
         zones.append({
           box = getBoxByAxis(j, link[1].c1[j], link[0].c1[j], link[1].c2[1-j], link[0].c2[1-j])
           zone = [{ start = link[1].c1[j]
-                    end   = ::min(link[0].c1[j],   link[1].c2[j])
-                    diapason = [[::max(link[1].c2[1-j], link[0].c1[1-j]), link[0].c2[1-j]]]
+                    end   = min(link[0].c1[j],   link[1].c2[j])
+                    diapason = [[max(link[1].c2[1-j], link[0].c1[1-j]), link[0].c2[1-j]]]
                  }]
           axis = j
           wayAxis = false
@@ -561,9 +562,9 @@ LinesGenerator.doubleLineGetZones <- function doubleLineGetZones(link)
       if (link[0].c1[1-j] < link[1].c1[1-j])  //alt way bottom / right
         zones.append({
           box = getBoxByAxis(j, link[0].c2[j], link[1].c2[j], link[0].c1[1-j], link[1].c1[1-j])
-          zone = [{ start = ::max(link[0].c2[j], link[1].c1[j])
+          zone = [{ start = max(link[0].c2[j], link[1].c1[j])
                     end   = link[1].c2[j]
-                    diapason = [[link[0].c1[1-j], ::min(link[1].c1[1-j], link[0].c2[1-j])]]
+                    diapason = [[link[0].c1[1-j], min(link[1].c1[1-j], link[0].c2[1-j])]]
                  }]
           axis = j
           wayAxis = true
@@ -572,9 +573,9 @@ LinesGenerator.doubleLineGetZones <- function doubleLineGetZones(link)
       if (link[0].c2[1-j] > link[1].c2[1-j]) //alt way top / left
         zones.append({
           box = getBoxByAxis(j, link[0].c2[j], link[1].c2[j], link[1].c2[1-j], link[0].c2[1-j])
-          zone = [{ start = ::max(link[0].c2[j], link[1].c1[j])
+          zone = [{ start = max(link[0].c2[j], link[1].c1[j])
                     end   = link[1].c2[j]
-                    diapason = [[::max(link[1].c2[1-j], link[0].c1[1-j]), link[0].c2[1-j]]]
+                    diapason = [[max(link[1].c2[1-j], link[0].c1[1-j]), link[0].c2[1-j]]]
                  }]
           axis = j
           wayAxis = true
@@ -696,7 +697,7 @@ LinesGenerator.doubleLineChooseBestInZone <- function doubleLineChooseBestInZone
     if (zone.end - zone.start < lineWidth)
       continue
 
-    let _posAxis = (zone.start > bestPos)? zone.start : ::min(bestPos, zone.end - lineWidth)
+    let _posAxis = (zone.start > bestPos)? zone.start : min(bestPos, zone.end - lineWidth)
     local _posAltAxis = 0
     local dFound = false
     let diapason = zone.diapason
@@ -713,7 +714,7 @@ LinesGenerator.doubleLineChooseBestInZone <- function doubleLineChooseBestInZone
         continue
       }
 
-      let _dpos = ::min(altBestPos, segment[1] - lineWidth)
+      let _dpos = min(altBestPos, segment[1] - lineWidth)
       if (!dFound || (altBestPos - _dpos) < (_posAltAxis - altBestPos))
         _posAltAxis = _dpos
       dFound = true
@@ -778,7 +779,7 @@ LinesGenerator.getBoxByAxis <- function getBoxByAxis(axisIdx, axis0, axis1, altA
 
 LinesGenerator.getLineBoxByP2 <- function getLineBoxByP2(dot1, dot2, lineWidth)
 {
-  return ::GuiBox(::min(dot1.x, dot2.x), ::min(dot1.y, dot2.y),
-                  ::max(dot1.x, dot2.x) + ((dot1.x == dot2.x)? lineWidth : 0),
-                  ::max(dot1.y, dot2.y) + ((dot1.y == dot2.y)? lineWidth : 0))
+  return ::GuiBox(min(dot1.x, dot2.x), min(dot1.y, dot2.y),
+                  max(dot1.x, dot2.x) + ((dot1.x == dot2.x)? lineWidth : 0),
+                  max(dot1.y, dot2.y) + ((dot1.y == dot2.y)? lineWidth : 0))
 }

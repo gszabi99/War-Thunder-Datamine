@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
@@ -430,7 +431,7 @@ let function getBulletsGroupCount(air, full = false)
     if (air.bulGroups < bulletSetsQuantity)
     {
       let add = getBulletsSetData(air, ::fakeBullets_prefix, modList) || 0
-      air.bulGroups = ::min(air.bulGroups + add, bulletSetsQuantity)
+      air.bulGroups = min(air.bulGroups + add, bulletSetsQuantity)
     }
   }
   return full? air.bulGroups : air.bulModsGroups
@@ -666,7 +667,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false,
       if (res.desc=="")
         res.desc = ::locEnding(locId, ending)
       if (caliber > 0)
-        res.desc = ::format(res.desc, caliber.tostring())
+        res.desc = format(res.desc, caliber.tostring())
     }
     return res //without effects atm
   }
@@ -815,6 +816,8 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS)
     let bData = getBulletsSetData(air, modifName)
     if (bData)
     {
+      if (!bData.useDefaultBullet)
+        return descr
       descr.caliber = bData.caliber
       descr.weaponType = bData.weaponType
     }

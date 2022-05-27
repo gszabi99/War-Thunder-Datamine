@@ -2,7 +2,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.ItemVehicle <- class extends ItemCouponBase {
   static iType = itemType.VEHICLE
-  static typeIcon = "#ui/gameuiskin#item_type_blueprints"
+  static typeIcon = "#ui/gameuiskin#item_type_blueprints.svg"
   static descHeaderLocId = "coupon/for/vehicle"
 
   unit = null

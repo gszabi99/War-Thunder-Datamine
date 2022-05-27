@@ -86,7 +86,7 @@ let function makeIterable(request, pos, size) {
   return request
 }
 
-let function noOpCb(response, err) { /* NO OP */ }
+let function noOpCb(_response, _err) { /* NO OP */ }
 
 
 // ------------ Session actions

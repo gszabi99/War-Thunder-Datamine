@@ -1,10 +1,6 @@
-let log_ = require("%sqstd/log.nut")(
-  [{
-    compare = @(val) type(val)=="instance" && "formatAsString" in val
-    tostring = @(val) val.formatAsString()
-  }]
-)
+let log_ = require("%globalScripts/logs.nut")
 require("%sqstd/regScriptDebugger.nut")(log_.debugTableData)
+require("console").setObjPrintFunc(log_.debugTableData)
 
 global enum Layers {
   Default
@@ -27,7 +23,7 @@ global const INVALID_ENTITY_ID = 0//::ecs.INVALID_ENTITY_ID
     return this
   }
 
-  function _call(self, ...) {
+  function _call(_self, ...) {
     let args = [this]
     args.append(path)
     args.extend(vargv)

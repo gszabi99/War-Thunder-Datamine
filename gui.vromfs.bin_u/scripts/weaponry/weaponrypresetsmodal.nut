@@ -69,7 +69,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let tiersAndDescWidth = ::to_pixels("".concat(
       "1@narrowTooltipWidth+4@blockInterval+2@scrollBarSize+2@frameHeaderPad"))
         + tiersWidth + iconWidth
-    presetTextWidth = ::min(::to_pixels("1@srw") - tiersAndDescWidth,
+    presetTextWidth = min(::to_pixels("1@srw") - tiersAndDescWidth,
       ::to_pixels("1@modPresetTextMaxWidth"))
     let wndWidth = tiersAndDescWidth + presetTextWidth
     chapterPos = presetTextWidth + 0.5 * tiersWidth + iconWidth
@@ -361,7 +361,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     local needSave = false
     if (lastWeapon != "" && lastWeapon != getLastWeapon(unit.name))
     {
-      dagor.debug($"force cln_update due lastWeapon '{lastWeapon}' != {getLastWeapon(unit.name)}")
+      ::dagor.debug($"force cln_update due lastWeapon '{lastWeapon}' != {getLastWeapon(unit.name)}")
       needSave = true
       lastWeapon = getLastWeapon(unit.name)
     }
@@ -442,21 +442,21 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   function updateButtons() {
     let isAvailable = isCustomPresetsAvailable()
-    showSceneBtn("newPresetBtn", isAvailable
+    this.showSceneBtn("newPresetBtn", isAvailable
       && presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM)
 
     if (curPresetIdx == null) {
-      showSceneBtn("actionBtn", false)
-      showSceneBtn("altActionBtn", false)
-      showSceneBtn("favoriteBtn", false)
-      showSceneBtn("openPresetMenuBtn", false)
+      this.showSceneBtn("actionBtn", false)
+      this.showSceneBtn("altActionBtn", false)
+      this.showSceneBtn("favoriteBtn", false)
+      this.showSceneBtn("openPresetMenuBtn", false)
       return
     }
 
     let curPreset = presets[curPresetIdx]
     let actions = getPresetActions()
     let isVisibleActionsButton = actions.len() > 0
-    let bObj = showSceneBtn("openPresetMenuBtn", isVisibleActionsButton)
+    let bObj = this.showSceneBtn("openPresetMenuBtn", isVisibleActionsButton)
     if (isVisibleActionsButton)
     {
       if (actions.len() == 1)
@@ -469,18 +469,18 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     let params = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     let btnText = params?.weaponryItem.actionBtnText ?? ""
     let canBuy = presets[idx].weaponPreset.cost > 0
-    let actionBtnObj = showSceneBtn("actionBtn", btnText != ""
+    let actionBtnObj = this.showSceneBtn("actionBtn", btnText != ""
       && (idx != chosenPresetIdx || canBuy))
     if (btnText != "" && actionBtnObj?.isValid())
       actionBtnObj.setValue(btnText)
     let altBtnText = params?.weaponryItem.altBtnBuyText ?? ""
-    let altActionBtnObj = showSceneBtn("altActionBtn", altBtnText != "")
+    let altActionBtnObj = this.showSceneBtn("altActionBtn", altBtnText != "")
     if (altBtnText != "" && altActionBtnObj?.isValid())
     {
       altActionBtnObj.setValue(altBtnText)
       altActionBtnObj.tooltip = params?.weaponryItem.altBtnTooltip ?? ""
     }
-    let favoriteBtnObj = showSceneBtn("favoriteBtn", true)
+    let favoriteBtnObj = this.showSceneBtn("favoriteBtn", true)
     favoriteBtnObj.setValue(::loc(curPreset.chapterOrd != 1
       ? "mainmenu/btnFavorite" : "mainmenu/btnFavoriteUnmark"))
   }
@@ -741,7 +741,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       return
 
     let curUnit = unit
-    msgBox("question_delete_preset",
+    this.msgBox("question_delete_preset",
       ::loc("msgbox/genericRequestDelete", { item = curPreset.customNameText }),
       [
         ["delete", @() deleteCustomPreset(curUnit, curPreset.name)],
@@ -762,7 +762,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (isShow)
       placePriceTextToButton(scene, "btn_buyAll", ::loc("mainmenu/btnBuyAll"), totalCost)
 
-    showSceneBtn("btn_buyAll", isShow)
+    this.showSceneBtn("btn_buyAll", isShow)
   }
 
   onBuyAll = @() buyAll()

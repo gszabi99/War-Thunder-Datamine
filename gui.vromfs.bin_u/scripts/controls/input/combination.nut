@@ -11,9 +11,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
   elements = null
 
 
-  constructor(_elements = [])
+  constructor(v_elements = [])
   {
-    elements = _elements
+    elements = v_elements
   }
 
   function getMarkup()

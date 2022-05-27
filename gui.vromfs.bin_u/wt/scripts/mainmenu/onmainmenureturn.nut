@@ -1,3 +1,4 @@
+let { format } = require("string")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 
 let time = require("%scripts/time.nut")
@@ -15,6 +16,37 @@ let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nucl
 let { checkShowRateWnd } = require("%scripts/user/suggestionRateGame.nut")
 let { checkAutoShowEmailRegistration, checkForceSuggestionEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
+
+let delayed_gblk_error_popups = []
+let function showGblkErrorPopup(errCode, path) {
+  if (!::g_login.isLoggedIn())
+  {
+    delayed_gblk_error_popups.append({ type = errCode, path = path })
+    return
+  }
+
+  let title = ::loc("gblk/saveError/title")
+  let msg = ::loc(format("gblk/saveError/text/%d", errCode), {path=path})
+  ::g_popups.add(title, msg, null, [{id="copy_button",
+                              text=::loc("gblk/saveError/copy"),
+                              func=(@(msg) function() {::copy_to_clipboard(msg)})(msg)}])
+}
+::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
+
+let function popGblkErrorPopups() {
+  if (!::g_login.isLoggedIn())
+    return
+
+  let total = delayed_gblk_error_popups.len()
+  for(local i = 0; i < total; i++)
+  {
+    let data = delayed_gblk_error_popups[i]
+    showGblkErrorPopup(data.type, data.path)
+  }
+  delayed_gblk_error_popups.clear()
+}
+
 
 //called after all first mainmenu actions
 local function onMainMenuReturn(handler, isAfterLogin) {
@@ -41,6 +73,9 @@ local function onMainMenuReturn(handler, isAfterLogin) {
 
   systemOptionsMaintain()
   ::g_user_presence.init()
+
+  if (isAllowPopups)
+    handler.doWhenActive(@() checkShowGpuBenchmarkWnd())
 
   handler.doWhenActive(@() ::checkNewNotificationUserlogs())
   handler.doWhenActive(@() ::checkNonApprovedResearches(true))
@@ -122,7 +157,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
   }
 
-  handler.doWhenActive(::pop_gblk_error_popups)
+  handler.doWhenActive(popGblkErrorPopups)
 
   guiScene.initCursor("%gui/cursor.blk", "normal")
 

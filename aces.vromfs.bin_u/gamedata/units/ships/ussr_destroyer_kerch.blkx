@@ -84,25 +84,28 @@
     "explosionFx": "explosion_ship_small"
   },
   {
-    "smokeScreenActivateTime": 10.0
+    "smokeScreenActivateTime": 5.0
   },
   {
     "smokeScreenEffectTime": 30.0
   },
   {
-    "smokeScreenRad": 50.0
+    "smokeScreenRad": 55.0
   },
   {
     "smokeScreenFx": "tank_smokescreen"
   },
   {
-    "smokeScreenOffset": [-48.0,2.0,0.0]
+    "smokeScreenOffset": [-45.0,2.0,0.0]
   },
   {
     "rearmSmokeTimeOnField": 180.0
   },
   {
     "canReloadNonGuns": true
+  },
+  {
+    "supportsCombinedPriSecTriggers": false
   },
   {
     "depthTraceWarningDepth": 5.0
@@ -949,258 +952,204 @@
     ]
   },
   {
-    "MetaParts": [
-      {
-        "cover": {
-          "part": "cover_01_dm",
+    "MetaParts": {
+      "hull": [
+        {
+          "hp": 20000.0
+        },
+        {
+          "part": "cover_01_dm"
+        },
+        {
+          "part": "cover_02_dm"
+        },
+        {
+          "part": "cover_03_dm"
+        },
+        {
+          "part": "cover_04_dm"
+        },
+        {
+          "part": "cover_05_dm"
+        },
+        {
+          "part": "cover_06_dm"
+        },
+        {
+          "part": "cover_07_dm"
+        },
+        {
+          "part": "cover_08_dm"
+        },
+        {
           "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDead": true,
             "kill": true,
             "killEffect": "hullBreak"
           }
         }
-      },
-      {
-        "cover": {
-          "part": "cover_02_dm",
+      ],
+      "open_mounts": [
+        {
+          "part": "main_caliber_turret_01_dm"
+        },
+        {
+          "part": "main_caliber_turret_02_dm"
+        },
+        {
+          "part": "main_caliber_turret_03_dm"
+        },
+        {
+          "part": "main_caliber_turret_04_dm"
+        },
+        {
+          "part": "main_caliber_turret_05_dm"
+        },
+        {
+          "part": "main_caliber_turret_06_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_01_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_02_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_03_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_04_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_05_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_06_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_07_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_08_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_09_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_10_dm"
+        },
+        {
+          "part": "aa_turret_01_dm"
+        },
+        {
+          "part": "aa_turret_02_dm"
+        },
+        {
+          "part": "aa_turret_03_dm"
+        },
+        {
+          "part": "aa_turret_04_dm"
+        },
+        {
+          "part": "aa_turret_05_dm"
+        },
+        {
+          "part": "aa_turret_06_dm"
+        },
+        {
+          "part": "aa_turret_07_dm"
+        },
+        {
+          "part": "aa_turret_08_dm"
+        },
+        {
+          "part": "aa_turret_09_dm"
+        },
+        {
+          "part": "aa_turret_10_dm"
+        },
+        {
+          "part": "aa_turret_11_dm"
+        },
+        {
+          "part": "aa_turret_12_dm"
+        },
+        {
+          "part": "aa_turret_13_dm"
+        },
+        {
+          "part": "aa_turret_14_dm"
+        },
+        {
+          "part": "aa_turret_15_dm"
+        },
+        {
+          "part": "aa_turret_16_dm"
+        },
+        {
+          "part": "aa_turret_17_dm"
+        },
+        {
+          "part": "aa_turret_18_dm"
+        },
+        {
+          "part": "aa_turret_19_dm"
+        },
+        {
+          "part": "aa_turret_20_dm"
+        },
+        {
+          "part": "aa_turret_21_dm"
+        },
+        {
+          "part": "aa_turret_22_dm"
+        },
+        {
+          "part": "aa_turret_23_dm"
+        },
+        {
+          "part": "aa_turret_24_dm"
+        },
+        {
+          "part": "aa_turret_25_dm"
+        },
+        {
+          "part": "rangefinder_01_dm"
+        },
+        {
+          "part": "rangefinder_02_dm"
+        },
+        {
+          "part": "rangefinder_03_dm"
+        },
+        {
+          "part": "rangefinder_04_dm"
+        },
+        {
+          "part": "rangefinder_05_dm"
+        },
+        {
+          "part": "rangefinder_06_dm"
+        },
+        {
+          "part": "rangefinder_07_dm"
+        },
+        {
+          "part": "rangefinder_08_dm"
+        },
+        {
+          "part": "rangefinder_09_dm"
+        },
+        {
+          "part": "rangefinder_10_dm"
+        },
+        {
           "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
-            "kill": true,
-            "killEffect": "destruction"
+            "pressureOpen": true
           }
         }
-      },
-      {
-        "cover": {
-          "part": "cover_03_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
-            "kill": true,
-            "killEffect": "drown"
-          }
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_04_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
-            "kill": true,
-            "killEffect": "drown"
-          }
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_05_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
-            "kill": true,
-            "killEffect": "drown"
-          }
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_06_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
-            "kill": true,
-            "killEffect": "destruction"
-          }
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_07_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
-            "kill": true,
-            "killEffect": "hullBreak"
-          }
-        }
-      },
-      {
-        "cover": {
-          "part": "cover_08_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
-            "kill": true,
-            "killEffect": "hullBreak"
-          }
-        }
-      },
-      {
-        "open_mounts": [
-          {
-            "part": "main_caliber_turret_01_dm"
-          },
-          {
-            "part": "main_caliber_turret_02_dm"
-          },
-          {
-            "part": "main_caliber_turret_03_dm"
-          },
-          {
-            "part": "main_caliber_turret_04_dm"
-          },
-          {
-            "part": "main_caliber_turret_05_dm"
-          },
-          {
-            "part": "main_caliber_turret_06_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_01_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_02_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_03_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_04_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_05_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_06_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_07_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_08_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_09_dm"
-          },
-          {
-            "part": "auxiliary_caliber_turret_10_dm"
-          },
-          {
-            "part": "aa_turret_01_dm"
-          },
-          {
-            "part": "aa_turret_02_dm"
-          },
-          {
-            "part": "aa_turret_03_dm"
-          },
-          {
-            "part": "aa_turret_04_dm"
-          },
-          {
-            "part": "aa_turret_05_dm"
-          },
-          {
-            "part": "aa_turret_06_dm"
-          },
-          {
-            "part": "aa_turret_07_dm"
-          },
-          {
-            "part": "aa_turret_08_dm"
-          },
-          {
-            "part": "aa_turret_09_dm"
-          },
-          {
-            "part": "aa_turret_10_dm"
-          },
-          {
-            "part": "aa_turret_11_dm"
-          },
-          {
-            "part": "aa_turret_12_dm"
-          },
-          {
-            "part": "aa_turret_13_dm"
-          },
-          {
-            "part": "aa_turret_14_dm"
-          },
-          {
-            "part": "aa_turret_15_dm"
-          },
-          {
-            "part": "aa_turret_16_dm"
-          },
-          {
-            "part": "aa_turret_17_dm"
-          },
-          {
-            "part": "aa_turret_18_dm"
-          },
-          {
-            "part": "aa_turret_19_dm"
-          },
-          {
-            "part": "aa_turret_20_dm"
-          },
-          {
-            "part": "aa_turret_21_dm"
-          },
-          {
-            "part": "aa_turret_22_dm"
-          },
-          {
-            "part": "aa_turret_23_dm"
-          },
-          {
-            "part": "aa_turret_24_dm"
-          },
-          {
-            "part": "aa_turret_25_dm"
-          },
-          {
-            "part": "rangefinder_01_dm"
-          },
-          {
-            "part": "rangefinder_02_dm"
-          },
-          {
-            "part": "rangefinder_03_dm"
-          },
-          {
-            "part": "rangefinder_04_dm"
-          },
-          {
-            "part": "rangefinder_05_dm"
-          },
-          {
-            "part": "rangefinder_06_dm"
-          },
-          {
-            "part": "rangefinder_07_dm"
-          },
-          {
-            "part": "rangefinder_08_dm"
-          },
-          {
-            "part": "rangefinder_09_dm"
-          },
-          {
-            "part": "rangefinder_10_dm"
-          },
-          {
-            "effect": {
-              "pressureOpen": true
-            }
-          }
-        ]
-      }
-    ]
+      ]
+    }
   },
   {
     "ShipPhys": {
@@ -1351,8 +1300,8 @@
         "dmPartMain": "bridge_dm",
         "dmPart": "rangefinder_01_dm",
         "measureAccuracy": 0.85,
-        "targetLockTime": 30.0,
-        "calcTime": 18.0,
+        "targetLockTime": 24.0,
+        "calcTime": 14.0,
         "rotationSpeed": 20.0,
         "triggerGroupUse": {
           "primary": true,
@@ -4199,16 +4148,16 @@
         "genericDamageMult": 0.15,
         "armorThrough": 35.0,
         "compartment_01_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         },
         "compartment_02_dm": {
           "hp": 2500.0
         },
         "compartment_03_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         },
         "compartment_04_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         }
       },
       "control_compartments": {
@@ -4218,7 +4167,7 @@
         "genericDamageMult": 0.5,
         "armorThrough": 15.0,
         "bridge_dm": {
-          "hp": 500.0
+          "hp": 425.0
         },
         "radio_station_dm": {
           "hp": 500.0
@@ -4231,25 +4180,25 @@
         "genericDamageMult": 0.1,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 1248.0
+          "hp": 12486.0
         },
         "cover_02_dm": {
-          "hp": 1042.0
+          "hp": 10421.0
         },
         "cover_03_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_04_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_05_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_06_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_07_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         }
       },
       "superstructures": {
@@ -4362,13 +4311,13 @@
         "genericDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
-          "hp": 2584.0
+          "hp": 2400.0
         },
         "engine_room_02_dm": {
-          "hp": 2780.0
+          "hp": 2400.0
         },
         "engine_room_03_dm": {
-          "hp": 2000.0
+          "hp": 2400.0
         }
       },
       "engine_rooms": {
@@ -4378,10 +4327,10 @@
         "explosionDamageMult": 1.2,
         "armorThrough": 150.0,
         "transmission_01_dm": {
-          "hp": 2002.0
+          "hp": 2400.0
         },
         "transmission_02_dm": {
-          "hp": 2253.0
+          "hp": 2400.0
         }
       },
       "funnels": {
@@ -4504,18 +4453,18 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "fireDamageMult": 1.5,
-        "pressureDamageMult": 5.0,
+        "pressureDamageMult": 7.0,
         "main_caliber_turret_01_dm": {
-          "hp": 275.0
+          "hp": 350.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 279.0
+          "hp": 350.0
         },
         "main_caliber_turret_03_dm": {
-          "hp": 277.0
+          "hp": 350.0
         },
         "main_caliber_turret_04_dm": {
-          "hp": 278.0
+          "hp": 350.0
         }
       },
       "turrets_aux_caliber": {
@@ -4524,10 +4473,10 @@
         "armorThickness": 3.0,
         "pressureDamageMult": 3.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 100.0
+          "hp": 175.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 100.0
+          "hp": 175.0
         }
       },
       "turrets_aa_caliber": {
@@ -4535,12 +4484,12 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "fireDamageMult": 2.0,
-        "pressureDamageMult": 1.0,
+        "pressureDamageMult": 2.0,
         "aa_turret_01_dm": {
-          "hp": 46.0
+          "hp": 100.0
         },
         "aa_turret_02_dm": {
-          "hp": 46.0
+          "hp": 100.0
         }
       },
       "gun_main_caliber": {
@@ -4606,16 +4555,16 @@
         "fireProtectionHp": 5.0,
         "armorThrough": 150.0,
         "ammunition_storage_shells_01_dm": {
-          "hp": 1500.0
+          "hp": 1243.0
         },
         "ammunition_storage_shells_02_dm": {
-          "hp": 1500.0
+          "hp": 1237.0
         },
         "ammunition_storage_shells_03_dm": {
-          "hp": 1316.0
+          "hp": 1200.0
         },
         "ammunition_storage_shells_04_dm": {
-          "hp": 1498.0
+          "hp": 1200.0
         }
       },
       "ammo_storages_charges": {
@@ -4633,7 +4582,7 @@
         "fireProtectionHp": 3.0,
         "armorThrough": 100.0,
         "ammunition_storage_aux_01_dm": {
-          "hp": 1000.0
+          "hp": 828.0
         }
       },
       "ammo_first_stage": {
@@ -4706,13 +4655,13 @@
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
         "elevator_01_dm": {
-          "hp": 500.0
+          "hp": 700.0
         },
         "elevator_02_dm": {
-          "hp": 500.0
+          "hp": 550.0
         },
         "elevator_03_dm": {
-          "hp": 500.0
+          "hp": 550.0
         }
       },
       "pumps": {
@@ -4776,7 +4725,7 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 10
+        "crew": 11
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
@@ -4786,12 +4735,12 @@
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 10
+        "crew": 11
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 10
+        "crew": 11
       },
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -4846,22 +4795,22 @@
       "sailor16": {
         "dmPart": "engine_room_01_dm",
         "role": "sailor",
-        "crew": 18
+        "crew": 16
       },
       "sailor17": {
         "dmPart": "engine_room_02_dm",
         "role": "sailor",
-        "crew": 20
+        "crew": 17
       },
       "sailor18": {
         "dmPart": "engine_room_03_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 16
       },
       "sailor19": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
-        "crew": 14
+        "crew": 15
       },
       "sailor20": {
         "dmPart": "transmission_02_dm",
@@ -4900,7 +4849,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.1,
+          "salvoRndK": 0.07,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4969,7 +4918,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.1,
+          "salvoRndK": 0.07,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -5033,7 +4982,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.1,
+          "salvoRndK": 0.07,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -5110,7 +5059,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.1,
+          "salvoRndK": 0.07,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,

@@ -25,7 +25,7 @@ def load_optional_folder(path : string) : bool
   return ok
 
 
-def load_sub_folder(base_path, sub_folder: string): bool
+def load_sub_folder(base_path, sub_folder : string) : bool
   var path = "{base_path}/{sub_folder}"
   let res = load_folder(path)
   unsafe(delete_string(path))

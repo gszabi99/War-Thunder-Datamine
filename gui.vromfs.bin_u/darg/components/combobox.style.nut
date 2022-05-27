@@ -2,7 +2,7 @@ from "%darg/ui_imports.nut" import *
 
 let defHeight = calc_str_box("A")[1]
 
-let function listItem(text, action, is_current, params={}) {
+let function listItem(text, action, is_current, _params={}) {
   let group = ElemGroup()
   let stateFlags = Watched(0)
   let xmbNode = XmbNode()
@@ -25,7 +25,7 @@ let function listItem(text, action, is_current, params={}) {
       onElemState = @(sf) stateFlags.update(sf)
 
       children = {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         margin = sh(0.5)
         text
         color = textColor
@@ -53,7 +53,7 @@ let function boxCtor(params=null) {
 
   let labelText = {
     group = params.group
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     behavior = Behaviors.Marquee
     margin = sh(0.5)
     text = params.text
@@ -88,7 +88,7 @@ let function boxCtor(params=null) {
 }
 
 
-let function onOpenDropDown(itemXmbNode) {
+let function onOpenDropDown(_itemXmbNode) {
   gui_scene.setXmbFocus(null)
 }
 

@@ -75,7 +75,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
     if (suppliesEndMillisec > 0)
     {
-      let elapsed = ::max(0, (suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
+      let elapsed = max(0, (suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
 
       desc.append(::loc("worldwar/suppliesfinishedIn",
           {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
@@ -97,7 +97,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getArrivalTime()
   {
-    return ::max(0, (availableAtMillisec - ::ww_get_operation_time_millisec()))
+    return max(0, (availableAtMillisec - ::ww_get_operation_time_millisec()))
   }
 
   function isReady()
@@ -132,7 +132,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     if (entrenchEndMillisec <= 0)
       return -1
 
-    return ::max(0, (entrenchEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
+    return max(0, (entrenchEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
   }
 
   static function sortReadyReinforcements(a, b)

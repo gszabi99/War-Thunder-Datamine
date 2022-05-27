@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let stdpath = require("%sqstd/path.nut")
 
@@ -1181,8 +1182,8 @@ let stdpath = require("%sqstd/path.nut")
     if (!isNavigationVisible && getObj("nav_list").isFocused())
       setFocusToFileTable()
 
-    showSceneBtn("nav_list", isNavigationVisible)
-    showSceneBtn("nav_seperator", isNavigationVisible)
+    this.showSceneBtn("nav_list", isNavigationVisible)
+    this.showSceneBtn("nav_seperator", isNavigationVisible)
 
     let navListObj = getObj("nav_list")
     if (!navListObj || (isNavListObjFilled && !forceUpdate))
@@ -1199,10 +1200,10 @@ let stdpath = require("%sqstd/path.nut")
     {
       isNavigationToggleAllowed = false
       isNavigationVisible = false
-      showSceneBtn("nav_list", false)
-      showSceneBtn("nav_seperator", false)
+      this.showSceneBtn("nav_list", false)
+      this.showSceneBtn("nav_seperator", false)
     }
-    showSceneBtn("btn_navigation", isNavigationToggleAllowed)
+    this.showSceneBtn("btn_navigation", isNavigationToggleAllowed)
 
     let view = {items = []}
     cachedPathByNavItemId.clear()
@@ -1229,7 +1230,7 @@ let stdpath = require("%sqstd/path.nut")
   function fillFiltersObj(forceUpdate = false)
   {
     let shouldUseFilters = filters.len() > 1
-    let fileFilterObj = showSceneBtn("file_filter", shouldUseFilters)
+    let fileFilterObj = this.showSceneBtn("file_filter", shouldUseFilters)
     if (!fileFilterObj || !shouldUseFilters || (isFiltersObjFilled && !forceUpdate))
       return
 

@@ -12,6 +12,7 @@ let
 
 let
   IDENT_TM = identity3x4()
+  IDENT_BBOX = BBox3(float3(), 1f)
   VERY_SMALL_NUMBER = 4e-19
 
 [generic]
@@ -28,12 +29,21 @@ def square(x)
 
 
 [generic]
-def approach(from, to:auto(algebraic); dt: float; viscosity: float)
+def approach(from, to : auto(algebraic); dt : float; viscosity : float)
   return viscosity < 1e-9 ? to : from + (1.0 - exp(-dt / viscosity)) * (to - from)
+
+[generic]
+def approach_move(from, to : float3; dt : float; tau : float; min_vel : float) : float3
+  if length(to - from) < min_vel * dt
+    return to
+  let newVal = approach(from, to, dt, tau)
+  if length(newVal - from) < min_vel * dt
+    return move_to(from, to, dt, min_vel)
+  return approach(from, to, dt, tau)
 
 // move_to version for float
 [generic]
-def move_to_scalar(from, to, dt, vel: float)
+def move_to_scalar(from, to, dt, vel : float)
   let d = vel * dt
   if abs(from - to) < d
     return to
@@ -44,7 +54,7 @@ def move_to_scalar(from, to, dt, vel: float)
 
 // move_to version for vector types
 [generic]
-def move_to(from, to: auto(algebraic); dt, vel: float)
+def move_to(from, to : auto(algebraic); dt, vel : float)
   let d = vel * dt
   let dir = to - from
   let dlen = length(dir)
@@ -61,7 +71,7 @@ def safeinvsqrt(x)
   return x > 0.0 ? invsqrt(x) : 1.0
 
 [generic]
-def safeinv(val: float3): float3
+def safeinv(val : float3) : float3
   return float3(safeinv(val.x), safeinv(val.y), safeinv(val.z))
 
 [generic]
@@ -72,7 +82,7 @@ def normalize_default(vec, default_vec)
 // das implementation of C++ function from dag_mathBase.h
 [generic]
 def is_relative_equal_float(a, b : float; max_diff : float = 1e-5; max_rel_diff : float = FLT_EPSILON)
-  let diff = abs(a-b)
+  let diff = abs(a - b)
   if diff < max_diff
     return true
   let absA = abs(a)
@@ -82,12 +92,12 @@ def is_relative_equal_float(a, b : float; max_diff : float = 1e-5; max_rel_diff 
 // das implementation of C++ function from dag_mathBase.h
 [generic]
 def is_equal_float(a, b : float; eps : float = 1e-5f)
-  return is_relative_equal_float(a,b, eps, FLT_EPSILON)
+  return is_relative_equal_float(a, b, eps, FLT_EPSILON)
 
 // das implementation of C++ function from dag_mathBase.h
 [generic]
 def are_approximately_equal(a, b : float; epsilon : float = 8.0 * FLT_EPSILON) // Three bits precision by default.
-  return is_relative_equal_float(a,b, epsilon, epsilon)
+  return is_relative_equal_float(a, b, epsilon, epsilon)
 
 // returns signed magnitude of the vector that would result from a regular 3D cross product of the input vectors
 [generic]
@@ -95,20 +105,20 @@ def cross2d(a, b : float2) : float
   return a.y * b.x - a.x * b.y
 
 [generic]
-def is_nan(a: float4)
+def is_nan(a : float4)
   return is_nan(a.x) || is_nan(a.y) || is_nan(a.z) || is_nan(a.w)
 
 [generic]
-def is_nan(a: float3)
+def is_nan(a : float3)
   return is_nan(a.x) || is_nan(a.y) || is_nan(a.z)
 
 [generic]
-def is_nan(a: float2)
+def is_nan(a : float2)
   return is_nan(a.x) || is_nan(a.y)
 
 
 [generic]
-def scale_tm(scale: float): float3x4
+def scale_tm(scale : float) : float3x4
   var scaleTm : float3x4
   scaleTm[0] = float3(scale, 0.0, 0.0)
   scaleTm[1] = float3(0.0, scale, 0.0)
@@ -116,9 +126,17 @@ def scale_tm(scale: float): float3x4
   return <- scaleTm
 
 [generic]
-def scale_tm(tm: float3x4; scale: float): float3x4
+def scale_tm(tm : float3x4; scale : float) : float3x4
   return <- tm * scale_tm(scale)
 
 [generic]
-def cvt(val: float; from: float2; to: float2): float
+def cvt(val : float; from : float2; to : float2) : float
   return cvt(val, from.x, from.y, to.x, to.y)
+
+
+[generic]
+def frac(x)
+  if x >= 0.0
+    return x - floor(x)
+  else
+    return x - ceil(x)

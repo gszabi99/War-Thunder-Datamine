@@ -1,3 +1,4 @@
+let { format } = require("string")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -127,8 +128,8 @@ enum POINTING_DEVICE
       let displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
       let prevMapCoords = mapCoords || [0.5, 0.5]
       mapCoords = [
-        ::clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),
-        ::clamp(prevMapCoords[1] + displasement[1], 0.0, 1.0)
+        clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),
+        clamp(prevMapCoords[1] + displasement[1], 0.0, 1.0)
       ]
     }
 
@@ -148,8 +149,8 @@ enum POINTING_DEVICE
       let sizePx = ::round(mapSize[0] * dispersionRadius) * 2
       let posX = 1.0 * mapSize[0] * mapCoords[0]
       let posY = 1.0 * mapSize[1] * mapCoords[1]
-      objTarget.size = ::format("%d, %d", sizePx, sizePx)
-      objTarget.pos = ::format("%d-w/2, %d-h/2", posX, posY)
+      objTarget.size = format("%d, %d", sizePx, sizePx)
+      objTarget.pos = format("%d-w/2, %d-h/2", posX, posY)
       if (!isSuperArtillery)
         objTarget.enable(valid)
     }
@@ -189,8 +190,8 @@ enum POINTING_DEVICE
     if (!::checkObj(obj))
       return
 
-    obj.size = ::format("%d, %d", rangeSize[0], rangeSize[1])
-    obj.pos  = ::format("%d, %d", rangePos[0], rangePos[1])
+    obj.size = format("%d, %d", rangeSize[0], rangeSize[1])
+    obj.pos  = format("%d, %d", rangePos[0], rangePos[1])
 
     let gap = {
       t = rangePos[1]
@@ -203,29 +204,29 @@ enum POINTING_DEVICE
     obj.show(gap.t > 0)
     if (::checkObj(obj) && gap.t > 0)
     {
-      obj.size = ::format("%d, %d", mapSize[0], gap.t)
-      obj.pos  = ::format("%d, %d", 0, 0)
+      obj.size = format("%d, %d", mapSize[0], gap.t)
+      obj.pos  = format("%d, %d", 0, 0)
     }
     obj = scene.findObject("map_shade_b")
     obj.show(gap.b > 0)
     if (::checkObj(obj) && gap.b > 0)
     {
-      obj.size = ::format("%d, %d", mapSize[0], gap.b)
-      obj.pos  = ::format("%d, %d", 0, rangePos[1] + rangeSize[1])
+      obj.size = format("%d, %d", mapSize[0], gap.b)
+      obj.pos  = format("%d, %d", 0, rangePos[1] + rangeSize[1])
     }
     obj = scene.findObject("map_shade_l")
     obj.show(gap.l > 0)
     if (::checkObj(obj) && gap.l > 0)
     {
-      obj.size = ::format("%d, %d", gap.l, rangeSize[1])
-      obj.pos  = ::format("%d, %d", 0, rangePos[1])
+      obj.size = format("%d, %d", gap.l, rangeSize[1])
+      obj.pos  = format("%d, %d", 0, rangePos[1])
     }
     obj = scene.findObject("map_shade_r")
     obj.show(gap.r > 0)
     if (::checkObj(obj) && gap.r > 0)
     {
-      obj.size = ::format("%d, %d", gap.r, rangeSize[1])
-      obj.pos  = ::format("%d, %d", rangePos[0] + rangeSize[0], rangePos[1])
+      obj.size = format("%d, %d", gap.r, rangeSize[1])
+      obj.pos  = format("%d, %d", rangePos[0] + rangeSize[0], rangePos[1])
     }
   }
 
@@ -294,7 +295,7 @@ enum POINTING_DEVICE
       {
         if (canUseShortcuts)
           data.append(getShortcutFrameForHelp(info.primaryShortcut) +
-            ::format("controlsHelpHint { text:t='#%s' }", info.title))
+            format("controlsHelpHint { text:t='#%s' }", info.title))
         else
           data.append(::handyman.renderCached("%gui/commonParts/button", {
             id = info?.buttonId ?? ""

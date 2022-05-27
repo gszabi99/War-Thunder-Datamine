@@ -19,7 +19,7 @@ let contextStyle = {
       onElemState = @(sf) stateFlags.update(sf)
 
       children = {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         margin = sh(0.5)
         text = text
         group = group

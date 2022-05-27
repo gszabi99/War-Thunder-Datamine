@@ -6,9 +6,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.422,
   "gearSinkRangeC": 0.278,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -2539,6 +2537,31 @@
     {
       "multifunctionDisplays": [
         {
+          "display": [
+            {
+              "textureArea": [0.0,0.0,0.5,0.5]
+            },
+            {
+              "monoDisplayColor": [0.37,0.45,0.4]
+            },
+            {
+              "cameraFromShell": true
+            },
+            {
+              "page": {
+                "type": "target_tracking",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "thermal",
+                "turretIdx": 0
+              }
+            }
+          ]
+        },
+        {
           "display": {
             "textureArea": [0.5,0.5,1.0,1.0],
             "page": {
@@ -3338,7 +3361,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonM61.blk",
+              "blk": "gameData/Weapons/cannonGAU4.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -3428,7 +3451,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonM61.blk",
+              "blk": "gameData/Weapons/cannonGAU4.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "cannon3_dm",

@@ -8,7 +8,7 @@ local nextAllowedSaveTime = 0
 let saveTask = persist("saveTask", @() { value = -1 })
 local isSaveDelayed = false
 
-let log = @(txt) dagor.debug($"SAVE_PROFILE: {txt}")
+let log = @(txt) ::dagor.debug($"SAVE_PROFILE: {txt}")
 
 let function clearSaveTask() {
   ::periodic_task_unregister(saveTask.value)

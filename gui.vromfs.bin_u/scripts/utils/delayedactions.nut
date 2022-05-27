@@ -1,3 +1,4 @@
+let { format } = require("string")
 /*
 
  g_delayed_actions.add(callback, delay)
@@ -100,7 +101,7 @@
       let rndDelay = math.rnd() % 10
 
       add((@(i, rndDelay, curTime) function() {
-            dagor.debug(::format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))
+            ::dagor.debug(format("[%d] %d run action with delay %d seconds", curTime, i, rndDelay))
           })(i, rndDelay, curTime),
       rndDelay * 1000)
     }

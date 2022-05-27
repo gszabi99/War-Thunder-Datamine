@@ -105,7 +105,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     guiScene.performDelayed(this, function()
     {
       if (isValid())
-        msgBox("recent_item_confirmation", msgBoxText, [
+        this.msgBox("recent_item_confirmation", msgBoxText, [
           ["ok", ::Callback(@() _doActivateItem(item, params), this)
           ], ["cancel", function () {}]], "ok")
     })

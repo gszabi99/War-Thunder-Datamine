@@ -119,7 +119,7 @@
       "attempts": true,
       "locName": "missions/_GS/heavy_tank_ship;location/arcade_ireland",
       "locDesc": "missions/_GS/desc",
-      "scoreLimit": 7000,
+      "scoreLimit": 5400,
       "timeLimit": 25,
       "deathPenaltyMul": 0.2,
       "country_axis": "germany",
@@ -490,22 +490,22 @@
         },
         {
           "comment": {
-            "value": "задаем начальную скорость уничтожения наземки"
+            "value": ""
           }
         },
         {
           "comment": {
-            "value": "задаем значения для предотвращения длинных сессий"
+            "value": ""
           }
         },
         {
           "comment": {
-            "value": "предотвращаем убийство рядом стоящих бункеров"
+            "value": ""
           }
         },
         {
           "comment": {
-            "value": "начинается логика миссии"
+            "value": ""
           }
         },
         {
@@ -708,6 +708,15 @@
               "destTimeMode": false
             },
             {
+              "target_var_name": ""
+            },
+            {
+              "target_var_comp_op": "equal"
+            },
+            {
+              "target_var_value": 0
+            },
+            {
               "object": "t1_boats_squad"
             },
             {
@@ -770,6 +779,15 @@
             },
             {
               "destTimeMode": false
+            },
+            {
+              "target_var_name": ""
+            },
+            {
+              "target_var_comp_op": "equal"
+            },
+            {
+              "target_var_value": 0
             },
             {
               "object": "t1_navy_ships_squad"
@@ -1192,6 +1210,15 @@
           },
           {
             "destTimeMode": false
+          },
+          {
+            "target_var_name": ""
+          },
+          {
+            "target_var_comp_op": "equal"
+          },
+          {
+            "target_var_value": 0
           },
           {
             "object": "t1_boats_squad"
@@ -2496,7 +2523,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [16.0,8.0],
@@ -2533,7 +2560,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [16.0,8.0],
@@ -2607,7 +2634,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [16.0,8.0],
@@ -2644,7 +2671,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [16.0,8.0],
@@ -2940,7 +2967,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -3218,7 +3245,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -3320,7 +3347,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 4,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -3566,7 +3593,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -3700,7 +3727,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -3962,7 +3989,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -4096,7 +4123,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 4,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -4342,7 +4369,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 3,
+          "count": 2,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [16.0,8.0],
@@ -4483,7 +4510,249 @@
       }
     },
     {
-      "tankModels": {
+      "wheeled_vehicles": {
+        "name": "boat_swim_point",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13610.5,0.000488281,-1249.01]
+        ],
+        "unit_class": "germ_motobike",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {
+          "swim_point_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [15315.5,0.000976563,965.713]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "swim_point_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [14838.8,-0.00244141,-2169.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "swim_point_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [13230.8,-0.000488281,-2643.38]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "swim_point_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11701.7,0.0,-435.874]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "swim_point_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [13076.3,-0.00097656,1418.16]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "ships_swim_point",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12717.9,0.0,-749.164]
+        ],
+        "unit_class": "germ_motobike",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": {
+          "boat_swim_point01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [14321.6,0.000976563,675.922]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "boat_swim_point01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [13897.6,-0.000976563,-2315.91]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "boat_swim_point01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12533.8,0.0,-2389.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "boat_swim_point01_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11894.4,0.0,-1377.92]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "boat_swim_point01_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12082.4,-0.000976563,1128.37]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
         "name": "t1_truck_01",
         "tm": [
           [-0.520715,0.0,-0.85373],
@@ -4491,7 +4760,7 @@
           [0.85373,0.0,-0.520715],
           [3370.43,391.867,4479.87]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4508,7 +4777,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 5,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -4761,7 +5030,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_truck_02",
         "tm": [
           [0.0091536,0.0,-0.999957],
@@ -4769,7 +5038,7 @@
           [0.999957,0.0,0.0091536],
           [-1168.51,238.119,4216.99]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4786,7 +5055,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 5,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -4863,7 +5132,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_truck_03",
         "tm": [
           [-0.986189,0.0,0.165623],
@@ -4871,7 +5140,7 @@
           [-0.165623,0.0,-0.986189],
           [4332.11,211.32,2910.92]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4888,7 +5157,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 7,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -5109,7 +5378,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_truck_04",
         "tm": [
           [-0.461749,0.0,-0.88701],
@@ -5117,7 +5386,7 @@
           [0.88701,0.0,-0.461749],
           [6222.68,256.873,4425.57]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5134,7 +5403,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 5,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -5243,7 +5512,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_truck_01",
         "tm": [
           [0.67559,0.0,0.737277],
@@ -5251,7 +5520,7 @@
           [-0.737277,0.0,0.67559],
           [1436.59,405.273,-2294.4]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5268,7 +5537,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 5,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -5521,7 +5790,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_truck_02",
         "tm": [
           [0.277177,0.0,0.960818],
@@ -5529,7 +5798,7 @@
           [-0.960818,0.0,0.277177],
           [-501.667,621.558,-1284.23]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5546,7 +5815,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 5,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -5655,7 +5924,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_truck_03",
         "tm": [
           [-0.819152,0.0,0.573576],
@@ -5663,7 +5932,7 @@
           [-0.573576,0.0,-0.819152],
           [3359.28,534.5,-506.989]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5680,7 +5949,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 7,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -5901,7 +6170,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_truck_04",
         "tm": [
           [0.696104,0.0,0.71794],
@@ -5909,7 +6178,7 @@
           [-0.71794,0.0,0.696104],
           [3602.6,493.878,-1561.61]
         ],
-        "unit_class": "germ_sdkfz_251_21",
+        "unit_class": "germ_flakpanzer38_20mm",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5926,7 +6195,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 5,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 4,
           "formation_step": [12.0,8.0],
@@ -6077,248 +6346,6 @@
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
               "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "boat_swim_point",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13610.5,0.000488281,-1249.01]
-        ],
-        "unit_class": "germ_motobike",
-        "closed_waypoints": true,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 0,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "stealthRadius": 0.0,
-          "setStealth": true,
-          "targetableByAi": false
-        },
-        "way": {
-          "swim_point_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [15315.5,0.000976563,965.713]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "swim_point_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14838.8,-0.00244141,-2169.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "swim_point_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13230.8,-0.000488281,-2643.38]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "swim_point_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11701.7,0.0,-435.874]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "swim_point_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13076.3,-0.00097656,1418.16]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "ships_swim_point",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12717.9,0.0,-749.164]
-        ],
-        "unit_class": "germ_motobike",
-        "closed_waypoints": true,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 0,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "stealthRadius": 0.0,
-          "setStealth": true,
-          "targetableByAi": false
-        },
-        "way": {
-          "boat_swim_point01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [14321.6,0.000976563,675.922]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "boat_swim_point01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [13897.6,-0.000976563,-2315.91]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "boat_swim_point01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12533.8,0.0,-2389.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "boat_swim_point01_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11894.4,0.0,-1377.92]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "boat_swim_point01_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12082.4,-0.000976563,1128.37]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
             }
           }
         }

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
@@ -187,7 +188,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     if ( validateResult == "" )
       return true;
 
-    let errText = ::format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
+    let errText = format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
     callstack()
     ::script_net_assert_once("bad clan requirements", errText)
     return false

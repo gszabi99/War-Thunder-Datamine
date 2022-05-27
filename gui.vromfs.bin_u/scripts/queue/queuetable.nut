@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -131,7 +132,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     {
       let minutes = time.secondsToMinutes(waitTime).tointeger()
       let seconds = waitTime - time.minutesToSeconds(minutes)
-      txtWaitTime = ::format("%d:%02d", minutes, seconds)
+      txtWaitTime = format("%d:%02d", minutes, seconds)
     }
 
     scene.findObject("msgText").setValue(txtWaitTime)
@@ -298,7 +299,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     if (!::checkObj(clustersListBoxObj))
       return
 
-    let value = ::max(0, clustersListBoxObj.getValue())
+    let value = max(0, clustersListBoxObj.getValue())
     let timerObj = scene.findObject("waiting_time")
     let tableObj = scene.findObject("ia_tooltip_table")
     let clanTableObj = scene.findObject("queue_box_container")
@@ -444,11 +445,11 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
   function onEventQueueChangeState(p)
   {
-    let _queue = p?.queue
-    if (!::queues.checkQueueType(_queue, queueMask))
+    let queue = p?.queue
+    if (!::queues.checkQueueType(queue, queueMask))
       return
 
-    if (::queues.isQueuesEqual(_queue, getCurQueue()))
+    if (::queues.isQueuesEqual(queue, getCurQueue()))
     {
       fillQueueInfo()
       updateScene()
@@ -458,7 +459,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     if (::queues.isQueueActive(getCurQueue()))
       return //do not switch queue visual when current queue active.
 
-    setCurQueue(_queue)
+    setCurQueue(queue)
   }
 
   function onEventQueueInfoUpdated(params)
@@ -470,9 +471,9 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     updateScene()
   }
 
-  function onEventQueueClustersChanged(_queue)
+  function onEventQueueClustersChanged(queue)
   {
-    if (!::queues.isQueuesEqual(_queue, getCurQueue()))
+    if (!::queues.isQueuesEqual(queue, getCurQueue()))
       return
 
     build_IA_shop_filters = true

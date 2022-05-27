@@ -1,3 +1,4 @@
+let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
@@ -116,7 +117,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function initGcBackButton()
   {
-    showSceneBtn("gc_nav_back", canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
+    this.showSceneBtn("gc_nav_back", canQuitByGoBack && useTouchscreen && !::is_in_loading_screen())
   }
 
   function initSquadWidget()
@@ -140,7 +141,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function updateVoiceChatWidget(shouldShow)
   {
-    showSceneBtn(voiceChatWidgetNestObjId, shouldShow)
+    this.showSceneBtn(voiceChatWidgetNestObjId, shouldShow)
   }
 
   function initRightSection()
@@ -216,13 +217,13 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function afterSave()
   {
-    dagor.debug("warning! empty afterSave!")
+    ::dagor.debug("warning! empty afterSave!")
   }
 
   function save(onlineSave = true)
   {
     let handler = this
-    dagor.debug("save")
+    ::dagor.debug("save")
     if (::is_save_device_selected())
     {
       local saveRes = ::SAVELOAD_OK;
@@ -230,16 +231,16 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
       if (saveRes != ::SAVELOAD_OK)
       {
-        dagor.debug("saveRes = "+saveRes.tostring())
+        ::dagor.debug("saveRes = "+saveRes.tostring())
         local txt = "x360/noSaveDevice"
         if (saveRes == ::SAVELOAD_NO_SPACE)
           txt = "x360/noSpace"
         else if (saveRes == ::SAVELOAD_NOT_SELECTED)
           txt = "xbox360/questionSelectDevice"
-        msgBox("no_save_device", ::loc(txt),
+        this.msgBox("no_save_device", ::loc(txt),
         [
           ["yes", (@(handler, onlineSave) function() {
-              dagor.debug("performDelayed save")
+              ::dagor.debug("performDelayed save")
               handler.guiScene.performDelayed(handler, (@(handler, onlineSave) function() {
                 ::select_save_device(true)
                 save(onlineSave)
@@ -257,11 +258,11 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     }
     else
     {
-      msgBox("no_save_device", ::loc("xbox360/questionSelectDevice"),
+      this.msgBox("no_save_device", ::loc("xbox360/questionSelectDevice"),
       [
         ["yes", (@(handler, onlineSave) function() {
 
-            dagor.debug("performDelayed save")
+            ::dagor.debug("performDelayed save")
             handler.guiScene.performDelayed(handler, (@(handler, onlineSave) function() {
               ::select_save_device(true)
               save(onlineSave)
@@ -392,7 +393,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function notAvailableYetMsgBox()
   {
-    msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+    this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
   function onUserLog(obj)
@@ -611,7 +612,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   {
     if (id != taskId)
     {
-      dagor.debug("wrong ID in char server cb, ignoring");
+      ::dagor.debug("wrong ID in char server cb, ignoring");
       ::g_tasker.charCallback(id, tType, result)
       return
     }
@@ -630,7 +631,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
         if (result == ::EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
         {
           let notAllowedChars = ::get_char_extended_error()
-          text = ::format(text, notAllowedChars)
+          text = format(text, notAllowedChars)
         }
 
       handler.msgBox("char_connecting_error", text,
@@ -654,7 +655,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (cancelFunc == null)
       cancelFunc = function(){}
 
-    progressBox = msgBox("char_connecting",
+    progressBox = this.msgBox("char_connecting",
         text,
         [["cancel", cancelFunc]], "cancel",
         { waitAnim = true,
@@ -732,7 +733,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function onSquadCreate(obj)
   {
     if (::g_squad_manager.isInSquad())
-      msgBox("already_in_squad", ::loc("squad/already_in_squad"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
+      this.msgBox("already_in_squad", ::loc("squad/already_in_squad"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
     else
       ::chatInviteToSquad(null, this)
   }

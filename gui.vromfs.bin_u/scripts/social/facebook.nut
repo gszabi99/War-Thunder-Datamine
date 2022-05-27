@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -48,7 +49,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
 {
   if (path == "")
     return
-  dagor.debug("FACEBOOK UPLOAD: " + path)
+  ::dagor.debug("FACEBOOK UPLOAD: " + path)
 
   let uploadsBlk = ::load_local_account_settings(FACEBOOK_UPLOADS_SAVE_ID) ?? ::DataBlock()
   if (uploadsBlk?.postDate == time.getUtcDays())
@@ -151,7 +152,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
   if (!::checkObj(fbObj))
     return
 
-  fbObj.tooltip = ::format(::loc("mainmenu/facebookShareLimit"), ::uploadLimit)
+  fbObj.tooltip = format(::loc("mainmenu/facebookShareLimit"), ::uploadLimit)
 }
 
 ::gui_handlers.facebookReminderModal <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -163,7 +164,7 @@ const FACEBOOK_UPLOADS_SAVE_ID = "facebook/uploads"
     scene.findObject("award_image")["background-image"] = "#ui/images/facebook_like.jpg?P1";
     scene.findObject("award_image")["height"] = "0.5w"
     scene.findObject("btn_ok").setValue(::loc("options/facebookLogin"));
-    showSceneBtn("btn_upload_facebook_scrn", false)
+    this.showSceneBtn("btn_upload_facebook_scrn", false)
   }
 
   function onOk()

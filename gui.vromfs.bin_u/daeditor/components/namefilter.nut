@@ -9,7 +9,7 @@ let function nameFilter(watched_text, params) {
   local placeholder = null
   if (params?.placeholder) {
     placeholder = {
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       text = params.placeholder
       color = Color(160, 160, 160)
     }
@@ -29,7 +29,7 @@ let function nameFilter(watched_text, params) {
       group = group
 
       children = {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         size = [flex(), SIZE_TO_CONTENT]
         margin = fsh(0.5)
 

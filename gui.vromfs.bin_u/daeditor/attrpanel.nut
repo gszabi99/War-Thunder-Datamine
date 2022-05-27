@@ -7,7 +7,7 @@ let { Point2, Point3, Point4 } = require("dagor.math")
 
 let {endswith} = require("string")
 let {getValFromObj, isCompReadOnly} = require("components/attrUtil.nut")
-let {filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity, selectedEntities} = require("state.nut")
+let {filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity, selectedEntities, de4workMode} = require("state.nut")
 let {colors, gridHeight} = require("components/style.nut")
 
 let selectedCompComp = Watched(null)
@@ -34,6 +34,8 @@ let scrollbar = require("%darg/components/scrollbar.nut")
 let fieldReadOnly = require("components/apFieldReadOnly.nut")
 let compNameFilter = require("components/apNameFilter.nut")(filterString, selectedCompName)
 
+let {riSelectShown, riSelectWindow} = require("riSelect.nut")
+
 let combobox = require("%darg/components/combobox.nut")
 
 let windowState = Watched({
@@ -42,7 +44,7 @@ let windowState = Watched({
 })
 
 
-let function onMoveResize(dx, dy, dw, dh) {
+let function onMoveResize(dx, dy, dw, _dh) {
   let w = windowState.value
   w.pos[0] = clamp(w.pos[0]+dx, -(sw(100)-w.size[0]), 0)
   w.pos[1] = max(w.pos[1]+dy, 0)
@@ -143,7 +145,7 @@ let mkCompNameText = function(comp_name_text, metaInfo, modified, group=null) {
                : (metaInfo ? metaComponentPrefix : "")
   let suffix = modified ? modifiedSuffix : ""
   return {
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     text = $"{prefix}{comp_name_text}{suffix}"
     size = [flex(), fontH(100)]
     margin = fsh(0.5)
@@ -255,7 +257,7 @@ let function doAddTemplate(templateName) {
     if (g_entity_mgr.getTemplateDB().getTemplateByName(templateName) == null) {
       infoBox("Invalid template name")
     } else {
-      recreateEntityWithTemplates({eid=eid, addTemplates=[templateName], callback=updateEntityTemplateNameCallback})
+      recreateEntityWithTemplates({eid, addTemplates=[templateName], callback=updateEntityTemplateNameCallback, checkComps=false})
     }
   } else {
     infoBox("Entity not selected")
@@ -303,7 +305,7 @@ let function doDelTemplate(templateName) {
     } else if (g_entity_mgr.getTemplateDB().getTemplateByName(templateName) == null) {
       infoBox("Invalid template name")
     } else {
-      recreateEntityWithTemplates({eid=eid, removeTemplates=[templateName], callback=updateEntityTemplateNameCallback})
+      recreateEntityWithTemplates({eid, removeTemplates=[templateName], callback=updateEntityTemplateNameCallback, checkComps=false})
     }
   } else {
     infoBox("Entity not selected")
@@ -342,7 +344,7 @@ let function openDelTemplateDialog() {
 
 let templateTooltip = Watched(null)
 
-let function panelCaption(text, tpl_name) {
+let function panelCaption(text, tpl_name, non_scene) {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
@@ -358,8 +360,8 @@ let function panelCaption(text, tpl_name) {
     children = {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      rendObj = ROBJ_DTEXT
-      text = text
+      rendObj = ROBJ_TEXT
+      text = non_scene ? $"[generated] {text}" : text
       margin = [hdpx(5), 0]
     }
   }
@@ -391,7 +393,7 @@ let function panelButtons() {
   }
 }
 
-let autoOpenClosePropPanel = function(v) {
+let autoOpenClosePropPanel = function(_) {
   local show = selectedEntity.value != INVALID_ENTITY_ID && selectedEntities.value.len() == 1
   if (show && propPanelClosed.value)
     return
@@ -402,8 +404,9 @@ selectedEntities.subscribe(autoOpenClosePropPanel)
 
 
 let hiddenComponents = {
-  editableObj = true
-  nonCreatableObj = true
+  editableObj        = true
+  editableTemplate   = true
+  nonCreatableObj    = true
   daeditor__selected = true
 }
 
@@ -421,8 +424,8 @@ let function isKeyInFilter(key, filterStr=null){
   return false
 }
 
-let rightArrow = {rendObj = ROBJ_DTEXT text = "^" transform = {rotate=90}}
-let downArrow = {rendObj = ROBJ_DTEXT text = "^" transform = {rotate=180}}
+let rightArrow = {rendObj = ROBJ_TEXT text = "^" transform = {rotate=90}}
+let downArrow = {rendObj = ROBJ_TEXT text = "^" transform = {rotate=180}}
 let mkTagFromTextColor = @(text, fillColor = Color(100,100,100), size = SIZE_TO_CONTENT, textColor = Color(0,0,0)) {
   rendObj = ROBJ_BOX
   size
@@ -432,7 +435,7 @@ let mkTagFromTextColor = @(text, fillColor = Color(100,100,100), size = SIZE_TO_
   padding = [0,hdpx(1)]
   vplace = ALIGN_CENTER
   children = {
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     size
     text
     fontSize = hdpx(10)
@@ -446,7 +449,7 @@ let ecsObjectSign = mkTagFromText("obj")
 let emptyTag = mkTagFromText("empty")
 let constTag = mkTagFromText("Shared")
 let isOpenedCache = persist("isOpenedCache", @() {})
-selectedEntity.subscribe(function(eid){
+selectedEntity.subscribe(function(_eid){
   const maxCacheEntries = 100
   if (isOpenedCache.len()>maxCacheEntries)
     isOpenedCache.clear()
@@ -797,7 +800,7 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
   let prefix = modified ? (metaInfo ? modifiedContainerPrefix : modifiedNoMetaPrefix)
                : (metaInfo ? metaContainerPrefix : "")
   let suffix = modified ? modifiedSuffix : ""
-  let captionText = {rendObj = ROBJ_DTEXT, text = $"{prefix}{caption}{suffix}", color = Color(180,180,180)}
+  let captionText = {rendObj = ROBJ_TEXT, text = $"{prefix}{caption}{suffix}", color = Color(180,180,180)}
   let padding = [hdpx(5), hdpx(5)]
   let gap = hdpx(4)
   let isOdd = toggleBg()
@@ -829,6 +832,7 @@ local function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tag
       gap = gap
       rendObj = ROBJ_SOLID
       color = isOdd ? colors.GridBg[0] : colors.GridBg[1]
+      behavior = Behaviors.Button
       onHover = @(on) cursors.setTooltip(on ? mkCompTooltip(metaInfo) : null)
     }
   }
@@ -952,7 +956,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
   path = path ?? []
   let function childrenCtor(){
     let res = []
-    foreach (num, val in (object?.getAll() ?? object)) {
+    foreach (num, _val in (object?.getAll() ?? object)) {
       let nkeys = (clone path).append(num)
       res.append(mkComp(eid, rawComponentName, rawObject, $"{caption}[{num}]", onChange, nkeys))
     }
@@ -1003,7 +1007,7 @@ let getCurComps = @() (selectedEntity.value ?? INVALID_ENTITY_ID) == INVALID_ENT
 let curEntityComponents = Watched(getCurComps())
 let setCurComps = @() curEntityComponents(getCurComps())
 
-selectedEntity.subscribe(function(eid){
+selectedEntity.subscribe(function(_eid){
   gui_scene.resetTimeout(0.1, setCurComps)
 })
 
@@ -1011,10 +1015,11 @@ let isCurEntityComponents = Computed(@() curEntityComponents.value.len()>0)
 
 let filteredCurComponents = Computed(function(){
   let res = []
+  let noTags = de4workMode.value == "Designer"
   foreach(compName, compObj in curEntityComponents.value) {
     if (isComponentHidden(compName))
       continue
-    if (compObj.tostring() == "ecs::Tag")
+    if (noTags && compObj.tostring() == "ecs::Tag")
       continue
     if (isKeyInFilter(compName, filterString.value))
       res.append({compName, compObj, eid = selectedEntity.value})
@@ -1062,7 +1067,7 @@ let function compPanel() {
       watch = [
         selectedEntity, selectedEntities, propPanelVisible, filterString,
         windowState, isCurEntityComponents, filteredCurComponents, selectedCompName,
-        templateTooltip
+        de4workMode, riSelectShown
       ]
       size = [sw(100), sh(100)]
 
@@ -1093,16 +1098,18 @@ let function compPanel() {
 
               flow = FLOW_VERTICAL
               children = [
-                panelCaption(captionText, templName)
-                isCurEntityComponents.value ? compNameFilter : null
-                scrolledGrid
-                panelButtons
+                panelCaption(captionText, templName, isNonSceneEntity())
+                !riSelectShown.value && isCurEntityComponents.value ? compNameFilter : null
+                !riSelectShown.value ? scrolledGrid : null
+                !riSelectShown.value ? panelButtons : null
               ]
             }
+            riSelectShown.value ? riSelectWindow : null
             modalWindowsComponent
           ]
         }
-        {
+        @() {
+          watch = [templateTooltip]
           pos = windowState.value.pos
           hplace = ALIGN_CENTER
           children = templateTooltip.value

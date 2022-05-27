@@ -73,7 +73,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     if (isLogMarkUsed)
       ::g_ww_logs.viewIndex = 0
     else if (isLogPageScrolledDown)
-      ::g_ww_logs.viewIndex = ::max(::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT, 0)
+      ::g_ww_logs.viewIndex = max(::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT, 0)
 
     fillLogBlock(false, null, !isLogMarkUsed && isLogPageScrolledDown)
   }
@@ -602,7 +602,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
   function onClickShowFirstLogs(obj)
   {
-    ::g_ww_logs.viewIndex = ::max(::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT, 0)
+    ::g_ww_logs.viewIndex = max(::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT, 0)
     fillLogBlock(true)
   }
 
@@ -610,7 +610,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   {
     if (::g_ww_logs.viewIndex > 0)
     {
-      ::g_ww_logs.viewIndex = ::max(::g_ww_logs.viewIndex - WW_LOG_MAX_LOAD_AMOUNT, 0)
+      ::g_ww_logs.viewIndex = max(::g_ww_logs.viewIndex - WW_LOG_MAX_LOAD_AMOUNT, 0)
       fillLogBlock()
       return
     }
@@ -640,7 +640,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   {
     ::g_ww_logs.viewIndex += WW_LOG_MAX_LOAD_AMOUNT
     if (::g_ww_logs.viewIndex > ::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT)
-      ::g_ww_logs.viewIndex = ::max(::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT, 0)
+      ::g_ww_logs.viewIndex = max(::g_ww_logs.filtered.len() - WW_LOG_MAX_DISPLAY_AMOUNT, 0)
 
     fillLogBlock()
   }
@@ -671,7 +671,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
       ::g_ww_logs.filter[category] = enable
       ::g_ww_logs.applyLogsFilter()
-      ::g_ww_logs.viewIndex = ::max(::g_ww_logs.filtered.len() - 1, 0)
+      ::g_ww_logs.viewIndex = max(::g_ww_logs.filtered.len() - 1, 0)
 
       if (!::g_ww_logs.loaded.len())
         return

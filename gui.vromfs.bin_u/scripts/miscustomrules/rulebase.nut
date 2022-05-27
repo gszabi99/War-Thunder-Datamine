@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getAvailableRespawnBases } = require_native("guiRespawn")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
@@ -377,7 +378,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       return respawns2
     if (respawns2 == ::RESPAWNS_UNLIMITED)
       return respawns1
-    return ::min(respawns1, respawns2)
+    return min(respawns1, respawns2)
   }
 
   function getWeaponsLimitsBlk()
@@ -393,7 +394,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
     foreach(blk in weaponLimitsBlk % unit.name)
       if (blk?.name == weapon.name)
-        return ::max(blk?.respawnsLeft ?? 0, 0)
+        return max(blk?.respawnsLeft ?? 0, 0)
     return 0
   }
 
@@ -462,7 +463,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     let valueBR = getRandomUnitsGroupValueRange(randomGroups, getBR)
     let minBR = valueBR.minValue
     let maxBR = valueBR.maxValue
-    return (minBR != maxBR ? ::format("%.1f-%.1f", minBR, maxBR) : ::format("%.1f", minBR))
+    return (minBR != maxBR ? format("%.1f-%.1f", minBR, maxBR) : format("%.1f", minBR))
   }
 
   function getWeaponForRandomUnit(unit, weaponryName)
@@ -496,8 +497,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
         continue
 
       let value = getValue(unit)
-      minValue = (minValue == null) ? value : ::min(minValue, value)
-      maxValue = (maxValue == null) ? value : ::max(maxValue, value)
+      minValue = (minValue == null) ? value : min(minValue, value)
+      maxValue = (maxValue == null) ? value : max(maxValue, value)
     }
     return {
       minValue = minValue ?? 0

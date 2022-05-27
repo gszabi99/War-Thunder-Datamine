@@ -2,7 +2,7 @@ options no_aot
 module macro_common shared
 
 [macro_function]
-def validate_string_argument(arg; name:string; var errors: das_string): bool
+def validate_string_argument(arg; name : string; var errors : das_string) : bool
   if arg is nothing
     errors := "{name} is not defined"
     return false
@@ -13,7 +13,7 @@ def validate_string_argument(arg; name:string; var errors: das_string): bool
 
 
 [macro_function]
-def validate_bool_argument(arg; name:string; var errors: das_string): bool
+def validate_bool_argument(arg; name : string; var errors : das_string) : bool
   if arg is nothing
     errors := "{name} is not defined"
     return false

@@ -26,7 +26,7 @@ let function box(isSelected, sf) {
 
 let label = @(text, sf) {
   size = [flex(), SIZE_TO_CONTENT]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   color = calcColor(sf)
   text = text
 }

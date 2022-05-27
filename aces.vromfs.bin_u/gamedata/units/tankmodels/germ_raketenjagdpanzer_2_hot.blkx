@@ -271,7 +271,7 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 300.0,
+        "hp": 50.0,
         "gun_barrel_dm": {
           "armorThickness": 20.0
         },
@@ -346,6 +346,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -646,8 +647,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -691,8 +692,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -700,8 +701,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -709,8 +710,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -749,29 +750,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -1765,7 +1766,7 @@
           "errExplTime": 0.0,
           "turret": {
             "head": "bone_turret",
-            "gun": "gun",
+            "gun": "bone_rocket_roll_01",
             "gunnerDm": "gunner_dm"
           },
           "limits": {
@@ -1813,6 +1814,28 @@
             "pitch": [-5.0,25.0]
           }
         }
+      },
+      {
+        "animatedBones": [
+          {
+            "node": "bone_rocket_roll_01"
+          },
+          {
+            "node": "gun_roller_01"
+          },
+          {
+            "node": "gun_roller_02"
+          },
+          {
+            "node": "gun_roller_03"
+          },
+          {
+            "node": "gun_roller_04"
+          },
+          {
+            "node": "bone_gun_roller_01"
+          }
+        ]
       }
     ]
   },
@@ -2656,7 +2679,7 @@
                 "errExplTime": 0.0,
                 "turret": {
                   "head": "bone_turret",
-                  "gun": "gun",
+                  "gun": "bone_rocket_roll_01",
                   "gunnerDm": "gunner_dm"
                 },
                 "limits": {
@@ -2814,6 +2837,28 @@
                     "yaw": [0.0,0.0],
                     "pitch": [0.0,0.0]
                   }
+                }
+              ]
+            },
+            {
+              "animatedBones": [
+                {
+                  "node": "bone_rocket_roll_01"
+                },
+                {
+                  "node": "gun_roller_01"
+                },
+                {
+                  "node": "gun_roller_02"
+                },
+                {
+                  "node": "gun_roller_03"
+                },
+                {
+                  "node": "gun_roller_04"
+                },
+                {
+                  "node": "bone_gun_roller_01"
                 }
               ]
             }

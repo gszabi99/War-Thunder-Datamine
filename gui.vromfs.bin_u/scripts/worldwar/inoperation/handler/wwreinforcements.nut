@@ -90,7 +90,7 @@
 
   function showDeployHint(isVisible = false)
   {
-    showSceneBtn("deploy_hint_nest", isVisible)
+    this.showSceneBtn("deploy_hint_nest", isVisible)
   }
 
   function onChangeArmyValue(obj)
@@ -143,7 +143,7 @@
   {
     updateReinforcementsList()
 
-    showSceneBtn("no_reinforcements_text", armiesBlocks.len() == 0)
+    this.showSceneBtn("no_reinforcements_text", armiesBlocks.len() == 0)
 
     let readyArmies = []
     let otherArmies = []
@@ -155,10 +155,10 @@
 
     fillArmiesList(readyArmies, "ready_reinforcements_list", true)
     fillArmiesList(otherArmies, "reinforcements_list", false)
-    showSceneBtn("no_ready_reinforcements_text", readyArmies.len() == 0)
-    showSceneBtn("ready_label", readyArmies.len() > 0)
-    showSceneBtn("ready_reinforcements_block", armiesBlocks.len() > 0)
-    showSceneBtn("coming_reinforcements_block", otherArmies.len() > 0)
+    this.showSceneBtn("no_ready_reinforcements_text", readyArmies.len() == 0)
+    this.showSceneBtn("ready_label", readyArmies.len() > 0)
+    this.showSceneBtn("ready_reinforcements_block", armiesBlocks.len() > 0)
+    this.showSceneBtn("coming_reinforcements_block", otherArmies.len() > 0)
 
     updateSelectedArmy(true, false)
   }
@@ -246,7 +246,7 @@
       {
         let placeObj = obj.getParent()
         guiScene.destroyElement(obj)
-        showSceneBtn("no_reinforcements_text", placeObj.childrenCount() == 0)
+        this.showSceneBtn("no_reinforcements_text", placeObj.childrenCount() == 0)
       }
     }
 

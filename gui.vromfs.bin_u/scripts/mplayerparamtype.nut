@@ -131,7 +131,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
     getTooltip = function(val, player, defText) {
       let res = []
-      for (local i = 0; i < EXP_EVENT_TOTAL; i++) {
+      for (local i = 0; i < ::EXP_EVENT_TOTAL; i++) {
         let rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
         if (rowVal <= 0)
           continue
@@ -285,7 +285,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
       let total = ::get_race_checkpioints_count()
       let laps = ::get_race_laps_count()
       if (total && laps)
-        val = (::max(val, 0) % (total / laps))
+        val = (max(val, 0) % (total / laps))
       return val.tostring()
     }
     diffFunc = ::g_mplayer_param_type._newer

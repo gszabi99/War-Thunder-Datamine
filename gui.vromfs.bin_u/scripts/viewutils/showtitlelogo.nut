@@ -6,7 +6,7 @@ return function(scene = null, logoHeight = -1)
   if (logoHeight == -1)
   {
     let displayHeight = ::g_dagui_utils.toPixels(guiScene, "@titleLogoPlateHeight")
-    logoHeight = ::min(::max(displayHeight.tointeger(), 64), 128)
+    logoHeight = min(max(displayHeight.tointeger(), 64), 128)
   }
 
   let obj = scene? scene.findObject("titleLogo") : guiScene["titleLogo"]

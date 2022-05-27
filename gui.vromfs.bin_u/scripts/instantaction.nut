@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -124,7 +125,7 @@ let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
   {
     let price = ::Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
     local msg = ::loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
-    msg += "\n\n" + ::format(::loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
+    msg += "\n\n" + format(::loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
 
     ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
       {
@@ -167,9 +168,9 @@ let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
       msgText = repairInfo.randomCountry ? "msgbox/select_%s_aircrafts_random" : "msgbox/select_%s_aircraft"
 
     if(repairInfo.canFlyoutIfRepair)
-      msgText = ::format(::loc(::format(msgText, "repared")), ::Cost(repairInfo.repairCost).tostring())
+      msgText = format(::loc(format(msgText, "repared")), ::Cost(repairInfo.repairCost).tostring())
     else
-      msgText = ::format(::loc(::format(msgText, "available")),
+      msgText = format(::loc(format(msgText, "available")),
         time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
     let repairBtnName = respawns ? "RepairAll" : "Repair"

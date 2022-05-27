@@ -32,9 +32,9 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   playerSide = null // need for show view for global battle
 
-  constructor(_battle = null, customPlayerSide = null)
+  constructor(v_battle = null, customPlayerSide = null)
   {
-    battle = _battle || ::WwBattle()
+    battle = v_battle || ::WwBattle()
     playerSide = customPlayerSide ?? battle.getSide(::get_profile_country_sq())
     missionName = battle.getMissionName()
     name = battle.isStarted() ? battle.getLocName(playerSide) : ""
@@ -149,7 +149,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
           armyViews.top().setHasVersusText(false)
       }
 
-      maxSideArmiesNumber = ::max(maxSideArmiesNumber, armyViews.len())
+      maxSideArmiesNumber = max(maxSideArmiesNumber, armyViews.len())
 
       let view = {
         army = armyViews

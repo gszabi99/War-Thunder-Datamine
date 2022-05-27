@@ -149,7 +149,7 @@ let function pathToCanvas(path, viewBox=null, fill=false){
       lastCmd = [fill ? VECTOR_POLY : VECTOR_LINE]
       res.append(lastCmd)
       lastInitialPoint = transformP(points[0], offset, scale, curCursorPos, command)
-      foreach (i, p in points){
+      foreach (p in points){
         curCursorPos = curPos(curCursorPos, p, command)
         lastCmd.extend(transformP(p, offset, scale, curCursorPos, command))
       }
@@ -166,7 +166,7 @@ let function pathToCanvas(path, viewBox=null, fill=false){
         points = points.map(@(v) [v[4], v[5]])
       if (commandName.contains("BEZIER_SMOOTH"))
         points = points.map(@(v) [v[2], v[3]])
-      foreach (i, p in points){
+      foreach (p in points){
         let pt = transformP(p, offset, scale, curCursorPos, command)
         curCursorPos = curPos(curCursorPos, p, command)
         lastCmd.extend(pt)

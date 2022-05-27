@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 761.0,
-      "temperature": 18.0
-    },
     "player": {
       "army": 1,
       "wing": ""
@@ -17,10 +13,14 @@
     "mission": {
       "level": "levels/ruhr.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear"
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 761.0,
+      "temperature": 18.0
     },
     "spectator_points": []
   },
@@ -300,7 +300,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [0.0,350.0,-30000.0]
+        [0.0,1350.0,-30000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -311,7 +311,29 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [0.0,350.0,30000.0]
+        [0.0,1350.0,30000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "ht_t2_hunter_spawn_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,3350.0,-30000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "ht_t1_hunter_spawn_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,1350.0,30000.0]
       ],
       "objLayer": 0,
       "props": []

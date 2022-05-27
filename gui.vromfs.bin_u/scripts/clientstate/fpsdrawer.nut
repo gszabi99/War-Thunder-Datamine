@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 
@@ -73,7 +74,7 @@ fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId,
   let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
   if ((::is_dev_version || isAllowedForPlatform || isAllowedForUser) && fps < 10000 && fps > 0)
-    fpsText = ::colorize(getFpsColor(fps), ::format("FPS: %d", fps))
+    fpsText = ::colorize(getFpsColor(fps), format("FPS: %d", fps))
   objects.fps.setValue(fpsText)
 
   local latencyText = ""
@@ -82,9 +83,9 @@ fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId,
   local sidText = ""
   if (latency >= 0) {
     if (latencyA >= 0 && latencyR >= 0)
-      latencyText = ::format("%s:%5.1fms (A:%5.1fms R:%5.1fms)", ::loc("latency", "Latency"), latency, latencyA, latencyR)
+      latencyText = format("%s:%5.1fms (A:%5.1fms R:%5.1fms)", ::loc("latency", "Latency"), latency, latencyA, latencyR)
     else
-      latencyText = ::format("%s:%5.1fms", ::loc("latency", "Latency"), latency)
+      latencyText = format("%s:%5.1fms", ::loc("latency", "Latency"), latency)
   }
   if (ping >= 0)
   {

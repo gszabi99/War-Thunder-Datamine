@@ -1,3 +1,6 @@
+let {
+  is_mplayer_host = @() ::is_mplayer_host() //compatibility with 2.16.0.X
+} = require_optional("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
@@ -165,7 +168,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     else
     if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
     {
-      msgBox("question_restart_mission", ::loc("flightmenu/questionRestartMission"),
+      this.msgBox("question_restart_mission", ::loc("flightmenu/questionRestartMission"),
       [
         ["yes", restartBriefing],
         ["no"]
@@ -210,7 +213,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     else if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
     {
       local text = ""
-      if (::is_mplayer_host())
+      if (is_mplayer_host())
         text = ::loc("flightmenu/questionQuitMissionHost")
       else if (::get_game_mode() == ::GM_DOMINATION)
       {
@@ -229,7 +232,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
         text += ::loc("flightmenu/questionQuitMissionInProgress")
       } else
         text = ::loc("flightmenu/questionQuitMission")
-      msgBox("question_quit_mission", text,
+      this.msgBox("question_quit_mission", text,
       [
         ["yes", sendDisconnectMessage],
         ["no"]
@@ -238,7 +241,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
     else if (isMissionFailed)
     {
       let text = ::loc("flightmenu/questionQuitMission")
-      msgBox("question_quit_mission", text,
+      this.msgBox("question_quit_mission", text,
       [
         ["yes", function()
         {
@@ -265,7 +268,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 
   function onQuitGame(obj)
   {
-    msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
+    this.msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no"]
@@ -284,7 +287,7 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
   {
     if (canBailout())
     {
-      msgBox("question_bailout", getPlayerCurUnit()?.unitType.getBailoutQuestionText() ?? "",
+      this.msgBox("question_bailout", getPlayerCurUnit()?.unitType.getBailoutQuestionText() ?? "",
         [
           ["yes", doBailout],
           ["no"]

@@ -1,4 +1,6 @@
 from "soundOptions" import *
+
+let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
@@ -116,9 +118,9 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     applyOptions(true)
   }
 
-  function applyOptions(_forcedSave = false)
+  function applyOptions(v_forcedSave = false)
   {
-    forcedSave = _forcedSave
+    forcedSave = v_forcedSave
     if (doApply())
       applyReturn()
   }
@@ -342,7 +344,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     {
       let unit = getPlayerCurUnit()
       let success = ::add_tank_alt_crosshair_template()
-      let message = success && unit ? ::format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
+      let message = success && unit ? format(::loc("hud/successUserSight"), unit.name) : ::loc("hud/failUserSight")
 
       guiScene.performDelayed(this, function()
       {
@@ -382,7 +384,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       return
     }
 
-    msgBox(
+    this.msgBox(
       "crossnetwork_changes_warning",
       ::loc("guiHints/ps4_crossnetwork_chat"),
       [
@@ -501,7 +503,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (!yearObj)
       return;
 
-    dagor.assert(yearObj.childrenCount() == yearOption.values.len())
+    ::dagor.assert(yearObj.childrenCount() == yearOption.values.len())
     for (local i = 0; i < yearObj.childrenCount(); i++)
     {
       let line = yearObj.getChild(i);

@@ -2,7 +2,26 @@ local onSetTarget = null    //onSetTarget(oDaguiObject)
 local onUnsetTarget = null  //onUnsetTarget(DaguiObject)
 local shouldHideImage = false
 
-let bhvFocusFrameTarget = class
+let function hideImage(obj) {
+  let focusImageSource = obj.getFinalProp("focusImageSource")
+  if (focusImageSource == null)
+    return
+
+  local style = ""
+  if (focusImageSource != "foreground")
+    style += "background-color:#00000000;"
+  if (focusImageSource != "background")
+    style += "foreground-color:#00000000;"
+  obj.style = style
+}
+
+
+let function unhideImage(obj) {
+  obj.style = "background-color:; foreground-color:;"
+}
+
+
+let class bhvFocusFrameTarget
 {
   function onAttach(obj)
   {
@@ -24,37 +43,19 @@ let bhvFocusFrameTarget = class
       unhideImage(obj)
     return ::RETCODE_NOTHING
   }
-
-  static function hideImage(obj)
-  {
-    let focusImageSource = obj.getFinalProp("focusImageSource")
-    if (focusImageSource == null)
-      return
-
-    local style = ""
-    if (focusImageSource != "foreground")
-      style += "background-color:#00000000;"
-    if (focusImageSource != "background")
-      style += "foreground-color:#00000000;"
-    obj.style = style
-  }
-
-  static function unhideImage(obj)
-  {
-    obj.style = "background-color:; foreground-color:;"
-  }
 }
+
+let function setCallbacks(onSetTargetCb, onUnsetTargetCb) {
+  onSetTarget = onSetTargetCb
+  onUnsetTarget = onUnsetTargetCb
+}
+
 
 ::replace_script_gui_behaviour("focusFrameTarget", bhvFocusFrameTarget)
 
 return {
-  setCallbacks = function(onSetTargetCb, onUnsetTargetCb)
-  {
-    onSetTarget = onSetTargetCb
-    onUnsetTarget = onUnsetTargetCb
-  }
-
+  setCallbacks
   setShouldHideImage = @(shouldHide) shouldHideImage = shouldHide
-  hideImage = bhvFocusFrameTarget.hideImage
-  unhideImage = bhvFocusFrameTarget.unhideImage
+  hideImage
+  unhideImage
 }

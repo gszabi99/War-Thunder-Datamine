@@ -33,29 +33,29 @@ local class Version {
     let t = type(v)
 
     if (t == "string")
-      version = mkVersionFromString(v)
+      this.version = mkVersionFromString(v)
     else if (t == "array") {
       assert(v.len()==4)
-      version = clone v
+      this.version = clone v
     }
     else if (t =="integer") {
-      version = mkVersionFromInt(v)
+      this.version = mkVersionFromInt(v)
     }
     else if (t=="float")
-      version = mkVersionFromInt(v.tointeger())
+      this.version = mkVersionFromInt(v.tointeger())
     else if (t=="null")
-      version = [0,0,0,0]
+      this.version = [0,0,0,0]
     else {
-      version = [0,0,0,0]
+      this.version = [0,0,0,0]
       assert(false, "type is not supported")
     }
   }
   function toint(){
-    return versionToInt(version)
+    return versionToInt(this.version)
   }
 
   function tostring(){
-    return ".".join(version)
+    return ".".join(this.version)
   }
 }
 

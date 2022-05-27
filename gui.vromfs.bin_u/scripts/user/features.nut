@@ -27,7 +27,7 @@ let defaults = ::Watched({  //def value when feature not found in game_settings.
   QueueCustomEventRoom = false
   Invites = true
   Credits = true
-  EmbeddedBrowser = is_platform_windows
+  EmbeddedBrowser = ::is_platform_windows
   EmbeddedBrowserOnlineShop = false
 
   Chat = true

@@ -13,7 +13,7 @@ let {ShellCnt}  = require("%rGui/planeState/planeWeaponState.nut");
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let a10Speed = @() {
   watch = [SpeedValue, IlsColor]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(10), ph(50)]
   size = flex()
   color = IlsColor.value
@@ -25,7 +25,7 @@ let a10Speed = @() {
 let a10AltValue = Computed(@() clamp(Altitude.value * metrToFeet * 0.1, -200, 3800).tointeger())
 let a10Altitude = @() {
   watch = [a10AltValue, IlsColor]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(80), ph(50)]
   size = flex()
   color = IlsColor.value
@@ -37,7 +37,7 @@ let a10Altitude = @() {
 let a10TangageValue = Computed(@() round(Tangage.value))
 let a10Tangage = @() {
   watch = [a10TangageValue, IlsColor]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(80), ph(55)]
   size = flex()
   color = IlsColor.value
@@ -49,7 +49,7 @@ let a10Tangage = @() {
 let a10BarAltValue = Computed(@() clamp(BarAltitude.value * metrToFeet * 0.1, 0, 500).tointeger())
 let a10BarAltitude = @() {
   watch = [a10AltValue, IlsColor]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(80), ph(70)]
   size = flex()
   color = IlsColor.value
@@ -88,7 +88,7 @@ let function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
   return @() {
     watch = IlsColor
     pos = [x, y]
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     vplace = (num * invVPlace) < 0 ? ALIGN_BOTTOM : ALIGN_TOP
     hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
     color = IlsColor.value
@@ -162,7 +162,7 @@ let maverickAimMark = @() {
   children = [
     @() {
       watch = maverickDist
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       pos = [pw(-50), ph(120)]
       font = Fonts.hud
@@ -207,7 +207,7 @@ let gunAimMark = @() {
       children = [
         @() {
           watch = ccipDistM
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           color = IlsColor.value
           pos = [pw(-50), ph(120)]
           font = Fonts.hud
@@ -232,7 +232,7 @@ let maverickAim = @() {
   children = IlsAtgmTrackerVisible.value && !CannonMode.value ? [maverickAimMark] : []
 }
 
-let function impactLine(width, height) {
+let function impactLine(_width, height) {
   return @() {
     watch = [TargetPosValid, BombCCIPMode, BombingMode, RocketMode]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -302,7 +302,7 @@ let smallGunCrosshair = @() {
 
 let modeTxt = @() {
   watch = [CannonMode, IlsColor, RocketMode, BombCCIPMode, BombingMode, GuidanceLockState]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(10), ph(80)]
   size = flex()
   color = IlsColor.value
@@ -314,7 +314,7 @@ let modeTxt = @() {
 
 let shellCntText = @() {
   watch = [CannonMode, ShellCnt]
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(10), ph(77)]
   size = flex()
   color = IlsColor.value

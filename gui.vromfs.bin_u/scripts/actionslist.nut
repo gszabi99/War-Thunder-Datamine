@@ -41,16 +41,16 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
   __al_item_obj_tpl = "%gui/actionsList/actionsListItem"
 
-  static function open(_parentObj, _params)
+  static function open(v_parentObj, v_params)
   {
-    if (!::checkObj(_parentObj)
-      || _parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
-      || ::gui_handlers.ActionsList.hasActionsListOnObject(_parentObj))
+    if (!::checkObj(v_parentObj)
+      || v_parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
+      || ::gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj))
       return
 
     let params = {
-      scene = _parentObj
-      params = _params
+      scene = v_parentObj
+      params = v_params
     }
     ::handlersManager.loadHandler(::gui_handlers.ActionsList, params)
   }
@@ -96,7 +96,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
     local maxWidth = 0
     for(local i = 0; i < nest.childrenCount(); i++)
-      maxWidth = ::max(maxWidth, nest.getChild(i).getSize()[0])
+      maxWidth = max(maxWidth, nest.getChild(i).getSize()[0])
     nest.width = maxWidth
 
     if (::show_console_buttons)
@@ -106,7 +106,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
         let selIdx = params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         guiScene.applyPendingChanges(false)
-        ::move_mouse_on_child(nest, ::max(selIdx, 0))
+        ::move_mouse_on_child(nest, max(selIdx, 0))
       })
   }
 

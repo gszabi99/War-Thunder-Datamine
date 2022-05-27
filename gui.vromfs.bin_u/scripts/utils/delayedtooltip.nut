@@ -101,7 +101,7 @@ let function showWaitIconForObj(obj) {
 
 let function fillTooltipObj(tooltipObj, tooltipId) {
   let params = ::parse_json(tooltipId)
-  if (::type(params) != "table" || !("ttype" in params) || !("id" in params))
+  if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return false
 
   let tooltipType = getTooltipType(params.ttype)

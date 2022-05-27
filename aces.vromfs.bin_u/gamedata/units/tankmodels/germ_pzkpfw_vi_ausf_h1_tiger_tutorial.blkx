@@ -110,9 +110,6 @@
       "armorClass": "RHA_tank",
       "hp": 10000.0,
       "turret": {
-        "turret_bottom_dm": {
-          "armorThickness": 82.0
-        },
         "turret_top_dm": {
           "armorThickness": 26.0
         },
@@ -154,9 +151,6 @@
         "turret_02_front_dm": {
           "armorThickness": 100.0
         },
-        "turret_01_side_dm": {
-          "armorThickness": 90.0
-        },
         "turret_03_side_dm": {
           "armorThickness": 30.0
         },
@@ -187,7 +181,6 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
-        "ex_decor_r_01_dm": [],
         "ex_armor_body_l_02_dm": [],
         "ex_armor_body_l_03_dm": [],
         "ex_armor_body_l_04_dm": [],
@@ -351,6 +344,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1382,11 +1376,11 @@
       "EngineName": "engine_panzer6",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_heavy",
-      "TrackSoundNameCockpit": "tracks_heavy_interior",
+      "TrackSoundName": "tracks_tiger",
+      "TrackSoundNameCockpit": "tracks_tiger_interior",
       "turret_turn": "turret_turn_manual_y",
       "EngineNameAi": "engine_tank_ai_heavy",
-      "TrackSoundNameAi": "tracks_ai_heavy"
+      "TrackSoundNameAi": "tracks_ai_tiger"
     }
   },
   {
@@ -1562,8 +1556,6 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "width": 0.65,
-        "height": 0.1,
         "tracksTensionK": [7.0,8.0,1.5],
         "trackMesh": "ger_pzkpfw_vi_tiger_early_phys_track_line",
         "nonSymmetricMesh": true,
@@ -1573,7 +1565,9 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.05,
         "trackMaxHeight": 1.25,
-        "trackStartOffset": 0.09
+        "trackStartOffset": 0.09,
+        "height": 0.1,
+        "width": 0.65
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",

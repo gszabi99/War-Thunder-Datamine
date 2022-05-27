@@ -341,7 +341,7 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
   let distanceInner = distanceRel - distanceGateHalfWidthRel
   let distanceOuter = distanceRel + distanceGateHalfWidthRel
 
-  if (target.isDetected || target.isSelected) {
+  if (target.isDetected) {
     frameCommands.append(
       [ VECTOR_LINE,
         100 * angleGateLeftRel,
@@ -354,22 +354,6 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
         100 * (1.0 - distanceInner),
         100 * angleGateRightRel,
         100 * (1.0 - distanceOuter)
-      ]
-    )
-  }
-  if (target.isSelected) {
-    frameCommands.append(
-      [ VECTOR_LINE,
-        100 * angleGateLeftRel,
-        100 * (1 - distanceInner),
-        100 * angleGateRightRel,
-        100 * (1 - distanceInner)
-      ],
-      [ VECTOR_LINE,
-        100 * angleGateLeftRel,
-        100 * (1 - distanceOuter),
-        100 * angleGateRightRel,
-        100 * (1 - distanceOuter)
       ]
     )
   }
@@ -409,18 +393,30 @@ let createTargetOnRadarSquare = @(index, radius, size, color) function() {
   return res.__update({
     rendObj = ROBJ_VECTOR_CANVAS
     size
-    lineWidth = 100 * radialWidthRel
-    fillColor = 0
+    lineWidth = target.isSelected ? hdpx(2) : 100 * radialWidthRel
+    fillColor = color
     color = isColorOrWhite(color)
     opacity = opacity
-    commands = [
-      [ VECTOR_LINE,
-        100 * angleLeft,
-        100 * (1 - distanceRel),
-        100 * angleRight,
-        100 * (1 - distanceRel)
+    commands = target.isSelected ?
+      [
+        [ VECTOR_ELLIPSE,
+          100 * angleRel,
+          100 * (1 - distanceRel),
+          2,
+          2 ],
+        [ VECTOR_LINE,
+          100 * angleRel,
+          100 * (1 - distanceRel),
+          100 * (angleRel - target.horSpeed * 0.0002),
+          100 * (1 - (distanceRel + target.radialSpeed * 0.0002)) ]
+      ] :
+      [
+        [ VECTOR_LINE,
+          100 * angleLeft,
+          100 * (1 - distanceRel),
+          100 * angleRight,
+          100 * (1 - distanceRel) ]
       ]
-    ]
     transform = {
       pivot = [0.5, 0.5]
       translate = [
@@ -540,7 +536,7 @@ let function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
 let makeRadarModeText = @(textConfig, color) function() {
   return {
     watch = [RadarModeNameId, IsRadarVisible]
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
     text = getRadarModeText(RadarModeNameId, IsRadarVisible)
     color
@@ -550,7 +546,7 @@ let makeRadarModeText = @(textConfig, color) function() {
 let makeRadar2ModeText = @(textConfig, color) function() {
   return {
     watch = [Radar2ModeNameId, IsRadar2Visible]
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
     text = getRadarModeText(Radar2ModeNameId, IsRadar2Visible)
     color
@@ -576,7 +572,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
       : @() {
         watch = [ScanAzimuthMin, ScanAzimuthMax,
           ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [0, - hdpx(20)]
         color
         text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
@@ -589,7 +585,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
       !HasDistanceScale.value ? null
       : @() {
         watch = [VelocitySearch, DistanceMax, DistanceScalesMax ]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color
         pos = [max(size[0] * 0.75, hdpx(70)), -hdpx(20)]
         text = "".concat(VelocitySearch.value
@@ -600,7 +596,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
       !HasDistanceScale.value || isCollapsed ? null
       : @() {
         watch = [VelocitySearch, DistanceMin ]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color
         pos = [max(size[0] * 0.75, hdpx(70)), size[1] + hdpx(6)]
         text = VelocitySearch.value
@@ -610,7 +606,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
       isCollapsed ? null
       : @() {
         watch = [AzimuthMin]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color = isColorOrWhite(color)
         pos = [hdpx(4), hdpx(4)]
         text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
@@ -620,7 +616,7 @@ let B_ScopeSquareMarkers = @(size, color) function() {
         halign = ALIGN_RIGHT
         watch = [AzimuthMax]
         size = [size[0], SIZE_TO_CONTENT]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color = isColorOrWhite(color)
         pos = [-hdpx(4), hdpx(4)]
         text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
@@ -949,13 +945,11 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
     angleGateLeft  = max(angleGateLeft, AzimuthMin.value - PI * 0.5)
     angleGateRight = min(angleGateRight, AzimuthMax.value - PI * 0.5)
   }
-  let angleGateLeftDeg = angleGateLeft * 180.0 / PI
-  let angleGateRightDeg = angleGateRight * 180.0 / PI
   let distanceGateHalfWidthRel = 0.5 * max(DistanceGateWidthRel.value, distanceGateWidthRelMin) * distanceGateWidthMult
   let radiusInner = distanceRel - distanceGateHalfWidthRel
   let radiusOuter = distanceRel + distanceGateHalfWidthRel
   let frameCommands = []
-  if (target.isDetected || target.isSelected) {
+  if (target.isDetected) {
     frameCommands.append(
       [ VECTOR_LINE,
         50 + 50 * cos(angleGateLeft) * radiusInner,
@@ -972,12 +966,8 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
     )
   }
 
-  if (target.isSelected) {
-    frameCommands.append(
-      [ VECTOR_SECTOR, 50, 50, 50 * radiusInner, 50 * radiusInner, angleGateLeftDeg, angleGateRightDeg ],
-      [ VECTOR_SECTOR, 50, 50, 50 * radiusOuter, 50 * radiusOuter, angleGateLeftDeg, angleGateRightDeg ]
-    )
-  }
+  local sina = sin(angle)
+  local cosa = cos(angle)
 
   if (!target.isEnemy) {
     let iffMarkDistanceRel = distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
@@ -1010,13 +1000,30 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   return res.__update({
     rendObj = ROBJ_VECTOR_CANVAS
     size
-    lineWidth = 100 * radialWidthRel
+    lineWidth = target.isSelected ? hdpx(2) : 100 * radialWidthRel
     color = isColorOrWhite(color)
     fillColor = 0
     opacity = (1.0 - targets[index].ageRel)
-    commands = [
-      [ VECTOR_SECTOR, 50, 50, 50 * distanceRel, 50 * distanceRel, angleLeftDeg, angleRightDeg ]
-    ]
+    commands = target.isSelected ?
+      [
+        [ VECTOR_ELLIPSE,
+          50 + 50 * cosa * distanceRel,
+          50 + 50 * sina * distanceRel,
+          2,
+          2 ],
+        [ VECTOR_LINE,
+          50 + 50 * cosa * distanceRel,
+          50 + 50 * sina * distanceRel,
+          50 + 50 * (cosa * distanceRel + (cosa * target.radialSpeed + sina * target.horSpeed) * 0.0002),
+          50 + 50 * (sina * distanceRel + (sina * target.radialSpeed + cosa * target.horSpeed) * 0.0002)]
+      ] :
+      [
+        [ VECTOR_SECTOR,
+          50, 50,
+          50 * distanceRel,
+          50 * distanceRel,
+          angleLeftDeg, angleRightDeg ]
+      ]
     transform = {
       pivot = [0.5, 0.5]
       translate = [
@@ -1045,7 +1052,7 @@ let B_ScopeCircleMarkers = @(size, color) function() {
         : @() styleText.__merge({
           watch = [ HasAzimuthScale, ScanAzimuthMin, ScanAzimuthMax,
                     ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           pos = [-size[0] * 0.30, size[1] * 0.5 + hdpx(5)]
           hplace = ALIGN_LEFT
           text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
@@ -1058,7 +1065,7 @@ let B_ScopeCircleMarkers = @(size, color) function() {
       }),
       !HasDistanceScale.value ? null
         : @() styleText.__merge({
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           pos = [size[0] + hdpx(4), size[1] * 0.5 + hdpx(5)]
           watch = [VelocitySearch, DistanceMax, DistanceScalesMax ]
           text = "".concat(VelocitySearch.value
@@ -1072,22 +1079,22 @@ let B_ScopeCircleMarkers = @(size, color) function() {
       }),
       isCollapsed ? null
         : styleText.__merge({
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           pos = [size[0] * 0.5 - hdpx(4), -hdpx(18)]
           text = "".concat("0", ::loc("measureUnits/deg"))
       }),
       styleText.__merge({
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [size[0] + hdpx(4), size[1] * 0.5 - hdpx(15)]
         text = "".concat("90", ::loc("measureUnits/deg"))
       }),
       styleText.__merge({
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [size[0] * 0.5 - hdpx(18), size[1] + hdpx(4)]
         text = "".concat("180", ::loc("measureUnits/deg"))
       }),
       styleText.__merge({
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [-size[0] * 0.15, size[1] * 0.5 - hdpx(15)]
         hplace = ALIGN_LEFT
         text = "".concat("270", ::loc("measureUnits/deg"))
@@ -1327,7 +1334,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
           : @() styleLineForeground.__merge({
             watch = [ ScanAzimuthMin, ScanAzimuthMax,
                       ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
-            rendObj = ROBJ_DTEXT
+            rendObj = ROBJ_TEXT
             size = SIZE_TO_CONTENT
             color
             fontSize = hudFontHgt * fontScale
@@ -1345,7 +1352,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
       !HasDistanceScale.value ? null
         : @() styleLineForeground.__merge({
           watch = [ VelocitySearch, DistanceMax, DistanceScalesMax ]
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           size = SIZE_TO_CONTENT
           color
           fontSize = hudFontHgt * fontScale
@@ -1763,7 +1770,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
       : @() {
         watch = [ScanAzimuthMin, ScanAzimuthMax,
           ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [0, - hdpx(20)]
         color
         text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5),
@@ -1776,7 +1783,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
       IsBScopeVisible.value || !HasDistanceScale.value ? null
       : @() {
         watch = [VelocitySearch, DistanceMax, DistanceScalesMax ]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color
         pos = [size[0] * 0.75, -hdpx(20)]
         text = "".concat(VelocitySearch.value
@@ -1786,7 +1793,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
       },
       @() styleLineForeground.__merge({
         watch = ElevationMax
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color
         pos = [size[0] + hdpx(4), hdpx(4)]
         text = "".concat(floor(ElevationMax.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
@@ -1794,20 +1801,20 @@ let C_ScopeSquareMarkers = @(size, color) function() {
       @() styleLineForeground.__merge({
         watch = [ ElevationMin, ElevationRangeInv ]
         color
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [size[0] + hdpx(4), (1.0 - (0.0 - ElevationMin.value) * ElevationRangeInv.value) * size[1] - hdpx(4)]
         text = "".concat("0", ::loc("measureUnits/deg"))
       }),
       @() styleLineForeground.__merge({
         watch = ElevationMin
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color
         pos = [size[0] + hdpx(4), size[1] - hdpx(20)]
         text = "".concat(floor(ElevationMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
       }),
       @() styleLineForeground.__merge({
         watch = AzimuthMin
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [hdpx(4), hdpx(4)]
         color = isColorOrWhite(color)
         text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), ::loc("measureUnits/deg"))
@@ -1816,7 +1823,7 @@ let C_ScopeSquareMarkers = @(size, color) function() {
         size = [size[0], SIZE_TO_CONTENT]
         children = @() styleLineForeground.__merge({
           watch = AzimuthMax
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           pos = [-hdpx(4), hdpx(4)]
           color = isColorOrWhite(color)
           hplace = ALIGN_RIGHT
@@ -1890,8 +1897,8 @@ let function C_Scope(size, color) {
   }
 }
 
-let mkRadarTgtsDist = @(dist, id, width, color) styleText.__merge({
-  rendObj = ROBJ_DTEXT
+let mkRadarTgtsDist = @(dist, _id, width, color) styleText.__merge({
+  rendObj = ROBJ_TEXT
   color
   size = [width * 4, SIZE_TO_CONTENT]
   pos = [width + hdpx(5), 0]
@@ -1901,7 +1908,7 @@ let mkRadarTgtsDist = @(dist, id, width, color) styleText.__merge({
 })
 
 let mkRadarTgtsSpd = @(id, width, color) styleText.__merge({
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   color
   size = [width * 4, SIZE_TO_CONTENT]
   pos = [width + hdpx(5), hdpx(35) * sh(100) / 1080]
@@ -1970,13 +1977,34 @@ let createTargetOnScreen = @(id, width, color) function() {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpx(4)
         color
+        fillColor = 0
         size = [width, width]
-        commands = [
-          [VECTOR_LINE, 0, 0, 0, 100],
-          [VECTOR_LINE, 0, 100, 100, 100],
-          [VECTOR_LINE, 100, 100, 100, 0],
-          [VECTOR_LINE, 100, 0, 0, 0],
-        ]
+        commands = screenTargets?[id]?.isTracked ?
+          [
+            [VECTOR_RECTANGLE, 0, 0, 100, 100]
+          ] :
+          (screenTargets?[id]?.isDetected ?
+            [
+              [VECTOR_LINE, 0, 0, 40, 0],
+              [VECTOR_LINE, 0, 0, 0, 40],
+              [VECTOR_LINE, 100, 0, 60, 0],
+              [VECTOR_LINE, 100, 0, 100, 40],
+              [VECTOR_LINE, 100, 100, 60, 100],
+              [VECTOR_LINE, 100, 100, 100, 60],
+              [VECTOR_LINE, 0, 100, 40, 100],
+              [VECTOR_LINE, 0, 100, 0, 60]
+            ] :
+            [
+              [VECTOR_LINE, 0, 0, 10, 0],
+              [VECTOR_LINE, 0, 0, 0, 10],
+              [VECTOR_LINE, 100, 0, 90, 0],
+              [VECTOR_LINE, 100, 0, 100, 10],
+              [VECTOR_LINE, 100, 100, 90, 100],
+              [VECTOR_LINE, 100, 100, 100, 90],
+              [VECTOR_LINE, 0, 100, 10, 100],
+              [VECTOR_LINE, 0, 100, 0, 90]
+            ]
+          )
       },
       {
         rendObj = ROBJ_VECTOR_CANVAS
@@ -2385,7 +2413,7 @@ let function azimuthMarkStrike(styleColor) {
   }
 }
 
-let mkRadarBase = @(posWatch, size, isAir, color, mode, fontScale = 1.0) function() {
+let mkRadarBase = @(posWatch, size, _isAir, color, mode, fontScale = 1.0) function() {
 
   let isSquare = mode.value == RadarViewMode.B_SCOPE_SQUARE
   let azimuthRange = AzimuthRange.value

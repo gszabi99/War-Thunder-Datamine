@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
@@ -7,7 +10,7 @@ let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
-local { setGuiOptionsMode } = ::require_native("guiOptions")
+let { setGuiOptionsMode } = ::require_native("guiOptions")
 let { havePlayerTag } = require("scripts/user/userUtils.nut")
 let { getDistr } = require("auth_wt")
 
@@ -45,15 +48,15 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
     animBgLoad()
     setVersionText()
     ::setProjectAwards(this)
-    showTitleLogo(scene, 128)
-    initLanguageSwitch()
-    checkShardingCircuits()
+    showTitleLogo(this.scene, 128)
+    this.initLanguageSwitch()
+    this.checkShardingCircuits()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
     ::enable_keyboard_layout_change_tracking(true)
     ::enable_keyboard_locks_change_tracking(true)
 
-    let bugDiscObj = scene.findObject("browser_bug_disclaimer")
+    let bugDiscObj = this.scene.findObject("browser_bug_disclaimer")
     if (::checkObj(bugDiscObj))
       bugDiscObj.show(::target_platform == "linux64" && ::is_steam_big_picture()) //STEAM_OS
 
@@ -64,21 +67,21 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
     let disableSSLCheck = lp.autoSave & ::AUTO_SAVE_FLG_NOSSLCERT
 
-    let unObj = scene.findObject("loginbox_username")
+    let unObj = this.scene.findObject("loginbox_username")
     if (::checkObj(unObj))
       unObj.setValue(lp.login)
 
-    let psObj = scene.findObject("loginbox_password")
+    let psObj = this.scene.findObject("loginbox_password")
     if (::checkObj(psObj)) {
       psObj["password-smb"] = ::loc("password_mask_char", "*")
       psObj.setValue(lp.password)
     }
 
-    let alObj = scene.findObject("loginbox_autosave_login")
+    let alObj = this.scene.findObject("loginbox_autosave_login")
     if (::checkObj(alObj))
       alObj.setValue(lp.autoSave & ::AUTO_SAVE_FLG_LOGIN)
 
-    let spObj = scene.findObject("loginbox_autosave_password")
+    let spObj = this.scene.findObject("loginbox_autosave_password")
     if (::checkObj(spObj))
     {
       spObj.show(!isVietnamese)
@@ -90,21 +93,21 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       spObj.findObject("loginbox_autosave_password_text").setValue(text)
     }
 
-    setDisableSslCertBox(disableSSLCheck)
+    this.setDisableSslCertBox(disableSSLCheck)
     let isSteamRunning = ::steam_is_running()
     let showSteamLogin = isSteamRunning
-    let showWebLogin = !isSteamRunning && ::webauth_start(this, onSsoAuthorizationComplete)
-    showSceneBtn("secondary_auth_block", showSteamLogin || showWebLogin)
-    showSceneBtn("steam_login_action_button", showSteamLogin)
-    showSceneBtn("sso_login_action_button", showWebLogin)
-    showSceneBtn("btn_signUp_link", !showSteamLogin)
+    let showWebLogin = !isSteamRunning && ::webauth_start(this, this.onSsoAuthorizationComplete)
+    this.showSceneBtn("secondary_auth_block", showSteamLogin || showWebLogin)
+    this.showSceneBtn("steam_login_action_button", showSteamLogin)
+    this.showSceneBtn("sso_login_action_button", showWebLogin)
+    this.showSceneBtn("btn_signUp_link", !showSteamLogin)
 
-    initial_autologin = ::is_autologin_enabled()
+    this.initial_autologin = ::is_autologin_enabled()
 
     let saveLoginAndPassMask = ::AUTO_SAVE_FLG_LOGIN | ::AUTO_SAVE_FLG_PASS
     let autoLoginEnable = (lp.autoSave & saveLoginAndPassMask) == saveLoginAndPassMask
-    local autoLogin = (initial_autologin && autoLoginEnable) || ::need_force_autologin()
-    let autoLoginObj = scene.findObject("loginbox_autologin")
+    local autoLogin = (this.initial_autologin && autoLoginEnable) || ::need_force_autologin()
+    let autoLoginObj = this.scene.findObject("loginbox_autologin")
     if (::checkObj(autoLoginObj))
     {
       autoLoginObj.show(!isVietnamese)
@@ -112,7 +115,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       autoLoginObj.setValue(autoLogin)
     }
 
-    showSceneBtn("links_block", !::is_platform_shield_tv())
+    this.showSceneBtn("links_block", !::is_platform_shield_tv())
 
     if ("dgs_get_argv" in ::getroottable())
     {
@@ -131,20 +134,20 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
     if (("stoken" in lp) && lp.stoken != null && lp.stoken != "")
     {
-      stoken = lp.stoken
-      doLoginDelayed()
+      this.stoken = lp.stoken
+      this.doLoginDelayed()
       return
     }
 
     if ("disable_autorelogin_once" in ::getroottable())
-      autoLogin = autoLogin && !disable_autorelogin_once
+      autoLogin = autoLogin && !::disable_autorelogin_once
     if (autoLogin)
     {
-      doLoginDelayed()
+      this.doLoginDelayed()
       return
     }
 
-    ::select_editbox(scene.findObject(tabFocusArray[ lp.login != "" ? 1 : 0 ]))
+    ::select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
   }
 
   function onDestroy()
@@ -156,7 +159,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function setDisableSslCertBox(value)
   {
-    let dcObj = showSceneBtn("loginbox_disable_ssl_cert", value)
+    let dcObj = this.showSceneBtn("loginbox_disable_ssl_cert", value)
     if (::checkObj(dcObj))
       dcObj.setValue(value)
   }
@@ -165,10 +168,10 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
   {
     local defValue = 0
     let networkBlk = ::get_network_block()
-    let avCircuits = networkBlk.getBlockByName(availableCircuitsBlockName)
+    let avCircuits = networkBlk.getBlockByName(this.availableCircuitsBlockName)
 
     let configCircuitName = ::get_cur_circuit_name()
-    shardItems = [{
+    this.shardItems = [{
                     item = configCircuitName
                     text = ::loc("circuit/" + configCircuitName)
                  }]
@@ -179,17 +182,17 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       if (defaultCircuit == "")
         defaultCircuit = configCircuitName
 
-      shardItems = []
+      this.shardItems = []
       for(local i = 0; i < avCircuits.paramCount(); ++i)
       {
         let param = avCircuits.getParamName(i)
         let value = avCircuits.getParamValue(i)
-        if (param == paramName && typeof(value) == "string")
+        if (param == this.paramName && typeof(value) == "string")
         {
           if (value == defaultCircuit)
             defValue = i
 
-          shardItems.append({
+          this.shardItems.append({
                               item = value
                               text = ::loc("circuit/" + value)
                            })
@@ -197,27 +200,27 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       }
     }
 
-    let show = shardItems.len() > 1
-    let shardObj = showSceneBtn("sharding_block", show)
+    let show = this.shardItems.len() > 1
+    let shardObj = this.showSceneBtn("sharding_block", show)
     if (show && ::checkObj(shardObj))
     {
       let dropObj = shardObj.findObject("sharding_dropright_block")
-      let shardData = ::create_option_combobox("sharding_list", shardItems, defValue, null, true)
-      guiScene.replaceContentFromText(dropObj, shardData, shardData.len(), this)
+      let shardData = ::create_option_combobox("sharding_list", this.shardItems, defValue, null, true)
+      this.guiScene.replaceContentFromText(dropObj, shardData, shardData.len(), this)
     }
   }
 
   function onChangeAutosave()
   {
-    if (!isValid())
+    if (!this.isValid())
       return
 
-    let remoteCompObj = scene.findObject("loginbox_remote_comp")
-    let rememberDeviceObj = scene.findObject("loginbox_code_remember_this_device")
-    let savePassObj = scene.findObject("loginbox_autosave_password")
-    let saveLoginObj = scene.findObject("loginbox_autosave_login")
-    let autoLoginObj = scene.findObject("loginbox_autologin")
-    let disableCertObj = scene.findObject("loginbox_disable_ssl_cert")
+    let remoteCompObj = this.scene.findObject("loginbox_remote_comp")
+    let rememberDeviceObj = this.scene.findObject("loginbox_code_remember_this_device")
+    let savePassObj = this.scene.findObject("loginbox_autosave_password")
+    let saveLoginObj = this.scene.findObject("loginbox_autosave_login")
+    let autoLoginObj = this.scene.findObject("loginbox_autologin")
+    let disableCertObj = this.scene.findObject("loginbox_disable_ssl_cert")
 
     if (rememberDeviceObj.isVisible())
       remoteCompObj.setValue(!rememberDeviceObj.getValue())
@@ -228,7 +231,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
     let isAutosaveLogin = saveLoginObj.getValue()
     let isAutosavePass = savePassObj.getValue()
 
-    setDisableSslCertBox(disableCertObj.getValue())
+    this.setDisableSslCertBox(disableCertObj.getValue())
 
     saveLoginObj.enable(!isRemoteComp)
     savePassObj.enable(!isRemoteComp && isAutosaveLogin && !::is_vietnamese_version())
@@ -245,18 +248,18 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
   function initLanguageSwitch()
   {
     let canSwitchLang = ::canSwitchGameLocalization()
-    showSceneBtn("language_selector", canSwitchLang)
+    this.showSceneBtn("language_selector", canSwitchLang)
     if (!canSwitchLang)
       return
 
-    localizationInfo = localizationInfo || ::g_language.getGameLocalizationInfo()
+    this.localizationInfo = this.localizationInfo || ::g_language.getGameLocalizationInfo()
     let curLangId = ::get_current_language()
-    local lang = localizationInfo[0]
-    foreach (l in localizationInfo)
+    local lang = this.localizationInfo[0]
+    foreach (l in this.localizationInfo)
       if (l.id == curLangId)
         lang = l
 
-    let objLangLabel = scene.findObject("label_language")
+    let objLangLabel = this.scene.findObject("label_language")
     if (::checkObj(objLangLabel))
     {
       local title = ::loc("profile/language")
@@ -264,10 +267,10 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       title += (title == titleEn ? "" : ::loc("ui/parentheses/space", { text = titleEn })) + ":"
       objLangLabel.setValue(title)
     }
-    let objLangIcon = scene.findObject("btn_language_icon")
+    let objLangIcon = this.scene.findObject("btn_language_icon")
     if (::checkObj(objLangIcon))
       objLangIcon["background-image"] = lang.icon
-    let objLangName = scene.findObject("btn_language_text")
+    let objLangName = this.scene.findObject("btn_language_text")
     if (::checkObj(objLangName))
       objLangName.setValue(lang.title)
   }
@@ -275,10 +278,10 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
   function onPopupLanguages(obj)
   {
     if (::gui_handlers.ActionsList.hasActionsListOnObject(obj))
-      return onClosePopups()
+      return this.onClosePopups()
 
-    localizationInfo = localizationInfo || ::g_language.getGameLocalizationInfo()
-    if (!::checkObj(obj) || localizationInfo.len() < 2)
+    this.localizationInfo = this.localizationInfo || ::g_language.getGameLocalizationInfo()
+    if (!::checkObj(obj) || this.localizationInfo.len() < 2)
       return
 
     let curLangId = ::get_current_language()
@@ -287,14 +290,14 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
       closeOnUnhover = true
       actions = []
     }
-    for (local i = 0; i < localizationInfo.len(); i++)
+    for (local i = 0; i < this.localizationInfo.len(); i++)
     {
-      let lang = localizationInfo[i]
+      let lang = this.localizationInfo[i]
       menu.actions.append({
         actionName  = lang.id
         text        = lang.title
         icon        = lang.icon
-        action      = (@(lang) function () { onChangeLanguage(lang.id) })(lang)
+        action      = (@(lang) function () { this.onChangeLanguage(lang.id) })(lang)
         selected    = lang.id == curLangId
       })
     }
@@ -303,37 +306,37 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function onClosePopups()
   {
-    let obj = scene.findObject("btn_language")
+    let obj = this.scene.findObject("btn_language")
     if (::checkObj(obj))
       ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
   }
 
   function onChangeLanguage(langId)
   {
-    let no_dump_login = scene.findObject("loginbox_username").getValue() || ""
-    let no_dump_pass = scene.findObject("loginbox_password").getValue() || ""
-    let isRemoteComp = scene.findObject("loginbox_remote_comp").getValue()
-    let code_remember_this_device = scene.findObject("loginbox_code_remember_this_device").getValue()
-    let isAutosaveLogin = scene.findObject("loginbox_autosave_login").getValue()
-    let isAutosavePass = scene.findObject("loginbox_autosave_password").getValue()
-    let autologin = scene.findObject("loginbox_autologin").getValue()
-    let shardingListObj = scene.findObject("sharding_list")
+    let no_dump_login = this.scene.findObject("loginbox_username").getValue() || ""
+    let no_dump_pass = this.scene.findObject("loginbox_password").getValue() || ""
+    let isRemoteComp = this.scene.findObject("loginbox_remote_comp").getValue()
+    let code_remember_this_device = this.scene.findObject("loginbox_code_remember_this_device").getValue()
+    let isAutosaveLogin = this.scene.findObject("loginbox_autosave_login").getValue()
+    let isAutosavePass = this.scene.findObject("loginbox_autosave_password").getValue()
+    let autologin = this.scene.findObject("loginbox_autologin").getValue()
+    let shardingListObj = this.scene.findObject("sharding_list")
     let shard = shardingListObj ? shardingListObj.getValue() : -1
 
     ::g_language.setGameLocalization(langId, true, true)
 
     let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
-    scene = handler ? handler.scene : null
-    if (!::checkObj(scene))
+    this.scene = handler ? handler.scene : null
+    if (!::checkObj(this.scene))
       return
 
-    scene.findObject("loginbox_username").setValue(no_dump_login)
-    scene.findObject("loginbox_password").setValue(no_dump_pass)
-    scene.findObject("loginbox_remote_comp").setValue(isRemoteComp)
-    scene.findObject("loginbox_code_remember_this_device").setValue(code_remember_this_device)
-    scene.findObject("loginbox_autosave_login").setValue(isAutosaveLogin)
-    scene.findObject("loginbox_autosave_password").setValue(isAutosavePass)
-    scene.findObject("loginbox_autologin").setValue(autologin)
+    this.scene.findObject("loginbox_username").setValue(no_dump_login)
+    this.scene.findObject("loginbox_password").setValue(no_dump_pass)
+    this.scene.findObject("loginbox_remote_comp").setValue(isRemoteComp)
+    this.scene.findObject("loginbox_code_remember_this_device").setValue(code_remember_this_device)
+    this.scene.findObject("loginbox_autosave_login").setValue(isAutosaveLogin)
+    this.scene.findObject("loginbox_autosave_password").setValue(isAutosavePass)
+    this.scene.findObject("loginbox_autologin").setValue(autologin)
     handler.onChangeAutosave()
     if (shardingListObj)
       shardingListObj.setValue(shard)
@@ -341,7 +344,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function requestLogin(no_dump_login)
   {
-    return requestLoginWithCode(no_dump_login, "");
+    return this.requestLoginWithCode(no_dump_login, "");
   }
 
   function requestLoginWithCode(no_dump_login, code)
@@ -349,45 +352,45 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "regular"})
     ::dagor.debug("Login: check_login_pass")
     return ::check_login_pass(no_dump_login,
-                              ::get_object_value(scene, "loginbox_password", ""),
-                              check2StepAuthCode ? "" : stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
+                              ::get_object_value(this.scene, "loginbox_password", ""),
+                              this.check2StepAuthCode ? "" : this.stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
                               code,
-                              check2StepAuthCode
-                                ? ::get_object_value(scene, "loginbox_code_remember_this_device", false)
-                                : !::get_object_value(scene, "loginbox_disable_ssl_cert", false),
-                              ::get_object_value(scene, "loginbox_remote_comp", false)
+                              this.check2StepAuthCode
+                                ? ::get_object_value(this.scene, "loginbox_code_remember_this_device", false)
+                                : !::get_object_value(this.scene, "loginbox_disable_ssl_cert", false),
+                              ::get_object_value(this.scene, "loginbox_remote_comp", false)
                              )
   }
 
   function continueLogin(no_dump_login)
   {
-    if (shardItems)
+    if (this.shardItems)
     {
-      if (shardItems.len() == 1)
-        ::set_network_circuit(shardItems[0].item)
-      else if (shardItems.len() > 1)
-        ::set_network_circuit(shardItems[scene.findObject("sharding_list").getValue()].item)
+      if (this.shardItems.len() == 1)
+        ::set_network_circuit(this.shardItems[0].item)
+      else if (this.shardItems.len() > 1)
+        ::set_network_circuit(this.shardItems[this.scene.findObject("sharding_list").getValue()].item)
     }
 
-    let autoSaveLogin = ::get_object_value(scene, "loginbox_autosave_login", defaultSaveLoginFlagVal)
-    let autoSavePassword = ::get_object_value(scene, "loginbox_autosave_password", defaultSavePasswordFlagVal)
-    let disableSSLCheck = ::get_object_value(scene, "loginbox_disable_ssl_cert", false)
+    let autoSaveLogin = ::get_object_value(this.scene, "loginbox_autosave_login", this.defaultSaveLoginFlagVal)
+    let autoSavePassword = ::get_object_value(this.scene, "loginbox_autosave_password", this.defaultSavePasswordFlagVal)
+    let disableSSLCheck = ::get_object_value(this.scene, "loginbox_disable_ssl_cert", false)
     local autoSave = (autoSaveLogin     ? ::AUTO_SAVE_FLG_LOGIN     : 0) |
                      (autoSavePassword  ? ::AUTO_SAVE_FLG_PASS      : 0) |
                      (disableSSLCheck   ? ::AUTO_SAVE_FLG_NOSSLCERT : 0)
 
-    if (was_using_stoken || isSteamAuth)
+    if (this.was_using_stoken || this.isSteamAuth)
       autoSave = autoSave | ::AUTO_SAVE_FLG_DISABLE
 
-    ::set_login_pass(no_dump_login.tostring(), ::get_object_value(scene, "loginbox_password", ""), autoSave)
-    if (!::checkObj(scene)) //set_login_pass start onlineJob
+    ::set_login_pass(no_dump_login.tostring(), ::get_object_value(this.scene, "loginbox_password", ""), autoSave)
+    if (!::checkObj(this.scene)) //set_login_pass start onlineJob
       return
 
     let autoLogin = (autoSaveLogin && autoSavePassword) ?
-                ::get_object_value(scene, "loginbox_autologin", defaultSaveAutologinFlagVal)
+                ::get_object_value(this.scene, "loginbox_autologin", this.defaultSaveAutologinFlagVal)
                 : false
     ::set_autologin_enabled(autoLogin)
-    if (initial_autologin != autoLogin)
+    if (this.initial_autologin != autoLogin)
       ::save_profile(false)
 
     ::g_login.addState(LOGIN_STATE.AUTHORIZED)
@@ -395,43 +398,43 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function onOk()
   {
-    if (!isLoginEditsFilled())
+    if (!this.isLoginEditsFilled())
       return
 
-    isLoginRequestInprogress = true
-    requestGet2stepCodeAtempt = MAX_GET_2STEP_CODE_ATTEMPTS
-    doLoginWaitJob()
+    this.isLoginRequestInprogress = true
+    this.requestGet2stepCodeAtempt = MAX_GET_2STEP_CODE_ATTEMPTS
+    this.doLoginWaitJob()
   }
 
   function doLoginDelayed()
   {
-    isLoginRequestInprogress = true
-    guiScene.performDelayed(this, doLoginWaitJob)
+    this.isLoginRequestInprogress = true
+    this.guiScene.performDelayed(this, this.doLoginWaitJob)
   }
 
   function doLoginWaitJob()
   {
     ::disable_autorelogin_once <- false
-    let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
-    local result = requestLogin(no_dump_login)
-    proceedAuthorizationResult(result, no_dump_login)
+    let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
+    local result = this.requestLogin(no_dump_login)
+    this.proceedAuthorizationResult(result, no_dump_login)
   }
 
   function onSteamAuthorization(steamSpecCode = null)
   {
-    isSteamAuth = true
+    this.isSteamAuth = true
     steamSpecCode = steamSpecCode || "steam"
-    isLoginRequestInprogress = true
+    this.isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam"})
     ::dagor.debug("Steam Login: check_login_pass with code " + steamSpecCode)
     let result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
-    proceedAuthorizationResult(result, "")
+    this.proceedAuthorizationResult(result, "")
   }
 
   function onSsoAuthorization()
   {
-    let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
+    let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
     let no_dump_url = ::webauth_get_url(no_dump_login)
     openUrl(no_dump_url)
     ::browser_set_external_url(no_dump_url)
@@ -443,33 +446,34 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
     if (params.success)
     {
-      let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
-      continueLogin(no_dump_login);
+      let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
+      ::load_local_settings()
+      this.continueLogin(no_dump_login);
     }
   }
 
   function onEventProceedGetTwoStepCode(data)
   {
-    if (!isValid() || isLoginRequestInprogress)
+    if (!this.isValid() || this.isLoginRequestInprogress)
     {
       return
     }
 
     let result = data.status
     let code = data.code
-    let no_dump_login = ::get_object_value(scene, "loginbox_username", "")
+    let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
 
-    if (result == ::YU2_TIMEOUT && requestGet2stepCodeAtempt-- > 0)
+    if (result == ::YU2_TIMEOUT && this.requestGet2stepCodeAtempt-- > 0)
     {
-      doLoginDelayed()
+      this.doLoginDelayed()
       return
     }
 
     if (result == ::YU2_OK)
     {
-      isLoginRequestInprogress = true
-      let loginResult = requestLoginWithCode(no_dump_login, code)
-      proceedAuthorizationResult(loginResult, no_dump_login)
+      this.isLoginRequestInprogress = true
+      let loginResult = this.requestLoginWithCode(no_dump_login, code)
+      this.proceedAuthorizationResult(loginResult, no_dump_login)
     }
   }
 
@@ -482,12 +486,12 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function proceedAuthorizationResult(result, no_dump_login)
   {
-    isLoginRequestInprogress = false
-    if (!::checkObj(scene)) //check_login_pass is not instant
+    this.isLoginRequestInprogress = false
+    if (!::checkObj(this.scene)) //check_login_pass is not instant
       return
 
-    was_using_stoken = (stoken != "")
-    stoken = ""
+    this.was_using_stoken = (this.stoken != "")
+    this.stoken = ""
     switch (result)
     {
       case ::YU2_OK:
@@ -495,7 +499,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
             && !::has_feature("AllowSteamAccountLinking")
             && !havePlayerTag("steam"))
         {
-          msgBox("steam_relogin_request",
+          this.msgBox("steam_relogin_request",
             ::loc("mainmenu/login/steamRelogin"),
           [
             ["ok", ::restart_without_steam],
@@ -505,9 +509,9 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
           return
         }
 
-        if (needTrySteamLink())
+        if (this.needTrySteamLink())
         {
-          let isRemoteComp = ::get_object_value(scene, "loginbox_remote_comp", false)
+          let isRemoteComp = ::get_object_value(this.scene, "loginbox_remote_comp", false)
           statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam_link"})
           ::dagor.debug("Steam Link Login: check_login_pass")
           let res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
@@ -518,61 +522,61 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
             ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, false)
         }
         else if (::steam_is_running() && !::has_feature("AllowSteamAccountLinking"))
-          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, isSteamAuth)
+          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
 
-        continueLogin(no_dump_login)
+        this.continueLogin(no_dump_login)
         break
 
       case ::YU2_2STEP_AUTH: //error, received if user not logged, because he have 2step authorization activated
         {
-          check2StepAuthCode = true
-          showSceneBtn("loginbox_code_remember_this_device", true)
-          showSceneBtn("loginbox_remote_comp", false)
+          this.check2StepAuthCode = true
+          this.showSceneBtn("loginbox_code_remember_this_device", true)
+          this.showSceneBtn("loginbox_remote_comp", false)
           twoStepModal.open({
-            loginScene           = scene,
-            continueLogin        = continueLogin.bindenv(this)
+            loginScene           = this.scene,
+            continueLogin        = this.continueLogin.bindenv(this)
           })
-          onChangeAutosave()
-          guiScene.performDelayed(this, (@(scene) function() {
+          this.onChangeAutosave()
+          this.guiScene.performDelayed(this, (@(scene) function() {
             if (!::checkObj(scene))
               return
 
             if ("get_two_step_code_async2" in getroottable())
               ::get_two_step_code_async2("ProceedGetTwoStepCode")
             else
-              ::get_two_step_code_async(this, onEventProceedGetTwoStepCode)
-          })(scene))
+              ::get_two_step_code_async(this, this.onEventProceedGetTwoStepCode)
+          })(this.scene))
         }
         break
 
       case ::YU2_PSN_RESTRICTED:
         {
-          msgBox("psn_restricted", ::loc("yn1/login/PSN_RESTRICTED"),
+          this.msgBox("psn_restricted", ::loc("yn1/login/PSN_RESTRICTED"),
              [["exit", exitGame ]], "exit")
         }
         break;
 
       case ::YU2_WRONG_LOGIN:
       case ::YU2_WRONG_PARAMETER:
-        if (was_using_stoken)
+        if (this.was_using_stoken)
           return;
         ::error_message_box("yn1/connect_error", result, // auth error
         [
           ["recovery", function() {openUrl(::loc("url/recovery"), false, false, "login_wnd")}],
           ["exit", exitGame],
-          ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(onLoginErrorTryAgain, this) })
+          ["tryAgain", ::Callback(this.onLoginErrorTryAgain, this)]
+        ], "tryAgain", { cancel_fn = ::Callback(this.onLoginErrorTryAgain, this) })
         break
 
       case ::YU2_SSL_CACERT:
-        if (was_using_stoken)
+        if (this.was_using_stoken)
           return;
         ::error_message_box("yn1/connect_error", result,
         [
-          ["disableSSLCheck", ::Callback(function() { setDisableSslCertBox(true) }, this)],
+          ["disableSSLCheck", ::Callback(function() { this.setDisableSslCertBox(true) }, this)],
           ["exit", exitGame],
-          ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(onLoginErrorTryAgain, this) })
+          ["tryAgain", ::Callback(this.onLoginErrorTryAgain, this)]
+        ], "tryAgain", { cancel_fn = ::Callback(this.onLoginErrorTryAgain, this) })
         break
 
       case ::YU2_DOI_INCOMPLETE:
@@ -580,13 +584,13 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
         break
 
       default:
-        if (was_using_stoken)
+        if (this.was_using_stoken)
           return;
         ::error_message_box("yn1/connect_error", result,
         [
           ["exit", exitGame],
-          ["tryAgain", ::Callback(onLoginErrorTryAgain, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(onLoginErrorTryAgain, this) })
+          ["tryAgain", ::Callback(this.onLoginErrorTryAgain, this)]
+        ], "tryAgain", { cancel_fn = ::Callback(this.onLoginErrorTryAgain, this) })
     }
   }
 
@@ -594,13 +598,13 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function onKbdWrapDown()
   {
-    setFocusToNextObj(scene, tabFocusArray, 1)
+    setFocusToNextObj(this.scene, this.tabFocusArray, 1)
   }
 
   function onEventKeyboardLayoutChanged(params)
   {
     let layoutIndicator =
-      scene.findObject("loginbox_password_layout_indicator")
+      this.scene.findObject("loginbox_password_layout_indicator")
 
     if (!::checkObj(layoutIndicator))
       return
@@ -614,7 +618,7 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 
   function onEventKeyboardLocksChanged(params)
   {
-    let capsIndicator = scene.findObject("loginbox_password_caps_indicator")
+    let capsIndicator = this.scene.findObject("loginbox_password_caps_indicator")
     if (::check_obj(capsIndicator))
       capsIndicator.show((params.locks & 1) == 1)
   }
@@ -640,47 +644,47 @@ const MAX_GET_2STEP_CODE_ATTEMPTS = 10
   function onChangeLogin(obj)
   {
     //Don't save value to local, so it doens't appear in logs.
-    let res = !::g_string.validateEmail(obj.getValue()) && (stoken == "")
+    let res = !::g_string.validateEmail(obj.getValue()) && (this.stoken == "")
     obj.warning = res? "yes" : "no"
     obj.warningText = res? "yes" : "no"
     obj.tooltip = res? ::loc("tooltip/invalidEmail/possibly") : ""
-    setLoginBtnState()
+    this.setLoginBtnState()
   }
 
   function onDoneEnter()
   {
-    if (!check2StepAuthCode)
-      doLoginWaitJob()
+    if (!this.check2StepAuthCode)
+      this.doLoginWaitJob()
   }
 
   function onDoneCode()
   {
-    doLoginWaitJob()
+    this.doLoginWaitJob()
   }
 
   function onExit()
   {
-    msgBox("login_question_quit_game", ::loc("mainmenu/questionQuitGame"),
+    this.msgBox("login_question_quit_game", ::loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no", @() null]
       ], "no", { cancel_fn = @() null})
   }
 
-  isLoginEditsFilled = @() ::get_object_value(scene, "loginbox_username", "") != ""
-    && ::get_object_value(scene, "loginbox_password", "") != ""
+  isLoginEditsFilled = @() ::get_object_value(this.scene, "loginbox_username", "") != ""
+    && ::get_object_value(this.scene, "loginbox_password", "") != ""
 
   function setLoginBtnState ()
   {
-    let loginBtnObj = scene.findObject("login_action_button")
+    let loginBtnObj = this.scene.findObject("login_action_button")
     if (!::check_obj(loginBtnObj))
       return false
 
-    loginBtnObj.enable = isLoginEditsFilled() ? "yes" : "no"
+    loginBtnObj.enable = this.isLoginEditsFilled() ? "yes" : "no"
   }
 
   function goBack()
   {
-    onExit()
+    this.onExit()
   }
 }

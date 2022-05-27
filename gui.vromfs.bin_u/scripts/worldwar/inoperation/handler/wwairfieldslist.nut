@@ -272,8 +272,8 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     formationTextObj.setValue(text)
 
     let hasEnoughToFly = airfield.hasEnoughUnitsToFly()
-    showSceneBtn("control_help", hasEnoughToFly)
-    showSceneBtn("alert_text", !hasEnoughToFly)
+    this.showSceneBtn("control_help", hasEnoughToFly)
+    this.showSceneBtn("alert_text", !hasEnoughToFly)
 
     if (!hasFormationUnits && !hasCooldownUnits)
       ::ww_event("MapClearSelection", {})

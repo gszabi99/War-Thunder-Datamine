@@ -1,4 +1,4 @@
-let stdStr = require("string")
+let { format, split_by_chars } = require("string")
 let {isStringInteger} = require("string.nut")
 
 const TIME_SECOND_IN_MSEC = 1000
@@ -39,9 +39,9 @@ let function secondsToTime(time){
 
 let function secondsToTimeSimpleString(time) {
   let {hours=0, minutes=0, seconds=0} = secondsToTime(time)
-  let minuteStr = hours > 0 ? stdStr.format("%02d", minutes) : minutes.tostring()
+  let minuteStr = hours > 0 ? format("%02d", minutes) : minutes.tostring()
   let hoursStr = hours > 0 ? hours.tostring() : null
-  let secondsStr = stdStr.format("%02d", seconds)//minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring()
+  let secondsStr = format("%02d", seconds)//minutes+hours > 0 ? format("%02d", seconds) : seconds.tostring()
   let res = ":".join([hoursStr,minuteStr,secondsStr].filter(@(v) v != null))
   return time < 0 ? $"-{res}" : $"{res}"
 }
@@ -72,7 +72,7 @@ let function getSecondsFromTemplate(str, errorValue = null) {
     return errorValue
 
   local seconds = 0
-  foreach (val in stdStr.split(str, " ")) {
+  foreach (val in split_by_chars(str, " ")) {
     let key = val.slice(val.len() - 1)
     if (!(key in timeTbl))
       return errorValue
@@ -97,7 +97,7 @@ let function secondsToTimeFormatString(time) {
   if (minutes>0)
     res.append("{0}{minutes}".subst(minutes))
   if (seconds>0)
-    res.append("{0}{seconds}".subst(minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring()))
+    res.append("{0}{seconds}".subst(minutes+hours > 0 ? format("%02d", seconds) : seconds.tostring()))
   return " ".join(res)
 }
 

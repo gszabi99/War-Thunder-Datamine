@@ -59,7 +59,7 @@ let help = @(showHelp) function help(){
 
     children = [
       {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         text = "Keyboard help"
         margin = fsh(0.5)
       }

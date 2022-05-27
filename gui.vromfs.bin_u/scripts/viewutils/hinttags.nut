@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 enum hintTagCheckOrder {
   EXACT_WORD //single word tags
@@ -79,7 +80,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
     delimiter = " "
     getViewSlices = function(tagName, params)
     {
-      let paramsList = ::split(tagName, delimiter)
+      let paramsList = split_by_chars(tagName, delimiter)
       let res = {
         image = ::g_string.cutPrefix(paramsList[0], typeName,  "")
         color = null
@@ -131,7 +132,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
 
     getViewSlices = function(tagName, params) //tagName == shortcutId
     {
-      let paramsList = ::split(tagName, delimiter)
+      let paramsList = split_by_chars(tagName, delimiter)
       let shortcut = ::SHORTCUT?[paramsList?[1]]
       if (!u.isTable(shortcut))
         return []

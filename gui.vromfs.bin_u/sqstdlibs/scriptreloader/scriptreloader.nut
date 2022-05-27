@@ -13,30 +13,30 @@ if (!("g_script_reloader" in getroottable()))
                  : function(path) { return path }
   }
 
-g_script_reloader.loadOnce <- function loadOnce(scriptPath)
+::g_script_reloader.loadOnce <- function loadOnce(scriptPath)
 {
-  if (scriptPath in loadedScripts)
+  if (scriptPath in this.loadedScripts)
     return false
-  return _runScript(scriptPath)
+  return this._runScript(scriptPath)
 }
 
-g_script_reloader.loadIfExist <- function loadIfExist(scriptPath)
+::g_script_reloader.loadIfExist <- function loadIfExist(scriptPath)
 {
-  if (scriptPath in loadedScripts)
+  if (scriptPath in this.loadedScripts)
     return false
   local isExist = ::dd_file_exist(scriptPath)
-  loadedScripts[scriptPath] <- isExist
+  this.loadedScripts[scriptPath] <- isExist
   if (isExist)
-    return _runScript(scriptPath)
+    return this._runScript(scriptPath)
   return false
 }
 
-g_script_reloader._runScript <- function _runScript(scriptPath)
+::g_script_reloader._runScript <- function _runScript(scriptPath)
 {
-  loadedScripts[scriptPath] <- true
+  this.loadedScripts[scriptPath] <- true
   local res = false
   try {
-    require(modifyPath(scriptPath))
+    require(this.modifyPath(scriptPath))
     res = true
   } catch (e) {
   }
@@ -51,49 +51,49 @@ foreach(scriptPath in ::g_script_reloader.USED_SCRIPTS)
 //storageId - uniq id where to save storage. you can use here handler or file name to avoid same id from other structures
 //context - structure to save/load data from
 //paramsArray - array of params id to take/set to current context
-g_script_reloader.registerPersistentData <- function registerPersistentData(storageId, context, paramsArray)
+::g_script_reloader.registerPersistentData <- function registerPersistentData(storageId, context, paramsArray)
 {
-  if (storageId in storagesList)
-    storagesList[storageId].switchToNewContext(context, paramsArray)
+  if (storageId in this.storagesList)
+    this.storagesList[storageId].switchToNewContext(context, paramsArray)
   else
-    storagesList[storageId] <- ::ScriptReloaderStorage(context, paramsArray)
+    this.storagesList[storageId] <- ::ScriptReloaderStorage(context, paramsArray)
 }
 
 //structureId - context will be taken from root table by structure id
 //              storageid = structureId
 //ParamsArrayId - will be takenFromContext
-g_script_reloader.registerPersistentDataFromRoot <- function registerPersistentDataFromRoot(structureId, paramsArrayId = PERSISTENT_DATA_PARAMS)
+::g_script_reloader.registerPersistentDataFromRoot <- function registerPersistentDataFromRoot(structureId, paramsArrayId = PERSISTENT_DATA_PARAMS)
 {
-  if (!(structureId in getroottable()))
-    return ::dagor.assertf(false, "g_script_reloader: not found structure " + structureId + " in root table to register data")
+  if (!(structureId in ::getroottable()))
+    return ::dagor.assertf(false, $"g_script_reloader: not found structure {structureId} in root table to register data")
 
-  local context = getroottable()[structureId]
+  local context = ::getroottable()[structureId]
   if (!(paramsArrayId in context))
-    return ::dagor.assertf(false, "g_script_reloader: not found paramsArray " + paramsArrayId + " in " + structureId)
+    return ::dagor.assertf(false, $"g_script_reloader: not found paramsArray {paramsArrayId} in {structureId}")
 
-  registerPersistentData(structureId, context, context[paramsArrayId])
+  this.registerPersistentData(structureId, context, context[paramsArrayId])
 }
 
-g_script_reloader.reload <- function reload(scriptPathOrStartFunc) {
-  isInReloading = true
-  saveAllDataToStorages()
-  loadedScripts.clear()
+::g_script_reloader.reload <- function reload(scriptPathOrStartFunc) {
+  this.isInReloading = true
+  this.saveAllDataToStorages()
+  this.loadedScripts.clear()
 
   if (typeof(scriptPathOrStartFunc) == "function")
     scriptPathOrStartFunc()
   else if (typeof(scriptPathOrStartFunc) == "string")
-    loadOnce(scriptPathOrStartFunc)
+    this.loadOnce(scriptPathOrStartFunc)
   else
-    ::dagor.assertf(false, "Scripts reloader: bad reload param type " + scriptPathOrStartFunc)
+    ::dagor.assertf(false, $"Scripts reloader: bad reload param type {scriptPathOrStartFunc}")
 
-  if ("broadcastEvent" in getroottable())
+  if ("broadcastEvent" in ::getroottable())
     ::broadcastEvent("ScriptsReloaded")
-  isInReloading = false
+  this.isInReloading = false
   return "Reload success" //for feedbek on console command
 }
 
-g_script_reloader.saveAllDataToStorages <- function saveAllDataToStorages()
+::g_script_reloader.saveAllDataToStorages <- function saveAllDataToStorages()
 {
-  foreach(storage in storagesList)
+  foreach(storage in this.storagesList)
     storage.saveDataToStorage()
 }

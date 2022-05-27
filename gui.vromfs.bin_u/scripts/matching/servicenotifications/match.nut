@@ -3,7 +3,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::notify_clusters_changed <- function notify_clusters_changed(params)
 {
-  dagor.debug("notify_clusters_changed")
+  ::dagor.debug("notify_clusters_changed")
   ::g_clusters.onClustersChanged(params)
 }
 
@@ -24,12 +24,12 @@ let clearChangedGameModesParams = @() changedGameModes.paramsArray.clear()
 
   if (::is_in_flight()) // do not handle while session is active
   {
-    dagor.debug("is_in_flight need notify_game_modes_changed after battle")
+    ::dagor.debug("is_in_flight need notify_game_modes_changed after battle")
     changedGameModes.paramsArray.append(params)
     return
   }
 
-  dagor.debug("notify_game_modes_changed")
+  ::dagor.debug("notify_game_modes_changed")
   g_matching_game_modes.onGameModesChangedNotify(getTblValue("added", params, null),
                                                  getTblValue("removed", params, null),
                                                  getTblValue("changed", params, null))
@@ -51,7 +51,7 @@ subscriptions.addListenersWithoutEnv({
 {
   let maxFetchDelaySec = 60
   let rndDelaySec = ::math.rnd() % maxFetchDelaySec
-  dagor.debug("notify_game_modes_changed_rnd_delay " + rndDelaySec)
+  ::dagor.debug("notify_game_modes_changed_rnd_delay " + rndDelaySec)
   g_delayed_actions.add((@(params) function() { notify_game_modes_changed(params) })(params),
                         rndDelaySec * 1000)
 }

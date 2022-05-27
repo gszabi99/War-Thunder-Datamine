@@ -1,6 +1,55 @@
 [
   {
     "unlockable": {
+      "id": "2_17_0_X_youtubers_trophy",
+      "type": "achievement",
+      "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2_17_0_X_youtubers_trophy_gift_1",
+      "userLogId": "2_17_0_X_youtubers_trophy_1",
+      "type": "trophy",
+      "amount_trophies": 7,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2_17_0_X_youtubers_trophy"
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2_17_0_X_youtubers_trophy_gift_2",
+      "userLogId": "2_17_0_X_youtubers_trophy_2",
+      "type": "trophy",
+      "amount_trophies": 7,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2_17_0_X_youtubers_trophy"
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2_17_0_X_youtubers_trophy_gift_3",
+      "userLogId": "2_17_0_X_youtubers_trophy_3",
+      "type": "trophy",
+      "amount_trophies": 7,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2_17_0_X_youtubers_trophy"
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "gift_booster_rp_20_5mp_after_5mp_trophy",
       "userLogId": "booster_rp_20_5mp_unlock_trophy",
       "type": "trophy",
@@ -38775,6 +38824,121 @@
             "type": "timeRange",
             "beginDate": "2022-03-27 11:00:00",
             "endDate": "2022-03-30 11:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_05_27_top_ace_trophy_gift",
+      "locDescId": "2022_05_27_top_ace_trophy_gift/desc",
+      "userLogId": "2021_12_07_memorable_date_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "top_ace",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 20
+        },
+        {
+          "mulArcade": 1
+        },
+        {
+          "mulRealistic": 2
+        },
+        {
+          "mulHardcore": 2
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "offenderUnitRank",
+            "minRank": 7
+          }
+        },
+        {
+          "condition": [
+            {
+              "type": "offenderType"
+            },
+            {
+              "unitType": "typeFighter"
+            },
+            {
+              "unitType": "typeStormovik"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "type": "targetType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-05-27 14:00:00",
+            "endDate": "2022-05-30 07:30:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2022_05_27_se_home_guard_decal",
+      "locDescId": "2022_05_27_se_home_guard_decal/desc",
+      "userLogId": "2022_05_27_se_home_guard_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "se_home_guard",
+      "costGold": 199,
+      "mode": [
+        {
+          "type": "missionsPlayedScore"
+        },
+        {
+          "num": 3
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "activity",
+            "percent": 70
+          }
+        },
+        {
+          "condition": {
+            "type": "playerCountry",
+            "country": "country_sweden"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2022-05-27 12:00:00",
+            "endDate": "2022-05-30 07:30:00"
           }
         }
       ]
@@ -83289,6 +83453,9 @@
             },
             {
               "class": "bf-109z"
+            },
+            {
+              "class": "s_199"
             }
           ]
         },

@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -8,7 +9,10 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarUnitName } = ::require_native("hudActionBar")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
-local { onSpectatorMode, switchSpectatorTargetById } = require_native("guiSpectator")
+let { onSpectatorMode, switchSpectatorTargetById,
+  getSpectatorTargetId = @() ::get_spectator_target_id(), // compatibility with 2.15.1.X
+  getSpectatorTargetName = @() ::get_spectator_target_name() // compatibility with 2.15.1.X
+} = require("guiSpectator")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -312,7 +316,7 @@ enum SPECTATOR_CHAT_TAB {
         cornerImgTiny = true
       })
 
-    let tabsObj = showSceneBtn("tabs", true)
+    let tabsObj = this.showSceneBtn("tabs", true)
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
@@ -351,7 +355,7 @@ enum SPECTATOR_CHAT_TAB {
         spectatorModeInited = true
         onSpectatorMode(true)
         catchingFirstTarget = isMultiplayer && gotRefereeRights
-        dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
+        ::dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
       }
       updateCooldown = 0.0
     }
@@ -362,7 +366,7 @@ enum SPECTATOR_CHAT_TAB {
     updateCooldown -= dt
     let isUpdateByCooldown = updateCooldown <= 0.0
 
-    let targetNick  = ::get_spectator_target_name()
+    let targetNick  = getSpectatorTargetName()
     let hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
     let isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
     lastTargetNick  = targetNick
@@ -494,11 +498,11 @@ enum SPECTATOR_CHAT_TAB {
   function getTargetPlayer()
   {
     if (!isMultiplayer)
-      return (::get_spectator_target_name().len() && teams.len() && teams[0].players.len())
+      return (getSpectatorTargetName().len() && teams.len() && teams[0].players.len())
         ? teams[0].players[0]
         : null
 
-    let targetId = ::get_spectator_target_id()
+    let targetId = getSpectatorTargetId()
     if (targetId >= 0)
       return getPlayer(targetId)
 
@@ -567,7 +571,7 @@ enum SPECTATOR_CHAT_TAB {
       if (::get_time_speed() != replayTimeSpeed)
       {
         replayTimeSpeed = ::get_time_speed()
-        scene.findObject("txt_replay_time_speed").setValue(::format("%.3fx", replayTimeSpeed))
+        scene.findObject("txt_replay_time_speed").setValue(format("%.3fx", replayTimeSpeed))
         scene.findObject("ID_REPLAY_SLOWER").enable(replayTimeSpeed > replayTimeSpeedMin)
         scene.findObject("ID_REPLAY_FASTER").enable(replayTimeSpeed < replayTimeSpeedMax)
       }
@@ -1315,13 +1319,6 @@ enum SPECTATOR_CHAT_TAB {
         return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
 
-      case ::HUD_MSG_STREAK: // Any player got streak (deprecated)
-        if (::HUD_MSG_STREAK_EX > 0) // compatibility
-          return ""
-        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
-        return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
-        break
-
       // Mission objectives
       case ::HUD_MSG_OBJECTIVE: // Hero team mission objective
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
@@ -1421,7 +1418,7 @@ enum SPECTATOR_CHAT_TAB {
       foreach (p in positions)
       {
         posStr = p
-        let pos = ::split(posStr, ",")
+        let pos = split_by_chars(posStr, ",")
         if (pos.len() != 2)
           break
         foreach (i, v in pos)

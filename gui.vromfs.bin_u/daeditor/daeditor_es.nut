@@ -10,15 +10,15 @@ selectedEntities.subscribe(function(val) {
     selectedEntity(INVALID_ENTITY_ID)
 })
 
-selectedEntity.subscribe(function(eid) {
+selectedEntity.subscribe(function(_eid) {
   selectedCompName(null)
 })
 
-let function addEntitySelection(eid, comp) {
+let function addEntitySelection(eid, _comp) {
   selectedEntities.mutate(@(val) val[eid] <- true)
 }
 
-let function removeEntitySelection(eid, comp) {
+let function removeEntitySelection(eid, _comp) {
   selectedEntities.mutate(@(val) delete val[eid])
 }
 

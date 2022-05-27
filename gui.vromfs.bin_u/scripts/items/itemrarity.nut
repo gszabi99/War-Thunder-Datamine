@@ -10,10 +10,10 @@ local Rarity = class {
   color  = ITEM_RARITY_COLOR_DEFAULT
   tag    = null
 
-  constructor(_value, _color) {
-    isRare = _value > ITEM_RARITY_DEFAULT
-    value  = isRare ? _value : ITEM_RARITY_DEFAULT
-    colorValue = isRare && !::u.isEmpty(_color) ? _color : ITEM_RARITY_COLOR_DEFAULT
+  constructor(v_value, v_color) {
+    isRare = v_value > ITEM_RARITY_DEFAULT
+    value  = isRare ? v_value : ITEM_RARITY_DEFAULT
+    colorValue = isRare && !::u.isEmpty(v_color) ? v_color : ITEM_RARITY_COLOR_DEFAULT
     color  = $"#{colorValue}"
     updateTag()
   }

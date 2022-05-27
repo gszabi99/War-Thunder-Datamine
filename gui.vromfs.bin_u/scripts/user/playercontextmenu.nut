@@ -530,9 +530,9 @@ let getActions = function(contact, params)
   return buttons
 }
 
-let showMenu = function(_contact, handler, params = {})
+let showMenu = function(v_contact, handler, params = {})
 {
-  let contact = _contact || verifyContact(params)
+  let contact = v_contact || verifyContact(params)
   let showMenu = ::callee()
   if (contact && contact.needCheckXboxId())
     return contact.getXboxId(@() showMenu(contact, handler, params))

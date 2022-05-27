@@ -40,6 +40,7 @@ tdiv {
       margin-left:t='1@blockInterval'
       margin-right:t='2@sf/@pf_outdated'
       background-image:t='<<crewSpecializationIcon>>'
+      background-svg-size:t='1@cIco, 1@cIco'
     }
     activeText {
       text:t='<<crewSpecialization>>'

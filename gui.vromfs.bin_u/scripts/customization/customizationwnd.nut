@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { acos } = require("math")
 let penalty = require("penalty")
@@ -367,8 +368,8 @@ enum decalTwoSidedMode
 
     if (!::can_save_current_skin_template())
     {
-      let message = ::format(::loc("decals/noUserSkinForCurUnit"), ::getUnitName(unit.name))
-      msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
+      let message = format(::loc("decals/noUserSkinForCurUnit"), ::getUnitName(unit.name))
+      this.msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
       return
     }
 
@@ -376,8 +377,8 @@ enum decalTwoSidedMode
     let success = ::save_current_skin_template(allowCurrentSkin)
 
     let templateName = "template_" + unit.name
-    let message = success ? ::format(::loc("decals/successfulLoadedSkinSample"), templateName) : ::loc("decals/failedLoadedSkinSample")
-    msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
+    let message = success ? format(::loc("decals/successfulLoadedSkinSample"), templateName) : ::loc("decals/failedLoadedSkinSample")
+    this.msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
 
     updateMainGuiElements()
   }
@@ -430,7 +431,7 @@ enum decalTwoSidedMode
       return
 
     let isVisible = !previewMode && isUnitOwn && unit.unitType.isSkinAutoSelectAvailable()
-    showSceneBtn("auto_skin_block", isVisible)
+    this.showSceneBtn("auto_skin_block", isVisible)
     if (!isVisible)
       return
 
@@ -637,7 +638,7 @@ enum decalTwoSidedMode
   function askBuyPremium(afterCloseFunc)
   {
     let msgText = ::loc("msgbox/noEntitlement/PremiumAccount")
-    msgBox("no_premium", msgText,
+    this.msgBox("no_premium", msgText,
          [["ok", @() startOnlineShop("premium", afterCloseFunc) ],
          ["cancel", @() null ]], "ok", { checkDuplicateId = true })
   }
@@ -741,7 +742,7 @@ enum decalTwoSidedMode
     let slot = getSlotInfo(slotIdx, false, decoratorType)
     let decalId = slot.decalId
     let decorator = ::g_decorator.getDecorator(decalId, decoratorType)
-    let slotRatio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
+    let slotRatio = clamp(decoratorType.getRatio(decorator), 1, 2)
     local buttonTooltip = slot.isEmpty ? ::loc(decoratorType.emptySlotLocId) : ""
     if (!isUnitOwn)
       buttonTooltip = "#mainmenu/decalUnitLocked"
@@ -792,7 +793,7 @@ enum decalTwoSidedMode
       canBuyOnline = false
     }
 
-    local bObj = showSceneBtn("btn_buy", canBuyIngame)
+    local bObj = this.showSceneBtn("btn_buy", canBuyIngame)
     if (canBuyIngame && ::check_obj(bObj))
     {
       let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
@@ -801,11 +802,11 @@ enum decalTwoSidedMode
       ::showUnitDiscount(bObj.findObject("buy_discount"), unit)
     }
 
-    let bOnlineObj = showSceneBtn("btn_buy_online", canBuyOnline)
+    let bOnlineObj = this.showSceneBtn("btn_buy_online", canBuyOnline)
     if (canBuyOnline && ::check_obj(bOnlineObj))
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), unit)
 
-    showSceneBtn("btn_marketplace_find_unit", canFindUnitOnMarketplace)
+    this.showSceneBtn("btn_marketplace_find_unit", canFindUnitOnMarketplace)
 
     local skinDecorator = null
     local skinCouponItemdefId = null
@@ -822,7 +823,7 @@ enum decalTwoSidedMode
       (::ItemsManager.getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
     let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
-    bObj = showSceneBtn("btn_buy_skin", canBuySkin)
+    bObj = this.showSceneBtn("btn_buy_skin", canBuySkin)
     if (canBuySkin && ::check_obj(bObj))
     {
       let price = skinDecorator.getCost()
@@ -885,7 +886,7 @@ enum decalTwoSidedMode
 
 
     let isVisibleSuggestedSkin = needSuggestSkin(unit.name, previewSkinId)
-    let suggestedSkinObj = showSceneBtn("suggested_skin", isVisibleSuggestedSkin)
+    let suggestedSkinObj = this.showSceneBtn("suggested_skin", isVisibleSuggestedSkin)
     if (isVisibleSuggestedSkin) {
       ::showBtn("btn_suggested_skin_find", canFindSkinOnMarketplace, suggestedSkinObj)
       ::showBtn("btn_suggested_skin_exchange", canConsumeSkinCoupon, suggestedSkinObj)
@@ -949,7 +950,7 @@ enum decalTwoSidedMode
 
   function updateDecoratorActions(show, decoratorType)
   {
-    let hintsObj = showSceneBtn("decals_hint", show)
+    let hintsObj = this.showSceneBtn("decals_hint", show)
     if (show && ::checkObj(hintsObj))
     {
       ::showBtnTable(hintsObj, {
@@ -960,10 +961,10 @@ enum decalTwoSidedMode
 
     //Flip
     let showMirror = show && decoratorType.canMirror()
-    showSceneBtn("btn_toggle_mirror", showMirror)
+    this.showSceneBtn("btn_toggle_mirror", showMirror)
     //TwoSided
     let showAbsBf = show && decoratorType.canToggle()
-    showSceneBtn("two_sided", showAbsBf)
+    this.showSceneBtn("two_sided", showAbsBf)
 
     if (showMirror || showAbsBf)
       updateDecoratorActionBtnStates()
@@ -1024,7 +1025,7 @@ enum decalTwoSidedMode
       return
 
     let isUnitAutoselected = initialUnitId && initialUnitId != unit?.name
-    local obj = showSceneBtn("previewed_decorator_unit", isUnitAutoselected)
+    local obj = this.showSceneBtn("previewed_decorator_unit", isUnitAutoselected)
     if (obj && isUnitAutoselected)
       obj.findObject("label").setValue(::loc("decoratorPreview/autoselectedUnit", {
           previewUnit = ::colorize("activeTextColor", ::getUnitName(unit))
@@ -1034,7 +1035,7 @@ enum decalTwoSidedMode
           customization = ::loc("mainmenu/btnShowroom")
         }))
 
-    obj = showSceneBtn("previewed_decorator", true)
+    obj = this.showSceneBtn("previewed_decorator", true)
     if (obj)
     {
       let txtApplyDecorator = ::loc("decoratorPreview/applyManually/" + currentType.resourceType)
@@ -1167,7 +1168,7 @@ enum decalTwoSidedMode
     if (::canBuyUnit(unit))
       onOkFunc = (@(unit) function() { ::buyUnit(unit) })(unit)
 
-    msgBox("unit_locked", ::loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
+    this.msgBox("unit_locked", ::loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
     return false
   }
 
@@ -1187,12 +1188,12 @@ enum decalTwoSidedMode
         ::loc("decals/needToBuySkin",
           {purchase = skinDecorator.getName(), cost = priceText}),
         skinDecorator.getCost())
-      msgBox("skin_locked", msgText,
+      this.msgBox("skin_locked", msgText,
         [["ok", (@(previewSkinId) function() { buySkin(previewSkinId, cost) })(previewSkinId) ],
         ["cancel", function() {} ]], "ok")
     }
     else
-      msgBox("skin_locked", ::loc("decals/skinLocked"), [["ok", function() {} ]], "ok")
+      this.msgBox("skin_locked", ::loc("decals/skinLocked"), [["ok", function() {} ]], "ok")
     return false
   }
 
@@ -1206,7 +1207,7 @@ enum decalTwoSidedMode
 
     if (::has_feature("EnablePremiumPurchase"))
     {
-      msgBox("no_premium", ::loc("decals/noPremiumAccount"),
+      this.msgBox("no_premium", ::loc("decals/noPremiumAccount"),
            [["ok", function()
             {
                onOnlineShopPremium()
@@ -1216,7 +1217,7 @@ enum decalTwoSidedMode
     }
     else
     {
-      msgBox("premium_not_available", ::loc("charServer/notAvailableYet"),
+      this.msgBox("premium_not_available", ::loc("charServer/notAvailableYet"),
            [["cancel"]], "cancel")
     }
     return false
@@ -1353,7 +1354,7 @@ enum decalTwoSidedMode
       highlighted = decorator.id == curSlotDecalId
       onClick = "onDecoratorItemClick"
       onDblClick = "onDecalItemDoubleClick"
-      ratio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
+      ratio = clamp(decoratorType.getRatio(decorator), 1, 2)
       unlocked = isUnlocked
       image = decoratorType.getImage(decorator)
       tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
@@ -1422,7 +1423,7 @@ enum decalTwoSidedMode
       }))
 
     if (decorator.lockedByDLC != null)
-      text.append(::format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decorator.lockedByDLC)))
+      text.append(format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decorator.lockedByDLC)))
 
     if (text.len() != 0)
     {
@@ -1837,7 +1838,7 @@ enum decalTwoSidedMode
         {purchase = ::colorize("userlogColoredText", decorator.getName()),
           cost = cost.getTextAccordingToBalance()}),
       decorator.getCost())
-    msgBox("buy_decorator_on_preview", msgText,
+    this.msgBox("buy_decorator_on_preview", msgText,
       [["ok", (@(decorator, afterPurchDo) function() {
           currentState = decoratorEditState.PURCHASE
           if (!buyDecorator(decorator, cost, afterPurchDo))
@@ -1866,7 +1867,7 @@ enum decalTwoSidedMode
     if (!(couponItem?.hasLink() ?? false))
       return
     let couponName = ::colorize("activeTextColor", couponItem.getName())
-    msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
+    this.msgBox("go_to_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = couponName }), [
         [ "find_on_marketplace", function() { couponItem.openLink(); onBtnBack() } ],
         [ "cancel", onBtnBack ]
       ], "find_on_marketplace", { cancel_fn = onBtnBack })
@@ -2096,7 +2097,7 @@ enum decalTwoSidedMode
                             cost = cost.getTextAccordingToBalance()
                           }), cost)
 
-    msgBox("need_money", msgText,
+    this.msgBox("need_money", msgText,
           [["ok", (@(previewSkinId, cost) function() {
             if (::check_balance_msgBox(cost))
               buySkin(previewSkinId, cost)
@@ -2270,7 +2271,7 @@ enum decalTwoSidedMode
   function deleteDecorator(decoratorType, slotId)
   {
     let slotInfo = getSlotInfo(slotId, false, decoratorType)
-    msgBox("delete_decal", ::loc(decoratorType.removeDecoratorLocId, {name = decoratorType.getLocName(slotInfo.decalId)}),
+    this.msgBox("delete_decal", ::loc(decoratorType.removeDecoratorLocId, {name = decoratorType.getLocName(slotInfo.decalId)}),
     [
       ["ok", (@(decoratorType, slotInfo) function() {
           decoratorType.removeDecorator(slotInfo.id, true)
@@ -2349,7 +2350,7 @@ enum decalTwoSidedMode
   function onInfo()
   {
     if (::has_feature("WikiUnitInfo"))
-      openUrl(::format(::loc("url/wiki_objects"), unit.name), false, false, "customization_wnd")
+      openUrl(format(::loc("url/wiki_objects"), unit.name), false, false, "customization_wnd")
     else
       ::showInfoMsgBox(::colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + ::loc("profile/wiki_link"))
   }
@@ -2504,9 +2505,9 @@ enum decalTwoSidedMode
       }
 
       if (timeSec == 0)
-        txt = ::format(::loc("charServer/decal/permanent"))
+        txt = format(::loc("charServer/decal/permanent"))
       else
-        txt = ::format(::loc("charServer/decal/timed"), time.hoursToString(time.secondsToHours(timeSec), false))
+        txt = format(::loc("charServer/decal/timed"), time.hoursToString(time.secondsToHours(timeSec), false))
     }
 
     obj.setValue(txt)

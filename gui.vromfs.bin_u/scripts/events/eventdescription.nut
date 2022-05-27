@@ -1,3 +1,4 @@
+let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { getPlayerName,
@@ -92,7 +93,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
         ? ::loc("options/custom")
         : ::events.getDifficultyText(selectedEvent.name)
       let respawnText = ::events.getRespawnsText(selectedEvent)
-      eventDifficultyObj.text = ::format(" %s %s", difficultyText, respawnText)
+      eventDifficultyObj.text = format(" %s %s", difficultyText, respawnText)
     }
 
     // Event players range
@@ -144,7 +145,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
         }, this))
     }
 
-    let timeLimitObj = showSceneBtn("event_time_limit", !!room)
+    let timeLimitObj = this.showSceneBtn("event_time_limit", !!room)
     if (timeLimitObj && room)
     {
       let timeLimit = ::SessionLobby.getTimeLimit(room)
@@ -157,7 +158,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
       timeLimitObj.setValue(timeText)
     }
 
-    showSceneBtn("players_list_btn", !!room)
+    this.showSceneBtn("players_list_btn", !!room)
 
     // Fill vehicle lists
     local teamObj = null
@@ -226,7 +227,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
     let locParams = {
       players = countText
       maxPlayers = ::events.getMaxTeamSize(roomMGM)
-      unready = ::max(0, ::getTblValue(team, countTbl, 0) - countTblReady[team])
+      unready = max(0, ::getTblValue(team, countTbl, 0) - countTblReady[team])
     }
     if (locParams.unready)
       locId = "multiplayer/teamPlayers/hasUnready"
@@ -294,7 +295,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
     }
 
     let hasAchievementGroup = (::events.getEventAchievementGroup(selectedEvent) != "")
-    showSceneBtn("rewards_list_btn",
+    this.showSceneBtn("rewards_list_btn",
       ::EventRewards.haveRewards(selectedEvent) || ::EventRewards.getBaseVictoryReward(selectedEvent)
         || hasAchievementGroup)
   }
@@ -322,13 +323,13 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
       }
       else
       {
-        dagor.debug("Error: Event " + selectedEvent.name + ": not found mission info for mission " + misName)
+        ::dagor.debug("Error: Event " + selectedEvent.name + ": not found mission info for mission " + misName)
         hasMission = false
       }
     }
-    showSceneBtn("tactical_map_single", hasMission)
+    this.showSceneBtn("tactical_map_single", hasMission)
 
-    let multipleMapObj = showSceneBtn("multiple_mission", !hasMission)
+    let multipleMapObj = this.showSceneBtn("multiple_mission", !hasMission)
     if (!hasMission && multipleMapObj)
       multipleMapObj["background-image"] = "#ui/random_mission_map"
   }

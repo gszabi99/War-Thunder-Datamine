@@ -36,7 +36,7 @@ let function processMemberList(members) {
         if (isMe)
           match.teamId = player.teamId
       }
-      minMemberId = (minMemberId) == null ? m.memberId : ::min(m.memberId, minMemberId)
+      minMemberId = (minMemberId) == null ? m.memberId : min(m.memberId, minMemberId)
     }
     if (isMe)
       match.playerId = m.memberId

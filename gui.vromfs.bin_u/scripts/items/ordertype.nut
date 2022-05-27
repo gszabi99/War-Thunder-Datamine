@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -11,7 +12,7 @@ let { getUnitClassTypesFromCodeMask } = require("%scripts/unit/unitClassType.nut
 g_order_type._getDescription <- function _getDescription(colorScheme)
 {
   return ::colorize(colorScheme.typeDescriptionColor,
-    ::loc(::format("items/order/type/%s/description", name)))
+    ::loc(format("items/order/type/%s/description", name)))
 }
 
 g_order_type._getParametersDescription <- function _getParametersDescription(typeParams, colorScheme)
@@ -41,13 +42,13 @@ g_order_type._getParametersDescription <- function _getParametersDescription(typ
 
 g_order_type._getParameterDescription <- function _getParameterDescription(paramName, paramValue, localizeStringValue, colorScheme)
 {
-  let localizedParamName = ::loc(::format("items/order/type/%s/param/%s", name, paramName))
+  let localizedParamName = ::loc(format("items/order/type/%s/param/%s", name, paramName))
   // If parameter has no value then it's name will be colored with value-color.
   if (::u.isString(paramValue) && paramValue.len() == 0)
     return ::colorize(colorScheme.parameterValueColor, localizedParamName)
   local description = ::colorize(colorScheme.parameterLabelColor, localizedParamName)
   if (localizeStringValue && ::u.isString(paramValue))
-    paramValue = ::loc(::format("items/order/type/%s/param/%s/value/%s", name, paramName, paramValue))
+    paramValue = ::loc(format("items/order/type/%s/param/%s/value/%s", name, paramName, paramValue))
   description += ::colorize(colorScheme.parameterValueColor, paramValue)
   return description
 }
@@ -55,7 +56,7 @@ g_order_type._getParameterDescription <- function _getParameterDescription(param
 g_order_type._getObjectiveDescriptionByKey <- function _getObjectiveDescriptionByKey(typeParams, colorScheme, statusDescriptionKey)
 {
   let defaultText = ::g_order_type._getDescription.call(this, ::g_orders.emptyColorScheme)
-  let uncoloredText = ::loc(::format(statusDescriptionKey, name), defaultText)
+  let uncoloredText = ::loc(format(statusDescriptionKey, name), defaultText)
   local description = ::colorize(colorScheme.objectiveDescriptionColor, uncoloredText)
   let typeParamsDescription = ::g_order_type._getParametersDescription.call(this, typeParams, colorScheme)
   if (description.len() > 0 && typeParamsDescription.len() > 0)

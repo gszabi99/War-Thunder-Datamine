@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -89,7 +90,7 @@ local function getResourcesConfig(resources) {
     let descrImage = unlock?.descrImage ?? ""
     if (descrImage != "") {
       let imgSize = unlock?.descrImageSize ?? "0.05sh, 0.05sh"
-      res.resourcesImagesMarkupArr.append(::format(imgFormat, imgSize, unlock.descrImage))
+      res.resourcesImagesMarkupArr.append(format(imgFormat, imgSize, unlock.descrImage))
     }
   }
 
@@ -371,7 +372,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       let lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
       if (!("descriptionBlk" in res))
         res.descriptionBlk <- ""
-      res.descriptionBlk += ::format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
+      res.descriptionBlk += format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
     }
 
     res.tooltip = (log.type==::EULT_SESSION_RESULT) ? ::loc("debriefing/total") : ::loc("userlog/interimResults");
@@ -798,7 +799,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     if (::getTblValue("descrImage", config, "") != "")
     {
       let imgSize = ::getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
-      res.descriptionBlk <- ::format(imgFormat, imgSize, config.descrImage)
+      res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage)
     }
   }
   else if (log.type==::EULT_CHARD_AWARD)
@@ -1125,11 +1126,11 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
           res.logImg2 = ::get_country_icon($"country_{tags.country}")
 
       let nameMarkup = item.getNameMarkup()
-      let rewardMarkup = ::format(textareaFormat,
+      let rewardMarkup = format(textareaFormat,
         ::g_string.stripTags($"{::loc("reward")}{::loc("ui/colon")}"))
       res.descriptionBlk <- isAutoConsume
         ? ::get_userlog_image_item(item)
-        : "".concat(::format(textareaFormat,
+        : "".concat(format(textareaFormat,
           $"{::g_string.stripTags(usedText)}{::loc("ui/colon")}"), $"{nameMarkup}{rewardMarkup}")
 
       local resTextArr = []
@@ -1190,11 +1191,11 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       {
         local color = prizeType == "entitlement" ? "userlogColoredText" : "activeTextColor"
         local title = ::colorize(color, rewardText)
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
       }
       else if (prizeType == "item")
       {
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
         res.descriptionBlk += ::get_userlog_image_item(::ItemsManager.findItemById(prize.item))
       }
       else if (prizeType == "unlock" && ::getTblValue("unlockType", log) == "decal")
@@ -1202,18 +1203,18 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
         local title = ::colorize("userlogColoredText", rewardText)
         local config = ::build_log_unlock_data({ id = log.unlock })
         local imgSize = ::getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
         res.descriptionBlk += format(imgFormat, imgSize, config.descrImage)
       }
       else
       {
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
         res.descriptionBlk += ::PrizesView.getPrizesListView(prizes)
       }
     }
     else
     {
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
         res.descriptionBlk += ::PrizesView.getPrizesListView(prizes)
     }
     */
@@ -1306,7 +1307,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
                      numSpares = numSpares
                      unitName = (unit != null ? ::colorize("userlogColoredText", ::getUnitName(unit)) : "")
                    })
-      res.descriptionBlk <- ::format(textareaFormat,
+      res.descriptionBlk <- format(textareaFormat,
                                 ::g_string.stripTags(::loc(locId + "_desc/universalSpare") + ::loc("ui/colon")))
       res.descriptionBlk += item.getNameMarkup(numSpares,true)
     }

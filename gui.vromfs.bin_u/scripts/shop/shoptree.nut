@@ -1,3 +1,4 @@
+let { format } = require("string")
 let function getReqAirPosInArray(reqName, arr)
 {
   foreach(r, row in arr)
@@ -206,7 +207,7 @@ let function getBranchesTbl(rangeData)
     foreach(idx, item in b)
       test += ((idx==0)? "\n" : ", ") + item.air.name + " ("+item.air.rank+","+item.childs+")"
                + (item?.reqAir ? "("+item.reqAir+")":"")
-  dagor.debug(test)
+  ::dagor.debug(test)
 */
   return branches
 }
@@ -398,7 +399,7 @@ let function generatePageTreeByRank(page)
             if (item != null)
             {
               if (rangeTree[i][j + firstCol] != null)
-                dagor.debug("GP: try to fill not empty cell!!!!! ")
+                ::dagor.debug("GP: try to fill not empty cell!!!!! ")
               rangeTree[i][j + firstCol] = item
             }
         }
@@ -450,7 +451,7 @@ let function generatePageTreeByRankPosXY(page)
   }
   if (unitsWithWrongPositions.len() > 0)
   {
-    let message = ::format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
+    let message = format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
                              page.name,
                              ::g_string.implode(unitsWithWrongPositions, "\n")
                             )
@@ -512,7 +513,7 @@ let function generateTreeData(page)
       if (typeof(item)=="integer") testText += "."
       else testText += "A"
     }
-  dagor.debug(testText + "\n done.")
+  ::dagor.debug(testText + "\n done.")
 */
   //fill Lines and clear table
   fillLinesInPage(page)

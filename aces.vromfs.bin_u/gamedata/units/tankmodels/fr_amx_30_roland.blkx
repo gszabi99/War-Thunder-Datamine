@@ -397,7 +397,7 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 250.0,
+        "hp": 50.0,
         "armorThickness": 25.0,
         "gun_barrel_dm": {
           "armorThickness": 10.0,
@@ -485,6 +485,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1426,8 +1427,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1471,8 +1472,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1480,8 +1481,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1489,8 +1490,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1529,29 +1530,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2496,6 +2497,12 @@
         },
         {
           "node": "bone_gun_01"
+        },
+        {
+          "node": "bone_roll_01"
+        },
+        {
+          "node": "bone_roll_02"
         }
       ]
     }
@@ -2522,8 +2529,6 @@
       },
       "tracks": {
         "animationMultiplier": -0.68,
-        "height": 0.08,
-        "width": 0.57,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "fr_amx_30_phys_track_line",
         "trackLen": 0.16,
@@ -2532,6 +2537,8 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.19,
+        "height": 0.08,
+        "width": 0.57,
         "trackStartOffset": 0.23
       },
       "collisionProps": {
@@ -2545,34 +2552,43 @@
         "minRPM": 600.0
       },
       "mechanics": {
-        "maxBrakeForce": 150000.0,
+        "maxBrakeForce": 170000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 0.92,
-        "sideGearRatio": 5.0,
+        "mainGearRatio": 7.4,
+        "sideGearRatio": 1.0,
         "gearRatios": [
           {
-            "ratio": -2.8
+            "ratio": -0.62
           },
           {
-            "ratio": -6.7
+            "ratio": -0.93
+          },
+          {
+            "ratio": -1.51
+          },
+          {
+            "ratio": -2.73
+          },
+          {
+            "ratio": -5.9
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 6.7
+            "ratio": 5.9
           },
           {
-            "ratio": 3.6
+            "ratio": 2.73
           },
           {
-            "ratio": 2.4
+            "ratio": 1.51
           },
           {
-            "ratio": 1.5
+            "ratio": 0.93
           },
           {
-            "ratio": 1.0
+            "ratio": 0.62
           }
         ]
       },
@@ -3373,6 +3389,12 @@
                 },
                 {
                   "node": "bone_gun_01"
+                },
+                {
+                  "node": "bone_roll_01"
+                },
+                {
+                  "node": "bone_roll_02"
                 }
               ]
             }

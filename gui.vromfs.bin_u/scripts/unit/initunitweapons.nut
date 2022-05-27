@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
@@ -115,7 +116,7 @@ let function getCustomSumWeapons(weaponBlk, weaponsBlk) {
   let weapons = weaponBlk % "Weapon"
   let slots = weaponsBlk.custom_presets % "slot"
   foreach(wBlk in weapons) {
-    let blk = slots.findvalue(@(_) _.index == wBlk.slot)?[wBlk.preset]
+    let blk = slots.findvalue(@(s) s.index == wBlk.slot)?[wBlk.preset]
     if (blk != null)
       eachParam(blk, function(_, param) { appendOnce(param, res) })
   }
@@ -146,7 +147,7 @@ let function initWeaponryUpgrades(upgradesTarget, blk) {
 
     if (!("weaponUpgrades" in upgradesTarget))
       upgradesTarget.weaponUpgrades <- []
-    upgradesTarget.weaponUpgrades.append(::split(blk[upgradeName], "/"))
+    upgradesTarget.weaponUpgrades.append(split_by_chars(blk[upgradeName], "/"))
   }
 }
 

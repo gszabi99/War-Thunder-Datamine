@@ -1,3 +1,5 @@
+let { format, split_by_chars } = require("string")
+let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 
@@ -125,7 +127,7 @@ enum BATTLE_LOG_FILTER
 
   }
 
-  rePatternNumeric = ::regexp2("^\\d+$")
+  rePatternNumeric = regexp2("^\\d+$")
 
   // http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
   escapeCodeToCssColor = [
@@ -244,12 +246,6 @@ enum BATTLE_LOG_FILTER
         break
       case ::HUD_MSG_STREAK_EX: // Any player got streak
         let text = msgStreakToText(msg)
-        message = timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
-        break
-      case ::HUD_MSG_STREAK: // Any player got streak (deprecated)
-        if (::HUD_MSG_STREAK_EX > 0) // compatibility
-          return
-        let text = msgEscapeCodesToCssColors(msg.text)
         message = timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
       default:
@@ -371,13 +367,13 @@ enum BATTLE_LOG_FILTER
     let isLocal = !forceThirdPerson && playerId == localPlayerId
     let streakNameType = isLocal ? ::SNT_MY_STREAK_HEADER : :: SNT_OTHER_STREAK_TEXT
     let what = ::get_loc_for_streak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
-    return isLocal ? what : ::format("%s %s", getUnitNameEx(playerId), what)
+    return isLocal ? what : format("%s %s", getUnitNameEx(playerId), what)
   }
 
   function msgEscapeCodesToCssColors(sequence)
   {
     local ret = ""
-    foreach (w in split(sequence, "\x1B"))
+    foreach (w in split_by_chars(sequence, "\x1B"))
     {
       if (w.len() >= 3 && rePatternNumeric.match(w.slice(0, 3)))
       {

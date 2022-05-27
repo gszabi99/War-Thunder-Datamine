@@ -18,28 +18,28 @@ const STATE_ICON_SIZE = 54
 let iconSize = hdpx(STATE_ICON_SIZE)
 
 let images = {
-  engine = Picture("!ui/gameuiskin#engine_state_indicator")
-  transmission = Picture("!ui/gameuiskin#ship_transmission_state_indicator")
-  steeringGear = Picture("!ui/gameuiskin#ship_steering_gear_state_indicator")
-  artillery = Picture("!ui/gameuiskin#artillery_weapon_state_indicator")
-  artillerySecondary = Picture("!ui/gameuiskin#artillery_secondary_weapon_state_indicator")
-  machineGun = Picture("!ui/gameuiskin#machine_gun_weapon_state_indicator")
-  torpedo = Picture("!ui/gameuiskin#ship_torpedo_weapon_state_indicator")
-  buoyancy = Picture("!ui/gameuiskin#buoyancy_icon")
+  engine = Picture($"!ui/gameuiskin#engine_state_indicator.svg:{iconSize}:{iconSize}")
+  transmission = Picture($"!ui/gameuiskin#ship_transmission_state_indicator.svg:{iconSize}:{iconSize}")
+  steeringGear = Picture($"!ui/gameuiskin#ship_steering_gear_state_indicator.svg:{iconSize}:{iconSize}")
+  artillery = Picture($"!ui/gameuiskin#artillery_weapon_state_indicator.svg:{iconSize}:{iconSize}")
+  artillerySecondary = Picture($"!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg:{iconSize}:{iconSize}")
+  machineGun = Picture($"!ui/gameuiskin#machine_gun_weapon_state_indicator.svg:{iconSize}:{iconSize}")
+  torpedo = Picture($"!ui/gameuiskin#ship_torpedo_weapon_state_indicator.svg:{iconSize}:{iconSize}")
+  buoyancy = Picture($"!ui/gameuiskin#buoyancy_icon.svg:{iconSize}:{iconSize}")
   fire = "!ui/gameuiskin#fire_indicator.svg:"
-  steeringMark = Picture("!ui/gameuiskin#floatage_arrow_down")
+  steeringMark = Picture($"!ui/gameuiskin#floatage_arrow_down.svg:{iconSize}:{iconSize}")
   sightCone = Picture("+ui/gameuiskin#map_camera")
-  shipCrew = Picture("!ui/gameuiskin#ship_crew")
-  gunner = Picture("!ui/gameuiskin#ship_crew_gunner")
-  driver = Picture("!ui/gameuiskin#ship_crew_driver")
+  shipCrew = Picture($"!ui/gameuiskin#ship_crew.svg:{iconSize}:{iconSize}")
+  gunner = Picture($"!ui/gameuiskin#ship_crew_gunner.svg:{iconSize}:{iconSize}")
+  driver = Picture($"!ui/gameuiskin#ship_crew_driver.svg:{iconSize}:{iconSize}")
 
   bg = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss")
 
   gunnerState = [ //according to AI_GUNNERS_ enum
-    Picture("!ui/gameuiskin#ship_gunner_state_hold_fire")
-    Picture("!ui/gameuiskin#ship_gunner_state_fire_at_will")
-    Picture("!ui/gameuiskin#ship_gunner_state_air_targets")
-    Picture("!ui/gameuiskin#ship_gunner_state_naval_targets")
+    Picture($"!ui/gameuiskin#ship_gunner_state_hold_fire.svg:{iconSize}:{iconSize}")
+    Picture($"!ui/gameuiskin#ship_gunner_state_fire_at_will.svg:{iconSize}:{iconSize}")
+    Picture($"!ui/gameuiskin#ship_gunner_state_air_targets.svg:{iconSize}:{iconSize}")
+    Picture($"!ui/gameuiskin#ship_gunner_state_naval_targets.svg:{iconSize}:{iconSize}")
   ]
 }
 
@@ -134,7 +134,7 @@ let buoyancyIndicator = @() {
   opacity = buoyancyOpacity.value
   children = [
     @() {
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       text = $"{buoyancyPercent.value}%"
       font = Fonts.small_text_hud
       watch = buoyancyPercent
@@ -164,7 +164,7 @@ let stateBlock = {
 }
 
 
-let playAiSwithAnimation = function (ne_value) {
+let playAiSwithAnimation = function (_ne_value) {
   ::anim_start(aiGunnersState)
 }
 
@@ -177,8 +177,8 @@ let aiGunners = @() {
   image = images.gunnerState?[aiGunnersState.value] ?? images.gunnerState[0]
   color = damageModule.active
   watch = aiGunnersState
-  onAttach = @(elem) aiGunnersState.subscribe(playAiSwithAnimation)
-  onDetach = @(elem) aiGunnersState.unsubscribe(playAiSwithAnimation)
+  onAttach = @(_elem) aiGunnersState.subscribe(playAiSwithAnimation)
+  onDetach = @(_elem) aiGunnersState.unsubscribe(playAiSwithAnimation)
   transform = {}
   animations = [
     {
@@ -217,7 +217,7 @@ let maxCrewLeftPercent = Computed(@() totalCrewMembersCount.value > 0
   : 0
 )
 let countCrewLeftPercent = Computed(@()
-  ::clamp(lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
+  clamp(lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
       0, maxCrewLeftPercent.value, aliveCrewMembersCount.value),
     0, 100)
 )
@@ -247,7 +247,7 @@ let crewBlock = {
     @() {
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_CENTER
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       watch = countCrewLeftPercent
       text = $"{countCrewLeftPercent.value}%"
       font = Fonts.tiny_text_hud
@@ -386,7 +386,7 @@ return @() {
   padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
   gap = isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
   behavior = Behaviors.RecalcHandler
-  function onRecalcLayout(initial, elem) {
+  function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
       ::cross_call.update_damage_panel_state({
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]

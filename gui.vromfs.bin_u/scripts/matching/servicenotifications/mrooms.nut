@@ -93,7 +93,7 @@ local MRoomsHandlers = class {
 
     if (getTblValue("host", member.public))
     {
-      dagor.debug(format("found host %s (%s)", member.name, member.userId.tostring()))
+      ::dagor.debug(format("found host %s (%s)", member.name, member.userId.tostring()))
       hostId = member.userId
     }
 
@@ -150,7 +150,7 @@ local MRoomsHandlers = class {
       cur_member = __getRoomMember(member.userId)
     if (cur_member == null)
     {
-      dagor.debug(format("failed to update member attributes. member not found in room %s",
+      ::dagor.debug(format("failed to update member attributes. member not found in room %s",
                           member.userId.tostring()))
       return
     }
@@ -211,21 +211,21 @@ local MRoomsHandlers = class {
 
   function __connectToHost()
   {
-    dagor.debug("__connectToHost")
+    ::dagor.debug("__connectToHost")
     if (!hasSession())
       return
 
     let host = __getRoomMember(hostId)
     if (!host)
     {
-      dagor.debug("__connectToHost failed: host is not in the room")
+      ::dagor.debug("__connectToHost failed: host is not in the room")
       return
     }
 
     let me = __getMyRoomMember()
     if (!me)
     {
-      dagor.debug("__connectToHost failed: player is not in the room")
+      ::dagor.debug("__connectToHost failed: player is not in the room")
       return
     }
 
@@ -255,17 +255,7 @@ local MRoomsHandlers = class {
       serverUrls.append(ipStr)
     }
 
-    // for compatibility with old client: after all client will be updated delete check and call connect_to_host
-    if ("connect_to_host_list" in ::getroottable())
-      ::connect_to_host_list(serverUrls,
-                        roomPub.room_key, me.private.auth_key,
-                        getTblValue("sessionId", roomPub, roomId))
-    else
-      ::connect_to_host("ip" in hostPub ? hostPub.ip : 0,
-                        "port" in hostPub ? hostPub.port : 0,
-                        roomPub.room_key, me.private.auth_key,
-                        getTblValue("sessionId", roomPub, roomId))
-
+    ::connect_to_host_list(serverUrls, roomPub.room_key, me.private.auth_key, getTblValue("sessionId", roomPub, roomId))
   }
 
   // notifications
@@ -287,7 +277,7 @@ local MRoomsHandlers = class {
     if (!__isNotifyForCurrentRoom(member))
       return
 
-    dagor.debug(format("%s (%s) joined to room", member.name, member.userId.tostring()))
+    ::dagor.debug(format("%s (%s) joined to room", member.name, member.userId.tostring()))
     __addRoomMember(member)
 
     notify_room_member_joined(member)
@@ -298,7 +288,7 @@ local MRoomsHandlers = class {
     if (!__isNotifyForCurrentRoom(member))
       return
 
-    dagor.debug(format("%s (%s) left from room", member.name, member.userId.tostring()))
+    ::dagor.debug(format("%s (%s) left from room", member.name, member.userId.tostring()))
     __removeRoomMember(member.userId)
     notify_room_member_leaved(member)
   }
@@ -308,7 +298,7 @@ local MRoomsHandlers = class {
     if (!__isNotifyForCurrentRoom(member))
       return
 
-    dagor.debug(format("%s (%s) kicked from room", member.name, member.userId.tostring()))
+    ::dagor.debug(format("%s (%s) kicked from room", member.name, member.userId.tostring()))
     __removeRoomMember(member.userId)
     notify_room_member_kicked(member)
   }
@@ -340,19 +330,19 @@ local MRoomsHandlers = class {
 
   function onHostNotify(notify)
   {
-    debugTableData(notify)
+    ::debugTableData(notify)
     if (!__isNotifyForCurrentRoom(notify))
       return
 
     if (notify.hostId != hostId)
     {
-      dagor.debug("warning: got host notify from host that is not in current room")
+      ::dagor.debug("warning: got host notify from host that is not in current room")
       return
     }
 
     if (notify.roomId != getRoomId())
     {
-      dagor.debug("warning: got host notify for wrong room")
+      ::dagor.debug("warning: got host notify for wrong room")
       return
     }
 
@@ -374,7 +364,7 @@ local MRoomsHandlers = class {
 
     if (getTblValue("connect_on_join", room.public))
     {
-      dagor.debug("room with auto-connect feature")
+      ::dagor.debug("room with auto-connect feature")
       isSelfReady = true
       __onSelfReady()
     }

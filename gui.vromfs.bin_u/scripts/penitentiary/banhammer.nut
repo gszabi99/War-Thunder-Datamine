@@ -113,7 +113,7 @@ let chatLogToString = function(chatLog)
 
   function notFoundPlayerMsg()
   {
-    msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(playerName) }),
+    this.msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(playerName) }),
         [
           ["ok", function() { goBack() } ]
         ], "ok")
@@ -122,8 +122,8 @@ let chatLogToString = function(chatLog)
   function updateButtons()
   {
     let haveUid = ::getTblValue("uid", player) != null
-    showSceneBtn("info_loading", !haveUid)
-    showSceneBtn("btn_send", haveUid)
+    this.showSceneBtn("info_loading", !haveUid)
+    this.showSceneBtn("btn_send", haveUid)
   }
 
   function onPlayerFound(contact)
@@ -146,7 +146,7 @@ let chatLogToString = function(chatLog)
     let comment = clearBorderSymbolsMultiline(  scene.findObject("complaint_text").getValue()  )
     if (comment.len() < 10)
     {
-      msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
+      this.msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
@@ -165,7 +165,7 @@ let chatLogToString = function(chatLog)
     let category = ::get_gui_option(::USEROPT_COMPLAINT_CATEGORY)
     let penalty =  ::get_gui_option(::USEROPT_BAN_PENALTY)
 
-    dagor.debug(format("%s user: %s, for %s, for %d sec.\n comment: %s",
+    ::dagor.debug(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, playerName, category, duration, comment))
     taskId = char_ban_user(uid, duration, "", category, penalty,
                            comment, ""/*hidden_note*/, chatLogToString(chatLog ?? {}))
@@ -175,7 +175,7 @@ let chatLogToString = function(chatLog)
       showTaskProgressBox(::loc("charServer/send"))
       afterSlotOp = function()
         {
-          dagor.debug("[IRC] sending /reauth " + playerName)
+          ::dagor.debug("[IRC] sending /reauth " + playerName)
           ::gchat_raw_command("reauth " + ::gchat_escape_target(playerName))
           goBack()
         }
@@ -290,7 +290,7 @@ let chatLogToString = function(chatLog)
     let user_comment = clearBorderSymbolsMultiline( scene.findObject("complaint_text").getValue() )
     if (user_comment.len() < 10)
     {
-      msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
+      this.msgBox("need_text", ::loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
@@ -308,9 +308,9 @@ let chatLogToString = function(chatLog)
     chatLog.clanInfo <- clanInfo
     let strChatLog = chatLogToString(chatLog)
 
-    dagor.debug("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
-    dagor.debug("pInfo:")
-    debugTableData(pInfo)
+    ::dagor.debug("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
+    ::dagor.debug("pInfo:")
+    ::debugTableData(pInfo)
 
     taskId = -1
     if (("userId" in pInfo) && pInfo.userId)

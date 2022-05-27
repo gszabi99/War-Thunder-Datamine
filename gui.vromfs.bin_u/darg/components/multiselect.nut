@@ -4,7 +4,7 @@ let baseStyle = require("multiselect.style.nut")
 
 let mkMultiselect = @(selected /*Watched({ <key> = true })*/, options /*[{ key, text }, ...]*/, minOptions = 0, maxOptions = 0, rootOverride = {}, style = baseStyle)
   function() {
-    let numSelected = Computed(@() selected.value.filter(@(v,k) v).len())
+    let numSelected = Computed(@() selected.value.filter(@(v) v).len())
     let mkOnClick = @(option) function() {
       let curVal = selected.value?[option.key] ?? false
       let resultNum = numSelected.value + (curVal ? -1 : 1)

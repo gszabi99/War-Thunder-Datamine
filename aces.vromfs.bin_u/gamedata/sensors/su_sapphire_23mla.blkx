@@ -1018,13 +1018,10 @@
             "clearTargetsOfInterest": []
           },
           {
-            "addTargetOfInterest": []
+            "updateTargetOfInterest": []
           },
           {
             "setLastTargetOfInterestActive": []
-          },
-          {
-            "updateActiveTargetOfInterest": []
           },
           {
             "setCenterAzimuth": {
@@ -1660,7 +1657,7 @@
         {
           "finishedBSVDesignationTrack": {
             "stateFrom": "BSVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "BSVSearch",
             "actions": {
@@ -1727,7 +1724,7 @@
         {
           "finishedBoresightTrack": {
             "stateFrom": "BSVBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "BSVBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -1831,7 +1828,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "BSVdHDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "BSVdHSearch",
             "actions": {
@@ -1843,7 +1840,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "SMVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "SMVSearch",
             "actions": {
@@ -1855,7 +1852,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "MVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "MVSearch",
             "actions": {
@@ -1867,7 +1864,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "OLSFromLookUpDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "OLSFromLookUpSearch",
             "actions": {
@@ -1879,7 +1876,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "OLSFromLookDownDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "OLSFromLookDownSearch",
             "actions": {
@@ -1946,7 +1943,7 @@
         {
           "finishedBSVdHBoresightTrack": {
             "stateFrom": "BSVdHBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "BSVdHBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2105,7 +2102,7 @@
         {
           "finishedSMVBoresightTrack": {
             "stateFrom": "SMVBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "SMVBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2264,7 +2261,7 @@
         {
           "finishedMVBoresightTrack": {
             "stateFrom": "MVBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "MVBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2423,7 +2420,7 @@
         {
           "finishedOLSFromLookUpBoresightTrack": {
             "stateFrom": "OLSFromLookUpBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "OLSFromLookUpBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2582,7 +2579,7 @@
         {
           "finishedOLSFromLookDownBoresightTrack": {
             "stateFrom": "OLSFromLookDownBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "OLSFromLookDownBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2761,7 +2758,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": [],
+            "updateTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -2781,7 +2778,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -2795,9 +2795,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

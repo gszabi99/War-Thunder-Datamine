@@ -108,7 +108,7 @@
 
   function updateButtons()
   {
-    let chooseBtn = showSceneBtn("btn_choose", !!curMission)
+    let chooseBtn = this.showSceneBtn("btn_choose", !!curMission)
     if (curMission)
       chooseBtn.setValue(isMissionSelected(curMission) ? ::loc("misList/unselectMission") : ::loc("misList/selectMission"))
 

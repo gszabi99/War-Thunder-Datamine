@@ -149,7 +149,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let decoratorConfig = getDecoratorConfig()
     let decorator = decoratorConfig?.decorator
     let hasInfo = decorator != null
-    let infoNestObj = showSceneBtn("decorator_info", hasInfo)
+    let infoNestObj = this.showSceneBtn("decorator_info", hasInfo)
     if (hasInfo) {
       let imgRatio = 1.0 / (decorator?.decoratorType.getRatio(decorator) ?? 1)
       updateDecoratorDescription(infoNestObj, this, decorator?.decoratorType, decorator, {
@@ -183,7 +183,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let canFindInStore = !canBuy && !canConsumeCoupon && !canFindOnMarketplace
       && ::ItemsManager.canGetDecoratorFromTrophy(decorator)
 
-    let bObj = showSceneBtn("btn_buy_decorator", canBuy)
+    let bObj = this.showSceneBtn("btn_buy_decorator", canBuy)
     if (canBuy && ::check_obj(bObj))
       placePriceTextToButton(scene, "btn_buy_decorator", ::loc("mainmenu/btnOrder"), decorator?.getCost())
 

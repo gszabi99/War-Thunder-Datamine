@@ -21,7 +21,7 @@ let function place_by_circle(params) {
       halign = ALIGN_CENTER
       valign=ALIGN_CENTER
       size=[0,0]
-      rendObj=ROBJ_DTEXT
+      rendObj=ROBJ_TEXT
       text=",".concat(pos[0],pos[1])
       children = o
     }
@@ -36,7 +36,7 @@ let function mDefCtor(text) {
   return function (curIdx, idx) {
     return watchElemState(function(sf) {
       return {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         text = text
         color = (curIdx.value==idx || (S_HOVER & sf)) ? Color(250,250,250) : Color(120,120,120)
       }

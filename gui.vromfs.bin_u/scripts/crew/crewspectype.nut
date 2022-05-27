@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_crew_spec_type <- {
   types = []
@@ -52,13 +53,13 @@ g_crew_spec_type._getDiscountTooltipByValue <- function _getDiscountTooltipByVal
 {
   if (!::u.isString(discountValue))
     discountValue = discountValue.tostring()
-  let locId = ::format("discount/%s/tooltip", specName)
-  return ::format(::loc(locId), discountValue)
+  let locId = format("discount/%s/tooltip", specName)
+  return format(::loc(locId), discountValue)
 }
 
 g_crew_spec_type._getNameLocId <- function _getNameLocId()
 {
-  return ::format("crew/qualification/%d", code)
+  return format("crew/qualification/%d", code)
 }
 
 g_crew_spec_type._getDiscountValueByUnitNames <- function _getDiscountValueByUnitNames(unitNames)
@@ -85,7 +86,7 @@ g_crew_spec_type._getMulValue <- function _getMulValue(prevSpecTypeCode = 0)
   let skillsBlk = ::get_skills_blk()
   local addPct = 0.0
   for(local specCode = code; specCode > prevSpecTypeCode; specCode--)
-    addPct += skillsBlk?[::format("specialization%d_add", specCode + 1)] ?? 0
+    addPct += skillsBlk?[format("specialization%d_add", specCode + 1)] ?? 0
   return 0.01 * addPct
 }
 
@@ -225,7 +226,7 @@ g_crew_spec_type._getBaseTooltipText <- function _getBaseTooltipText(crew, unit)
   {
     let nextType = getNextType()
     let nextSpecName = nextType.getName()
-    tooltipText += ::format(
+    tooltipText += format(
       "\n\n%s: %s",
       ::loc("crew/qualification/nextSpec"),
       ::colorize("activeTextColor", nextSpecName))
@@ -252,7 +253,7 @@ g_crew_spec_type._getBaseTooltipText <- function _getBaseTooltipText(crew, unit)
   }
   if (isShowExpUpgrade)
   {
-    tooltipText += ::format(
+    tooltipText += format(
       "\n%s: %s / %s",
       ::loc("crew/qualification/expUpgradeLabel"),
       ::Cost().setRp(getExpLeftByCrewAndUnit(crew, unit)).toStringWithParams({isRpAlwaysShown = true}),

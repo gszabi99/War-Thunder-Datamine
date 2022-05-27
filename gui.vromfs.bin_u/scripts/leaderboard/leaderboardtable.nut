@@ -43,9 +43,9 @@ let platformModule = require("%scripts/clientState/platform.nut")
 
   function showLoadingAnimation()
   {
-    showSceneBtn("wait_animation", true)
-    showSceneBtn("no_leaderboads_text", false)
-    showSceneBtn("lb_table", false)
+    this.showSceneBtn("wait_animation", true)
+    this.showSceneBtn("no_leaderboads_text", false)
+    this.showSceneBtn("lb_table", false)
   }
 
   function fillTable(lbRows, selfRow, selfPos, hasHeader, hasTable)
@@ -99,9 +99,9 @@ let platformModule = require("%scripts/clientState/platform.nut")
     if (hasTable)
       onRowSelect(lbTable)
 
-    showSceneBtn("wait_animation", !hasHeader && !hasTable)
-    showSceneBtn("no_leaderboads_text", hasHeader && !hasTable)
-    showSceneBtn("lb_table", hasHeader && hasTable)
+    this.showSceneBtn("wait_animation", !hasHeader && !hasTable)
+    this.showSceneBtn("no_leaderboads_text", hasHeader && !hasTable)
+    this.showSceneBtn("lb_table", hasHeader && hasTable)
   }
 
   function getTableRowMarkup(row, rowIdx, selfPos)

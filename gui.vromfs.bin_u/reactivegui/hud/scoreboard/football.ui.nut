@@ -29,7 +29,7 @@ let function getScoreObj(teamName) {
 
     children = @() {
       watch = scoreParams.score
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font = Fonts.big_text_hud
       fontFxColor = Color(0, 0, 0, 255)
       fontFxFactor = 50
@@ -51,7 +51,7 @@ return {
       color = Color(0, 0, 0, 102)
       children = @(){
         watch = roundTimeLeft
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         font = Fonts.medium_text_hud
         color = Color(249, 219, 120)
         text = secondsToTimeSimpleString(roundTimeLeft.value)

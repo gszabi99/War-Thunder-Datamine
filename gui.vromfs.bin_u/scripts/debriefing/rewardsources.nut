@@ -5,18 +5,18 @@ let sourcesConfig = {
   premAcc = {
     textColor = "@chapterUnlockedColor"
     hasPlus = true
-    icon = "#ui/gameuiskin#item_type_premium"
+    icon = "#ui/gameuiskin#item_type_premium.svg"
   }
   premMod = {
     textColor = "@chapterUnlockedColor"
     hasPlus = true
-    icon = "#ui/gameuiskin#item_type_talisman"
+    icon = "#ui/gameuiskin#item_type_talisman.svg"
     iconWidth = "0.95@sIco"
   }
   booster = {
     textColor = "@linkTextColor"
     hasPlus = true
-    icon = "#ui/gameuiskin#item_type_boosters"
+    icon = "#ui/gameuiskin#item_type_boosters.svg"
   }
   prevUnitEfficiency = {
     textColor = "@userlogColoredText"

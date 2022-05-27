@@ -96,7 +96,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
       if (isLeprRewards(rewardsData))
       {
         local place = currentPlace
-        for (; place < ::min(maxPlaceForBlock, till); ++place)
+        for (; place < min(maxPlaceForBlock, till); ++place)
         {
           let gold = getGoldRewardLerp(rewardsData, place + 1, currentPlace)
           let regalia = getRagalia(rewardsData, place + 1)
@@ -113,7 +113,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
       else
       {
         local place = currentPlace
-        for (; place < ::min(maxPlaceForBlock, till); ++place)
+        for (; place < min(maxPlaceForBlock, till); ++place)
         {
           let gold = ::getTblValue("place" + (place + 1) + "Gold", rewardsData, 0)
           let regalia = getRagalia(rewardsData, place + 1)

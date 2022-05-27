@@ -121,8 +121,8 @@ const ITEMS_PER_PAGE = 8
     }
     let wheelmenu = scene.findObject("wheelmenu")
     wheelmenu["total-input-transparent"] = mouseEnabled ? "no" : "yes"
-    showSceneBtn("fast_shortcuts_block", false)
-    showSceneBtn("wheelmenu_bg_shade", shouldShadeBackground)
+    this.showSceneBtn("fast_shortcuts_block", false)
+    this.showSceneBtn("wheelmenu_bg_shade", shouldShadeBackground)
 
     ::g_hud_event_manager.subscribe("LocalPlayerDead", function (data) {
       sendAnswerAndClose(invalidIndex)
@@ -152,8 +152,8 @@ const ITEMS_PER_PAGE = 8
     foreach (idx, v in menu)
       if (v != null)
         itemsTotal = idx + 1
-    pagesTotal = ::max(1, (itemsTotal + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
-    pageIdx = isInitial ? 0 : ::min(pageIdx, pagesTotal - 1)
+    pagesTotal = max(1, (itemsTotal + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE)
+    pageIdx = isInitial ? 0 : min(pageIdx, pagesTotal - 1)
 
     fillMenuItems()
     updatePageInfo()
@@ -167,7 +167,7 @@ const ITEMS_PER_PAGE = 8
   {
     let startIdx = pageIdx * ITEMS_PER_PAGE
 
-    let itemsCount = ::max(itemsTotal - startIdx, ITEMS_PER_PAGE)
+    let itemsCount = max(itemsTotal - startIdx, ITEMS_PER_PAGE)
     btnSetIdx = btnSetsConfig.len() - 1
     for (local i = 0; i < btnSetsConfig.len(); i++)
       if (btnSetsConfig[i].len() >= itemsCount)
@@ -184,7 +184,7 @@ const ITEMS_PER_PAGE = 8
       let item = menu?[index]
       let isShow = (item?.name ?? "") != ""
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
-      let bObj = showSceneBtn($"wheelmenuItem{suffix}", isShow)
+      let bObj = this.showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
       if (::checkObj(bObj))
       {
@@ -213,7 +213,7 @@ const ITEMS_PER_PAGE = 8
     objPageInfo.setValue(shouldShowPages
       ? ::loc("mainmenu/pageNumOfPages", { num = pageIdx + 1, total = pagesTotal })
       : "")
-    showSceneBtn("btnSwitchPage", shouldShowPages)
+    this.showSceneBtn("btnSwitchPage", shouldShowPages)
   }
 
   function updateTitlePos()
