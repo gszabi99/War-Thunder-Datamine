@@ -21,8 +21,8 @@ let function getAmmoCost(unit, ammoName, ammoType)
   let res = ::Cost()
   if (ammoType==AMMO.MODIFICATION)
   {
-    res.wp = max(::wp_get_modification_cost(unit.name, ammoName), 0)
-    res.gold = max(::wp_get_modification_cost_gold(unit.name, ammoName), 0)
+    res.wp = ::max(::wp_get_modification_cost(unit.name, ammoName), 0)
+    res.gold = ::max(::wp_get_modification_cost_gold(unit.name, ammoName), 0)
   } else
   {
     res.wp = ::wp_get_cost2(unit.name, ammoName)

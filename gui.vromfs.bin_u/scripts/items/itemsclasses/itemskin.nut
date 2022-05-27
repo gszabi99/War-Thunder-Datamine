@@ -2,17 +2,17 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Skin <- class extends ItemCouponBase {
   static iType = itemType.SKIN
-  static typeIcon = "#ui/gameuiskin#item_type_skin.svg"
+  static typeIcon = "#ui/gameuiskin#item_type_skin"
   static descHeaderLocId = "coupon/for/skin"
 
   unitId = null
 
   // Creates a real skin decorator, with unitId in name
-  function addResourcesByUnitId(v_unitId)
+  function addResourcesByUnitId(_unitId)
   {
     if (unitId)
       return
-    unitId = v_unitId
+    unitId = _unitId
     addResources({ unitId = unitId })
   }
 

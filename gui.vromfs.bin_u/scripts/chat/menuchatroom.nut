@@ -1,4 +1,3 @@
-let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 
@@ -32,7 +31,7 @@ local function localizeSystemMsg(msg)
     local playerName = ::g_string.slice(msg, 0, -ending.len() - 1)
     playerName = platformModule.getPlayerName(playerName)
     if (locText != "")
-      msg = format(locText, playerName)
+      msg = ::format(locText, playerName)
     if (playerName == ::my_user_name)
       ::sync_handler_simulate_signal("profile_reload")
     break
@@ -221,7 +220,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 
       if (mBlock.text == "" && mBlock.from != "") {
           let pLink = ::g_chat.generatePlayerLink(mBlock.from, mBlock.uid)
-          mBlock.text = format("<Link=%s><Color=%s>%s</Color>:</Link> ", pLink, mBlock.userColor,
+          mBlock.text = ::format("<Link=%s><Color=%s>%s</Color>:</Link> ", pLink, mBlock.userColor,
             mBlock.fullName)
       }
 

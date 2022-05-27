@@ -5,7 +5,9 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
-  "jetEnginePowerFullScale": true,
+  "JetNozzlesAnim1": [0.3,0.5],
+  "JetNozzlesAnim2": [0.5,1.0],
+  "JetNozzlesAnim3": [1.0,0.0],
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -1989,12 +1991,15 @@
         "node": "armor3_dm"
       }
     ],
+    "hideNodes": {
+      "node": "rwr"
+    },
     "Weapon": [
       {
         "trigger": "cannon"
       },
       {
-        "blk": "gameData/Weapons/cannonM61A1.blk"
+        "blk": "gameData/Weapons/cannonM61.blk"
       },
       {
         "emitter": "flare1"

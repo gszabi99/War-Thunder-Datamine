@@ -16,7 +16,7 @@ let styleLine = {
   lineWidth = hdpx(LINE_WIDTH)
 }
 let styleShipHudText = {
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   color = Color(255, 255, 255, 255)
   font = Fonts.medium_text_hud
   fontFxColor = Color(0, 0, 0, 80)
@@ -47,7 +47,7 @@ let function wishDistCmp(){
     watch = [depthLevel, wishDist]
     color = getDepthColor(depthLevel.value)
     halign = ALIGN_LEFT
-    text = floor(max(wishDist.value, 0)).tostring()
+    text = floor(::max(wishDist.value, 0)).tostring()
   })
 }
 

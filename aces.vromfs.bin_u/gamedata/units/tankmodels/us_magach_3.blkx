@@ -183,9 +183,6 @@
         "turret_08_top_dm": {
           "armorThickness": 10.0
         },
-        "turret_01_back_dm": {
-          "armorThickness": 25.0
-        },
         "turret_03_front_dm": {
           "armorClass": "tank_structural_steel",
           "armorThickness": 5.0
@@ -300,8 +297,7 @@
           "armorThickness": 87.0
         },
         "turret_03_top_dm": {
-          "armorThickness": 45.0,
-          "variableThickness": true
+          "armorThickness": 45.0
         },
         "turret_04_top_dm": {
           "armorThickness": 65.0
@@ -554,7 +550,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1466,8 +1461,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1511,8 +1506,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1520,8 +1515,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1529,8 +1524,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1569,29 +1564,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2663,13 +2658,11 @@
             "pitch": [-9.0,19.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-161.0,0.5,19.0],
-            "lim2": [-161.0,-122.0,-3.0,19.0],
-            "lim3": [-122.0,122.0,-9.0,19.0],
-            "lim4": [122.0,139.0,-3.0,19.0],
-            "lim5": [139.0,147.5,0.0,19.0],
-            "lim6": [147.5,161.0,-3.0,19.0],
-            "lim7": [161.0,180.0,0.5,19.0]
+            "lim1": [-180.0,-160.0,1.5,19.0],
+            "lim2": [-160.0,-121.0,-1.0,19.0],
+            "lim3": [-121.0,121.0,-9.0,19.0],
+            "lim4": [121.0,160.0,-1.0,19.0],
+            "lim5": [160.0,180.0,1.5,19.0]
           }
         }
       },
@@ -2860,6 +2853,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.6381,
+        "height": 0.12,
+        "width": 0.5,
         "tracksTensionK": [4.5,8.0,2.0],
         "trackMesh": "us_t97_phys_track_line",
         "trackLen": 0.176,
@@ -2869,9 +2864,7 @@
         "trackEmitSparks": false,
         "trackMaxHeight": 1.5,
         "trackStartOffset": 0.17,
-        "trackMaxSinking": 0.05,
-        "height": 0.12,
-        "width": 0.5
+        "trackMaxSinking": 0.05
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -3807,13 +3800,11 @@
                   "pitch": [-9.0,19.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-161.0,0.5,19.0],
-                  "lim2": [-161.0,-122.0,-3.0,19.0],
-                  "lim3": [-122.0,122.0,-9.0,19.0],
-                  "lim4": [122.0,139.0,-3.0,19.0],
-                  "lim5": [139.0,147.5,0.0,19.0],
-                  "lim6": [147.5,161.0,-3.0,19.0],
-                  "lim7": [161.0,180.0,0.5,19.0]
+                  "lim1": [-180.0,-160.0,1.5,19.0],
+                  "lim2": [-160.0,-121.0,-1.0,19.0],
+                  "lim3": [-121.0,121.0,-9.0,19.0],
+                  "lim4": [121.0,160.0,-1.0,19.0],
+                  "lim5": [160.0,180.0,1.5,19.0]
                 }
               }
             },

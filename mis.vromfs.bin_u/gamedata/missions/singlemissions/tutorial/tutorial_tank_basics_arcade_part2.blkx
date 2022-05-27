@@ -5351,45 +5351,12 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "shootingLR_target_killed_bq"
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_basics_arcade_part2",
+            "params": "task 6/7: player killed the 1st tank at long range"
           }
         }
       ],
-      "else_actions": []
-    },
-    "shootingLR_target_killed_bq": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isKilled",
-          "check_objects": "all",
-          "object_marking": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "target_tank05"
-        }
-      },
-      "actions": {
-        "bigQueryAddRecord": {
-          "name": "tutorial_tank_basics_arcade_part2",
-          "params": "task 6/7: player killed the 1st tank at long range"
-        }
-      },
       "else_actions": []
     },
     "shootingLR_target_07_killed": {

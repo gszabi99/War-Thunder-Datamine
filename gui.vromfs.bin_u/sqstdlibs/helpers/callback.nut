@@ -1,9 +1,4 @@
-let { format } = require("string")
 let u = require("u.nut")
-
-#explicit-this
-#no-root-fallback
-
 /**
  * Callback - wrapper for regular callback functions with context validation.
  *
@@ -40,40 +35,40 @@ local Callback = class {
   isToStringForDebug = true
 
   constructor(callback_function, context = null) {
-    this.callbackFn = callback_function
+    callbackFn = callback_function
 
     if (context)
-      this.setContext(context)
+      setContext(context)
 
-    this.valid = true
+    valid = true
   }
 
   function setContext(context) {
-    this.callbackFn = this.callbackFn.bindenv(context)
-    this.refToContext = context.weakref()
-    this.hasContext = true
+    callbackFn = callbackFn.bindenv(context)
+    refToContext = context.weakref()
+    hasContext = true
   }
 
   function isValid() {
-    return this.isContextValid() && this.valid
+    return isContextValid() && valid
   }
 
   function markInvalid() {
-    this.valid = false
+    valid = false
   }
 
   function getContextDbgName() {
-    if (!this.hasContext)
+    if (!hasContext)
       return "null"
-    return getDbgName(this.refToContext)
+    return getDbgName(refToContext)
   }
 
   function getfuncinfos() {
-    return this.callbackFn.getfuncinfos()
+    return callbackFn.getfuncinfos()
   }
 
   function tostring() {
-    return format("Callback( context = %s)", this.getContextDbgName())
+    return ::format("Callback( context = %s)", getContextDbgName())
   }
 
   /**
@@ -81,9 +76,9 @@ local Callback = class {
    */
   function _call(origin_this, ...) {
     try {
-      if (!this.isContextValid())
+      if (!isContextValid())
         return
-      return this.callbackFn.acall([origin_this].extend(vargv))
+      return callbackFn.acall([origin_this].extend(vargv))
     }
     catch (err) {
       assertFunc(this, err)
@@ -95,9 +90,9 @@ local Callback = class {
    */
   function call(origin_this, ...) {
     try {
-      if (!this.isContextValid())
+      if (!isContextValid())
         return
-      return this.callbackFn.acall([origin_this].extend(vargv))
+      return callbackFn.acall([origin_this].extend(vargv))
     }
     catch (err) {
       assertFunc(this, err)
@@ -107,14 +102,14 @@ local Callback = class {
   /***************************** Private methods ******************************/
 
   function isContextValid() {
-    if (!this.hasContext)
+    if (!hasContext)
       return true
 
-    if (this.refToContext == null)
+    if (refToContext == null)
       return false
 
-    if ("isValid" in this.refToContext)
-      return this.refToContext.isValid()
+    if ("isValid" in refToContext)
+      return refToContext.isValid()
 
     return true
   }
@@ -126,7 +121,7 @@ local function make(func, context = null) {
   if (typeof func == "function")
     return Callback(func, context)
   if (typeof func == "string" && (func in context) && typeof context[func] == "function")
-    return Callback(context[func], context)
+    return ::Callback(context[func], context)
   return null
 }
 

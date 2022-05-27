@@ -126,7 +126,7 @@ let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
       ::colorize("userlogColoredText", ", ".join(unusedUnits.map(@(u) ::getUnitName(u)), true))]))
   msgArray.append(::colorize("warningTextColor", ::loc("worldwar/autoPresetWarningText")))
 
-  this.msgBox("ask_apply_preset", "\n\n".join(msgArray),
+  msgBox("ask_apply_preset", "\n\n".join(msgArray),
     [
       ["yes", function() {
         if (hasSlotbarByUnitsGroups)

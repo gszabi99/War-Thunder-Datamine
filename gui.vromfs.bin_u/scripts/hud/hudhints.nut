@@ -1,4 +1,3 @@
-let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let { is_stereo_mode } = ::require_native("vr")
@@ -476,10 +475,23 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
   ACTION_NOT_AVAILABLE_HINT = {
     hintType = ::g_hud_hint_types.COMMON
-    showEvent = "hint:action_not_available"
+    showEvent = [ "hint:action_not_available",
+      //events below are compatibility with 1_75_0_X
+      "hint:more_kills_for_kill_streak:show", "hint:needs_kills_streak_event:show", "hint:active_event:show",
+      "hint:already_participating:show", "hint:no_event_slots:show"]
     lifeTime = 5.0
     priority = CATASTROPHIC_HINT_PRIORITY
-    getLocId = @(data) ::loc($"hints/{data?.hintId ?? ""}")
+
+    eventToLocId = { //this table only compatibility with 1_75_0_X
+      ["hint:more_kills_for_kill_streak:show"]   = "hints/more_kills_for_kill_streak",
+      ["hint:needs_kills_streak_event:show"]     = "hints/needs_kills_streak_event",
+      ["hint:active_event:show"]                 = "hints/active_event",
+      ["hint:already_participating:show"]        = "hints/already_participating",
+      ["hint:no_event_slots:show"]               = "hints/no_event_slots"
+    }
+
+    getLocId = @(data) "hintId" in data ? ::loc("hints/" + data.hintId)
+      : eventToLocId?[::g_hud_event_manager.getCurHudEventName()] ?? "" //compatibility with 1_75_0_X
   }
 
   INEFFECTIVE_HIT_HINT = {
@@ -998,7 +1010,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
         local param = eventData.param
         if (eventData?.paramTeamId)
           param = ::colorize(::get_team_color(eventData.paramTeamId), param)
-        res = format(res, param)
+        res = ::format(res, param)
       }
       if (eventData?.teamId && eventData.teamId > 0)
         res = ::colorize(::get_team_color(eventData.teamId), res)
@@ -1651,30 +1663,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:shot_failed_aps_working:show"
     lifeTime = 3.0
     isHideOnDeath = true
-  }
-
-  ALLOW_COMMANDER_AIM_MODE = {
-    hintType = ::g_hud_hint_types.ACTIONBAR
-    locId     = "hints/allow_commander_aim_mode"
-    noKeyLocId = "hints/allow_commander_aim_mode_nokey"
-    showEvent = "hint:allow_commander_aim_mode:show"
-    shouldBlink = true
-    lifeTime = 10.0
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = true
-    shortcuts = "ID_COMMANDER_AIM_MODE"
-  }
-
-  ENABLE_COMBINED_PRI_SEC_TRIGGERS = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/enable_combined_pri_sec_triggers"
-    showEvent = "hint:enable_combined_pri_sec_triggers:show"
-    lifeTime = 10.0
-    totalCount = 5
-    maskId = 31
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = true
-    shortcuts = "ID_SHIP_WEAPON_ALL"
   }
 },
 function() {

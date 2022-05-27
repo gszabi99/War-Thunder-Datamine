@@ -159,7 +159,7 @@
           "armorThickness": 12.7
         },
         "turret_03_side_dm": {
-          "armorThickness": 38.0
+          "armorThickness": 12.7
         },
         "composite_armor_hull_01_dm": {
           "armorThickness": 17.25,
@@ -275,11 +275,7 @@
         "ex_armor_11_dm": [],
         "ex_armor_12_dm": [],
         "ex_armor_13_dm": [],
-        "turret_01_front_dm": [],
-        "ex_armor_turret_04_dm": {
-          "armorClass": "tank_traks",
-          "armorThickness": 20.0
-        }
+        "turret_01_front_dm": []
       },
       "mask": {
         "armorClass": "CHA_tank",
@@ -461,7 +457,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1353,8 +1348,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1398,8 +1393,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1407,8 +1402,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1416,8 +1411,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1456,29 +1451,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2487,11 +2482,11 @@
             "pitch": [-10.0,20.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-155.0,0.0,20.0],
+            "lim1": [-180.0,-155.0,6.0,20.0],
             "lim2": [-155.0,-140.0,-5.0,20.0],
             "lim3": [-140.0,140.0,-10.0,20.0],
             "lim4": [140.0,155.0,-5.0,20.0],
-            "lim5": [155.0,180.0,0.0,20.0]
+            "lim5": [155.0,180.0,6.0,20.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2687,9 +2682,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 50000.0,
-        "Fuel": 800.0,
-        "TakeOff": 50800.0,
+        "Empty": 51400.0,
+        "Fuel": 600.0,
+        "TakeOff": 52000.0,
         "momentOfInertia": [4.0,5.0,6.0],
         "CenterOfGravity": [0.1,0.5,0.0],
         "AdvancedMass": true,
@@ -2698,6 +2693,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
+        "width": 0.68,
+        "height": 0.08,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "uk_centurion_24_phys_track_line",
         "trackLen": 0.1397,
@@ -2707,8 +2704,6 @@
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.4,
         "trackEmitSparks": true,
-        "height": 0.08,
-        "width": 0.68,
         "trackStartOffset": 0.16,
         "fricSideRot": [5.0,0.0,0.7,0.3],
         "fricFrontal": [1.0,0.8]
@@ -3691,11 +3686,11 @@
                   "pitch": [-10.0,20.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-155.0,0.0,20.0],
+                  "lim1": [-180.0,-155.0,6.0,20.0],
                   "lim2": [-155.0,-140.0,-5.0,20.0],
                   "lim3": [-140.0,140.0,-10.0,20.0],
                   "lim4": [140.0,155.0,-5.0,20.0],
-                  "lim5": [155.0,180.0,0.0,20.0]
+                  "lim5": [155.0,180.0,6.0,20.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,

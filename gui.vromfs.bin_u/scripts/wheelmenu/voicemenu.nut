@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
 
 ::gui_start_voicemenu <- function gui_start_voicemenu(config)
@@ -67,7 +66,7 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
     }
 
     let canUseButtons = mouseEnabled || ::show_console_buttons
-    this.showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
+    showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
   }
 
   function getChatMode()
@@ -77,9 +76,9 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
 
   function updateFastVoiceMessagesTable()
   {
-    this.showSceneBtn("fast_shortcuts_block", true)
+    showSceneBtn("fast_shortcuts_block", true)
     let isConsoleMode = ::get_is_console_mode_enabled()
-    let textRawParam = format("chatMode:t='%s'; padding-left:t='1@bw'", getChatMode())
+    let textRawParam = ::format("chatMode:t='%s'; padding-left:t='1@bw'", getChatMode())
     let messagesArray = []
     for (local i = 0; i < ::NUM_FAST_VOICE_MESSAGES; i++)
     {
@@ -95,7 +94,7 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
 
       let cells = [
         {id = "name", textType = "text", textRawParam = textRawParam,
-         text = format(::loc(getVoiceMessageNames()[messageIndex].name + "_0"),
+         text = ::format(::loc(getVoiceMessageNames()[messageIndex].name + "_0"),
                          ::loc("voice_message_target_placeholder"))}
       ]
 
@@ -126,7 +125,7 @@ let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voice
       messagesArray.append(::buildTableRow(fastShortcutId, cells))
     }
 
-    this.showSceneBtn("empty_messages_warning", messagesArray.len() == 0)
+    showSceneBtn("empty_messages_warning", messagesArray.len() == 0)
     let data = ::g_string.implode(messagesArray, "\n")
     let tblObj = scene.findObject("fast_voice_messages_table")
     if (::checkObj(tblObj))

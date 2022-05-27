@@ -12,9 +12,9 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
   roomData = null
   isRoomDestroyed = false
 
-  constructor(v_roomId)
+  constructor(_roomId)
   {
-    roomId = v_roomId
+    roomId = _roomId
   }
 
   function isValid()

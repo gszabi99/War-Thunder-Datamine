@@ -92,7 +92,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
       && canInvite
       && ::g_squad_utils.canSquad()
 
-    this.showSceneBtn("btn_squadInvite_bottom", showSquadInvite)
+    showSceneBtn("btn_squadInvite_bottom", showSquadInvite)
   }
 
   function onPlayerMsg(obj)

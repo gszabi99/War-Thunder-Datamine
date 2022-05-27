@@ -29,11 +29,11 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
   updateFunctions = null
 
-  constructor(handler, v_guiScene, v_scene)
+  constructor(_handler, _guiScene, _scene)
   {
-    owner = handler
-    guiScene = v_guiScene
-    scene = v_scene
+    owner = _handler
+    guiScene = _guiScene
+    scene = _scene
 
     updateFunctions = {}
     foreach (key, config in getPromoHandlerUpdateConfigs()) {

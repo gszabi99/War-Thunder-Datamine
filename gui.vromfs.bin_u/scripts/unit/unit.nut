@@ -1,4 +1,3 @@
-let { split_by_chars } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { isString, isArray, isTable, isFunction } = require("%sqStdLibs/helpers/u.nut")
@@ -236,7 +235,7 @@ local Unit = class
     let listStr = blk?[fieldName]
     if (!isString(listStr))
       return defValue
-    return split_by_chars(listStr, separator).contains(targetPlatform)
+    return ::split(listStr, separator).contains(targetPlatform)
   }
 
   function applyShopBlk(shopUnitBlk, prevShopUnitName, unitGroupName = null)
@@ -255,7 +254,7 @@ local Unit = class
     showOnlyWhenResearch = shopUnitBlk?.showOnlyWhenResearch ?? false
 
     if (isVisibleUnbought && isString(shopUnitBlk?.hideForLangs))
-      hideForLangs = split_by_chars(shopUnitBlk?.hideForLangs, "; ")
+      hideForLangs = ::split(shopUnitBlk?.hideForLangs, "; ")
 
     foreach(key in ["reqFeature", "hideFeature", "showOnlyIfPlayerHasUnlock", "reqUnlock"])
       if ((shopUnitBlk?[key] ?? "") != "")
@@ -441,7 +440,7 @@ local Unit = class
         if (res < 0 || res > spawnScore)
           res = spawnScore
       }
-    return max(res, 0)
+    return ::max(res, 0)
   }
 
   function invalidateModificators()
@@ -519,7 +518,7 @@ local Unit = class
     let curPresetWeapons = getPresetWeapons(unitBlk, weapon)
     if (curPresetWeapons.len() > 0) {
       local nbrBomb = 0
-      ::dagor.debug("check unit weapon :")
+      dagor.debug("check unit weapon :")
       foreach (weap in curPresetWeapons) {
         if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
           continue

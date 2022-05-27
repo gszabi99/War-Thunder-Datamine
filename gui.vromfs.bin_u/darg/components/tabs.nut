@@ -33,7 +33,7 @@ let function defTab(tab_item, is_current, handler) {
       onFocus = handler
 
       children = {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         margin = [sh(1), sh(2)]
         color = textColor
 
@@ -45,7 +45,7 @@ let function defTab(tab_item, is_current, handler) {
 }
 
 
-let function defHolder(_params) {
+let function defHolder(params) {
   return {
     rendObj = ROBJ_SOLID
     size = [flex(), SIZE_TO_CONTENT]

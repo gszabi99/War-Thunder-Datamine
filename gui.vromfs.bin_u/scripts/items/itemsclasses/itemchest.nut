@@ -8,7 +8,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 ::items_classes.Chest <- class extends ItemExternal {
   static iType = itemType.CHEST
   static defaultLocId = "chest"
-  static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
+  static typeIcon = "#ui/gameuiskin#item_type_trophies"
   static isPreferMarkupDescInTooltip = true
   static userlogOpenLoc = "open_trophy"
   static hasTopRewardAsFirstItem = false

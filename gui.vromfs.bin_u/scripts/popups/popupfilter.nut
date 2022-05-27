@@ -35,7 +35,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
     foreach (fType in filterTypes)
       foreach (cb in fType.checkbox)
         if (cb?.text)
-          maxTextWidth = max(maxTextWidth, getStringWidthPx(cb.text, "fontMedium"))
+          maxTextWidth = ::max(maxTextWidth, getStringWidthPx(cb.text, "fontMedium"))
 
     let columns = filterTypes.map(function(fType, idx) {
       let { checkbox } = fType
@@ -139,7 +139,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onShowFilterBtnClick(obj) {
     isFilterVisible = !isFilterVisible
-    this.showSceneBtn(POUP_ID, isFilterVisible)
+    showSceneBtn(POUP_ID, isFilterVisible)
   }
 }
 

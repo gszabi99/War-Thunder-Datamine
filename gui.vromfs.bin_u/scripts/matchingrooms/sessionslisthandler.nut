@@ -118,7 +118,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
   {
     let listHeight = sessionsListObj.getSize()[1]
     let rowHeight = guiScene.calcString("@baseTrHeight", null)
-    roomsPerPage = max((listHeight / rowHeight).tointeger(), 1)
+    roomsPerPage = ::max((listHeight / rowHeight).tointeger(), 1)
   }
 
   function updateButtons()
@@ -346,11 +346,11 @@ let { havePremium } = require("%scripts/user/premium.nut")
     local selectedRow = -1
     curPageRoomsList.clear()
 
-    let maxPage = max((roomsList.len() - 1) / roomsPerPage, 0)
-    curPage = clamp(curPage, 0, maxPage)
+    let maxPage = ::max((roomsList.len() - 1) / roomsPerPage, 0)
+    curPage = ::clamp(curPage, 0, maxPage)
 
     let start = curPage * roomsPerPage
-    let end = min(start + roomsPerPage, roomsList.len())
+    let end = ::min(start + roomsPerPage, roomsList.len())
     for(local i = start; i < end; i++)
     {
       let room = roomsList[i]
@@ -359,7 +359,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
          selectedRow = curPageRoomsList.len() - 1
     }
     if (selectedRow < 0 && curPageRoomsList.len())
-      selectedRow = clamp(sessionsListObj.getValue(), 0, curPageRoomsList.len() - 1)
+      selectedRow = ::clamp(sessionsListObj.getValue(), 0, curPageRoomsList.len() - 1)
 
     let roomsInfoTbl = ::SessionLobby.getRoomsInfoTbl(curPageRoomsList)
     let data = ::build_mp_table(roomsInfoTbl, getRoomsListMarkUpData(), getColumnsList(), roomsInfoTbl.len())
@@ -426,7 +426,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 
     let room = getCurRoom()
     if (!room)
-      return this.msgBox("no_room_selected", ::loc("ui/nothing_selected"), [["ok"]], "ok")
+      return msgBox("no_room_selected", ::loc("ui/nothing_selected"), [["ok"]], "ok")
 
     if (::g_squad_manager.getSquadRoomId() != room.roomId
       && !::g_squad_utils.canJoinFlightMsgBox(

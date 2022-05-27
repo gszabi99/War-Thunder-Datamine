@@ -1,25 +1,16 @@
-let { format } = require("string")
 let statsd = require("statsd")
 let time = require("%scripts/time.nut")
 let eventbus = require("eventbus")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
-// contentUpdater module is optional and don't available on PC
-let contentUpdater = require_optional("contentUpdater")
-if (contentUpdater == null)
-  return
-
-let { start_updater_with_config_once, stop_updater,
-      UPDATER_EVENT_STAGE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH,
-      UPDATER_DOWNLOADING, UPDATER_DOWNLOADING_YUP, UPDATER_CHECKING_FAST, UPDATER_CHECKING,
-      UPDATER_RESPATCH, UPDATER_COPYING } = contentUpdater
-
 const ContentUpdaterEventId = "contentupdater.modal.event"
 
 eventbus.subscribe(ContentUpdaterEventId, function (evt) {
+  let {t, p0, p1, p2} = evt
+
   let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.UpdaterModal)
-  if ((handler?.isValid() ?? false))
-    handler?.onUpdaterCallback(evt)
+  if (handler?.isValid())
+    handler?.onUpdaterCallback(t, p0, p1, p2)
 })
 
 ::gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler
@@ -42,7 +33,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
 
   percent = 0
   dspeed = 0
-  etaSec = 0
+  eta_sec = 0
 
   isCancel = false
   isCancelButtonVisible = false
@@ -53,143 +44,140 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
 
   function initScreen()
   {
-    this.showSceneBtn(this.buttonOkId, false)
-    this.showSceneBtn(this.buttonCancelId, false)
+    showSceneBtn(buttonOkId, false)
+    showSceneBtn(buttonCancelId, false)
 
-    this.scene.findObject("updater_timer").setUserData(this)
+    scene.findObject("updater_timer").setUserData(this)
 
-    this.resetTimer()
-    this.onUpdate(null, 0.0)
+    resetTimer()
+    onUpdate(null, 0.0)
 
-    this.updateText()
+    updateText()
 
-    if (!start_updater_with_config_once(this.configPath, ContentUpdaterEventId))
-      this.onFinish()
+    if (!::start_content_updater_once(configPath, ContentUpdaterEventId))
+      onFinish()
   }
 
   function changeBg()
   {
-    let dynamicBgContainer = this.scene.findObject("animated_bg_picture")
+    let dynamicBgContainer = scene.findObject("animated_bg_picture")
     if (::check_obj(dynamicBgContainer))
       animBgLoad("", dynamicBgContainer)
   }
 
   function resetTimer()
   {
-    this.timer = this.timeToShowCancel
-    this.showSceneBtn(this.buttonCancelId, false)
+    timer = timeToShowCancel
+    showSceneBtn(buttonCancelId, false)
   }
 
-  function onUpdaterCallback(evt)
+  function onUpdaterCallback(cbType, p0, p1, p2)
   {
-    if (this.isFinished || !this.isValid())
+    if (isFinished || !isValid())
       return
-    let { eventType } = evt
-    switch(eventType)
+
+    switch(cbType)
     {
-    case UPDATER_EVENT_STAGE:
-      this.stage = evt?.stage
-      this.updateText()
-      this.updateProgressbar()
+    case ::UPDATER_CB_STAGE:
+      stage = p0
+      updateText()
+      updateProgressbar()
       break;
-    case UPDATER_EVENT_PROGRESS:
-      this.percent = evt?.percent
-      this.dspeed  = evt?.dspeed
-      this.etaSec  = evt?.etaSec
-      this.updateText()
-      this.updateProgressbar()
+    case ::UPDATER_CB_PROGRESS:
+      percent = p0
+      dspeed = p1
+      eta_sec = p2
+      updateText()
+      updateProgressbar()
       break;
-    case UPDATER_EVENT_ERROR:
-      this.errorCode = evt?.error
+    case ::UPDATER_CB_ERROR:
+      errorCode = p0
       break;
-    case UPDATER_EVENT_FINISH:
-      this.onFinish()
+    case ::UPDATER_CB_FINISH:
+      onFinish();
       break;
     }
   }
 
   function allowCancelCurrentStage()
   {
-    if (this.stage == UPDATER_DOWNLOADING || this.stage == UPDATER_DOWNLOADING_YUP)
+    if (stage == ::UPDATER_DOWNLOADING || stage == ::UPDATER_DOWNLOADING_YUP)
     {
-      if (!this.isCancelButtonVisible)
+      if (!isCancelButtonVisible)
       {
-        this.showSceneBtn(this.buttonCancelId, true)
-        this.isCancelButtonVisible = true
+        showSceneBtn(buttonCancelId, true)
+        isCancelButtonVisible = true
       }
       return true
     }
 
-    if (this.isCancelButtonVisible)
+    if (isCancelButtonVisible)
     {
-      this.showSceneBtn(this.buttonCancelId, false)
-      this.isCancelButtonVisible = false
+      showSceneBtn(buttonCancelId, false)
+      isCancelButtonVisible = false
     }
     return false
   }
 
   function onUpdate(obj, dt)
   {
-    this.bgTimer -= dt
-    if(this.bgTimer <= 0)
+    bgTimer -= dt
+    if(bgTimer <= 0)
     {
-      this.changeBg()
-      this.bgTimer = this.bgChangeInterval
+      changeBg()
+      bgTimer = bgChangeInterval
     }
 
-    this.timer -= dt
-    if (this.timer < 0 && this.allowCancelCurrentStage())
+    timer -= dt
+    if (timer < 0 && allowCancelCurrentStage())
     {
-      if (!this.wasCancelButtonShownOnce)
+      if (!wasCancelButtonShownOnce)
       {
         statsd.send_counter("sq.updater.longdownload", 1)
-        this.wasCancelButtonShownOnce = true
+        wasCancelButtonShownOnce = true
       }
     }
   }
 
   function updateProgressbar()
   {
-    let blockObj = this.scene.findObject("loading_progress_box")
+    let blockObj = scene.findObject("loading_progress_box")
     if (!::checkObj(blockObj))
       return
-    blockObj.setValue(100 * this.percent)
+    blockObj.setValue(100 * percent)
   }
 
   function onFinish()
   {
-    if (this.isFinished)
-      return
-    this.isFinished = true
+    isFinished = true
 
-    if (this.errorCode < 0)
-      this.goBack()
+    if (errorCode < 0)
+      goBack()
     else
     {
-      let errorText = ::loc("updater/error/" + this.errorCode.tostring())
-      this.msgBox("updater_error", errorText, [["ok", this.goBack ]], "ok")
+      let errorText = ::loc("updater/error/" + errorCode.tostring())
+      msgBox("updater_error", errorText, [["ok", goBack ]], "ok")
     }
   }
 
   function updateText()
   {
-    let {stage, dspeed, etaSec} = this //-ident-hides-ident
     local text = ""
     local textSub = ""
-    if (stage == UPDATER_DOWNLOADING)
+    if (stage == ::UPDATER_DOWNLOADING)
       text = ::loc("updater/downloading")
     else
       text = ::loc("pl1/check_profile") //because we have all localizations
 
-    if (stage == UPDATER_CHECKING_FAST || stage == UPDATER_CHECKING
-      || stage == UPDATER_RESPATCH || stage == UPDATER_DOWNLOADING
-      || stage == UPDATER_COPYING)
+    if (stage == ::UPDATER_CHECKING_FAST || stage == ::UPDATER_CHECKING
+      || stage == ::UPDATER_RESPATCH || stage == ::UPDATER_DOWNLOADING
+      || stage == ::UPDATER_COPYING)
     {
       text += ": ";
-      text += ::floor(this.percent)
+      text += ::floor(percent)
       text += "%"
     }
-    if (stage == UPDATER_DOWNLOADING)
+    if (stage == ::UPDATER_DOWNLOADING)
     {
       if (dspeed > 0)
       {
@@ -209,33 +197,33 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
             desc = meas > 0.5 ? ::loc("updater/dspeed/kb") : ::loc("updater/dspeed/b");
           }
         }
-        textSub += time.secondsToString(etaSec);
-        textSub += format(" ( %.1f%s )", meas, desc);
+        textSub += time.secondsToString(eta_sec);
+        textSub += ::format(" ( %.1f%s )", meas, desc);
       }
     }
 
-    this.scene.findObject("msgText").setValue(text)
-    this.scene.findObject("msgTextSub").setValue(textSub)
+    scene.findObject("msgText").setValue(text)
+    scene.findObject("msgTextSub").setValue(textSub)
   }
 
   function onCancel()
   {
-    this.isCancel = true
+    isCancel = true
     statsd.send_counter("sq.updater.cancelled", 1)
-    stop_updater()
-    this.showSceneBtn(this.buttonCancelId, false)
+    ::stop_content_updater()
+    showSceneBtn(buttonCancelId, false)
   }
 
   function onEventSignOut()
   {
-    stop_updater()
+    ::stop_content_updater()
     statsd.send_counter("sq.updater.signedout", 1)
   }
 
   function afterModalDestroy()
   {
-    if (this.onFinishCallback)
-      this.onFinishCallback()
+    if (onFinishCallback)
+      onFinishCallback()
     ::g_login.addState(LOGIN_STATE.AUTHORIZED)
   }
 }

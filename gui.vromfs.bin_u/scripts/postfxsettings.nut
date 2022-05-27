@@ -1,4 +1,3 @@
-let { format } = require("string")
 ::tonemappingMode_list <- ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"];
 ::lut_list <- ["#options/hudDefault"];
 ::lut_textures <- [""];
@@ -76,15 +75,15 @@ const firstColumnWidth = 0.45
 
   function createRowMarkup(name, controlMarkup)
   {
-    let controlCell = format("td { width:t='%.3fpw'; padding-left:t='@optPad'; %s }", 1.0 - firstColumnWidth, controlMarkup)
-    let res = format("tr{ id:t='%s'; td { width:t='%.3fpw'; overflow:t='hidden'; optiontext {text:t='%s'; } } %s }",
+    let controlCell = ::format("td { width:t='%.3fpw'; padding-left:t='@optPad'; %s }", 1.0 - firstColumnWidth, controlMarkup)
+    let res = ::format("tr{ id:t='%s'; td { width:t='%.3fpw'; overflow:t='hidden'; optiontext {text:t='%s'; } } %s }",
       name, firstColumnWidth, "#options/" + name, controlCell)
     return res
   }
 
   function createOneSlider(name, value, cb, params, showValue)
   {
-    params.step <- params?.step ?? max(1, ::round((params.max - params.min) / maxSliderSteps).tointeger())
+    params.step <- params?.step ?? ::max(1, ::round((params.max - params.min) / maxSliderSteps).tointeger())
     local markuo = ::create_option_slider("postfx_settings_" + name, value.tointeger(), cb, true, "slider", params)
     if (showValue)
       markuo += format(" optionValueText { id:t='%s' } ", name+"_value");

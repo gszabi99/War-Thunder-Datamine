@@ -1,7 +1,35 @@
-let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
-let function error_code_tostring(error_code)
+::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message=null)
+{
+  let guiScene = ::get_gui_scene()
+  if (::checkObj(guiScene["errorMessageBox"]))
+    return
+
+  let errData = ::get_error_data(header, error_code)
+
+  if (!isPlatformXboxOne)
+  {
+    errData.text += "\n\n" + (isPlatformSony? "" : (::loc("msgbox/error_link_format_game") + ::loc("ui/colon")))
+    let knoledgebaseSuffix = ::is_vendor_tencent()? "/Tencent" : ""
+    let link = ::loc($"url/knowledgebase{knoledgebaseSuffix}") + errData.errCode
+    let linkText = isPlatformSony? ::loc("msgbox/error_link_format_game") : link
+    errData.text += $"<url={link}>{linkText}</url>"
+  }
+
+  if (message != null)
+    errData.text += message
+
+  if ("LAST_SESSION_DEBUG_INFO" in getroottable())
+  {
+    options = options || {}
+    options["debug_string"] <- ::LAST_SESSION_DEBUG_INFO
+  }
+
+  return ::scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
+}
+
+::error_code_tostring <- function error_code_tostring(error_code)
 {
   switch (error_code)
   {
@@ -25,10 +53,34 @@ let function error_code_tostring(error_code)
       return "80130184" // special error for this
   }
 
-  return format("%X", error_code)
+  return ::format("%X", error_code)
 }
 
-let function psn_err_msg(text, res)
+::get_error_data <- function get_error_data(header, error_code)
+{
+  let res = {
+    errCode = null
+    text = null
+  }
+  if (typeof error_code != "string")
+  {
+    error_code = error_code & 0xFFFFFFFF // Temporary fix for 1.67.2.X
+
+    res.errCode = error_code_tostring(error_code)
+    if (is_matching_error(error_code))
+      res.text = ::matching_err_msg(header, matching_error_string(error_code))
+    else
+      res.text = ::psn_err_msg(header, res.errCode);
+  }
+  else
+  {
+    res.errCode = error_code
+    res.text = ::psn_err_msg(header, res.errCode);
+  }
+  return res
+}
+
+::psn_err_msg <- function psn_err_msg(text, res)
 {
   local errCode = res
   if (errCode == "0")
@@ -48,7 +100,7 @@ let function psn_err_msg(text, res)
   return errText
 }
 
-let function matching_err_msg(text, error_text)
+::matching_err_msg <- function matching_err_msg(text, error_text)
 {
   local errMsg = ::loc("matching/" + error_text)
   if (errMsg.len() == 0)
@@ -70,57 +122,3 @@ let function matching_err_msg(text, error_text)
     return ::loc("YU2/error/NEED_2STEP")
   return ::loc("charServer/notAvailableYet")
 }
-
-let function get_error_data(header, error_code)
-{
-  let res = {
-    errCode = null
-    text = null
-  }
-  if (typeof error_code != "string")
-  {
-    error_code = error_code & 0xFFFFFFFF // Temporary fix for 1.67.2.X
-
-    res.errCode = error_code_tostring(error_code)
-    if (is_matching_error(error_code))
-      res.text = matching_err_msg(header, matching_error_string(error_code))
-    else
-      res.text = psn_err_msg(header, res.errCode);
-  }
-  else
-  {
-    res.errCode = error_code
-    res.text = psn_err_msg(header, res.errCode);
-  }
-  return res
-}
-
-::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message=null)
-{
-  let guiScene = ::get_gui_scene()
-  if (::checkObj(guiScene["errorMessageBox"]))
-    return
-
-  let errData = get_error_data(header, error_code)
-
-  if (!isPlatformXboxOne)
-  {
-    errData.text += "\n\n" + (isPlatformSony? "" : (::loc("msgbox/error_link_format_game") + ::loc("ui/colon")))
-    let knoledgebaseSuffix = ::is_vendor_tencent()? "/Tencent" : ""
-    let link = ::loc($"url/knowledgebase{knoledgebaseSuffix}") + errData.errCode
-    let linkText = isPlatformSony? ::loc("msgbox/error_link_format_game") : link
-    errData.text += $"<url={link}>{linkText}</url>"
-  }
-
-  if (message != null)
-    errData.text += message
-
-  if ("LAST_SESSION_DEBUG_INFO" in getroottable())
-  {
-    options = options || {}
-    options["debug_string"] <- ::LAST_SESSION_DEBUG_INFO
-  }
-
-  return ::scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
-}
-

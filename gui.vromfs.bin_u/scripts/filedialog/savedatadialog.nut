@@ -290,7 +290,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!curEntry)
       return
 
-    ::dagor.debug("SAVE DIALOG: onBtnDelete for entry")
+    dagor.debug("SAVE DIALOG: onBtnDelete for entry")
     ::debugTableData(curEntry)
 
     ::scene_msg_box("savedata_delete_msg_box",
@@ -311,7 +311,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     }
 
     let entry = getExistEntry(entryName) || createEntry(entryName)
-    ::dagor.debug("SAVE DIALOG: onBtnSave for entry:")
+    dagor.debug("SAVE DIALOG: onBtnSave for entry:")
     ::debugTableData(entry)
 
     if (entry.path == "")
@@ -334,7 +334,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!selectedEntry)
       return
 
-    ::dagor.debug("SAVE DIALOG: onBtnRewrite for entry:")
+    dagor.debug("SAVE DIALOG: onBtnRewrite for entry:")
     ::debugTableData(selectedEntry)
     doRewrite(selectedEntry)
   }
@@ -358,7 +358,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     if (!curEntry)
       return
 
-    ::dagor.debug("SAVE DIALOG: onBtnLoad for entry:")
+    dagor.debug("SAVE DIALOG: onBtnLoad for entry:")
     ::debugTableData(curEntry)
 
     ::scene_msg_box("savedata_confirm_load_msg_box",

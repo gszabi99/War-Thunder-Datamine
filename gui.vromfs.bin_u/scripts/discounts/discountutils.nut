@@ -13,9 +13,9 @@ let { eachBlock } = require("%sqstd/datablock.nut")
   ::invoke_multi_array(path, function (arr) {
     let block = get_blk_by_path_array(arr, blk)
     let discountValue = ::getTblValue("discount", block, 0)
-    result.maxDiscount = max(result.maxDiscount, discountValue)
+    result.maxDiscount = ::max(result.maxDiscount, discountValue)
     local personalDiscountValue = personalDiscount.getDiscountByPath(arr)
-    result.maxDiscount = max(result.maxDiscount, personalDiscountValue)
+    result.maxDiscount = ::max(result.maxDiscount, personalDiscountValue)
   })
   return result.maxDiscount
 }
@@ -31,7 +31,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
   if (discountTypes.contains("weapons"))
     eachBlock(unitTable?.weapons, function(table, name) {
       if (!::shop_is_weapon_purchased(unitName, name))
-        discount = max(discount,
+        discount = ::max(discount,
           ::getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_weapon(unitName, name))
     })
@@ -39,13 +39,13 @@ let { eachBlock } = require("%sqstd/datablock.nut")
   if (discountTypes.contains("mods"))
     eachBlock(unitTable?.mods, function(table, name) {
       if (!::shop_is_modification_purchased(unitName, name))
-        discount = max(discount,
+        discount = ::max(discount,
           ::getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_mod(unitName, name))
     })
 
   if (discountTypes.contains("spare") && unitTable?.spare)
-    discount = max(discount, ::getTblValue("discount", unitTable.spare, 0))
+    discount = ::max(discount, ::getTblValue("discount", unitTable.spare, 0))
 
   return discount
 }

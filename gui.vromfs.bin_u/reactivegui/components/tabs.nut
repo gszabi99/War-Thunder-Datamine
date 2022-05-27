@@ -43,7 +43,7 @@ let function tabCtor(tab, is_current, handler) {
       onElemState = @(sf) stateFlags.update(sf)
 
       children = {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         font = fontsState.get("small")
         color = textColor
         text = tab.text
@@ -54,7 +54,7 @@ let function tabCtor(tab, is_current, handler) {
 }
 
 
-let tabsHolder = @(_params){
+let tabsHolder = @(params){
   rendObj = ROBJ_SOLID
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL

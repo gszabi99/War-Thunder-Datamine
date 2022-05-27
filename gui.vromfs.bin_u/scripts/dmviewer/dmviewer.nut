@@ -1,6 +1,3 @@
-let { format } = require("string")
-let regexp2 = require("regexp2")
-let { sin, PI } = require("math")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -83,10 +80,10 @@ const AFTERBURNER_CHAMBER = 3
   armorClassToSteel = null
 
   prepareNameId = [
-    { pattern = regexp2(@"_l_|_r_"),   replace = "_" },
-    { pattern = regexp2(@"[0-9]|dm$"), replace = "" },
-    { pattern = regexp2(@"__+"),       replace = "_" },
-    { pattern = regexp2(@"_+$"),       replace = "" },
+    { pattern = ::regexp2(@"_l_|_r_"),   replace = "_" },
+    { pattern = ::regexp2(@"[0-9]|dm$"), replace = "" },
+    { pattern = ::regexp2(@"__+"),       replace = "_" },
+    { pattern = ::regexp2(@"_+$"),       replace = "" },
   ]
 
   crewMemberToRole = {
@@ -494,9 +491,9 @@ const AFTERBURNER_CHAMBER = 3
     guiScene.setUpdatesEnabled(true, true)
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     let size = obj.getSize()
-    let posX = clamp(cursorPos[0] + offset[0], unsafe[0], max(unsafe[0], screen[0] - unsafe[0] - size[0]))
-    let posY = clamp(cursorPos[1] + offset[1], unsafe[1], max(unsafe[1], screen[1] - unsafe[1] - size[1]))
-    obj.pos = format("%d, %d", posX, posY)
+    let posX = ::clamp(cursorPos[0] + offset[0], unsafe[0], ::max(unsafe[0], screen[0] - unsafe[0] - size[0]))
+    let posY = ::clamp(cursorPos[1] + offset[1], unsafe[1], ::max(unsafe[1], screen[1] - unsafe[1] - size[1]))
+    obj.pos = ::format("%d, %d", posX, posY)
   }
 
   function getPartNameId(params)
@@ -618,8 +615,8 @@ const AFTERBURNER_CHAMBER = 3
       }
       else
       {
-        let effectiveThicknessClamped = min(effectiveThickness,
-          min((relativeArmorThreshold * thickness).tointeger(), absoluteArmorThreshold))
+        let effectiveThicknessClamped = ::min(effectiveThickness,
+          ::min((relativeArmorThreshold * thickness).tointeger(), absoluteArmorThreshold))
 
         desc.append(::loc("armor_class/effective_thickness") + ::nbsp +
           (effectiveThicknessClamped < effectiveThickness ? ">" : "") +
@@ -746,7 +743,7 @@ const AFTERBURNER_CHAMBER = 3
             let currentParams = unit?.modificators[difficulty.crewSkillName]
             if (isSecondaryModsValid && currentParams && currentParams.horsePowers && currentParams.maxHorsePowersRPM)
             {
-              desc.append(format("%s %s (%s %d %s)", ::loc("engine_power") + ::loc("ui/colon"),
+              desc.append(::format("%s %s (%s %d %s)", ::loc("engine_power") + ::loc("ui/colon"),
                 ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(currentParams.horsePowers),
                 ::loc("shop/unitValidCondition"), currentParams.maxHorsePowersRPM.tointeger(), ::loc("measureUnits/rpm")))
             }
@@ -958,11 +955,11 @@ const AFTERBURNER_CHAMBER = 3
             foreach (gear in (info.gearRatios % "ratio")) {
               if (gear > 0) {
                 gearsF++
-                ratioF = ratioF ? min(ratioF, gear) : gear
+                ratioF = ratioF ? ::min(ratioF, gear) : gear
               }
               else if (gear < 0) {
                 gearsB++
-                ratioB = ratioB ? min(ratioB, -gear) : -gear
+                ratioB = ratioB ? ::min(ratioB, -gear) : -gear
               }
             }
             let maxSpeedF = maxSpeed
@@ -1156,7 +1153,7 @@ const AFTERBURNER_CHAMBER = 3
             {
               let transiverBlk = transiversBlk.getBlock(t)
               let range = transiverBlk.getReal("range", 0.0)
-              rangeMax = max(rangeMax, range)
+              rangeMax = ::max(rangeMax, range)
               if (transiverBlk?.visibilityType == "infraRed")
                 isIrst = true
               else
@@ -1223,7 +1220,7 @@ const AFTERBURNER_CHAMBER = 3
             }
             desc.append(::loc("plane_engine_type") + ::loc("ui/colon") + ::loc(radarType))
             if (isRadar)
-              desc.append(::loc("radar_freq_band") + ::loc("ui/colon") + ::loc(format("radar_freq_band_%d", radarFreqBand)))
+              desc.append(::loc("radar_freq_band") + ::loc("ui/colon") + ::loc(::format("radar_freq_band_%d", radarFreqBand)))
             desc.append(::loc("radar_range_max") + ::loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
 
             let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
@@ -1427,7 +1424,7 @@ const AFTERBURNER_CHAMBER = 3
 
         let ammo = isSpecialBullet ? 1 : getWeaponTotalBulletCount(partId, weaponInfoBlk)
         let shouldShowAmmoInTitle = isSpecialBulletEmitter
-        let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? format(::loc("weapons/counter"), ammo) : ""
+        let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? ::format(::loc("weapons/counter"), ammo) : ""
 
         if(weaponName != "")
           desc.append("".concat(::loc($"weapons/{weaponName}"), ammoTxt))
@@ -1561,19 +1558,19 @@ const AFTERBURNER_CHAMBER = 3
         // 2. Measure accuracy
         let accuracy = getFireControlAccuracy(fcBlk)
         if (accuracy != -1)
-          desc.append(format("%s %d%s", ::loc("xray/fire_control/accuracy"),
+          desc.append(::format("%s %d%s", ::loc("xray/fire_control/accuracy"),
             accuracy, ::loc("measureUnits/percent")))
 
         // 3. Fire solution calculation time
         let lockTime = fcBlk?.targetLockTime
         if (lockTime)
-          desc.append(format("%s %d%s", ::loc("xray/fire_control/lock_time"),
+          desc.append(::format("%s %d%s", ::loc("xray/fire_control/lock_time"),
             lockTime, ::loc("measureUnits/seconds")))
 
         // 4. Fire solution update time
         let calcTime = fcBlk?.calcTime
         if (calcTime)
-          desc.append(format("%s %d%s", ::loc("xray/fire_control/calc_time"),
+          desc.append(::format("%s %d%s", ::loc("xray/fire_control/calc_time"),
             calcTime, ::loc("measureUnits/seconds")))
 
         break
@@ -1680,14 +1677,14 @@ const AFTERBURNER_CHAMBER = 3
 
   function getOpticsParams(zoomOutFov, zoomInFov)
   {
-    let fovToZoom = @(fov) sin(80/2*PI/180)/sin(fov/2*PI/180)
+    let fovToZoom = @(fov) ::sin(80/2*PI/180)/::sin(fov/2*PI/180)
     let fovOutIn = [zoomOutFov, zoomInFov].filter(@(fov) fov > 0)
     let zoom = fovOutIn.map(@(fov) fovToZoom(fov))
     if (zoom.len() == 2 && ::abs(zoom[0] - zoom[1]) < 0.1) {
       zoom.remove(0)
       fovOutIn.remove(0)
     }
-    let zoomTexts = ::u.map(zoom, @(zoom) format("%.1fx", zoom))
+    let zoomTexts = ::u.map(zoom, @(zoom) ::format("%.1fx", zoom))
     let fovTexts = fovOutIn.map(@(fov) "".concat(::round(fov), ::loc("measureUnits/deg")))
     return {
       zoom = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
@@ -1728,13 +1725,13 @@ const AFTERBURNER_CHAMBER = 3
     if (horAngles)
       desc.append("".concat(::loc("xray/aps/protected_sector/hor"), ::loc("ui/colon"),
         ( horAngles.x + horAngles.y == 0
-          ? format("±%d%s", ::abs(horAngles.y), deg)
-          : format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg) ) ) )
+          ? ::format("±%d%s", ::abs(horAngles.y), deg)
+          : ::format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg) ) ) )
     if (verAngles)
       desc.append("".concat(::loc("xray/aps/protected_sector/vert"), ::loc("ui/colon"),
         ( verAngles.x + verAngles.y == 0
-          ? format("±%d%s", ::abs(verAngles.y), deg)
-          : format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg) ) ) )
+          ? ::format("±%d%s", ::abs(verAngles.y), deg)
+          : ::format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg) ) ) )
     if (reloadTime)
       desc.append("".concat(::loc("xray/aps/reloadTime"), ::loc("ui/colon"),
         reloadTime, " ", ::loc("measureUnits/seconds") ) )
@@ -1795,7 +1792,7 @@ const AFTERBURNER_CHAMBER = 3
           partIdx = partIdx ?? extractIndexFromDmPartName(partName)
           if (partIdx != -1
               && partIdx >= (blk?.xrayDmPartRange.x ?? -1) && partIdx <= (blk?.xrayDmPartRange.y ?? -1)
-              && format(blk.xrayDmPartFmt, partIdx) == partName)
+              && ::format(blk.xrayDmPartFmt, partIdx) == partName)
             return blk
         }
       }
@@ -1834,19 +1831,19 @@ const AFTERBURNER_CHAMBER = 3
           return weapon
       if (::u.isPoint2(weapon?.emitterGenRange))
       {
-        let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
-        let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
+        let rangeMin = ::min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
+        let rangeMax = ::max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
         foreach(linkKeyFmt in partLinkSourcesGenFmt)
           if (weapon?[linkKeyFmt])
           {
             if (weapon[linkKeyFmt].indexof("%02d") == null)
             {
-              ::dagor.assertf(false, "Bad weapon param " + linkKeyFmt + "='" + weapon[linkKeyFmt] +
+              dagor.assertf(false, "Bad weapon param " + linkKeyFmt + "='" + weapon[linkKeyFmt] +
                 "' on " + unit.name)
               continue
             }
             for(local i = rangeMin; i <= rangeMax; i++)
-              if (format(weapon[linkKeyFmt], i) == weaponPartName)
+              if (::format(weapon[linkKeyFmt], i) == weaponPartName)
                 return weapon
           }
       }
@@ -1918,9 +1915,9 @@ const AFTERBURNER_CHAMBER = 3
         continue
 
       let { x, y } = g.angles
-      let anglesText = (x + y == 0) ? format("±%d%s", ::abs(y), deg)
-        : (isSwaped && g.canSwap) ? format("%+d%s/%+d%s", ::abs(y) * getSign(x), deg, ::abs(x) * getSign(y), deg)
-        : format("%+d%s/%+d%s", x, deg, y, deg)
+      let anglesText = (x + y == 0) ? ::format("±%d%s", ::abs(y), deg)
+        : (isSwaped && g.canSwap) ? ::format("%+d%s/%+d%s", ::abs(y) * getSign(x), deg, ::abs(x) * getSign(y), deg)
+        : ::format("%+d%s/%+d%s", x, deg, y, deg)
 
       desc.append(" ".concat(::loc(g.label), anglesText))
     }
@@ -1965,7 +1962,7 @@ const AFTERBURNER_CHAMBER = 3
 
         if (speed)
         {
-          let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", ::round(speed))
+          let speedTxt = speed < 10 ? ::format("%.1f", speed) : ::format("%d", ::round(speed))
           desc.append(::loc("crewSkillParameter/" + a.modifName) + ::loc("ui/colon") +
             speedTxt + ::loc("measureUnits/deg_per_sec"))
         }
@@ -2112,7 +2109,7 @@ const AFTERBURNER_CHAMBER = 3
     }
     if (reloadTimeS)
     {
-      reloadTimeS = (reloadTimeS % 1) ? format("%.1f", reloadTimeS) : format("%d", reloadTimeS)
+      reloadTimeS = (reloadTimeS % 1) ? ::format("%.1f", reloadTimeS) : ::format("%d", reloadTimeS)
       desc.append(::loc("shop/reloadTime") + " " + reloadTimeS + " " + ::loc("measureUnits/seconds"))
     }
     return desc

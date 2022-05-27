@@ -252,11 +252,10 @@
         "ex_armor_r_03_dm": [],
         "ex_armor_r_04_dm": [],
         "ex_armor_l_10_dm": [],
-        "ex_armor_l_12_dm": [],
-        "ex_armor_03_dm": [],
-        "ex_armor_05_dm": [],
-        "ex_armor_04_dm": [],
-        "ex_armor_06_dm": []
+        "ex_armor_l_12_dm": []
+      },
+      "attachables": {
+        "ex_armor_02_dm": true
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -415,7 +414,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -758,17 +756,6 @@
           "hp": 100.0
         }
       }
-    }
-  },
-  {
-    "attachables": {
-      "ex_armor_02_dm": true,
-      "ex_armor_03_dm": true,
-      "ex_armor_05_dm": true,
-      "ex_armor_04_dm": true,
-      "ex_armor_06_dm": true,
-      "fuel_tank_r_01_dm": true,
-      "fuel_tank_l_01_dm": true
     }
   },
   {
@@ -2031,17 +2018,16 @@
         "Weapon": {
           "trigger": "gunner2",
           "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-          "emitter": "bone_mg_aa_v_02",
-          "flash": "emtr_mg_aa_flame_02",
+          "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+          "emitter": "bone_mg_aa_v_01",
+          "flash": "emtr_mg_aa_flame_01",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_04_dm",
+          "barrelDP": "gun_barrel_02_dm",
           "parkInDeadzone": false,
           "speedYaw": 90.0,
           "speedPitch": 90.0,
           "bullets": 600,
-          "isBulletBelt": true,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
@@ -2056,34 +2042,16 @@
           "errExplTime": 0.0,
           "forestallTime": 0.1,
           "turret": {
-            "head": "bone_mg_aa_h_02",
-            "gun": "bone_mg_aa_v_02",
-            "gunnerDm": "commander_dm"
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
+            "gunnerDm": "commander_dm",
+            "hasNightVision": false
           },
           "limits": {
-            "yaw": [-60.0,60.0],
-            "pitch": [-10.0,70.0]
+            "yaw": [-180.0,180.0],
+            "pitch": [-10.0,60.0]
           }
         }
-      },
-      {
-        "hideNodes": [
-          {
-            "node": "mg_m1919a4_02"
-          },
-          {
-            "node": "mg_m1919a4_ammo"
-          },
-          {
-            "node": "mg_m1919a4_mount_h"
-          },
-          {
-            "node": "mg_m1919a4_mount_v"
-          },
-          {
-            "node": "gun_barrel_02"
-          }
-        ]
       }
     ]
   },
@@ -3150,17 +3118,16 @@
               "Weapon": {
                 "trigger": "gunner2",
                 "triggerGroup": "machinegun",
-                "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-                "emitter": "bone_mg_aa_v_02",
-                "flash": "emtr_mg_aa_flame_02",
+                "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+                "emitter": "bone_mg_aa_v_01",
+                "flash": "emtr_mg_aa_flame_01",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_04_dm",
+                "barrelDP": "gun_barrel_02_dm",
                 "parkInDeadzone": false,
                 "speedYaw": 90.0,
                 "speedPitch": 90.0,
                 "bullets": 600,
-                "isBulletBelt": true,
                 "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
@@ -3175,13 +3142,14 @@
                 "errExplTime": 0.0,
                 "forestallTime": 0.1,
                 "turret": {
-                  "head": "bone_mg_aa_h_02",
-                  "gun": "bone_mg_aa_v_02",
-                  "gunnerDm": "commander_dm"
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_mg_aa_v_01",
+                  "gunnerDm": "commander_dm",
+                  "hasNightVision": false
                 },
                 "limits": {
-                  "yaw": [-60.0,60.0],
-                  "pitch": [-10.0,70.0]
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-10.0,60.0]
                 }
               }
             },
@@ -3230,25 +3198,6 @@
                   "pitch": [0.0,0.0]
                 }
               }
-            },
-            {
-              "hideNodes": [
-                {
-                  "node": "mg_m1919a4_02"
-                },
-                {
-                  "node": "mg_m1919a4_ammo"
-                },
-                {
-                  "node": "mg_m1919a4_mount_h"
-                },
-                {
-                  "node": "mg_m1919a4_mount_v"
-                },
-                {
-                  "node": "gun_barrel_02"
-                }
-              ]
             }
           ]
         }

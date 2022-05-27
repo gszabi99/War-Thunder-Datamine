@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { hasAnyFeature } = require("%scripts/user/features.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -453,7 +452,7 @@ g_squad_manager.initSquadSizes <- function initSquadSizes()
       name = name
       value = size
     })
-    maxSize = max(maxSize, size)
+    maxSize = ::max(maxSize, size)
   }
 
   if (!squadSizesList.len())
@@ -1140,7 +1139,7 @@ g_squad_manager.getSquadRank <- function getSquadRank()
 
   local squadRank = 0
   foreach (uid, memberData in squadData.members)
-    squadRank = max(memberData.rank, squadRank)
+    squadRank = ::max(memberData.rank, squadRank)
 
   return squadRank
 }
@@ -1257,7 +1256,7 @@ g_squad_manager.addApplication <- function addApplication(uid)
   checkNewApplications()
   if (isSquadLeader())
     ::g_popups.add(null, ::colorize("chatTextInviteColor",
-      format(::loc("squad/player_application"),
+      ::format(::loc("squad/player_application"),
         platformModule.getPlayerName(squadData.applications[uid]?.name ?? ""))))
 
   ::broadcastEvent(squadEvent.APPLICATIONS_CHANGED, { uid = uid })

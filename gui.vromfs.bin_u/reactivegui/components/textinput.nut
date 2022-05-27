@@ -19,7 +19,7 @@ let hudFrame = @(inputObj, group, sf) {
 
 let export = class {
   hud = @(text_state, options={}) textInput(text_state, options, hudFrame)
-  _call = @(_self, text_state, options={}) textInput(text_state, options)
+  _call = @(self, text_state, options={}) textInput(text_state, options)
 }()
 
 

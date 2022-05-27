@@ -9,7 +9,7 @@ let drawMark = @(state_var, text, pos, line_style, colorWatched) function() {
     return res
 
   let textMark = @() line_style.__merge({
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     watch = colorWatched
     color = colorWatched.value
     text = text

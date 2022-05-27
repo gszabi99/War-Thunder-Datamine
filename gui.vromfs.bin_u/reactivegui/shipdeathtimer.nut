@@ -11,7 +11,7 @@ return @(){
   flow = FLOW_HORIZONTAL
   children = !showTimeToDeath.value ? null : [
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))
@@ -21,7 +21,7 @@ return @(){
     }
     @() {
       watch = timeToDeath
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))

@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
@@ -479,7 +478,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     eventData.diffWeight <- setDifficultyWeight(eventData)
     if ("event_access" in eventData && ::u.isString(eventData.event_access))
-      eventData.event_access <- split_by_chars(eventData.event_access, "; ")
+      eventData.event_access <- ::split(eventData.event_access, "; ")
 
     setEventDisplayType(eventData, _calcEventDisplayType(eventData))
 
@@ -744,7 +743,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if ("eventImage" in event)
     {
       let eventImageTemplate = event.eventImage
-      return format(eventImageTemplate, isWide ? "wide" : "thin")
+      return ::format(eventImageTemplate, isWide ? "wide" : "thin")
     }
 
     local res = ""
@@ -761,7 +760,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function wrapImageName(imageName, isWide)
   {
-    return format("#ui/images/game_modes_tiles/%s.jpg?P1", imageName + (isWide ? "_wide" : "_thin"))
+    return ::format("#ui/images/game_modes_tiles/%s.jpg?P1", imageName + (isWide ? "_wide" : "_thin"))
   }
 
   function getEventPreviewVideoName(event, isWide)
@@ -1275,7 +1274,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       if (::isUnitBroken(unit))
         continue
 
-      res = max(res, unit.rank)
+      res = ::max(res, unit.rank)
     }
     return res
   }
@@ -1608,7 +1607,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     foreach(name, flag in __game_events[eventId].mission_decl.customDifficulty)
     {
       diffChanges += diffChanges.len()? "\n" : ""
-      diffChanges += format("%s - %s", ::loc("options/" + name), ::loc("options/" + (flag? "enabled" : "disabled")))
+      diffChanges += ::format("%s - %s", ::loc("options/" + name), ::loc("options/" + (flag? "enabled" : "disabled")))
     }
 
     return diffChanges
@@ -1643,7 +1642,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     foreach(team in getSidesList(event))
     {
       let teamSize = getTeamSize(getTeamData(event, team))
-      maxTeamSize = max(maxTeamSize, teamSize)
+      maxTeamSize = ::max(maxTeamSize, teamSize)
     }
     return maxTeamSize
   }
@@ -1749,7 +1748,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
           maxBR = (rule.mranks?.min ?? 1) - 1
       }
     }
-    return  ::loc("mainmenu/maxBR", {br = format("%.1f", ::calc_battle_rating_from_rank(maxBR))})
+    return  ::loc("mainmenu/maxBR", {br = ::format("%.1f", ::calc_battle_rating_from_rank(maxBR))})
   }
 
   function getEventNameText(event)
@@ -1974,9 +1973,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       let air = ::getAircraftByName(rule.name)
       if (!air)
       {
-        ::dagor.assertf(false, "Wrong air name '" + rule.name + "'")
-        ::dagor.debug("rule:")
-        ::debugTableData(rule)
+        dagor.assertf(false, "Wrong air name '" + rule.name + "'")
+        dagor.debug("rule:")
+        debugTableData(rule)
       }
       if (onlyText || !air)
         ruleString = ::getUnitName(air, true)
@@ -2012,11 +2011,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     }
     if ("ranks" in rule)
     {
-      let minRank = max(1, ::getTblValue("min", rule.ranks, 1))
+      let minRank = ::max(1, ::getTblValue("min", rule.ranks, 1))
       let maxRank = ::getTblValue("max", rule.ranks, ::max_country_rank)
       local rankText = ::get_roman_numeral(minRank)
                      + ((minRank != maxRank) ? " - " + ::get_roman_numeral(maxRank) : "")
-      rankText = format(::loc("events/rank"), rankText)
+      rankText = ::format(::loc("events/rank"), rankText)
       if (ruleString.len())
         ruleString += ::loc("ui/parentheses/space", { text = rankText })
       else
@@ -2026,10 +2025,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if ("mranks" in rule)
     {
       let mranks = rule.mranks
-      let minBR = format("%.1f", ::calc_battle_rating_from_rank(mranks?.min ?? 0))
-      let maxBR = format("%.1f", ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank()))
+      let minBR = ::format("%.1f", ::calc_battle_rating_from_rank(mranks?.min ?? 0))
+      let maxBR = ::format("%.1f", ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank()))
       local brText = minBR + ((minBR != maxBR) ? " - " + maxBR : "")
-      brText = format(::loc("events/br"), brText)
+      brText = ::format(::loc("events/br"), brText)
       if (ruleString.len())
         ruleString += ::loc("ui/parentheses/space", { text = brText })
       else
@@ -2161,7 +2160,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         local messageText = reasonData.reasonText
         startTime = ::events.getEventStartTime(reasonData.event)
         if (startTime > 0)
-          messageText +=  "\n" + format(::loc("events/event_starts_in"), ::colorize("activeTextColor",
+          messageText +=  "\n" + ::format(::loc("events/event_starts_in"), ::colorize("activeTextColor",
             time.hoursToString(time.secondsToHours(startTime))))
         ::scene_msg_box("cant_join", null, messageText,
             [["ok", function() {}]], "ok")
@@ -2270,7 +2269,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     {
       let startTime = ::events.getEventStartTime(event)
       if (startTime > 0)
-        return format(::loc("events/event_started_at"), ::colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
+        return ::format(::loc("events/event_started_at"), ::colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
     }
     return ""
   }
@@ -2281,13 +2280,13 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     {
       let endTime = ::events.getEventEndTime(event)
       if (endTime > 0)
-        return format(::loc("events/event_ends_in"), ::colorize("activeTextColor", time.hoursToString(time.secondsToHours(endTime))))
+        return ::format(::loc("events/event_ends_in"), ::colorize("activeTextColor", time.hoursToString(time.secondsToHours(endTime))))
       else
         return ""
     }
     let startTime = ::events.getEventStartTime(event)
     if (startTime > 0)
-      return format(::loc("events/event_starts_in"), ::colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
+      return ::format(::loc("events/event_starts_in"), ::colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
     return ::loc("events/event_disabled")
   }
 

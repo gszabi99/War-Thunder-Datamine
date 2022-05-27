@@ -1,6 +1,3 @@
-let { split_by_chars } = require("string")
-let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
-} = require("app")
 let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let promoConditions = require("%scripts/promo/promoConditions.nut")
@@ -32,7 +29,7 @@ g_popup_msg.ps4ActivityFeedFromPopup <- function ps4ActivityFeedFromPopup(blk)
   if (blk?.ps4ActivityFeedType != "update")
     return null
 
-  let ver = split_by_chars(get_game_version_str(), ".")
+  let ver = split(::get_game_version_str(), ".")
   let feed = {
     config = {
       locId = "major_update"

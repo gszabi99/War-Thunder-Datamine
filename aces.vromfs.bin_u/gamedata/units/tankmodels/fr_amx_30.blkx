@@ -425,6 +425,34 @@
           "hp": 20.0
         }
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 200.0,
+        "armorThickness": 35.0,
+        "gun_barrel_dm": [],
+        "gun_barrel_01_dm": [
+          {
+            "armorThickness": 10.0
+          },
+          {
+            "armorThickness": 5.0
+          },
+          {
+            "hp": 100.0
+          },
+          {
+            "hp": 50.0
+          },
+          {
+            "armorThrough": 10.0
+          }
+        ],
+        "gun_barrel_02_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        }
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 250.0,
@@ -484,76 +512,6 @@
           }
         }
       },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 35.0,
-        "gun_barrel_dm": [],
-        "gun_barrel_01_dm": [
-          {
-            "armorThrough": 10.0
-          },
-          {
-            "armorThrough": 10.0
-          },
-          {
-            "armorThrough": 10.0
-          },
-          {
-            "armorThickness": 5.0
-          },
-          {
-            "armorThickness": 10.0
-          },
-          {
-            "armorThickness": 5.0
-          },
-          {
-            "hp": 50.0
-          },
-          {
-            "hp": 100.0
-          },
-          {
-            "hp": 50.0
-          }
-        ],
-        "gun_barrel_02_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_03_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_04_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_05_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_06_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_07_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_08_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        }
-      },
       "tracks": {
         "armorClass": "tank_traks",
         "allowRicochet": true,
@@ -573,7 +531,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1480,8 +1437,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1525,8 +1482,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1534,8 +1491,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1543,8 +1500,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1583,29 +1540,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2529,6 +2486,8 @@
       },
       "tracks": {
         "animationMultiplier": -0.68,
+        "height": 0.08,
+        "width": 0.57,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "fr_amx_30_phys_track_line",
         "trackLen": 0.16,
@@ -2537,8 +2496,6 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.19,
-        "height": 0.08,
-        "width": 0.57,
         "trackStartOffset": 0.165
       },
       "collisionProps": {
@@ -2553,41 +2510,32 @@
       "mechanics": {
         "maxBrakeForce": 150000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 7.4,
-        "sideGearRatio": 1.0,
+        "mainGearRatio": 0.92,
+        "sideGearRatio": 5.0,
         "gearRatios": [
           {
-            "ratio": -0.62
+            "ratio": -2.8
           },
           {
-            "ratio": -0.93
-          },
-          {
-            "ratio": -1.51
-          },
-          {
-            "ratio": -2.73
-          },
-          {
-            "ratio": -5.9
+            "ratio": -6.7
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 5.9
+            "ratio": 6.7
           },
           {
-            "ratio": 2.73
+            "ratio": 3.6
           },
           {
-            "ratio": 1.51
+            "ratio": 2.4
           },
           {
-            "ratio": 0.93
+            "ratio": 1.5
           },
           {
-            "ratio": 0.62
+            "ratio": 1.0
           }
         ]
       },

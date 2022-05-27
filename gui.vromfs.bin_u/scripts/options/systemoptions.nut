@@ -1,5 +1,3 @@
-let { format, strip } = require("string")
-let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = ::require_native("vr")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -81,8 +79,7 @@ local mUiStruct = [
       "anisotropy"
       "msaa"
       "antialiasing"
-      "renderingResolution"
-      "temporalUpscaling"
+      "taau_ratio"
       "ssaa"
       "latency"
       "latencyFlash"
@@ -91,6 +88,7 @@ local mUiStruct = [
       "shadowQuality"
       "compatibilityShadowQuality"
       "fxResolutionQuality"
+      "backgroundScale"
       "cloudsQuality"
       "panoramaResolution"
       "landquality"
@@ -327,13 +325,6 @@ let function pickQualityPreset() {
   return preset
 }
 
-let function localizaQualityPreset(presetName) {
-  let txt = (presetName == "ultralow" || presetName == "min") ? "ultra_low"
-    : presetName == "ultrahigh" ? "ultra_high"
-    : presetName
-  return ::loc($"options/quality_{txt}")
-}
-
 let function localize(optionId, valueId) {
   switch (optionId) {
     case "resolution":
@@ -358,7 +349,8 @@ let function localize(optionId, valueId) {
     case "dirtSubDiv":
       if (valueId == "none")
         return ::loc("options/none")
-      return localizaQualityPreset(valueId)
+      let txt = (valueId=="ultralow" || valueId=="min")? "ultra_low" : (valueId=="ultrahigh")? "ultra_high" : valueId
+      return ::loc("options/quality_" + txt)
   }
   return ::loc(format("options/%s_%s", optionId, valueId), valueId)
 }
@@ -366,7 +358,7 @@ let function localize(optionId, valueId) {
 let function parseResolution(resolution) {
   let sides = resolution == "auto"
     ? [ 0, 0 ] // To be sorted first.
-    : resolution.split("x").apply(@(v) ::to_integer_safe(strip(v), 0, false))
+    : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
   return {
     resolution = resolution
     w = sides?[0] ?? 0
@@ -439,7 +431,7 @@ mShared = {
 
   setCompatibilityMode = function() {
     if (getGuiValue("compatibilityMode")) {
-      setGuiValue("renderingResolution",2)
+      setGuiValue("backgroundScale",2)
       eachBlock(mQualityPresets, function(_, k) {
         let enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].compMode ?? false
         mShared.enableByCompMode(k, enabled)
@@ -515,7 +507,7 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness", "temporalUpscaling", "renderingResolution" ])
+    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -557,7 +549,7 @@ mShared = {
   ssaaClick = function() {
     if (getGuiValue("ssaa") == "4X") {
       let okFunc = function() {
-        setGuiValue("renderingResolution", 2)
+        setGuiValue("backgroundScale", 2)
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
@@ -684,46 +676,6 @@ mShared = {
       - Fullscreen - maybe YES. There can be aspect ratios non-standard for PC monitors.
     */
   }
-
-  temporalUpscalingClick = function() {
-   let isEnable = getGuiValue("temporal_upscaling")
-
-    if (isEnable)
-    {
-      setGuiValue("antialiasing", "taa")
-    }
-    else
-    {
-      let blk = blkOptFromPath(::get_config_name())
-      let value = get_blk_value_by_path(blk, "video/postfx_antialiasing", "high_fxaa")
-      if (value == "taa")
-        setGuiValue("antialiasing", "high_fxaa")
-      else
-        setGuiValue("antialiasing", value)
-    }
-  }
-
-  antialiasingClick = function() {
-    let value = getGuiValue("antialiasing")
-
-    if (value == "taa")
-      setGuiValue("temporal_upscaling", true)
-    else
-      setGuiValue("temporal_upscaling", false)
-  }
-
-  renderingResolutionClick = function() {
-    let value = getGuiValue("renderingResolution", 1.0)
-    if (value < 2)
-    {
-      setGuiValue("ssaa", 1.0)
-      enableGuiOption("ssaa", false)
-      enableGuiOption("temporal_upscaling", true)
-      return
-    }
-    enableGuiOption("ssaa", true)
-    enableGuiOption("temporal_upscaling", false)
-  }
 }
 //------------------------------------------------------------------------------
 /*
@@ -826,34 +778,18 @@ mSettings = {
     }
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
-    values = [ "none", "fxaa", "high_fxaa", "taa"]
+    values = [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
-    onChanged = "antialiasingClick"
   }
-  renderingResolution = { widgetType="slider" def=2 min=0 max=2 blk="video/renderingResolution" restart=false
-    blkValues = [ 0.0, 0.5, 1.0 ]
-    getFromBlk = function(blk, desc) {
-      local val = get_blk_value_by_path(blk, desc.blk, 1.0)
-      if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
-        val = 2.0
-      return ::find_nearest(val, desc.blkValues)
-    }
-    setToBlk = function(blk, desc, val) {
-      local res = ::getTblValue(val, desc.blkValues, desc.def)
-      if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
-        res = 2.0
-      set_blk_value_by_path(blk, desc.blk, res)
-    }
-    enabled = @() getGuiValue("dlss") == "off"
-    onChanged = "renderingResolutionClick"
-  }
-  temporalUpscaling = { widgetType="checkbox" def=false blk="video/temporalUpscaling" restart=false
-    onChanged = "temporalUpscalingClick"
-    enabled = @() (getGuiValue("dlss") == "off" && getGuiValue("renderingResolution", 1.0) < 2.0)
+  taau_ratio = { widgetType="slider" def=100 min=50 max=100 blk="video/temporalResolutionScale" restart=false
+    enabled = @() !getGuiValue("compatibilityMode")
+                  && (getGuiValue("antialiasing") == "low_taa" || getGuiValue("antialiasing") == "high_taa")
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0)*100.0).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val.tofloat()/100.0) }
   }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("renderingResolution") >= 2.0
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -926,6 +862,21 @@ mSettings = {
     values = [ "low", "medium", "high", "ultrahigh" ]
   }
   selfReflection = { widgetType="checkbox" def=true blk="render/selfReflection" restart=false
+  }
+  backgroundScale = { widgetType="slider" def=2 min=0 max=2 blk="graphics/backgroundScale" restart=false
+    blkValues = [ 0.7, 0.85, 1.0 ]
+    getFromBlk = function(blk, desc) {
+      local val = get_blk_value_by_path(blk, desc.blk, 1.0)
+      if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
+        val = 2.0
+      return ::find_nearest(val, desc.blkValues)
+    }
+    setToBlk = function(blk, desc, val) {
+      local res = ::getTblValue(val, desc.blkValues, desc.def)
+      if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
+        res = 2.0
+      set_blk_value_by_path(blk, desc.blk, res)
+    }
   }
   landquality = { widgetType="slider" def=0 min=0 max=4 blk="graphics/landquality" restart=false
     onChanged = "landqualityClick"
@@ -1318,7 +1269,15 @@ let function onRestartClient() {
   applyRestartClient()
 }
 
-let function hotReloadOrRestart() {
+let function onConfigApply() {
+  if (!mScriptValid)
+    return
+  if (!::check_obj(mContainerObj))
+    return
+
+  mShared.presetCheck()
+  onGuiUnloaded()
+
   if (isSavePending())
     configWrite()
 
@@ -1326,47 +1285,31 @@ let function hotReloadOrRestart() {
   if (!restartPending && isHotReloadPending())
     applyRestartEngine(isReloadSceneRerquired())
 
+  let handler = mHandler
   configFree()
 
-  if (restartPending && isClientRestartable()) {
+  if (restartPending && isClientRestartable())
+  {
     let func_restart = function() {
       applyRestartClient()
     }
 
-    if (canRestartClient()) {
+    if (canRestartClient())
+    {
       let message = ::loc("msgbox/client_restart_required") + "\n" + ::loc("msgbox/restart_now")
-      ::scene_msg_box("sysopt_apply", null, message, [
+      handler.msgBox("sysopt_apply", message, [
           ["restart", func_restart],
           ["no"],
-        ], "restart", { cancel_fn = @() null })
+        ], "restart", { cancel_fn = function(){} })
     }
-    else {
+    else
+    {
       let message = ::loc("msgbox/client_restart_required")
-      ::scene_msg_box("sysopt_apply", null, message, [
+      handler.msgBox("sysopt_apply", message, [
           ["ok"],
-        ], "ok", { cancel_fn = @() null })
+        ], "ok", { cancel_fn = function(){} })
     }
   }
-}
-
-let function onConfigApply() {
-  if (!mScriptValid)
-    return
-
-  if (!::check_obj(mContainerObj))
-    return
-
-  mShared.presetCheck()
-  onGuiUnloaded()
-  hotReloadOrRestart()
-}
-
-let function onConfigApplyWithoutUiUpdate() {
-  if (!mScriptValid)
-    return
-
-  mShared.presetCheck()
-  hotReloadOrRestart()
 }
 
 let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
@@ -1382,14 +1325,14 @@ let function onGuiOptionChanged(obj) {
   if (!desc)
     return
 
+  let curValue = ::getTblValue(id, mCfgCurrent)
+  if (curValue == null)  //not inited or already cleared?
+    return
+
   if (desc.ignoreNextUiCallback) {
     desc.ignoreNextUiCallback = false
     return
   }
-
-  let curValue = ::getTblValue(id, mCfgCurrent)
-  if (curValue == null)  //not inited or already cleared?
-    return
 
   local value = null
   let raw = obj.getValue()
@@ -1447,7 +1390,7 @@ let function fillGuiOptions(containerObj, handler) {
 
   if (!mScriptValid) {
     let msg = ::loc("msgbox/internal_error_header") + "\n" + mValidationError
-    let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
+    let data = ::format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
     guiScene.replaceContentFromText(containerObj.id, data, data.len(), handler)
     return
   }
@@ -1494,7 +1437,7 @@ let function fillGuiOptions(containerObj, handler) {
           option = ::create_option_switchbox(config)
           break
         case "slider":
-          desc.step <- desc?.step ?? max(1, ::round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
+          desc.step <- desc?.step ?? ::max(1, ::round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
           option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
           break
         case "list":
@@ -1552,16 +1495,6 @@ let function fillGuiOptions(containerObj, handler) {
   guiScene.setUpdatesEnabled(true, true)
   onGuiLoaded()
 }
-
-let function setQualityPreset(presetName) {
-  if (mCfgInitial.len() == 0)
-    configRead()
-
-  setGuiValue("graphicsQuality", presetName, mHandler == null)
-  getOptionDesc("graphicsQuality")?.onChanged()
-  updateGuiNavbar(true)
-}
-
 //------------------------------------------------------------------------------
 init()
 ::cross_call_api.sysopt <- { getGuiValue = getGuiValue }
@@ -1577,7 +1510,4 @@ return {
   canUseGraphicsOptions = canUseGraphicsOptions
   systemOptionsMaintain = configMaintain
   overrideUiStruct = @(struct) mUiStruct = struct
-  setQualityPreset
-  localizaQualityPreset
-  onConfigApplyWithoutUiUpdate
 }

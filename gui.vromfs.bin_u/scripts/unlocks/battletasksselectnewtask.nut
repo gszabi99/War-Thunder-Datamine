@@ -64,7 +64,7 @@
     let taskObj = getCurrentTaskObj()
 
     ::showBtn("btn_reroll", false, taskObj)
-    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && isConfigHaveConditions(config))
+    showSceneBtn("btn_requirements_list", ::show_console_buttons && isConfigHaveConditions(config))
   }
 
   function onSelect(obj)

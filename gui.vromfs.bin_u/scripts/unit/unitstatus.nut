@@ -55,7 +55,7 @@ let function getBitStatus(unit, params = {})
 
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle
-    ? min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
+    ? ::min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
     : (params?.diffExp ?? 0)
   let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 

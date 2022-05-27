@@ -1,4 +1,3 @@
-let { format } = require("string")
 let workshopCraftTree = require("workshopCraftTree.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
@@ -319,9 +318,9 @@ local WorkshopSet = class {
       return
 
     let knownList = knownBlk % KNOWN_ITEMS_SAVE_KEY
-    foreach(d in knownList)
-      if (isItemIdInSet(d))
-        knownItemdefs[d] <- true
+    foreach(_id in knownList)
+      if (isItemIdInSet(_id))
+        knownItemdefs[_id] <- true
   }
 
   function loadKnownReqItemsOnce()
@@ -335,8 +334,8 @@ local WorkshopSet = class {
       return
 
     let knownList = knownBlk % KNOWN_ITEMS_SAVE_KEY
-    foreach(d in knownList)
-      knownReqItemdefs[d] <- true
+    foreach(_id in knownList)
+      knownReqItemdefs[_id] <- true
   }
 
   function initKnownItemsOnce()
@@ -383,8 +382,8 @@ local WorkshopSet = class {
     local knownBlk = ::load_local_account_settings(saveId)
     if (!knownBlk)
       knownBlk = ::DataBlock()
-    foreach(d in newKnownIds)
-      knownBlk[KNOWN_ITEMS_SAVE_KEY] <- d
+    foreach(_id in newKnownIds)
+      knownBlk[KNOWN_ITEMS_SAVE_KEY] <- _id
 
     ::save_local_account_settings(saveId, knownBlk)
   }
@@ -411,7 +410,7 @@ local WorkshopSet = class {
     return visibleSeenIds
   }
 
-  _tostring        = @() format("WorkshopSet %s (itemdefsAmount = %d)", id, itemdefs.len())
+  _tostring        = @() ::format("WorkshopSet %s (itemdefsAmount = %d)", id, itemdefs.len())
 
   isVisibleCraftTree = @(craftTree) hasAllFeatures(craftTree.reqFeaturesArr)
   getCraftTree       = @() ::u.search(craftTrees, isVisibleCraftTree.bindenv(this))

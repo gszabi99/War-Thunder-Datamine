@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -56,7 +55,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     backSceneFunc = ::gui_start_mainmenu
     mapsTbl = {}
     mapsListObj = scene.findObject("maps_list")
-    mapsListNestObj = this.showSceneBtn("operation_list", isDeveloperMode)
+    mapsListNestObj = showSceneBtn("operation_list", isDeveloperMode)
 
     topMenuHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
       scene.findObject("topmenu_menu_panel"),
@@ -256,7 +255,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let progressMaxValue = trophy?.rewardedParamValue ?? 0
       let isProgressReached = progressCurValue >= progressMaxValue
       let progressText = ::loc("ui/parentheses",
-        { text = $"{min(progressCurValue, progressMaxValue)}/{progressMaxValue}"})
+        { text = $"{::min(progressCurValue, progressMaxValue)}/{progressMaxValue}"})
 
       res.append({
         trophyDesc = $"{getTrophyDesc(trophy)} {progressText}"
@@ -516,7 +515,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   function updateButtons()
   {
-    this.showSceneBtn("gamercard_logo", true)
+    showSceneBtn("gamercard_logo", true)
 
     let hasMap = selMap != null
     let isInQueue = isMyClanInQueue()
@@ -528,9 +527,9 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     let needShowBeginMapWaitTime = !(nearestAvailableMapToBattle?.isActive?() ?? true)
     if ((queuesJoinTime > 0) != isInQueue)
       queuesJoinTime = isInQueue ? getLatestQueueJoinTime() : 0
-    this.showSceneBtn("queues_wait_time_div", isInQueue)
+    showSceneBtn("queues_wait_time_div", isInQueue)
     updateQueuesWaitTime()
-    this.showSceneBtn("begin_map_wait_time_div", needShowBeginMapWaitTime)
+    showSceneBtn("begin_map_wait_time_div", needShowBeginMapWaitTime)
     updateBeginMapWaitTime()
     updateWwarUrlButton()
 
@@ -539,7 +538,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let selectedMapObj = getSelectedMapObj()
       let isMapActionVisible = !hasMap ||
         (selMap.isActive() && isQueueJoiningEnabled && !isInQueue)
-      let btnMapActionObj = this.showSceneBtn("btn_map_action", isMapActionVisible && isDeveloperMode)
+      let btnMapActionObj = showSceneBtn("btn_map_action", isMapActionVisible && isDeveloperMode)
       btnMapActionObj.setValue(getSelectedMapEditBtnText(selectedMapObj))
     }
 
@@ -578,7 +577,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let queue = map.getQueue()
       let t = queue.isMyClanJoined() ? queue.getMyClanQueueJoinTime() : 0
       if (t > 0)
-        res = (res == 0) ? t : min(res, t)
+        res = (res == 0) ? t : ::min(res, t)
     }
     return res
   }
@@ -710,7 +709,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   function onOperationListSwitch()
   {
     isDeveloperMode = !isDeveloperMode
-    this.showSceneBtn("operation_list", isDeveloperMode)
+    showSceneBtn("operation_list", isDeveloperMode)
     let countriesContainerObj = scene.findObject("countries_container")
     local selObj = canEditMapCountries(countriesContainerObj) ? countriesContainerObj : null
 
@@ -822,7 +821,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       newClanOperation.join(myClanCountry)
     else
     {
-      let msg = format("Error: WWar: Bad country for my clan group in just created operation %d:\n%s",
+      let msg = ::format("Error: WWar: Bad country for my clan group in just created operation %d:\n%s",
                            newClanOperation.id,
                            ::toString(newClanOperation.getMyClanGroup())
                           )
@@ -982,7 +981,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
     let worldWarUrlBtnKey = ::get_gui_regional_blk()?.worldWarUrlBtnKey ?? ""
     let isVisibleBtn = !::u.isEmpty(worldWarUrlBtnKey)
-    let btnObj = this.showSceneBtn("ww_wiki", isVisibleBtn)
+    let btnObj = showSceneBtn("ww_wiki", isVisibleBtn)
     if (!isVisibleBtn || !btnObj?.isValid())
       return
 
@@ -994,7 +993,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   {
     let rewards = fillTrophyList().extend(fillUnlocksList())
     let isRewardsVisible = rewards.len() > 0
-    this.showSceneBtn("rewards_panel", isRewardsVisible)
+    showSceneBtn("rewards_panel", isRewardsVisible)
     if (isRewardsVisible)
       fillRewards(rewards)
   }

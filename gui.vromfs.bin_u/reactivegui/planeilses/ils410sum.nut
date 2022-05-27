@@ -79,7 +79,7 @@ let SUMAltitude = @() {
     @() {
       watch = SUMAltValue
       size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       color = IlsColor.value
       fontSize = 60
       font = Fonts.hud
@@ -92,7 +92,7 @@ let SUMSpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let SUMSpeed = @() {
   watch = SUMSpeedValue
   size = SIZE_TO_CONTENT
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   pos = [pw(27), ph(25)]
   color = IlsColor.value
   fontSize = 60

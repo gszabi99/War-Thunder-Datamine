@@ -14,10 +14,10 @@ local RespawnBase = class
 
   static MAP_ID_NOTHING = MAP_SELECT_NOTHING
 
-  constructor(v_id, v_isAutoSelected = false)
+  constructor(_id, _isAutoSelected = false)
   {
-    id = v_id
-    isAutoSelected = v_isAutoSelected
+    id = _id
+    isAutoSelected = _isAutoSelected
     name = getRespawnBaseNameById(id)
     isRandom = name == "missions/random_spawn" || name == "missions/ground_spawn_random"
     isDefault = isDefaultRespawnBase(id)

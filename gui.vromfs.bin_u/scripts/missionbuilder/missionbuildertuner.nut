@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText,
         getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -76,7 +75,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
     local weapons = getWeaponsList(unitId, weapTags)
     if (weapons.values.len() == 0)
     {
-      ::dagor.debug($"Bomber without bombs: {unitId}")
+      dagor.debug($"Bomber without bombs: {unitId}")
       weapons = getWeaponsList(unitId)
     }
 
@@ -117,7 +116,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
           id = ""
           cellType = "left"
           width = "45%pw"
-          rawParam = format("overflow:t='hidden'; optiontext{ text:t='%s' }", ::locOrStrip(labelText))
+          rawParam = ::format("overflow:t='hidden'; optiontext{ text:t='%s' }", ::locOrStrip(labelText))
         } }, { params = {
           id = ""
           cellType = "right"
@@ -196,7 +195,7 @@ let { cutPostfix } = require("%sqstd/string.nut")
       let isFighter = armada.getBool("mustBeFighter", false);
       let isAssault = armada.getBool("mustBeAssault", false);
       let minCount = armada.getInt("minCount", 1);
-      let maxCount = max(armada.getInt("maxCount", maxSquadSize), count)
+      let maxCount = ::max(armada.getInt("maxCount", maxSquadSize), count)
       let excludeTag = isFreeFlight ? "not_in_free_flight" : "not_in_dynamic_campaign";
 
       if ((name == "") || (aircraft == ""))

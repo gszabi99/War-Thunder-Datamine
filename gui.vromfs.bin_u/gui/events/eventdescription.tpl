@@ -3,11 +3,13 @@ tdiv {
   pos:t='0,0'
   position:t='relative'
   size:t='fw, ph'
+  padding-right:t='1@blockInterval'
   flow:t='vertical'
   css-hier-invalidate:t='yes'
 
   tdiv {
     width:t='pw'
+    background-color:t='@separatorBlockColor'
 
     tdiv {
       position:t='relative'
@@ -41,7 +43,8 @@ tdiv {
 
     tdiv { //info texts
       width:t='pw'
-      padding:t='0, 0, 0, 1@blockInterval'
+      padding:t='1@blockInterval, 0'
+      background-color:t='@separatorBlockColor'
 
       tdiv { //left info
         width:t='fw'
@@ -146,7 +149,7 @@ tdiv {
           btnName:t='start'
           display:t='hide'
           enable:t='no'
-          visualStyle:t="secondary"
+          visualStyle:t="purchase"
           buttonWink{}
           ButtonImg{}
         }
@@ -163,13 +166,10 @@ tdiv {
         }
       }
     }
-    
-    rowSeparator {}
-
     tdiv {
       width:t='pw'
       min-height:t='1@eventTacticalMapSize + 3@leaderboardTrHeight + 0.02@sf + 1@buttonHeight'
-      padding-top:t='2@blockInterval'
+      padding-top:t='0.01@scrn_tgt'
 
       tdiv {
         id:t='tactical-map'

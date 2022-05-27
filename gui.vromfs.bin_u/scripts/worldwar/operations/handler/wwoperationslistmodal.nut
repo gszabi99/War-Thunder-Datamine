@@ -107,8 +107,8 @@ local { getOperationById, getOperationGroupByMapId
   {
     let view = getOperationsListView()
     let isOperationListVisible = view != null
-    this.showSceneBtn("chapter_place", isOperationListVisible)
-    this.showSceneBtn("separator_line", isOperationListVisible)
+    showSceneBtn("chapter_place", isOperationListVisible)
+    showSceneBtn("separator_line", isOperationListVisible)
     let data = ::handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList", view)
     guiScene.replaceContentFromText(opListObj, data, data.len(), this)
 

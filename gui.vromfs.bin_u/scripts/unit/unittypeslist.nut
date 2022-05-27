@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 
@@ -48,32 +47,32 @@ local unitTypes = {
     hasAiGunners = false
 
     isAvailable = function() { return false }
-    isVisibleInShop = function() { return this.isAvailable() }
-    isAvailableForFirstChoice = function(country = null) { return this.isAvailable() }
+    isVisibleInShop = function() { return isAvailable() }
+    isAvailableForFirstChoice = function(country = null) { return isAvailable() }
     isFirstChosen = function()
-      { return this.firstChosenTypeUnlockName != null && ::is_unlocked(-1, this.firstChosenTypeUnlockName) }
-    getTestFlightText = function() { return ::loc("mainmenu/btn" + this.testFlightName ) }
-    getTestFlightUnavailableText = function() { return ::loc("mainmenu/cant" + this.testFlightName ) }
-    getBailoutButtonText = @() ::loc($"flightmenu/{this.bailoutName}")
-    getBailoutQuestionText = @() ::loc($"flightmenu/{this.bailoutQuestion}")
-    getArmyLocName = function() { return ::loc("mainmenu/" + this.armyId, "") }
-    getCrewArmyLocName = @() ::loc("unit_type/" + (crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""))
-    getCrewTag = @() crewUnitTypeConfig?[this.crewUnitType]?.crewTag ?? ""
-    getLocName = function() { return ::loc(format("unit_type/%s", this.tag), "") }
+      { return firstChosenTypeUnlockName != null && ::is_unlocked(-1, firstChosenTypeUnlockName) }
+    getTestFlightText = function() { return ::loc("mainmenu/btn" + testFlightName ) }
+    getTestFlightUnavailableText = function() { return ::loc("mainmenu/cant" + testFlightName ) }
+    getBailoutButtonText = @() ::loc($"flightmenu/{bailoutName}")
+    getBailoutQuestionText = @() ::loc($"flightmenu/{bailoutQuestion}")
+    getArmyLocName = function() { return ::loc("mainmenu/" + armyId, "") }
+    getCrewArmyLocName = @() ::loc("unit_type/" + (crewUnitTypeConfig?[crewUnitType]?.crewTag ?? ""))
+    getCrewTag = @() crewUnitTypeConfig?[crewUnitType]?.crewTag ?? ""
+    getLocName = function() { return ::loc(::format("unit_type/%s", tag), "") }
     canUseSeveralBulletsForGun = false
     modClassOrder = []
     isSkinAutoSelectAvailable = @() false
-    canSpendGold = @() this.isAvailable()
+    canSpendGold = @() isAvailable()
     canShowProtectionAnalysis = @() false
     canShowVisualEffectInProtectionAnalysis = @() false
-    haveAnyUnitInCountry = @(countryName) isCountryHaveUnitType(countryName, this.esUnitType)
+    haveAnyUnitInCountry = @(countryName) isCountryHaveUnitType(countryName, esUnitType)
     isAvailableByMissionSettings = function(misBlk, useKillStreaks = null)
     {
       if (useKillStreaks == null)
         useKillStreaks = misBlk?.useKillStreaks ?? false
-      return (misBlk?[this.missionSettingsAvailabilityFlag] ?? false) && (!this.isUsedInKillStreaks || !useKillStreaks)
+      return (misBlk?[missionSettingsAvailabilityFlag] ?? false) && (!isUsedInKillStreaks || !useKillStreaks)
     }
-    getMissionAllowedCraftsClassName = @() this.name.tolower()
+    getMissionAllowedCraftsClassName = @() name.tolower()
 
     bulletSetsQuantity = BULLETS_SETS_QUANTITY_SHORT
     wheelmenuAxis = []
@@ -91,13 +90,13 @@ local unitTypes = {
 
   function getByEsUnitType(esUnitType)
   {
-    return enums.getCachedType("esUnitType", esUnitType, this.cache.byEsUnitType, this, this.INVALID)
+    return enums.getCachedType("esUnitType", esUnitType, cache.byEsUnitType, this, INVALID)
   }
 
   function getArrayBybitMask(bitMask)
   {
     let typesArray = []
-    foreach (t in this.types)
+    foreach (t in types)
     {
       if ((t.bit & bitMask) != 0)
         typesArray.append(t)
@@ -107,44 +106,44 @@ local unitTypes = {
 
   function getByBit(bit)
   {
-    return enums.getCachedType("bit", bit, this.cache.byBit, this, this.INVALID)
+    return enums.getCachedType("bit", bit, cache.byBit, this, INVALID)
   }
 
   function getByName(typeName, caseSensitive = true)
   {
-    let cacheTbl = caseSensitive ? this.cache.byName : this.cache.byNameNoCase
-    return enums.getCachedType("name", typeName, cacheTbl, this, this.INVALID, caseSensitive)
+    let cacheTbl = caseSensitive ? cache.byName : cache.byNameNoCase
+    return enums.getCachedType("name", typeName, cacheTbl, this, INVALID, caseSensitive)
   }
 
   function getByArmyId(armyId)
   {
-    return enums.getCachedType("armyId", armyId, this.cache.byArmyId, this, this.INVALID)
+    return enums.getCachedType("armyId", armyId, cache.byArmyId, this, INVALID)
   }
 
   function getByTag(tag)
   {
-    return enums.getCachedType("tag", tag, this.cache.byTag, this, this.INVALID)
+    return enums.getCachedType("tag", tag, cache.byTag, this, INVALID)
   }
 
   function getByUnitName(unitId)
   {
     let unit = ::getAircraftByName(unitId)
-    return unit ? unit.unitType : this.INVALID
+    return unit ? unit.unitType : INVALID
   }
 
   function getTypeMaskByTagsString(listStr, separator = "; ", bitMaskName = "bit")
   {
     local res = 0
-    let list = split_by_chars(listStr, separator)
+    let list = ::split(listStr, separator)
     foreach(tag in list)
-      res = res | this.getByTag(tag)[bitMaskName]
+      res = res | getByTag(tag)[bitMaskName]
     return res
   }
 
   function getEsUnitTypeMaskByCrewUnitTypeMask(crewUnitTypeMask)
   {
     local res = 0
-    foreach(t in this.types)
+    foreach(t in types)
       if (crewUnitTypeMask & (1 << t.crewUnitType))
         res = res | t.esUnitType
     return res
@@ -166,12 +165,12 @@ local unitTypes = {
     enums.addTypes(this, typesTable,
       function()
       {
-        if (this.esUnitType != ::ES_UNIT_TYPE_INVALID)
+        if (esUnitType != ::ES_UNIT_TYPE_INVALID)
         {
-          this.bit = 1 << this.esUnitType
-          this.bitCrewType = 1 << this.crewUnitType
+          bit = 1 << esUnitType
+          bitCrewType = 1 << crewUnitType
         }
-        this.lowerName = this.name.tolower()
+        lowerName = name.tolower()
       },
       "typeName",
       "unitTypesList"

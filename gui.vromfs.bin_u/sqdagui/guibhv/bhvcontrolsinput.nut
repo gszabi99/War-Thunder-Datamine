@@ -6,7 +6,7 @@ local gestureInProgress = false
 
   function onLMouse(obj, mx, my, is_up, bits)
   {
-    this.setMouseButton(obj, "0", is_up)
+    setMouseButton(obj, "0", is_up)
     return ::RETCODE_HALT
   }
 
@@ -27,7 +27,7 @@ local gestureInProgress = false
       btn="6"
 
     if (btn)
-      this.setMouseButton(obj, btn, is_up)
+      setMouseButton(obj, btn, is_up)
     return ::RETCODE_HALT
   }
 
@@ -63,14 +63,14 @@ local gestureInProgress = false
 
   function setMouseButton(obj, button, is_up)
   {
-    if (!this.checkActive(obj) || gestureInProgress)
+    if (!checkActive(obj) || gestureInProgress)
       return
     if (!is_up)
     {
-      let btnIndex = this.getCurrentBtnIndex(obj)
+      let btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
-        if (!this.isExistsShortcut(obj, ::STD_MOUSE_DEVICE_ID.tostring(), button))
+        if (!isExistsShortcut(obj, ::STD_MOUSE_DEVICE_ID.tostring(), button))
         {
           obj["device" + btnIndex] = ::STD_MOUSE_DEVICE_ID.tostring()
           obj["button" + btnIndex] = button
@@ -98,14 +98,14 @@ local gestureInProgress = false
 
   function onKbd(obj, event, btn_idx)
   {
-    if (!this.checkActive(obj))
+    if (!checkActive(obj))
       return ::RETCODE_HALT
     if (event == ::EV_KBD_DOWN)
     {
-      let btnIndex = this.getCurrentBtnIndex(obj)
+      let btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
-        if (!this.isExistsShortcut(obj, ::STD_KEYBOARD_DEVICE_ID.tostring(), btn_idx.tostring()))
+        if (!isExistsShortcut(obj, ::STD_KEYBOARD_DEVICE_ID.tostring(), btn_idx.tostring()))
         {
           obj["device" + btnIndex] = ::STD_KEYBOARD_DEVICE_ID.tostring()
           obj["button" + btnIndex] = btn_idx.tostring()
@@ -139,7 +139,7 @@ local gestureInProgress = false
 
   function onJoystick(obj, joy, btn_idx, is_up, buttons)
   {
-    if (!this.checkActive(obj))
+    if (!checkActive(obj))
       return ::RETCODE_HALT
 
     // Gamepad START btn is reserved for toggling the input listening mode off/on.
@@ -155,14 +155,14 @@ local gestureInProgress = false
         let id = ::JOYSTICK_DEVICE_0_ID
         if (id>=0)
         {
-          let btnIndex = this.getCurrentBtnIndex(obj)
+          let btnIndex = getCurrentBtnIndex(obj)
           if (btnIndex >= 0 && !obj["device" + btnIndex].len())
           {
-            if (!this.isExistsShortcut(obj, id.tostring(), btn_idx.tostring()))
+            if (!isExistsShortcut(obj, id.tostring(), btn_idx.tostring()))
             {
               let checkAnalog = obj?["check_analog"]
               if (checkAnalog == null || checkAnalog.tointeger() == 0 ||
-                (obj["device0"] != "" && obj["button0"] != "") || !this.isAnalog(id, btn_idx))
+                (obj["device0"] != "" && obj["button0"] != "") || !isAnalog(id, btn_idx))
               {
                 obj["device" + btnIndex] = id.tostring()
                 obj["button" + btnIndex] = btn_idx.tostring()
@@ -183,16 +183,16 @@ local gestureInProgress = false
 
   function onGesture(obj, event, gesture_idx)
   {
-    if (!this.checkActive(obj))
+    if (!checkActive(obj))
       return ::RETCODE_HALT
 
     if (event == ::EV_GESTURE_START)
     {
       gestureInProgress = true
-      let btnIndex = this.getCurrentBtnIndex(obj)
+      let btnIndex = getCurrentBtnIndex(obj)
       if (btnIndex >= 0 && !obj["device" + btnIndex].len())
       {
-        if (!this.isExistsShortcut(obj, ::STD_GESTURE_DEVICE_ID.tostring(), gesture_idx.tostring()))
+        if (!isExistsShortcut(obj, ::STD_GESTURE_DEVICE_ID.tostring(), gesture_idx.tostring()))
         {
           obj["device" + btnIndex] = ::STD_GESTURE_DEVICE_ID.tostring()
           obj["button" + btnIndex] = gesture_idx.tostring()

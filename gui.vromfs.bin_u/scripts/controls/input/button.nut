@@ -7,11 +7,11 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
   preset = null
 
-  constructor(dev, btn, presetV = null)
+  constructor(dev, btn, _preset = null)
   {
     deviceId = dev
     buttonId = btn
-    preset = presetV || ::g_controls_manager.getCurPreset()
+    preset = _preset || ::g_controls_manager.getCurPreset()
   }
 
   function getMarkup()

@@ -28,7 +28,7 @@ elemViewType.addTypes({
         return
 
       let nestObj = obj.getParent().getParent()
-      if (!::check_obj(nestObj))
+      if (!check_obj(nestObj))
         return
 
       let isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||

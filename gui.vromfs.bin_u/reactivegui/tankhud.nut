@@ -31,8 +31,8 @@ let function Root() {
     size = [sw(100), sh(100)]
     children = [
       mkRadar(radarPosComputed)
-      aamAim(colorWacthed, colorAlertWatched, false)
-      agmAim(colorWacthed, false)
+      aamAim(false, colorWacthed, colorAlertWatched)
+      agmAim(false, colorWacthed)
       IndicatorsVisible.value
         ? @() {
             children = [
@@ -51,7 +51,7 @@ let tankXrayIndicator = @() {
   rotateWithCamera = true
   size = [pw(62), ph(62)]
   behavior = Behaviors.RecalcHandler
-  function onRecalcLayout(_initial, elem) {
+  function onRecalcLayout(initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
       ::cross_call.update_damage_panel_state({
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]

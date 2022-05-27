@@ -33,7 +33,7 @@ let _matching = {
 */
 ::matching_api_func <- function matching_api_func(name, cb, params = null)
 {
-  ::dagor.debug("send matching request: " + name)
+  dagor.debug("send matching request: " + name)
   matching.rpc_call(name, _matching.translate_matching_params(params),
     function (resp)
     {
@@ -44,7 +44,7 @@ let _matching = {
 
 ::matching_api_notify <- function matching_api_notify(name, params = null)
 {
-  ::dagor.debug("send matching notify: " + name)
+  dagor.debug("send matching notify: " + name)
   matching.notify(name, _matching.translate_matching_params(params))
 }
 

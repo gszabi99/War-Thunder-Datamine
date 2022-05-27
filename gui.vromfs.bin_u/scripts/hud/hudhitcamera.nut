@@ -52,15 +52,15 @@
   }
 }
 
-g_hud_hitcamera.init <- function init(nest)
+g_hud_hitcamera.init <- function init(_nest)
 {
-  if (!::checkObj(nest))
+  if (!::checkObj(_nest))
     return
 
-  if (::checkObj(scene) && scene.isEqual(nest))
+  if (::checkObj(scene) && scene.isEqual(_nest))
     return
 
-  scene = nest
+  scene = _nest
   titleObj = scene.findObject("title")
   infoObj  = scene.findObject("info")
 

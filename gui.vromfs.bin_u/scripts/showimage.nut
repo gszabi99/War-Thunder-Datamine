@@ -1,4 +1,3 @@
-let { format } = require("string")
 ::view_fullscreen_image <- function view_fullscreen_image(obj)
 {
   ::handlersManager.loadHandler(::gui_handlers.ShowImage, { showObj = obj })
@@ -63,7 +62,7 @@ let { format } = require("string")
     imgObj["max-width"] = maxSize[0].tostring()
     imgObj["max-height"] = maxSize[1].tostring()
     imgObj["background-image"] = image
-    imgObj["background-svg-size"] = format("%d, %d", maxSize[0], maxSize[1])
+    imgObj["background-svg-size"] = ::format("%d, %d", maxSize[0], maxSize[1])
     imgObj["background-repeat"] = showObj?["background-repeat"] ?? "aspect-ratio"
 
     frameObj = scene.findObject("imgFrame")
@@ -171,9 +170,9 @@ let { format } = require("string")
     }
 
     imgObj["background-image"] = image
-    imgObj.width  = format("%d", size[0])
-    imgObj.height = format("%d", size[1])
-    imgObj["background-svg-size"] = format("%d, %d", size[0], size[1])
+    imgObj.width  = ::format("%d", size[0])
+    imgObj.height = ::format("%d", size[1])
+    imgObj["background-svg-size"] = ::format("%d, %d", size[0], size[1])
     imgObj["background-repeat"] = "aspect-ratio"
 
     scene.findObject("btn_back").show(true)

@@ -1,4 +1,3 @@
-let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let globalEnv = require("globalEnv")
 let { getShortcutById } = require("%scripts/controls/shortcutsUtils.nut")
@@ -471,7 +470,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
 
     splitCompositAxis = function (compositAxis)
     {
-      return split_by_chars(compositAxis, "+")
+      return ::split(compositAxis, "+")
     }
 
     isAssigned = function (shortcutId, preset = null)

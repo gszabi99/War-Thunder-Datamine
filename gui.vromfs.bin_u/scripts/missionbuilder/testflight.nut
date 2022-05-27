@@ -48,10 +48,10 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
 
     ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
-    let btnBuilder = this.showSceneBtn("btn_builder", hasMissionBuilder)
+    let btnBuilder = showSceneBtn("btn_builder", hasMissionBuilder)
     if (hasMissionBuilder)
       btnBuilder.setValue(::loc("mainmenu/btnBuilder"))
-    this.showSceneBtn("btn_select", true)
+    showSceneBtn("btn_select", true)
 
     needSlotbar = needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
     if (needSlotbar)
@@ -62,7 +62,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       frameObj.withSlotbar = "yes"
     }
 
-    this.showSceneBtn("unit_weapons_selector", true)
+    showSceneBtn("unit_weapons_selector", true)
     guiScene.applyPendingChanges(false)
 
     guiScene.setUpdatesEnabled(false, false)
@@ -280,7 +280,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       saveAircraftOptions()
 
       if (needSlotbar) // There is a slotbar in this scene
-        this.msgBox("not_available",
+        msgBox("not_available",
           ::loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
@@ -310,7 +310,7 @@ local { getActionBarUnitName } = ::require_native("hudActionBar")
       return onMissionBuilder()
 
     if (!isTestFlightAvailable())
-      return this.msgBox("not_available", getCantFlyText(unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      return msgBox("not_available", getCantFlyText(unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
 
     if (::isInArray(getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))

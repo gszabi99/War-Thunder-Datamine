@@ -13,18 +13,18 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   rootDescId = "item_desc"
 
   //this handler dosnt create own scene, just search objects in already exist scene.
-  static function link(v_scene, v_descItem = null, v_map = null, v_descParams = {})
+  static function link(_scene, _descItem = null, _map = null, _descParams = {})
   {
     let params = {
-      scene = v_scene
-      descItem = v_descItem
-      map = v_map
-      descParams = v_descParams
+      scene = _scene
+      descItem = _descItem
+      map = _map
+      descParams = _descParams
     }
 
-    if ((!v_descItem && v_map) || (v_descItem instanceof ::WwOperation))
+    if ((!_descItem && _map) || (_descItem instanceof ::WwOperation))
       return ::handlersManager.loadHandler(::gui_handlers.WwOperationDescriptionCustomHandler, params)
-    else if (v_descItem instanceof ::WwQueue)
+    else if (_descItem instanceof ::WwQueue)
       return ::handlersManager.loadHandler(::gui_handlers.WwQueueDescriptionCustomHandler, params)
   }
 
@@ -75,7 +75,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
     if (scene.id == rootDescId)
       scene.show(isShow)
     else
-      this.showSceneBtn(rootDescId, isShow)
+      showSceneBtn(rootDescId, isShow)
   }
 
   function updateName()

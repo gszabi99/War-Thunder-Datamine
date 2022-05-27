@@ -91,7 +91,7 @@ let function sortBoosters(boosters, effectType)
   }
   foreach(booster in boosters)
   {
-    res.maxSortOrder = max(::getTblValue("maxSortOrder", res, 0), booster.sortOrder)
+    res.maxSortOrder = ::max(::getTblValue("maxSortOrder", res, 0), booster.sortOrder)
     if (!::getTblValue(booster.sortOrder, res))
       res[booster.sortOrder] <- {
         personal = [],

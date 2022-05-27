@@ -42,7 +42,7 @@
     {
       let shortcutData = []
 
-      let numButtons = min(shortcut.dev.len(), shortcut.btn.len())
+      let numButtons = ::min(shortcut.dev.len(), shortcut.btn.len())
       for (local j = 0; j < numButtons; j++)
         shortcutData.append({
           deviceId = shortcut.dev[j]
@@ -130,7 +130,7 @@ let joystick_params_template = {
 
 ::joystick_get_cur_settings <- function joystick_get_cur_settings()
 {
-  let result = ::JoystickParams()
+  let result = JoystickParams()
   ::u.extend(result, ::g_controls_manager.getCurPreset().params)
   return result
 }

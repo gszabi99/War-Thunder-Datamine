@@ -239,8 +239,7 @@
           "armorThickness": 60.0
         },
         "gun_mask_dm": {
-          "armorThickness": 100.0,
-          "variableThickness": true
+          "armorThickness": 100.0
         }
       },
       "hull_turret_cha": {
@@ -283,7 +282,6 @@
           "createSecondaryShatters": false
         },
         "turret_01_back_dm": {
-          "armorClass": "t_90_rubber_fabric_screens",
           "armorThickness": 10.0
         },
         "turret_02_back_dm": {
@@ -1268,8 +1266,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1313,8 +1311,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1322,8 +1320,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1331,8 +1329,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1371,29 +1369,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2028,6 +2026,9 @@
         },
         {
           "part": "drive_turret_h_02_dm"
+        },
+        {
+          "part": "transmission_dm"
         },
         {
           "part": "ammo_turret_dm"
@@ -2748,7 +2749,7 @@
   },
   {
     "sound": {
-      "EngineName": "engine_challenger",
+      "EngineName": "engine_chieftain",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_mbt",

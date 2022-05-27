@@ -1,4 +1,3 @@
-let { split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let promoConditions = require("%scripts/promo/promoConditions.nut")
@@ -47,7 +46,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!("reqEntitlement" in block))
       return true
 
-    return split_by_chars(block.reqEntitlement, "; ").findvalue(@(ent) ::has_entitlement(ent) == 1 ) != null
+    return ::split(block.reqEntitlement, "; ").findvalue(@(ent) ::has_entitlement(ent) == 1 ) != null
   }
 }
 
@@ -373,7 +372,7 @@ g_promo.checkBlockReqFeature <- function checkBlockReqFeature(block)
   if (!("reqFeature" in block))
     return true
 
-  return hasAllFeatures(split_by_chars(block.reqFeature, "; "))
+  return hasAllFeatures(::split(block.reqFeature, "; "))
 }
 
 g_promo.checkBlockUnlock <- function checkBlockUnlock(block)
@@ -557,7 +556,7 @@ g_promo.launchAction <- function launchAction(actionData, handler, obj)
   {
     ::dagor.assert(false, "Promo: Not found action in actions table. Action " + action)
     ::dagor.debug("Promo: Rest params of paramsArray")
-    ::debugTableData(actionData)
+    debugTableData(actionData)
     return false
   }
 

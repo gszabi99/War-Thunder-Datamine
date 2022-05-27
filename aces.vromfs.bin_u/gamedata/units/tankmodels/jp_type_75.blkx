@@ -413,7 +413,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1319,8 +1318,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1364,8 +1363,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1373,8 +1372,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1382,8 +1381,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1422,29 +1421,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2391,7 +2390,7 @@
           "parkInDeadzone": false,
           "autoLoader": true,
           "speedYaw": 12.0,
-          "speedPitch": 15.0,
+          "speedPitch": 5.0,
           "fireConeAngle": 1.0,
           "bullets": 28,
           "salvoAmount": 100.0,
@@ -2505,42 +2504,27 @@
       "mechanics": {
         "maxBrakeForce": 130000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 5.65,
-        "sideGearRatio": 1.0,
+        "mainGearRatio": 1.0,
+        "sideGearRatio": 4.2,
         "neutralGearRatio": 10.0,
         "gearRatios": [
           {
-            "ratio": -2.58
-          },
-          {
-            "ratio": -5.16
+            "ratio": -4.61
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 7.76
+            "ratio": 8.0
           },
           {
-            "ratio": 3.88
+            "ratio": 6.0
           },
           {
-            "ratio": 3.115
+            "ratio": 2.6
           },
           {
-            "ratio": 2.35
-          },
-          {
-            "ratio": 1.94
-          },
-          {
-            "ratio": 1.53
-          },
-          {
-            "ratio": 1.28
-          },
-          {
-            "ratio": 1.03
+            "ratio": 1.39
           }
         ]
       },

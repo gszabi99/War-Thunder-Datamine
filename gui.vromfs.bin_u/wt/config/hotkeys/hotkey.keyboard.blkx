@@ -1470,20 +1470,12 @@
           "name": "ID_GUIDED_BOMBS"
         },
         {
-          "shortcut": [
-            {
-              "button": {
-                "deviceId": 2,
-                "buttonId": 56
-              }
-            },
-            {
-              "button": {
-                "deviceId": 2,
-                "buttonId": 57
-              }
+          "shortcut": {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 57
             }
-          ]
+          }
         },
         {
           "shortcut": {
@@ -1787,7 +1779,7 @@
           {
             "button": {
               "deviceId": 2,
-              "buttonId": 29
+              "buttonId": 57
             }
           }
         ]
@@ -3698,6 +3690,16 @@
     },
     {
       "event": {
+        "name": "rudder_right"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left"
+      }
+    },
+    {
+      "event": {
         "name": "camy"
       }
     },
@@ -4070,6 +4072,36 @@
     {
       "event": {
         "name": "zoom_rangeSet"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left_rangeMin"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left_rangeMax"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left_rangeSet"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_right_rangeMin"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_right_rangeMax"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_right_rangeSet"
       }
     },
     {
@@ -4984,6 +5016,30 @@
         "kMul": 1.0,
         "relSens": 1.0,
         "relative": true
+      },
+      "rudder_left": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "rudder_right": {
+        "axisId": -1,
+        "innerDeadzone": 0.0,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
       },
       "fire": {
         "axisId": -1,

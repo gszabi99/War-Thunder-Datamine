@@ -10,8 +10,8 @@ let defStyle = {
   defTextColor = colors.menu.commonTextColor
   ulSpacing = ::fpx(15)
   ulGap = blockInterval
-  ulBullet = {rendObj = ROBJ_TEXT, font = fontsState.get("normal"), text=" • "}
-  ulNoBullet= { rendObj = ROBJ_TEXT, font = fontsState.get("normal"), text="   " }
+  ulBullet = {rendObj = ROBJ_DTEXT, font = fontsState.get("normal"), text=" • "}
+  ulNoBullet= { rendObj = ROBJ_DTEXT, font = fontsState.get("normal"), text="   " }
   h1Font = fontsState.get("bigBold")
   h2Font = fontsState.get("medium")
   h3Font = fontsState.get("normal")
@@ -27,9 +27,9 @@ let defStyle = {
   padding = blockInterval
 }
 
-let noTextFormatFunc = @(object, _style=defStyle) object
+let noTextFormatFunc = @(object, style=defStyle) object
 
-let function textArea(params, _formatTextFunc=noTextFormatFunc, style=defStyle){
+let function textArea(params, formatTextFunc=noTextFormatFunc, style=defStyle){
   return {
     rendObj = ROBJ_TEXTAREA
     text = params?.v
@@ -48,7 +48,7 @@ let function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
   return function() {
     let color = stateFlags.value & S_HOVER ? style.urlHoverColor : style.urlColor
     return {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       text = data?.v ?? data.url
       behavior = Behaviors.Button
       color = color
@@ -64,11 +64,11 @@ let function url(data, fmtFunc=noTextFormatFunc, style=defStyle){
 }
 
 let function mkUlElement(bullet){
-  return function (elem, formatTextFunc=noTextFormatFunc, _style=defStyle) {
+  return function (elem, formatTextFunc=noTextFormatFunc, style=defStyle) {
     local res = formatTextFunc(elem)
     if (res==null)
       return null
-    if (type(res)!="array")
+    if (::type(res)!="array")
       res = [res]
     return {
       size = [flex(), SIZE_TO_CONTENT]
@@ -86,7 +86,7 @@ let function mkList(elemFunc){
     })
   }
 }
-let function horizontal(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
+let function horizontal(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_HORIZONTAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -94,7 +94,7 @@ let function horizontal(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
   })
 }
 
-let function accent(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
+let function accent(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_HORIZONTAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -104,7 +104,7 @@ let function accent(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
   })
 }
 
-let function vertical(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
+let function vertical(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return obj.__merge({
     flow = FLOW_VERTICAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -124,7 +124,7 @@ let function textParsed(params, formatTextFunc=noTextFormatFunc, style=defStyle)
   return textArea(params, formatTextFunc, style)
 }
 
-let function column(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
+let function column(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   return {
     flow = FLOW_VERTICAL
     size = [flex(), SIZE_TO_CONTENT]
@@ -134,7 +134,7 @@ let function column(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
 
 let getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx+1], 100, false)
 
-let function columns(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
+let function columns(obj, formatTextFunc=noTextFormatFunc, style=defStyle){
   local preset = obj?.preset ?? "single"
   preset = preset.split("_")
   local cols = obj.v.filter(@(v) v?.t=="column")
@@ -153,7 +153,7 @@ let function columns(obj, formatTextFunc=noTextFormatFunc, _style=defStyle){
   }
 }
 
-let function video(obj, _formatTextFunc, style=defStyle) {
+let function video(obj, formatTextFunc, style=defStyle) {
   let stateFlags = Watched(0)
   let width = ::fpx(obj?.imageWidth ?? 300)
   let height = ::fpx(obj?.imageHeight ?? 80)
@@ -176,7 +176,7 @@ let function video(obj, _formatTextFunc, style=defStyle) {
       color = Color(0,0,0,150)
       halign = ALIGN_CENTER
       size = [flex(), SIZE_TO_CONTENT]
-      children = {rendObj = ROBJ_TEXT text = obj?.caption
+      children = {rendObj = ROBJ_DTEXT text = obj?.caption
         ?? ::loc("Watch video") padding = ::fpx(5)}
     })
     onClick = function() {
@@ -186,7 +186,7 @@ let function video(obj, _formatTextFunc, style=defStyle) {
   }.__update(obj)
 }
 
-let function image(obj, _formatTextFunc=noTextFormatFunc, style=defStyle) {
+let function image(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {
   return {
     rendObj = ROBJ_IMAGE
     image=::Picture(obj.v)
@@ -196,7 +196,7 @@ let function image(obj, _formatTextFunc=noTextFormatFunc, style=defStyle) {
         ? ::fpx(obj.height) : ::fpx(200)]
     keepAspect=true padding=style.padding
     children = {
-      rendObj = ROBJ_TEXT text = obj?.caption vplace = ALIGN_BOTTOM
+      rendObj = ROBJ_DTEXT text = obj?.caption vplace = ALIGN_BOTTOM
       fontFxColor = Color(0,0,0,150)
       fontFxFactor = min(64, ::fpx(64))
       fontFx = FFT_GLOW
@@ -231,7 +231,7 @@ let formatters = {
   bullets
   list = bullets
   indent
-  sep = @(obj, _formatTextFunc=noTextFormatFunc, _style=defStyle) separatorCmp.__merge(obj)
+  sep = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) separatorCmp.__merge(obj)
   horizontal
   vertical
   accent

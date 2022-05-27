@@ -132,9 +132,6 @@
       },
       "hull_RHA": {
         "armorClass": "RHA_tank",
-        "turret_06_bottom_dm": {
-          "armorThickness": 20.0
-        },
         "superstructure_side_dm": {
           "armorThickness": 51.0,
           "armorClass": "CHA_tank"
@@ -150,7 +147,7 @@
           "armorThickness": 25.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 30.0
         },
         "body_bottom_dm": {
           "armorThickness": 38.0,
@@ -198,9 +195,6 @@
         },
         "turret_02_front_dm": {
           "armorThickness": 5.0
-        },
-        "body_top_dm": {
-          "armorThickness": 10.0
         }
       },
       "side_decor": {
@@ -273,6 +267,9 @@
         "gun_mask_05_dm": {
           "armorThickness": 82.0
         },
+        "body_top_dm": {
+          "armorThickness": 10.0
+        },
         "turret_01_side_dm": {
           "armorThickness": 29.7
         },
@@ -281,6 +278,9 @@
         },
         "turret_05_bottom_dm": {
           "armorThickness": 57.0
+        },
+        "turret_06_bottom_dm": {
+          "armorThickness": 73.0
         },
         "turret_01_top_dm": {
           "armorThickness": 30.0
@@ -421,9 +421,7 @@
           "ex_armor_body_r_01_dm": [],
           "ex_armor_body_l_01_dm": [],
           "ex_armor_turret_01_dm": [],
-          "ex_armor_07_dm": [],
-          "ex_armor_r_01_dm": [],
-          "ex_armor_l_01_dm": []
+          "ex_armor_07_dm": []
         }
       },
       "gun": {
@@ -476,7 +474,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1390,8 +1387,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1435,8 +1432,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1444,8 +1441,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1453,8 +1450,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1493,29 +1490,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2675,6 +2672,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.6381,
+        "height": 0.12,
+        "width": 0.5,
         "tracksTensionK": [4.5,8.0,2.0],
         "trackMesh": "us_t97_phys_track_line",
         "trackLen": 0.176,
@@ -2684,9 +2683,7 @@
         "trackEmitSparks": false,
         "trackMaxHeight": 1.5,
         "trackStartOffset": 0.17,
-        "trackMaxSinking": 0.05,
-        "height": 0.12,
-        "width": 0.5
+        "trackMaxSinking": 0.05
       },
       "collisionProps": {
         "cls_turret": "convex_hull",

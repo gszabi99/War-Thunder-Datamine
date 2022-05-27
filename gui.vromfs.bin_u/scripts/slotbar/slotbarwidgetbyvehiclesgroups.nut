@@ -53,7 +53,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
       let realCrewsCount = crewsList.len()
       let groupsList = unitsGroupsByCountry?[listCountry].groups
       let isVisualDisabled = groupsList == null
-      let crewsCount = max(realCrewsCount, showNewSlot ? (groupsList?.len() ?? 0) : 0)
+      let crewsCount = ::max(realCrewsCount, showNewSlot ? (groupsList?.len() ?? 0) : 0)
       for(local i = 0; i < crewsCount; i++)
       {
         let crew = crewsList?[i] ?? getDefaultCrew(listCountry, idx, i)

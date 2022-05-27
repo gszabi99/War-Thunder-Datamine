@@ -6,23 +6,17 @@ let modeNames =
   "hud/search",
   "hud/acquisition",
   "hud/ACM",
-  "hud/BST",
-  "hud/VSL",
   "hud/track",
 
   "hud/PD VS standby",
   "hud/PD VS search",
   "hud/PD VS acquisition",
   "hud/PD VS ACM",
-  "hud/PD VS BST",
-  "hud/PD VS VSL",
 
   "hud/PD standby",
   "hud/PD search",
   "hud/PD acquisition",
   "hud/PD ACM",
-  "hud/PD BST",
-  "hud/PD VSL",
   "hud/PD track",
 
   "hud/LD standby",
@@ -36,13 +30,6 @@ let modeNames =
   "hud/MTI acquisition",
   "hud/MTI ACM",
   "hud/MTI track",
-
-  "hud/TWS standby",
-  "hud/TWS search",
-  "hud/TWS acquisition",
-  "hud/TWS BST",
-  "hud/TWS VSL",
-  "hud/TWS track",
 
   "hud/IRST standby",
   "hud/IRST search",
@@ -165,9 +152,9 @@ let AamLaunchZoneDist    = Watched(0.0)
 let AamLaunchZoneDistMin = Watched(0.0)
 let AamLaunchZoneDistMax = Watched(0.0)
 
-let AzimuthRange = Computed(@() max(0.0, AzimuthMax.value - AzimuthMin.value))
+let AzimuthRange = Computed(@() ::max(0.0, AzimuthMax.value - AzimuthMin.value))
 let AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
-let ElevationRange = Computed(@() max(0.0, ElevationMax.value - ElevationMin.value))
+let ElevationRange = Computed(@() ::max(0.0, ElevationMax.value - ElevationMin.value))
 let ElevationRangeInv = Computed(@() ElevationRange.value != 0 ? 1.0 / ElevationRange.value : 1.0)
 
 
@@ -227,8 +214,7 @@ radarState.__update({
 }
 
 
-::interop.updateTarget <- function (index, azimuth_rel, azimuth_width_rel, elevation_rel, elevation_width_rel, distance_rel, distance_width_rel,
-                                    age_rel, hor_speed, ver_speed, radial_speed, is_selected, is_detected, is_enemy, signal_rel) {
+::interop.updateTarget <- function (index, azimuth_rel, azimuth_width_rel, elevation_rel, elevation_width_rel, distance_rel, distance_width_rel, age_rel, is_selected, is_detected, is_enemy, signal_rel) {
   if (index >= targets.len())
     targets.resize(index + 1)
 
@@ -246,9 +232,6 @@ radarState.__update({
     distanceRel = distance_rel
     distanceWidthRel = max(distance_width_rel, 0.05)
     ageRel = age_rel
-    horSpeed = hor_speed
-    verSpeed = ver_speed
-    radialSpeed = radial_speed
     isSelected = is_selected
     isDetected = is_detected
     isEnemy = is_enemy
@@ -289,7 +272,7 @@ const targetLifeTime = 5.0
   ScreenTargetsTrigger.trigger()
 }
 
-::interop.updateScreenTarget2 <- function(id, x, y, azimuth_rate, elevation_rate, dist, speed, is_detected, is_tracked) {
+::interop.updateScreenTarget2 <- function(id, x, y, azimuth_rate, elevation_rate, dist, speed) {
   if (!screenTargets)
     screenTargets = {}
 
@@ -302,22 +285,17 @@ const targetLifeTime = 5.0
       elevationRate = elevation_rate
       dist = dist
       speed = speed
-      isDetected = is_detected
-      isTracked = is_tracked
       isUpdated = true
     }
   }
   else {
-    local screenTarget = screenTargets[id]
-    screenTarget.x = x
-    screenTarget.y = y
-    screenTarget.azimuthRate = azimuth_rate
-    screenTarget.elevationRate = elevation_rate
-    screenTarget.dist = dist
-    screenTarget.speed = speed
-    screenTarget.isDetected = is_detected
-    screenTarget.isTracked = is_tracked
-    screenTarget.isUpdated = true
+    screenTargets[id].x = x
+    screenTargets[id].y = y
+    screenTargets[id].azimuthRate = azimuth_rate
+    screenTargets[id].elevationRate = elevation_rate
+    screenTargets[id].dist = dist
+    screenTargets[id].speed = speed
+    screenTargets[id].isUpdated = true
   }
 
   ScreenTargetsTrigger.trigger()
@@ -355,11 +333,11 @@ const targetLifeTime = 5.0
 
 
 ::interop.resetTargetsFlags <- function() {
-  foreach(target in screenTargets)
+  foreach(id, target in screenTargets)
     if (target)
       target.isUpdated = false
 
-  foreach(marker in azimuthMarkers)
+  foreach(id, marker in azimuthMarkers)
     if (marker)
       marker.isUpdated = false
 }
@@ -405,7 +383,7 @@ const targetLifeTime = 5.0
   LockZoneWatched({x0, x1, x2, x3, y0, y1, y2, y3})
 }
 
-::interop.updateLockZoneRotated <- function(_x0, _y0, _x1, _y1, _x2, _y2, _x3, _y3) {}
+::interop.updateLockZoneRotated <- function(x0, y0, x1, y1, x2, y2, x3, y3) {}
 
 ::interop.updateRadarPosSize <- function(x, y, w, h) {
   radarPosSize({x, y, w, h})

@@ -31,10 +31,10 @@ enum WW_OPERATION_PRIORITY //bit enum
   isFromShortStatus = false
   isFinished = false //this parametr updated from local operation when return main menu of WWar
 
-  constructor(v_data, v_isFromShortStatus = false)
+  constructor(_data, _isFromShortStatus = false)
   {
-    data = v_data
-    isFromShortStatus = v_isFromShortStatus
+    data = _data
+    isFromShortStatus = _isFromShortStatus
     id = ::getTblValue("_id", data, -1)
     status = ::getTblValue("st", data, WW_OPERATION_STATUSES.UNKNOWN)
   }

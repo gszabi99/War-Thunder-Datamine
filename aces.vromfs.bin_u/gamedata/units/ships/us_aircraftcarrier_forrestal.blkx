@@ -30,9 +30,9 @@
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
   "explosionFx": "explosion_ship_small",
-  "smokeScreenActivateTime": 5.0,
+  "smokeScreenActivateTime": 10.0,
   "smokeScreenEffectTime": 30.0,
-  "smokeScreenRad": 60.0,
+  "smokeScreenRad": 50.0,
   "smokeScreenFx": "tank_smokescreen",
   "smokeScreenOffset": [-80.0,2.0,0.0],
   "rearmSmokeTimeOnField": 180.0,
@@ -1477,285 +1477,377 @@
       ]
     }
   ],
-  "MetaParts": {
-    "hull": [
-      {
-        "hp": 45600.0
-      },
-      {
-        "part": "cover_01_dm"
-      },
-      {
-        "part": "cover_02_dm"
-      },
-      {
-        "part": "cover_03_dm"
-      },
-      {
-        "part": "cover_04_dm"
-      },
-      {
-        "part": "cover_05_dm"
-      },
-      {
-        "part": "cover_06_dm"
-      },
-      {
-        "part": "cover_07_dm"
-      },
-      {
-        "part": "cover_08_dm"
-      },
-      {
-        "part": "cover_09_dm"
-      },
-      {
-        "part": "cover_10_dm"
-      },
-      {
+  "MetaParts": [
+    {
+      "cover": {
+        "part": "cover_01_dm",
         "effect": {
-          "conditionDead": true,
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
           "kill": true,
-          "killEffect": "hullBreak"
+          "killEffect": "destruction"
         }
       }
-    ],
-    "open_mounts": [
-      {
-        "part": "auxiliary_caliber_turret_01_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_02_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_03_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_04_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_05_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_06_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_07_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_08_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_09_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_10_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_11_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_12_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_13_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_14_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_15_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_16_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_17_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_18_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_19_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_20_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_21_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_22_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_23_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_24_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_25_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_26_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_27_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_28_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_29_dm"
-      },
-      {
-        "part": "auxiliary_caliber_turret_30_dm"
-      },
-      {
-        "part": "aa_turret_01_dm"
-      },
-      {
-        "part": "aa_turret_02_dm"
-      },
-      {
-        "part": "aa_turret_03_dm"
-      },
-      {
-        "part": "aa_turret_04_dm"
-      },
-      {
-        "part": "aa_turret_05_dm"
-      },
-      {
-        "part": "aa_turret_06_dm"
-      },
-      {
-        "part": "aa_turret_07_dm"
-      },
-      {
-        "part": "aa_turret_08_dm"
-      },
-      {
-        "part": "aa_turret_09_dm"
-      },
-      {
-        "part": "aa_turret_10_dm"
-      },
-      {
-        "part": "aa_turret_11_dm"
-      },
-      {
-        "part": "aa_turret_12_dm"
-      },
-      {
-        "part": "aa_turret_13_dm"
-      },
-      {
-        "part": "aa_turret_14_dm"
-      },
-      {
-        "part": "aa_turret_15_dm"
-      },
-      {
-        "part": "aa_turret_16_dm"
-      },
-      {
-        "part": "aa_turret_17_dm"
-      },
-      {
-        "part": "aa_turret_18_dm"
-      },
-      {
-        "part": "aa_turret_19_dm"
-      },
-      {
-        "part": "aa_turret_20_dm"
-      },
-      {
-        "part": "aa_turret_21_dm"
-      },
-      {
-        "part": "aa_turret_22_dm"
-      },
-      {
-        "part": "aa_turret_23_dm"
-      },
-      {
-        "part": "aa_turret_24_dm"
-      },
-      {
-        "part": "aa_turret_25_dm"
-      },
-      {
-        "part": "aa_turret_25_dm"
-      },
-      {
-        "part": "aa_turret_26_dm"
-      },
-      {
-        "part": "aa_turret_27_dm"
-      },
-      {
-        "part": "aa_turret_28_dm"
-      },
-      {
-        "part": "aa_turret_29_dm"
-      },
-      {
-        "part": "aa_turret_30_dm"
-      },
-      {
-        "part": "rangefinder_01_dm"
-      },
-      {
-        "part": "rangefinder_02_dm"
-      },
-      {
-        "part": "rangefinder_03_dm"
-      },
-      {
-        "part": "rangefinder_04_dm"
-      },
-      {
-        "part": "rangefinder_05_dm"
-      },
-      {
-        "part": "rangefinder_06_dm"
-      },
-      {
-        "part": "rangefinder_07_dm"
-      },
-      {
-        "part": "rangefinder_08_dm"
-      },
-      {
-        "part": "rangefinder_09_dm"
-      },
-      {
-        "part": "rangefinder_10_dm"
-      },
-      {
-        "part": "rangefinder_11_dm"
-      },
-      {
-        "part": "rangefinder_12_dm"
-      },
-      {
-        "part": "rangefinder_13_dm"
-      },
-      {
-        "part": "rangefinder_14_dm"
-      },
-      {
-        "part": "rangefinder_15_dm"
-      },
-      {
+    },
+    {
+      "cover": {
+        "part": "cover_02_dm",
         "effect": {
-          "pressureOpen": true
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
         }
       }
-    ]
-  },
+    },
+    {
+      "cover": {
+        "part": "cover_03_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_04_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_05_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_06_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_07_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_08_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_09_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_10_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_11_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "cover": {
+        "part": "cover_12_dm",
+        "effect": {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 100000.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      }
+    },
+    {
+      "open_mounts": [
+        {
+          "part": "auxiliary_caliber_turret_01_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_02_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_03_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_04_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_05_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_06_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_07_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_08_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_09_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_10_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_11_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_12_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_13_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_14_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_15_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_16_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_17_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_18_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_19_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_20_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_21_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_22_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_23_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_24_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_25_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_26_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_27_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_28_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_29_dm"
+        },
+        {
+          "part": "auxiliary_caliber_turret_30_dm"
+        },
+        {
+          "part": "aa_turret_01_dm"
+        },
+        {
+          "part": "aa_turret_02_dm"
+        },
+        {
+          "part": "aa_turret_03_dm"
+        },
+        {
+          "part": "aa_turret_04_dm"
+        },
+        {
+          "part": "aa_turret_05_dm"
+        },
+        {
+          "part": "aa_turret_06_dm"
+        },
+        {
+          "part": "aa_turret_07_dm"
+        },
+        {
+          "part": "aa_turret_08_dm"
+        },
+        {
+          "part": "aa_turret_09_dm"
+        },
+        {
+          "part": "aa_turret_10_dm"
+        },
+        {
+          "part": "aa_turret_11_dm"
+        },
+        {
+          "part": "aa_turret_12_dm"
+        },
+        {
+          "part": "aa_turret_13_dm"
+        },
+        {
+          "part": "aa_turret_14_dm"
+        },
+        {
+          "part": "aa_turret_15_dm"
+        },
+        {
+          "part": "aa_turret_16_dm"
+        },
+        {
+          "part": "aa_turret_17_dm"
+        },
+        {
+          "part": "aa_turret_18_dm"
+        },
+        {
+          "part": "aa_turret_19_dm"
+        },
+        {
+          "part": "aa_turret_20_dm"
+        },
+        {
+          "part": "aa_turret_21_dm"
+        },
+        {
+          "part": "aa_turret_22_dm"
+        },
+        {
+          "part": "aa_turret_23_dm"
+        },
+        {
+          "part": "aa_turret_24_dm"
+        },
+        {
+          "part": "aa_turret_25_dm"
+        },
+        {
+          "part": "aa_turret_25_dm"
+        },
+        {
+          "part": "aa_turret_26_dm"
+        },
+        {
+          "part": "aa_turret_27_dm"
+        },
+        {
+          "part": "aa_turret_28_dm"
+        },
+        {
+          "part": "aa_turret_29_dm"
+        },
+        {
+          "part": "aa_turret_30_dm"
+        },
+        {
+          "part": "rangefinder_01_dm"
+        },
+        {
+          "part": "rangefinder_02_dm"
+        },
+        {
+          "part": "rangefinder_03_dm"
+        },
+        {
+          "part": "rangefinder_04_dm"
+        },
+        {
+          "part": "rangefinder_05_dm"
+        },
+        {
+          "part": "rangefinder_06_dm"
+        },
+        {
+          "part": "rangefinder_07_dm"
+        },
+        {
+          "part": "rangefinder_08_dm"
+        },
+        {
+          "part": "rangefinder_09_dm"
+        },
+        {
+          "part": "rangefinder_10_dm"
+        },
+        {
+          "part": "rangefinder_11_dm"
+        },
+        {
+          "part": "rangefinder_12_dm"
+        },
+        {
+          "part": "rangefinder_13_dm"
+        },
+        {
+          "part": "rangefinder_14_dm"
+        },
+        {
+          "part": "rangefinder_15_dm"
+        },
+        {
+          "effect": {
+            "pressureOpen": true
+          }
+        }
+      ]
+    }
+  ],
   "ShipPhys": {
     "mass": {
       "Empty": 80000000.0,

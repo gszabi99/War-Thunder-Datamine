@@ -1,4 +1,3 @@
-let { format } = require("string")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
 ::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT

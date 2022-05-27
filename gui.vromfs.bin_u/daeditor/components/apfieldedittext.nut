@@ -60,7 +60,7 @@ let function fieldEditText_(params={}) {
     }
 
     return {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       size = [flex(), SIZE_TO_CONTENT]
       margin = gridMargin
 

@@ -27,7 +27,7 @@
   function sumArrays(q1, q2)
   {
     let res = []
-    for(local i = 0; i < (max(q1.len(), q2.len())); i++)
+    for(local i = 0; i < (::max(q1.len(), q2.len())); i++)
     {
       let val1 = q1.len() >= i ? q1[i] : null
       let val2 = q2.len() >= i ? q2[i] : null

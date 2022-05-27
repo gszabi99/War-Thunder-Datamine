@@ -672,8 +672,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -717,8 +717,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -726,8 +726,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -735,8 +735,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -775,29 +775,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2593,9 +2593,6 @@
       },
       "hull_RHA": {
         "armorClass": "RHA_tank_modern",
-        "turret_08_top_dm": {
-          "armorThickness": 20.0
-        },
         "superstructure_top_dm": {
           "armorThickness": 57.0
         },
@@ -2757,6 +2754,16 @@
           "armorThickness": 100.0,
           "cumulativeArmorQuality": 1.0
         }
+      },
+      "composite_armor": {
+        "armorClass": "leopard_2a5_turret_nera",
+        "armorThickness": 0.1,
+        "createSecondaryShatters": false,
+        "composite_armor_turret_01_dm": [],
+        "composite_armor_turret_02_dm": [],
+        "composite_armor_turret_03_dm": [],
+        "composite_armor_turret_04_dm": [],
+        "composite_armor_turret_05_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -2983,7 +2990,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3313,6 +3319,70 @@
         }
       }
     }
+  },
+  {
+    "xray_viewer_data": [
+      {
+        "armorArrayTurretInner": {
+          "xrayDmPart": "composite_armor_turret_01_dm",
+          "titleLoc": "hull_side_special_armor",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_01_dm",
+              "xrayTextThickness": 285.0
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurretInner": {
+          "xrayDmPart": "composite_armor_turret_02_dm",
+          "titleLoc": "hull_side_special_armor",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_02_dm",
+              "xrayTextThickness": 235.0
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurretInner": {
+          "xrayDmPart": "composite_armor_turret_03_dm",
+          "titleLoc": "hull_side_special_armor",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_03_dm",
+              "xrayTextThickness": 235.0
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurretInner": {
+          "xrayDmPart": "composite_armor_turret_04_dm",
+          "titleLoc": "hull_side_special_armor",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_04_dm",
+              "xrayTextThickness": 127.0
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurretInner": {
+          "xrayDmPart": "composite_armor_turret_05_dm",
+          "titleLoc": "hull_side_special_armor",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_05_dm",
+              "xrayTextThickness": 127.0
+            }
+          }
+        }
+      }
+    ]
   },
   {
     "attachables": {

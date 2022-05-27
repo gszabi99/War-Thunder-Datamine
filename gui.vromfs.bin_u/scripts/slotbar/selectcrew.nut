@@ -16,7 +16,7 @@ let function getObjPosInSafeArea(obj) {
   let safeArea = getSafearea()
   let screen = [::screen_width(), ::screen_height()]
   local border = safeArea.map(@(value, idx) (screen[idx] * (1.0 - value) / 2).tointeger())
-  return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
+  return pos.map(@(val, idx) ::clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
 ::gui_handlers.SelectCrew <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -177,13 +177,13 @@ let function getObjPosInSafeArea(obj) {
       if (isLegendBottom)
       {
         legendPosY = bottomNoTd + interval
-        bottom = max(legendPosY + legendSize[1], bottom)
+        bottom = ::max(legendPosY + legendSize[1], bottom)
       } else
       {
         isNearTd = tdPos[1] == top
         let topNoTd = isNearTd ? tdPos[1] + tdSize[1] + interval : top
         legendPosY = topNoTd - interval - legendSize[1]
-        top = min(legendPosY, top)
+        top = ::min(legendPosY, top)
       }
 
       legendObj.top = legendPosY
@@ -273,7 +273,7 @@ let function getObjPosInSafeArea(obj) {
     playerBalance.gold = playerInfo.gold
 
     restrictCancel = getTakeAirCost() < playerBalance
-    this.showSceneBtn("btn_set_cancel", !restrictCancel)
+    showSceneBtn("btn_set_cancel", !restrictCancel)
 
     guiScene.applyPendingChanges(false)
     let steps = [

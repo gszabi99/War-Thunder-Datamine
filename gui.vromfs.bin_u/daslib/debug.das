@@ -701,9 +701,9 @@ class private DAgent: DapiDebugAgent
         ctx.pauseRequested = true
 
         if withInstruments
-            for c in contexts
-                if !c.ctx.category.debug_context
-                    *c.ctx |> set_single_step(true)
+            for ctx in contexts
+                if !ctx.ctx.category.debug_context
+                    *ctx.ctx |> set_single_step(true)
 
     def reqResume(var exclude: DAContext)
         if withInstruments
@@ -1190,8 +1190,8 @@ class private DAServer: Server
         for ctx in agent.contexts
             ctx |> reset_debug_flags()
             ctx.continueRequested = true
-        for it in values(agent.breakpoints)
-            delete it
+        for data in values(agent.breakpoints)
+            delete data
         agent.breakpoints |> clear()
         // ini.arguments.restart
         disconnected = true

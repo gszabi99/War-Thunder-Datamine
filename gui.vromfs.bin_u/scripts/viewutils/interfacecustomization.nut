@@ -1,4 +1,7 @@
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { GUI } = require("%scripts/utils/configs.nut")
+
+local baseCustomizationArray = null
 
 let activeConfig = ::Watched(null)
 let toBattleLocId = ::Computed(@() activeConfig.value?.toBattleLocId ?? "mainmenu/toBattle")
@@ -9,17 +12,23 @@ toBattleLocIdShort.subscribe(@(_) ::broadcastEvent("ToBattleLocShortChanged"))
 
 local updateCustomizationConfigTask = -1
 
-let scheduledEvents = [
-  {
-    beginDate = "04-12 06:07:00"
-    endDate = "04-12 23:59:59"
-    toBattleLocId = "mainmenu/toBattle/12april"
-    toBattleLocIdShort = "mainmenu/toBattle/12april"
-  }
-]
+let function initCustomConfigOnce() {
+  if (baseCustomizationArray != null)
+    return
+
+  baseCustomizationArray = []
+  let customizationsBlk = GUI.get()?.interface_customization
+  if (customizationsBlk == null)
+    return
+
+  let configsCount = customizationsBlk.blockCount()
+  for(local i = 0; i < configsCount; i++)
+    baseCustomizationArray.append(::buildTableFromBlk(customizationsBlk.getBlock(i)))
+}
 
 local updateActiveCustomConfig = @() null
 updateActiveCustomConfig = function() {
+  initCustomConfigOnce()
   if (updateCustomizationConfigTask >= 0) {
     ::periodic_task_unregister(updateCustomizationConfigTask)
     updateCustomizationConfigTask = -1
@@ -27,7 +36,7 @@ updateActiveCustomConfig = function() {
 
   local minUpdateTimeSec = null
   let activeCustomizationConfig = {}
-  foreach(customization in scheduledEvents) {
+  foreach(customization in baseCustomizationArray) {
     let endTime = customization?.endDate != null
       ? getTimestampFromStringUtc(customization.endDate)
       : null
@@ -40,12 +49,12 @@ updateActiveCustomConfig = function() {
       : null
     if (startTime != null && currentTime < startTime) {
       let updateTimeSec = startTime - currentTime
-      minUpdateTimeSec = min(minUpdateTimeSec ?? updateTimeSec, updateTimeSec)
+      minUpdateTimeSec = ::min(minUpdateTimeSec ?? updateTimeSec, updateTimeSec)
       continue
     }
 
     let updateTimeSec = endTime - currentTime
-    minUpdateTimeSec = min(minUpdateTimeSec ?? updateTimeSec, updateTimeSec)
+    minUpdateTimeSec = ::min(minUpdateTimeSec ?? updateTimeSec, updateTimeSec)
     activeCustomizationConfig.__update(customization)
   }
 

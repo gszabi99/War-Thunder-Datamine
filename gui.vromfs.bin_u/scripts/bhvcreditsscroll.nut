@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 
 const timeToShowAll = 500.0
@@ -26,7 +25,7 @@ const timeToShowAll = 500.0
         obj.inited="yes"
     } else
       curOffs += dt * parentSize[1] * speedCreditsScroll //* 720 / parentSize[1] / 0.9
-    obj.cur_slide_offs = format("%f", curOffs)
+    obj.cur_slide_offs = ::format("%f", curOffs)
     obj.top = (-curOffs).tointeger().tostring()
   }
 /*

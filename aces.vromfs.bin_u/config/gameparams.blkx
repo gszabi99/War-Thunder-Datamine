@@ -236,6 +236,9 @@
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
+  "allAircraftNodesAnimationHierarchy": true,
+  "aircraftAnimchar": false,
+  "missedNodesMax": 6,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -270,9 +273,7 @@
   "rendinstRadiusMultForBlast": 4.0,
   "isBlastEffectActivated": true,
   "supportShowHintBattleCnt": 5,
-  "playerDustFxSpawnRate": 1.0,
   "showWaveHitcam": true,
-  "waveOffset": [20.0,20.0],
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [400.0,900.0,0.1,1.0],
@@ -2745,7 +2746,6 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.2,
-        "payloadCoGMultiplier": 0.0,
         "tankTrackRepairTime": 15.0,
         "tankRepairSpeed": 5.0,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -2815,7 +2815,6 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.0,
-        "payloadCoGMultiplier": 0.2,
         "tankTrackRepairTime": 150.0,
         "tankRepairSpeed": 3.5,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -2887,7 +2886,6 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.0,
-        "payloadCoGMultiplier": 0.2,
         "tankTrackRepairTime": 180.0,
         "tankRepairSpeed": 3.5,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -4253,9 +4251,6 @@
       },
       "amplitude3": {
         "amplitude": 0.6
-      },
-      "amplitude4": {
-        "amplitude": 0.6
       }
     },
     "preset2": {
@@ -4283,9 +4278,6 @@
         "amplitude": 0.7
       },
       "amplitude3": {
-        "amplitude": 0.7
-      },
-      "amplitude4": {
         "amplitude": 0.7
       }
     },
@@ -4315,9 +4307,6 @@
       },
       "amplitude3": {
         "amplitude": 0.7
-      },
-      "amplitude4": {
-        "amplitude": 0.7
       }
     },
     "preset4": {
@@ -4345,9 +4334,6 @@
         "amplitude": 1.0
       },
       "amplitude3": {
-        "amplitude": 0.7
-      },
-      "amplitude4": {
         "amplitude": 0.7
       }
     },
@@ -4377,9 +4363,6 @@
       },
       "amplitude3": {
         "amplitude": 0.5
-      },
-      "amplitude4": {
-        "amplitude": 0.5
       }
     },
     "preset6": {
@@ -4407,9 +4390,6 @@
         "amplitude": 0.75
       },
       "amplitude3": {
-        "amplitude": 0.5
-      },
-      "amplitude4": {
         "amplitude": 0.5
       }
     }
@@ -13733,30 +13713,6 @@
       {
         "p": {
           "name": "wheel_r_01_",
-          "modelNames": "vcac_mephisto"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "vcac_mephisto"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "vcac_mephisto"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "vcac_mephisto"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
           "modelNames": "alecto_mk_1"
         }
       },
@@ -13776,54 +13732,6 @@
         "p": {
           "name": "wheel_l_04_",
           "modelNames": "alecto_mk_1"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_04_",
-          "modelNames": "vbc_pt2"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_04_",
-          "modelNames": "vbc_pt2"
         }
       }
     ],
@@ -17195,7 +17103,7 @@
     "default": {
       "effect": "track_dirt_back",
       "effectFront": "track_dirt_front",
-      "effectTop": "",
+      "effectTop": "track_dirt_top",
       "effectDust": "track_move_dirt",
       "effectBack": "track_dirt_dust"
     },
@@ -17218,14 +17126,7 @@
       "effectFront": "track_dirt_front",
       "effectTop": "track_dirt_top",
       "effectDust": "track_move_dirt",
-      "effectBack": ""
-    },
-    "ground": {
-      "effect": "track_ground_back",
-      "effectFront": "track_ground_front",
-      "effectTop": "track_ground_top",
-      "effectDust": "track_move_ground",
-      "effectBack": "track_ground_dust"
+      "effectBack": "track_dirt_dust"
     }
   },
   "treeDestractible": {
@@ -17711,8 +17612,7 @@
     "clampingGamma": 1.2,
     "frameWeightMinDynamicStill": 0.11,
     "frameWeightMinDynamicMotion": 0.2,
-    "newframeFalloffDynamicStill": 0.15,
-    "scaleAabbWithMotionMaxForTAAU": 2.5
+    "newframeFalloffDynamicStill": 0.15
   },
   "MicrodetailMultipliers": {
     "airplane": 0.37,

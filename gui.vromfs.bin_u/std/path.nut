@@ -1,4 +1,4 @@
-let {split_by_chars, regexp} = require("string")
+let {split, regexp} = require("string")
 
 /**
  * Normalize file path slashes to be unix-like forward slashes.
@@ -19,7 +19,7 @@ let {split_by_chars, regexp} = require("string")
  *   normalize("/a/b///c\\d")         > "/a/b/c/d"
  */
 let function normalize(path) {
-  let pathSegments = split_by_chars(path, "\\/")
+  let pathSegments = split(path, "\\/")
   local isAbsolutePath = false
 
   if (path.len() > 0 && (path[0] == '/' || path[0] == "\\"[0])) {
@@ -189,7 +189,7 @@ let function splitToArray(path) {
   if (path == "")
     return []
   assert(type(path)=="string", @() $"path type is not string ({type(path)})")
-  let segments = split_by_chars(path, "/")
+  let segments = split(path, "/")
   if (path[0] == '/')
     segments.insert(0, "/")
 

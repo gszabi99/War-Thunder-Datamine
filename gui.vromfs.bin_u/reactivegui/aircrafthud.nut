@@ -46,11 +46,11 @@ let function aircraftMainHud(isBackground) {
     children =
       IsMainHudVisible.value
         ? [
-            aircraftRocketSight(sh(2.0), sh(2.0))
-            aamAim(HudColor, AlertColorHigh, isBackground)
-            agmAim(HudColor, isBackground)
-            aircraftTurretsComponent(HudColor)
-            fixedGunsDirection(HudColor, isBackground)
+            aircraftRocketSight(sh(2.0), sh(2.0), isBackground)
+            aamAim(isBackground, HudColor, AlertColorHigh)
+            agmAim(isBackground, HudColor)
+            aircraftTurretsComponent(isBackground, false)
+            fixedGunsDirection(isBackground)
             aircraftParamsTable(isBackground)
             taTarget(sw(25), sh(25), isBackground)
           ]
@@ -68,7 +68,7 @@ let function aircraftMainHud(isBackground) {
     watch = IsGunnerHudVisible
     children = IsGunnerHudVisible.value
       ? [
-        aircraftTurretsComponent()
+        aircraftTurretsComponent(isBackground, false)
         aircraftParamsTable(isBackground)
       ]
       : null
@@ -88,8 +88,8 @@ let weaponHud = @(isBackground)
     watch = IsWeaponHudVisible
     children = IsWeaponHudVisible.value
       ? [
-        aamAim(HudColor, AlertColorHigh, isBackground)
-        agmAim(HudColor, isBackground)
+        aamAim(isBackground, HudColor, AlertColorHigh)
+        agmAim(isBackground, HudColor)
       ]
       : null
   }
@@ -102,11 +102,11 @@ let aircraftArbiterHud = @(isBackground)
       : null
   }
 
-let agmAimIndicator = @(watchedColor, isBackground)
+let agmAimIndicator = @(isBackground)
   @(){
     watch = AtgmTrackerVisible
     size = flex()
-    children = AtgmTrackerVisible.value ? [agmAim(watchedColor, isBackground)] : null
+    children = AtgmTrackerVisible.value ? [agmAim(isBackground, HudColor)] : null
   }
 
 
@@ -135,14 +135,14 @@ let function aircraftHUDs(isBackground) {
       twsElement(HudColor, twsPosWatched, twsSize)
       radarElement(HudColor, radarPosComputed, radarSize)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
-      agmAimIndicator(HudColor, isBackground)
+      agmAimIndicator(isBackground)
       !IndicatorsVisible.value ? null : weaponHud(isBackground)
-      laserPointComponent(HudColor, isBackground)
+      laserPointComponent(isBackground)
       LaserAtgmSightVisible.value && !isBackground ? laserAtgmSight(sw(100), sh(100)) : null
       TargetingPodSightVisible.value && !isBackground ? targetingPodSight(sw(100), sh(100)) : null
-      TargetingPodSightVisible.value && !isBackground ? laserDesignatorStatusComponent(HudColor, sw(50), sh(38), isBackground) : null
+      TargetingPodSightVisible.value && !isBackground ? laserDesignatorStatusComponent(isBackground) : null
       TargetingPodSightVisible.value && !isBackground ? lockSight(HudColor, hdpx(150), hdpx(100), sw(50), sh(50), isBackground) : null
-      !LaserAtgmSightVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)], isBackground) : null
+      !LaserAtgmSightVisible.value ? compassElem(isBackground, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
     ]
   }
 }

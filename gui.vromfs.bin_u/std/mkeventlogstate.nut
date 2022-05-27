@@ -1,7 +1,6 @@
 let { Watched } = require("frp")
 let { setTimeout } = require("dagor.workcycle")
 let { kwarg } = require("%sqstd/functools.nut")
-let { get_time_msec } = require("dagor.time")
 
 //when event have parameter ttl it will be automatically removed on time finish
 //isEventsEqual = @(event1, event2) bool - used only to remove events not only by uid.
@@ -24,37 +23,18 @@ let function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEven
   }
 
   let function startRemoveTimer(event) {
-    local { ttl = defTtl, uid, removeMsec = null } = event
-    if (ttl <= 0)
-      return
-    if (removeMsec == null) {
-      removeMsec = get_time_msec() + (1000 * ttl).tointeger()
-      event.removeMsec <- removeMsec
-    }
-    setTimeout(max(0.001 * (removeMsec - get_time_msec()), 0.01), @() removeEvent(uid))
+    let { ttl = defTtl, uid } = event
+    if (ttl > 0)
+      setTimeout(ttl, @() removeEvent(uid))
   }
   curEvents.value.each(startRemoveTimer)
-
-  let function findFirstRemoveHint() {
-    local time = null
-    local resIdx = null
-    foreach(idx, evt in curEvents.value) {
-      let { removeMsec = null } = evt
-      if (resIdx != null
-          && (removeMsec == null || (time != null && time > removeMsec)))
-        continue
-      resIdx = idx
-      time = removeMsec
-    }
-    return resIdx
-  }
 
   let function addEvent(eventExt) {
     let uid = ++lastEventUid
     let event = eventExt.__merge({ uid })
 
     let idxToRemove = getEqualIndex(event)
-      ?? (curEvents.value.len() >= maxActiveEvents ? findFirstRemoveHint() : null)
+      ?? (curEvents.value.len() >= maxActiveEvents ? 0 : null)
 
     curEvents.mutate(function(list) {
       if (idxToRemove != null)

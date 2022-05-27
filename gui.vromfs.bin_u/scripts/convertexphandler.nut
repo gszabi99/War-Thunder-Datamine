@@ -1,4 +1,3 @@
-let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { research } = require("%scripts/unit/unitActions.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
@@ -353,7 +352,7 @@ enum windowState
   function showNoRPmsgbox()
   {
     if (!::checkObj(guiScene["no_rp_msgbox"]))
-      this.msgBox("no_rp_msgbox", ::loc("msgbox/no_rp"), [["ok", function () {}]], "ok", { cancel_fn = function() {}})
+      msgBox("no_rp_msgbox", ::loc("msgbox/no_rp"), [["ok", function () {}]], "ok", { cancel_fn = function() {}})
   }
 
   function updateSliderText()
@@ -365,7 +364,7 @@ enum windowState
                             ? format("<color=@activeTextColor> +%s</color>", ::Cost().setFrp(expToBuy).tostring())
                             : ""
     let strRequiredExp = ::g_language.decimalFormat(::getUnitReqExp(unit))
-    let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, ::loc("ui/slash"), strRequiredExp)
+    let sliderText = ::format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, ::loc("ui/slash"), strRequiredExp)
     sliderTextObj.setValue(sliderText)
   }
 
@@ -380,8 +379,8 @@ enum windowState
     let isMinSet = curGoldValue == minGoldValue
     let isMaxSet = curGoldValue == maxGoldValue
 
-    this.showSceneBtn("btn_apply", currentState == windowState.research)
-    this.showSceneBtn("btn_buy_unit", currentState == windowState.canBuy)
+    showSceneBtn("btn_apply", currentState == windowState.research)
+    showSceneBtn("btn_buy_unit", currentState == windowState.canBuy)
     scene.findObject("btn_apply").inactiveColor = curGoldValue != minGoldValue ? "no" : "yes"
 
     scene.findObject("buttonDec").enable(!isMinSet)
@@ -563,7 +562,7 @@ enum windowState
     let msgText = warningIfGold(::loc("exp/convert/needMoneyQuestion",
         {exp = ::Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance()}),
       cost)
-    this.msgBox("need_money", msgText,
+    msgBox("need_money", msgText,
       [
         ["yes", (@(cost, curExp) function() {
             if (::check_balance_msgBox(cost))

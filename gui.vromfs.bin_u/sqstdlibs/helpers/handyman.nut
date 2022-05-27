@@ -30,8 +30,7 @@
 #no-plus-concat
 
 let g_string =  require("%sqstd/string.nut")
-local {regexp} = require("string")
-
+local regexp = getroottable()?.regexp ?? require("string").regexp
 /**
  * A simple string scanner that is used by the template parser to find
  * tokens in template strings.
@@ -42,16 +41,16 @@ local Scanner = class {
   pos    = 0
 
   constructor (_string) {
-    this.string = _string
-    this.tail = _string
-    this.pos = 0
+    string = _string
+    tail = string
+    pos = 0
   }
 
   /**
    * Returns `true` if the tail is empty (end of string).
    */
   function eos () {
-    return this.tail == ""
+    return tail == ""
   }
 
   /**
@@ -62,10 +61,10 @@ local Scanner = class {
     local match = re.search(this.tail)
 
     if (match && match.begin == 0) {
-      local s = this.tail.slice(0, match.end)
+      local string = this.tail.slice(0, match.end)//warning disable: -ident-hides-ident
       this.tail = this.tail.slice(match.end)
-      this.pos += s.len()
-      return s
+      this.pos += string.len()
+      return string
     }
 
     return ""
@@ -76,18 +75,18 @@ local Scanner = class {
    * the skipped string, which is the entire tail if no match can be made.
    */
   function scanUntil(re) {
-    local res = re.search(this.tail)
+    local res = re.search(tail)
     local match
 
     if (res == null) {
-      match = this.tail
-      this.tail = ""
+      match = tail
+      tail = ""
     }
     else if (res.begin == 0)
       match = ""
     else {
-      match = this.tail.slice(0, res.begin)
-      this.tail = this.tail.slice(res.begin)
+      match = tail.slice(0, res.begin)
+      tail = tail.slice(res.begin)
     }
 
     this.pos += match.len()
@@ -102,10 +101,10 @@ Context = class {
   parentContext = null
 
   constructor(_view, _parentContext = null) {
-    this.view          = _view == null ? {} : _view
-    this.cache         = {}
-    this.cache["."]    <- this.view
-    this.parentContext = _parentContext
+    view          = _view == null ? {} : _view
+    cache         = {}
+    cache["."]    <- view
+    parentContext = _parentContext
   }
 
   /**
@@ -123,8 +122,8 @@ Context = class {
   function lookup (name) {
     local value = null
     local context = this
-    if (name in this.cache)
-      value = this.cache[name]
+    if (name in cache)
+      value = cache[name]
     else {
       while (context) {
         if ((name.indexof(".") ?? -1) > 0) {
@@ -146,7 +145,7 @@ Context = class {
         context = context.parentContext
       }
 
-      this.cache[name] <- value
+      cache[name] <- value
     }
 
     if (typeof value == "function") {
@@ -191,10 +190,13 @@ local Writer = class {
    * that is generated from the parse.
    */
   function parse(template, tags = null) { //warning disable: -ident-hides-ident
-    local tokens = this.cache?[template]
+
+    local cache = this.cache //warning disable: -ident-hides-ident
+    local tokens = cache?[template]
+
     if (tokens == null) {
-      tokens = this.parseTemplate(template, tags)
-      this.cache[template] <- tokens
+      tokens = parseTemplate(template, tags)
+      cache[template] <- tokens
     }
 
     return tokens
@@ -329,17 +331,17 @@ local Writer = class {
   }
 
   function isWhitespace(string) {
-    return !this.nonSpaceRe.match(string)
+    return !nonSpaceRe.match(string)
   }
 
   function escapeRegExp(string) {
     local start = 0
     local matches = []
-    local match = this.escapeRe.search(string, start)
+    local match = escapeRe.search(string, start)
     while (match) {
       matches.append(match)
       start = match.end
-      match = this.escapeRe.search(string, start)
+      match = escapeRe.search(string, start)
     }
 
     for(local i = matches.len() - 1; i >= 0; i--) {
@@ -350,24 +352,25 @@ local Writer = class {
   }
 
   function escapeTags(tags) { //warning disable: -ident-hides-ident
+
     if (!(typeof tags == "array") || tags.len() != 2) {
       ::dagor.assertf(false, $"Invalid tags: {tags}")
     }
 
     return [
-      regexp("".concat(this.escapeRegExp(tags[0]), "\\s*")),
-      regexp("".concat("\\s*", this.escapeRegExp(tags[1])))
+      regexp("".concat(escapeRegExp(tags[0]), "\\s*")),
+      regexp("".concat("\\s*", escapeRegExp(tags[1])))
     ]
   }
 
   function parseTemplate(template, _tags = null) {
-    local tags = _tags || this.tags //warning disable: -ident-hides-ident
+    local tags = _tags || tags //warning disable: -ident-hides-ident
     template = template || ""
 
     if (typeof tags == "string")
-     tags = g_string.split(tags, this.spaceRe)
+     tags = g_string.split(tags, spaceRe)
 
-    local tagRes  = this.escapeTags(tags)
+    local tagRes  = escapeTags(tags)
     local scanner = Scanner(template)
 
     local sections = []     // Stack to hold section tokens
@@ -388,7 +391,7 @@ local Writer = class {
 
           chr = value.slice(i, i + 1)
 
-          if (this.isWhitespace(chr))
+          if (isWhitespace(chr))
             spaces.append(tokens.len())
           else
             nonSpace = true
@@ -421,19 +424,19 @@ local Writer = class {
       hasTag = true
 
       // Get the tag type.
-      local scaned = scanner.scan(this.tagRe)
+      local scaned = scanner.scan(tagRe)
       tType = scaned == "" ? "name" : scaned
-      scanner.scan(this.whiteRe)
+      scanner.scan(whiteRe)
 
       // Get the tag value.
       if (tType == "=") {
-        value = scanner.scanUntil(this.equalsRe)
-        scanner.scan(this.equalsRe)
+        value = scanner.scanUntil(equalsRe)
+        scanner.scan(equalsRe)
         scanner.scanUntil(tagRes[1])
       }
       else if (tType == "{") {
-        value = scanner.scanUntil(regexp("".concat("\\s*", this.escapeRegExp($"\}{tags[1]}"))))
-        scanner.scan(this.curlyRe)
+        value = scanner.scanUntil(::regexp("".concat("\\s*", escapeRegExp($"\}{tags[1]}"))))
+        scanner.scan(curlyRe)
         scanner.scanUntil(tagRes[1])
         tType = "&"
       }
@@ -474,8 +477,8 @@ local Writer = class {
       }
       else if (tType == "=") {
         // Set the tags for the next time around.
-        tags = value.split(this.spaceRe)
-        tagRes = this.escapeTags(tags)
+        tags = value.split(spaceRe)
+        tagRes = escapeTags(tags)
       }
     }
 
@@ -486,7 +489,7 @@ local Writer = class {
     if (scanError)
       tokens = []
 
-    return this.nestTokens(this.squashTokens(tokens))
+    return nestTokens(squashTokens(tokens))
   }
 
   /**
@@ -571,7 +574,7 @@ local Writer = class {
    * Clears all cached templates in the default writer.
    * */
   function clearCache() {
-    return this.defaultWriter.clearCache()
+    return defaultWriter.clearCache()
   }
 
   /*
@@ -580,7 +583,7 @@ local Writer = class {
    * parse templates on the fly as they are rendered.
    * */
   function parse(template, tags) {
-    return this.defaultWriter.parse(template, tags)
+    return defaultWriter.parse(template, tags)
   }
 
   /*
@@ -588,7 +591,7 @@ local Writer = class {
    * default writer.
    * */
   function render(template, view, partials = null) {
-    return this.defaultWriter.render(template, view, partials)
+    return defaultWriter.render(template, view, partials)
   }
 
   /**
@@ -597,32 +600,33 @@ local Writer = class {
    * which can be cached to increase render performance.
    */
   function renderCached(templatePath, view, partials = null, cachePartials = false) {
-    this.updateCache(templatePath)
+    updateCache(templatePath)
     if (partials != null && cachePartials)
       foreach (partialName, partialPath in partials)
-        this.updateCache(partialPath)
-    local tokens = this.tokensByTemplatePath[templatePath]
-    local template = this.tokensByTemplatePath[templatePath]
+        updateCache(partialPath)
+    local tokens = tokensByTemplatePath[templatePath]
+    local template = tokensByTemplatePath[templatePath]
     local context = (typeof view == "instance" && view instanceof Context) ? view : Context(view)
-    return this.defaultWriter.renderTokens(tokens, context, partials, template)
+    return defaultWriter.renderTokens(tokens, context, partials, template)
   }
 
   function checkCacheReset() {//only for easier development
-    if (!::always_reload_scenes || ::dagor.getCurTime() - this.lastCacheReset < 1000)
+
+    if (!::always_reload_scenes || ::dagor.getCurTime() - lastCacheReset < 1000)
       return
 
-    this.lastCacheReset = ::dagor.getCurTime()
-    this.tokensByTemplatePath.clear()
+    lastCacheReset = ::dagor.getCurTime()
+    tokensByTemplatePath.clear()
   }
 
   function updateCache(templatePath) {
-    this.checkCacheReset()
-    if (templatePath in this.tokensByTemplatePath)
+    checkCacheReset()
+    if (templatePath in tokensByTemplatePath)
       return
     local template = ::load_template_text(templatePath)
-    template = this.processIncludes(template)
-    this.templateByTemplatePath[templatePath] <- template
-    this.tokensByTemplatePath[templatePath] <- this.defaultWriter.parseTemplate(template)
+    template = processIncludes(template)
+    templateByTemplatePath[templatePath] <- template
+    tokensByTemplatePath[templatePath] <- defaultWriter.parseTemplate(template)
   }
 
   function processIncludes(template) {
@@ -721,5 +725,5 @@ local partials = {
     layout_insertion = "wink:t='yes';"
   }
   ::dlog("before render")
-  ::dlog(::handyman.render(testTemplate, testView, partials))
+  ::dlog(handyman.render(testTemplate, testView, partials))
 }

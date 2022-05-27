@@ -1,4 +1,3 @@
-let regexp2 = require("regexp2")
 let { getTierWeaponsParams, getCustomWeaponryPresetView, editSlotInPreset, getPresetDisbalanceText
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -71,7 +70,7 @@ let function openEditPresetName(name, okFunc) {
     let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
     foreach (p in params)
-      maxWidth = max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
+      maxWidth = ::max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
     foreach (p in params)
       if (p.id != curPresetId)
         buttons.append({
@@ -162,7 +161,7 @@ let function openEditPresetName(name, okFunc) {
     let tierObj = getCurrenTierObj()
     let isWeaponsAvailable = isTierObj(tierObj)
       && availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger()).len() > 0
-    this.showSceneBtn("editTier", presetNest.findObject("tiersNest_").isHovered()
+    showSceneBtn("editTier", presetNest.findObject("tiersNest_").isHovered()
       && isWeaponsAvailable)
   }
 
@@ -196,7 +195,7 @@ let function openEditPresetName(name, okFunc) {
   }
 
   function goBack() {
-    this.msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
+    msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
       [
         ["yes", base.goBack],
         ["cancel", function () {}]

@@ -124,7 +124,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
   }
 
   function updateButtons(needShowList) {
-    this.showSceneBtn("member_menu_open", needShowList)
+    showSceneBtn("member_menu_open", needShowList)
     if (needShowList)
       ::move_mouse_on_child_by_value(squadListObj)
   }

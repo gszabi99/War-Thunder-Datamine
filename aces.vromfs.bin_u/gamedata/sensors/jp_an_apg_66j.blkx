@@ -225,7 +225,7 @@
         "setPulseDopplerStandbyMode": {
           "setStandbyModeCommon": [],
           "setModeName": {
-            "name": "PD standby"
+            "name": "PD VS standby"
           },
           "setSignal": {
             "signal": "pulseDopplerSearch"
@@ -274,7 +274,7 @@
         "setPulseDopplerSearchMode": {
           "setSearchModeCommon": [],
           "setModeName": {
-            "name": "PD search"
+            "name": "PD VS search"
           },
           "setSignal": {
             "signal": "pulseDopplerSearch"
@@ -334,7 +334,7 @@
         "setPulseDopplerDesignationLockMode": {
           "setDesignationLockModeCommon": [],
           "setModeName": {
-            "name": "PD acquisition"
+            "name": "PD VS acquisition"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
@@ -394,7 +394,7 @@
         "setPulseDopplerBoresightLockMode": {
           "setBoresightLockModeCommon": [],
           "setModeName": {
-            "name": "PD ACM"
+            "name": "PD VS ACM"
           },
           "setSignal": {
             "signal": "pulseDopplerTrack"
@@ -409,8 +409,9 @@
             "scanPattern": "track"
           },
           "clearTargetsOfInterest": [],
-          "updateTargetOfInterest": [],
+          "addTargetOfInterest": [],
           "setLastTargetOfInterestActive": [],
+          "updateActiveTargetOfInterest": [],
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -649,7 +650,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "pulseDesignationTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "command": "selectTarget",
             "stateTo": "pulseSearch",
             "actions": {
@@ -740,7 +741,7 @@
         {
           "finishedPulseDopplerDesignationTrack": {
             "stateFrom": "pulseDopplerDesignationTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "command": "selectTarget",
             "stateTo": "pulseDopplerSearch",
             "actions": {
@@ -841,7 +842,7 @@
         {
           "brokenPulseBoresightTrack": {
             "stateFrom": "pulseBoresightTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "stateTo": "pulseBoresightLock",
             "actions": {
               "setFsmActive": {
@@ -958,7 +959,7 @@
         {
           "brokenPulseDopplerBoresightTrack": {
             "stateFrom": "pulseDopplerBoresightTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "stateTo": "pulseDopplerBoresightLock",
             "actions": {
               "setFsmActive": {
@@ -1117,7 +1118,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": [],
+            "updateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1137,10 +1138,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
-            "clearTargetsOfInterest": {
-              "timeOut": 1.0
-            },
+            "extrapolateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1154,6 +1152,9 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            },
+            "checkActiveTargetOfInerestInertialTimeout": {
+              "timeOut": 1.0
             }
           }
         }

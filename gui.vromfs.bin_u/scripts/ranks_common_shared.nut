@@ -1,36 +1,36 @@
-let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { interpolateArray } = require("%sqstd/math.nut")
+let format = require("string").format
 
 ::DS_UT_AIRCRAFT <- "Air"
 ::DS_UT_TANK <- "Tank"
 ::DS_UT_SHIP <- "Ship"
 ::DS_UT_INVALID <- "Invalid"
 
-let ds_unit_type_names = {
-  [::ES_UNIT_TYPE_AIRCRAFT] = ::DS_UT_AIRCRAFT,
-  [::ES_UNIT_TYPE_TANK] = ::DS_UT_TANK,
-  [::ES_UNIT_TYPE_BOAT] = ::DS_UT_SHIP,
-  [::ES_UNIT_TYPE_SHIP] = ::DS_UT_SHIP,
-  [::ES_UNIT_TYPE_HELICOPTER] = ::DS_UT_AIRCRAFT
+::ds_unit_type_names <- {
+  [::ES_UNIT_TYPE_AIRCRAFT] = DS_UT_AIRCRAFT,
+  [::ES_UNIT_TYPE_TANK] = DS_UT_TANK,
+  [::ES_UNIT_TYPE_BOAT] = DS_UT_SHIP,
+  [::ES_UNIT_TYPE_SHIP] = DS_UT_SHIP,
+  [::ES_UNIT_TYPE_HELICOPTER] = DS_UT_AIRCRAFT
 }
 
 ::mapWpUnitClassToWpUnitType <- {
-  exp_bomber = ::DS_UT_AIRCRAFT
-  exp_fighter = ::DS_UT_AIRCRAFT
-  exp_assault = ::DS_UT_AIRCRAFT
-  exp_tank = ::DS_UT_TANK
-  exp_heavy_tank = ::DS_UT_TANK
-  exp_tank_destroyer = ::DS_UT_TANK
-  exp_SPAA = ::DS_UT_TANK
-  exp_torpedo_boat = ::DS_UT_SHIP
-  exp_gun_boat = ::DS_UT_SHIP
-  exp_torpedo_gun_boat = ::DS_UT_SHIP
-  exp_submarine_chaser = ::DS_UT_SHIP
-  exp_destroyer = ::DS_UT_SHIP
-  exp_cruiser = ::DS_UT_SHIP
-  exp_naval_ferry_barge = ::DS_UT_SHIP
-  exp_helicopter = ::DS_UT_AIRCRAFT
+  exp_bomber = DS_UT_AIRCRAFT
+  exp_fighter = DS_UT_AIRCRAFT
+  exp_assault = DS_UT_AIRCRAFT
+  exp_tank = DS_UT_TANK
+  exp_heavy_tank = DS_UT_TANK
+  exp_tank_destroyer = DS_UT_TANK
+  exp_SPAA = DS_UT_TANK
+  exp_torpedo_boat = DS_UT_SHIP
+  exp_gun_boat = DS_UT_SHIP
+  exp_torpedo_gun_boat = DS_UT_SHIP
+  exp_submarine_chaser = DS_UT_SHIP
+  exp_destroyer = DS_UT_SHIP
+  exp_cruiser = DS_UT_SHIP
+  exp_naval_ferry_barge = DS_UT_SHIP
+  exp_helicopter = DS_UT_AIRCRAFT
 }
 
 global enum EDifficulties
@@ -112,7 +112,7 @@ global const EDIFF_SHIFT = 3
     return ::cur_mission_mode
   let mission_name = ::get_selected_mission()
   let mission_mode = (mission_name && ::get_mission_type(mission_name)) || 0
-  ::dagor.debug("get_mission_mode "+mission_name+" mission_mode "+mission_mode)
+  dagor.debug("get_mission_mode "+mission_name+" mission_mode "+mission_mode)
   ::cur_mission_mode = mission_mode
   return mission_mode
 }
@@ -145,12 +145,12 @@ global const EDIFF_SHIFT = 3
 
 ::get_ds_ut_name_unit_type <- function get_ds_ut_name_unit_type(unitType)
 {
-  return ds_unit_type_names?[unitType] ?? ::DS_UT_INVALID
+  return ::ds_unit_type_names?[unitType] ?? DS_UT_INVALID
 }
 
 ::get_unit_type_by_unit_name <- function get_unit_type_by_unit_name(unitId)
 {
-  return ::mapWpUnitClassToWpUnitType?[::getWpcostUnitClass(unitId)] ?? ::DS_UT_INVALID
+  return ::mapWpUnitClassToWpUnitType?[::getWpcostUnitClass(unitId)] ?? DS_UT_INVALID
 }
 
 ::round <- function round(value, digits=0)
@@ -166,7 +166,7 @@ global const EDIFF_SHIFT = 3
 
 ::get_battle_rating_string_from_rank <- function get_battle_rating_string_from_rank(economicRank)
 {
-  return format("%.1f", ::calc_battle_rating_from_rank(economicRank))
+  return ::format("%.1f", ::calc_battle_rating_from_rank(economicRank))
 }
 
 ::get_unit_blk_economic_rank_by_mode <- function get_unit_blk_economic_rank_by_mode(unitBlk, ediff)
@@ -196,18 +196,18 @@ global const EDIFF_SHIFT = 3
   let unit_type = ::get_unit_type_by_unit_name(unitName)
   if (blk?[unit_type] == null)
   {
-    ::dagor.debug("ERROR: ranks.blk is broken "+unit_type)
+    dagor.debug("ERROR: ranks.blk is broken "+unit_type)
     return 0
   }
 
-  let diff = ::get_mission_mode()
+  let diff = get_mission_mode()
   local param_name = ""
   local expMul = 1.0
   if (prevUnit && resUnit.reqAir == unitName && unitName != null)
   {
     param_name = "prevAirExpMulMode"
     expMul *= blk.getReal(param_name+diff.tostring(), 0.0)
-    ::dagor.debug("get_unit_exp_conversion_mul: with research child mul. ExpMul "+expMul+" prevUnit.name "+resUnit.reqAir+" unit.name "+unitName+" resUnitName "+resUnitName)
+    dagor.debug("get_unit_exp_conversion_mul: with research child mul. ExpMul "+expMul+" prevUnit.name "+resUnit.reqAir+" unit.name "+unitName+" resUnitName "+resUnitName)
   }
   else
   {
@@ -227,7 +227,7 @@ global const EDIFF_SHIFT = 3
         eraDiff *= -1
       }
     expMul *= blk.getReal(param_name+eraDiff.tostring(), 0.0)
-    ::dagor.debug("get_unit_exp_conversion_mul: with units era difference. ExpMul "+expMul)
+    dagor.debug("get_unit_exp_conversion_mul: with units era difference. ExpMul "+expMul)
   }
 
   return expMul
@@ -261,7 +261,7 @@ global const EDIFF_SHIFT = 3
   let ws = ::get_warpoints_blk()
   let misBlk = ::get_current_mission_info_cached()
   let sessionMRank = misBlk?.ranks?.max ?? 0
-  let modeName = ::get_emode_name(::get_mission_mode())
+  let modeName = get_emode_name(get_mission_mode())
   let overrideBlock = ws?.respawn_points?[modeName]?["override_params_by_session_rank"]
   local overrideBlockName = ""
   if (overrideBlock)
@@ -345,14 +345,14 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
     return 1.0
 
   local bulletsMul = 1.0
-  if (::get_spawn_score_param("useSpawnCostMulForBullet", false)) {
+  if (get_spawn_score_param("useSpawnCostMulForBullet", false)) {
     foreach (bullet in bulletArray) {
       bulletsMul += ((wpcost?[unitname].modifications[bullet].spawnCostMul ?? 1.0) - 1.0)
     }
   }
 
   local weaponMul = 1.0
-  if (::get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
+  if (get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
     let weaponBlk = wpcost?[unitname].weapons[weapon]
     if (weaponBlk != null) {
       weaponMul = weaponBlk?.spawnCostMul ?? 1.0 // temp for compatibility with prev wpcost format
@@ -376,7 +376,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
       )
     }
     else if (weapon != null && weapon != "") {
-      ::dagor.logerr($"getUnitSpawnScore: there is no weapon in wpcost and presetWeapons is empty for {unitname} {weapon}")
+      dagor.logerr($"getUnitSpawnScore: there is no weapon in wpcost and presetWeapons is empty for {unitname} {weapon}")
     }
   }
 
@@ -398,10 +398,10 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
   }
 
   let md = misblk?.mission_settings?.mission
-  if (!::dd_file_exist(md?.level ?? ""))
+  if (!dd_file_exist(md?.level ?? ""))
     err("Unknown location " + (md?.level ?? "null"))
   let levelBlk = (md?.level ?? "").slice(0, -3) + "blk"
-  if (!::dd_file_exist(levelBlk))
+  if (!dd_file_exist(levelBlk))
     err(levelBlk + " not found");
 
   //TODO: weather
@@ -414,7 +414,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
       let inc = units_include.getBlock(i);
       if (inc.filename != null)
       {
-        if ((inc.filename == "") || (!::dd_file_exist(inc.filename)))
+        if ((inc.filename == "") || (!dd_file_exist(inc.filename)))
           err("Wrong units include: "+inc.filename)
       }
     }
@@ -444,7 +444,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
     if (unitType in typeToPath)
     {
       let path = unitClass ? (typeToPath[unitType] + "/"+unitClass+".blk") : ""
-      if (!::dd_file_exist(path))
+      if (!dd_file_exist(path))
         err($"Unknown unit_class {unitClass} of unit {unit?.name}")
       else
       {
@@ -461,7 +461,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
             foreach (p in presets)
               if (p?.name == preset)
               {
-                if (::dd_file_exist(p?.blk ?? ""))
+                if (dd_file_exist(p?.blk ?? ""))
                 {
                   found = true;
                   break;
@@ -477,61 +477,65 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
       //TODO: weapon presets
     }
   }
-  ::dagor.debug(::validate_custom_mission_last_error);
+  dagor.debug(::validate_custom_mission_last_error);
   return ::validate_custom_mission_last_error;
 }
 
-let cyber_cafe_boost =
+::cyber_cafe_boost<-
 {
   level=[{wp = 0, xp = 0}, {wp = 0.0, xp = 0.05}, {wp = 0.0, xp = 0.1}, {wp = 0.1, xp = 0.1}]
   squad=[{wp = 0, xp = 0}, {wp = 0.0, xp = 0.0}, {wp = 0.0, xp = 0.1}, {wp = 0.05, xp = 0.1}, {wp = 0.05, xp = 0.1}]
   isValid = false
 }
-::cyber_cafe_max_level <- cyber_cafe_boost.level.len() - 1
+::cyber_cafe_max_level <- ::cyber_cafe_boost.level.len() - 1
 
 
 cyber_cafe_boost.loadTables <- function loadTables()
 {
-  if (this.isValid)
+  if (isValid)
     return
 
   let ws = ::get_warpoints_blk()
 
-  foreach (idx, param in this.level)
+  local idx = 0
+  foreach(param in level)
   {
-    param.wp = ws.getReal("cyberCafeLevelBoost"+idx.tostring()+"WP", param.wp)
-    param.xp = ws.getReal("cyberCafeLevelBoost"+idx.tostring()+"XP", param.xp)
+    level[idx].wp = ws.getReal("cyberCafeLevelBoost"+idx.tostring()+"WP", param.wp)
+    level[idx].xp = ws.getReal("cyberCafeLevelBoost"+idx.tostring()+"XP", param.xp)
+    idx++
   }
 
-  foreach(idx, param in this.squad)
+  idx = 0
+  foreach(param in squad)
   {
-    param.wp = ws.getReal("cyberCafeSquadBoost"+idx.tostring()+"WP", param.wp)
-    param.xp = ws.getReal("cyberCafeSquadBoost"+idx.tostring()+"XP", param.xp)
+    squad[idx].wp = ws.getReal("cyberCafeSquadBoost"+idx.tostring()+"WP", param.wp)
+    squad[idx].xp = ws.getReal("cyberCafeSquadBoost"+idx.tostring()+"XP", param.xp)
+    idx++
   }
 
-  this.isValid = true
+  isValid = true
 }
 
 
 ::calc_boost_for_cyber_cafe <- function calc_boost_for_cyber_cafe(level)
 {
-  cyber_cafe_boost.loadTables()
+  ::cyber_cafe_boost.loadTables()
 
   if (level > ::cyber_cafe_max_level)
     level = ::cyber_cafe_max_level
 
-  return cyber_cafe_boost.level[level]
+  return ::cyber_cafe_boost.level[level]
 }
 
 
 ::calc_boost_for_squads_members_from_same_cyber_cafe <- function calc_boost_for_squads_members_from_same_cyber_cafe(numMembers)
 {
-  cyber_cafe_boost.loadTables()
+  ::cyber_cafe_boost.loadTables()
 
   if (numMembers > 4)
     numMembers = 4
 
-  return cyber_cafe_boost.squad[numMembers]
+  return ::cyber_cafe_boost.squad[numMembers]
 }
 
 
@@ -549,7 +553,7 @@ cyber_cafe_boost.loadTables <- function loadTables()
 
   if (pveTrophyName == null || typeof(pveTrophyName) != "string")
   {
-    ::dagor.debug("get_pve_trophy_name. PVE Trophy for this mission is missing or not a string.")
+    dagor.debug("get_pve_trophy_name. PVE Trophy for this mission is missing or not a string.")
     return null
   }
 
@@ -560,17 +564,17 @@ cyber_cafe_boost.loadTables <- function loadTables()
   else
   {
     let maxTrophyStage = ws.getInt("pveTrophyMaxStage", 0)
-    local trophyStage = ::get_pve_time_award_stage(sessionTime)
+    local trophyStage = get_pve_time_award_stage(sessionTime)
     if (trophyStage > maxTrophyStage)
       trophyStage = maxTrophyStage
     if (trophyStage <= 0)
     {
-      ::dagor.debug("get_pve_trophy_name. cannot generate trophy name for this amount of time in session: "+sessionTime)
+      dagor.debug("get_pve_trophy_name. cannot generate trophy name for this amount of time in session: "+sessionTime)
       return null
     }
     pveTrophyName += "_stage_"+trophyStage
   }
-  ::dagor.debug("get_pve_trophy_name. trophy name "+pveTrophyName+" success? "+success+" session time "+sessionTime)
+  dagor.debug("get_pve_trophy_name. trophy name "+pveTrophyName+" success? "+success+" session time "+sessionTime)
   return pveTrophyName
 }
 
@@ -584,7 +588,7 @@ cyber_cafe_boost.loadTables <- function loadTables()
   {
     timeAwardStage = ((sessionTime / 60) / timeAwardStep).tointeger()
   }
-  ::dagor.debug("get_pve_time_award_stage stage "+timeAwardStage+" sessionTime "+sessionTime+" timeAwardStep "+timeAwardStep+" minutes")
+  dagor.debug("get_pve_time_award_stage stage "+timeAwardStage+" sessionTime "+sessionTime+" timeAwardStep "+timeAwardStep+" minutes")
   return timeAwardStage
 }
 

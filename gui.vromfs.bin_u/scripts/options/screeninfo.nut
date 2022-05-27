@@ -31,7 +31,7 @@ local function getFinalSafearea(safearea, widthLimit)
 {
   if (widthLimit < 1.0 && safearea < 1.0 && isTripleHead())
     widthLimit = widthLimit * safearea
-  return [ min(safearea, widthLimit), safearea ]
+  return [ ::min(safearea, widthLimit), safearea ]
 }
 
 local function getMainScreenSizePx(sw = null, sh = null)
@@ -46,7 +46,7 @@ local function getMainScreenSizePx(sw = null, sh = null)
 let function getScreenHeightForFonts(sw, sh)
 {
   let scr = getMainScreenSizePx(sw, sh)
-  let height = min(0.75 * max(scr[0], scr[1]), min(scr[1], scr[0]))
+  let height = ::min(0.75 * ::max(scr[0], scr[1]), ::min(scr[1], scr[0]))
   return ::round(height).tointeger()
 }
 

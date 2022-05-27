@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let {
   getPreferredVersion = @() -1
@@ -6,20 +5,20 @@ let {
   ? require("%sonyLib/webApi.nut")
   : null
 
-let activityFeedRequestLocParams = freeze({
-  player = "$USER_NAME_OR_ID",
-  count = "$STORY_COUNT",
-  onlineUserId = "$ONLINE_ID",
-  productName = "$PRODUCT_NAME",
-  titleName = "$TITLE_NAME",
-  fiveStarValue = "$FIVE_STAR_VALUE",
-  sourceCount = "$SOURCE_COUNT"
-})
-
 ::g_localization <- {
+  activityFeedRequestLocParams = {
+    player = "$USER_NAME_OR_ID",
+    count = "$STORY_COUNT",
+    onlineUserId = "$ONLINE_ID",
+    productName = "$PRODUCT_NAME",
+    titleName = "$TITLE_NAME",
+    fiveStarValue = "$FIVE_STAR_VALUE",
+    sourceCount = "$SOURCE_COUNT"
+  }
+
   function getLocIdsArray(config, key = "locId") {
     let keyValue = config?[key] ?? ""
-    let parsedString = split_by_chars(keyValue, "; ")
+    let parsedString = ::split(keyValue, "; ")
     if (parsedString.len() <= 1)
       return [keyValue]
 
@@ -72,12 +71,12 @@ let activityFeedRequestLocParams = freeze({
   }
 }
 
-::g_localization.getFilledFeedTextByLang <- function getFilledFeedTextByLang(locIdsArray, customFeedParams = {})
+g_localization.getFilledFeedTextByLang <- function getFilledFeedTextByLang(locIdsArray, customFeedParams = {})
 {
   let localizedKeyWords = {}
   if ("requireLocalization" in customFeedParams)
     foreach(name in customFeedParams.requireLocalization)
-      localizedKeyWords[name] <- this.getLocalizedTextWithAbbreviation(customFeedParams[name])
+      localizedKeyWords[name] <- getLocalizedTextWithAbbreviation(customFeedParams[name])
 
   let activityFeed_config = customFeedParams.__merge(activityFeedRequestLocParams)
 
@@ -86,7 +85,7 @@ let activityFeedRequestLocParams = freeze({
   let localizedTables = {}
   foreach (locId in locIdsArray)
   {
-    let table = this.getLocalizedTextWithAbbreviation(locId)
+    let table = getLocalizedTextWithAbbreviation(locId)
     foreach (abbrev, string in table)
     {
       if (!(abbrev in localizedTables))
@@ -110,8 +109,8 @@ let activityFeedRequestLocParams = freeze({
   return captions
 }
 
-::g_localization.formatLangTextsInStringStyle <- function formatLangTextsInStringStyle(langTextsArray)
+g_localization.formatLangTextsInStringStyle <- function formatLangTextsInStringStyle(langTextsArray)
 {
-  let formatedArray = ::u.map(langTextsArray, @(table) format("\"%s\":\"%s\"", table.abbreviation, table.text))
+  let formatedArray = ::u.map(langTextsArray, @(table) ::format("\"%s\":\"%s\"", table.abbreviation, table.text))
   return ::g_string.implode(formatedArray, ",")
 }

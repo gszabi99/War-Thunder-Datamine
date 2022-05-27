@@ -1813,10 +1813,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
+        "flexionDir": [0.0,-1.0,0.2],
         "type": "leftHand",
         "detachedNodeYpr": [0.0,-15.0,-90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0],
-        "flexionDir": [0.0,-1.0,0.2]
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -1825,10 +1825,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
+        "flexionDir": [0.0,-1.0,-0.5],
         "type": "rightHand",
         "detachedNodeYpr": [0.0,-15.0,90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0],
-        "flexionDir": [0.0,-1.0,-0.5]
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -1837,7 +1837,7 @@
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.2,1.0,0.0]
+        "flexionDir": [0.0,1.0,0.3]
       }
     },
     {
@@ -1846,7 +1846,7 @@
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [-0.2,1.0,0.0]
+        "flexionDir": [0.0,1.0,-0.3]
       }
     }
   ],
@@ -1861,41 +1861,22 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "headPos": [1.84,0.865,-0.015],
-    "headPosOnShooting": [1.94,0.865,-0.015],
+    "headPos": [1.814,0.855,-0.0],
+    "headPosOnShooting": [1.814,0.855,-0.0],
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [2.271732,0.512397,-0.283841],
     "lightColor": [0.62,0.3,0.21],
     "lightAttenuation": 12.0,
-    "mirror": true,
-    "mirrorPos": [2.122,1.075,0.0],
-    "mirrorNorm": [-0.956,-0.25,0.0],
-    "mirrorNode": "blister12",
     "devices": [
       {
-        "stick_ailerons": [-1.0,1.0]
+        "speed": [27.777,333.333]
       },
       {
-        "stick_ailerons": [-1.0,1.0]
+        "compass": [0.0,360.0]
       },
       {
-        "stick_ailerons1": [-1.0,1.0]
-      },
-      {
-        "stick_ailerons2": [-1.0,1.0]
-      },
-      {
-        "stick_elevator": [-1.0,1.0]
-      },
-      {
-        "stick_elevator1": [-1.0,1.0]
-      },
-      {
-        "pedals1": [-1.0,1.0]
-      },
-      {
-        "pedals1": [-1.0,1.0]
+        "compass1": [0.0,360.0]
       },
       {
         "pedals1": [-1.0,1.0]
@@ -1904,28 +1885,16 @@
         "pedals2": [-1.0,1.0]
       },
       {
-        "pedals2": [-1.0,1.0]
+        "stick_ailerons": [-1.2,1.2]
       },
       {
-        "pedals2": [-1.0,1.0]
+        "stick_elevator": [-1.2,1.2]
+      },
+      {
+        "throttle": [-1.6,2.3]
       },
       {
         "throttle": [0.0,1.0]
-      },
-      {
-        "weapon2": [0.0,1.0]
-      },
-      {
-        "weapon4": [0.0,1.0]
-      },
-      {
-        "airbrake_lever": [0.0,1.0]
-      },
-      {
-        "airbrake_fixed": true
-      },
-      {
-        "speed": [27.778,305.556]
       },
       {
         "vario": [-75.0,75.0]
@@ -1937,10 +1906,10 @@
         "altitude_min": [0.0,1000.0]
       },
       {
-        "altitude1_10k": [0.0,100000.0]
+        "altitude_min2": [0.0,1000.0]
       },
       {
-        "radio_altitude": [0.0,1200.0]
+        "altitude_min3": [0.0,3600.0]
       },
       {
         "altitude_koef": 1.0
@@ -1949,22 +1918,7 @@
         "bank": [-8.0,8.0]
       },
       {
-        "bank1": [-8.0,8.0]
-      },
-      {
         "turn": [-0.23562,0.23562]
-      },
-      {
-        "aviahorizon_pitch": [-80.0,80.0]
-      },
-      {
-        "aviahorizon_roll": [-180.0,180.0]
-      },
-      {
-        "compass": [0.0,360.0]
-      },
-      {
-        "compass1": [0.0,360.0]
       },
       {
         "clock_hour": [0.0,12.0]
@@ -1976,22 +1930,43 @@
         "clock_sec": [0.0,60.0]
       },
       {
-        "fuel": [0.0,788.0]
+        "fuel": [0.0,1050.0]
       },
       {
         "rpm": [0.0,15000.0]
       },
       {
+        "fuel1": [0.0,370.0]
+      },
+      {
         "oil_pressure": [0.0,120.0]
       },
       {
-        "oil_temperature": [-50.0,150.0]
+        "oil_temperature": [0.0,150.0]
       },
       {
         "fuel_pressure": [0.0,15.0]
       },
       {
-        "water_temperature": [0.0,1000.0]
+        "throttle1": [0.0,1.0]
+      },
+      {
+        "weapon1": [0.0,1.0]
+      },
+      {
+        "weapon2": [0.0,1.0]
+      },
+      {
+        "aviahorizon_pitch": [-90.0,90.0]
+      },
+      {
+        "aviahorizon_roll": [-180.0,180.0]
+      },
+      {
+        "airbrake_lever": [0.0,1.0]
+      },
+      {
+        "airbrake_fixed": true
       }
     ],
     "parts_holes_dmg": {

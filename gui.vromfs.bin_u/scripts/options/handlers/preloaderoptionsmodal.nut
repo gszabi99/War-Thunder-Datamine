@@ -20,7 +20,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
 
     fillLoadingScreenList()
-    this.showSceneBtn("items_list_msg", false).setValue(::loc("shop/search/global/notFound"))
+    showSceneBtn("items_list_msg", false).setValue(::loc("shop/search/global/notFound"))
 
     updateListItems()
     updateButtons()
@@ -74,8 +74,8 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     let isBanBtnVisible = (isMouseMode && scene.findObject(selectedId).isVisible())
       || hoveredId == selectedId
 
-    this.showSceneBtn("btn_select", !isMouseMode && hoveredId != selectedId && isHovered)
-    this.showSceneBtn("btn_ban", isBanBtnVisible)
+    showSceneBtn("btn_select", !isMouseMode && hoveredId != selectedId && isHovered)
+    showSceneBtn("btn_ban", isBanBtnVisible)
       .setValue(isBanBtnVisible && havePremium.value && isLoadingScreenBanned(selectedId)
         ? ::loc("maps/preferences/removeBan")
         : ::loc("maps/preferences/ban"))
@@ -89,12 +89,12 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     if (!havePremium.value)
-      return this.msgBox("need_money", ::loc("mainmenu/onlyWithPremium"), [
+      return msgBox("need_money", ::loc("mainmenu/onlyWithPremium"), [
         ["purchase", (@() onOnlineShopPremium()).bindenv(this)],
         ["cancel"]], "purchase")
 
     if (!isLoadingScreenBanned(selectedId) && !canBan())
-      return this.msgBox("max_banned_count", ::loc("preloaderSettings/maxBannedCount"), [
+      return msgBox("max_banned_count", ::loc("preloaderSettings/maxBannedCount"), [
         ["ok"]], "ok")
 
     toggleLoadingScreenBan(selectedId)
@@ -159,8 +159,8 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
       isFound = isFound || isVisible
     }
 
-    this.showSceneBtn("filter_edit_cancel_btn", value.len() != 0)
-    this.showSceneBtn("items_list_msg", !isFound)
+    showSceneBtn("filter_edit_cancel_btn", value.len() != 0)
+    showSceneBtn("items_list_msg", !isFound)
     guiScene.setUpdatesEnabled(true, true)
 
     updateButtons()

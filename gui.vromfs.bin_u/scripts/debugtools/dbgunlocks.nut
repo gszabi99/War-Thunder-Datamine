@@ -1,4 +1,3 @@
-let { format } = require("string")
 // warning disable: -file:forbidden-function
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -68,7 +67,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
     res += "\n" + unlock.id + ":" + (desc != ""? "\n" : "") + desc
   }
   dlog("GP: res:")
-  ::dagor.debug(res)
+  dagor.debug(res)
   dlog("GP: done")
 }
 
@@ -109,7 +108,7 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 
 ::gen_all_unlocks_desc_to_blk_cur_lang <- function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false)
 {
-  let fullPath = format("%s/unlocks%s.blk", path, ::get_current_language())
+  let fullPath = ::format("%s/unlocks%s.blk", path, ::get_current_language())
   dlog("GP: gen all unlocks description to " + fullPath)
 
   let res = ::DataBlock()

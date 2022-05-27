@@ -25,25 +25,5 @@ let function fadeColor(color, transparency) {
   Color((color & redHex) >> 16, (color & greenHex) >> 8, color & blueHex, transparency)
 }
 
-let styleText = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = max(1.5, hdpx(1) * (LINE_WIDTH + 1.5))
-  font = Fonts.hud
-  fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
-  fontFx = FFT_GLOW
-  fontSize = hudFontHgt
-}
-
-let styleLineForeground = {
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = hdpx(LINE_WIDTH)
-  font = Fonts.hud
-  fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
-  fontFx = FFT_GLOW
-  fontSize = hudFontHgt
-}
-
 return {hudFontHgt, greenColor, fontOutlineColor, backgroundColor, targetSectorColor, greenColorGrid, fontOutlineFxFactor
-    isDarkColor, isColorOrWhite, redHex, greenHex, blueHex, fadeColor, styleText, styleLineForeground}
+    isDarkColor, isColorOrWhite, redHex, greenHex, blueHex, fadeColor}

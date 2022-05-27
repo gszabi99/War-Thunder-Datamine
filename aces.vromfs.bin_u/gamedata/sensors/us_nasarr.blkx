@@ -461,10 +461,13 @@
             "clearTargetsOfInterest": []
           },
           {
-            "updateTargetOfInterest": []
+            "addTargetOfInterest": []
           },
           {
             "setLastTargetOfInterestActive": []
+          },
+          {
+            "updateActiveTargetOfInterest": []
           },
           {
             "setCenterAzimuth": {
@@ -606,7 +609,7 @@
         },
         "finishedDesignationTrack": {
           "stateFrom": "designationTrack",
-          "event": "targetsOfInterestCleanup",
+          "event": "activeTargetOfInterestInertialTimeOut",
           "command": "selectTarget",
           "stateTo": "search",
           "actions": {
@@ -684,7 +687,7 @@
         ],
         "brokenBoresightTrack": {
           "stateFrom": "boresightTrack",
-          "event": "targetsOfInterestCleanup",
+          "event": "activeTargetOfInterestInertialTimeOut",
           "stateTo": "boresightLock",
           "actions": {
             "setFsmActive": {
@@ -815,7 +818,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": [],
+            "updateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -835,10 +838,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
-            "clearTargetsOfInterest": {
-              "timeOut": 1.0
-            },
+            "extrapolateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -852,6 +852,9 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            },
+            "checkActiveTargetOfInerestInertialTimeout": {
+              "timeOut": 1.0
             }
           }
         }

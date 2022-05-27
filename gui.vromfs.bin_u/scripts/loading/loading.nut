@@ -4,6 +4,9 @@ let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objec
 
 ::gui_start_loading <- function gui_start_loading(isMissionLoading = false)
 {
+  if (::u.isString(isMissionLoading))
+    isMissionLoading = isMissionLoading != "%gui/loading.blk" //compatibility with 1.67.2.X
+
   let briefing = ::DataBlock()
   if (::g_login.isLoggedIn() && isMissionLoading
       && ::loading_get_briefing(briefing) && (briefing.blockCount() > 0))

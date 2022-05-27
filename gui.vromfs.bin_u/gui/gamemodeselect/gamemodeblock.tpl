@@ -64,7 +64,7 @@ gameModeBlock {
   }
 
   <<#videoPreview>>
-  GameModeMovie {
+  movie {
     movie-load='<<videoPreview>>'
     movie-autoStart:t='yes'
     movie-loop:t='yes'
