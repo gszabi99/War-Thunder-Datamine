@@ -411,6 +411,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1392,8 +1393,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1437,8 +1438,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1446,8 +1447,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1455,8 +1456,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1495,29 +1496,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2082,7 +2083,12 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-8.0,12.0]
+            "pitch": [-10.0,16.0]
+          },
+          "limitsTable": {
+            "lim1": [-180.0,-175.0,-10.0,12.0],
+            "lim2": [-175.0,125.0,-10.0,16.0],
+            "lim3": [125.0,180.0,-10.0,12.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2178,13 +2184,13 @@
           "errExplTime": 0.0,
           "forestallTime": 0.1,
           "turret": {
-            "head": "bone_mg_aa_h_01",
+            "head": "bone_turret_01",
             "gun": "bone_mg_aa_v_01",
             "gunnerDm": "commander_dm",
             "hasNightVision": false
           },
           "limits": {
-            "yaw": [-10.0,45.0],
+            "yaw": [-6.0,180.0],
             "pitch": [-10.0,20.0]
           }
         }
@@ -2213,8 +2219,19 @@
       },
       "tracks": {
         "animationMultiplier": -0.68,
-        "height": 0.06,
-        "width": 0.53
+        "tracksTensionK": [50.0,8.0,2.0],
+        "trackMesh": "us_teledyne_ags_phys_track_line",
+        "trackLen": 0.13,
+        "trackCount": 96,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.2,
+        "trackStartOffset": 0.033,
+        "height": 0.1,
+        "width": 0.53,
+        "trackConnector": true,
+        "trackEmitSparks": false
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2267,9 +2284,11 @@
         "defaultGearRadius": 0.3,
         "topGearRadius": 0.13,
         "defaultDampeningForce": [67000.0,67000.0],
-        "frontBackGearRadius": 0.18,
+        "frontBackGearRadius": 0.23,
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.245,
+        "wheel_l_drive": 0.245
       }
     }
   },
@@ -3069,7 +3088,12 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-8.0,12.0]
+                  "pitch": [-10.0,16.0]
+                },
+                "limitsTable": {
+                  "lim1": [-180.0,-175.0,-10.0,12.0],
+                  "lim2": [-175.0,125.0,-10.0,16.0],
+                  "lim3": [125.0,180.0,-10.0,12.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -3165,13 +3189,13 @@
                 "errExplTime": 0.0,
                 "forestallTime": 0.1,
                 "turret": {
-                  "head": "bone_mg_aa_h_01",
+                  "head": "bone_turret_01",
                   "gun": "bone_mg_aa_v_01",
                   "gunnerDm": "commander_dm",
                   "hasNightVision": false
                 },
                 "limits": {
-                  "yaw": [-10.0,45.0],
+                  "yaw": [-6.0,180.0],
                   "pitch": [-10.0,20.0]
                 }
               }

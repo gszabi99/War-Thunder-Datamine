@@ -24,7 +24,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
   function getSceneTplView()
   {
-    let maxCountX = ::max(::floor(
+    let maxCountX = max(::floor(
       ::to_pixels("1@srw - 1@mapPreferencePreviewFullWidth - 1@scrollBarSize")
       * 1.0 / ::to_pixels("1@mapPreferenceIconNestWidth")), 1)
     mapsList = mapPreferencesParams.getMapsList(curEvent)
@@ -334,7 +334,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   {
     counters = mapPreferencesParams.getCounters(curEvent)
     foreach(name, list in inactiveMaps)
-      counters[name].curCounter = ::max(counters[name].curCounter - list.len(), 0)
+      counters[name].curCounter = max(counters[name].curCounter - list.len(), 0)
     let params = counters.filter(@(c) c.curCounter > c.maxCounter).keys()
     if(params.len() > 0)
     {
@@ -417,7 +417,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
     let isFound = visibleMapsList.len() != 0
     currentMapId = isFound ? visibleMapsList[0].mapId : -1
-    showSceneBtn("empty_list_label", !isFound)
+    this.showSceneBtn("empty_list_label", !isFound)
     mlistObj.findObject("nest_" + currentMapId)?.scrollToView()
     updateMapPreview()
   }

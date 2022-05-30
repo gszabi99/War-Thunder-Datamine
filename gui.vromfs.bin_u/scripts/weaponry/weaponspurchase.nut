@@ -1,3 +1,4 @@
+let { format } = require("string")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getItemCost,
@@ -65,11 +66,11 @@ local class WeaponsPurchaseProcess
   msgLocParams = {}
   isAllPresetPurchase = false
 
-  constructor(_unit, additionalParams)
+  constructor(v_unit, additionalParams)
   {
     processStartTime = ::dagor.getCurTime()
 
-    unit = _unit
+    unit = v_unit
     isAllPresetPurchase = additionalParams?.isAllPresetPurchase ?? false
     silent = additionalParams?.silent ?? false
     open = additionalParams?.open ?? false
@@ -367,7 +368,7 @@ local class WeaponsPurchaseProcess
   {
     local text = getModItemName(unit, modItem, false)
     if (amount > 1)
-      text += " " + ::colorize("activeTextColor", ::format(::loc("weapons/counter/right/short"), amount))
+      text += " " + ::colorize("activeTextColor", format(::loc("weapons/counter/right/short"), amount))
 
     return ::colorize("userlogColoredText", text)
   }

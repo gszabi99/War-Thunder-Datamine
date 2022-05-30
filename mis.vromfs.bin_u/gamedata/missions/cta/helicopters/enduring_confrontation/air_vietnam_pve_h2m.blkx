@@ -397,6 +397,22 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/tl_takeoff_landing_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -438,32 +454,22 @@
         },
         {
           "comment": {
-            "value": "доступность шаблонов"
+            "value": "dostupnost' shablonov"
           }
         },
         {
           "comment": {
-            "value": "выключение разведки"
+            "value": "vyklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "включение разведки"
+            "value": "vklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "разрешаем бои после уничтожения конвоев"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": "увеличиваем количество одновременно запущенных шаблонов"
+            "value": "razreshaem boi posle unichtozheniya konvoev"
           }
         },
         {
@@ -473,12 +479,27 @@
         },
         {
           "comment": {
-            "value": "размер сетки"
+            "value": "uvelichivaem kolichestvo odnovremenno zapushchennyh shablonov"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "razmer setki"
           }
         },
         {
           "comment": {
             "value": "set pve mode on for template orginizer"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -524,6 +545,12 @@
           }
         },
         {
+          "varSetBool": {
+            "value": true,
+            "var": "tl_t1_is_enabled"
+          }
+        },
+        {
           "varSetInt": {
             "value": 3,
             "var": "to_max_templates_to_launch"
@@ -542,6 +569,106 @@
           }
         }
       ],
+      "else_actions": []
+    },
+    "test_capture_zones_on_copy": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 90.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "varSetInt": [
+          {
+            "value": 1
+          },
+          {
+            "var": "flt_area_03_state"
+          },
+          {
+            "var": "flt_area_04_state"
+          },
+          {
+            "var": "flt_area_05_state"
+          },
+          {
+            "var": "flt_area_06_state"
+          },
+          {
+            "var": "flt_area_07_state"
+          },
+          {
+            "var": "flt_area_08_state"
+          },
+          {
+            "var": "flt_area_09_state"
+          },
+          {
+            "var": "flt_area_10_state"
+          },
+          {
+            "var": "flt_area_11_state"
+          },
+          {
+            "var": "flt_area_12_state"
+          },
+          {
+            "var": "flt_area_13_state"
+          },
+          {
+            "var": "flt_area_14_state"
+          },
+          {
+            "var": "flt_area_17_state"
+          },
+          {
+            "var": "flt_area_18_state"
+          },
+          {
+            "var": "flt_area_24_state"
+          },
+          {
+            "var": "flt_area_25_state"
+          },
+          {
+            "var": "flt_area_26_state"
+          },
+          {
+            "var": "flt_area_31_state"
+          },
+          {
+            "var": "flt_area_32_state"
+          },
+          {
+            "var": "flt_area_33_state"
+          },
+          {
+            "var": "flt_area_38_state"
+          },
+          {
+            "var": "flt_area_39_state"
+          },
+          {
+            "var": "flt_area_40_state"
+          }
+        ],
+        "triggerEnable": [
+          {
+            "target": "flt_draw_frontline"
+          },
+          {
+            "target": "test_capture_zones_off"
+          }
+        ]
+      },
       "else_actions": []
     }
   },

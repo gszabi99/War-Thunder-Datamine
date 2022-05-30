@@ -704,8 +704,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -749,8 +749,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -758,8 +758,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -767,8 +767,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -807,29 +807,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -1895,12 +1895,12 @@
         "armorClass": "tank_ultra_porcelain",
         "hidableInXrayViewer": true,
         "composite_armor_turret_01_dm": {
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "createSecondaryShatters": false,
           "ignoreSolidDimension": true
         },
         "composite_armor_turret_02_dm": {
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "createSecondaryShatters": false,
           "ignoreSolidDimension": true
         },
@@ -1976,7 +1976,8 @@
           "hidableInXrayViewer": true
         },
         "gun_mask_dm": {
-          "armorThickness": 50.0
+          "armorThickness": 50.0,
+          "variableThickness": true
         },
         "gun_mask_01_dm": {
           "armorThickness": 50.0

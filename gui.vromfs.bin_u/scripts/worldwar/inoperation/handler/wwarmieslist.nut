@@ -86,10 +86,10 @@
   function onArmiesByStatusTabChange(obj)
   {
     if (lastTabSelected != null)
-      showSceneBtn("army_by_state_title_" + lastTabSelected.status, false)
+      this.showSceneBtn("army_by_state_title_" + lastTabSelected.status, false)
 
     lastTabSelected = ::g_ww_map_armies_status_tab_type.getTypeByStatus(obj.getValue())
-    showSceneBtn("army_by_state_title_" + lastTabSelected.status, true)
+    this.showSceneBtn("army_by_state_title_" + lastTabSelected.status, true)
 
     currentPage = 0
     updateTabContent()
@@ -192,8 +192,8 @@
   {
     let pagesCount = lastTabSelected.getTotalPageCount(curItemsPerPage)
     let hasPaginator = pagesCount > 1
-    let paginatorPlaceObj = showSceneBtn("paginator_place", hasPaginator)
-    showSceneBtn("paginator_nest_obj", hasPaginator)
+    let paginatorPlaceObj = this.showSceneBtn("paginator_place", hasPaginator)
+    this.showSceneBtn("paginator_nest_obj", hasPaginator)
     if (hasPaginator)
       ::generatePaginator(paginatorPlaceObj, this, currentPage, pagesCount - 1, null, true, true)
   }

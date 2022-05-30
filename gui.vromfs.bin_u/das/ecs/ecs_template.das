@@ -1,5 +1,5 @@
 options no_unused_function_arguments = false
-options no_aot=true//currently, as of 08.10.2021 there is a bug in AOT codegen for E3DCOLOR
+options no_aot = true//currently, as of 08.10.2021 there is a bug in AOT codegen for E3DCOLOR
 module ecs_template shared private
 require ecs
 require DagorMath
@@ -17,7 +17,7 @@ bitfield TemplateComponentFlags
   IGNORED
 
 def private template_flags(annotations : AnnotationArgumentList)
-  var ret:TemplateComponentFlags
+  var ret : TemplateComponentFlags
   for a in annotations
     if a.basicType != Type tBool
       continue
@@ -37,23 +37,23 @@ def private is_undef(arg)
 def private is_undef(annotations : AnnotationArgumentList)
   return is_undef(find_arg("undef", annotations))
 
-def follow_the_yellow_brick_road ( expr:ExpressionPtr ) : ExpressionPtr
+def follow_the_yellow_brick_road(expr : ExpressionPtr) : ExpressionPtr
   if expr is ExprRef2Value
     return (expr as ExprRef2Value).subexpr |> follow_the_yellow_brick_road
   elif expr is ExprVar
     let ev = expr as ExprVar
     if !ev.varFlags.local && !ev.varFlags.argument && !ev.varFlags._block
-      if ev.variable!=null && ev.variable._type.flags.constant && ev.variable.init!=null
+      if ev.variable != null && ev.variable._type.flags.constant && ev.variable.init != null
         return ev.variable.init |> follow_the_yellow_brick_road
   return expr
 
-def get_eval_any ( econst:ExpressionPtr; var errors:das_string; var any_errors:bool&; var output: auto(TT)& )
+def get_eval_any(econst : ExpressionPtr; var errors : das_string; var any_errors : bool&; var output : auto(TT)&)
   if econst is ExprCall
     if econst.flags.noSideEffects
       var ok = true
       unsafe
-        var res : variant<dummy:float4;id:TT - & -const>
-        res.dummy = eval_single_expression(econst,ok)
+        var res : variant<dummy : float4; id : TT-&-const>
+        res.dummy = eval_single_expression(econst, ok)
         if !ok
           errors := "{errors}\nexpression failed to evaluate {describe(econst)}"
           any_errors = true
@@ -65,24 +65,24 @@ def get_eval_any ( econst:ExpressionPtr; var errors:das_string; var any_errors:b
   errors := "{errors}\nunsupported initializer {describe(econst)}"
   any_errors = true
 
-def get_const_expr ( expr:ExpressionPtr ) : ExpressionPtr
+def get_const_expr(expr : ExpressionPtr) : ExpressionPtr
   if expr == null
     return [[ExpressionPtr]]
   let econst <- expr |> follow_the_yellow_brick_road
   return econst |> is_expr_const ? econst : [[ExpressionPtr]]
 
-def get_templ_const ( expr:ExpressionPtr; var errors:das_string; var any_errors:bool&; var output: auto&)
+def get_templ_const(expr : ExpressionPtr; var errors : das_string; var any_errors : bool&; var output : auto&)
   if expr == null
     return
   let econst <- expr |> follow_the_yellow_brick_road
   econst |> get_eval_any(errors, any_errors, output)
 
-def def_string(v:das_string?)
+def def_string(v : das_string?)
   return v != null ? string(*v) : ""
 
 [structure_macro(name=ecs_template)]
 class CreateTemplateAnnotation : AstStructureAnnotation
-  def override apply ( var st:StructurePtr; var group:ModuleGroup; args:AnnotationArgumentList; var errors : das_string ) : bool
+  def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     for field in st.fields
       let arg = find_arg("undef", field.annotation)
       if is_undef(arg)
@@ -92,18 +92,18 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         if undefType && !(arg is tString)
           field._type <- new [[TypeDecl() baseType = Type tInt]]
         else
-          field._type <- new [[TypeDecl() baseType = Type tInt, alias := (arg ?as tString) ?? typeName]]
+          field._type <- new [[TypeDecl() baseType = Type tInt, alias := (arg ? as tString) ?? typeName]]
         field.init := null
     return true
 
-  def override finish ( var st:StructurePtr; var group:ModuleGroup; args:AnnotationArgumentList; var errors : das_string ) : bool
+  def override finish(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     if !is_entity_mgr_exists()
       return true
     if is_in_aot() //|| find_index_if(each(args), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(group, a.sValue);}) != -1
       st.fields |> clear()
       return true
-    var parents:array<string>
-    var tags:array<uint>
+    var parents : array<string>
+    var tags : array<uint>
     defer_delete(parents)
     var hadErrors = false
     for a in args
@@ -119,7 +119,7 @@ class CreateTemplateAnnotation : AstStructureAnnotation
           hadErrors = true
         else
           tags |> emplace(ecs_hash(string(a.sValue)))
-    createTemplate2(group, ecs_hash(string(st.at.fileInfo.name)), string(st.name), parents) <| $(var cmp:CreatingTemplate)
+    createTemplate2(group, ecs_hash(string(st.at.fileInfo.name)), string(st.name), parents) <| $(var cmp : CreatingTemplate)
       for tag in tags
         cmp |> creating_template_addTag(tag)
       for field in st.fields
@@ -141,35 +141,35 @@ class CreateTemplateAnnotation : AstStructureAnnotation
           set_undef(cmp, f, fieldName, string(field._type.alias))
         else
           let econst <- field.init |> get_const_expr
-          if field._type.baseType==Type tBool
-            set(cmp, f, fieldName, (econst ?as ExprConstBool)?.value ?? false)
-          elif field._type.baseType==Type tInt
-            set(cmp, f, fieldName, (econst ?as ExprConstInt)?.value ?? 0)
-          elif field._type.baseType==Type tUInt
-            set(cmp, f, fieldName, (econst ?as ExprConstUInt)?.value ?? 0u)
-          elif field._type.baseType==Type tUInt64
-            set(cmp, f, fieldName, (econst ?as ExprConstUInt64)?.value ?? uint64(0))
-          elif field._type.baseType==Type tInt2
-            set(cmp, f, fieldName, (econst ?as ExprConstInt2)?.value ?? int2(0))
-          elif field._type.baseType==Type tInt3
-            set(cmp, f, fieldName, (econst ?as ExprConstInt3)?.value ?? int3(0))
-          elif field._type.baseType==Type tFloat
-            set(cmp, f, fieldName, (econst ?as ExprConstFloat)?.value ?? 0.)
-          elif field._type.baseType==Type tFloat2
-            set(cmp, f, fieldName, (econst ?as ExprConstFloat2)?.value ?? float2(0.))
-          elif field._type.baseType==Type tFloat3
-            set(cmp, f, fieldName, (econst ?as ExprConstFloat3)?.value ?? float3(0.))
-          elif field._type.baseType==Type tFloat4
-            set(cmp, f, fieldName, (econst ?as ExprConstFloat4)?.value ?? float4(0.))
-          elif field._type.baseType==Type tFloat4
-            set(cmp, f, fieldName, (econst ?as ExprConstFloat4)?.value ?? float4(0.))
-          elif field._type.baseType==Type tString
-            set(cmp, f, fieldName, def_string((econst ?as ExprConstString)?.value))
-          elif field._type.baseType==Type tHandle
+          if field._type.baseType == Type tBool
+            set(cmp, f, fieldName, (econst ? as ExprConstBool)?.value ?? false)
+          elif field._type.baseType == Type tInt
+            set(cmp, f, fieldName, (econst ? as ExprConstInt)?.value ?? 0)
+          elif field._type.baseType == Type tUInt
+            set(cmp, f, fieldName, (econst ? as ExprConstUInt)?.value ?? 0u)
+          elif field._type.baseType == Type tUInt64
+            set(cmp, f, fieldName, (econst ? as ExprConstUInt64)?.value ?? uint64(0))
+          elif field._type.baseType == Type tInt2
+            set(cmp, f, fieldName, (econst ? as ExprConstInt2)?.value ?? int2(0))
+          elif field._type.baseType == Type tInt3
+            set(cmp, f, fieldName, (econst ? as ExprConstInt3)?.value ?? int3(0))
+          elif field._type.baseType == Type tFloat
+            set(cmp, f, fieldName, (econst ? as ExprConstFloat)?.value ?? 0.)
+          elif field._type.baseType == Type tFloat2
+            set(cmp, f, fieldName, (econst ? as ExprConstFloat2)?.value ?? float2(0.))
+          elif field._type.baseType == Type tFloat3
+            set(cmp, f, fieldName, (econst ? as ExprConstFloat3)?.value ?? float3(0.))
+          elif field._type.baseType == Type tFloat4
+            set(cmp, f, fieldName, (econst ? as ExprConstFloat4)?.value ?? float4(0.))
+          elif field._type.baseType == Type tFloat4
+            set(cmp, f, fieldName, (econst ? as ExprConstFloat4)?.value ?? float4(0.))
+          elif field._type.baseType == Type tString
+            set(cmp, f, fieldName, def_string((econst ? as ExprConstString)?.value))
+          elif field._type.baseType == Type tHandle
             if field._type.annotation.name == "EntityId"
               set(cmp, f, fieldName, INVALID_ENTITY_ID)
             elif field._type.annotation.name == "E3DCOLOR"
-              var color: E3DCOLOR
+              var color : E3DCOLOR
               get_templ_const(field.init, errors, hadErrors, color)
               set(cmp, f, fieldName, color)
             elif field._type.annotation.name == "Array"
@@ -181,6 +181,63 @@ class CreateTemplateAnnotation : AstStructureAnnotation
             elif field._type.annotation.name == "Tag"
               assert(field.init == null)
               set_undef(cmp, f, fieldName, "ecs::Tag")
+            elif field._type.annotation.name == "UInt8List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::UInt8List")
+            elif field._type.annotation.name == "UInt16List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::UInt16List")
+            elif field._type.annotation.name == "UInt32List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::UInt32List")
+            elif field._type.annotation.name == "UInt64List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::UInt64List")
+            elif field._type.annotation.name == "StringList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::StringList")
+            elif field._type.annotation.name == "EidList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::EidList")
+            elif field._type.annotation.name == "FloatList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::FloatList")
+            elif field._type.annotation.name == "Point2List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Point2List")
+            elif field._type.annotation.name == "Point3List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Point3List")
+            elif field._type.annotation.name == "Point4List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Point4List")
+            elif field._type.annotation.name == "IPoint2List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::IPoint2List")
+            elif field._type.annotation.name == "IPoint3List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::IPoint3List")
+            elif field._type.annotation.name == "BoolList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::BoolList")
+            elif field._type.annotation.name == "TMatrixList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::TMatrixList")
+            elif field._type.annotation.name == "ColorList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::ColorList")
+            elif field._type.annotation.name == "Int8List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Int8List")
+            elif field._type.annotation.name == "Int16List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Int16List")
+            elif field._type.annotation.name == "IntList"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::IntList")
+            elif field._type.annotation.name == "Int64List"
+              assert(field.init == null)
+              set_undef(cmp, f, fieldName, "ecs::Int64List")
             else
               logerr("Template {st.name} declared at {st.at.fileInfo.name} has field <{fieldName}> of unknown handleType <{field._type.annotation.name}> fullName <{describe(field._type)}>")
     return !hadErrors

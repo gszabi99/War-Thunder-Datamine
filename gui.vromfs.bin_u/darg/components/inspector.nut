@@ -20,6 +20,14 @@ let curData        = Computed(@() pickedList.value?[viewIdx.value])
 let fontSize = sh(1.5)
 let valColor = Color(155,255,50)
 
+let function inspectorToggle() {
+  shown(!shown.value)
+  pickerActive(false)
+  pickedList([])
+  viewIdx(0)
+  highlight(null)
+}
+
 let function textButton(text, action, isEnabled = true) {
   let stateFlags = Watched(0)
 
@@ -46,7 +54,7 @@ let function textButton(text, action, isEnabled = true) {
       color = color
       padding = [hdpx(5), hdpx(10)]
       children = {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         text = text
         color = isEnabled ? 0xFFFFFFFF : 0xFFBBBBBB
       }
@@ -64,22 +72,26 @@ let function mkDirBtn(text, dir) {
   }
 }
 
+let gap = { size = flex() }
+let pickBtn = textButton("Pick", @() pickerActive(true))
+let prevBtn = mkDirBtn("Prev", -1)
+let nextBtn = mkDirBtn("Next", 1)
+let closeBtn = textButton("Close", inspectorToggle)
+
 let invAlign = @(align) align == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
+
 let function panelToolbar() {
-  let pickBtn = textButton("Pick", @() pickerActive(true))
-  let alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<|" : "|>", @() wndHalign(invAlign(wndHalign.value)))
-  let prev = mkDirBtn("Prev", -1)
-  let next = mkDirBtn("Next", 1)
+  let alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<|" : "|>",
+    @() wndHalign(invAlign(wndHalign.value)))
   return {
     watch = wndHalign
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     padding = sh(1)
     gap = sh(0.5)
-    halign = invAlign(wndHalign.value)
     children = wndHalign.value == ALIGN_RIGHT
-      ? [alignBtn, pickBtn, prev, next]
-      : [prev, next, pickBtn, alignBtn]
+      ? [alignBtn, pickBtn, prevBtn, nextBtn, gap, closeBtn]
+      : [closeBtn, gap, prevBtn, nextBtn, pickBtn, alignBtn]
   }
 }
 
@@ -369,14 +381,6 @@ let function inspectorRoot() {
     })
 
   return res
-}
-
-let function inspectorToggle() {
-  shown(!shown.value)
-  pickerActive(false)
-  pickedList([])
-  viewIdx(0)
-  highlight(null)
 }
 
 return {

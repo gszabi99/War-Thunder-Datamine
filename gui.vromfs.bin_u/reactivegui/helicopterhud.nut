@@ -10,7 +10,7 @@ let {paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed, turretA
   launchDistanceMax, lockSight, targetSize, sight, rangeFinder, detectAlly} = require("airHudElems.nut")
 
 let {
-  gunDirection, fixedGunsDirection, helicopterCCRP, atgmTrackerStatusComponent,
+  gunDirection, fixedGunsDirection, helicopterCCRP, agmTrackerStatusComponent,
   laserDesignatorStatusComponent, laserDesignatorComponent, agmTrackZoneComponent} = require("airSight.nut")
 
 let {radarElement, twsElement} = require("airHudComponents.nut")
@@ -51,14 +51,14 @@ let function helicopterMainHud(isBackground) {
     watch = IsMainHudVisible
     children = IsMainHudVisible.value
     ? [
-      rocketAim(sh(0.8), sh(1.8), isBackground, HudColor.value)
-      aamAim(isBackground, HudColor, AlertColorHigh)
-      agmAim(isBackground, HudColor)
-      gunDirection(isBackground, false)
-      fixedGunsDirection(isBackground)
-      helicopterCCRP(isBackground)
+      rocketAim(sh(0.8), sh(1.8), HudColor.value, isBackground)
+      aamAim(HudColor, AlertColorHigh, isBackground)
+      agmAim(HudColor, isBackground)
+      gunDirection(HudColor, false, isBackground)
+      fixedGunsDirection(HudColor, isBackground)
+      helicopterCCRP(HudColor, isBackground)
       vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value, isBackground)
-      horSpeed(isBackground, HudColor.value)
+      horSpeed(HudColor.value, isBackground)
       helicopterParamsTable(isBackground)
       taTarget(sw(25), sh(25), isBackground)
     ]
@@ -74,20 +74,20 @@ let function helicopterSightHud(isBackground) {
     [
       vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudColor.value, isBackground)
       turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), isBackground)
-      agmLaunchZone(sw(100), sh(100), isBackground)
+      agmLaunchZone(HudColor, sw(100), sh(100), isBackground)
       launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), isBackground)
       helicopterSightParamsTable(isBackground)
       lockSight(HudColor, hdpx(150), hdpx(100), sw(50), sh(50), isBackground)
       targetSize(HudColor, sw(100), sh(100))
-      agmTrackZoneComponent(isBackground)
-      laserDesignatorComponent(isBackground)
+      agmTrackZoneComponent(HudColor, isBackground)
+      agmTrackerStatusComponent(HudColor, sw(50), sh(41), isBackground)
+      laserDesignatorComponent(HudColor, isBackground)
+      laserDesignatorStatusComponent(HudColor, sw(50), sh(38), isBackground)
       sight(HudColor, sw(50), sh(50), hdpx(500), isBackground)
       rangeFinder(HudColor, sw(50), sh(59), isBackground)
-      laserDesignatorStatusComponent(isBackground)
-      atgmTrackerStatusComponent(isBackground)
       detectAlly(sw(51), sh(35), isBackground)
-      agmAim(isBackground, HudColor)
-      gunDirection(isBackground, true)
+      agmAim(HudColor, isBackground)
+      gunDirection(HudColor, true, isBackground)
     ]
     : null
   }
@@ -98,9 +98,9 @@ let function helicopterGunnerHud(isBackground) {
     watch = IsGunnerHudVisible
     children = IsGunnerHudVisible.value
     ? [
-        gunDirection(isBackground, false)
-        fixedGunsDirection(isBackground)
-        helicopterCCRP(isBackground)
+        gunDirection(HudColor, false, isBackground)
+        fixedGunsDirection(HudColor, isBackground)
+        helicopterCCRP(HudColor, isBackground)
         vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value, isBackground)
         helicopterParamsTable(isBackground)
       ]
@@ -143,7 +143,7 @@ let function helicopterHUDs(isBackground) {
       pilotHud(isBackground)
       !IsMfdEnabled.value ? twsElement(HudColor, twsPosComputed, twsSize) : null
       !IsMfdEnabled.value ? radarElement(HudColor, radarPosWatched, radarSize) : null
-      !IsRadarHudVisible.value ? compassElem(isBackground, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)]) : null
+      !IsRadarHudVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5*compassSize[0], sh(15)], isBackground) : null
     ]
   }
 }

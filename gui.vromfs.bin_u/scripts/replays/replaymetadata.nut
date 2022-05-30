@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 
 let buildReplayMpTable = function(replayPath)
@@ -41,7 +42,7 @@ let buildReplayMpTable = function(replayPath)
 
     if (mplayer.name == "")
     {
-      let parts = ::split(b?.nick ?? "", " ")
+      let parts = split_by_chars(b?.nick ?? "", " ")
       let hasClanTag = parts.len() == 2
       mplayer.clanTag = hasClanTag ? parts[0] : ""
       mplayer.name    = hasClanTag ? parts[1] : parts[0]

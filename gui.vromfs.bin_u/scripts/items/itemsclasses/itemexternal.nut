@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -34,6 +35,8 @@ let defaultLocIdsList = {
   maxAmountIcon                         = "check_mark/green"
   reUseItemLocId                        = "item/consume/again"
   openingRewardTitle                    = "mainmenu/itemConsumed/title"
+  rewardTitle                           = "mainmenu/itemCreated/title"
+  disassembledRewardTitle               = "mainmenu/itemDisassembled/title"
   cantConsumeYet                        = "item/cant_consume_yet"
 }
 
@@ -150,7 +153,7 @@ local ItemExternal = class extends ::BaseItem
         || tradeableTimestamp != getTradebleTimestamp(itemDesc))
       return false
     addUid(itemDesc.itemid, itemDesc.quantity)
-    lastChangeTimestamp = ::max(lastChangeTimestamp, time.getTimestampFromIso8601(itemDesc?.timestamp))
+    lastChangeTimestamp = max(lastChangeTimestamp, time.getTimestampFromIso8601(itemDesc?.timestamp))
     return true
   }
 
@@ -240,10 +243,9 @@ local ItemExternal = class extends ::BaseItem
     return ::LayersIcon.getIconData(null, image)
   }
 
-  function getOpeningCaption()
-  {
-    return ::loc(getLocIdsList().openingRewardTitle)
-  }
+  getOpeningCaption = @() ::loc(getLocIdsList().openingRewardTitle)
+  getCreationCaption = @() ::loc(getLocIdsList().rewardTitle)
+  getDissasembledCaption = @() ::loc(getLocIdsList().disassembledRewardTitle)
 
   function isAllowSkipOpeningAnim()
   {
@@ -507,7 +509,7 @@ local ItemExternal = class extends ::BaseItem
       data_below_text = ::PrizesView.getPrizesListView([ metaBlk ],
         { showAsTrophyContent = true, receivedPrizes = false, widthByParentParent = true })
       data_below_buttons = ::has_feature("Marketplace") && itemDef?.marketable
-        ? ::format("textarea{overlayTextColor:t='warning'; text:t='%s'}", ::g_string.stripTags(::loc("msgBox/coupon_will_be_spent")))
+        ? format("textarea{overlayTextColor:t='warning'; text:t='%s'}", ::g_string.stripTags(::loc("msgBox/coupon_will_be_spent")))
         : null
     }
     let item = this //we need direct link, to not lose action on items list refresh.
@@ -666,7 +668,7 @@ local ItemExternal = class extends ::BaseItem
     }
 
     local maxAmount = ::ceil(leftWbAmount.tofloat() / warbondItem.getWarbondsAmount()).tointeger()
-    maxAmount = ::min(maxAmount, amount)
+    maxAmount = min(maxAmount, amount)
     if (maxAmount == 1 || !::has_feature("ItemConvertToWarbondMultiple"))
     {
       convertToWarbondsImpl(recipe, warbondItem, 1)
@@ -929,7 +931,7 @@ local ItemExternal = class extends ::BaseItem
 
     let curSeconds = ::dagor.getCurTime() * 0.001
     let deltaSeconds = (craftTimeSec - curSeconds).tointeger()
-    return ::max(0, deltaSeconds)
+    return max(0, deltaSeconds)
   }
 
   function getCraftTimeTextShort()
@@ -1113,10 +1115,10 @@ local ItemExternal = class extends ::BaseItem
       return
 
     substitutionItemData = []
-    let tagData = split(tag, "_")
+    let tagData = split_by_chars(tag, "_")
     for (local i = tagData.len() - 1; i >= 0 ; i--)
     {
-      let ids = split(tagData[i], "-")
+      let ids = split_by_chars(tagData[i], "-")
       if (ids.len() < 2)
         continue
       substitutionItemData.append(ids)

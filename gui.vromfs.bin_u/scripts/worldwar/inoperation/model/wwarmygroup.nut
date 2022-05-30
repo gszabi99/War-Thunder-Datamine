@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
 ::WwArmyGroup <- class
@@ -75,7 +76,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   function getFullName()
   {
-    return ::format("%d %s", getArmyGroupIdx(), name)
+    return format("%d %s", getArmyGroupIdx(), name)
   }
 
   function getCountryIcon()

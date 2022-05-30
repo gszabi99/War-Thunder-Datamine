@@ -115,7 +115,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initControlBlockVisibiltiySwitch()
   {
-    showSceneBtn("control_block_visibility_switch", isSwitchPanelBtnVisible())
+    this.showSceneBtn("control_block_visibility_switch", isSwitchPanelBtnVisible())
     updateGamercardType()
   }
 
@@ -151,7 +151,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function onPageChange(obj)
   {
     currentOperationInfoTabType = ::g_ww_map_info_type.getTypeByIndex(obj.getValue())
-    showSceneBtn("content_block_2", currentOperationInfoTabType == ::g_ww_map_info_type.OBJECTIVE)
+    this.showSceneBtn("content_block_2", currentOperationInfoTabType == ::g_ww_map_info_type.OBJECTIVE)
     updatePage()
     onTabChange()
   }
@@ -177,8 +177,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       return
 
     let show = ::g_world_war.haveManagementAccessForAnyGroup()
-    showSceneBtn("reinforcements_block", show)
-    showSceneBtn("armies_block", show)
+    this.showSceneBtn("reinforcements_block", show)
+    this.showSceneBtn("armies_block", show)
 
     local defaultTabId = 0
     if (show)
@@ -348,7 +348,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function initToBattleButton()
   {
-    let toBattleNest = showSceneBtn("gamercard_tobattle", true)
+    let toBattleNest = this.showSceneBtn("gamercard_tobattle", true)
     if (toBattleNest)
     {
       scene.findObject("top_gamercard_bg").needRedShadow = "no"
@@ -357,7 +357,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       })
       guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
     }
-    showSceneBtn("gamercard_logo", false)
+    this.showSceneBtn("gamercard_logo", false)
 
     updateToBattleButton()
   }
@@ -908,7 +908,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       operStatObj.animation = "hide"
     let afkLoseTimeShowSec = (::g_world_war.getSetting("afkLoseTimeShowSec", 0)
       / ::ww_get_speedup_factor()).tointeger()
-    let delayTime = ::max(time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
+    let delayTime = max(time.millisecondsToSecondsInt(afkData.afkLoseTimeMsec)
       - ::g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
 
     afkLostTimer = ::Timer(scene, delayTime,

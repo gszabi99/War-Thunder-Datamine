@@ -8,7 +8,7 @@ let function calculate_allocated_memory(obj) {
   let typeName = type(obj)
 
   if (typeName == "table" || typeName == "class" || typeName == "array")
-    foreach (k, v in obj) {
+    foreach (v in obj) {
       items++
       sum += calculate_allocated_memory(v)
     }

@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 /* LayersIcon API:
@@ -56,40 +57,42 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 }
 
-LayersIcon.initConfigOnce <- function initConfigOnce(blk = null)
+::LayersIcon.initConfigOnce <- function initConfigOnce(blk = null)
 {
-  if (config)
+  if (this.config)
     return
 
   if (!blk)
     blk = GUI.get()
-  config = blk?.layered_icons ? ::buildTableFromBlk(blk.layered_icons) : {}
+  let config = blk?.layered_icons ? ::buildTableFromBlk(blk.layered_icons) : {}
   if (!("styles" in config)) config.styles <- {}
   if (!("layers" in config)) config.layers <- {}
+  this.config = config
 }
 
-LayersIcon.refreshConfig <- function refreshConfig()
+::LayersIcon.refreshConfig <- function refreshConfig()
 {
   ::LayersIcon.config = null
   ::LayersIcon.initConfigOnce(null)
 }
 
-LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null, defStyle=null, iconParams=null, iconConfig=null)
+::LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null, defStyle=null, iconParams=null, iconConfig=null)
 {
-  initConfigOnce()
+  this.initConfigOnce()
 
   local data = ""
+  let styles = this.config.styles
   let styleCfg = iconConfig ? iconConfig
-    : iconStyle && (iconStyle in config.styles) && config.styles[iconStyle]
-  let defStyleCfg = defStyle && (defStyle in config.styles) && config.styles[defStyle]
+    : iconStyle && (iconStyle in styles) && styles[iconStyle]
+  let defStyleCfg = defStyle && (defStyle in styles) && styles[defStyle]
 
   let usingStyle = styleCfg? styleCfg : defStyleCfg
   if (usingStyle)
   {
-    let layers = split(usingStyle, "; ")
+    let layers = split_by_chars(usingStyle, "; ")
     foreach (layerName in layers)
     {
-      local layerCfg = findLayerCfg(layerName)
+      local layerCfg = this.findLayerCfg(layerName)
       if (!layerCfg)
         continue
 
@@ -112,30 +115,30 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null
   {
     ratio = (ratio && ratio > 0) ? ratio : 1.0
     let size = (ratio == 1.0)? "ph, ph" : (ratio > 1.0)? format("ph, %.2fph", 1/ratio) : format("%.2fph, ph", ratio)
-    data = iconLayer.subst({ id = "id:t='iconLayer0'", size, posX ="(pw-w)/2", posY = "(ph-h)/2",
+    data = this.iconLayer.subst({ id = "id:t='iconLayer0'", size, posX ="(pw-w)/2", posY = "(ph-h)/2",
       pos = "absolute", image, props = "" })
   }
 
   return data
 }
 
-LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size)
+::LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size)
 {
-  return iconLayer.subst({ id = "id:t='iconLayer0'", size, posX = "(pw-w)/2", posY = "(ph-h)/2",
+  return this.iconLayer.subst({ id = "id:t='iconLayer0'", size, posX = "(pw-w)/2", posY = "(ph-h)/2",
     pos = "absolute", image, props = "" })
 }
 
-LayersIcon.findLayerCfg <- function findLayerCfg(id)
+::LayersIcon.findLayerCfg <- function findLayerCfg(id)
 {
-  return "layers" in config ? ::getTblValue(id.tolower(), config.layers) : null
+  return "layers" in this.config ? ::getTblValue(id.tolower(), this.config.layers) : null
 }
 
-LayersIcon.findStyleCfg <- function findStyleCfg(id)
+::LayersIcon.findStyleCfg <- function findStyleCfg(id)
 {
-  return "styles" in config ? ::getTblValue(id.tolower(), config?.styles) : null
+  return "styles" in this.config ? ::getTblValue(id.tolower(), this.config?.styles) : null
 }
 
-LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "")  //need to move it to handyman,
+::LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "")  //need to move it to handyman,
                                      //but before need to correct cashe it or it will decrease performance
 {
   let getResultsTable = (@(layersCfgParams, layerCfg) function() {
@@ -153,14 +156,14 @@ LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers 
         if (typeof layerCfg[paramName] == "string")
           result = layerCfg[paramName]
         else if ("formatValue" in table)
-          result = ::format(table.formatValue, layerCfg[paramName].tofloat())
+          result = format(table.formatValue, layerCfg[paramName].tofloat())
       }
 
       resultTable[resultParamName] <- result
     }
 
     return resultTable
-  })(layersCfgParams, layerCfg)
+  })(this.layersCfgParams, layerCfg)
 
   let baseParams = getResultsTable()
 
@@ -173,15 +176,15 @@ LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers 
   local props = ""
   foreach(key in [ "background-svg-size" ])
     if (key in layerCfg)
-      props += ::format("%s:t='%s';", key, layerCfg[key])
+      props += format("%s:t='%s';", key, layerCfg[key])
 
-  return iconLayer.subst({id, size = $"{baseParams.width}, {baseParams.height}",
+  return this.iconLayer.subst({id, size = $"{baseParams.width}, {baseParams.height}",
     posX = baseParams.posX + offsetX, posY = baseParams.posY + offsetY,
     pos = baseParams.position, image = img, props = $"{props} {insertLayers}" })
 }
 
 // For icon customization it is much easier to use replaceIcon() with iconParams, or getIconData() with iconParams.
-LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg)
+::LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg)
 {
   local insertLayers = ""
   foreach(layerCfg in insertLayersArrayCfg)
@@ -196,31 +199,31 @@ LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLay
   return ::LayersIcon.genDataFromLayer(mainLayerCfg, insertLayers)
 }
 
-LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image=null, ratio=null, defStyle=null, iconParams=null, iconConfig=null)
+::LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image=null, ratio=null, defStyle=null, iconParams=null, iconConfig=null)
 {
   if (!::checkObj(iconObj))
     return
 
   let guiScene = iconObj.getScene()
-  let data = getIconData(iconStyle, image, ratio, defStyle, iconParams, iconConfig)
+  let data = this.getIconData(iconStyle, image, ratio, defStyle, iconParams, iconConfig)
   guiScene.replaceContentFromText(iconObj, data, data.len(), null)
 }
 
-LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
+::LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
 {
-  local props = ::format("color:t='%s';", ::getTblValue("color", layerCfg, "@commonTextColor"))
-  props += ::format("font:t='%s';", ::getTblValue("font", layerCfg, "@fontNormal"))
+  local props = format("color:t='%s';", ::getTblValue("color", layerCfg, "@commonTextColor"))
+  props += format("font:t='%s';", ::getTblValue("font", layerCfg, "@fontNormal"))
   foreach(id in ["font-ht", "max-width", "text-align", "shadeStyle"])
     if (id in layerCfg)
-      props += ::format("%s:t='%s';", id, layerCfg[id])
+      props += format("%s:t='%s';", id, layerCfg[id])
 
-  let idTag = ("id" in layerCfg) ? ::format("id:t='%s';", ::g_string.stripTags(layerCfg.id)) : ""
+  let idTag = ("id" in layerCfg) ? format("id:t='%s';", ::g_string.stripTags(layerCfg.id)) : ""
 
   let posX = ("x" in layerCfg)? layerCfg.x.tostring() : "(pw-w)/2"
   let posY = ("y" in layerCfg)? layerCfg.y.tostring() : "(ph-h)/2"
   let position = ::getTblValue("position", layerCfg, "absolute")
 
-  return ::format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",
+  return format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",
                       idTag,
                       ::g_string.stripTags(::getTblValue("text", layerCfg, "")),
                       posX, posY,
@@ -228,6 +231,6 @@ LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
                       props)
 }
 
-LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : ::max(minOffset, maxOffset / (itemsLen - 1))
+::LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : max(minOffset, maxOffset / (itemsLen - 1))
 
 ::g_script_reloader.registerPersistentDataFromRoot("LayersIcon")

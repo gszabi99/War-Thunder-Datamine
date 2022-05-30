@@ -99,6 +99,9 @@
     "canReloadNonGuns": true
   },
   {
+    "supportsCombinedPriSecTriggers": true
+  },
+  {
     "perfectRangefinder": true
   },
   {
@@ -853,18 +856,23 @@
           "hp": 375.0
         },
         "compartment_02_dm": {
-          "hp": 482.0
+          "hp": 460.0
         },
         "compartment_03_dm": {
           "hp": 354.0
-        },
+        }
+      },
+      "control_compartments": {
+        "fireParamsPreset": "ship_cover_boats",
+        "stopChanceOnDeadPart": 0.2,
+        "armorClass": "ship_wood",
+        "armorThickness": 25.0,
+        "fireProtectionHp": 3.0,
         "bridge_dm": {
-          "armorThickness": 25.0,
-          "hp": 150.0
+          "hp": 200.0
         },
         "radio_station_dm": {
-          "armorThickness": 25.0,
-          "hp": 80.0
+          "hp": 100.0
         }
       },
       "superstructures": {
@@ -960,22 +968,22 @@
         "armorThickness": 5.0,
         "fireProtectionHp": 8.0,
         "engine_01_dm": {
-          "hp": 300.0
+          "hp": 490.0
         },
         "engine_02_dm": {
-          "hp": 300.0
+          "hp": 454.0
         },
         "engine_03_dm": {
-          "hp": 300.0
+          "hp": 490.0
         },
         "transmission_01_dm": {
-          "hp": 300.0
+          "hp": 400.0
         },
         "transmission_02_dm": {
-          "hp": 300.0
+          "hp": 400.0
         },
         "transmission_03_dm": {
-          "hp": 300.0
+          "hp": 400.0
         }
       },
       "steering_gear": {
@@ -1028,24 +1036,24 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "main_caliber_turret_03_dm": {
-          "hp": 80.0
+          "hp": 150.0
         }
       },
       "turrets_aux_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 75.0
+          "hp": 100.0
         }
       },
       "turrets_aa_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "aa_turret_01_dm": {
-          "hp": 44.0
+          "hp": 40.0
         },
         "aa_turret_02_dm": {
-          "hp": 43.0
+          "hp": 40.0
         }
       },
       "gun_main_caliber": {
@@ -1144,7 +1152,7 @@
   },
   {
     "tank_crew": {
-      "minCrewMemberRepairCount": 4,
+      "minCrewMemberRepairCount": 0,
       "minCrewMemberAliveCount": 3,
       "sailor1": {
         "dmPart": "bridge_dm",

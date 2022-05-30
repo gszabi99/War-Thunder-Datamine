@@ -1,3 +1,4 @@
+let { format } = require("string")
 let string = require("%sqstd/string.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -5,7 +6,7 @@ local intIconToString = @(id) ""
 local getIconPath = @(icon) icon
 local getConfig = @() null
 
-let BhvAvatar = class
+let class BhvAvatar
 {
   eventMask    = ::EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
@@ -13,10 +14,10 @@ let BhvAvatar = class
 
   function onAttach(obj)
   {
-    setIsFull(obj, obj?.isFull == "yes")
+    this.setIsFull(obj, obj?.isFull == "yes")
     if (obj?.value)
-      setStringValue(obj, validateStrValue(obj.value))
-    updateView(obj)
+      this.setStringValue(obj, this.validateStrValue(obj.value))
+    this.updateView(obj)
     return ::RETCODE_NOTHING
   }
 
@@ -29,12 +30,12 @@ let BhvAvatar = class
     return strValue
   }
 
-  function isFull(obj) { return !!obj.getIntProp(isFullPID, 0) }
+  function isFull(obj) { return !!obj.getIntProp(this.isFullPID, 0) }
   function setIsFull(obj, newIsFull)
   {
-    if (newIsFull == isFull(obj))
+    if (newIsFull == this.isFull(obj))
       return false
-    obj.setIntProp(isFullPID, newIsFull ? 1 : 0)
+    obj.setIntProp(this.isFullPID, newIsFull ? 1 : 0)
     return true
   }
 
@@ -50,14 +51,14 @@ let BhvAvatar = class
   {
     local shouldUpdate = false
     if (u.isBool(newValue))
-      shouldUpdate = setIsFull(obj, newValue)
+      shouldUpdate = this.setIsFull(obj, newValue)
     else if (u.isInteger(newValue))
-      shouldUpdate = setStringValue(obj, intIconToString(newValue))
+      shouldUpdate = this.setStringValue(obj, intIconToString(newValue))
     else if (u.isString(newValue))
-      shouldUpdate = setStringValue(obj, newValue)
+      shouldUpdate = this.setStringValue(obj, newValue)
 
     if (shouldUpdate)
-      updateView(obj)
+      this.updateView(obj)
   }
 
   function updateView(obj)
@@ -69,7 +70,7 @@ let BhvAvatar = class
     if (!hasImage)
       return
 
-    if (isFull(obj))
+    if (this.isFull(obj))
     {
       obj.set_prop_latent("background-repeat",  "stretch")
       obj.set_prop_latent("background-position", "0")
@@ -78,12 +79,12 @@ let BhvAvatar = class
     }
 
     let imgBlk = getConfig()?[image]
-    let size = ::clamp(imgBlk?.size || 1.0, 0.01, 1.0)
+    let size = clamp(imgBlk?.size || 1.0, 0.01, 1.0)
     let x = imgBlk?.pos?.x ?? 0.0
     let y = imgBlk?.pos?.y ?? 0.0
     obj.set_prop_latent("background-repeat",  "part")
     obj.set_prop_latent("background-position",
-      ::format("%d,%d,%d,%d",
+      format("%d,%d,%d,%d",
         (1000 * x).tointeger(), (1000 * y).tointeger(),
         (1000 * (1.0 - x - size)).tointeger(), (1000 * (1.0 - y - size)).tointeger()
     ))
@@ -94,17 +95,16 @@ let BhvAvatar = class
 ::replace_script_gui_behaviour("bhvAvatar", BhvAvatar)
 
 return {
-  init = function(params)
-  {
+  init = function(params) {
     intIconToString   = params?.intIconToString   ?? intIconToString
     getIconPath       = params?.getIconPath       ?? getIconPath
     getConfig         = params?.getConfig         ?? getConfig
   }
 
   getCurParams = @() {
-    intIconToString   = intIconToString
-    getIconPath       = getIconPath
-    getConfig         = getConfig
+    intIconToString
+    getIconPath
+    getConfig
   }
 
   forceUpdateView = @(obj) BhvAvatar.updateView.call(BhvAvatar, obj)

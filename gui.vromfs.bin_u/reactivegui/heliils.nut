@@ -57,7 +57,7 @@ let function ilsHud(elemStyle, isBackground) {
     [
       mfdPilotParamsTable(isBackground, false, false, ilsStyle)
       vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), MfdColor.value, isBackground, ilsStyle)
-      horSpeed(isBackground, MfdColor.value, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
+      horSpeed(MfdColor.value, isBackground, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
       compassComponent(ilsStyle, [pilotSw(100), pilotSh(13)], [pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15)])
     ]
     : null
@@ -73,7 +73,7 @@ let function ilsMovingMarks(style, isBackground) {
     watch = [IsIlsEnabled, MfdColor]
     children = IsIlsEnabled.value ?
     [
-      rocketAim(pilotSw(4), pilotSh(8), isBackground, MfdColor.value, ilsStyle)
+      rocketAim(pilotSw(4), pilotSh(8), MfdColor.value, isBackground, ilsStyle)
       taTarget(pilotSw(25), pilotSh(25), isBackground)
     ]
     : null

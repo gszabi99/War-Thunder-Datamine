@@ -55,9 +55,9 @@
   "RollLeveling": false,
   "ArcadeMaxRollCoeff": 0.99,
   "ArcadeYawMutilpliers": [1.3,4.0,1.4],
-  "AileronMaxDv": 40.0,
-  "ElevatorMaxDv": 40.0,
-  "RudderMaxDv": 30.0,
+  "AileronMaxDv": 10.0,
+  "ElevatorMaxDv": 10.0,
+  "RudderMaxDv": 10.0,
   "CockpitOpenedDoorBreakSpeed": 600.0,
   "MomentOfInertia": [29500.0,52500.0,53500.0],
   "IgnoreErrors": true,
@@ -135,8 +135,8 @@
     "Fuselage": 158.0,
     "Stabilizer": 0.6,
     "Elevator": 2.2,
-    "Keel": 2.8,
-    "Rudder": 2.2
+    "Keel": 2.0,
+    "Rudder": 3.0
   },
   "Focus": {
     "FocusOffset": 0.01,
@@ -1598,7 +1598,7 @@
       "Limits": [0.05,0.95],
       "ClimbMax": [-4.0,6.0],
       "ClimbMinLimByHorSpeed": [40.0,-4.0,80.0,-5.0],
-      "ClimbMinLimByRAltitude": [15.0,-3.0,50.0,-4.0],
+      "ClimbMinLimByRAltitude": [15.0,-3.0,50.0,-6.0],
       "ClimbPID": {
         "Kp": 1.0,
         "Ki": 0.5,
@@ -1630,7 +1630,7 @@
       "YawHeadingToYawRateMultByIas": [0.0,1.0,120.0,1.0],
       "YawHeadingToYawRateMultByReqRoll": [0.0,1.0,60.0,0.15],
       "ThrottleToYawRateMult": [0.5,0.8,1.0,1.0],
-      "YawHeadingToYawRate": [0.0,0.0,14.0,45.0],
+      "YawHeadingToYawRate": [0.0,0.0,14.0,35.0],
       "RollPID": {
         "Kp": 1.8,
         "Ki": 0.0,

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
 let { getLinkedGunIdx, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -25,13 +26,13 @@ global enum bulletsAmountState {
   isForcedAvailable = false
   isBulletDataLoading = false
 
-  constructor(_unit, params = {})
+  constructor(v_unit, params = {})
   {
     gunsInfo = []
     checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
     isForcedAvailable = params?.isForcedAvailable ?? false
 
-    setUnit(_unit)
+    setUnit(v_unit)
     ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
   }
 
@@ -40,14 +41,14 @@ global enum bulletsAmountState {
     return unit
   }
 
-  function setUnit(_unit)
+  function setUnit(v_unit)
   {
-    if (typeof(_unit) == "string")
-      _unit = ::getAircraftByName(_unit)
-    if (unit == _unit)
+    if (typeof(v_unit) == "string")
+      v_unit = ::getAircraftByName(v_unit)
+    if (unit == v_unit)
       return
 
-    unit = _unit
+    unit = v_unit
     bulGroups = null
   }
 
@@ -91,8 +92,8 @@ global enum bulletsAmountState {
       return false
 
     let unallocated = getUnallocatedBulletCount(bulGroup)
-    let maxCount = ::min(unallocated + count, bulGroup.maxBulletsCount)
-    newCount = ::clamp(newCount, 0, maxCount)
+    let maxCount = min(unallocated + count, bulGroup.maxBulletsCount)
+    newCount = clamp(newCount, 0, maxCount)
 
     if (count == newCount)
       return false
@@ -170,7 +171,7 @@ global enum bulletsAmountState {
 
       local status = bulletsAmountState.READY
       let totalBullets = gInfo.total
-      let minBullets = ::clamp((0.2 * totalBullets).tointeger(), 1, getAmmoWarningMinimum(AMMO.MODIFICATION, unit, totalBullets))
+      let minBullets = clamp((0.2 * totalBullets).tointeger(), 1, getAmmoWarningMinimum(AMMO.MODIFICATION, unit, totalBullets))
       if (totalBullets - unallocated >= minBullets)
         status = bulletsAmountState.HAS_UNALLOCATED
       else
@@ -182,7 +183,7 @@ global enum bulletsAmountState {
       res.status = status
       res.unallocated = unallocated * gInfo.guns
       if (status == bulletsAmountState.LOW_AMOUNT)
-        res.required = ::min(minBullets, totalBullets) * gInfo.guns
+        res.required = min(minBullets, totalBullets) * gInfo.guns
     }
     return res
   }
@@ -199,9 +200,9 @@ global enum bulletsAmountState {
 
     local msg = ""
     if (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
-      msg = ::format(::loc("multiplayer/someBulletsLeft"), ::colorize("activeTextColor", readyCounts.unallocated.tostring()))
+      msg = format(::loc("multiplayer/someBulletsLeft"), ::colorize("activeTextColor", readyCounts.unallocated.tostring()))
     else
-      msg = ::format(::loc("multiplayer/notEnoughBullets"), ::colorize("activeTextColor", readyCounts.required.tostring()))
+      msg = format(::loc("multiplayer/notEnoughBullets"), ::colorize("activeTextColor", readyCounts.required.tostring()))
 
     ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
       {
@@ -484,7 +485,7 @@ global enum bulletsAmountState {
       }
 
       //no point to check unallocated amount left after init. this will happen only once, and all bullets atthat moment will be filled up.
-      let newCount = ::min(gInfo.unallocated / gInfo.notInitedCount, bulGroup.maxBulletsCount)
+      let newCount = min(gInfo.unallocated / gInfo.notInitedCount, bulGroup.maxBulletsCount)
       bulGroup.setBulletsCount(newCount)
       gInfo.unallocated -= newCount
       gInfo.notInitedCount--

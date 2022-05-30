@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -296,7 +297,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         foreach (zoneName, holderSide in block)
         {
           let zoneCapturedTimeSec = ::ww_get_zone_capture_time_sec(zoneName)
-          minCapturedTimeSec = minCapturedTimeSec < 0 ? zoneCapturedTimeSec : ::min(minCapturedTimeSec, zoneCapturedTimeSec)
+          minCapturedTimeSec = minCapturedTimeSec < 0 ? zoneCapturedTimeSec : min(minCapturedTimeSec, zoneCapturedTimeSec)
         }
 
         let timeSec = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
@@ -311,14 +312,14 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         if (!::checkObj(pValueObj))
           return
 
-        let zonesArray = ::split(dataBlk.zone, ";")
+        let zonesArray = split_by_chars(dataBlk.zone, ";")
         local minCapturedTimeSec = -1
         for (local i = 0; i < zonesArray.len(); i++)
         {
           if (minCapturedTimeSec < 0)
             minCapturedTimeSec = ::ww_get_zone_capture_time_sec(zonesArray[i])
           else
-            minCapturedTimeSec = ::min(minCapturedTimeSec, ::ww_get_zone_capture_time_sec(zonesArray[i]))
+            minCapturedTimeSec = min(minCapturedTimeSec, ::ww_get_zone_capture_time_sec(zonesArray[i]))
         }
 
         let leftTime = ((dataBlk?[updateParam] ?? 0) - minCapturedTimeSec) / ::ww_get_speedup_factor()
@@ -356,7 +357,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     specificClassParamConvertion = {
       num = function(value, blk, side, t) {
-        let zones = ::split(blk.zone, ";")
+        let zones = split_by_chars(blk.zone, ";")
         return t.isDefender(blk, side) ? zones.len() - value + 1 : value
       }
     }
@@ -429,7 +430,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
       let sideIdx = ::ww_side_name_to_val(side)
       let paramName = "rSpeedMulStatus" + sideIdx + "New"
       let speedupFactor = statusBlk?[paramName] ?? 1
-      return ::round(::max(speedupFactor - 1, 0) * 100)
+      return ::round(max(speedupFactor - 1, 0) * 100)
     }
 
     getNameSpecification = function(dataBlk, statusBlk)

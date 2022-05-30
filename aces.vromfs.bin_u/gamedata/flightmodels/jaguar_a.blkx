@@ -10,9 +10,7 @@
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.204,
   "gearSinkRangeC": 0.308,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "viewDistKInSight": 4.0,
   "radarCScope": true,
   "gyroscopicSightOverSensors": true,
@@ -2012,10 +2010,10 @@
       "sightFov": 1.0
     },
     {
-      "headPos": [4.2,1.03,0.0]
+      "headPos": [4.2,0.98,0.0]
     },
     {
-      "headPosOnShooting": [4.3,1.03,0.0]
+      "headPosOnShooting": [4.3,0.98,0.0]
     },
     {
       "mirror": true
@@ -2033,51 +2031,28 @@
       "mirrorNode": "blister8"
     },
     {
-      "lightPos": [4.976167,0.607395,0.165254]
+      "lightPos": [4.976167,0.607395,0.0]
     },
     {
-      "lightColor": [0.91,0.05,0.13]
+      "lightColor": [0.7,0.01,0.0]
     },
     {
-      "lightRadius": 0.2
-    },
-    {
-      "lightPos1": [4.956398,0.616251,-0.261856]
-    },
-    {
-      "lightColor1": [0.91,0.05,0.13]
-    },
-    {
-      "lightRadius1": 0.2
-    },
-    {
-      "lightPos2": [4.951085,0.56656,-0.004782]
-    },
-    {
-      "lightColor2": [0.41,0.75,0.3]
-    },
-    {
-      "lightRadius2": 0.35
-    },
-    {
-      "lightPos3": [5.024328,0.683216,-0.00347]
-    },
-    {
-      "lightColor3": [1.91,0.65,0.02]
-    },
-    {
-      "lightRadius3": 0.19
+      "lightRadius": 0.45
     },
     {
       "devices": {
         "stick_ailerons": [-1.0,1.0],
-        "stick_elevator": [-1.5,1.0],
+        "stick_elevator": [-1.0,1.0],
         "pedals": [-1.0,1.0],
         "pedals1": [-1.0,1.0],
         "pedals2": [-1.0,1.0],
         "pedals3": [-1.0,1.0],
         "throttle": [0.0,1.0],
+        "throttle_1": [0.0,1.0],
+        "throttle_2": [0.0,1.0],
         "throttle1": [0.0,1.0],
+        "throttle1_1": [0.0,1.0],
+        "throttle1_2": [0.0,1.0],
         "flaps": [0.0,1.0],
         "flaps_fixed": true,
         "flaps_indicator": [0.0,1.0],
@@ -2087,54 +2062,63 @@
         "trimmer_fixed": false,
         "trimmer_indicator": [-1.0,1.0],
         "weapon2": [0.0,1.0],
-        "speed": [0.0,411.556],
+        "speed": [0.0,514.444],
+        "mach": [0.65,2.45],
         "vario": [-30.0,30.0],
         "altitude_10k": [0.0,100000.0],
         "altitude_hour": [0.0,10000.0],
         "altitude_min": [0.0,1000.0],
+        "altitude1_hour": [0.0,100000.0],
         "altitude1_min": [0.0,1000.0],
-        "altitude1_hour": [0.0,50000.0],
-        "radio_altitude": [0.0,50000.0],
+        "altitude2_10k": [0.0,100000.0],
+        "altitude2_hour": [0.0,10000.0],
+        "altitude3_min": [0.0,1000.0],
+        "radio_altitude": [0.0,5000.0],
         "altitude_koef": 3.28,
-        "mach_hour": [0.0,10.0],
-        "mach_min": [0.0,10.0],
-        "mach_sec": [0.0,10.0],
-        "aviahorizon_pitch": [-80.0,80.0],
+        "aviahorizon_pitch": [-90.0,90.0],
         "aviahorizon_roll": [-180.0,180.0],
+        "aviahorizon_pitch1": [-70.0,70.0],
+        "aviahorizon_roll1": [-180.0,180.0],
+        "aoa": [0.0,22.0],
+        "aoa1": [0.0,22.0],
+        "aoa2": [0.0,22.0],
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
+        "compass2": [0.0,360.0],
         "bank": [-8.0,8.0],
         "turn": [-0.23562,0.23562],
+        "g_meter": [-5.0,10.0],
+        "g_meter_min": [-5.0,10.0],
+        "g_meter_max": [-5.0,10.0],
         "clock_hour": [0.0,12.0],
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
-        "fuel_consume": [0.0,150.0],
-        "fuel_consume1": [0.0,150.0],
         "rpm_min": [0.0,1000.0],
-        "rpm_hour": [0.0,13000.0],
+        "rpm_hour": [0.0,13600.0],
         "rpm1_min": [0.0,1000.0],
-        "rpm1_hour": [0.0,13000.0],
-        "fuel": [0.0,1700.0],
-        "fuel1": [0.0,1700.0],
+        "rpm1_hour": [0.0,13600.0],
+        "fuel": [0.0,1000.0],
+        "fuel1": [0.0,1000.0],
+        "fuel_pressure": [0.0,15.0],
+        "fuel_pressure1": [0.0,15.0],
+        "fuel_consume": [0.0,120.0],
+        "fuel_consume1": [0.0,120.0],
         "oil_pressure": [0.0,120.0],
         "oil_pressure1": [0.0,120.0],
         "oil_temperature": [0.0,150.0],
         "water_temperature": [0.0,1000.0],
-        "water_temperature1": [0.0,1000.0],
-        "fuel_pressure": [0.0,15.0],
-        "fuel_pressure1": [0.0,15.0],
-        "g_meter": [-5.0,10.0],
-        "g_meter_min": [-5.0,10.0],
-        "g_meter_max": [-5.0,10.0]
+        "water_temperature1": [0.0,1000.0]
       }
     },
     {
       "multifunctionDisplays": [
         {
           "display": {
-            "textureArea": [0.0,0.0,0.5,0.5],
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "monoDisplayColor": [0.95,0.9,0.7],
             "page": {
-              "type": "map"
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           }
         },

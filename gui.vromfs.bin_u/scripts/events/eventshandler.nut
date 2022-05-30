@@ -1,3 +1,4 @@
+let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getTextWithCrossplayIcon,
@@ -482,7 +483,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (!queueToShow || ::handlersManager.isHandlerValid(queueInfoHandlerWeak))
       return
 
-    let queueObj = showSceneBtn("div_before_chapters_list", true)
+    let queueObj = this.showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
     let queueHandlerClass = queueToShow && ::queues.getQueuePreferredViewClass(queueToShow)
     let queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
@@ -518,7 +519,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let isReady = ::g_squad_manager.isMeReady()
     let isSquadMember = ::g_squad_manager.isSquadMember()
 
-    showSceneBtn("btn_select_console", !isCurItemInFocus && (isEvent || isHeader))
+    this.showSceneBtn("btn_select_console", !isCurItemInFocus && (isEvent || isHeader))
 
     let showJoinBtn = isCurItemInFocus && (isEvent && (!isInQueue || (isSquadMember && !isReady)))
     let joinButtonObj = scene.findObject("btn_join_event")
@@ -539,8 +540,8 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0)
     {
-      startText += ::format(" (%s)", battlePriceText)
-      uncoloredStartText += ::format(" (%s)", ::events.getEventBattleCostText(
+      startText += format(" (%s)", battlePriceText)
+      uncoloredStartText += format(" (%s)", ::events.getEventBattleCostText(
         event, "activeTextColor", true, false))
     }
 
@@ -550,7 +551,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     leaveButtonObj.enable(isInQueue)
 
     let isShowCollapseBtn = isCurItemInFocus && isHeader
-    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
+    let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
     if (isShowCollapseBtn)
     {
       let isCollapsedChapter = getCollapsedChapters()?[curChapterId]
@@ -562,19 +563,19 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     reasonTextObj.setValue(reasonData.reasonText)
     reasonTextObj.show(reasonData.reasonText.len() > 0 && !isInQueue)
 
-    showSceneBtn("btn_rooms_list", isCurItemInFocus && isEvent
+    this.showSceneBtn("btn_rooms_list", isCurItemInFocus && isEvent
       && ::events.isEventWithLobby(event))
 
     let pack = isCurItemInFocus && isEvent ? ::events.getEventReqPack(event, true) : null
     let needDownloadPack = pack != null && !::have_package(pack)
-    let packBtn = showSceneBtn("btn_download_pack", needDownloadPack)
+    let packBtn = this.showSceneBtn("btn_download_pack", needDownloadPack)
     if (needDownloadPack && packBtn)
     {
       packBtn.tooltip = ::get_pkg_loc_name(pack)
       packBtn.setValue(::loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
     }
 
-    showSceneBtn("btn_queue_options", isCurItemInFocus && isEvent
+    this.showSceneBtn("btn_queue_options", isCurItemInFocus && isEvent
       && ::queue_classes.Event.hasOptions(event.name))
   }
 

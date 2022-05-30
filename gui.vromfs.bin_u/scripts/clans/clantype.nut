@@ -93,7 +93,7 @@ g_clan_type._canUpgradeMembers <- function _canUpgradeMembers(current_limit)
 
 g_clan_type._getMembersUpgradeCost <- function _getMembersUpgradeCost(current_limit)
 {
-  return ::Cost(0, ::max(0, ::clan_get_members_upgrade_cost(code, current_limit)))
+  return ::Cost(0, max(0, ::clan_get_members_upgrade_cost(code, current_limit)))
 }
 
 g_clan_type._getMembersUpgradeStep <- function _getMembersUpgradeStep()

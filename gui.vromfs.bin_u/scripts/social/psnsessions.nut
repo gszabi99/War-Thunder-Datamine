@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let psn = require("%sonyLib/webApi.nut")
@@ -39,7 +40,7 @@ let sessionParams = {
   [PSN_SESSION_TYPE.SKIRMISH] = {
     image = @() "ui/images/reward27.jpg"
     info = function() {
-      let missionLoc = ::split(::SessionLobby.getMissionData()?.locName || "", "; ")
+      let missionLoc = split_by_chars(::SessionLobby.getMissionData()?.locName || "", "; ")
       let defaultLoc = ["missions/" + ::SessionLobby.getMissionName(true)]
       return {
         index = 0

@@ -1,0 +1,124 @@
+{
+  "root": {
+    "blur": [],
+    "blur_foreground": [],
+    "frame": {
+      "pos": "50%(pw-w), 50%(ph-h)",
+      "position": "absolute",
+      "class": "wndNav",
+      "size": "0.8@sf, 0.3@sf",
+      "flow": "vertical",
+      "frame_header": {
+        "activeText": {
+          "text": "#gpuBenchmark/title",
+          "caption": "yes"
+        },
+        "Button_close": []
+      },
+      "tdiv": [
+        {
+          "size": "pw, ph"
+        },
+        {
+          "tdiv": {
+            "id": "benchmarkStart",
+            "position": "absolute",
+            "size": "pw, ph",
+            "textareaNoTab": {
+              "position": "relative",
+              "pos": "50%(pw-w), 50%(ph-h)",
+              "text": "#gpuBenchmark/desc"
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "id": "waitAnimation",
+            "position": "absolute",
+            "pos": "50%(pw-w), 50%(ph-h)",
+            "display": "hide",
+            "animated_wait_icon": {
+              "background-rotation": "0",
+              "margin-right": "1@blockInterval"
+            },
+            "textareaNoTab": {
+              "id": "progressText",
+              "position": "relative",
+              "pos": "0, 50%(ph-h)"
+            },
+            "timer": {
+              "id": "progress_timer",
+              "timer_handler_func": "onUpdate",
+              "timer_interval_msec": "1000"
+            }
+          }
+        },
+        {
+          "tdiv": [
+            {
+              "id": "presetSelection"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "flow": "vertical"
+            },
+            {
+              "width": "pw"
+            },
+            {
+              "pos": "50%(pw-w), 0"
+            },
+            {
+              "position": "relative"
+            },
+            {
+              "margin-top": "0.01@scrn_tgt"
+            },
+            {
+              "margin-bottom": "0.005@scrn_tgt"
+            },
+            {
+              "tdiv": {
+                "width": "pw",
+                "margin-bottom": "0.005@scrn_tgt",
+                "textarea": {
+                  "width": "pw",
+                  "text": "#gpuBenchmark/resultsTitle"
+                }
+              }
+            },
+            {
+              "tdiv": {
+                "id": "resultsList",
+                "width": "pw",
+                "padding": "0.01@scrn_tgt, 0.01@scrn_tgt",
+                "flow": "vertical"
+              }
+            }
+          ]
+        }
+      ],
+      "navBar": {
+        "navLeft": {
+          "Button_text": {
+            "text": "#msgbox/btn_cancel",
+            "on_click": "goBack",
+            "btnName": "B",
+            "ButtonImg": []
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "id": "btnStart",
+            "text": "#gpuBenchmark/btnStart",
+            "btnName": "A",
+            "on_click": "onBenchmarkStart",
+            "ButtonImg": []
+          }
+        }
+      }
+    }
+  }
+}

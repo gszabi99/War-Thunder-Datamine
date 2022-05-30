@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
 let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -140,7 +141,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
     local data = ""
     foreach(unit in filteredUnits)
-      data += ::format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
+      data += format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
         ::build_aircraft_item(unit.name, unit, getUnitItemParams(unit)))
 
     return data

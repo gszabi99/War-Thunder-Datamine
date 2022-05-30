@@ -124,12 +124,12 @@
         "actions": [
           {
             "comment": {
-              "value": "получаем балансный уровень миссии"
+              "value": "poluchaem balansnyj uroven' missii"
             }
           },
           {
             "comment": {
-              "value": "назначаем дистанцию проверки от ранга миссии"
+              "value": "naznachaem distanciyu proverki ot ranga missii"
             }
           },
           {
@@ -392,57 +392,57 @@
         "actions": [
           {
             "comment": {
-              "value": "проверяем что стартовые индексы не нулевые"
+              "value": "proveryaem chto startovye indeksy ne nulevye"
             }
           },
           {
             "comment": {
-              "value": "и назначаем индексы в свои переменные"
+              "value": "i naznachaem indeksy v svoi peremennye"
             }
           },
           {
             "comment": {
-              "value": "имя первой зоны для рисования "
+              "value": "imya pervoj zony dlya risovaniya "
             }
           },
           {
             "comment": {
-              "value": "имя второй зоны для рисования "
+              "value": "imya vtoroj zony dlya risovaniya "
             }
           },
           {
             "comment": {
-              "value": "имя переменной армии атакующих"
+              "value": "imya peremennoj armii atakuyushchih"
             }
           },
           {
             "comment": {
-              "value": "получаем армию атакующих"
+              "value": "poluchaem armiyu atakuyushchih"
             }
           },
           {
             "comment": {
-              "value": "имя переменной армии защищающихся"
+              "value": "imya peremennoj armii zashchishchayushchihsya"
             }
           },
           {
             "comment": {
-              "value": "создаем имя боевой зоны"
+              "value": "sozdaem imya boevoj zony"
             }
           },
           {
             "comment": {
-              "value": "создаем имя зоны в случае успеха атаки"
+              "value": "sozdaem imya zony v sluchae uspeha ataki"
             }
           },
           {
             "comment": {
-              "value": "обнуляем текущий индекс битвы для ротации"
+              "value": "obnulyaem tekushchij indeks bitvy dlya rotacii"
             }
           },
           {
             "comment": {
-              "value": "проверяем сквады"
+              "value": "proveryaem skvady"
             }
           },
           {
@@ -579,7 +579,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "переменные пустые - завершаем шаблон"
+            "value": "peremennye pustye - zavershaem shablon"
           },
           "triggerDisable": {
             "target": "lbt_start"
@@ -610,17 +610,17 @@
         "actions": [
           {
             "comment": {
-              "value": "проверили что активных битв меньше 3"
+              "value": "proverili chto aktivnyh bitv men'she 3"
             }
           },
           {
             "comment": {
-              "value": "создаем имя слота активности битвы"
+              "value": "sozdaem imya slota aktivnosti bitvy"
             }
           },
           {
             "comment": {
-              "value": "проверяем свободна ли слот битвы"
+              "value": "proveryaem svobodna li slot bitvy"
             }
           },
           {
@@ -658,7 +658,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "все слоты заняты нельзя начать битву"
+            "value": "vse sloty zanyaty nel'zya nachat' bitvu"
           },
           "triggerEnable": {
             "target": "lbt_start_end"
@@ -688,7 +688,7 @@
         "actions": [
           {
             "comment": {
-              "value": "битва с таким слотом не активна"
+              "value": "bitva s takim slotom ne aktivna"
             }
           },
           {
@@ -951,7 +951,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше по циклу"
+            "value": "idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_start_rotator"
@@ -974,7 +974,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "дизейблим цикл обработки. дальше все делается в heat ротации"
+            "value": "dizejblim cikl obrabotki. dal'she vse delaetsya v heat rotacii"
           },
           "triggerDisable": {
             "target": "lbt_start_rotator"
@@ -2174,11 +2174,6 @@
             },
             {
               "comment": {
-                "value": "enable shooting and set visibility for AAA units"
-              }
-            },
-            {
-              "comment": {
                 "value": ""
               }
             },
@@ -2546,73 +2541,6 @@
               ]
             },
             {
-              "unitSetProperties": [
-                {
-                  "object_marking": 0
-                },
-                {
-                  "object_var_name": "aaa"
-                },
-                {
-                  "object_var_comp_op": "equal"
-                },
-                {
-                  "object_var_value": 1
-                },
-                {
-                  "object": "@lbt_battle_t1_army_squad_name"
-                },
-                {
-                  "object": "@lbt_battle_t2_army_squad_name"
-                },
-                {
-                  "stealthRadius": 128000.0
-                },
-                {
-                  "attack_type": "fire_at_will"
-                },
-                {
-                  "targetAir": true
-                },
-                {
-                  "targetGnd": true
-                },
-                {
-                  "accuracy": 0.1
-                },
-                {
-                  "airAccuracy": 0.1
-                },
-                {
-                  "maxDeviationAngle": 30.0
-                },
-                {
-                  "checkVisibilityTarget": true
-                },
-                {
-                  "visibilityTreeTransparencyThreshold": 0.1
-                },
-                {
-                  "effShootingRate": 0.12
-                },
-                {
-                  "airEffShootingRate": 0.12
-                },
-                {
-                  "adaptiveAccuracyTime": 10.0
-                },
-                {
-                  "fireRandom": true
-                },
-                {
-                  "targetChangeInterval": 5.0
-                },
-                {
-                  "targetChangeProb": 0.25
-                }
-              ]
-            },
-            {
               "__unitSetProperties": [
                 {
                   "object_marking": 0
@@ -2648,7 +2576,7 @@
                   "targetGnd": true
                 },
                 {
-                  "accuracy": 0.3
+                  "accuracy": 0.1
                 },
                 {
                   "airAccuracy": 0.1
@@ -2657,10 +2585,13 @@
                   "maxDeviationAngle": 30.0
                 },
                 {
-                  "checkVisibilityTarget": false
+                  "checkVisibilityTarget": true
                 },
                 {
-                  "effShootingRate": 0.3
+                  "visibilityTreeTransparencyThreshold": 0.1
+                },
+                {
+                  "effShootingRate": 0.12
                 },
                 {
                   "airEffShootingRate": 0.12
@@ -3082,17 +3013,17 @@
           "actions": [
             {
               "comment": {
-                "value": "индекс внутри диапазона"
+                "value": "indeks vnutri diapazona"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной хранящей активна ли битва"
+                "value": "sozdaem imya peremennoj hranyashchej aktivna li bitva"
               }
             },
             {
               "comment": {
-                "value": "проверяем активна ли битва"
+                "value": "proveryaem aktivna li bitva"
               }
             },
             {
@@ -3130,7 +3061,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "индекс вышел за предел диапазона"
+              "value": "indeks vyshel za predel diapazona"
             },
             "triggerEnable": {
               "target": "lbt_damage_restart"
@@ -3160,27 +3091,27 @@
           "actions": [
             {
               "comment": {
-                "value": "создаем имя сквада команды А"
+                "value": "sozdaem imya skvada komandy A"
               }
             },
             {
               "comment": {
-                "value": "создаем имя сквада команды Б"
+                "value": "sozdaem imya skvada komandy B"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды А"
+                "value": "sozdaem imya peremennoj, gde hranitsya podschet mertvyh yunitov komandy A"
               }
             },
             {
               "comment": {
-                "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды Б"
+                "value": "sozdaem imya peremennoj, gde hranitsya podschet mertvyh yunitov komandy B"
               }
             },
             {
               "comment": {
-                "value": "проверяем юнитов команды А"
+                "value": "proveryaem yunitov komandy A"
               }
             },
             {
@@ -3257,7 +3188,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             },
             "triggerEnable": {
               "target": "lbt_damage_rotator"
@@ -3296,7 +3227,7 @@
               "var": "@lbt_damage_t1_counter_var_name"
             },
             "comment": {
-              "value": "проверяем команду Б"
+              "value": "proveryaem komandu B"
             },
             "triggerEnable": {
               "target": "lbt_battle_t2_death_counter"
@@ -3304,7 +3235,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "проверяем команду Б"
+              "value": "proveryaem komandu B"
             },
             "triggerEnable": {
               "target": "lbt_battle_t2_death_counter"
@@ -3344,7 +3275,7 @@
               "var": "@lbt_damage_t2_counter_var_name"
             },
             "comment": {
-              "value": "дальше по циклу"
+              "value": "dal'she po ciklu"
             },
             "triggerEnable": {
               "target": "lbt_damage_rotator"
@@ -3352,7 +3283,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "дальше по циклу"
+              "value": "dal'she po ciklu"
             },
             "triggerEnable": {
               "target": "lbt_damage_rotator"
@@ -3381,22 +3312,22 @@
         "actions": [
           {
             "comment": {
-              "value": "выставляем текущий индекс"
+              "value": "vystavlyaem tekushchij indeks"
             }
           },
           {
             "comment": {
-              "value": "выставляем строку"
+              "value": "vystavlyaem stroku"
             }
           },
           {
             "comment": {
-              "value": "выставляем максимум"
+              "value": "vystavlyaem maksimum"
             }
           },
           {
             "comment": {
-              "value": "запускаем цикл"
+              "value": "zapuskaem cikl"
             }
           },
           {
@@ -3465,42 +3396,42 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем строку до увеличения текущего индекса"
+              "value": "schitaem stroku do uvelicheniya tekushchego indeksa"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем текущий индекс"
+              "value": "uvelichivaem tekushchij indeks"
             }
           },
           {
             "comment": {
-              "value": "собираем имя зоны"
+              "value": "sobiraem imya zony"
             }
           },
           {
             "comment": {
-              "value": "собираем имя переменой, хранящей армию"
+              "value": "sobiraem imya peremenoj, hranyashchej armiyu"
             }
           },
           {
             "comment": {
-              "value": "получаем армию зоны"
+              "value": "poluchaem armiyu zony"
             }
           },
           {
             "comment": {
-              "value": "считаем максимальное значение"
+              "value": "schitaem maksimal'noe znachenie"
             }
           },
           {
             "comment": {
-              "value": "считаем минимальное значение"
+              "value": "schitaem minimal'noe znachenie"
             }
           },
           {
             "comment": {
-              "value": "проверяем что армия не равна нулю (зона не используется)"
+              "value": "proveryaem chto armiya ne ravna nulyu (zona ne ispol'zuetsya)"
             }
           },
           {
@@ -3627,7 +3558,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не получилось ничего найти"
+            "value": "ne poluchilos' nichego najti"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_restart"
@@ -3657,22 +3588,22 @@
         "actions": [
           {
             "comment": {
-              "value": "проверили, что зона принадлежит какой-то армии"
+              "value": "proverili, chto zona prinadlezhit kakoj-to armii"
             }
           },
           {
             "comment": {
-              "value": "собираем переменную в которой хранится heat зоны"
+              "value": "sobiraem peremennuyu v kotoroj hranitsya heat zony"
             }
           },
           {
             "comment": {
-              "value": "получаем значение heat"
+              "value": "poluchaem znachenie heat"
             }
           },
           {
             "comment": {
-              "value": "проверяем значение heat для команды 1"
+              "value": "proveryaem znachenie heat dlya komandy 1"
             }
           },
           {
@@ -3710,7 +3641,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не принадлежит армии, идем дальше по циклу"
+            "value": "ne prinadlezhit armii, idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -3740,12 +3671,12 @@
         "actions": [
           {
             "comment": {
-              "value": "атакует команда А"
+              "value": "atakuet komanda A"
             }
           },
           {
             "comment": {
-              "value": "запускаем проверку пограничных зон"
+              "value": "zapuskaem proverku pogranichnyh zon"
             }
           },
           {
@@ -3762,7 +3693,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем может быть команда Б атакует"
+            "value": "proveryaem mozhet byt' komanda B atakuet"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_t2_check"
@@ -3792,12 +3723,12 @@
         "actions": [
           {
             "comment": {
-              "value": "атакует команда Б"
+              "value": "atakuet komanda B"
             }
           },
           {
             "comment": {
-              "value": "запускаем проверку пограничных зон"
+              "value": "zapuskaem proverku pogranichnyh zon"
             }
           },
           {
@@ -3814,7 +3745,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "нет нужного heat идем дальше по циклу"
+            "value": "net nuzhnogo heat idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -3844,52 +3775,52 @@
         "actions": [
           {
             "comment": {
-              "value": "зона используется"
+              "value": "zona ispol'zuetsya"
             }
           },
           {
             "comment": {
-              "value": "собираем имя левой зоны"
+              "value": "sobiraem imya levoj zony"
             }
           },
           {
             "comment": {
-              "value": "получаем имя переменной, где хранится армия"
+              "value": "poluchaem imya peremennoj, gde hranitsya armiya"
             }
           },
           {
             "comment": {
-              "value": "собираем имя правой зоны"
+              "value": "sobiraem imya pravoj zony"
             }
           },
           {
             "comment": {
-              "value": "получаем имя переменной, где хранится армия"
+              "value": "poluchaem imya peremennoj, gde hranitsya armiya"
             }
           },
           {
             "comment": {
-              "value": "собираем имя верхней зоны"
+              "value": "sobiraem imya verhnej zony"
             }
           },
           {
             "comment": {
-              "value": "получаем имя переменной, где хранится армия"
+              "value": "poluchaem imya peremennoj, gde hranitsya armiya"
             }
           },
           {
             "comment": {
-              "value": "собираем имя нижней зоны"
+              "value": "sobiraem imya nizhnej zony"
             }
           },
           {
             "comment": {
-              "value": "получаем имя переменной, где хранится армия"
+              "value": "poluchaem imya peremennoj, gde hranitsya armiya"
             }
           },
           {
             "comment": {
-              "value": "проверяем левую зону"
+              "value": "proveryaem levuyu zonu"
             }
           },
           {
@@ -4093,12 +4024,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "зона не используется"
+              "value": "zona ne ispol'zuetsya"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             }
           },
           {
@@ -4136,22 +4067,22 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс не вышел за пределы строки"
+              "value": "indeks ne vyshel za predely stroki"
             }
           },
           {
             "comment": {
-              "value": "и зона существует"
+              "value": "i zona sushchestvuet"
             }
           },
           {
             "comment": {
-              "value": "получаем армию левой ячейки"
+              "value": "poluchaem armiyu levoj yachejki"
             }
           },
           {
             "comment": {
-              "value": "сравниваем армии"
+              "value": "sravnivaem armii"
             }
           },
           {
@@ -4169,7 +4100,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку справа"
+            "value": "idem proveryat' yachejku sprava"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_right_exist"
@@ -4209,12 +4140,12 @@
         "actions": [
           {
             "comment": {
-              "value": "армия левой зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "armiya levoj zony bol'she 0 i ne ravna armii proveryaemoj zony"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "proveryaem kto sobiralsya atakovat'"
             }
           },
           {
@@ -4225,7 +4156,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку справа"
+            "value": "idem proveryat' yachejku sprava"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_right_exist"
@@ -4256,17 +4187,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "armiya pravoj zony atakuet"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "zapominaem indeksy zon"
             }
           },
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
@@ -4306,7 +4237,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "armiya tekushchej zony atakuet"
             }
           },
           {
@@ -4344,22 +4275,22 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс не вышел за пределы строки"
+              "value": "indeks ne vyshel za predely stroki"
             }
           },
           {
             "comment": {
-              "value": "и зона существует"
+              "value": "i zona sushchestvuet"
             }
           },
           {
             "comment": {
-              "value": "получаем армию левой ячейки"
+              "value": "poluchaem armiyu levoj yachejki"
             }
           },
           {
             "comment": {
-              "value": "сравниваем армии"
+              "value": "sravnivaem armii"
             }
           },
           {
@@ -4377,7 +4308,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку сверху"
+            "value": "idem proveryat' yachejku sverhu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_upper_exist"
@@ -4417,12 +4348,12 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "armiya pravoj zony bol'she 0 i ne ravna armii proveryaemoj zony"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "proveryaem kto sobiralsya atakovat'"
             }
           },
           {
@@ -4433,7 +4364,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку сверху"
+            "value": "idem proveryat' yachejku sverhu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_upper_exist"
@@ -4464,17 +4395,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "armiya pravoj zony atakuet"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "zapominaem indeksy zon"
             }
           },
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
@@ -4514,7 +4445,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "armiya tekushchej zony atakuet"
             }
           },
           {
@@ -4546,17 +4477,17 @@
         "actions": [
           {
             "comment": {
-              "value": "зона существует"
+              "value": "zona sushchestvuet"
             }
           },
           {
             "comment": {
-              "value": "получаем армию верхней ячейки"
+              "value": "poluchaem armiyu verhnej yachejki"
             }
           },
           {
             "comment": {
-              "value": "сравниваем армии"
+              "value": "sravnivaem armii"
             }
           },
           {
@@ -4574,7 +4505,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку снизу"
+            "value": "idem proveryat' yachejku snizu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_bottom_exist"
@@ -4614,17 +4545,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия верхней зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "armiya verhnej zony bol'she 0 i ne ravna armii proveryaemoj zony"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "proveryaem kto sobiralsya atakovat'"
             }
           },
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
@@ -4635,7 +4566,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку снизу"
+            "value": "idem proveryat' yachejku snizu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_bottom_exist"
@@ -4666,17 +4597,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "armiya pravoj zony atakuet"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "zapominaem indeksy zon"
             }
           },
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
@@ -4716,7 +4647,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "armiya tekushchej zony atakuet"
             }
           },
           {
@@ -4748,17 +4679,17 @@
         "actions": [
           {
             "comment": {
-              "value": "зона существует"
+              "value": "zona sushchestvuet"
             }
           },
           {
             "comment": {
-              "value": "получаем армию нижней ячейки"
+              "value": "poluchaem armiyu nizhnej yachejki"
             }
           },
           {
             "comment": {
-              "value": "сравниваем армии"
+              "value": "sravnivaem armii"
             }
           },
           {
@@ -4776,7 +4707,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше по циклу"
+            "value": "idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -4824,12 +4755,12 @@
         "actions": [
           {
             "comment": {
-              "value": "армия верхней зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "armiya verhnej zony bol'she 0 i ne ravna armii proveryaemoj zony"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "proveryaem kto sobiralsya atakovat'"
             }
           },
           {
@@ -4840,7 +4771,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше по циклу"
+            "value": "idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -4871,17 +4802,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "armiya pravoj zony atakuet"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "zapominaem indeksy zon"
             }
           },
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
@@ -4921,7 +4852,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "armiya tekushchej zony atakuet"
             }
           },
           {
@@ -4948,12 +4879,12 @@
         "actions": [
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
             "comment": {
-              "value": "запускаем проверку того что в этих квадратах уже есть битва"
+              "value": "zapuskaem proverku togo chto v etih kvadratah uzhe est' bitva"
             }
           },
           {
@@ -4995,12 +4926,12 @@
         "actions": [
           {
             "comment": {
-              "value": "обнуляем индекс"
+              "value": "obnulyaem indeks"
             }
           },
           {
             "comment": {
-              "value": "запускаем ротацию дальше"
+              "value": "zapuskaem rotaciyu dal'she"
             }
           },
           {
@@ -5048,17 +4979,17 @@
           },
           {
             "comment": {
-              "value": "создаем переменную хранящую имя from для битвы"
+              "value": "sozdaem peremennuyu hranyashchuyu imya from dlya bitvy"
             }
           },
           {
             "comment": {
-              "value": "создаем переменную хранящую имя to для битвы"
+              "value": "sozdaem peremennuyu hranyashchuyu imya to dlya bitvy"
             }
           },
           {
             "comment": {
-              "value": "проверяем индексы"
+              "value": "proveryaem indeksy"
             }
           },
           {
@@ -5109,7 +5040,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "так и не нашли ничего. стартуем битву"
+            "value": "tak i ne nashli nichego. startuem bitvu"
           },
           "triggerEnable": {
             "target": "lbt_heat_battle_start"
@@ -5165,7 +5096,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "индексы совпали. возвращаемся в ротацию heat"
+            "value": "indeksy sovpali. vozvrashchaemsya v rotaciyu heat"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -5173,7 +5104,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "индексы не совпали идем дальше по ротации"
+            "value": "indeksy ne sovpali idem dal'she po rotacii"
           },
           "triggerEnable": {
             "target": "lbt_heat_battle_check_rotator"
@@ -5197,22 +5128,22 @@
         "actions": [
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "zapolnyaem polya"
             }
           },
           {
             "comment": {
-              "value": "ставим heat в 0"
+              "value": "stavim heat v 0"
             }
           },
           {
             "comment": {
-              "value": "запускаем саму битву"
+              "value": "zapuskaem samu bitvu"
             }
           },
           {
             "comment": {
-              "value": "запускаем ротацию дальше"
+              "value": "zapuskaem rotaciyu dal'she"
             }
           },
           {
@@ -5273,7 +5204,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем раз в 1 секунду для более точных результатов"
+            "value": "zapuskaem raz v 1 sekundu dlya bolee tochnyh rezul'tatov"
           },
           "varSetInt": {
             "value": 0,
@@ -5309,17 +5240,17 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс внутри диапазона"
+              "value": "indeks vnutri diapazona"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, где харнится активен ли бой"
+              "value": "sozdaem imya peremennoj, gde harnitsya aktiven li boj"
             }
           },
           {
             "comment": {
-              "value": "запускаем проверку"
+              "value": "zapuskaem proverku"
             }
           },
           {
@@ -5357,7 +5288,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс вышел за диапазон. рестартим цикл"
+            "value": "indeks vyshel za diapazon. restartim cikl"
           },
           "triggerEnable": {
             "target": "lbt_time_restart"
@@ -5387,42 +5318,42 @@
         "actions": [
           {
             "comment": {
-              "value": "битва активна"
+              "value": "bitva aktivna"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, хранящей время боя"
+              "value": "sozdaem imya peremennoj, hranyashchej vremya boya"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем время на 1"
+              "value": "uvelichivaem vremya na 1"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды А"
+              "value": "sozdaem imya peremennoj hranyashchej aktivnost' igrokov komandy A"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды Б"
+              "value": "sozdaem imya peremennoj hranyashchej aktivnost' igrokov komandy B"
             }
           },
           {
             "comment": {
-              "value": "создаем имя сквада команды А"
+              "value": "sozdaem imya skvada komandy A"
             }
           },
           {
             "comment": {
-              "value": "создаем имя сквада команды Б"
+              "value": "sozdaem imya skvada komandy B"
             }
           },
           {
             "comment": {
-              "value": "проверяем надо ли менять активность"
+              "value": "proveryaem nado li menyat' aktivnost'"
             }
           },
           {
@@ -5526,7 +5457,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "битва не активна идем дальше по циклу"
+            "value": "bitva ne aktivna idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_time_rotator"
@@ -5591,7 +5522,7 @@
         "actions": [
           {
             "comment": {
-              "value": "рядом есть один из игроков команды А"
+              "value": "ryadom est' odin iz igrokov komandy A"
             }
           },
           {
@@ -5614,7 +5545,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды А"
+            "value": "ryadom net igrokov komandy A"
           },
           "triggerEnable": {
             "target": "lbt_time_t2_activity_change"
@@ -5679,7 +5610,7 @@
         "actions": [
           {
             "comment": {
-              "value": "рядом есть один из игроков команды Б"
+              "value": "ryadom est' odin iz igrokov komandy B"
             }
           },
           {
@@ -5702,7 +5633,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды Б"
+            "value": "ryadom net igrokov komandy B"
           },
           "triggerEnable": {
             "target": "lbt_time_rotator"
@@ -5729,7 +5660,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем раз в 10 секунд"
+            "value": "zapuskaem raz v 10 sekund"
           },
           "varSetInt": {
             "value": 0,
@@ -5765,17 +5696,17 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс внутри диапазона"
+              "value": "indeks vnutri diapazona"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, где харнится активен ли бой"
+              "value": "sozdaem imya peremennoj, gde harnitsya aktiven li boj"
             }
           },
           {
             "comment": {
-              "value": "запускаем проверку"
+              "value": "zapuskaem proverku"
             }
           },
           {
@@ -5813,7 +5744,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс вышел за диапазон. рестартим цикл"
+            "value": "indeks vyshel za diapazon. restartim cikl"
           },
           "triggerEnable": {
             "target": "lbt_end_restart"
@@ -5843,37 +5774,37 @@
         "actions": [
           {
             "comment": {
-              "value": "битва активна"
+              "value": "bitva aktivna"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, хранящей время боя"
+              "value": "sozdaem imya peremennoj, hranyashchej vremya boya"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды А"
+              "value": "sozdaem imya peremennoj hranyashchej aktivnost' igrokov komandy A"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды Б"
+              "value": "sozdaem imya peremennoj hranyashchej aktivnost' igrokov komandy B"
             }
           },
           {
             "comment": {
-              "value": "создаем имя сквада команды А"
+              "value": "sozdaem imya skvada komandy A"
             }
           },
           {
             "comment": {
-              "value": "создаем имя сквада команды Б"
+              "value": "sozdaem imya skvada komandy B"
             }
           },
           {
             "comment": {
-              "value": "проверяем не надо ли завершить битву"
+              "value": "proveryaem ne nado li zavershit' bitvu"
             }
           },
           {
@@ -5970,7 +5901,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "битва не активна идем дальше по циклу"
+            "value": "bitva ne aktivna idem dal'she po ciklu"
           },
           "triggerEnable": {
             "target": "lbt_end_rotator"
@@ -6026,52 +5957,52 @@
         "actions": [
           {
             "comment": {
-              "value": "создаем имя переменной, где харнится откуда напали"
+              "value": "sozdaem imya peremennoj, gde harnitsya otkuda napali"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, где харнится куда напали"
+              "value": "sozdaem imya peremennoj, gde harnitsya kuda napali"
             }
           },
           {
             "comment": {
-              "value": "прячем стрелку"
+              "value": "pryachem strelku"
             }
           },
           {
             "comment": {
-              "value": "перерисовываем все стрелки"
+              "value": "pererisovyvaem vse strelki"
             }
           },
           {
             "comment": {
-              "value": "перестаем мигать целями для РБ"
+              "value": "perestaem migat' celyami dlya RB"
             }
           },
           {
             "comment": {
-              "value": "убираем видимость"
+              "value": "ubiraem vidimost'"
             }
           },
           {
             "comment": {
-              "value": "получаем переменную, хранящую армию атакующего"
+              "value": "poluchaem peremennuyu, hranyashchuyu armiyu atakuyushchego"
             }
           },
           {
             "comment": {
-              "value": "получаем армию нападающего"
+              "value": "poluchaem armiyu napadayushchego"
             }
           },
           {
             "comment": {
-              "value": "получаем переменную, хранящую армию защищающегося"
+              "value": "poluchaem peremennuyu, hranyashchuyu armiyu zashchishchayushchegosya"
             }
           },
           {
             "comment": {
-              "value": "получаем армию защищающегося"
+              "value": "poluchaem armiyu zashchishchayushchegosya"
             }
           },
           {
@@ -6086,7 +6017,7 @@
           },
           {
             "comment": {
-              "value": "включаем проверку кто выиграл"
+              "value": "vklyuchaem proverku kto vyigral"
             }
           },
           {
@@ -6299,22 +6230,22 @@
         "actions": [
           {
             "comment": {
-              "value": "победила команда А"
+              "value": "pobedila komanda A"
             }
           },
           {
             "comment": {
-              "value": "двигаем линию фронта"
+              "value": "dvigaem liniyu fronta"
             }
           },
           {
             "comment": {
-              "value": "проверяем активности"
+              "value": "proveryaem aktivnosti"
             }
           },
           {
             "comment": {
-              "value": "проверяем разрешена ли контр атака"
+              "value": "proveryaem razreshena li kontr ataka"
             }
           },
           {
@@ -6341,7 +6272,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем выигрыш команды Б"
+            "value": "proveryaem vyigrysh komandy B"
           },
           "triggerEnable": {
             "target": "lbt_end_check_t2_win"
@@ -6372,22 +6303,22 @@
         "actions": [
           {
             "comment": {
-              "value": "победила команда А"
+              "value": "pobedila komanda A"
             }
           },
           {
             "comment": {
-              "value": "двигаем линию фронта"
+              "value": "dvigaem liniyu fronta"
             }
           },
           {
             "comment": {
-              "value": "проверяем активности"
+              "value": "proveryaem aktivnosti"
             }
           },
           {
             "comment": {
-              "value": "проверяем разрешена ли контр атака"
+              "value": "proveryaem razreshena li kontr ataka"
             }
           },
           {
@@ -6414,7 +6345,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем выигрыш команды Б"
+            "value": "proveryaem vyigrysh komandy B"
           },
           "triggerEnable": {
             "target": "lbt_end_check_no_win"
@@ -6438,12 +6369,12 @@
         "actions": [
           {
             "comment": {
-              "value": "никто не победил"
+              "value": "nikto ne pobedil"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             }
           },
           {
@@ -6483,17 +6414,17 @@
         "actions": [
           {
             "comment": {
-              "value": "двигаем линию фронта"
+              "value": "dvigaem liniyu fronta"
             }
           },
           {
             "comment": {
-              "value": "рисуем линию фронта"
+              "value": "risuem liniyu fronta"
             }
           },
           {
             "comment": {
-              "value": "убрали захват аэродрома так как там самостоятельный цикл"
+              "value": "ubrali zahvat aerodroma tak kak tam samostoyatel'nyj cikl"
             }
           },
           {
@@ -6522,7 +6453,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не двигаем линию фронта"
+            "value": "ne dvigaem liniyu fronta"
           },
           "triggerDisable": {
             "target": "lbt_end_t1_move_frontline"
@@ -6552,17 +6483,17 @@
         "actions": [
           {
             "comment": {
-              "value": "двигаем линию фронта"
+              "value": "dvigaem liniyu fronta"
             }
           },
           {
             "comment": {
-              "value": "рисуем линию фронта"
+              "value": "risuem liniyu fronta"
             }
           },
           {
             "comment": {
-              "value": "убрали захват аэродрома так как там самостоятельный цикл"
+              "value": "ubrali zahvat aerodroma tak kak tam samostoyatel'nyj cikl"
             }
           },
           {
@@ -6591,7 +6522,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не двигаем линию фронта"
+            "value": "ne dvigaem liniyu fronta"
           },
           "triggerDisable": {
             "target": "lbt_end_t1_move_frontline"
@@ -6615,12 +6546,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
             }
           },
           {
             "comment": {
-              "value": "проверяем активность"
+              "value": "proveryaem aktivnost'"
             }
           },
           {
@@ -6687,12 +6618,12 @@
         "actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была 25% или выше"
+              "value": "aktivnost' igrokov pri vypolnenii zadaniya byla 25% ili vyshe"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             }
           },
           {
@@ -6709,12 +6640,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была ниже 25%"
+              "value": "aktivnost' igrokov pri vypolnenii zadaniya byla nizhe 25%"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             }
           },
           {
@@ -6746,12 +6677,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
             }
           },
           {
             "comment": {
-              "value": "проверяем активность"
+              "value": "proveryaem aktivnost'"
             }
           },
           {
@@ -6818,12 +6749,12 @@
         "actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была 25% или выше"
+              "value": "aktivnost' igrokov pri vypolnenii zadaniya byla 25% ili vyshe"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             }
           },
           {
@@ -6840,12 +6771,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была ниже 25%"
+              "value": "aktivnost' igrokov pri vypolnenii zadaniya byla nizhe 25%"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "idem dal'she po ciklu"
             }
           },
           {
@@ -6914,47 +6845,47 @@
           },
           {
             "comment": {
-              "value": "собираем переменную, хранящую откуда напали"
+              "value": "sobiraem peremennuyu, hranyashchuyu otkuda napali"
             }
           },
           {
             "comment": {
-              "value": "собираем переменную, хранящую куда напали"
+              "value": "sobiraem peremennuyu, hranyashchuyu kuda napali"
             }
           },
           {
             "comment": {
-              "value": "получае значения откуда и куда напали"
+              "value": "poluchae znacheniya otkuda i kuda napali"
             }
           },
           {
             "comment": {
-              "value": "создаем переменные, хранящие армии"
+              "value": "sozdaem peremennye, hranyashchie armii"
             }
           },
           {
             "comment": {
-              "value": "создаем переменные, хранящие армии"
+              "value": "sozdaem peremennye, hranyashchie armii"
             }
           },
           {
             "comment": {
-              "value": "получаем значения армий"
+              "value": "poluchaem znacheniya armij"
             }
           },
           {
             "comment": {
-              "value": "получаем имя боевой зоны"
+              "value": "poluchaem imya boevoj zony"
             }
           },
           {
             "comment": {
-              "value": "переменная хранящая активность битвы"
+              "value": "peremennaya hranyashchaya aktivnost' bitvy"
             }
           },
           {
             "comment": {
-              "value": "проверяем что значения армий валидно"
+              "value": "proveryaem chto znacheniya armij validno"
             }
           },
           {
@@ -7134,7 +7065,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "по новому циклу не идем"
+            "value": "po novomu ciklu ne idem"
           },
           "triggerDisable": {
             "target": "lbt_end_redraw_rotator"
@@ -7403,7 +7334,7 @@
         },
         "actions": {
           "comment": {
-            "value": "контр аттака разрешена"
+            "value": "kontr attaka razreshena"
           },
           "triggerEnable": {
             "target": "lbt_counter_attack_t1_check_start"
@@ -7411,7 +7342,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "контр атака не разрешена"
+            "value": "kontr ataka ne razreshena"
           },
           "triggerDisable": {
             "target": "lbt_counter_attack_t1_check_enable"
@@ -7440,7 +7371,7 @@
         },
         "actions": {
           "comment": {
-            "value": "контр аттака разрешена"
+            "value": "kontr attaka razreshena"
           },
           "triggerEnable": {
             "target": "lbt_counter_attack_t2_check_start"
@@ -7448,7 +7379,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "контр атака не разрешена"
+            "value": "kontr ataka ne razreshena"
           },
           "triggerDisable": {
             "target": "lbt_counter_attack_t2_check_enable"
@@ -7478,17 +7409,17 @@
         "actions": [
           {
             "comment": {
-              "value": "атака была со стороны врага - можно контратаковать"
+              "value": "ataka byla so storony vraga - mozhno kontratakovat'"
             }
           },
           {
             "comment": {
-              "value": "получаем переменную, хранящую heat"
+              "value": "poluchaem peremennuyu, hranyashchuyu heat"
             }
           },
           {
             "comment": {
-              "value": "выставляет heat максимальным"
+              "value": "vystavlyaet heat maksimal'nym"
             }
           },
           {
@@ -7547,17 +7478,17 @@
         "actions": [
           {
             "comment": {
-              "value": "атака была со стороны врага - можно контратаковать"
+              "value": "ataka byla so storony vraga - mozhno kontratakovat'"
             }
           },
           {
             "comment": {
-              "value": "получаем переменную, хранящую heat"
+              "value": "poluchaem peremennuyu, hranyashchuyu heat"
             }
           },
           {
             "comment": {
-              "value": "выставляет heat максимальным"
+              "value": "vystavlyaet heat maksimal'nym"
             }
           },
           {

@@ -15,7 +15,7 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
     return
   }
 
-  let cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
+  let cutIndex = min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
   let requestList = playersList.slice(0, cutIndex)
   let leftList = playersList.slice(cutIndex)
 
@@ -39,7 +39,7 @@ let function requestUnknownPSNIds(playersList, knownUsers, cb) {
   }
 
   let self = callee()
-  let cutIndex = ::min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
+  let cutIndex = min(playersList.len(), MAX_UNKNOWN_IDS_PEER_REQUEST)
   let requestList = playersList.slice(0, cutIndex)
   let leftList = playersList.slice(cutIndex)
 

@@ -542,7 +542,7 @@
         "missionShowMapIcon": {
           "show": true,
           "team": "A",
-          "iconName": "ui/gameuiskin#icon_weapons_in_progress",
+          "iconName": "ui/gameuiskin#icon_weapons_in_progress.svg",
           "areaName": "rearm_area",
           "colorCode": "Ally",
           "scale": 0.33,
@@ -793,20 +793,32 @@
         "initMission": []
       },
       "conditions": [],
-      "actions": {
-        "varSetString": {
-          "value": "target_tank08",
-          "var": "atgm_unit"
+      "actions": [
+        {
+          "varSetString": {
+            "value": "target_tank_atgm",
+            "var": "atgm_unit"
+          }
         },
-        "varSetInt": {
-          "value": 0,
-          "var": "atgm_timer",
-          "input_var": "atgm_time"
+        {
+          "varSetString": {
+            "value": "tank_spawn_area_atgm",
+            "var": "atgm_unit_spawn"
+          }
         },
-        "triggerEnable": {
-          "target": "atgm_enable"
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "atgm_timer",
+            "input_var": "atgm_time"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "atgm_enable"
+          }
         }
-      },
+      ],
       "else_actions": []
     },
     "atgm_enable": {
@@ -851,12 +863,41 @@
           "missionShowMapIcon": {
             "show": true,
             "team": "A",
-            "iconName": "ui/gameuiskin#shadow_fighter_radar",
+            "iconName": "ui/gameuiskin#shadow_fighter_radar.svg",
             "areaName": "atgm_vs_player_area",
             "colorCode": "White",
             "scale": 40.0,
             "scaleWithMap": true,
             "opacity": 192
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "@atgm_unit",
+            "target": "@atgm_unit_spawn"
+          }
+        },
+        {
+          "unitSetVar": {
+            "object_var_name": "killed",
+            "object": "@atgm_unit",
+            "object_var_value": 0
+          }
+        },
+        {
+          "unitSetVar": {
+            "object_var_name": "self_name",
+            "object": "@atgm_unit",
+            "object_var_string": "@atgm_unit"
+          }
+        },
+        {
+          "unitSetVar": {
+            "object_var_name": "self_spawn_area",
+            "object": "@atgm_unit",
+            "object_var_string": "@atgm_unit_spawn"
           }
         },
         {
@@ -880,14 +921,9 @@
         }
       ],
       "else_actions": {
-        "unitPutToSleep": [
-          {
-            "target": "@atgm_unit"
-          },
-          {
-            "target": "atgm_objgrp_sq"
-          }
-        ]
+        "unitPutToSleep": {
+          "target": "atgm_objgrp_sq"
+        }
       }
     },
     "atgm_unit_killed": {
@@ -1352,7 +1388,8 @@
     "atgm_timer": 0,
     "atgm_time": 3,
     "atgm_unit": "",
-    "player": ""
+    "player": "",
+    "atgm_unit_spawn": ""
   },
   "dialogs": [],
   "airfields": [],

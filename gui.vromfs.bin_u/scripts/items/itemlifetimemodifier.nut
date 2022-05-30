@@ -1,5 +1,7 @@
-local ItemLifetimeModifier = class {
-  static dependenciesRe = ::regexp2("\\bs\\.count_([0-9]+)")
+let regexp2 = require("regexp2")
+
+let class ItemLifetimeModifier {
+  static dependenciesRe = regexp2("\\bs\\.count_([0-9]+)")
 
   modifierFunction = null
   dependencies = null

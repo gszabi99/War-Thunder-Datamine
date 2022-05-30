@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setUnitLastBullets,
@@ -25,11 +26,11 @@ local { clearUnitOption } = ::require_native("guiOptions")
   option = null //bullet option. initialize only on request because generate descriptions
   selectedBullet = null //selected bullet from modifications list
 
-  constructor(_unit, _groupIndex, _gunInfo, params)
+  constructor(v_unit, v_groupIndex, v_gunInfo, params)
   {
-    unit = _unit
-    groupIndex = _groupIndex
-    gunInfo = _gunInfo
+    unit = v_unit
+    groupIndex = v_groupIndex
+    gunInfo = v_gunInfo
     guns = ::getTblValue("guns", gunInfo) || 1
     active = params?.isActive ?? active
     canChangeActivity = params?.canChangeActivity ?? canChangeActivity
@@ -45,7 +46,7 @@ local { clearUnitOption } = ::require_native("guiOptions")
 
     let bulletOptionId = ::USEROPT_BULLET_COUNT0 + groupIndex
     let count = ::get_unit_option(unit.name, bulletOptionId)
-    if (::type(count) == "string") //validate bullets option type
+    if (type(count) == "string") //validate bullets option type
       clearUnitOption(unit.name, bulletOptionId)
     else if (count != null)
       bulletsCount = (count / guns).tointeger()
@@ -124,11 +125,11 @@ local { clearUnitOption } = ::require_native("guiOptions")
     if (!isAmmoFree(unit, selectedName, AMMO.PRIMARY))
     {
       let boughtCount = (getAmmoAmount(unit, selectedName, AMMO.PRIMARY) / guns).tointeger()
-      maxBulletsCount = isForcedAvailable? gunInfo.total : ::min(boughtCount, gunInfo.total)
+      maxBulletsCount = isForcedAvailable? gunInfo.total : min(boughtCount, gunInfo.total)
     }
 
     if (maxToRespawn > 0)
-      maxBulletsCount = ::min(maxBulletsCount, maxToRespawn)
+      maxBulletsCount = min(maxBulletsCount, maxToRespawn)
 
     if (bulletsCount < 0 || bulletsCount <= maxBulletsCount)
       return false
@@ -154,7 +155,7 @@ local { clearUnitOption } = ::require_native("guiOptions")
 
   function _tostring()
   {
-    return ::format("BulletGroup( unit = %s, idx = %d, active = %s, selected = %s )",
+    return format("BulletGroup( unit = %s, idx = %d, active = %s, selected = %s )",
                     unit.name, groupIndex, active.tostring(), selectedName)
   }
 

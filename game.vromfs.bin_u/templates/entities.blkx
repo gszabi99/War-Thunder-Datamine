@@ -179,6 +179,7 @@
       "ri_gpu_object__enable_displacement": true,
       "ri_gpu_object__render_into_shadows": false,
       "ri_gpu_object__coast_range": [-1.0,-1.0],
+      "ri_gpu_object__face_coast": false,
       "ri_gpu_object__ri_placer_list:array": [],
       "ri_gpu_object__biome_params:array": [],
       "ri_gpu_object__multiple_objects:array": [],
@@ -1165,15 +1166,43 @@
     "_extends": "unit",
     "aim_component": []
   },
+  "expendable_mod": {
+    "_extends": "replicating",
+    "mod__enabled_without_mod": true,
+    "mod__count_effects_mod": false,
+    "mod__ownerEid:eid": [],
+    "_group": {
+      "_replicate": true,
+      "mod__total_count": 0,
+      "mod__count": 0
+    }
+  },
+  "toolkit_ecs": {
+    "_extends": "expendable_mod",
+    "mod__name": "tank_tool_kit_expendable",
+    "mod__type_name": "toolkit"
+  },
+  "extinguisher_ecs": {
+    "_extends": "expendable_mod",
+    "mod__name": "manual_extinguisher_expendable",
+    "mod__type_name": "extinguisher"
+  },
+  "ship_extinguisher_ecs": {
+    "_extends": "extinguisher_ecs",
+    "mod__enabled_without_mod": false
+  },
+  "medicalkit_ecs": {
+    "_extends": "expendable_mod",
+    "mod__name": "tank_medical_kit_expendable",
+    "mod__type_name": "medicalkit",
+    "mod__enabled_without_mod": false,
+    "mod__count_effects_mod": true
+  },
   "ground_unit": {
     "_extends": "simple_ground_unit",
     "move_sys__maxDecel": 0.0,
     "fire_damage__update_burn_interval": 1.0,
     "fire_damage__isBurn": false,
-    "toolkit__name": "tank_tool_kit_expendable",
-    "toolkit__enabled_without_mod": true,
-    "extinguisher__name": "manual_extinguisher_expendable",
-    "extinguisher__enabled_without_mod": true,
     "unit_fire": [],
     "fire_fx__id:list<i>": [],
     "fire_fx__fxId:list<i>": [],
@@ -1185,8 +1214,9 @@
     "fuel_tanks": [],
     "ammo_stowage": [],
     "fire_damage": [],
-    "toolkit": [],
-    "extinguisher": []
+    "modEids:list<eid>": {
+      "_replicate": true
+    }
   },
   "light_vehicle": {
     "_extends": "simple_ground_unit"
@@ -1199,9 +1229,17 @@
   },
   "tank": {
     "_extends": "ground_unit",
-    "medicalkit__name": "tank_medical_kit_expendable",
-    "medicalkit__enabled_without_mod": false,
-    "medicalkit": [],
+    "mods:list<t>": [
+      {
+        "mod": "toolkit_ecs"
+      },
+      {
+        "mod": "extinguisher_ecs"
+      },
+      {
+        "mod": "medicalkit_ecs"
+      }
+    ],
     "track_sound": {
       "_tags": "sound"
     },
@@ -1221,7 +1259,17 @@
   },
   "ship": {
     "_extends": "ground_unit",
-    "extinguisher__enabled_without_mod": false,
+    "mods:list<t>": [
+      {
+        "mod": "toolkit_ecs"
+      },
+      {
+        "mod": "ship_extinguisher_ecs"
+      },
+      {
+        "mod": "medicalkit_ecs"
+      }
+    ],
     "track_sound": {
       "_tags": "sound"
     }
@@ -1265,12 +1313,32 @@
   "torpedo_gun": {
     "_extends": "weapon"
   },
-  "player": {
-    "player_id": -1,
-    "connId": -1,
-    "_tracked": "connId",
-    "m_player": []
-  },
+  "player": [
+    {
+      "player_id": -1
+    },
+    {
+      "connId": -1
+    },
+    {
+      "syncVromsStep": 0
+    },
+    {
+      "syncVromsStartAtTime": 0
+    },
+    {
+      "receiveLogerr": false
+    },
+    {
+      "_tracked": "connId"
+    },
+    {
+      "_tracked": "syncVromsStep"
+    },
+    {
+      "m_player": []
+    }
+  ],
   "background_model": {
     "background_model__model": "",
     "background_model__skin": "",
@@ -1542,6 +1610,95 @@
         "_tags": "server",
         "sand_worm__delayedTimer": -1.0,
         "sand_worm__delayedTime": 12.0
+      }
+    }
+  ],
+  "damage_area": [
+    {
+      "_extends": "root"
+    },
+    {
+      "_extends": "replicating"
+    },
+    {
+      "damage_area__fallVel": [0.0,0.0,0.0]
+    },
+    {
+      "damage_area__fallNorm": [0.0,0.0,0.0]
+    },
+    {
+      "damage_area__velocityMult": 0.0
+    },
+    {
+      "damage_area__maxRise": 0.0
+    },
+    {
+      "damage_area__endTime": 0.0
+    },
+    {
+      "damage_area__pos1": [0.0,0.0,0.0]
+    },
+    {
+      "damage_area__vel": [0.0,0.0,0.0]
+    },
+    {
+      "damage_area__maxFlightTime": 0.0
+    },
+    {
+      "damage_area__maxFlightDist": 0.0
+    },
+    {
+      "damage_area__radius": 0.0
+    },
+    {
+      "damage_area__damage": 0.0
+    },
+    {
+      "damage_area__damageTypeId": -1
+    },
+    {
+      "damage_area__seed": 0
+    },
+    {
+      "damage_area__fxType": ""
+    },
+    {
+      "damage_area__burnFxType": ""
+    },
+    {
+      "damage_area__burnFxSize": 0.0
+    },
+    {
+      "damage_area__flightTime": 0.0
+    },
+    {
+      "damage_area__scorchMarginSize": 0.0
+    },
+    {
+      "damage_area__scorchStrength": 0.0
+    },
+    {
+      "damage_area__scorchDuration": 0.0
+    },
+    {
+      "_group": {
+        "_track": true,
+        "damage_area__pos2": [0.0,0.0,0.0],
+        "damage_area__move": true
+      }
+    },
+    {
+      "_group": {
+        "_tags": "server",
+        "damage_area__offenderId": 0,
+        "damage_area__nextUpdateTime": 0.0
+      }
+    },
+    {
+      "_group": {
+        "_tags": "gameClient",
+        "damage_area__fxId": -1,
+        "damage_area__burnFxIds:list<i>": []
       }
     }
   ]

@@ -264,19 +264,16 @@
         "turret_09_side_dm": {
           "armorThickness": 10.0
         },
-        "turret_09_front_dm": {
-          "armorThickness": 5.0
+        "turret_10_back_dm": {
+          "armorThickness": 10.0
         },
-        "turret_09_back_dm": {
+        "turret_08_top_dm": {
           "armorThickness": 5.0
         }
       },
       "turret": {
         "armorClass": "CHA_tank",
         "turret_02_side_dm": {
-          "armorThickness": 30.0
-        },
-        "turret_02_bottom_dm": {
           "armorThickness": 30.0
         },
         "turret_bottom_dm": {
@@ -298,7 +295,8 @@
           "armorThickness": 50.0
         },
         "gun_mask_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "variableThickness": true
         },
         "turret_commander_dm": {
           "armorThickness": 30.0
@@ -307,7 +305,8 @@
           "armorThickness": 65.0
         },
         "turret_03_front_dm": {
-          "armorThickness": 65.0
+          "armorThickness": 65.0,
+          "variableThickness": true
         },
         "turret_03_side_dm": {
           "armorThickness": 65.0
@@ -318,7 +317,8 @@
         },
         "turret_04_side_dm": {
           "armorThickness": 30.0,
-          "armorClass": "RHA_tank"
+          "armorClass": "RHA_tank",
+          "variableThickness": true
         },
         "turret_04_back_dm": {
           "armorThickness": 65.0
@@ -327,7 +327,8 @@
           "armorThickness": 30.0
         },
         "turret_04_bottom_dm": {
-          "armorThickness": 65.0
+          "armorThickness": 65.0,
+          "variableThickness": true
         },
         "turret_05_front_dm": {
           "armorThickness": 65.0
@@ -336,7 +337,8 @@
           "armorThickness": 65.0
         },
         "turret_05_back_dm": {
-          "armorThickness": 100.0
+          "armorThickness": 100.0,
+          "variableThickness": true
         },
         "turret_05_top_dm": {
           "armorThickness": 30.0,
@@ -361,10 +363,12 @@
           "armorThickness": 30.0
         },
         "turret_07_top_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 30.0,
+          "armorClass": "RHA_tank"
         },
         "turret_07_side_dm": {
-          "armorThickness": 65.0
+          "armorThickness": 65.0,
+          "variableThickness": true
         },
         "turret_07_bottom_dm": {
           "armorThickness": 30.0
@@ -372,7 +376,7 @@
         "turret_08_side_dm": {
           "armorThickness": 35.0
         },
-        "turret_08_front_dm": {
+        "turret_10_front_dm": {
           "armorThickness": 25.0
         },
         "turret_07_front_dm": {
@@ -420,9 +424,6 @@
         "ex_armor_body_05_dm": [],
         "ex_armor_body_03_dm": [],
         "ex_armor_body_04_dm": [],
-        "ex_armor_turret_01_dm": {
-          "armorThickness": 6.0
-        },
         "turret_08_bottom_dm": {
           "armorThickness": 15.0
         }
@@ -497,6 +498,16 @@
           "armorThickness": 3.0,
           "hp": 20.0
         }
+      },
+      "body_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 300.0,
+        "armorThickness": 8.0,
+        "hidableInViewer": true,
+        "turret_09_top_dm": [],
+        "turret_09_bottom_dm": [],
+        "turret_09_back_dm": [],
+        "turret_09_front_dm": []
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -612,6 +623,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1502,8 +1514,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1547,8 +1559,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1556,8 +1568,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1565,8 +1577,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1605,29 +1617,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -3040,12 +3052,19 @@
           "limits": {
             "yaw": [-120.0,120.0],
             "pitch": [-10.0,50.0]
+          },
+          "limitsTable": {
+            "lim1": [-120.0,-98.0,-10.0,50.0],
+            "lim2": [-98.0,-80.0,-1.0,50.0],
+            "lim3": [-80.0,-30.0,-10.0,50.0],
+            "lim4": [-30.0,-18.0,-2.0,50.0],
+            "lim5": [-18.0,120.0,-10.0,50.0]
           }
         }
       },
       {
         "Weapon": {
-          "trigger": "gunner4",
+          "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
           "emitter": "emtr_mg_flame_01",
@@ -3081,6 +3100,14 @@
           "limits": {
             "yaw": [-120.0,120.0],
             "pitch": [-10.0,50.0]
+          },
+          "limitsTable": {
+            "lim1": [-120.0,21.0,-10.0,50.0],
+            "lim2": [21.0,45.0,-1.0,50.0],
+            "lim3": [45.0,75.0,-10.0,50.0],
+            "lim4": [75.0,89.0,-7.0,50.0],
+            "lim5": [89.0,102.0,10.0,50.0],
+            "lim6": [102.0,120.0,-3.0,50.0]
           }
         }
       },
@@ -3121,9 +3148,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 58500.0,
+        "Empty": 59500.0,
         "Fuel": 1500.0,
-        "TakeOff": 60000.0,
+        "TakeOff": 61000.0,
         "momentOfInertia": [2.5,2.5,5.0],
         "CenterOfGravity": [-0.1,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -4307,12 +4334,19 @@
                 "limits": {
                   "yaw": [-120.0,120.0],
                   "pitch": [-10.0,50.0]
+                },
+                "limitsTable": {
+                  "lim1": [-120.0,-98.0,-10.0,50.0],
+                  "lim2": [-98.0,-80.0,-1.0,50.0],
+                  "lim3": [-80.0,-30.0,-10.0,50.0],
+                  "lim4": [-30.0,-18.0,-2.0,50.0],
+                  "lim5": [-18.0,120.0,-10.0,50.0]
                 }
               }
             },
             {
               "Weapon": {
-                "trigger": "gunner4",
+                "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
                 "emitter": "emtr_mg_flame_01",
@@ -4348,6 +4382,14 @@
                 "limits": {
                   "yaw": [-120.0,120.0],
                   "pitch": [-10.0,50.0]
+                },
+                "limitsTable": {
+                  "lim1": [-120.0,21.0,-10.0,50.0],
+                  "lim2": [21.0,45.0,-1.0,50.0],
+                  "lim3": [45.0,75.0,-10.0,50.0],
+                  "lim4": [75.0,89.0,-7.0,50.0],
+                  "lim5": [89.0,102.0,10.0,50.0],
+                  "lim6": [102.0,120.0,-3.0,50.0]
                 }
               }
             },

@@ -9,7 +9,7 @@ let {
   is_console,
   consoleRevision } = require("%sqstd/platform.nut")
 
-let {is_running_on_steam_deck} = require_native("steam")
+let {is_running_on_steam_deck} = ::require_native("steam")
 
 let {
   isXBoxPlayerName,

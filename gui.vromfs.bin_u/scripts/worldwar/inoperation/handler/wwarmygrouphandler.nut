@@ -5,16 +5,16 @@
 
   armyView = null
 
-  constructor(_placeObj, _group = null)
+  constructor(v_placeObj, v_group = null)
   {
-    if (!::checkObj(_placeObj))
+    if (!::checkObj(v_placeObj))
       return
 
-    if (!_group || !_group.isValid())
+    if (!v_group || !v_group.isValid())
       return
 
-    scene = _placeObj
-    group = _group
+    scene = v_placeObj
+    group = v_group
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 

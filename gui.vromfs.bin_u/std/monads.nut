@@ -8,7 +8,7 @@ const ASSERT_MSG = "provided value should be Monad"
 
 /*
 function to cceck interfaces, useful for design and tests
-local Foo = class {get = @(v) null}
+local Foo = class {get = @(_) null}
 
 checkInterface(Foo, [{name = "get", params = ["v"]}])
 
@@ -57,11 +57,11 @@ let function checkInterface(klass, methods){
 */
 let class Monad {
   //of, pure :: a -> M a
-  static function of(x){
+  static function of(_){
     throw("pure method needs to be implemented")
   }
   //flatMap :: # M a -> (a -> M b) -> M b
-  function flatMap(f){
+  function flatMap(_){
     throw("flatMap method needs to be implemented")
   }
   isMonad = @() true
@@ -96,7 +96,7 @@ local _Maybe
 local _None
 
 _Maybe = class extends Monad {
-  constructor(a) {
+  constructor(_) {
     throw("do not call directly")
   }
   static function of(a) {
@@ -142,7 +142,7 @@ _Maybe = class extends Monad {
 _None = class extends _Maybe {
   constructor(){}
   static get = @() null
-  static map = @(fn) none
+  static map = @(_fn) none
   static filter = @(...) none
   static orElse = @(other) other
   static orSome = @(other) Some(other)
@@ -403,7 +403,7 @@ Task = class extends Monad {
 if (__name__ == "__main__"){
   println("testing Maybe Monad")
   let foo = Maybe(2)
-    .map(@(v) null).orSome(10).orElse(2).map(@(...) null).orElse(Some(-2))
+    .map(@(_) null).orSome(10).orElse(2).map(@(...) null).orElse(Some(-2))
     .flatMap(@(v) Some(v+1)).get()
   if (foo!=-1){
     throw("FAILED Maybe check")

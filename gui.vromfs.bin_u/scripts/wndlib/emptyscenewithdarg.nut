@@ -5,6 +5,10 @@ let class emptySceneWithDarg extends ::BaseGuiHandler {
   shouldBlurSceneBgFn = needUseHangarDof
   widgetId = null
 
+  function initScreen() {
+    ::enableHangarControls(false, true)
+  }
+
   getWidgetsList = @() widgetId == null ? null : [{ widgetId = widgetId }]
 }
 

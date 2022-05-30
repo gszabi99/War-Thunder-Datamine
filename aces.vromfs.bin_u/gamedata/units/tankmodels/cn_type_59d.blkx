@@ -673,8 +673,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -718,8 +718,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -727,8 +727,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -736,8 +736,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -776,29 +776,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2989,6 +2989,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3303,9 +3304,6 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "height": 0.06,
-        "width": 0.58,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
         "tracksTensionK": [3.5,10.0,2.0],
         "trackMesh": "ussr_54_44_004_13g_phys_track_line",
         "trackLen": 0.137,
@@ -3314,7 +3312,10 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.16,
-        "trackStartOffset": 0.05
+        "height": 0.06,
+        "width": 0.58,
+        "trackStartOffset": 0.065,
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",

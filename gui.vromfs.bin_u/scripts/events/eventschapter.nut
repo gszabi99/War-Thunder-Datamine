@@ -41,7 +41,7 @@
     {
       let event = ::events.getEvent(eventName)
       if (event)
-        sortPriority = ::max(sortPriority, ::events.getEventUiSortPriority(event))
+        sortPriority = max(sortPriority, ::events.getEventUiSortPriority(event))
     }
   }
 

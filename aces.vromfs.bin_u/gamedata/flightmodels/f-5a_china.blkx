@@ -5,9 +5,7 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.296,
   "gearSinkRangeC": 0.29,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -3471,15 +3469,16 @@
     "new_compressor_jet": {
       "tier": 1
     },
-    "q5_countermeasures_launcher_chaff_only": [],
-    "q5_countermeasures_launcher_flare_only": [],
-    "q5_countermeasures_launcher_chaff_priority": [],
-    "q5_countermeasures_launcher_flare_priority": [],
-    "q_5b_ltc": {
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
+      "tier": 2,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "tier": 1,
-      "group": "q_5b_group",
+      "group": "mi-24_EVU",
       "effects": {
         "commonWeapons": [
           {
@@ -3553,7 +3552,7 @@
     "t_160_armor_targets": [],
     "t_160_stealth": [],
     "t_160_belt_pack": {
-      "prevModification": "q_5b_ltc",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 2
     },
     "t_160_new_gun": {

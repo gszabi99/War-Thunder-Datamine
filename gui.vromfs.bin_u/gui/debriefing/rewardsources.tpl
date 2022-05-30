@@ -33,6 +33,7 @@ tdiv {
     img {
       size:t='@sIco, @sIco'; pos:t='pw/2-w/2, 0'; position:t='relative'
       background-image:t='<<icon>>'
+      background-svg-size:t='@sIco, @sIco';
     }
   }
   <</icon>>

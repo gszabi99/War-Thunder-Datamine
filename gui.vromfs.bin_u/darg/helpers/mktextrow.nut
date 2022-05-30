@@ -3,11 +3,11 @@
   and replace some tokens with darg components, and all left text with mkText functions, returning list of components
   example:
     let text = "hello <<user>>, current time: <<time>>!"
-    let mkText = @(text) {rendObj = ROBJ_DTEXT, text=text}
+    let mkText = @(text) {rendObj = ROBJ_TEXT, text=text}
     let curUser = Watched("Bob")
     let replaceTable = {
-      ["<<user>>"] = {text=curUser.value, rendObj = ROBJ_DTEXT, color = Color(255,200,200)},
-      ["<<time>>"] = {text=curTime.value, rendObj = ROBJ_DTEXT, color = Color(200,255,200)}
+      ["<<user>>"] = {text=curUser.value, rendObj = ROBJ_TEXT, color = Color(255,200,200)},
+      ["<<time>>"] = {text=curTime.value, rendObj = ROBJ_TEXT, color = Color(200,255,200)}
     }
 
     let greeting = @(){

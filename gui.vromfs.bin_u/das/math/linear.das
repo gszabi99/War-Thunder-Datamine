@@ -22,9 +22,9 @@ def distance_to_line(point, a, dir) : float
   return distance(point, pt)
 
 def is_2d_lines_crossed(startL1, endL1, startL2, endL2 : float2) : bool
-  let den = (endL2.y - startL2.y)* (endL1.x - startL1.x) - (endL2.x - startL2.x) * (endL1.y - startL1.y)
+  let den = (endL2.y - startL2.y) * (endL1.x - startL1.x) - (endL2.x - startL2.x) * (endL1.y - startL1.y)
   if den == 0.0
     return false
-  let ua = ((endL2.x - startL2.x)* (startL1.y - startL2.y) - (endL2.y - startL2.y) * (startL1.x - startL2.x)) / den
-  let ub = ((endL1.x - startL1.x)* (startL1.y - startL2.y) - (endL1.y - startL1.y) * (startL1.x - startL2.x)) / den
-  return ua >= 0.0 && ua <=1.0 && ub >= 0.0 && ub <= 1.0
+  let ua = ((endL2.x - startL2.x) * (startL1.y - startL2.y) - (endL2.y - startL2.y) * (startL1.x - startL2.x)) / den
+  let ub = ((endL1.x - startL1.x) * (startL1.y - startL2.y) - (endL1.y - startL1.y) * (startL1.x - startL2.x)) / den
+  return ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0

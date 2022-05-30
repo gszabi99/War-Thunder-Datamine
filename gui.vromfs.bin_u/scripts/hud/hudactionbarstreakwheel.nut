@@ -11,7 +11,8 @@ let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNI
   EII_MEDICALKIT, EII_TERRAFORM, EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH,
   EII_EXTINGUISHER, EII_TOOLKIT, EII_REPAIR_BREACHES, EII_SPEED_BOOSTER,
   EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR,
-  EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_STEALTH, EII_LOCK
+  EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_SUPPORT_PLANE_CHANGE,
+  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK
 } = ::require_native("hudActionBarConst")
 
 const ITEMS_PER_PAGE = 8
@@ -38,19 +39,6 @@ let cfgMenuTank = [
     EII_STEALTH,        // Event
     EII_LOCK,           // Event
     null,
-]
-
-// April Fools Day 2022 Event
-let cfgMenuTankArachisCombatTrack = [
-  // Page #1
-    EII_SMOKE_GRENADE,
-    EII_SMOKE_SCREEN,
-    EII_ARTILLERY_TARGET,
-    null,
-    EII_LOCK,           // Event
-    null,
-    EII_MEDICALKIT,
-    [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
 ]
 
 let cfgMenuShip = [
@@ -91,6 +79,8 @@ let cfgMenuAircraft = [
   // Page #1
     EII_SUPPORT_PLANE,
     EII_SUPPORT_PLANE_2,
+    EII_SUPPORT_PLANE_CHANGE,
+    EII_SUPPORT_PLANE_GROUP_ATTACK,
     EII_SMOKE_SCREEN,
     null,
     null,
@@ -103,8 +93,7 @@ let cfgMenuAircraft = [
 /******************************** CONFIGS END *********************************/
 
 let function getCfgByUnit(unit) {
-  return [ "combat_track_a", "combat_track_h" ].contains(unit?.name) ? cfgMenuTankArachisCombatTrack
-       : unit?.isTank()       ? cfgMenuTank
+  return unit?.isTank()       ? cfgMenuTank
        : unit?.isShipOrBoat() ? cfgMenuShip
        : unit?.isAir()        ? cfgMenuAircraft
        : unit?.isSubmarine()  ? cfgMenuSubmarine

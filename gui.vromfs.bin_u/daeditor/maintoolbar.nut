@@ -1,12 +1,17 @@
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
-let {showEntitySelect, propPanelVisible, propPanelClosed, showHelp, de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop} = require("state.nut")
+
+let {showEntitySelect, propPanelVisible, propPanelClosed, showHelp, de4editMode,
+     de4workMode, de4workModes, showUIinEditor, editorTimeStop} = require("state.nut")
+
 let pictureButton = require("components/pictureButton.nut")
 let combobox = require("%darg/components/combobox.nut")
 let cursors =  require("components/cursors.nut")
+
 let daEditor4 = require("daEditor4")
 let {DE4_MODE_CREATE_ENTITY, get_instance} = require("entity_editor")
-let {DE4_MODE_MOVE, DE4_MODE_ROTATE, DE4_MODE_SCALE, DE4_MODE_SELECT, getEditMode, setEditMode} = daEditor4
+let {DE4_MODE_MOVE, DE4_MODE_ROTATE, DE4_MODE_SCALE, DE4_MODE_MOVE_SURF, DE4_MODE_SELECT,
+     DE4_MODE_POINT_ACTION, getEditMode, setEditMode} = daEditor4
 
 let function toolbarButton(image, action, tooltip_text, checked=null) {
   let function onHover(on) {
@@ -53,7 +58,7 @@ let separator = {
 let svg = @(name) {image = $"!%daeditor/images/{name}.svg"} //Atlas is not working %daeditor/editor#
 let function mainToolbar() {
   let function toggleEntitySelect() {
-    if (getEditMode() == DE4_MODE_CREATE_ENTITY)
+    if (getEditMode() == DE4_MODE_CREATE_ENTITY || getEditMode() == DE4_MODE_POINT_ACTION)
       setEditMode(DE4_MODE_SELECT)
     showEntitySelect.update(!showEntitySelect.value);
   }
@@ -68,9 +73,11 @@ let function mainToolbar() {
     propPanelClosed(propPanelVisible.value && !showHelp.value)
     propPanelVisible(!propPanelVisible.value)
   }
+  let toggleTime = @() editorTimeStop(!editorTimeStop.value)
   let toggleHelp = @() showHelp.update(!showHelp.value)
 
   return {
+    cursor = cursors.normal
     size = [sw(100), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     rendObj = ROBJ_WORLD_BLUR
@@ -80,24 +87,32 @@ let function mainToolbar() {
     padding =hdpx(4)
 
     children = [
-//      comp(Watch(scenePath), txt(scenePath.value, {color = Color(170,170,170), padding=[0, hdpx(10)], maxWidth = sw(15)}), ClipChildren)
-      toolbarButton(svg("select_by_name"), toggleEntitySelect, "Find entity", showEntitySelect.value)
+      // comp(Watch(scenePath), txt(scenePath.value, {color = Color(170,170,170), padding=[0, hdpx(10)], maxWidth = sw(15)}), ClipChildren)
+      toolbarButton(svg("select_by_name"), toggleEntitySelect, "Find entity (Tab)", showEntitySelect.value)
       separator
-      modeButton(svg("select"), DE4_MODE_SELECT, "Select")
-      modeButton(svg("move"), DE4_MODE_MOVE, "Move")
-      modeButton(svg("rotate"), DE4_MODE_ROTATE, "Rotate") //rotate or mirror, make blue
-      modeButton(svg("scale"), DE4_MODE_SCALE, "Scale")
-      modeButton(svg("create"), DE4_MODE_CREATE_ENTITY, "Create entity", DE4_MODE_SELECT)
+      modeButton(svg("select"), DE4_MODE_SELECT, "Select (Q)")
+      modeButton(svg("move"),   DE4_MODE_MOVE,   "Move (W)")
+      modeButton(svg("rotate"), DE4_MODE_ROTATE, "Rotate (E)") //rotate or mirror, make blue
+      modeButton(svg("scale"),  DE4_MODE_SCALE,  "Scale (R)")
+      modeButton(svg("create"), DE4_MODE_CREATE_ENTITY, "Create entity (T)", DE4_MODE_SELECT)
       separator
-      toolbarButton(svg("properties"), togglePropPanel, "Property panel", propPanelVisible.value)
+      toolbarButton(svg("delete"),     @() get_instance().deleteSelectedObjects(true), "Delete selected (Del)")
+      separator
+      modeButton(svg("surf"), DE4_MODE_MOVE_SURF, "Surf over ground (Ctrl+Alt+W)")
+      toolbarButton(svg("drop"),       @() get_instance().dropObjects(),      "Drop (Ctrl+Alt+D)")
+      toolbarButton(svg("dropnormal"), @() get_instance().dropObjectsNorm(),  "Drop on normal (Ctrl+Alt+E)")
+      toolbarButton(svg("resetscale"), @() get_instance().resetScale(),       "Reset scale (Ctrl+Alt+R)")
+      toolbarButton(svg("zoomcenter"), @() get_instance().zoomAndCenter(),    "Zoom and center (Z)")
+      separator
+      toolbarButton(svg("properties"), togglePropPanel, "Property panel (P)", propPanelVisible.value)
       toolbarButton(svg("hide"), @() get_instance().hideSelectedTemplate(), "Hide")
       toolbarButton(svg("show"), @() get_instance().unhideAll(), "Unhide all")
       separator
       toolbarButton(svg("gui_toggle"), @() showUIinEditor(!showUIinEditor.value), "Show UI", showUIinEditor.value)
-      toolbarButton(svg("time_toggle"), @() editorTimeStop(!editorTimeStop.value), "Toggle time", !editorTimeStop.value)
+      toolbarButton(svg("time_toggle"), toggleTime, "Toggle time (Ctrl+T)", !editorTimeStop.value)
       separator
       toolbarButton(svg("save"), @() get_instance().saveObjects(""), "Save")
-      toolbarButton(svg("help"), toggleHelp, "Help", showHelp.value)
+      toolbarButton(svg("help"), toggleHelp, "Help (F1)", showHelp.value)
 
       de4workModes.value.len() <= 1 ? null : separator
       de4workModes.value.len() <= 1 ? null : {
@@ -111,7 +126,9 @@ let function mainToolbar() {
       ["Tab", toggleEntitySelect],
       ["T", toggleCreateEntityMode],
       ["F1", toggleHelp],
-      ["P", togglePropPanel]
+      ["P", togglePropPanel],
+      ["L.Ctrl T", toggleTime],
+      ["Esc", @() daEditor4.setEditMode(DE4_MODE_SELECT)]
     ]
   }
 }

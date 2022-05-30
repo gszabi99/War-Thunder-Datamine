@@ -4,7 +4,7 @@ let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
 
 let gap = ::scrn_tgt(0.005)
-return function(textComp, params, handler, group, sf){
+return function(textComp, params, _handler, _group, sf){
   let gamepadHotkey = getGamepadHotkeys(params?.hotkeys)
   if (gamepadHotkey == "")
     return textComp

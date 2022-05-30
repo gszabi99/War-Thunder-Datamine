@@ -229,7 +229,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
           cost = goodsConfig.cost.getTextAccordingToBalance()}),
       goodsConfig.cost)
     let onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curGoodsIdx)
-    msgBox("purchase_ask", msgText,
+    this.msgBox("purchase_ask", msgText,
       [
         ["yes", function() {
           if (::check_balance_msgBox(goodsConfig.cost)) {

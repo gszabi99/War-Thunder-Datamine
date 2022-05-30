@@ -6,41 +6,41 @@
 
   constructor(context, paramsList)
   {
-    setContextParams(context, paramsList)
+    this.setContextParams(context, paramsList)
   }
 
   function setContextParams(context, paramsList)
   {
-    contextWeak = context ? context.weakref() : null
-    paramsArray = paramsList
+    this.contextWeak = context ? context.weakref() : null
+    this.paramsArray = paramsList
   }
 
   function switchToNewContext(context, paramsList)
   {
-    setContextParams(context, paramsList)
-    loadDataFromStorage()
+    this.setContextParams(context, paramsList)
+    this.loadDataFromStorage()
   }
 
   function loadDataFromStorage()
   {
-    if (!storedData || !paramsArray || !contextWeak)
+    if (!this.storedData || !this.paramsArray || !this.contextWeak)
       return
 
-    foreach(param in paramsArray)
-      if ((param in contextWeak) && (param in storedData))
-        contextWeak[param] = storedData[param]
+    foreach(param in this.paramsArray)
+      if ((param in this.contextWeak) && (param in this.storedData))
+        this.contextWeak[param] = this.storedData[param]
   }
 
   function saveDataToStorage()
   {
-    if (!contextWeak)
+    if (!this.contextWeak)
       return
 
-    if (!storedData)
-      storedData = {}
+    if (!this.storedData)
+      this.storedData = {}
 
-    foreach(param in paramsArray)
-      if (param in contextWeak)
-        storedData[param] <- contextWeak[param]
+    foreach(param in this.paramsArray)
+      if (param in this.contextWeak)
+        this.storedData[param] <- this.contextWeak[param]
   }
 }

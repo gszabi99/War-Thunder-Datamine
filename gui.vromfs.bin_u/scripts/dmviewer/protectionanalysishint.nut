@@ -15,19 +15,19 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     penetratedArmor = function(params, id, resultCfg) {
       local res = 0.0
       foreach (src in resultCfg.infoSrc) {
-        res = ::max(res, (params?[src]?[id]?.generic ?? 0.0) +
+        res = max(res, (params?[src]?[id]?.generic ?? 0.0) +
           (params?[src]?[id]?.genericLongRod ?? 0.0) +
           (params?[src]?[id]?.explosiveFormedProjectile ?? 0.0) +
           (params?[src]?[id]?.cumulative ?? 0.0))
-        res = ::max(res, (params?[src]?[id]?.explosion ?? 0.0))
-        res = ::max(res, (params?[src]?[id]?.shatter ?? 0.0))
+        res = max(res, (params?[src]?[id]?.explosion ?? 0.0))
+        res = max(res, (params?[src]?[id]?.shatter ?? 0.0))
       }
       return res
     }
     ricochetProb = function(params, id, resultCfg) {
       local res = 0.0
       foreach (src in resultCfg.infoSrc)
-        res = ::max(res, (params?[src]?[id] ?? 0.0))
+        res = max(res, (params?[src]?[id] ?? 0.0))
       return res
     }
     parts = function(params, id, resultCfg) {
@@ -38,10 +38,10 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
       return res
     }
     angle = function(params, id, resultCfg) {
-      return ::max((params?.angle ?? 0.0), 0.0)
+      return max((params?.angle ?? 0.0), 0.0)
     }
     headingAngle = function(params, id, resultCfg) {
-      return ::max((params?.headingAngle ?? 0.0), 0.0)
+      return max((params?.headingAngle ?? 0.0), 0.0)
     }
   }
 

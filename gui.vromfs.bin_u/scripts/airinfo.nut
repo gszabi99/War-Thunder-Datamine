@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -140,7 +141,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   let isInShop = ::getTblValue("isInShop", unit)
   if (isInShop == null)
   {
-    debugTableData(unit)
+    ::debugTableData(unit)
     ::dagor.assertf(false, "not existing isInShop param")
     return false
   }
@@ -926,8 +927,8 @@ let isEventUnit = @(unit) unit.event != null
     }
 
     refMarkerObj.show(true)
-    let left = ::min((refer - vMin) / (vMax - vMin), 1)
-    refMarkerObj.left = ::format("%.3fpw - 0.5w)", left)
+    let left = min((refer - vMin) / (vMax - vMin), 1)
+    refMarkerObj.left = format("%.3fpw - 0.5w)", left)
   }
 }
 
@@ -1017,7 +1018,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::showAirInfo <- function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 {
-  handler = handler || ::handlersManager.getActiveBaseHandler()
+  handler = handler || ::handlersManager.getActiveRootHandler()
 
   if (!::checkObj(holderObj))
   {
@@ -1107,7 +1108,7 @@ let isEventUnit = @(unit) unit.event != null
         obj.isForSquadVehicle = "yes"
       let expTotal = air.reqExp
       let expInvest = isSquadronVehicle
-        ? ::min(::clan_get_exp(), expTotal - expCur)
+        ? min(::clan_get_exp(), expTotal - expCur)
         : ::getTblValue("researchExpInvest", params, 0)
       let isResearching = ::isUnitInResearch(air) && (!isSquadronVehicle || isInClan || expInvest > 0)
 
@@ -1123,7 +1124,7 @@ let isEventUnit = @(unit) unit.event != null
         let expCurText = isSquadronVehicle
           ? ::Cost().setSap(expCur).toStringWithParams({isSapAlwaysShown = true})
           : ::Cost().setRp(expCur).toStringWithParams({isRpAlwaysShown = true})
-        local expText = ::format("%s%s%s%s",
+        local expText = format("%s%s%s%s",
           statusText,
           expCurText,
           ::loc("ui/slash"),
@@ -1205,7 +1206,7 @@ let isEventUnit = @(unit) unit.event != null
       prevUnitObj.show(true)
       let tdNameObj = prevUnitObj.findObject("aircraft-prevUnit")
       if (::checkObj(tdNameObj))
-        tdNameObj.setValue(::format(::loc("shop/prevUnitEfficiencyResearch"), ::getUnitName(prevUnit, true)))
+        tdNameObj.setValue(format(::loc("shop/prevUnitEfficiencyResearch"), ::getUnitName(prevUnit, true)))
       let tdValueObj = prevUnitObj.findObject("aircraft-prevUnit_bonus")
       if (::checkObj(tdValueObj))
       {
@@ -1213,7 +1214,7 @@ let isEventUnit = @(unit) unit.event != null
         let curVal = rBlk?[param_name + diffCode.tostring()] ?? 1
 
         if (curVal != 1)
-          tdValueObj.setValue(::format("<color=@userlogColoredText>%s%%</color>", (curVal*100).tostring()))
+          tdValueObj.setValue(format("<color=@userlogColoredText>%s%%</color>", (curVal*100).tostring()))
         else
           prevUnitObj.show(false)
       }
@@ -1366,7 +1367,7 @@ let isEventUnit = @(unit) unit.event != null
     let horsePowers = currentParams.horsePowers;
     let horsePowersRPM = currentParams.maxHorsePowersRPM;
     holderObj.findObject("aircraft-horsePowers").setValue(
-      ::format("%s %s %d %s", ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(horsePowers),
+      format("%s %s %d %s", ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(horsePowers),
         ::loc("shop/unitValidCondition"), horsePowersRPM.tointeger(), ::loc("measureUnits/rpm")))
     local thickness = currentParams.armorThicknessHull;
     holderObj.findObject("aircraft-armorThicknessHull").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), ::loc("measureUnits/mm")))
@@ -1476,7 +1477,7 @@ let isEventUnit = @(unit) unit.event != null
       holderObj.findObject("ship-antiTorpedoProtection-title").setValue(
         "".concat(::loc("info/ship/antiTorpedoProtection"), ::loc("ui/colon")))
       holderObj.findObject("ship-antiTorpedoProtection-value").setValue(
-        ::format("%d %s", atProtection, ::loc("measureUnits/kg")))
+        format("%d %s", atProtection, ::loc("measureUnits/kg")))
     }
 
     let shipMaterials = getShipMaterialTexts(air.name)
@@ -1543,9 +1544,9 @@ let isEventUnit = @(unit) unit.event != null
     local wpTimedText = [ wpMuls.wpTimed.tostring() ]
     if (wpMuls.premMul != 1.0) {
       wpMultText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
-        ::colorize("yellow", ::format("%.1f", wpMuls.premMul)))
+        ::colorize("yellow", format("%.1f", wpMuls.premMul)))
       wpTimedText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
-        ::colorize("yellow", ::format("%.1f", wpMuls.premMul)))
+        ::colorize("yellow", format("%.1f", wpMuls.premMul)))
     }
     wpMultText = "".join(wpMultText)
     wpTimedText = "".join(wpTimedText)
@@ -1651,7 +1652,7 @@ let isEventUnit = @(unit) unit.event != null
     let freeRepairsUnlimited = ::isUnitDefault(air)
     let egdCode = difficulty.egdCode
     if (freeRepairsUnlimited)
-      repairCostData = ::format("textareaNoTab { smallFont:t='yes'; text:t='%s' }", ::loc("shop/free"))
+      repairCostData = format("textareaNoTab { smallFont:t='yes'; text:t='%s' }", ::loc("shop/free"))
     else
     {
       let avgRepairMul = wBlk?.avgRepairMul ?? 1.0
@@ -1801,7 +1802,7 @@ let isEventUnit = @(unit) unit.event != null
   {
     if (::canBuyUnitOnline(air))
       addInfoTextsList.append(::colorize("userlogColoredText",
-        ::format(::loc("shop/giftAir/"+air.gift+"/info"), air.giftParam ? ::loc(air.giftParam) : "")))
+        format(::loc("shop/giftAir/"+air.gift+"/info"), air.giftParam ? ::loc(air.giftParam) : "")))
     if (::isUnitDefault(air))
       addInfoTextsList.append(::loc("shop/reserve/info"))
     if (::canBuyUnitOnMarketplace(air))
@@ -2094,7 +2095,7 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
   let unitPath = ::get_unit_file_name(unitId)
   if (unitBlkData == null)
     unitBlkData = ::get_full_unit_blk(unitId)
-  let nodes = ::split(unitPath, "/")
+  let nodes = split_by_chars(unitPath, "/")
   if (nodes.len())
     nodes.pop()
   let unitDir = ::g_string.implode(nodes, "/")

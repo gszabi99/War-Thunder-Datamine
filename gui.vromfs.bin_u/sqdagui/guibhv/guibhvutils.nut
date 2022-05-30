@@ -2,7 +2,7 @@ let { memoize } = require("%sqstd/functools.nut")
 
 let function getNearestSelectableChildIndex(listObj, curIndex, way)
 {
-  if (!check_obj(listObj))
+  if (!::check_obj(listObj))
     return curIndex
 
   let step = (way >= 0)? 1 : -1
@@ -10,7 +10,7 @@ let function getNearestSelectableChildIndex(listObj, curIndex, way)
   for (local i = curIndex + step; i != breakAt; i += step)
   {
     let iObj = listObj.getChild(i)
-    if (!check_obj(iObj))
+    if (!::check_obj(iObj))
       continue
     if (!iObj.isVisible() || !iObj.isEnabled() || iObj?.inactive=="yes")
       continue

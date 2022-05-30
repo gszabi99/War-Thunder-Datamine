@@ -156,9 +156,9 @@ g_dmg_model.getAngleByProbabilityFromP2blk <- function getAngleByProbabilityFrom
         // This means that we are on the left side of
         // probability-by-angle curve.
         if (x == 1)
-          return ::max(angle1, angle2)
+          return max(angle1, angle2)
         else
-          return ::min(angle1, angle2)
+          return min(angle1, angle2)
       }
       return stdMath.lerp(probability1, probability2, angle1, angle2, x)
     }
@@ -174,7 +174,7 @@ g_dmg_model.getMaxProbabilityFromP2blk <- function getMaxProbabilityFromP2blk(bl
   {
     let p = blk.getParamValue(i)
     if (typeof p == "instance" && p instanceof ::Point2)
-      result = ::max(result, p.y)
+      result = max(result, p.y)
   }
   return result
 }

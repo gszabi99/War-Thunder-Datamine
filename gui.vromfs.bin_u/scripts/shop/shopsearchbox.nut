@@ -130,13 +130,13 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
     onSearchEditBoxActivate()
   }
 
-  function onActiveStateChanged(_isActive)
+  function onActiveStateChanged(v_isActive)
   {
     if (!isValid())
       return
-    if (isActive == _isActive)
+    if (isActive == v_isActive)
       return
-    isActive = _isActive
+    isActive = v_isActive
 
     local obj = scene.findObject("search_buttons")
     if (::check_obj(obj))

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let time = require("%scripts/time.nut")
@@ -32,7 +33,7 @@ let function memoizeByProfile(func, hashFunc = null) {
     removeDecoratorLocId = ""
     emptySlotLocId = ""
     userlogPurchaseIcon = "#ui/gameuiskin#unlock_decal"
-    prizeTypeIcon = "#ui/gameuiskin#item_type_unlock"
+    prizeTypeIcon = "#ui/gameuiskin#item_type_unlock.svg"
     defaultStyle = ""
 
     getAvailableSlots = function(unit) { return 0 }
@@ -145,7 +146,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     groupPathPrefix = "decals/group/"
     removeDecoratorLocId = "mainmenu/requestDeleteDecal"
     emptySlotLocId = "mainmenu/decalFreeSlot"
-    prizeTypeIcon = "#ui/gameuiskin#item_type_decal"
+    prizeTypeIcon = "#ui/gameuiskin#item_type_decal.svg"
     defaultStyle = "reward_decal"
 
     jobCallbacksStack = {}
@@ -161,15 +162,15 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getRatio = function(decorator) { return decorator?.aspect_ratio ?? 1 }
-    getImageSize = function(decorator) { return ::format("256@sf/@pf, %d@sf/@pf", ::floor(256.0 / getRatio(decorator) + 0.5)) }
+    getImageSize = function(decorator) { return format("256@sf/@pf, %d@sf/@pf", ::floor(256.0 / getRatio(decorator) + 0.5)) }
 
     getLocName = function(decoratorName, ...) { return ::loc("decals/" + decoratorName) }
     getLocDesc = function(decoratorName) { return ::loc("decals/" + decoratorName + "/desc", "") }
 
     getCost = function(decoratorName)
     {
-      return ::Cost(::max(0, ::get_decal_cost_wp(decoratorName)),
-                    ::max(0, ::get_decal_cost_gold(decoratorName)))
+      return ::Cost(max(0, ::get_decal_cost_wp(decoratorName)),
+                    max(0, ::get_decal_cost_gold(decoratorName)))
     }
     getDecoratorNameInSlot = function(slotIdx, unitName, skinId, checkPremium = false)
     {
@@ -260,7 +261,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     removeDecoratorLocId = "mainmenu/requestDeleteDecorator"
     emptySlotLocId = "mainmenu/attachableFreeSlot"
     userlogPurchaseIcon = "#ui/gameuiskin#unlock_attachable"
-    prizeTypeIcon = "#ui/gameuiskin#item_type_attachable"
+    prizeTypeIcon = "#ui/gameuiskin#item_type_attachable.svg"
     defaultStyle = "reward_attachable"
 
     getAvailableSlots = function(unit) { return ::get_num_attachables_slots(unit.name) }
@@ -292,8 +293,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     getCost = function(decoratorName)
     {
-      return ::Cost(::max(0, ::get_attachable_cost_wp(decoratorName)),
-                    ::max(0, ::get_attachable_cost_gold(decoratorName)))
+      return ::Cost(max(0, ::get_attachable_cost_wp(decoratorName)),
+                    max(0, ::get_attachable_cost_gold(decoratorName)))
     }
     getDecoratorNameInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_name(slotIdx) }
     getDecoratorGroupInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_group(slotIdx) }
@@ -350,7 +351,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     unlockedItemType = ::UNLOCKABLE_SKIN
     resourceType = "skin"
     userlogPurchaseIcon = "#ui/gameuiskin#unlock_skin"
-    prizeTypeIcon = "#ui/gameuiskin#item_type_skin"
+    prizeTypeIcon = "#ui/gameuiskin#item_type_skin.svg"
     defaultStyle = "reward_skin"
 
     getImage = function(decorator)
@@ -436,8 +437,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getCost = function(decoratorName)
     {
       let unitName = ::g_unlocks.getPlaneBySkinId(decoratorName)
-      return ::Cost(::max(0, ::get_skin_cost_wp(unitName, decoratorName)),
-                    ::max(0, ::get_skin_cost_gold(unitName, decoratorName)))
+      return ::Cost(max(0, ::get_skin_cost_wp(unitName, decoratorName)),
+                    max(0, ::get_skin_cost_gold(unitName, decoratorName)))
     }
 
     getFreeSlotIdx = @(...) 0

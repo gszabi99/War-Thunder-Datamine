@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -198,7 +199,7 @@ local MP_CHAT_PARAMS = {
     }
     else
       transparency += dt / CHAT_WINDOW_APPEAR_TIME
-    transparency = ::clamp(transparency, 0.0, 1.0)
+    transparency = clamp(transparency, 0.0, 1.0)
 
     let transValue = (isHudVisible && isVisibleWithCursor(sceneData)) ? 100 :
       (100.0 * (3.0 - 2.0 * transparency) * transparency * transparency).tointeger()
@@ -610,7 +611,7 @@ local MP_CHAT_PARAMS = {
   {
     let timeString = time.secondsToString(message.time, false)
     if (message.sender == "") //system
-      return ::format(
+      return format(
         "%s <color=@chatActiveInfoColor>%s</color>",
         timeString,
         ::loc(message.text))
@@ -637,7 +638,7 @@ local MP_CHAT_PARAMS = {
     message.userColor = userColor
     message.msgColor = msgColor
     message.clanTag = clanTag
-    return ::format(
+    return format(
       "%s <Color=%s>[%s] <Link=PL_%s>%s:</Link></Color> <Color=%s>%s</Color>",
       timeString,
       userColor,
@@ -820,7 +821,7 @@ local MP_CHAT_PARAMS = {
 
 ::clear_game_chat <- function clear_game_chat()
 {
-  debugTableData(ingame_chat)
+  ::debugTableData(ingame_chat)
   ingame_chat.clearLog()
 }
 

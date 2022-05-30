@@ -1,3 +1,4 @@
+let { format } = require("string")
 let persistent = {
   unitsCfg = null
 }
@@ -84,7 +85,7 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
   local valuesList = value.map(function(val) {
     val = val * unit.koef
     if (shouldRoundValue && isPresize)
-      return ::format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
+      return format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
     let roundPrecision = (unit.round == 0 || !isPresize) ? 1 : ::pow(0.1, unit.round)
     return ::g_string.floatToStringRounded(val, roundPrecision)
   })

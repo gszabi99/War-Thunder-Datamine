@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -356,6 +357,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       bulletType = null
       tiers = {}
       dependentWeaponPreset = {}
+      bannedWeaponPreset = {}
       blk = ""
     }
 
@@ -390,6 +392,14 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
           slot = dependentWeapon.slot
           reqForPresetId = weapon.presetId
           reqForTier = weapon.tier
+        })
+      }
+      foreach (bannedWeapon in (weapon % "bannedWeaponPreset")) {
+        let bannedWeapons = item.bannedWeaponPreset?[bannedWeapon.preset] ?? []
+        item.bannedWeaponPreset[bannedWeapon.preset] <- bannedWeapons.append({
+          slot = bannedWeapon.slot
+          bannedByPresetId = weapon.presetId
+          bannedByTier = weapon.tier
         })
       }
     }
@@ -458,7 +468,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
               else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.irSeeker?.groundVehiclesAsTarget ?? false))
               {
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
-                  item.seekerRange <- ::min(rangeRearAspect, rangeAllAspect)
+                  item.seekerRange <- min(rangeRearAspect, rangeAllAspect)
               }
               if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
                 item.seekerECCM <- true
@@ -507,10 +517,10 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       }
       else  if (currentTypeName == WEAPON_TYPE.TORPEDOES)
       {
-        item.dropSpeedRange = itemBlk.getPoint2("dropSpeedRange", Point2(0,0))
+        item.dropSpeedRange = itemBlk.getPoint2("dropSpeedRange", ::Point2(0,0))
         if (item.dropSpeedRange.x == 0 && item.dropSpeedRange.y == 0)
           item.dropSpeedRange = null
-        item.dropHeightRange = itemBlk.getPoint2("dropHeightRange", Point2(0,0))
+        item.dropHeightRange = itemBlk.getPoint2("dropHeightRange", ::Point2(0,0))
         if (item.dropHeightRange.x == 0 && item.dropHeightRange.y == 0)
           item.dropHeightRange = null
         item.maxSpeedInWater <- itemBlk?.maxSpeedInWater ?? 0
@@ -569,6 +579,11 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         let dependentWeaponPreset = currentType.weaponBlocks[weaponName].dependentWeaponPreset?[dependentWeaponName] ?? []
         currentType.weaponBlocks[weaponName].dependentWeaponPreset[dependentWeaponName] <-
           dependentWeaponPreset.extend(dependentWeapon)
+      }
+      foreach (bannedWeaponName, bannedWeapon in item.bannedWeaponPreset) {
+        let bannedWeaponPreset = currentType.weaponBlocks[weaponName].bannedWeaponPreset?[bannedWeaponName] ?? []
+        currentType.weaponBlocks[weaponName].bannedWeaponPreset[bannedWeaponName] <-
+          bannedWeaponPreset.extend(bannedWeapon)
       }
     }
 
@@ -632,7 +647,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.launchRange)))
     if (weapon?.machMax)
       res.append("".concat(::loc("rocket/maxSpeed"), colon,
-        ::format("%.1f %s", weapon.machMax, ::loc("measureUnits/machNumber"))))
+        format("%.1f %s", weapon.machMax, ::loc("measureUnits/machNumber"))))
     else if (weapon?.maxSpeed)
       res.append("".concat(::loc("rocket/maxSpeed"), colon,
         ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed)))
@@ -652,10 +667,10 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     {
       if (weapon?.guidanceType != null || weapon?.autoAiming != null)
         res.append("".concat(::loc("missile/timeGuidance"), colon,
-          ::format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
+          format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
       else
         res.append("".concat(::loc("missile/timeSelfdestruction"), colon,
-          ::format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
+          format("%.1f %s", weapon.timeLife, ::loc("measureUnits/seconds"))))
     }
   }
   else if (weaponType == "torpedoes")
@@ -666,15 +681,22 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
       let mod = getModificationByName(unit, torpedoMod)
       let diffId = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff()).crewSkillName
       let effects = mod?.effects?[diffId]
-      let torpedoAffected = effects?.torpedoAffected ?? ""
-      if (effects && (torpedoAffected == "" || torpedoAffected == weapon.blk))
+      let weaponEffects = effects?.weapons
+      if (weaponEffects)
       {
         weapon = clone weapon
-        foreach (k, v in weapon)
+        foreach (weaponMod in weaponEffects)
         {
-          let kEffect = $"{k}Torpedo"
-          if ((kEffect in effects) && type(v) == type(effects[kEffect]))
-            weapon[k] += effects[kEffect]
+          let torpedoAffected = weaponMod?.torpedoAffected ?? ""
+          if (weaponMod && (torpedoAffected == "" || torpedoAffected == weapon.blk))
+          {
+            foreach (k, v in weapon)
+            {
+              let kEffect = $"{k}Torpedo"
+              if ((kEffect in weaponMod) && type(v) == type(weaponMod[kEffect]))
+                weapon[k] += weaponMod[kEffect]
+            }
+          }
         }
       }
     }
@@ -818,7 +840,7 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
 
   if (!p.isPrimary) {
     let weapon = unit.getWeapons()?[weaponPresetIdx]
-    let curPreset = weapon != null ? getUnitPresets(unitBlk).findvalue(@(_) _.name == weapon.name) : null
+    let curPreset = weapon != null ? getUnitPresets(unitBlk).findvalue(@(p) p.name == weapon.name) : null
     weapons = addWeaponsFromBlk(weapons, getPresetWeapons(unitBlk, weapon),
       unit, p.weaponsFilterFunc, curPreset?.weaponConfig)
   }

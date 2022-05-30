@@ -61,13 +61,13 @@ let stdMath = require("%sqstd/math.nut")
 
     initItemsPerPage()
 
-    currentPage = ::max(0, (value / itemsPerPage).tointeger())
+    currentPage = max(0, (value / itemsPerPage).tointeger())
 
     contentObj = scene.findObject("images_list")
     fillPage()
     ::move_mouse_on_child(contentObj, 0)
 
-    showSceneBtn("btn_select", ::show_console_buttons)
+    this.showSceneBtn("btn_select", ::show_console_buttons)
   }
 
   function initItemsPerPage()
@@ -79,8 +79,8 @@ let stdMath = require("%sqstd/math.nut")
     //update size for single page
     if (cfg.itemsCountX * cfg.itemsCountY > options.len())
     {
-      let total = ::max(options.len(), minAmountButtons)
-      local columns = ::min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)
+      let total = max(options.len(), minAmountButtons)
+      local columns = min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)
       local rows = ::ceil(total.tofloat() / columns).tointeger()
       if (rows > cfg.itemsCountY)
       {
@@ -103,9 +103,9 @@ let stdMath = require("%sqstd/math.nut")
 
     let haveCustomTooltip = getTooltipObjFunc() != null
     let start = currentPage * itemsPerPage
-    let end = ::min((currentPage + 1) * itemsPerPage, options.len()) - 1
-    let selIdx = valueInited ? ::min(contentObj.getValue(), end - start)
-      : ::clamp(value - start, 0, end - start)
+    let end = min((currentPage + 1) * itemsPerPage, options.len()) - 1
+    let selIdx = valueInited ? min(contentObj.getValue(), end - start)
+      : clamp(value - start, 0, end - start)
     for (local i = start; i <= end; i++)
     {
       let item = options[i]
@@ -193,7 +193,7 @@ let stdMath = require("%sqstd/math.nut")
   function updateButtons()
   {
     let option = ::getTblValue(getSelIconIdx(), options)
-    showSceneBtn("btn_select", ::getTblValue("enabled", option, false))
+    this.showSceneBtn("btn_select", ::getTblValue("enabled", option, false))
   }
 
   function afterModalDestroy()
@@ -251,7 +251,7 @@ let stdMath = require("%sqstd/math.nut")
   function markCurPageSeen()
   {
     let seenConfig = getSeenConfig(currentPage * itemsPerPage,
-      ::min((currentPage + 1) * itemsPerPage, options.len()) - 1)
+      min((currentPage + 1) * itemsPerPage, options.len()) - 1)
     if (seenConfig)
       seenList.get(seenConfig.listId).markSeen(seenConfig.entities)
   }

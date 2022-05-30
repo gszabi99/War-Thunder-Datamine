@@ -108,6 +108,9 @@
     "canReloadNonGuns": true
   },
   {
+    "supportsCombinedPriSecTriggers": true
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -930,21 +933,27 @@
         "hidableInViewer": true,
         "fireProtectionHp": 3.0,
         "compartment_01_dm": {
-          "hp": 730.0
+          "hp": 1280.0
         },
         "compartment_02_dm": {
-          "hp": 893.0
+          "hp": 1280.0
         },
         "compartment_03_dm": {
-          "hp": 653.0
-        },
+          "hp": 1280.0
+        }
+      },
+      "control_compartments": {
+        "fireParamsPreset": "ship_cover_boats",
+        "stopChanceOnDeadPart": 0.3,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0,
+        "hidableInViewer": true,
+        "fireProtectionHp": 3.0,
         "bridge_dm": {
-          "armorThickness": 1.0,
-          "hp": 270.0
+          "hp": 260.0
         },
         "radio_station_dm": {
-          "armorThickness": 1.0,
-          "hp": 150.0
+          "hp": 230.0
         }
       },
       "superstructures": {
@@ -1021,10 +1030,10 @@
         "armorThickness": 4.0,
         "fireProtectionHp": 10.0,
         "engine_01_dm": {
-          "hp": 982.0
+          "hp": 760.0
         },
         "transmission_01_dm": {
-          "hp": 500.0
+          "hp": 610.0
         }
       },
       "steering_gear": {
@@ -1089,24 +1098,24 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "main_caliber_turret_01_dm": {
-          "hp": 150.0
+          "hp": 207.0
         }
       },
       "turrets_aux_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 75.0
+          "hp": 120.0
         }
       },
       "turrets_aa_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "aa_turret_01_dm": {
-          "hp": 50.0
+          "hp": 30.0
         },
         "aa_turret_02_dm": {
-          "hp": 50.0
+          "hp": 30.0
         }
       },
       "gun_main_caliber": {
@@ -1222,7 +1231,7 @@
   },
   {
     "tank_crew": {
-      "minCrewMemberRepairCount": 4,
+      "minCrewMemberRepairCount": 0,
       "minCrewMemberAliveCount": 3,
       "sailor1": {
         "dmPart": "bridge_dm",

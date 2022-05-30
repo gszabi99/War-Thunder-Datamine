@@ -9,24 +9,10 @@ let functools = require("%sqstd/functools.nut")
 let darg_library = require("%darg/darg_library.nut")
 let {Computed, Watched, set_nested_observable_debug} = require("frp")
 
-let {tostring_r} = require("%sqstd/string.nut")
-let logLib = require("%sqstd/log.nut")
+let log = require("%globalScripts/logs.nut")
 getroottable().__update(require("daRg"))
 
 set_nested_observable_debug(true)
-
-let tostringfuncTbl = [
-  {
-    compare = @(val) val instanceof Watched
-    tostring = @(val) "Watched: {0}".subst(tostring_r(val.value,{maxdeeplevel = 3, splitlines=false}))
-  }
-  {
-    compare = @(val) type(val) == "instance" && val?.formatAsString != null
-    tostring = @(val) val.formatAsString()
-  }
-]
-
-let log = logLib(tostringfuncTbl)
 
 //frp
 ::Watched <- Watched //warning disable: -ident-hides-ident
@@ -42,7 +28,7 @@ let log = logLib(tostringfuncTbl)
 
 //logging
 ::dlog <- log.dlog
-::log <- log  //warning disable: -ident-hides-ident
+::log <- log.log  //warning disable: -ident-hides-ident
 
 ::math <- require("math")
 ::string <- require("string")

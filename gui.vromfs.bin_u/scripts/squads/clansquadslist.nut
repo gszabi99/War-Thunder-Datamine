@@ -1,3 +1,4 @@
+let { format } = require("string")
   const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
   const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
   const CLAN_SQUADS_LIST_TIME_OUT = 180000
@@ -103,7 +104,7 @@ local ClanSquadsList = class
   {
     if (squads.len() > MAX_SQUADS_LIST_LEN)
     {
-      let message = ::format("Error in clanSquads::updateClanSquadsList:\nToo long clan squads list - %d",
+      let message = format("Error in clanSquads::updateClanSquadsList:\nToo long clan squads list - %d",
                                 squads.len())
       ::script_net_assert_once("too long clan squads list", message)
 

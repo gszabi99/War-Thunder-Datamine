@@ -56,7 +56,7 @@ local function setBlkValueByPath(blk, path, val) {
   //from new value
   local destType = type(blk?[key])
   if (destType == "instance")
-    blk[key] <- null
+    blk.removeBlock(key)
   else if (blk?[key] != null && destType != type(val))
     blk[key] = null
 

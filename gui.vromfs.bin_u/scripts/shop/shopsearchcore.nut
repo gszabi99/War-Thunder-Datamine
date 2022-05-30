@@ -1,4 +1,6 @@
-let reUnitLocNameSeparators = ::regexp2(@"[ \-_/.()"+::nbsp+"]")
+let regexp2 = require("regexp2")
+
+let reUnitLocNameSeparators = regexp2(@"[ \-_/.()"+::nbsp+"]")
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
 let searchTokensCache = {}
 

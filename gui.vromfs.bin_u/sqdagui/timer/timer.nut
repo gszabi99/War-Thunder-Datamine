@@ -16,58 +16,58 @@ let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
     if (!_onTimeOut)
       return ::dagor.assertf(false, "Error: no onTimeOut in Timer.")
 
-    onTimeOut = handler ? Callback(_onTimeOut, handler) : _onTimeOut
-    cycled    = _cycled
-    isDelayed = _isDelayed
+    this.onTimeOut = handler ? Callback(_onTimeOut, handler) : _onTimeOut
+    this.cycled    = _cycled
+    this.isDelayed = _isDelayed
 
-    guiScene = parentObj.getScene()
-    timerGuiObj = guiScene.createElement(parentObj, "timer", this)
-    timerGuiObj.timer_handler_func = "onUpdate"
-    timerGuiObj.timer_interval_msec = (_delay * 1000.0).tointeger().tostring()
-    timerGuiObj.setUserData(this)
+    this.guiScene = parentObj.getScene()
+    this.timerGuiObj = this.guiScene.createElement(parentObj, "timer", this)
+    this.timerGuiObj.timer_handler_func = "onUpdate"
+    this.timerGuiObj.timer_interval_msec = (_delay * 1000.0).tointeger().tostring()
+    this.timerGuiObj.setUserData(this)
   }
 
   function onUpdate(obj, dt)
   {
-    performAction()
+    this.performAction()
 
-    if (!cycled)
-      destroy()
+    if (!this.cycled)
+      this.destroy()
   }
 
   function performAction()
   {
-    if (!isDelayed)
-      onTimeOut()
+    if (!this.isDelayed)
+      this.onTimeOut()
     else
-      guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(onTimeOut))
+      this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut))
   }
 
   function setDelay(newDelay)
   {
-    if (::check_obj(timerGuiObj))
+    if (::check_obj(this.timerGuiObj))
     {
-      timerGuiObj.timer_interval_msec = (newDelay * 1000.0).tointeger().tostring()
-      timerGuiObj.setIntProp(timeNowPID, 0)
+      this.timerGuiObj.timer_interval_msec = (newDelay * 1000.0).tointeger().tostring()
+      this.timerGuiObj.setIntProp(this.timeNowPID, 0)
     }
   }
 
   function setCb(_onTimeOut)
   {
-    onTimeOut = _onTimeOut
+    this.onTimeOut = _onTimeOut
   }
 
   function destroy()
   {
-    if (::check_obj(timerGuiObj))
+    if (::check_obj(this.timerGuiObj))
     {
-      timerGuiObj.setUserData(null)
-      guiScene.destroyElement(timerGuiObj)
+      this.timerGuiObj.setUserData(null)
+      this.guiScene.destroyElement(this.timerGuiObj)
     }
   }
 
   function isValid()
   {
-    return ::check_obj(timerGuiObj)
+    return ::check_obj(this.timerGuiObj)
   }
 }

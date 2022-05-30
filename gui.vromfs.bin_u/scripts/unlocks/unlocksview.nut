@@ -1,3 +1,4 @@
+let { format } = require("string")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -212,13 +213,13 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     if (unlockType == ::UNLOCKABLE_PILOT)
       return getPilotViewDataItem(unlockConfig)
 
-    local icon = "#ui/gameuiskin#item_type_placeholder"
+    local icon = "#ui/gameuiskin#item_type_placeholder.svg"
     local title = unlockConfig.name
 
     if (unlockType == ::UNLOCKABLE_TITLE)
     {
-      icon = "#ui/gameuiskin#item_type_unlock"
-      title = ::format(::loc("reward/title"), title)
+      icon = "#ui/gameuiskin#item_type_unlock.svg"
+      title = format(::loc("reward/title"), title)
     }
 
     return {
@@ -264,7 +265,7 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
 
     let isUnlocked = isBitMode? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
     hiddenContent += "unlockCondition {"
-    hiddenContent += ::format("textarea {text:t='%s' } \n %s \n",
+    hiddenContent += format("textarea {text:t='%s' } \n %s \n",
                               ::g_string.stripTags(names[i]),
                               ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}"))
     hiddenContent += format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no"))
@@ -330,7 +331,7 @@ g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
     rewardText = ::get_unlock_name_text(unlockType, id)
   }
   else if (unlockType == ::UNLOCKABLE_TITLE)
-    rewardText = ::format(::loc("reward/title"), ::get_unlock_name_text(unlockType, id))
+    rewardText = format(::loc("reward/title"), ::get_unlock_name_text(unlockType, id))
   else if (unlockType == ::UNLOCKABLE_TROPHY)
   {
     let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
@@ -454,6 +455,6 @@ g_unlock_view.fillUnlockPurchaseButton <- function fillUnlockPurchaseButton(unlo
       msg += "not purchase time. see time before."
       ::g_unlocks.debugLogVisibleByTimeInfo(unlockId)
     }
-    dagor.debug(msg)
+    ::dagor.debug(msg)
   }
 }

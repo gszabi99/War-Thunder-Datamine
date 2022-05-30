@@ -4,7 +4,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 ::items_classes.CraftProcess <- class extends ItemExternal {
   static iType = itemType.CRAFT_PROCESS
   static defaultLocId = "craft_part"
-  static typeIcon = "#ui/gameuiskin#item_type_craftpart"
+  static typeIcon = "#ui/gameuiskin#item_type_craftpart.svg"
 
   static itemExpiredLocId = "items/craft_process/finished"
   static descReceipesListWithCurQuantities = false

@@ -47,7 +47,7 @@ let warningSystemState = {
   }
 }
 
-::interop.updateMlwsTarget <- function(index, x, y, age, enemy, track) {
+::interop.updateMlwsTarget <- function(index, x, y, age, enemy, _track) {
   if (index >= warningSystemState.mlwsTargets.len())
     warningSystemState.mlwsTargets.resize(index + 1)
   warningSystemState.mlwsTargets[index] = {
@@ -59,7 +59,7 @@ let warningSystemState = {
   warningSystemState.mlwsTargetsTriggers.trigger()
 }
 
-::interop.updateLwsTarget <- function(index, x, y, age, enemy, track) {
+::interop.updateLwsTarget <- function(index, x, y, age, enemy, _track) {
   if (index >= warningSystemState.lwsTargets.len())
    warningSystemState.lwsTargets.resize(index + 1)
   warningSystemState.lwsTargets[index] = {

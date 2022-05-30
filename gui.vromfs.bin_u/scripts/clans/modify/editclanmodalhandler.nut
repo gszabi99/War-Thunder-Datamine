@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
@@ -153,8 +154,8 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
       let text = changedPrimary && newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
-      let msgText = ::warningIfGold(::format(::loc(text), cost.getTextAccordingToBalance()), cost)
-      msgBox("need_money", msgText, [["ok", function() { editClanInfo() }],
+      let msgText = ::warningIfGold(format(::loc(text), cost.getTextAccordingToBalance()), cost)
+      this.msgBox("need_money", msgText, [["ok", function() { editClanInfo() }],
         ["cancel"]], "ok")
     }
   }
@@ -192,8 +193,8 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
       placePriceTextToButton(scene, "btn_upg_members", ::loc("clan/members_upgrade_button", {step = upgStep}), cost)
     }
 
-    showSceneBtn("btn_upg_members", upgradeMembersButtonVisible)
-    showSceneBtn("btn_disbandClan", (isMyClan && isInArray("DISBAND", myRights)) || adminMode)
+    this.showSceneBtn("btn_upg_members", upgradeMembersButtonVisible)
+    this.showSceneBtn("btn_disbandClan", (isMyClan && isInArray("DISBAND", myRights)) || adminMode)
   }
 
   // Override
@@ -208,7 +209,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
             cost = cost.getTextAccordingToBalance()
           }),
         cost)
-      msgBox("need_money", msgText, [["ok", function() { upgradeMembers() } ],
+      this.msgBox("need_money", msgText, [["ok", function() { upgradeMembers() } ],
         ["cancel"]], "ok")
     }
   }
@@ -249,7 +250,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     if ((!isMyClan || !isInArray("LEADER", myRights)) && !::clan_get_admin_editor_mode())
       return;
 
-    msgBox("disband_clan", ::loc("clan/disbandClanConfirmation"),
+    this.msgBox("disband_clan", ::loc("clan/disbandClanConfirmation"),
       [
         ["yes", function()
         {
