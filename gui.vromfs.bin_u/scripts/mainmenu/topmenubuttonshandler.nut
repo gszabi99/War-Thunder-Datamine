@@ -64,7 +64,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
     let freeWidth = objForWidth.getSize()[0]
     let singleButtonMinWidth = guiScene.calcString("1@topMenuButtonWidth", null) || 1
-    return max(freeWidth / singleButtonMinWidth, 1)
+    return ::max(freeWidth / singleButtonMinWidth, 1)
   }
 
   function initSectionsOrder()

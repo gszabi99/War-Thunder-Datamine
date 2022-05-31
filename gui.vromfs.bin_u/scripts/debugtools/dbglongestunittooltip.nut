@@ -96,7 +96,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   }
 
   function revealFoundedUnits() {
-    this.showSceneBtn("sample_unit", false)
+    showSceneBtn("sample_unit", false)
   }
 
   function onEventUnitModsRecount(params) {

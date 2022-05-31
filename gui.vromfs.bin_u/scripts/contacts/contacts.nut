@@ -1,4 +1,3 @@
-let { format } = require("string")
 let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
@@ -148,7 +147,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
 
   if (!isSilent)
     ::showInfoMsgBox(
-      format(::loc("msg/cant_add/too_many_contacts"), ::EPL_MAX_PLAYERS_IN_LIST),
+      ::format(::loc("msg/cant_add/too_many_contacts"), ::EPL_MAX_PLAYERS_IN_LIST),
       "cant_add_contact"
     )
 
@@ -230,7 +229,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
     ::scene_msg_box(
       "remove_from_list",
       null,
-      format(::loc("msg/ask_remove_from_" + groupName), contact.getName()),
+      ::format(::loc("msg/ask_remove_from_" + groupName), contact.getName()),
       [
         ["ok", @() editContactsList({[false] = [contact]}, groupName)],
         ["cancel", @() null ]
@@ -484,7 +483,7 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
         foreach(country in shopCountriesList)
         {
           let countryIcon = ::get_country_icon(country)
-          ::debugTableData(memberData.selAirs)
+          debugTableData(memberData.selAirs)
           let unitName = memberData.selAirs?[country] ?? ""
           let unit = ::getAircraftByName(unitName)
           if (unit != null)

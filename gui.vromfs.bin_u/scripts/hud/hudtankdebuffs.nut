@@ -18,12 +18,12 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
   }
 
 
-  function init(nest)
+  function init(_nest)
   {
     if (!::has_feature("TankDetailedDamageIndicator"))
       return
 
-    scene = nest.findObject("tank_debuffs")
+    scene = _nest.findObject("tank_debuffs")
 
     if (!scene && !::checkObj(scene))
       return

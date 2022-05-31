@@ -1,4 +1,3 @@
-let { format } = require("string")
 let CONTACT_ADD_PARAM_NAME = "add"
 let CONTACT_REMOVE_PARAM_NAME = "remove"
 
@@ -59,10 +58,10 @@ return function(list, groupName, showNotification = false) {
             if(contact)
               contactsList.append(contact)
           }
-          text = format(msg, ::g_string.implode(contactsList.map(@(c) c?.getName()), ::loc("ui/comma") ))
+          text = ::format(msg, ::g_string.implode(contactsList.map(@(c) c?.getName()), ::loc("ui/comma") ))
         }
         else
-          text = format(::loc("msgbox/added_friends_number"), added)
+          text = ::format(::loc("msgbox/added_friends_number"), added)
 
         ::g_popups.add(null, text)
       }

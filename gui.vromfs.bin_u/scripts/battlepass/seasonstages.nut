@@ -50,7 +50,7 @@ let function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stage
 }
 
 let seasonStages = ::Computed(function() {
-  let stagesCount = max(basicUnlock.value?.stages?.len() ?? 0,
+  let stagesCount = ::max(basicUnlock.value?.stages?.len() ?? 0,
     premiumUnlock.value?.stages?.len() ?? 0,
     seasonLevel.value + COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES)
   let res = []

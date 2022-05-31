@@ -389,7 +389,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -733,38 +732,6 @@
         }
       }
     }
-  },
-  {
-    "chainIK": [
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_roll_03"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_roll_04"
-            }
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_roll_06"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_roll_07"
-            }
-          }
-        ]
-      }
-    ]
   },
   {
     "xray_viewer_data": [
@@ -1380,8 +1347,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1425,8 +1392,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1434,8 +1401,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1443,8 +1410,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1483,29 +1450,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2793,16 +2760,10 @@
       {
         "animatedBones": [
           {
-            "node": "bone_roll_01"
+            "node": "antenna_target_location"
           },
           {
-            "node": "bone_roll_02"
-          },
-          {
-            "node": "bone_roll_05"
-          },
-          {
-            "node": "bone_roll_08"
+            "node": "antenna_target_location_mount"
           }
         ]
       }
@@ -2850,17 +2811,8 @@
       },
       "tracks": {
         "animationMultiplier": -0.68,
-        "height": 0.08,
-        "width": 0.33,
-        "tracksTensionK": [7.0,10.0,7.0],
-        "trackMesh": "cn_pgz_04a_phys_track_line",
-        "trackLen": 0.161,
-        "trackCount": 84,
-        "trackFadeTime": 0.5,
-        "trackConnector": true,
-        "trackMaxSinking": 0.1,
-        "trackStartOffset": 0.08,
-        "trackEmitSparks": false
+        "height": 0.045,
+        "width": 0.33
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2910,13 +2862,10 @@
       "suspension": {
         "suspensionOffsets": [-0.1,-0.08,0.03],
         "defaultGearRadius": 0.33,
-        "frontBackGearRadius": 0.25,
+        "frontBackGearRadius": 0.205,
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "topGearRadius": 0.09,
-        "wheel_r_drive": 0.25,
-        "wheel_l_drive": 0.25
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -3492,7 +3441,7 @@
   },
   {
     "cockpit": {
-      "headPos": [0.0,4.2,-8.0],
+      "headPos": [0.0,4.5,-7.0],
       "headPosOnShooting": [-0.6,3.4,0.0],
       "zoomOutFov": 37.5,
       "zoomInFov": 12.3,
@@ -4037,16 +3986,10 @@
             {
               "animatedBones": [
                 {
-                  "node": "bone_roll_01"
+                  "node": "antenna_target_location"
                 },
                 {
-                  "node": "bone_roll_02"
-                },
-                {
-                  "node": "bone_roll_05"
-                },
-                {
-                  "node": "bone_roll_08"
+                  "node": "antenna_target_location_mount"
                 }
               ]
             }

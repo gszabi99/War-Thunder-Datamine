@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -312,7 +311,7 @@ let exportTypes = addTooltipTypes({
       }
 
       let columns = []
-      let unitsInArmyRowsMax = max(::floor(list.len() / 2).tointeger(), 3)
+      let unitsInArmyRowsMax = ::max(::floor(list.len() / 2).tointeger(), 3)
       let hasMultipleColumns = list.len() > unitsInArmyRowsMax
       if (!hasMultipleColumns)
         columns.append({ groupList = list })
@@ -529,11 +528,10 @@ let exportTypes = addTooltipTypes({
           || decoratorType == ::g_decorator_type.ATTACHABLES
           || unlockType == ::UNLOCKABLE_MEDAL)
       {
-        let bgImage = format("background-image:t='%s';", config.image)
-        let size = format("size:t='128, 128/%f';", config.imgRatio)
-        let svgSize = format("background-svg-size:t='128, 128/%f';", config.imgRatio)
+        let bgImage = ::format("background-image:t='%s';", config.image)
+        let size = ::format("size:t='128, 128/%f';", config.imgRatio)
 
-        guiScene.appendWithBlk(obj, " ".concat("img{", bgImage, size, svgSize, "}"), this)
+        guiScene.appendWithBlk(obj, ::format("img{ %s }", bgImage + size), this)
       }
       else if (decoratorType == ::g_decorator_type.SKINS)
       {
@@ -545,7 +543,7 @@ let exportTypes = addTooltipTypes({
 
         text = ::locOrStrip(::g_string.implode(text, "\n"))
         let textBlock = "textareaNoTab {smallFont:t='yes'; max-width:t='0.5@sf'; text:t='%s';}"
-        guiScene.appendWithBlk(obj, format(textBlock, text), this)
+        guiScene.appendWithBlk(obj, ::format(textBlock, text), this)
       }
       else
         return false
@@ -557,7 +555,7 @@ let exportTypes = addTooltipTypes({
 
 let function getTooltipType(typeName) {
   let res = tooltipTypes?[typeName]
-  return type(res) == "table" ? res : EMPTY
+  return ::type(res) == "table" ? res : EMPTY
 }
 
 return exportTypes.__update({

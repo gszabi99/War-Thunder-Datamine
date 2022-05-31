@@ -177,7 +177,7 @@ guiTutor.blockToView <- function blockToView(block)
 
     ownerWeak = ownerWeak.weakref()
     guiScene.setUpdatesEnabled(true, true)
-    this.showSceneBtn("close_btn", isTutorialCancelable)
+    showSceneBtn("close_btn", isTutorialCancelable)
     if (!isTutorialCancelable)
       scene.findObject("allow_cancel_timer").setUserData(this)
     showStep()
@@ -262,7 +262,7 @@ guiTutor.blockToView <- function blockToView(block)
     }
     ::guiTutor.createHighlight(scene.findObject("dark_screen"), blocksList, this, params)
 
-    this.showSceneBtn("dummy_console_next", actionType == tutorAction.ANY_CLICK)
+    showSceneBtn("dummy_console_next", actionType == tutorAction.ANY_CLICK)
 
     local nextActionShortcut = ::getTblValue("nextActionShortcut", stepData)
     if (nextActionShortcut && ::show_console_buttons)
@@ -369,6 +369,6 @@ guiTutor.blockToView <- function blockToView(block)
     if (stepTimeoutSec > 0)
       return
     isTutorialCancelable = true
-    this.showSceneBtn("close_btn", isTutorialCancelable)
+    showSceneBtn("close_btn", isTutorialCancelable)
   }
 }

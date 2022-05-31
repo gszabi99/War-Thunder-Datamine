@@ -39,11 +39,6 @@ let function getItemCost(unit, item)
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(unit, item)
 }
 
-let function isModStatusResearched(unit, mod) {
-  let s = ::shop_get_module_research_status(unit.name, mod.name)
-  return (s & ::ES_ITEM_STATUS_RESEARCHED) != 0
-}
-
 let function getItemStatusTbl(unit, item)
 {
   let isOwn = ::isUnitUsable(unit)
@@ -121,8 +116,7 @@ let function getItemStatusTbl(unit, item)
         else
         {
           res.canShowDiscount = res.canBuyMore
-          res.showPrice = !res.amount
-            && (canBuyMod(unit, item) || isModStatusResearched(unit, item))
+          res.showPrice = !res.amount && canBuyMod(unit, item)
         }
 
         if (isOwn && res.amount && isModUpgradeable(item.name))
@@ -310,7 +304,7 @@ let function getAllModsCost(unit, open = false)
         _modCost = openCost
     }
 
-    if (canBuyMod(unit, modification) || isModStatusResearched(unit, modification))
+    if (canBuyMod(unit, modification))
     {
       let modificationCost = getItemCost(unit, modification)
       if (!modificationCost.isZero())

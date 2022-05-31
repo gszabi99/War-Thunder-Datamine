@@ -1,4 +1,3 @@
-let { format } = require("string")
 /**
  * Caches data from leaderboard to provide always
  * actual values of reward progress.
@@ -33,21 +32,20 @@ let { format } = require("string")
     if (request.forClans)
       request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
 
-    let cache = __cache
-    ::events.requestSelfRow(request, function (selfRow) {
+    ::events.requestSelfRow(request, (@(__cache, cb, event, field, callback, eventEconomicName) function (selfRow) {
       if (!selfRow.len())
         return cb(null)
 
-      cache[eventEconomicName] <- selfRow[0]
+      __cache[eventEconomicName] <- selfRow[0]
       if (field in selfRow[0])
         callback(selfRow[0][field])
       else
       {
-        let msgToSend = format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
+        let msgToSend = ::format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
                                    field, event.name, eventEconomicName)
         ::dagor.debug(msgToSend)
       }
-    })
+    })(__cache, cb, event, field, callback, eventEconomicName))
   }
 
   function onEventEventBattleEnded(params)

@@ -40,7 +40,7 @@
         if (devId == ::STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
-        ::dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
+        dagor.debug("onButtonEntered "+i+" "+devId+" "+btnId);
         dev.append(devId);
         btn.append(btnId);
       }

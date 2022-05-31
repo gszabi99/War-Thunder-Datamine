@@ -79,21 +79,21 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function getCurPreset()
   {
-    return this.curPreset
+    return curPreset
   }
 
   function setCurPreset(otherPreset)
   {
     ::dagor.debug("ControlsManager: curPreset updated")
-    this.curPreset = otherPreset
-    this.fixDeviceMapping()
+    curPreset = otherPreset
+    fixDeviceMapping()
     ::broadcastEvent("ControlsReloaded")
-    this.commitControls()
+    commitControls()
   }
 
   function notifyPresetModified()
   {
-    this.commitControls()
+    commitControls()
   }
 
   function fixDeviceMapping()
@@ -114,15 +114,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
         connected     = !::getTblValue("disconnected", blkJoy, false)
       }))
 
-    if (this.getCurPreset().updateDeviceMapping(realMapping))
+    if (getCurPreset().updateDeviceMapping(realMapping))
       ::broadcastEvent("ControlsPresetChanged")
   }
 
   cachedShortcutGroupMap = null
-
   function getShortcutGroupMap()
   {
-    if (!this.cachedShortcutGroupMap)
+    if (!cachedShortcutGroupMap)
     {
       if (!("shortcutsList" in ::getroottable()))
         return {}
@@ -132,41 +131,41 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
         if (axisShortcut.type == CONTROL_TYPE.AXIS_SHORTCUT)
           axisShortcutSuffixesList.append(axisShortcut.id)
 
-      this.cachedShortcutGroupMap = {}
+      cachedShortcutGroupMap = {}
       foreach (shortcut in ::shortcutsList)
       {
         if (shortcut.type == CONTROL_TYPE.SHORTCUT || shortcut.type == CONTROL_TYPE.AXIS)
-          this.cachedShortcutGroupMap[shortcut.id] <- shortcut.checkGroup
+          cachedShortcutGroupMap[shortcut.id] <- shortcut.checkGroup
         if (shortcut.type == CONTROL_TYPE.AXIS)
           foreach (suffix in axisShortcutSuffixesList)
-            this.cachedShortcutGroupMap[shortcut.id + "_" + suffix] <- shortcut.checkGroup
+            cachedShortcutGroupMap[shortcut.id + "_" + suffix] <- shortcut.checkGroup
       }
     }
-    return this.cachedShortcutGroupMap
+    return cachedShortcutGroupMap
   }
 
   /* Commit controls to game client */
   function commitControls(fixMappingIfRequired = true)
   {
-    if (this.isControlsCommitPerformed)
+    if (isControlsCommitPerformed)
       return
-    this.isControlsCommitPerformed = true
+    isControlsCommitPerformed = true
 
     if (fixMappingIfRequired && isPlatformSony)
-      this.fixDeviceMapping()
-    this.fixControls()
+      fixDeviceMapping()
+    fixControls()
 
-    this.commitGuiOptions()
+    commitGuiOptions()
 
     // Check helpers options and fix if nessesary
     ::broadcastEvent("BeforeControlsCommit")
 
     // Send controls to C++ client
-    ::set_current_controls(this.curPreset, ::g_controls_manager.getShortcutGroupMap())
+    ::set_current_controls(curPreset, ::g_controls_manager.getShortcutGroupMap())
 
-    this.clearGuiOptions()
+    clearGuiOptions()
 
-    this.isControlsCommitPerformed = false
+    isControlsCommitPerformed = false
   }
 
   function setDefaultRelativeAxes()
@@ -177,7 +176,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     foreach (shortcut in ::shortcutsList)
       if (shortcut.type == CONTROL_TYPE.AXIS && (shortcut?.isAbsOnlyWhenRealAxis ?? false))
       {
-        let axis = this.curPreset.getAxis(shortcut.id)
+        let axis = curPreset.getAxis(shortcut.id)
         if (axis.axisId == -1)
           axis.relative = true
       }
@@ -185,47 +184,47 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function fixControls()
   {
-    foreach (fixData in this.fixesList)
+    foreach (fixData in fixesList)
     {
       let value = "valueFunction" in fixData ?
         fixData.valueFunction() : fixData.value
       if (::getTblValue("isAppend", fixData))
       {
         let isGamepadExpected =  ::is_xinput_device() || ::have_xinput_device()
-        if (this.curPreset.isHotkeyShortcutBinded(fixData.source, value)
+        if (curPreset.isHotkeyShortcutBinded(fixData.source, value)
             || (fixData.shouldAppendIfEmptyOnXInput
                 && isGamepadExpected
-                && this.curPreset.getHotkey(fixData.target).len() == 0))
-          this.curPreset.addHotkeyShortcut(fixData.target, value)
+                && curPreset.getHotkey(fixData.target).len() == 0))
+          curPreset.addHotkeyShortcut(fixData.target, value)
       }
       else
-        this.curPreset.setHotkey(fixData.target, value)
+        curPreset.setHotkey(fixData.target, value)
     }
-    foreach (shortcutsGroup in this.hardcodedShortcuts)
+    foreach (shortcutsGroup in hardcodedShortcuts)
       if (!("condition" in shortcutsGroup) || shortcutsGroup.condition())
         foreach (shortcut in shortcutsGroup.list)
-          this.curPreset.removeHotkeyShortcut(shortcut.name, shortcut.combo)
-    this.setDefaultRelativeAxes()
+          curPreset.removeHotkeyShortcut(shortcut.name, shortcut.combo)
+    setDefaultRelativeAxes()
   }
 
   function restoreHardcodedKeys(maxShortcutCombinations)
   {
-    foreach (shortcutsGroup in this.hardcodedShortcuts)
+    foreach (shortcutsGroup in hardcodedShortcuts)
       if (!("condition" in shortcutsGroup) || shortcutsGroup.condition())
         foreach (shortcut in shortcutsGroup.list)
-          if (this.curPreset.getHotkey(shortcut.name).len() < maxShortcutCombinations)
-            this.curPreset.addHotkeyShortcut(shortcut.name, shortcut.combo)
+          if (curPreset.getHotkey(shortcut.name).len() < maxShortcutCombinations)
+            curPreset.addHotkeyShortcut(shortcut.name, shortcut.combo)
   }
 
   function clearGuiOptions()
   {
     let prefix = "USEROPT_"
     let userOptTypes = []
-    foreach (oType, value in this.curPreset.params)
+    foreach (oType, value in curPreset.params)
       if (::g_string.startsWith(oType, prefix))
         userOptTypes.append(oType)
     foreach (oType in userOptTypes)
-      delete this.curPreset.params[oType]
+      delete curPreset.params[oType]
   }
 
   function commitGuiOptions()
@@ -236,7 +235,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     let mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
     let prefix = "USEROPT_"
-    foreach (oType, value in this.curPreset.params)
+    foreach (oType, value in curPreset.params)
       if (::g_string.startsWith(oType, prefix))
         if (oType in ::getroottable())
           ::set_option(::getroottable()[oType], value)
@@ -248,7 +247,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function onEventMissionStarted(params)
   {
     if (isPlatformSony)
-      this.commitControls()
+      commitControls()
   }
 }
 

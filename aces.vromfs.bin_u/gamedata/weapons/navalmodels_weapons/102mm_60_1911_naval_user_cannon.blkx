@@ -58,9 +58,9 @@
     "dynamicKv": true,
     "relativeVelArmorShift": [200.0,1000.0],
     "explodeTreshold": 5.0,
-    "fuseDelay": 0.035,
+    "fuseDelay": 0.01,
     "hpThresholdForFuse": 0.0,
-    "fuseOnWater": true,
+    "fuseOnWater": false,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -94,21 +94,21 @@
         },
         {
           "segment": {
-            "radiusScale": 5.0,
+            "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [0.0,30.0],
-            "countPortion": 0.15,
+            "angles": [0.0,180.0],
+            "countPortion": 0.5,
             "onHitChanceMultFire": 50.0
           }
         },
         {
           "segment": {
-            "radiusScale": 3.0,
+            "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
-            "angles": [30.0,180.0],
-            "countPortion": 0.85,
+            "angles": [181.0,359.0],
+            "countPortion": 0.5,
             "onHitChanceMultFire": 50.0
           }
         }
@@ -315,9 +315,9 @@
       "dynamicKv": true,
       "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 5.0,
-      "fuseDelay": 0.035,
+      "fuseDelay": 0.01,
       "hpThresholdForFuse": 0.0,
-      "fuseOnWater": true,
+      "fuseOnWater": false,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -351,21 +351,21 @@
           },
           {
             "segment": {
-              "radiusScale": 5.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [0.0,30.0],
-              "countPortion": 0.15,
+              "angles": [0.0,180.0],
+              "countPortion": 0.5,
               "onHitChanceMultFire": 50.0
             }
           },
           {
             "segment": {
-              "radiusScale": 3.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [30.0,180.0],
-              "countPortion": 0.85,
+              "angles": [181.0,359.0],
+              "countPortion": 0.5,
               "onHitChanceMultFire": 50.0
             }
           }
@@ -576,7 +576,7 @@
       "dynamicKv": true,
       "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 0.1,
-      "fuseDelay": 0.0,
+      "fuseDelayDist": 0.0,
       "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
@@ -608,17 +608,17 @@
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [0.0,30.0],
-              "countPortion": 0.85,
+              "countPortion": 0.5,
               "onHitChanceMultFire": 10.0
             }
           },
           {
             "segment": {
-              "radiusScale": 1.0,
+              "radiusScale": 2.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
-              "angles": [30.0,180.0],
-              "countPortion": 0.15,
+              "angles": [330.0,359.0],
+              "countPortion": 0.5,
               "onHitChanceMultFire": 10.0
             }
           }

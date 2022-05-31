@@ -1,5 +1,3 @@
-let { get_base_game_version = @() ::get_base_game_version() //compatibility with 2.15.1.X
-} = require("app")
 let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
@@ -51,9 +49,9 @@ let function logError(event, params = {}) {
   foreach (idx, p in params)
     if (typeof(p) == "string")
       txt = $"{txt} {idx} = {p}"
-  ::dagor.debug(txt)
+  dagor.debug(txt)
   send_counter(event, 1, {
-    exe_version = get_base_game_version()
+    exe_version = ::get_base_game_version()
     language = ::g_language.getShortName()
   }.__update(params))
 }

@@ -1,41 +1,19 @@
-let { regexp } = require("string")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-
 /**
  * Functions to work with controls presets
  */
 
-let stdPresetPathPrefix = $"{controlsPresetConfigPath.value}config/hotkeys/hotkey."
-let presetFileNameExtention = ".blk"
-let versionRegExp = regexp(@"_ver(\d+)$")
-let versionDigits = regexp(@"\d+$")
-
-//Path in local settings BLK, where stored hidhest version number which was displayed
-//to player.
-//Append preset name to this path get version of preset.
-let highestVersionSettingsPath = "controls_presets/highest_version_displayed"
-
-/**
- * Slice version from name and fill version field.
- */
-let function _handleVersion(preset)
-{
-  preset.name = preset.id
-  preset.version = 0
-
-  let versionMatch = versionRegExp.search(preset.name)
-  if (versionMatch)
-  {
-    let versionSubstring = preset.name.slice(versionMatch.begin)
-    preset.version = versionSubstring.slice(versionDigits.search(versionSubstring).begin).tointeger()
-    preset.name = preset.name.slice(0, versionMatch.begin)
-  }
-}
-
-
 ::g_controls_presets <- {
+  stdPresetPathPrefix = $"{controlsPresetConfigPath.value}config/hotkeys/hotkey."
+  presetFileNameExtention = ".blk"
+  versionRegExp = regexp(@"_ver(\d+)$")
+  versionDigits = regexp(@"\d+$")
 
+  //Path in local settings BLK, where stored hidhest version number which was displayed
+  //to player.
+  //Append preset name to this path get version of preset.
+  highestVersionSettingsPath = "controls_presets/highest_version_displayed"
 
   nullPreset = {
     id       = "",
@@ -53,16 +31,16 @@ let function _handleVersion(preset)
    */
   function isNewerControlsPresetVersionAvailable()
   {
-    let currentPreset = this.getCurrentPresetInfo()
+    let currentPreset = getCurrentPresetInfo()
     if (currentPreset.name == "")
       return false
 
-    let controlsPresetsList = this.getControlsPresetsList()
-    let highestDisplayedVersion = this.getHighestDisplayedPresetVersion(currentPreset.name)
+    let controlsPresetsList = getControlsPresetsList()
+    let highestDisplayedVersion = getHighestDisplayedPresetVersion(currentPreset.name)
 
     foreach (value in controlsPresetsList)
     {
-      let preset = this.parsePresetName(value)
+      let preset = parsePresetName(value)
       if (preset.name != currentPreset.name)
         continue
 
@@ -85,11 +63,11 @@ let function _handleVersion(preset)
 
   function getHighestVersionPreset(preset)
   {
-    let controlsPresetsList = this.getControlsPresetsList()
+    let controlsPresetsList = getControlsPresetsList()
     local highestVersionPreset = preset
     foreach (value in controlsPresetsList)
     {
-      let presetInList = this.parsePresetName(value)
+      let presetInList = parsePresetName(value)
 
       if (presetInList.name != preset.name)
         continue
@@ -103,22 +81,22 @@ let function _handleVersion(preset)
 
   function setHighestVersionOfCurrentPreset()
   {
-    let currentPreset = this.getCurrentPresetInfo()
+    let currentPreset = getCurrentPresetInfo()
     if (currentPreset.name == "")
       return
 
-    ::apply_joy_preset_xchange(this.getHighestVersionPreset(currentPreset).fileName)
+    ::apply_joy_preset_xchange(getHighestVersionPreset(currentPreset).fileName)
     ::save_profile(false)
   }
 
   function rejectHighestVersionOfCurrentPreset()
   {
-    let currentPreset = this.getCurrentPresetInfo()
+    let currentPreset = getCurrentPresetInfo()
     if (currentPreset.name == "")
       return
 
-    let preset = this.getHighestVersionPreset(currentPreset)
-    this.setHighestDisplayedPresetVersion(preset.name, preset.version)
+    let preset = getHighestVersionPreset(currentPreset)
+    setHighestDisplayedPresetVersion(preset.name, preset.version)
   }
 
   /**
@@ -127,11 +105,11 @@ let function _handleVersion(preset)
   function getNewerVersions(inPreset)
   {
     let result = []
-    let controlsPresetsList = this.getControlsPresetsList()
+    let controlsPresetsList = getControlsPresetsList()
 
     foreach (value in controlsPresetsList)
     {
-      let preset = this.parsePresetName(value)
+      let preset = parsePresetName(value)
       if (preset.name != inPreset.name)
         continue
 
@@ -147,8 +125,8 @@ let function _handleVersion(preset)
   function getPatchNoteTextForCurrentPreset()
   {
     local result = ""
-    let currentPreset = this.getCurrentPresetInfo()
-    let versions = this.getNewerVersions(currentPreset)
+    let currentPreset = getCurrentPresetInfo()
+    let versions = getNewerVersions(currentPreset)
 
     foreach (version in versions)
     {
@@ -165,7 +143,7 @@ let function _handleVersion(preset)
    */
   function getCurrentPresetInfo()
   {
-    return this.parsePresetFileName(::g_controls_manager.getCurPreset().getBasePresetFileName() ?? "")
+    return parsePresetFileName(::g_controls_manager.getCurPreset().getBasePresetFileName() ?? "")
   }
 
   /**
@@ -173,7 +151,7 @@ let function _handleVersion(preset)
    */
   function parsePresetFileName(presetFileName)
   {
-    let preset = clone this.nullPreset
+    let preset = clone nullPreset
 
     if (presetFileName.len() < stdPresetPathPrefix.len())
       return preset
@@ -192,12 +170,12 @@ let function _handleVersion(preset)
    */
   function parsePresetName(presetName)
   {
-    let preset = clone this.nullPreset
+    let preset = clone nullPreset
 
     if (presetName == "")
       return preset
 
-    preset.fileName = this.getControlsPresetFilename(presetName)
+    preset.fileName = getControlsPresetFilename(presetName)
     preset.id = presetName
 
     _handleVersion(preset)
@@ -213,20 +191,20 @@ let function _handleVersion(preset)
    */
   function getControlsPresetsList()
   {
-    if (this.presetsListCached == null)
+    if (presetsListCached == null)
     {
       let blk = ::DataBlock()
       blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
       local platform = isPlatformSteamDeck ? "steamdeck" : ::target_platform
-      this.presetsListCached = (blk?[platform] != null)
+      presetsListCached = (blk?[platform] != null)
         ? blk[platform] % "preset"
         : blk % "preset"
     }
     let result = (!isPlatformSony && !isPlatformXboxOne) ? ["custom"] : []
-    result.extend(this.presetsListCached)
-    let curPresetInfo = this.getCurrentPresetInfo()
+    result.extend(presetsListCached)
+    let curPresetInfo = getCurrentPresetInfo()
     if (curPresetInfo.id == "" || curPresetInfo.name == "empty"
-      || this.presetsListCached.indexof(curPresetInfo.id) != null)
+      || presetsListCached.indexof(curPresetInfo.id) != null)
         return result
 
     return result.append(curPresetInfo.id)
@@ -238,5 +216,22 @@ let function _handleVersion(preset)
   function getControlsPresetFilename(presetName)
   {
     return stdPresetPathPrefix + presetName + ".blk"
+  }
+
+  /**
+   * Slice version from name and fill version field.
+   */
+  function _handleVersion(preset)
+  {
+    preset.name = preset.id
+    preset.version = 0
+
+    let versionMatch = versionRegExp.search(preset.name)
+    if (versionMatch)
+    {
+      let versionSubstring = preset.name.slice(versionMatch.begin)
+      preset.version = versionSubstring.slice(versionDigits.search(versionSubstring).begin).tointeger()
+      preset.name = preset.name.slice(0, versionMatch.begin)
+    }
   }
 }

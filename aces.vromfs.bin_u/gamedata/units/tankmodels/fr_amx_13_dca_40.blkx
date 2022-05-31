@@ -585,11 +585,13 @@
           "armorThickness": 10.0
         },
         "composite_armor_hull_01_dm": {
-          "armorThickness": 5.0,
+          "armorThickness": 8.0,
+          "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 5.0,
+          "armorThickness": 8.0,
+          "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
         }
       },
@@ -812,7 +814,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1756,8 +1757,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1801,8 +1802,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1810,8 +1811,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1819,8 +1820,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1859,29 +1860,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2915,12 +2916,7 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
-          "barrel": "bone_gun_barrel",
-          "linkedAnimPart": {
-            "verNode": "bone_gun_01",
-            "verLimits": [5.0,85.0],
-            "verOriginLimits": [-5.0,85.0]
-          }
+          "barrel": "bone_gun_barrel"
         },
         "limits": {
           "yaw": [-180.0,180.0],
@@ -2951,6 +2947,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
+        "height": 0.06,
+        "width": 0.38,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "fr_amx_13_early_phys_track_line",
         "trackLen": 0.122,
@@ -2959,8 +2957,6 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.08,
         "trackMaxHeight": 1.13,
-        "height": 0.06,
-        "width": 0.38,
         "trackStartOffset": 0.12,
         "trackEmitSparks": true
       },

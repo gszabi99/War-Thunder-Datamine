@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
@@ -157,7 +156,7 @@ let getCssString = function()
 
   cssString = ""
   foreach(name, value in controlsList)
-    cssString += format("@const control_%s:%s;", name, getTexture(name))
+    cssString += ::format("@const control_%s:%s;", name, getTexture(name))
   return cssString
 }
 

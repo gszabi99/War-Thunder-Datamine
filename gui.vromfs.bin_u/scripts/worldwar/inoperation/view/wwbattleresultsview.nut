@@ -28,9 +28,9 @@ enum UNIT_STATS {
     EASAB_DEAD        = "debriefing/ww_army_state_dead"
   }
 
-  constructor(v_battleRes)
+  constructor(_battleRes)
   {
-    battleRes = v_battleRes
+    battleRes = _battleRes
 
     loadBattleUnitTypesData()
     teamBlock = getTeamBlock()

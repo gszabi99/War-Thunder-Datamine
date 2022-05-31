@@ -207,7 +207,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
   }
 
   getLeftBoughtCount = @() isValid()
-    ? max(awardType.getMaxBoughtCount(warbondWeak, blk) -  awardType.getBoughtCount(warbondWeak, blk), 0)
+    ? ::max(awardType.getMaxBoughtCount(warbondWeak, blk) -  awardType.getBoughtCount(warbondWeak, blk), 0)
     : 0
 
   function addAmountTextToDesc(desc)

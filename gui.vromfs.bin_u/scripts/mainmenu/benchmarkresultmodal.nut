@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 ::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT

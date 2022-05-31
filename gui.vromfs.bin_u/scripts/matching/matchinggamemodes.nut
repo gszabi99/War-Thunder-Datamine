@@ -55,7 +55,7 @@ local requestedGameModes = []
         }
         else
         {
-          ::dagor.debug("fetch gamemodes error, retry - " + __fetch_counter)
+          dagor.debug("fetch gamemodes error, retry - " + __fetch_counter)
           fetchGameModes()
         }
       }.bindenv(::g_matching_game_modes)
@@ -77,7 +77,7 @@ local requestedGameModes = []
       foreach (modeInfo in removed_list)
       {
         let gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
-        ::dagor.debug(format("matching game mode removed '%s' [%d]",
+        dagor.debug(format("matching game mode removed '%s' [%d]",
                             ::getTblValue("name", modeInfo, ""), gameModeId))
         __removeGameMode(gameModeId)
         needNotify = true
@@ -89,7 +89,7 @@ local requestedGameModes = []
       foreach (modeInfo in added_list)
       {
         let gameModeId = ::getTblValue("gameModeId", modeInfo, -1)
-        ::dagor.debug(format("matching game mode added '%s' [%d]",
+        dagor.debug(format("matching game mode added '%s' [%d]",
                             ::getTblValue("name", modeInfo, ""), gameModeId))
         needToFetchGmList.append(gameModeId)
       }
@@ -108,7 +108,7 @@ local requestedGameModes = []
         let visible  = modeInfo?.visible
         let active   = modeInfo?.active
 
-        ::dagor.debug($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
+        dagor.debug($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
 
         if (disabled && visible == false && active == false)
         {
@@ -166,7 +166,7 @@ local requestedGameModes = []
       let idx = requestedGameModes.indexof(gameModeId)
       if (idx != null)
         requestedGameModes.remove(idx)
-      ::dagor.debug(format("matching game mode fetched '%s' [%d]",
+      dagor.debug(format("matching game mode fetched '%s' [%d]",
                          modeInfo.name, gameModeId))
       __gameModes[gameModeId] <- modeInfo
     }

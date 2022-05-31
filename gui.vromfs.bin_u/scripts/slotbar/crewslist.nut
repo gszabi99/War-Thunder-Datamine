@@ -62,7 +62,7 @@ g_crews_list.reinitSlotbars <- function reinitSlotbars()
   if (isSlotbarUpdateSuspended)
   {
     isSlotbarUpdateRequired = true
-    ::dagor.debug("ignore reinitSlotbars: updates suspended")
+    dagor.debug("ignore reinitSlotbars: updates suspended")
     return
   }
 

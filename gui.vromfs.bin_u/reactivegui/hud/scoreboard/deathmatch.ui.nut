@@ -39,7 +39,7 @@ let function getScoreObj(teamName) {
   let scoreParams = scoreParamsByTeam[teamName]
   return @() {
     watch = [scoreParams.score, teamColors]
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     size = [sh(9), sh(6)]
     valign = ALIGN_CENTER
     halign = scoreParams.halign
@@ -63,7 +63,7 @@ return {
 
       children = [
       {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         font = Fonts.tiny_text_hud
         text = ::loc("multiplayer/deathmatch/goal")
       }
@@ -75,14 +75,14 @@ return {
         color = Color(42, 48, 55, 204)
         children = @(){
           watch = countKillsToWin
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_DTEXT
           font = Fonts.tiny_text_hud
           text = ::loc("multiplayer/deathmatch/goal/kills", { killsCount = countKillsToWin.value })
         }
       }
       @() {
         watch = timeLeft
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         font = Fonts.small_text_hud
         text = secondsToTimeSimpleString(timeLeft.value)
       }]

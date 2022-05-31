@@ -406,7 +406,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "light_jet_flame": {
-    "fx": "light_jet_flame_fx_cmps_fx",
+    "fx": "light_jet_flame_fx",
     "alphaHeightRange": [50.0,300.0],
     "lifeTime": 20.0,
     "numInstances": 30,
@@ -2122,46 +2122,6 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_ground_dust": {
-    "fx": "dust_tank_track_dust_ground_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_ground_back": {
-    "fx": "dust_tank_track_back_ground_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_ground_front": {
-    "fx": "dust_tank_track_front_ground_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_ground_top": {
-    "fx": "dust_tank_track_top_ground_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
-  "track_move_ground": {
-    "fx": "dust_tank_track_move_ground_cmps_fx",
-    "numInstances": 50,
-    "numReserved": 8,
-    "onePointNumber": 0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
   "tank_broken_exhaust": {
     "fx": "smoke_exhaust_broken_cmps_fx",
     "numInstances": 50,
@@ -2854,13 +2814,6 @@
     "soundEnableDistance": 100.0,
     "farPlane": 15000.0
   },
-  "muzzle_reject_fire": {
-    "fx": "muzzle_reject_fire_cmps_fx",
-    "numInstances": 70,
-    "numReserved": 20,
-    "onePointNumber": 20,
-    "soundEnableDistance": 100.0
-  },
   "bomb_expl_50kg": {
     "fx": "explosion_50_kg_cmps_fx",
     "farPlane": 5000.0,
@@ -3052,32 +3005,6 @@
     "sfxPath": "tanks/explosions_tanks",
     "sfxPathStudio": "naval/explosions",
     "sfxEvent": "ammo_explode",
-    "onePointNumber": 2,
-    "soundEnableDistance": 5000.0,
-    "farPlane": 20000.0
-  },
-  "explosion_napalm_fireball": {
-    "fx": "explosion_napalm_fireball_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "onePointNumber": 2,
-    "soundEnableDistance": 5000.0,
-    "farPlane": 20000.0
-  },
-  "explosion_napalm_wrackages": {
-    "fx": "explosion_napalm_wrackages_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 30,
-    "numReserved": 3,
-    "onePointNumber": 2,
-    "soundEnableDistance": 5000.0,
-    "farPlane": 20000.0
-  },
-  "explosion_napalm_firespot": {
-    "fx": "explosion_napalm_firespot_5m_cmps_fx",
-    "numInstances": 40,
-    "numReserved": 10,
     "onePointNumber": 2,
     "soundEnableDistance": 5000.0,
     "farPlane": 20000.0
@@ -4992,24 +4919,6 @@
     "soundEnableDistance": 5000.0,
     "farPlane": 25000.0
   },
-  "hit_81_132mm_heat": {
-    "fx": "hit_81_132mm_heat_cmps_fx",
-    "numInstances": 70,
-    "numReserved": 20,
-    "onePointNumber": 10,
-    "sfxPathStudio": "ground/explosions",
-    "sfxEvent": "explosion_metal",
-    "soundEnableDistance": 5000.0
-  },
-  "hit_133_205mm_heat": {
-    "fx": "hit_133_205mm_heat_cmps_fx",
-    "numInstances": 70,
-    "numReserved": 20,
-    "onePointNumber": 10,
-    "sfxPathStudio": "ground/explosions",
-    "sfxEvent": "explosion_metal",
-    "soundEnableDistance": 5000.0
-  },
   "misc_fake_glow": {
     "fx": "misc_fake_glow_cmps_fx",
     "numInstances": 70,
@@ -5051,18 +4960,6 @@
     "numInstances": 70,
     "numReserved": 20,
     "onePointNumber": 3
-  },
-  "dust_wind_stright_intense": {
-    "fx": "dust_wind_stright_intense_cmps_fx",
-    "numInstances": 70,
-    "numReserved": 20,
-    "onePointNumber": 20
-  },
-  "dust_wind_stright_intense_2x": {
-    "fx": "dust_wind_stright_intense_2x_cmps_fx",
-    "numInstances": 70,
-    "numReserved": 20,
-    "onePointNumber": 20
   },
   "dust_wind_fall": {
     "fx": "dust_wind_fall_cmps_fx",
@@ -5211,12 +5108,6 @@
   },
   "location_smoke_pipe_big": {
     "fx": "location_smoke_pipe_big_cmps_fx",
-    "numInstances": 30,
-    "numReserved": 20,
-    "onePointNumber": 3
-  },
-  "location_steam_pipe_tiny": {
-    "fx": "location_steam_pipe_tiny_cmps_fx",
     "numInstances": 30,
     "numReserved": 20,
     "onePointNumber": 3
@@ -6402,7 +6293,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "light_indoor_10_yellow": {
-    "fx": "light_indoor_10_yellow_fx_cmps_fx",
+    "fx": "light_indoor_10_yellow_fx",
     "lifeTime": 2.0,
     "numInstances": 30,
     "numReserved": 10,
@@ -6411,7 +6302,7 @@
     "sfxPathStudio": "aircraft/effects"
   },
   "light_indoor_20": {
-    "fx": "light_indoor_20_yellow_fx_cmps_fx",
+    "fx": "light_indoor_20_fx",
     "lifeTime": 2.0,
     "numInstances": 30,
     "numReserved": 10,

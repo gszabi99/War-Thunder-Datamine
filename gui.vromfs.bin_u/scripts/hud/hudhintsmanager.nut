@@ -27,13 +27,13 @@ enum HintShowState {
 
   delayedShowTimers = {} // key = hint.name, value = timer
 
-  function init(v_nest)
+  function init(_nest)
   {
     subscribe()
 
-    if (!::checkObj(v_nest))
+    if (!::checkObj(_nest))
       return
-    nest = v_nest
+    nest = _nest
 
     if (!findSceneObjects())
       return
@@ -116,7 +116,7 @@ enum HintShowState {
     {
       if(!hint.isEnabled() || isHintShowCountExceeded(hint))
       {
-        ::dagor.debug("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
+        dagor.debug("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
         continue
       }
 
@@ -416,7 +416,7 @@ enum HintShowState {
   function isHintShowCountExceeded(hint)
   {
     if(hint.maskId >= 0 || (hint?.totalCount ?? 0) > 0)
-      ::dagor.debug("Hints: " + (hint?.showEvent ?? "_")
+      dagor.debug("Hints: " + (hint?.showEvent ?? "_")
       + " maskId = " + hint.maskId
       + " totalCount = " + (hint?.totalCount ?? "_")
       + " showedCount = " + ::get_hint_seen_count(hint.maskId))

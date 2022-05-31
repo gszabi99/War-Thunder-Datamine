@@ -1,4 +1,3 @@
-let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
@@ -85,7 +84,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     else
       params.missionName <- room ? ::colorize(activeColor, ::SessionLobby.getMissionNameLoc(room)) : ""
 
-    return ::loc(format(locIdFormat, modeId), params)
+    return ::loc(::format(locIdFormat, modeId), params)
   }
 
   function getInviteText()

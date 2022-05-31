@@ -1,4 +1,3 @@
-let { format } = require("string")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let stdMath = require("%sqstd/math.nut")
 let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
@@ -189,7 +188,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
       crewUnitTypes.append(crewUnitType)
       let isCurrent = curCrewUnitType == crewUnitType
       isVisibleCurCrewTypeButton = isVisibleCurCrewTypeButton || isCurrent
-      data += format("RadioButton { id:t='%s'; text:t='%s'; %s RadioButtonImg{} }",
+      data += ::format("RadioButton { id:t='%s'; text:t='%s'; %s RadioButtonImg{} }",
                      "unit_type_" + crewUnitType,
                      unitType.getCrewArmyLocName(),
                      isCurrent ? "selected:t='yes';" : "")
@@ -326,8 +325,8 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     scene.findObject("crew_new_skills").setValue(levelIncText)
     scene.findObject("crew_level_block").tooltip = levelIncTooltip
     scene.findObject("btn_apply").enable(crewLevelInc > 0)
-    this.showSceneBtn("crew_cur_points_block", !isMaxLevel)
-    this.showSceneBtn("btn_buy", ::has_feature("SpendGold") && !isMaxLevel && crew.id != -1)
+    showSceneBtn("crew_cur_points_block", !isMaxLevel)
+    showSceneBtn("btn_buy", ::has_feature("SpendGold") && !isMaxLevel && crew.id != -1)
   }
 
   function updatePointsAdvice()
@@ -348,7 +347,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
       return
 
     let totalPointsToMax = ::g_crew.getSkillPointsToMaxAllSkills(crew, curUnit, curCrewUnitType)
-    this.showSceneBtn("btn_buy_all", totalPointsToMax > 0 && crew.id != -1)
+    showSceneBtn("btn_buy_all", totalPointsToMax > 0 && crew.id != -1)
     let text = ::loc("mainmenu/btnBuyAll") + ::loc("ui/parentheses/space", { text = ::get_crew_sp_text(totalPointsToMax) })
     setColoredDoubleTextToButton(scene, "btn_buy_all", text)
   }
@@ -557,7 +556,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
       ["no", action]
     ]
 
-    this.msgBox("applySkills", ::loc("crew/applySkills"), msgOptions, "yes", {
+    msgBox("applySkills", ::loc("crew/applySkills"), msgOptions, "yes", {
       cancel_fn = cancelAction
       checkDuplicateId = true
     })
@@ -710,7 +709,7 @@ let { getCrew } = require("%scripts/crew/crew.nut")
     if (::scene_msg_boxes_list.len() == 0)
     {
       let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, curUnit)
-      let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
+      let message = ::format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
                                ::my_user_id_str,
                                crew.country,

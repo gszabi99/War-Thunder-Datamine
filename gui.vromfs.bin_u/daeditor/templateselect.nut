@@ -68,7 +68,10 @@ let templPostfix = nameFilter(templatePostfixText, {
   }
 
   function onEscape() {
-    set_kb_focus(null)
+    if (templatePostfixText.value != "")
+      templatePostfixText("")
+    else
+      set_kb_focus(null)
   }
 })
 
@@ -100,7 +103,7 @@ let function listRow(tpl_name, idx) {
       onElemState = @(sf) stateFlags.update(sf & S_HOVER)
 
       children = {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         text = tpl_name
         margin = fsh(0.5)
       }
@@ -124,32 +127,7 @@ let filteredTemplatesCount = Computed(@() filteredTemplates.value.len())
 let selectedGroupTemplatesCount = Computed(@() selectedGroupTemplates.value.len())
 
 
-local showWholeList = false
-local showWholeListGroup = ""
-filterText.subscribe(@(_) showWholeList = false)
-
-let function listMore() {
-  return {
-    rendObj = ROBJ_SOLID
-    size = [flex(), SIZE_TO_CONTENT]
-    color = colors.GridBg[0]
-    behavior = Behaviors.Button
-
-    onClick = function() {
-      showWholeList = true
-      selectedTemplatesGroup.trigger()
-    }
-
-    children = {
-      rendObj = ROBJ_TEXT
-      text = "... (show all)"
-      margin = fsh(0.5)
-    }
-  }
-}
-
-
-local doRepeatValidateTemplates = @(_idx) null
+local doRepeatValidateTemplates = @(idx) null
 let function doValidateTemplates(idx) {
   const validateAfterName = ""
   local skipped = 0
@@ -181,23 +159,13 @@ doRepeatValidateTemplates = doValidateTemplates
 
 let function dialogRoot() {
   let templatesGroups = entity_editor.get_instance().getEcsTemplatesGroups()
-  let maxTemplatesInList = 1000
 
   let function listContent() {
-    if (selectedTemplatesGroup.value != showWholeListGroup) {
-      showWholeList = false
-      showWholeListGroup = selectedTemplatesGroup.value
-    }
-
     let rows = []
     let idx = 0
     foreach (tplName in filteredTemplates.value) {
       if (filterText.value.len()==0 || tplName.tolower().contains(filterText.value.tolower())) {
         rows.append(listRow(tplName, idx))
-      }
-      if (!showWholeList && rows.len() >= maxTemplatesInList) {
-        rows.append(listMore())
-        break
       }
     }
 
@@ -224,20 +192,12 @@ let function dialogRoot() {
   })
 
 
-  let function doClose() {
+  let function doCancel() {
     showTemplateSelect(false)
     filterText("")
     daEditor4.setEditMode(DE4_MODE_SELECT)
   }
 
-  let function doCancel() {
-    if (selectedItem.value != null) {
-      selectedItem(null)
-      entity_editor.get_instance().selectEcsTemplate("")
-    }
-    else
-      doClose()
-  }
 
   return {
     size = [flex(), flex()]
@@ -276,9 +236,8 @@ let function dialogRoot() {
             size = [flex(), SIZE_TO_CONTENT]
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            hotkeys = [["^Esc", doCancel]]
             children = [
-              textButton("Close", doClose)
+              textButton("Close", doCancel, {hotkeys=["^Esc"]})
               showDebugButtons.value ? textButton("Validate", @() doValidateTemplates(0), {boxStyle={normal={borderColor=Color(50,50,50,50)}} textStyle={normal={color=Color(80,80,80,80) fontSize=hdpx(12)}}}) : null
             ]
           }

@@ -12,7 +12,7 @@ enum MIS_LOAD { //bit enum
   //calls from c++ code.
 ::on_update_es_from_host <- function on_update_es_from_host()
 {
-  ::dagor.debug("on_update_es_from_host called")
+  dagor.debug("on_update_es_from_host called")
   ::g_crews_list.invalidate()
   ::reinitAllSlotbars()
   ::broadcastEvent("UpdateEsFromHost")
@@ -46,7 +46,7 @@ g_mis_loading_state.onEventUpdateEsFromHost <- function onEventUpdateEsFromHost(
   if (curState & MIS_LOAD.ECONOMIC_STATE)
     return
 
-  ::dagor.debug("misLoadState: received initial  economicState")
+  dagor.debug("misLoadState: received initial  economicState")
   curState = curState | MIS_LOAD.ECONOMIC_STATE
   checkRespawnBases()
 }
@@ -56,7 +56,7 @@ g_mis_loading_state.onEventLoadingStateChange <- function onEventLoadingStateCha
   if (!::is_in_flight())
   {
     if (curState != 0)
-      ::dagor.debug("misLoadState: reset mision loading state")
+      dagor.debug("misLoadState: reset mision loading state")
     curState = 0
   }
 }
@@ -81,7 +81,7 @@ g_mis_loading_state.checkRespawnBases <- function checkRespawnBases()
     break
   }
 
-  ::dagor.debug("misLoadState: check respawn bases. has available? " + hasRespBases)
+  dagor.debug("misLoadState: check respawn bases. has available? " + hasRespBases)
 
   if (hasRespBases)
     curState = curState | MIS_LOAD.RESPAWN_BASES

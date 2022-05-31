@@ -30,7 +30,7 @@ let function fillColor(sf, style=null, isEnabled = true) {
   return styling.BgNormal
 }
 
-let function fillColorTransp(sf, style=null, _isEnabled = true) {
+let function fillColorTransp(sf, style=null, isEnabled = true) {
   let styling = defStyle.__merge(style ?? {})
   if (sf & S_ACTIVE)    return styling.BgActive
   if (sf & S_HOVER)     return styling.BgHover
@@ -38,7 +38,7 @@ let function fillColorTransp(sf, style=null, _isEnabled = true) {
   return 0
 }
 
-let defTextCtor = @(text, _params, _handler, _group, _sf) text
+let defTextCtor = @(text, params, handler, group, sf) text
 let textButton = @(fill_color, border_width) function(text, handler, params={}) {
   let isEnabled = params?.isEnabled ?? true
   let group = ::ElemGroup()
@@ -71,8 +71,8 @@ let textButton = @(fill_color, border_width) function(text, handler, params={}) 
       sound
 
       children = textCtor({
-        rendObj = ROBJ_TEXT
-        text = (type(text)=="function") ? text() : text
+        rendObj = ROBJ_DTEXT
+        text = (::type(text)=="function") ? text() : text
         scrollOnHover=true
         delay = 0.5
         speed = [hdpx(100),hdpx(700)]
@@ -102,7 +102,7 @@ let export = class{
   Flat = textButton(fillColor, 0)
   Transp = textButton(fillColorTransp, 0)
 
-  _call = @(_self, text, handler, params={}) Flat(text, handler, params)
+  _call = @(self, text, handler, params={}) Flat(text, handler, params)
 }()
 
 

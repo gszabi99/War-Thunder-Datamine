@@ -179,7 +179,7 @@ register_command(
   }
 
   getTitle = @() rewardTitle && rewardTitle != "" ? rewardTitle
-    : isDisassemble && !shouldShowRewardItem ? trophyItem.getDissasembledCaption()
+    : isDisassemble && !shouldShowRewardItem ? ::loc("mainmenu/itemDisassembled/title")
     : isCreation() ? trophyItem.getCreationCaption()
     : trophyItem.getOpeningCaption()
 
@@ -273,7 +273,7 @@ register_command(
       return
     }
 
-    let imageObj = this.showSceneBtn("reward_image", true)
+    let imageObj = showSceneBtn("reward_image", true)
     imageObj["background-image"] = rewardImage
     imageObj.height = $"{1.0 / rewardImageRatio}pw"
   }
@@ -407,12 +407,12 @@ register_command(
 
     ::show_facebook_screenshot_button(scene, opened)
     let isShowRewardListBtn = opened && (configsArray.len() > 1 || haveItems)
-    local btnObj = this.showSceneBtn("btn_rewards_list", isShowRewardListBtn)
+    local btnObj = showSceneBtn("btn_rewards_list", isShowRewardListBtn)
     if (isShowRewardListBtn)
       btnObj.setValue(::loc(getRewardsListLocId()))
-    this.showSceneBtn("open_chest_animation", !animFinished) //hack tooltip bug
-    this.showSceneBtn("btn_ok", animFinished)
-    this.showSceneBtn("btn_back", animFinished || (trophyItem?.isAllowSkipOpeningAnim() ?? false))
+    showSceneBtn("open_chest_animation", !animFinished) //hack tooltip bug
+    showSceneBtn("btn_ok", animFinished)
+    showSceneBtn("btn_back", animFinished || (trophyItem?.isAllowSkipOpeningAnim() ?? false))
 
     let prizeActionBtnId = isHidePrizeActionBtn || !animFinished ? ""
       : unit && unit.isUsable() && !::isUnitInSlotbar(unit) ? "btn_take_air"
@@ -431,13 +431,13 @@ register_command(
     ]
 
     foreach (id in btnIds)
-      this.showSceneBtn(id, id == prizeActionBtnId)
+      showSceneBtn(id, id == prizeActionBtnId)
 
     if (prizeActionBtnId == "btn_run_custom_mission")
       scene.findObject(prizeActionBtnId).setValue(rewardItem?.getCustomMissionButtonText())
 
     let canReUseItem = animFinished && reUseRecipe != null
-    btnObj = this.showSceneBtn("btn_re_use_item", canReUseItem)
+    btnObj = showSceneBtn("btn_re_use_item", canReUseItem)
     if (canReUseItem) {
       btnObj.inactiveColor = reUseRecipe.isUsable ? "no" : "yes"
       btnObj.setValue(::loc(trophyItem.getLocIdsList().reUseItemLocId))

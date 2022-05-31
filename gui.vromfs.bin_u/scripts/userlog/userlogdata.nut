@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
@@ -729,7 +728,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
 
   if (needSave)
   {
-    ::dagor.debug("getUserLogsList - needSave")
+    dagor.debug("getUserLogsList - needSave")
     saveOnlineJob()
   }
   return logs

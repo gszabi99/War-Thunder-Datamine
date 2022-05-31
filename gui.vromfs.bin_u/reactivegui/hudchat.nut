@@ -47,7 +47,7 @@ let function modeColor(mode) {
 }
 
 
-let function sendFunc(_message) {
+let function sendFunc(message) {
   if (!penalty.isDevoiced()) {
     ::chat_on_send()
   } else {
@@ -128,7 +128,7 @@ let chatHint = @() {
   children = [
     getHintText
     @() {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       watch = state.modeId
       text = ::cross_call.mp_chat_mode.getModeNameText(state.modeId.value)
       color = modeColor(state.modeId.value)
@@ -228,12 +228,12 @@ let bottomPanel = @() {
     chatHint
   ]
 
-  onAttach = function() {
+  onAttach = function (elem) {
     state.inputChatVisible(true)
     state.canWriteToChat.subscribe(onInputToggle)
     onInputToggle(true)
    }
-   onDetach = function() {
+   onDetach = function (elem) {
      state.inputChatVisible(false)
      state.canWriteToChat.unsubscribe(onInputToggle)
      ::set_kb_focus(null)

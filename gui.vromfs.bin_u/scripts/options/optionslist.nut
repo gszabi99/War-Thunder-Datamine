@@ -39,7 +39,7 @@ let otherOptionsList = @() [
   [::USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
   [::USEROPT_SUBTITLES, "spinner"],
   [::USEROPT_HUD_SCREENSHOT_LOGO, "spinner", ::is_platform_pc],
-  [::USEROPT_SAVE_ZOOM_CAMERA, "spinner"]
+  [::USEROPT_SAVE_ZOOM_CAMERA, "spinner", !::u.isNull(::get_option_save_zoom_camera())] //compatibility with wop_1_77_2_X
 ]
 
 let getMainOptions = function() {
@@ -140,6 +140,8 @@ let getMainOptions = function() {
       [::USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner", ::has_feature("Tanks")],
       [::USEROPT_TACTICAL_MAP_SIZE, "slider"],
       [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !::is_platform_android],
+      // show option by code != -1 need for compatibility with 1_93_0_X
+      // TODO: remove after 1_93_0_X
       [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],

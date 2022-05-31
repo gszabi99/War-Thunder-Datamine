@@ -1,17 +1,16 @@
-let { split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { TRIGGER_TYPE, TRIGGER_TYPE_TO_BIT, ROCKETS_WEAPON_MASK, BOMBS_WEAPON_MASK
-  } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { TRIGGER_TYPE, TRIGGER_TYPE_TO_BIT, ROCKETS_WEAPON_MASK,
+  BOMBS_WEAPON_MASK, getTriggerType, isGunnerTrigger
+} = require("%scripts/weaponry/weaponryInfo.nut")
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
   "repairCostCoef", "repairCostCoefArcade", "repairCostCoefHistorical", "repairCostCoefSimulation",
   "caliber", "deactivationIsAllowed", "isTurretBelt", "bulletsIconParam"
 ]
-
-let weaponWpCostProperties = [ "hasDepthCharges", "hasCountermeasures", "hasRocketDistanceFuse" ]
 
 let reqNames = ["reqWeapon", "reqModification"]
 
@@ -33,39 +32,22 @@ let function addReqParamsToWeaponry(weaponry, blk) {
   }
 }
 
-let function initPresetParams (weapon, blk) {
-  let weaponmask = weapon.weaponmask
-  weapon.hasBombs <- (weaponmask & BOMBS_WEAPON_MASK) != 0
-  weapon.hasMines <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MINES]) != 0
-  weapon.hasTorpedoes <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.TORPEDOES]) != 0
-  weapon.bombsNbr <- blk?.totalBombCount ?? 0
-  foreach(p in weaponWpCostProperties)
-    weapon[p] <- weapon?[p] ?? blk?[p]
-}
-
-let function initCustomPresetParams(unit, weapon) {
-  let wpCost = ::get_wpcost_blk()?[unit.name].weapons
-  local bombsNbr = 0
-  foreach (w in  (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
-    let pWeapons = (wpCost?.custom_presets ? wpCost.custom_presets % "slot" : [])
-      .findvalue(@(v) v.index == w.slot)[w.preset]
-    if (pWeapons)
-      eachParam(pWeapons, function(_, name){
-        let blk = wpCost?[name]
-        weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
-        initPresetParams(weapon, blk)
-      })
-    if (weapon.hasBombs)
-      bombsNbr += weapon.bombsNbr
+let function initWeaponsMask(unit, weapon) {
+  let weponryConfig = getPresetWeapons(::get_full_unit_blk(unit.name), weapon)
+  local weaponmask = 0
+  foreach(weaponBlk in weponryConfig) {
+    let trigger = getTriggerType(weaponBlk)
+    if (trigger in TRIGGER_TYPE_TO_BIT)
+      weaponmask = weaponmask | TRIGGER_TYPE_TO_BIT[trigger]
+    else if (isGunnerTrigger(trigger))
+      weaponmask = weaponmask | TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.GUNNER]
   }
-  let weaponmask = weapon?.weaponmask ?? 0
-
-  weapon.bombsNbr <- bombsNbr
-  weapon.bomb <- weapon?.hasBombs
-  weapon.torpedo <- weapon?.hasTorpedoes
+  weapon.weaponmask <- weaponmask
+  weapon.torpedo <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.TORPEDOES]) != 0
   weapon.cannon <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.CANNON]) != 0
   weapon.additionalGuns <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.ADD_GUN]) != 0
   weapon.frontGun <- (weaponmask & TRIGGER_TYPE_TO_BIT[TRIGGER_TYPE.MACHINE_GUN]) != 0
+  weapon.bomb <- (weaponmask & BOMBS_WEAPON_MASK) != 0
   weapon.rocket <- (weaponmask & ROCKETS_WEAPON_MASK) != 0
 }
 
@@ -116,7 +98,6 @@ let function initUnitWeapons(unit, weapons, weaponsBlk) {
   foreach (weapon in weapons) {
     let weaponBlk = weaponsBlk?[weapon.name]
     initWeaponry(weapon, weaponBlk, esUnitType)
-    initPresetParams(weapon, weaponBlk)
     if (weaponsContainers.len() == 0 || (weaponBlk?.sum_weapons == null))
       continue
     let reqParams = {}
@@ -134,7 +115,7 @@ let function getCustomSumWeapons(weaponBlk, weaponsBlk) {
   let weapons = weaponBlk % "Weapon"
   let slots = weaponsBlk.custom_presets % "slot"
   foreach(wBlk in weapons) {
-    let blk = slots.findvalue(@(s) s.index == wBlk.slot)?[wBlk.preset]
+    let blk = slots.findvalue(@(_) _.index == wBlk.slot)?[wBlk.preset]
     if (blk != null)
       eachParam(blk, function(_, param) { appendOnce(param, res) })
   }
@@ -147,7 +128,7 @@ let function initUnitCustomPresetsWeapons(unit, weapons) {
   foreach (weapon in weapons) {
     let weaponBlk = weapon?.weaponsBlk
     initWeaponry(weapon, weaponBlk, esUnitType)
-    initCustomPresetParams(unit, weapon)
+    initWeaponsMask(unit, weapon)
     if (weaponsContainers.len() == 0)
       continue
 
@@ -165,7 +146,7 @@ let function initWeaponryUpgrades(upgradesTarget, blk) {
 
     if (!("weaponUpgrades" in upgradesTarget))
       upgradesTarget.weaponUpgrades <- []
-    upgradesTarget.weaponUpgrades.append(split_by_chars(blk[upgradeName], "/"))
+    upgradesTarget.weaponUpgrades.append(::split(blk[upgradeName], "/"))
   }
 }
 

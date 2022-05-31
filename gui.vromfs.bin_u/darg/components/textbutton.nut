@@ -45,7 +45,7 @@ let function textButton(text, handler= @() null, params = {}, style = defButtonS
     let boxS = boxStyle?[state] ?? {}
     return {
       rendObj = ROBJ_BOX
-      children = {rendObj = ROBJ_TEXT text}.__update(textNormal, textS)
+      children = {rendObj = ROBJ_DTEXT text}.__update(textNormal, textS)
     }.__update(boxNormal, boxS, {
       watch = [stateFlags, disabled]
       onElemState = @(sf) stateFlags(sf)

@@ -36,7 +36,7 @@ let function Log(tostringfunc=null) {
     if (vargv.len()==1)
       vargv=vargv[0]
     let out = tostring_r(vargv,{tostringfunc=tostringfunc})
-    let s = string.split_by_chars(out,"\n")
+    let s = string.split(out,"\n")
     for (local i=0; i < min(80,s.len()); i++) {
       dagorDebug.screenlog(s[i])
     }

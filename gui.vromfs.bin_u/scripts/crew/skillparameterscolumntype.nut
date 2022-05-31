@@ -1,4 +1,3 @@
-let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getSkillValue, isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
 
@@ -59,7 +58,7 @@ g_skill_parameters_column_type._createValueItem <- function _createValueItem(
   itemText += selectedDiffText
 
   if (addMeasureUnits)
-    itemText += format(" %s", ::colorize(textColor, measureType.getMeasureUnitsName()))
+    itemText += ::format(" %s", ::colorize(textColor, measureType.getMeasureUnitsName()))
   let valueItem = {
     itemText = itemText
   }
@@ -187,7 +186,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     previousParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_LEADERSHIP
     currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES
     textColor = "goodTextColor"
-    imageName = "#ui/gameuiskin#leaderBonus.svg"
+    imageName = "#ui/gameuiskin#leaderBonus"
     imageSize = 27
 
     checkSkill = function (memberName, skillName)
@@ -221,7 +220,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
         checkCrewUnitType(unit.unitType.crewUnitType)
       let unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
       let crewExpGunners = getSkillValue(crewId, unit, "gunner", "members")
-      let curGunners = min(crewExpGunners, unitTotalGunners)
+      let curGunners = ::min(crewExpGunners, unitTotalGunners)
       local text = curGunners + ::loc("ui/slash") + unitTotalGunners
       if (isUnitCompatible)
       {

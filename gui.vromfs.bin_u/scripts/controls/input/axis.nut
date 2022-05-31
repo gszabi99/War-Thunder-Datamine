@@ -15,13 +15,13 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
   mouseAxis = null
 
   // @deviceAxisDescription is a result of g_shortcut_type::_getDeviceAxisDescription
-  constructor (deviceAxisDescription, axisMod = AXIS_MODIFIERS.NONE, v_preset = null)
+  constructor (deviceAxisDescription, axisMod = AXIS_MODIFIERS.NONE, _preset = null)
   {
     deviceId = deviceAxisDescription.deviceId
     axisId = deviceAxisDescription.axisId
     mouseAxis = deviceAxisDescription.mouseAxis
     axisModifyer = axisMod
-    preset = v_preset || ::g_controls_manager.getCurPreset()
+    preset = _preset || ::g_controls_manager.getCurPreset()
   }
 
   function getMarkup()

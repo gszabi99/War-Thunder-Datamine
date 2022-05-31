@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { getShopItem,
         canUseIngameShop,
         getShopItemsTable } = require("%scripts/onlineShop/entitlementsStore.nut")
@@ -17,9 +16,8 @@ let { checkUnitWeapons, checkUnitSecondaryWeapons,
 let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 
-let getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
+local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
   isSquadronResearchMode = false, hasSlotbarByUnitsGroups = false, shopResearchMode = false,
   shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
@@ -247,13 +245,13 @@ let getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew =
       let squadronExpText = ::Cost().setSap(squadronExp).tostring()
 
       actionText = needToFlushExp || (isSquadronResearchMode && needChosenResearchOfSquadron)
-        ? format(::loc("mainmenu/btnResearch")
+        ? ::format(::loc("mainmenu/btnResearch")
           + (needToFlushExp || canFlushSquadronExp ? " (%s)" : ""),
           isSquadronVehicle
             ? squadronExpText
             : ::Cost().setRp(getReqExp).tostring())
         : canFlushSquadronExp && (isInResearch || isSquadronResearchMode)
-          ? format(::loc("mainmenu/btnInvestSquadronExp") + " (%s)", squadronExpText)
+          ? ::format(::loc("mainmenu/btnInvestSquadronExp") + " (%s)", squadronExpText)
             : isInResearch && setResearchManually && !isSquadronVehicle
               ? ::loc("mainmenu/btnConvert")
               : ::loc("mainmenu/btnResearch")
@@ -297,7 +295,7 @@ let getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew =
       isLink     = ::has_feature("WikiUnitInfo")
       actionFunc = function () {
         if (::has_feature("WikiUnitInfo"))
-          openUrl(format(::loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
+          openUrl(::format(::loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
         else
           ::showInfoMsgBox(::colorize("activeTextColor", ::getUnitName(unit, false)) + "\n" + ::loc("profile/wiki_link"))
       }
@@ -354,7 +352,7 @@ let showMenu = function showMenu(params) {
     return
   }
 
-  let actions = getActions(params, KWARG_NON_STRICT)  // warning disable: -param-count
+  let actions = getActions(params)
   if (actions.len() == 0)
     return
 

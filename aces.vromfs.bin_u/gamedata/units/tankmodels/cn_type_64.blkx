@@ -787,7 +787,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1150,94 +1149,6 @@
       "TrackSoundNameAi": "tracks_ai_light",
       "gun_turn": "turret_turn_mg_light"
     }
-  },
-  {
-    "chainIK": [
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_suspension_l_02_02"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_wheel_l_02"
-            }
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_suspension_l_05_02"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_wheel_l_05"
-            }
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_suspension_l_01_02"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_wheel_l_01"
-            }
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_suspension_r_02_02"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_wheel_r_02"
-            }
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_suspension_r_01_02"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_wheel_r_01"
-            }
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "point": {
-              "nameTemplate": "bone_suspension_r_05_02"
-            }
-          },
-          {
-            "point": {
-              "nameTemplate": "bone_wheel_r_05"
-            }
-          }
-        ]
-      }
-    ]
   },
   {
     "DamageEffects": [
@@ -1786,8 +1697,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1831,8 +1742,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1840,8 +1751,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1849,8 +1760,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1889,29 +1800,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2296,40 +2207,6 @@
   },
   {
     "MetaParts": {
-      "open_fightning_compartment": [
-        {
-          "part": "driver_dm"
-        },
-        {
-          "part": "loader_dm"
-        },
-        {
-          "part": "gunner_dm"
-        },
-        {
-          "part": "commander_dm"
-        },
-        {
-          "part": "machine_gunner_dm"
-        },
-        {
-          "part": "gunner_01_dm"
-        },
-        {
-          "part": "gunner_02_dm"
-        },
-        {
-          "part": "loader_01_dm"
-        },
-        {
-          "part": "loader_02_dm"
-        },
-        {
-          "effect": {
-            "pressureOpen": true
-          }
-        }
-      ],
       "closed_fightning_compartment": [
         {
           "part": "driver_dm"
@@ -2366,6 +2243,27 @@
         },
         {
           "part": "cannon_breech_dm"
+        },
+        {
+          "part": "radio_station_dm"
+        },
+        {
+          "part": "drive_turret_v_dm"
+        },
+        {
+          "part": "drive_turret_h_dm"
+        },
+        {
+          "part": "drive_turret_v_01_dm"
+        },
+        {
+          "part": "drive_turret_h_01_dm"
+        },
+        {
+          "part": "drive_turret_v_02_dm"
+        },
+        {
+          "part": "drive_turret_h_02_dm"
         },
         {
           "part": "ammo_turret_dm"
@@ -2819,90 +2717,6 @@
         },
         {
           "part": "ammo_body_r_20_dm"
-        },
-        {
-          "part": "radiator_dm"
-        },
-        {
-          "part": "radiator_l_dm"
-        },
-        {
-          "part": "radiator_r_dm"
-        },
-        {
-          "part": "radio_station_dm"
-        },
-        {
-          "part": "drive_turret_v_dm"
-        },
-        {
-          "part": "drive_turret_h_dm"
-        },
-        {
-          "part": "drive_turret_v_01_dm"
-        },
-        {
-          "part": "drive_turret_h_01_dm"
-        },
-        {
-          "part": "drive_turret_v_02_dm"
-        },
-        {
-          "part": "drive_turret_h_02_dm"
-        },
-        {
-          "part": "engine_dm"
-        },
-        {
-          "part": "transmission_dm"
-        },
-        {
-          "part": "fuel_tank_dm"
-        },
-        {
-          "part": "fuel_tank_01_dm"
-        },
-        {
-          "part": "fuel_tank_02_dm"
-        },
-        {
-          "part": "fuel_tank_03_dm"
-        },
-        {
-          "part": "fuel_tank_04_dm"
-        },
-        {
-          "part": "fuel_tank_05_dm"
-        },
-        {
-          "part": "fuel_tank_r_01_dm"
-        },
-        {
-          "part": "fuel_tank_r_02_dm"
-        },
-        {
-          "part": "fuel_tank_r_03_dm"
-        },
-        {
-          "part": "fuel_tank_r_04_dm"
-        },
-        {
-          "part": "fuel_tank_r_05_dm"
-        },
-        {
-          "part": "fuel_tank_l_01_dm"
-        },
-        {
-          "part": "fuel_tank_l_02_dm"
-        },
-        {
-          "part": "fuel_tank_l_03_dm"
-        },
-        {
-          "part": "fuel_tank_l_04_dm"
-        },
-        {
-          "part": "fuel_tank_l_05_dm"
         },
         {
           "effect": {

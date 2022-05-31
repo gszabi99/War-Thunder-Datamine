@@ -91,7 +91,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     checkAdvert()
 
     let hasResearch = ::getTblValue("hasTopMenuResearch", handler, true)
-    this.showSceneBtn("topmenu_btn_shop_wnd", hasResearch)
+    showSceneBtn("topmenu_btn_shop_wnd", hasResearch)
     if (!hasResearch)
       closeShop()
 

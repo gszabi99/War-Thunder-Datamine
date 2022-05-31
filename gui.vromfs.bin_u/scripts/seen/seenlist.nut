@@ -18,13 +18,14 @@ local SeenList = class {
 
   daysToUnseen = -1
 
-  constructor(listId) {
-    this.id = listId
-    activeSeenLists[listId] <- this
-    this.setCanBeNewFunc(@(entity) true)
+  constructor(listId)
+  {
+    id = listId
+    activeSeenLists[id] <- this
+    setCanBeNewFunc(@(entity) true)
 
-    this.entitiesData = {}
-    this.subListGetters = {}
+    entitiesData = {}
+    subListGetters = {}
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
@@ -34,22 +35,22 @@ local SeenList = class {
 
   function setListGetter(getter)
   {
-    this.listGetter = getter
+    listGetter = getter
   }
 
   //sublistId must be uniq with usual entities, because they able to be used in usual entities list
   function setSubListGetter(sublistId, subListGetterFunc)
   {
-    this.subListGetters[sublistId] <- subListGetterFunc
+    subListGetters[sublistId] <- subListGetterFunc
   }
-  isSubList = @(name) name in this.subListGetters
+  isSubList = @(name) name in subListGetters
 
   //make entity unseen if it missing in the list for such amount of days
   //better to set this when full list available by listGetter
   function setDaysToUnseen(days)
   {
-    this.daysToUnseen = days
-    this.validateEntitesDays()
+    daysToUnseen = days
+    validateEntitesDays()
   }
 
   //when no data in the current storage, this function will be called to gather data fromprevious storage.
@@ -58,56 +59,57 @@ local SeenList = class {
   //so compatibility function will be called only once per account.
   function setCompatibilityLoadData(func)
   {
-    this.compatibilityLoadData = func
+    compatibilityLoadData = func
   }
 
   //func = (bool) function(entity). Returns can entity from the list be marked as new or not
   function setCanBeNewFunc(func)
   {
-    this.canBeNew = func
+    canBeNew = func
   }
 
   //call this when list which can be received by listGetter has changed
   function onListChanged()
   {
-    this.validateEntitesDays()
-    seenListEvents.notifyChanged(this.id, null)
+    validateEntitesDays()
+    seenListEvents.notifyChanged(id, null)
   }
 
-  isNew      = @(entity) !(entity in this.entitiesData) && this.canBeNew(entity)
-  isNewSaved = @(entity) !(entity in this.entitiesData)
-  hasSeen    = @() this.entitiesData.len() > 0
+  isNew      = @(entity) !(entity in entitiesData) && canBeNew(entity)
+  isNewSaved = @(entity) !(entity in entitiesData)
+  hasSeen    = @() entitiesData.len() > 0
 
   //when null, will mark all entities received by listGetter
-  markSeen   = @(entityOrList = null) this.setSeen(entityOrList, true)
-  markUnseen = @(entityOrList = null) this.setSeen(entityOrList, false)
+  markSeen   = @(entityOrList = null) setSeen(entityOrList, true)
+  markUnseen = @(entityOrList = null) setSeen(entityOrList, false)
 
   function getNewCount(entityList = null) //when null, count all entities
   {
-    this.initOnce()
+    initOnce()
 
     local res = 0
     if (!entityList)
-      if (this.listGetter)
-        entityList = this.listGetter()
+      if (listGetter)
+        entityList = listGetter()
       else
         return res
 
     foreach(name in entityList)
-      if (this.isSubList(name)) {
-        if (this.subListGetters[name])
-          res += getNewCount(this.subListGetters[name]())
+      if (isSubList(name))
+      {
+        if (subListGetters[name])
+          res += getNewCount(subListGetters[name]())
       }
-      else if (this.isNew(name))
+      else if (isNew(name))
         res++
     return res
   }
 
   function clearSeenData()
   {
-    this.entitiesData.clear()
-    this.save()
-    seenListEvents.notifyChanged(this.id, null)
+    entitiesData.clear()
+    save()
+    seenListEvents.notifyChanged(id, null)
   }
 
   /*************************************************************************************************/
@@ -116,63 +118,66 @@ local SeenList = class {
 
   function initOnce()
   {
-    if (this.isInited || !::g_login.isProfileReceived())
+    if (isInited || !::g_login.isProfileReceived())
       return
-    this.isInited = true
+    isInited = true
 
-    this.entitiesData.clear()
-    let blk = ::load_local_account_settings(this.getSaveId())
+    entitiesData.clear()
+    let blk = ::load_local_account_settings(getSaveId())
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
-        this.entitiesData[blk.getParamName(i)] <- blk.getParamValue(i)
-    else if (this.compatibilityLoadData) {
-      this.entitiesData = this.compatibilityLoadData()
-      if (this.entitiesData.len())
-        this.save()
+        entitiesData[blk.getParamName(i)] <- blk.getParamValue(i)
+    else if (compatibilityLoadData)
+    {
+      entitiesData = compatibilityLoadData()
+      if (entitiesData.len())
+        save()
     }
 
-    this.validateEntitesDays()
+    validateEntitesDays()
   }
 
   function validateEntitesDays()
   {
-    if (this.daysToUnseen < 0 || !this.isInited || !this.listGetter)
+    if (daysToUnseen < 0 || !isInited || !listGetter)
       return
 
     local hasChanges = false
     let curDays = time.getUtcDays()
-    let entitiesList = this.listGetter()
+    let entitiesList = listGetter()
 
     foreach(entity in entitiesList)
-      if ((entity in this.entitiesData) && this.entitiesData[entity] != curDays)
+      if ((entity in entitiesData) && entitiesData[entity] != curDays)
       {
-        this.entitiesData[entity] = curDays
+        entitiesData[entity] = curDays
         hasChanges = true
       }
 
     let removeList = []
-    foreach(entity, days in this.entitiesData)
-      if (days + this.daysToUnseen < curDays)
+    foreach(entity, days in entitiesData)
+      if (days + daysToUnseen < curDays)
         removeList.append(entity)
 
     hasChanges = hasChanges || removeList.len()
     foreach(entity in removeList)
-      delete this.entitiesData[entity]
+      delete entitiesData[entity]
 
     if (hasChanges)
-      this.save()
+      save()
   }
 
-  getSaveId = @() "seen/" + this.id
+  getSaveId = @() "seen/" + id
 
-  function save() {
+  function save()
+  {
     local saveBlk = null
-    if (this.entitiesData.len()) {
+    if (entitiesData.len())
+    {
       saveBlk = ::DataBlock()
-      foreach(name, day in this.entitiesData)
+      foreach(name, day in entitiesData)
         saveBlk[name] = day
     }
-    ::save_local_account_settings(this.getSaveId(), saveBlk)
+    ::save_local_account_settings(getSaveId(), saveBlk)
   }
 
   function setSeen(entityOrList, shouldSeen)
@@ -180,11 +185,11 @@ local SeenList = class {
     if (!::g_login.isProfileReceived()) //Don't try to mark or init seen list before profile received
       return
 
-    this.initOnce()
+    initOnce()
 
     if (!entityOrList)
-      if (this.listGetter)
-        entityOrList = this.listGetter()
+      if (listGetter)
+        entityOrList = listGetter()
       else
         return
 
@@ -193,36 +198,38 @@ local SeenList = class {
     let curDays = time.getUtcDays()
     foreach(entity in entityList)
     {
-      if (this.isSubList(entity)) {
-        ::script_net_assert_once("Seen " + this.id + ": try to setSeen for subList " + entity)
+      if (isSubList(entity))
+      {
+        ::script_net_assert_once("Seen " + id + ": try to setSeen for subList " + entity)
         continue
       }
-      if (!this.canBeNew(entity))
+      if (!canBeNew(entity))
         continue //no need to hcange seen state for entities that can't be new.
                  //they need to be marked unseen when they become can be new.
-      if (this.isNewSaved(entity) == shouldSeen)
+      if (isNewSaved(entity) == shouldSeen)
         changedList.append(entity)
       if (shouldSeen)
-      this.entitiesData[entity] <- curDays
-      else if (entity in this.entitiesData)
-        delete this.entitiesData[entity]
+        entitiesData[entity] <- curDays
+      else if (entity in entitiesData)
+        delete entitiesData[entity]
     }
 
-    if (changedList.len()) {
-      seenListEvents.notifyChanged(this.id, changedList)
-      this.save()
+    if (changedList.len())
+    {
+      seenListEvents.notifyChanged(id, changedList)
+      save()
     }
   }
 
   function onEventSignOut(p)
   {
-    this.isInited = false
-    this.entitiesData.clear()
+    isInited = false
+    entitiesData.clear()
   }
 
   function onEventAccountReset(p)
   {
-    this.clearSeenData()
+    clearSeenData()
   }
 }
 
@@ -230,7 +237,8 @@ return {
   get = @(id) activeSeenLists?[id] ?? SeenList(id)
   isSeenList = @(id) activeSeenLists?[id] != null
 
-  clearAllSeenData = function() {
+  clearAllSeenData = function()
+  {
     foreach(seenList in activeSeenLists)
       seenList.clearSeenData()
   }

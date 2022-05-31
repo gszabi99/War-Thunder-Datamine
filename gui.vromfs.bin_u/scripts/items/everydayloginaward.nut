@@ -392,9 +392,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   function updateButtons()
   {
-    this.showSceneBtn("btn_open", !isOpened)
-    this.showSceneBtn("open_chest_animation", !rouletteAnimationFinished)
-    this.showSceneBtn("btn_rewards_list", isOpened && rouletteAnimationFinished && (rewardsArray.len() > 1 || haveItems))
+    showSceneBtn("btn_open", !isOpened)
+    showSceneBtn("open_chest_animation", !rouletteAnimationFinished)
+    showSceneBtn("btn_rewards_list", isOpened && rouletteAnimationFinished && (rewardsArray.len() > 1 || haveItems))
 
     if (isOpened)
       scene.findObject("btn_nav_open").setValue(rouletteAnimationFinished || useSingleAnimation
@@ -459,10 +459,10 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function updateReward()
   {
     let haveUnit = unit != null || periodUnit != null
-    let withoutUnitObj = this.showSceneBtn("block_without_unit", !haveUnit && isOpened)
+    let withoutUnitObj = showSceneBtn("block_without_unit", !haveUnit && isOpened)
 
-    let withUnitObj = this.showSceneBtn("block_with_unit", haveUnit && isOpened)
-    this.showSceneBtn("reward_join_img", periodicRewardsArray.len() > 0)
+    let withUnitObj = showSceneBtn("block_with_unit", haveUnit && isOpened)
+    showSceneBtn("reward_join_img", periodicRewardsArray.len() > 0)
 
     if (!isOpened)
       return

@@ -2,7 +2,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Warpoints <- class extends ItemCouponBase {
   static iType = itemType.WARPOINTS
-  static typeIcon = "#ui/gameuiskin#item_type_warpoints.svg"
+  static typeIcon = "#ui/gameuiskin#item_type_warpoints"
 
   getWarpoints         = @() metaBlk?.warpoints ?? 0
   canConsume           = @() isInventoryItem && getWarpoints() > 0

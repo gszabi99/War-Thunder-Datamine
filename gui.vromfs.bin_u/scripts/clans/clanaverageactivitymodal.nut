@@ -69,7 +69,7 @@ let PROGRESS_PARAMS = {
         let myExpTextSize = daguiFonts.getStringWidthPx(::getShortTextFromNum(roundMyExp)
             + (hasBoost ? (" + " + ::getShortTextFromNum((roundMyExp*expBoost).tointeger())) : ""),
           "fontNormal", guiScene)
-        let offsetMyExpText = min(pxCountToEdgeWnd - myExpTextSize/2, 0)
+        let offsetMyExpText = ::min(pxCountToEdgeWnd - myExpTextSize/2, 0)
         let myExpShortText= ::colorize("activeTextColor",
           ::getShortTextFromNum(roundMyExp) + (hasBoost ? (" + " + ::colorize("goodTextColor",
           ::getShortTextFromNum((roundMyExp*expBoost).tointeger()))) : ""))

@@ -5,7 +5,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
   static iType = itemType.DISCOUNT
   static defaultLocId = "personalDiscount"
   static defaultIconStyle = "default_personal_discount"
-  static typeIcon = "#ui/gameuiskin#item_type_discounts.svg"
+  static typeIcon = "#ui/gameuiskin#item_type_discounts"
 
   purchasesCount = 0
   purchasesMaxCount = 0
@@ -226,7 +226,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
     foreach (dataItem in discountDescriptionDataItems)
     {
       if (dataItem.category == category && dataItem.type == dType)
-        result = max(result, dataItem.discountValue)
+        result = ::max(result, dataItem.discountValue)
     }
     return result
   }
@@ -271,9 +271,9 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 
     let value = data.discountValue
     let minValue = ::getTblValue("discountMin", stackParams)
-    stackParams.discountMin <- minValue ? min(minValue, value) : value
+    stackParams.discountMin <- minValue ? ::min(minValue, value) : value
     let maxValue = ::getTblValue("discountMax", stackParams)
-    stackParams.discountMax <- maxValue ? max(maxValue, value) : value
+    stackParams.discountMax <- maxValue ? ::max(maxValue, value) : value
   }
 
   function getLayerText(colored = true)

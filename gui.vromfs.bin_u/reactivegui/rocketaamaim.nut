@@ -11,7 +11,7 @@ enum GuidanceLockResult {
   RESULT_LOCK_AFTER_LAUNCH = 4
 }
 
-let aamAimGimbal = @(color_watched, alert_color_watched, is_background) function() {
+let aamAimGimbal = @(is_background, color_watched, alert_color_watched) function() {
 
   if (!GimbalVisible.value)
     return { watch = GimbalVisible }
@@ -36,7 +36,7 @@ let aamAimGimbal = @(color_watched, alert_color_watched, is_background) function
   }
 }
 
-let aamAimTracker = @(color_watched, alert_color_watched, is_background) function() {
+let aamAimTracker = @(is_background, color_watched, alert_color_watched) function() {
 
   if(!TrackerVisible.value)
     return { watch = TrackerVisible }
@@ -61,11 +61,11 @@ let aamAimTracker = @(color_watched, alert_color_watched, is_background) functio
 }
 
 
-let AamAim = @(color_watched, alert_color_watched, is_background)
+let AamAim = @(is_background, color_watched, alert_color_watched)
 {
   children = [
-    aamAimGimbal(color_watched, alert_color_watched, is_background)
-    aamAimTracker(color_watched, alert_color_watched, is_background)
+    aamAimGimbal(is_background, color_watched, alert_color_watched)
+    aamAimTracker(is_background, color_watched, alert_color_watched)
   ]
 }
 

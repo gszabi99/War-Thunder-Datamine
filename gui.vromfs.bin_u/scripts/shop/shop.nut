@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -225,7 +224,7 @@ shopData = [
     if (needCount > count)
       guiScene.createMultiElementsByObject(tableObj, "%gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
 
-    count = max(count, needCount)
+    count = ::max(count, needCount)
     if (count != tableObj.childrenCount())
       return //prevent crash on error, but anyway we will get assert in such case on update
 
@@ -289,7 +288,7 @@ shopData = [
     foreach(row, rowArr in treeData.tree)
       for(local col = 0; col < rowArr.len(); col++)
         if (rowArr[col]) {
-          maxCols = max(maxCols, col)
+          maxCols = ::max(maxCols, col)
           let unitOrGroup = rowArr[col]
           cellsList.append({ unitOrGroup, id = unitOrGroup.name, posX = col, posY = row, position = "absolute" })
         }
@@ -493,7 +492,7 @@ shopData = [
       lines += format(lineFormat,
                       (::abs(c1-c0) - offset) + "@shop_width",
                       "1@modLineWidth", //height
-                      (min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset)) + "@shop_width",
+                      (::min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset)) + "@shop_width",
                       (lh + r0 + 1) + "@shop_height - 0.5@modLineWidth",
                       "0")
       lines += format(angleFormat,
@@ -575,7 +574,7 @@ shopData = [
     let totalWidth = guiScene.calcString(widthStr, null)
     let itemWidth = guiScene.calcString("@shop_width", null)
 
-    let extraWidth = "+" + max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
+    let extraWidth = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
     let extraLeft = extraWidth + "+1@modBlockTierNumHeight"
     let extraRight = extraWidth + "+1@scrollBarSize - 2@frameHeaderPad"
 
@@ -624,7 +623,7 @@ shopData = [
     let totalWidth = guiScene.calcString(widthStr, null)
     let itemWidth = guiScene.calcString("@shop_width", null)
 
-    let extraRight = "+" + max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
+    let extraRight = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
     let extraLeft = extraRight + "+1@modBlockTierNumHeight"
     let extraTop = "+1@shop_h_extra_first"
     let extraBottom = "+1@shop_h_extra_last"
@@ -699,7 +698,7 @@ shopData = [
       let unitsCount = boughtVehiclesCount[rank]
       let unitsTotal = totalVehiclesCount[rank]
       tooltipRank = ::loc("shop/age/tooltip") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::get_roman_numeral(rank))
-        + "\n" + ::loc("shop/tier/unitsBought") + ::loc("ui/colon") + ::colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal))
+        + "\n" + ::loc("shop/tier/unitsBought") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::format("%d/%d", unitsCount, unitsTotal))
     }
     else
     {
@@ -716,7 +715,7 @@ shopData = [
           let txtPrevRank = ::colorize("userlogColoredText", ::get_roman_numeral(prevRank))
           let txtUnitsNeed = ::colorize("badTextColor", unitsNeed)
           let txtUnitsLeft = ::colorize("badTextColor", unitsLeft)
-          let txtCounter = format("%d/%d", unitsCount, unitsNeed)
+          let txtCounter = ::format("%d/%d", unitsCount, unitsNeed)
           let txtCounterColored = ::colorize("badTextColor", txtCounter)
 
           let txtRankIsLocked = ::loc("shop/unlockTier/locked", { rank = txtThisRank })
@@ -768,7 +767,7 @@ shopData = [
       local arrowData = ""
       if (drawArrow)
       {
-        arrowData = format("shopArrow { type:t='vertical'; size:t='1@modArrowWidth, %s@shop_height - 1@modBlockTierNumHeight';" +
+        arrowData = ::format("shopArrow { type:t='vertical'; size:t='1@modArrowWidth, %s@shop_height - 1@modBlockTierNumHeight';" +
                       "pos:t='0.5pw - 0.5w, %s@shop_height + 0.5@modBlockTierNumHeight';" +
                       "shopStat:t='%s'; modArrowPlate{ text:t='%s'; tooltip:t='%s'}}",
                     (treeData.ranksHeight[i-1] - treeData.ranksHeight[i-2] - prevFakeRowRankCount).tostring(),
@@ -781,13 +780,13 @@ shopData = [
       let modBlockFormat = "modBlockTierNum { class:t='vehicleRanks' status:t='%s'; pos:t='0, %s@shop_height - 0.5h'; text:t='%s'; tooltip:t='%s'}"
 
       if (curFakeRowRankCount > 0)
-        data += format(modBlockFormat,
+        data += ::format(modBlockFormat,
                   "owner",
                   prevEraPos.tostring(),
                   "",
                   "")
 
-      data += format(modBlockFormat,
+      data += ::format(modBlockFormat,
                   status,
                   (prevEraPos + curFakeRowRankCount).tostring(),
                   ::loc("shop/age/num", { num = ::get_roman_numeral(i) }),
@@ -850,10 +849,10 @@ shopData = [
   function isUnlockedFakeUnit(unit)
   {
     return get_units_count_at_rank(unit?.rank,
-      unitTypes.getByName(unit?.isReqForFakeUnit ? split_by_chars(unit.name, "_")?[0] : unit.name,
+      unitTypes.getByName(unit?.isReqForFakeUnit ? ::split(unit.name, "_")?[0] : unit.name,
         false).esUnitType,
       unit.country, true)
-      >= (((split_by_chars(unit.name, "_"))?[1] ?? "0").tointeger() + 1)
+      >= (((::split(unit.name, "_"))?[1] ?? "0").tointeger() + 1)
   }
 
   function getCurPageEsUnitType()
@@ -1401,7 +1400,7 @@ shopData = [
     let heightOutOfSafearea = (topPos + containerHeight) - (safeareaBorderHeight + safeareaHeight)
     if (heightOutOfSafearea > 0)
       topPos -= ::ceil(heightOutOfSafearea / cellHeight) * cellHeight
-    topPos = max(topPos, safeareaBorderHeight)
+    topPos = ::max(topPos, safeareaBorderHeight)
 
     groupChooseObj = guiScene.loadModal("", "%gui/shop/shopGroup.blk", "massTransp", this)
     let placeObj = groupChooseObj.findObject("tablePlace")
@@ -1868,7 +1867,7 @@ shopData = [
 
   function onModifications(obj)
   {
-    this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+    msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
   function checkTag(aircraft, tag)

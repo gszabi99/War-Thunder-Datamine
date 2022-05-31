@@ -55,8 +55,8 @@ let function isDargComponent(comp) {
   if (c_type != "table" && c_type != "class")
     return false
   let knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
-  foreach(k, _val in c) {
-    if (knownProps.contains(k))
+  foreach(k,val in c) {
+    if (knownProps.indexof(k) != null)
       return true
   }
   return false

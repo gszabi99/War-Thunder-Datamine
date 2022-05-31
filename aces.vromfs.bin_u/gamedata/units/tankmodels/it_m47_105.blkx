@@ -118,9 +118,6 @@
         },
         "turret_03_top_dm": {
           "armorThickness": 22.2
-        },
-        "superstructure_top_dm": {
-          "armorThickness": 22.2
         }
       },
       "hull_RHA": {
@@ -134,8 +131,8 @@
         "body_side_dm": {
           "armorThickness": 50.8
         },
-        "turret_03_front_dm": {
-          "armorThickness": 20.0
+        "superstructure_top_dm": {
+          "armorThickness": 22.2
         },
         "body_back_dm": {
           "armorThickness": 22.2
@@ -144,13 +141,10 @@
           "armorThickness": 25.0
         },
         "superstructure_bottom_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 22.2
         },
         "body_bottom_dm": {
           "armorThickness": 25.4
-        },
-        "turret_05_top_dm": {
-          "armorThickness": 12.7
         },
         "turret_top_dm": {
           "armorThickness": 25.4
@@ -234,7 +228,7 @@
           "armorThickness": 103.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 101.6
+          "armorThickness": 121.0
         },
         "turret_01_top_dm": {
           "armorThickness": 36.0
@@ -396,7 +390,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1318,8 +1311,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1363,8 +1356,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1372,8 +1365,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1381,8 +1374,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1421,29 +1414,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2544,11 +2537,11 @@
             "pitch": [-10.0,19.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-161.5,-2.0,19.0],
-            "lim2": [-161.5,-138.0,-6.0,19.0],
-            "lim3": [-138.0,138.0,-10.0,19.0],
-            "lim4": [138.0,161.5,-6.0,19.0],
-            "lim5": [161.5,180.0,-2.0,19.0]
+            "lim1": [-180.0,-160.0,0.0,19.0],
+            "lim2": [-160.0,-130.0,-3.0,19.0],
+            "lim3": [-130.0,130.0,-10.0,19.0],
+            "lim4": [130.0,160.0,-3.0,19.0],
+            "lim5": [160.0,180.0,0.0,19.0]
           }
         }
       },

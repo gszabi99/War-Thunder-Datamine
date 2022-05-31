@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 
@@ -68,7 +67,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
           medal = reward.rating + "rating"
           break
       }
-      let medalIconMarkup = ::LayersIcon.getIconData(format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
+      let medalIconMarkup = ::LayersIcon.getIconData(::format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })
 
       local condition = ""
@@ -119,7 +118,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
             collection.append({
               id = decalId
               image = decorType.getImage(decal)
-              ratio = clamp(decorType.getRatio(decal), 1, 2)
+              ratio = ::clamp(decorType.getRatio(decal), 1, 2)
               tooltipId = DECORATION.getTooltipId(decalId, decorType.unlockedItemType)
             })
           }

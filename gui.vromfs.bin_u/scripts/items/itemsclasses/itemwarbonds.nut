@@ -2,7 +2,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Warbonds <- class extends ItemCouponBase {
   static iType = itemType.WARBONDS
-  static typeIcon = "#ui/gameuiskin#item_type_warbonds.svg"
+  static typeIcon = "#ui/gameuiskin#item_type_warbonds"
 
   getWarbond           = @() ::g_warbonds.findWarbond(metaBlk?.warbonds)
   getWarbondsAmount    = @() metaBlk?.count || 0

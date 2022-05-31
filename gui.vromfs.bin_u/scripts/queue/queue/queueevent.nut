@@ -13,7 +13,8 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
     name = ::getTblValue("mode", params, "")
     shouldQueueCustomMode = getShouldQueueCustomMode(name)
 
-    params.clusters <- clone (params?.clusters ?? [])
+    if (!::u.isArray(params?.clusters))
+      params.clusters <- []
   }
 
   function addQueueByParams(qParams)
@@ -109,8 +110,8 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 
   function join(successCallback, errorCallback)
   {
-    ::dagor.debug("enqueue into event session")
-    ::debugTableData(params)
+    dagor.debug("enqueue into event session")
+    debugTableData(params)
     _joinQueueImpl(getQueryParams(true), successCallback, errorCallback)
   }
 

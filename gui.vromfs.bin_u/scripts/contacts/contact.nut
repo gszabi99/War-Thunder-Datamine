@@ -102,9 +102,9 @@ subscribe("playerProfileDialogClosed", function(r) {
     inGameEx = null
   }
 
-  function setClanTag(v_clanTag)
+  function setClanTag(_clanTag)
   {
-    clanTag = v_clanTag
+    clanTag = _clanTag
     refreshClanTagsTable()
   }
 
@@ -254,9 +254,9 @@ subscribe("playerProfileDialogClosed", function(r) {
     return isPlayerFromXboxOne(name)
   }
 
-  isSameContact = @(v_uid) isInteger(v_uid)
-    ? v_uid == uidInt64
-    : v_uid == uid
+  isSameContact = @(_uid) isInteger(_uid)
+    ? _uid == uidInt64
+    : _uid == uid
 
   function isMe()
   {

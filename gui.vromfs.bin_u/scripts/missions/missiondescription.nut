@@ -1,4 +1,3 @@
-let { format } = require("string")
 /* API:
   static create(nest, mission = null)
     creates description handler into <nest>, and init with selected <mission>
@@ -90,7 +89,7 @@ let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorial
 
   function updateButtons()
   {
-    this.showSceneBtn("btn_url_mission_refresh", ::g_mislist_type.isUrlMission(curMission))
+    showSceneBtn("btn_url_mission_refresh", ::g_mislist_type.isUrlMission(curMission))
   }
 
   function applyDescConfig(config)
@@ -237,7 +236,7 @@ let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorial
                  getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", ")
 
       let country = ::getShopCountry(aircraft)
-      ::dagor.debug("aircraft = "+aircraft+" country = "+country)
+      dagor.debug("aircraft = "+aircraft+" country = "+country)
       config.flag <- ::get_country_icon(country, true)
     }
 
@@ -260,7 +259,7 @@ let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorial
     else if ((blk?.locDesc.len() ?? 0) > 0)
       config.objective <- getMissionLocName(blk, "locDesc")
     if (blk.getStr("recommendedPlayers","") != "")
-      config.maintext += format(::loc("players_recommended"), blk.getStr("recommendedPlayers","1-4")) + "\n"
+      config.maintext += ::format(::loc("players_recommended"), blk.getStr("recommendedPlayers","1-4")) + "\n"
 
     let rBlk = ::get_pve_awards_blk()
     if (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION || gm == ::GM_TRAINING)

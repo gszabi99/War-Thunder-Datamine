@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
@@ -280,7 +279,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   function saveOnlineJobWithUpdate()
   {
     taskId = saveOnlineJob()
-    ::dagor.debug("saveOnlineJobWithUpdate")
+    dagor.debug("saveOnlineJobWithUpdate")
     if (taskId >= 0)
     {
       ::set_char_cb(this, slotOpCb)

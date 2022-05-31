@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -27,15 +26,7 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     id = "lightTank"
     tutorial = "tutorial_tank_basics_arcade"
     canSkipByFeature = "AllowedToSkipBaseTankTutorials"
-    requiresFeature = "!TestTankActionTutorial"
-    suitableForUnit = @(unit) unit?.isTank() ?? false
-    isNeedAskInMainmenu = true
-  }
-  {
-    id = "lightTank_action"
-    tutorial = "tutorial_tank_action_arcade"
-    canSkipByFeature = "AllowedToSkipBaseTankTutorials"
-    requiresFeature = "TestTankActionTutorial"
+    requiresFeature = "Tanks"
     suitableForUnit = @(unit) unit?.isTank() ?? false
     isNeedAskInMainmenu = true
   }
@@ -287,7 +278,7 @@ let function isDiffUnlocked(diff, checkUnitType) {
           ::set_mp_mode(mainGameMode)
         return (progress<3 && progress>=diff) // 3 == unlocked, 0-2 - completed at difficulty
       }
-  ::dagor.assertf(false, "Error: Not found mission ::req_tutorial_name = " + reqName)
+  dagor.assertf(false, "Error: Not found mission ::req_tutorial_name = " + reqName)
   ::set_mp_mode(mainGameMode)
   return true
 }

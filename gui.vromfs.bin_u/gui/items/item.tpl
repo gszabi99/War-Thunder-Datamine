@@ -377,9 +377,6 @@ itemDiv {
   title:t='$tooltipObj';
   tooltip-float:t='<<^tooltipFloat>>horizontal<</tooltipFloat>><<tooltipFloat>>'
   <</tooltipId>>
-  <<^tooltipId>>
-  tooltip:t='<<tooltip>>'
-  <</tooltipId>>
   <</isTooltipByHold>>
 }
 <</items>>

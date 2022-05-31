@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -61,8 +60,8 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
   {
     let isRecrutedCrew = crew.id != -1
     scene.findObject("btn_apply").show(isRecrutedCrew)
-    this.showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
-    this.showSceneBtn("btn_recruit", !isRecrutedCrew)
+    showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
+    showSceneBtn("btn_recruit", !isRecrutedCrew)
     if (!isRecrutedCrew) {
       let rawCost = ::get_crew_slot_cost(getCurCountryName())
       let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
@@ -100,7 +99,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
         format(::loc("shop/needMoneyQuestion_purchaseCrew"),
           cost.getTextAccordingToBalance()),
         cost)
-      this.msgBox("need_money", msgText,
+      msgBox("need_money", msgText,
         [ ["ok", @() ::g_crew.purchaseNewSlot(country, onTaskSuccess) ],
           ["cancel", @() null ]
         ], "ok")

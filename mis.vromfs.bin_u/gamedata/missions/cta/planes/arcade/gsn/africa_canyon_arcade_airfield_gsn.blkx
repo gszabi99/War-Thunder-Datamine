@@ -385,17 +385,17 @@
       "actions": [
         {
           "comment": {
-            "value": "zadaem nachal'nuyu skorost' unichtozheniya nazemki"
+            "value": "задаем начальную скорость уничтожения наземки"
           }
         },
         {
           "comment": {
-            "value": "zadaem znacheniya dlya predotvrashcheniya dlinnyh sessij"
+            "value": "задаем значения для предотвращения длинных сессий"
           }
         },
         {
           "comment": {
-            "value": "nachinaetsya logika missii"
+            "value": "начинается логика миссии"
           }
         },
         {
@@ -778,7 +778,18 @@
   },
   "dialogs": [],
   "airfields": [],
-  "effects": [],
+  "effects": {
+    "effect_01": {
+      "type": "groundFire",
+      "tm": [
+        [450.679,0.0,0.0],
+        [0.0,450.679,0.0],
+        [0.0,0.0,450.679],
+        [-431.622,448.913,-7080.06]
+      ],
+      "density": 10.0
+    }
+  },
   "units": [
     {
       "wheeled_vehicles": {

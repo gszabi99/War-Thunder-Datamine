@@ -57,7 +57,7 @@ let time = require("%scripts/time.nut")
 
   function getMaxStrikesPerAttack()
   {
-    return min(maxStrikesPerAttack, maxAmmoCount)
+    return ::min(maxStrikesPerAttack, maxAmmoCount)
   }
 
   function getCooldownAfterMoveMillisec()
@@ -76,7 +76,7 @@ let time = require("%scripts/time.nut")
       return 0
 
     let millisec = nextStrikeTimeMillis - ::ww_get_operation_time_millisec()
-    return max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
+    return ::max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
   function getTimeToCompleteStrikes()
@@ -88,7 +88,7 @@ let time = require("%scripts/time.nut")
     millisec += getUnusedStrikesNumber() * getStrikeIntervalMillisec()
     millisec -= ::ww_get_operation_time_millisec()
 
-    return max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
+    return ::max(::ceil(time.millisecondsToSeconds(millisec)).tointeger(), 1)
   }
 
   function getUnusedStrikesNumber()

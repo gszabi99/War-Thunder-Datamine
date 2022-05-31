@@ -1,4 +1,3 @@
-let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
 
@@ -234,7 +233,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
 
         local string = arr.len() == 1 ? "" : $"{idx+1}) "
         string = $"{string}{item.getEffectDesc(false)}{::loc("ui/comma")}"
-        string = $"{string}{::loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(format("%.02f", effNew - effOld).tofloat())})}"
+        string = $"{string}{::loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(::format("%.02f", effNew - effOld).tofloat())})}"
         string = $"{string}{idx == arr.len()-1 ? ::loc("ui/dot") : ::loc("ui/semicolon")}"
 
         if (selectedItem != null && selectedItem.id == item.id)

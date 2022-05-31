@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 ::hudEnemyDamage <- {
   // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
@@ -95,12 +94,12 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
   listObj   = null
 
-  function init(nest)
+  function init(_nest)
   {
-    if (!::checkObj(nest))
+    if (!::checkObj(_nest))
       return
 
-    scene = nest
+    scene = _nest
     guiScene = scene.getScene()
     listObj = scene.findObject("hud_enemy_damage")
 
@@ -251,7 +250,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
         let value = 1.0 / thresholdShowHealthBelow * showHp
         let hue =  showHp ? (hueHpMin + (hueHpMax - hueHpMin) * value) : hueKill
         let brightness =  showHp ? (brightnessHpMin - (brightnessHpMin - brightnessHpMax) * value) : brightnessKill
-        let color = format("#%s", ::get_color_from_hsv(hue, 1, brightness))
+        let color = ::format("#%s", ::get_color_from_hsv(hue, 1, brightness))
         showPart(partName, color, !showHp)
       }
 

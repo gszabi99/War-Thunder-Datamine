@@ -1,4 +1,4 @@
-::gui_bhv.ActivateSelect <- class extends ::gui_bhv.posNavigator
+gui_bhv.ActivateSelect <- class extends gui_bhv.posNavigator
 {
   bhvId = "ActivateSelect"
   valuePID = ::dagui_propid.add_name_id("value")  //values by bits   chosen:yes;
@@ -7,18 +7,18 @@
 
   function setValue(obj, value)
   {
-    if (this.chooseItemImpl(obj, value, false, false))
-      this.setSelectedValue(obj, value)
+    if (chooseItemImpl(obj, value, false, false))
+      setSelectedValue(obj, value)
   }
 
   function getSelectedValue(obj)
   {
-    return obj.getIntProp(this.selectedPID, -1)
+    return obj.getIntProp(selectedPID, -1)
   }
 
   function setSelectedValue(obj, value)
   {
-    this.selectItem(obj, value, null, false)
+    selectItem(obj, value, null, false)
   }
 
   function onSelectAction(obj)
@@ -27,21 +27,21 @@
 
   function chooseItemImpl(obj, idx, needSound = true, needActivateChoosenItem = true)
   {
-    let idxObj = this.getChildObj(obj, idx)
+    let idxObj = getChildObj(obj, idx)
     if (!idxObj)
       return false
 
     local needNotify = false
-    let prevIdx = this.getValue(obj)
+    let prevIdx = getValue(obj)
     if (prevIdx!=idx)
     {
       needNotify = true
-      let prevObj = this.getChildObj(obj, prevIdx)
+      let prevObj = getChildObj(obj, prevIdx)
       if (prevObj)
         prevObj["chosen"] = "no"
     }
 
-    obj.setIntProp(this.valuePID, idx)
+    obj.setIntProp(valuePID, idx)
     idxObj["chosen"] = "yes"
 
     if (needSound && needNotify)
@@ -53,25 +53,25 @@
     return true
   }
 
-  chooseItem = @(obj, idx, needSound = true) this.chooseItemImpl(obj, idx, needSound)
+  chooseItem = @(obj, idx, needSound = true) chooseItemImpl(obj, idx, needSound)
 
   function onShortcutSelect(obj, is_down)
   {
-    let value = this.getHoveredChild(obj).hoveredIdx ?? -1
+    let value = getHoveredChild(obj).hoveredIdx ?? -1
     if (is_down) {
       if (value < 0)
         return ::RETCODE_NOTHING
-      ::set_script_gui_behaviour_events(this.bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
-      this.onActivatePushed(obj, value)
+      ::set_script_gui_behaviour_events(bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
+      onActivatePushed(obj, value)
       return ::RETCODE_HALT
     }
 
-    let pushedIdx = obj.getIntProp(this.activatePushedIdxPID, -1)
+    let pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
     if (pushedIdx < 0)
       return ::RETCODE_HALT
-    let wasHoldStarted = this.onActivateUnpushed(obj)
-    if ((!wasHoldStarted || this.needActionAfterHold(obj)) && pushedIdx == value)
-      this.chooseItem(obj, value)
+    let wasHoldStarted = onActivateUnpushed(obj)
+    if ((!wasHoldStarted || needActionAfterHold(obj)) && pushedIdx == value)
+      chooseItem(obj, value)
     return ::RETCODE_HALT
   }
 

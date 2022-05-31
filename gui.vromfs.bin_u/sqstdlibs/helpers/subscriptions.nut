@@ -1,6 +1,3 @@
-#explicit-this
-#no-root-fallback
-
 // warning disable: -egyptian-braces
 let callback = require("callback.nut")
 
@@ -32,15 +29,15 @@ local debugToStringFunc = @(...) ""
  *   "WndModalDestroy" = ...
  * }
  */
-let subscriptionsData = {}
+local subscriptionsData = {}
 
-let class Subscription {
+local Subscription = class {
   listenerPriority = 0
   listenerCallback = null
 
   constructor(func, env, priority) {
-    this.listenerCallback = callback.make(func, env)
-    this.listenerPriority = priority
+    listenerCallback = callback.make(func, env)
+    listenerPriority = priority
   }
 }
 

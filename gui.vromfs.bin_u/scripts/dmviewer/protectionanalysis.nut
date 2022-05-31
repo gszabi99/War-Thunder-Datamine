@@ -78,7 +78,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     }
 
     let isSimulationEnabled = unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
-    let obj = this.showSceneBtn("switch_damage", isSimulationEnabled)
+    let obj = showSceneBtn("switch_damage", isSimulationEnabled)
     if (isSimulationEnabled)
       onAllowSimulation(obj)
 
@@ -135,8 +135,8 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
       switch_damage = !switch_damage
       ::allowDamageSimulationInHangar(switch_damage)
 
-      this.showSceneBtn("switch_cut", switch_damage)
-      this.showSceneBtn("btn_repair", switch_damage)
+      showSceneBtn("switch_cut", switch_damage)
+      showSceneBtn("btn_repair", switch_damage)
     }
   }
 
@@ -152,13 +152,13 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
   function onUpdateActionsHint()
   {
     let showHints = ::has_feature("HangarHitcamera")
-    let hObj = this.showSceneBtn("analysis_hint", showHints)
+    let hObj = showSceneBtn("analysis_hint", showHints)
     if (!showHints || !::check_obj(hObj))
       return
 
     //hint for simulate shot
     let showHint = ::has_feature("HangarHitcamera")
-    let bObj = this.showSceneBtn("analysis_hint_shot", showHint)
+    let bObj = showSceneBtn("analysis_hint_shot", showHint)
     if (showHint && ::check_obj(bObj))
     {
       let shortcuts = []

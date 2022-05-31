@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
@@ -97,11 +96,11 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
           {
             tText += ::loc($"weapons/{weaponName}/short")
             if (weapon.ammo > 1)
-              tText += " " + format(::loc("weapons/counter/right/short"), weapon.ammo)
+              tText += " " + ::format(::loc("weapons/counter/right/short"), weapon.ammo)
           }
           else
           {
-            tText += ::loc($"weapons/{weaponName}") + format(::loc("weapons/counter"), weapon.ammo)
+            tText += ::loc($"weapons/{weaponName}") + ::format(::loc("weapons/counter"), weapon.ammo)
             if (weaponType == "torpedoes" && p.isPrimary != null &&
                 ::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])) // torpedoes drop for unit only
             {
@@ -109,11 +108,11 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
               {
                 let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
                 let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-                tText += "\n"+format( ::loc("weapons/drop_speed_range"),
+                tText += "\n"+::format( ::loc("weapons/drop_speed_range"),
                   "{0} {1}".subst(speedKmph, ::loc("ui/parentheses", { text = speedMps })) )
               }
               if (weapon.dropHeightRange)
-                tText += "\n"+format(::loc("weapons/drop_height_range"),
+                tText += "\n"+::format(::loc("weapons/drop_height_range"),
                   countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]))
             }
             if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ::ES_UNIT_TYPE_TANK)
@@ -131,7 +130,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
           {
             tText += ::loc($"weapons/{weaponName}")
             if (weapon.num > 1)
-              tText += format(::loc("weapons/counter"), weapon.num)
+              tText += ::format(::loc("weapons/counter"), weapon.num)
 
             if (weapon.ammo > 0)
               tText += " (" + ::loc("shop/ammo") + ::loc("ui/colon") + weapon.ammo + ")"
@@ -163,7 +162,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
         if (TRIGGER_TYPE.TURRETS in trigger) // && !unit.unitType.canUseSeveralBulletsForGun)
         {
           if(trigger[TRIGGER_TYPE.TURRETS] > 1)
-            tText = format(::loc("weapons/turret_number"), trigger[TRIGGER_TYPE.TURRETS]) + tText
+            tText = ::format(::loc("weapons/turret_number"), trigger[TRIGGER_TYPE.TURRETS]) + tText
           else
             tText = ::g_string.utf8ToUpper(::loc("weapons_types/turrets"), 1) + ::loc("ui/colon") + tText
         }
@@ -180,19 +179,19 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
     {
       if (weapTypeCount > 0)//Turrets
         text = "".concat(text, ::loc($"weapons_types/{weaponType}"), ::nbsp,
-          format(::loc("weapons/counter/right/short"), weapTypeCount))
+          ::format(::loc("weapons/counter/right/short"), weapTypeCount))
       if (gunNames.len() > 0)//Guns
       {
         let gunsTxt = []
         foreach(name, count in gunNames)
           gunsTxt.append("".concat(::loc($"weapons/{name}"), ::nbsp, count > 1
-            ? format(::loc("weapons/counter/right/short"), count) : ""))
+            ? ::format(::loc("weapons/counter/right/short"), count) : ""))
         text = $"{text} {(::loc("ui/comma")).join(gunsTxt)}"
       }
     }
     else
       text = "".concat(text, ::loc($"weapons_types/{weaponType}"),
-        format(::loc("weapons/counter"), weapTypeCount))
+        ::format(::loc("weapons/counter"), weapTypeCount))
   }
 
   if (text=="" && p.needTextWhenNoWeapons)
@@ -237,7 +236,7 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
       foreach (weaponName, weapon in weapons.weaponBlocks)
         return "".concat(
           ::loc($"weapons/{weaponName}"),
-          format(::loc("weapons/counter"), weapon.ammo),
+          ::format(::loc("weapons/counter"), weapon.ammo),
           getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(::nbsp))
         )
   return ""
@@ -345,7 +344,7 @@ let function getBulletsListHeader(unit, bulletsList)
   }
   else if (bulletsList.weaponType == WEAPON_TYPE.COUNTERMEASURES)
     locId = "modification/_countermeasures"
-  return format(::loc(locId), bulletsList.caliber.tostring())
+  return ::format(::loc(locId), bulletsList.caliber.tostring())
 }
 
 //include spawn score cost

@@ -12,7 +12,6 @@ tdiv {
     text:t=' '
     img {
       background-image:t='<<icon>>'
-      background-svg-size:t='1@dIco, 1@dIco'
       pos:t='0, ph/2-h/2'; position:t='absolute'
       size:t='1@dIco, 1@dIco'
     }

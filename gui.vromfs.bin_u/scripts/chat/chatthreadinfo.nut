@@ -1,4 +1,3 @@
-let { split_by_chars } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
@@ -71,7 +70,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
       title = roomId
     numPosts = dataBlk?.numposts ?? numPosts
 
-    updateInfoTags(::u.isString(dataBlk?.tags) ? split_by_chars(dataBlk.tags, ",") : [])
+    updateInfoTags(::u.isString(dataBlk?.tags) ? ::split(dataBlk.tags, ",") : [])
     if (ownerNick.len() && ownerUid.len())
       ::getContact(ownerUid, ownerNick, ownerClanTag)
 

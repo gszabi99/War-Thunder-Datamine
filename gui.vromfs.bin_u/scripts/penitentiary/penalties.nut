@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -33,13 +32,13 @@ let getDevoiceMessage = function (activeColor = "chatActiveInfoColor") {
   } else {
     let durationHours = time.secondsToHours(st.duration)
     local timeText = ::colorize(activeColor, time.hoursToString(durationHours, false))
-    txt += format(::loc("charServer/mute/timed"), timeText)
+    txt += ::format(::loc("charServer/mute/timed"), timeText)
 
     if (("seconds_left" in st) && st.seconds_left > 0) {
       let leftHours = time.secondsToHours(st.seconds_left)
       timeText = ::colorize(activeColor, time.hoursToString(leftHours, false, true))
       if (timeText != "") {
-        txt += " " + format(::loc("charServer/ban/timeLeft"), timeText)
+        txt += " " + ::format(::loc("charServer/ban/timeLeft"), timeText)
       }
     } else if (::isInMenu()) {
       ::update_entitlements_limited()
@@ -63,7 +62,7 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
     return
   }
 
-  ::debugTableData(st, {recursionLevel = -1, addStr = "BAN "})
+  debugTableData(st, {recursionLevel = -1, addStr = "BAN "})
 
   local txt = ""
   local fn = function() {}
@@ -76,12 +75,12 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
     ::queues.leaveAllQueuesSilent()
     ::SessionLobby.leaveRoom()
   } else if (st.status == penalty.DEVOICE) {
-    if (::is_decals_disabled()) {
+    if (is_decals_disabled()) {
       banType = "mutedecal"
     } else {
       banType = "mute"
     }
-  } else if (::is_decals_disabled()) {
+  } else if (is_decals_disabled()) {
     onlyDecalsDisabled = true
     banType = "decal"
   } else {
@@ -93,8 +92,8 @@ let showBannedStatusMsgBox = function(showBanOnly = false) {
   } else {
     let timeLeft = time.secondsToHours(::get_time_till_decals_disabled() || st.seconds_left)
     let durationHours = time.secondsToHours(st.duration)
-    txt += format(::loc("charServer/" + banType + "/timed"), time.hoursToString(durationHours, false))
-    txt += " " + format(::loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
+    txt += ::format(::loc("charServer/" + banType + "/timed"), time.hoursToString(durationHours, false))
+    txt += " " + ::format(::loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
   }
 
   if (!onlyDecalsDisabled) {

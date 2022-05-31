@@ -1,4 +1,3 @@
-let { format } = require("string")
 let statsd = require("statsd")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -61,13 +60,13 @@ let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
   ::abandoned_researched_items_for_session = []
 }
 
-let function go_to_account_web_page(bqKey = "")
+::go_to_account_web_page <- function go_to_account_web_page(bqKey = "")
 {
-  let urlBase = format("/user.php?skin_lang=%s", ::g_language.getShortName())
+  let urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
   openUrl(::get_authenticated_url_sso(urlBase).url, false, false, bqKey)
 }
 
-::g_login.loadLoginHandler <- function loadLoginHandler()
+g_login.loadLoginHandler <- function loadLoginHandler()
 {
   local hClass = ::gui_handlers.LoginWndHandler
   if (isPlatformSony)
@@ -85,9 +84,9 @@ let function go_to_account_web_page(bqKey = "")
   ::handlersManager.loadHandler(hClass)
 }
 
-::g_login.onAuthorizeChanged <- function onAuthorizeChanged()
+g_login.onAuthorizeChanged <- function onAuthorizeChanged()
 {
-  if (!this.isAuthorized())
+  if (!isAuthorized())
   {
     if (::g_login.initOptionsPseudoThread)
       ::g_login.initOptionsPseudoThread.clear()
@@ -101,7 +100,7 @@ let function go_to_account_web_page(bqKey = "")
     })
 }
 
-::g_login.initConfigs <- function initConfigs(cb)
+g_login.initConfigs <- function initConfigs(cb)
 {
   ::broadcastEvent("AuthorizeComplete")
   ::load_scripts_after_login_once()
@@ -109,11 +108,11 @@ let function go_to_account_web_page(bqKey = "")
   ::my_user_id_str = ::get_player_user_id_str()
   ::my_user_id_int64 = ::my_user_id_str.tointeger()
 
-  this.initOptionsPseudoThread =  [
+  initOptionsPseudoThread =  [
     function() { ::initEmptyMenuChat() }
   ]
-  this.initOptionsPseudoThread.extend(::init_options_steps)
-  this.initOptionsPseudoThread.append(
+  initOptionsPseudoThread.extend(::init_options_steps)
+  initOptionsPseudoThread.append(
     function() {
       if (!::g_login.hasState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))
         return PT_STEP_STATUS.SUSPEND
@@ -130,7 +129,7 @@ let function go_to_account_web_page(bqKey = "")
 
       ::g_font.validateSavedConfigFonts()
       if (::handlersManager.checkPostLoadCss(true))
-        ::dagor.debug("Login: forced to reload waitforLogin window.")
+        dagor.debug("Login: forced to reload waitforLogin window.")
       return null
     }
     function() {
@@ -187,20 +186,20 @@ let function go_to_account_web_page(bqKey = "")
       {
         let l = ::loc(sver, "-1")
         try { getroottable()[sver] = l.tointeger() }
-        catch(e) { ::dagor.assertf(0, "can't convert '"+l+"' to version "+sver) }
+        catch(e) { dagor.assertf(0, "can't convert '"+l+"' to version "+sver) }
       }
 
       ::nda_version = ::has_feature("Tanks") ? ::nda_version_tanks : ::nda_version
 
-      if (::should_agree_eula(::nda_version, ::TEXT_NDA))
+      if (should_agree_eula(::nda_version, ::TEXT_NDA))
         ::gui_start_eula(::TEXT_NDA)
       else
-      if (::should_agree_eula(::eula_version, ::TEXT_EULA))
+      if (should_agree_eula(::eula_version, ::TEXT_EULA))
         ::gui_start_eula(::TEXT_EULA)
     }
     function()
     {
-      if (::should_agree_eula(::nda_version, ::TEXT_NDA) || ::should_agree_eula(::eula_version, ::TEXT_EULA))
+      if (should_agree_eula(::nda_version, ::TEXT_NDA) || should_agree_eula(::eula_version, ::TEXT_EULA))
         return PT_STEP_STATUS.SUSPEND
       return null
     }
@@ -240,16 +239,16 @@ let function go_to_account_web_page(bqKey = "")
     }
   )
 
-  startPseudoThread(this.initOptionsPseudoThread, startLogout)
+  startPseudoThread(initOptionsPseudoThread, startLogout)
 }
 
-::g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
+g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
 {
   //work only after scripts reload
-  if (!this.shouldRestartPseudoThread)
+  if (!shouldRestartPseudoThread)
     return
-  this.shouldRestartPseudoThread = false
-  if (!this.initOptionsPseudoThread)
+  shouldRestartPseudoThread = false
+  if (!initOptionsPseudoThread)
     return
 
   ::get_cur_gui_scene().performDelayed(::getroottable(),
@@ -260,19 +259,19 @@ let function go_to_account_web_page(bqKey = "")
     })
 }
 
-::g_login.afterScriptsReload <- function afterScriptsReload()
+g_login.afterScriptsReload <- function afterScriptsReload()
 {
-  if (this.initOptionsPseudoThread)
-    this.shouldRestartPseudoThread = true
+  if (initOptionsPseudoThread)
+    shouldRestartPseudoThread = true
 }
 
-::g_login.onLoggedInChanged <- function onLoggedInChanged()
+g_login.onLoggedInChanged <- function onLoggedInChanged()
 {
-  if (!this.isLoggedIn())
+  if (!isLoggedIn())
     return
 
-  this.statsdOnLogin()
-  this.bigQueryOnLogin()
+  statsdOnLogin()
+  bigQueryOnLogin()
 
   ::broadcastEvent("LoginComplete")
 
@@ -286,7 +285,7 @@ let function go_to_account_web_page(bqKey = "")
   })
 }
 
-::g_login.firstMainMenuLoad <- function firstMainMenuLoad()
+g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 {
   let handler = ::gui_start_mainmenu(false)
   if (!handler)
@@ -294,23 +293,23 @@ let function go_to_account_web_page(bqKey = "")
 
   ::updateContentPacks()
 
-  handler.doWhenActive(::checkAwardsOnStartFrom)
+  handler.doWhenActive(checkAwardsOnStartFrom)
   handler.doWhenActive(@() ::tribunal.checkComplaintCounts())
   handler.doWhenActive(@() ::menu_chat_handler?.checkVoiceChatSuggestion())
 
-  if (!::fetch_profile_inited_once())
+  if (!fetch_profile_inited_once())
   {
-    if (::get_num_real_devices() == 0 && !::is_platform_android)
-      ::setControlTypeByID("ct_mouse")
+    if (get_num_real_devices() == 0 && !::is_platform_android)
+      setControlTypeByID("ct_mouse")
     else if (::is_platform_shield_tv())
-      ::setControlTypeByID("ct_xinput")
+      setControlTypeByID("ct_xinput")
     else if (!isPlatformSteamDeck)
     {
       let onlyDevicesChoice = !::has_feature("Profile")
       handler.doWhenActive(function() { ::gui_start_controls_type_choice(onlyDevicesChoice) })
     }
   }
-  else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
+  else if (!fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
 
   if (::g_login.isProfileReceived() && ::g_controls_presets.isNewerControlsPresetVersionAvailable())
@@ -331,12 +330,12 @@ let function go_to_account_web_page(bqKey = "")
 
   if (::has_feature("CheckEmailVerified") && !havePlayerTag("email_verified"))
     handler.doWhenActive(function () {
-      this.msgBox(
+      msgBox(
       "email_not_verified_msg_box",
       ::loc("mainmenu/email_not_verified"),
       [
         ["later", function() {} ],
-        ["verify", function() {go_to_account_web_page("email_verification_popup")}]
+        ["verify", function() {::go_to_account_web_page("email_verification_popup")}]
       ],
       "later", { cancel_fn = function() {}}
     )})
@@ -350,7 +349,7 @@ let function go_to_account_web_page(bqKey = "")
         [{
           id = "acitvate"
           text = ::loc("msgbox/btn_activate")
-          func = function() {go_to_account_web_page("2step_auth_popup")}
+          func = function() {::go_to_account_web_page("2step_auth_popup")}
         }]
       )
     })
@@ -366,7 +365,7 @@ let function go_to_account_web_page(bqKey = "")
   onMainMenuReturnActions.value?.onMainMenuReturn(handler, true)
 }
 
-::g_login.statsdOnLogin <- function statsdOnLogin()
+g_login.statsdOnLogin <- function statsdOnLogin()
 {
   statsd.send_counter("sq.game_start.login", 1)
 
@@ -429,12 +428,12 @@ let function go_to_account_web_page(bqKey = "")
       {
         anyUG = true
         statsd.send_counter("sq.ug.useus", 1)
-        ::dagor.debug("statsd_on_login ug.useus "+skin)
+        dagor.debug("statsd_on_login ug.useus "+skin)
         break;
       }
     }
 
-    let lcfg = ::DataBlock()
+    let lcfg = DataBlock()
     ::get_localization_blk_copy(lcfg)
     if (lcfg.locTable != null)
     {

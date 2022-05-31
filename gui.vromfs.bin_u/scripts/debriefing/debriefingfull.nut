@@ -1,7 +1,3 @@
-let {
-  get_mp_session_id_str = @() ::get_mp_session_id(), //compatibility with 2.16.0.X
-  is_mplayer_peer = @() ::is_mplayer_peer() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
 let mpChatModel = require("%scripts/chat/mpChatModel.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("%scripts/debriefing/rewardSources.nut")
@@ -792,14 +788,14 @@ let function debriefingApplyFirstWinInDayMul(exp, debrResult)
             if ((key in unitData) && unitData[key] > 0)
               unitData[key] = (unitData[key] * xpFirstWinInDayMul).tointeger()
 
-    exp.expFirstWinInDay <- max(0, exp.expTotal - xpTotalDebr)
+    exp.expFirstWinInDay <- ::max(0, exp.expTotal - xpTotalDebr)
     debrResult.xpFirstWinInDayMul <- xpFirstWinInDayMul
   }
 
   if (isNeedMulWp)
   {
     exp.wpTotal <- (wpTotalDebr * wpFirstWinInDayMul).tointeger()
-    exp.wpFirstWinInDay <- max(0, exp.wpTotal - wpTotalDebr)
+    exp.wpFirstWinInDay <- ::max(0, exp.wpTotal - wpTotalDebr)
     debrResult.wpFirstWinInDayMul <- wpFirstWinInDayMul
   }
 }
@@ -842,7 +838,7 @@ let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   {
     let preVictoryStageTime = stagesTime.len() > 1 ? stagesTime[stagesTime.len() - 2] : 0
     let maxTime = preVictoryStageTime + (victoryStageTime - preVictoryStageTime) / 2
-    visSessionTime = min(visSessionTime, maxTime)
+    visSessionTime = ::min(visSessionTime, maxTime)
   }
 
   return {
@@ -914,7 +910,7 @@ let function gatherDebriefingResult() {
 
   debriefingResult.isMp <- ::is_multiplayer()
   debriefingResult.isReplay <- ::is_replay_playing()
-  debriefingResult.sessionId <- get_mp_session_id_str()
+  debriefingResult.sessionId <- ::get_mp_session_id()
   debriefingResult.useFinalResults <- ::getTblValue("useFinalResults", ::get_current_mission_info_cached(), false)
   debriefingResult.mpTblTeams <- ::get_mp_tbl_teams()
   debriefingResult.unitTypesMask <- ::SessionLobby.getUnitTypesMask()
@@ -1046,7 +1042,7 @@ let function gatherDebriefingResult() {
   calculateDebriefingTabularData(false)
   recountDebriefingResult()
 
-  if (is_mplayer_peer())
+  if (::is_mplayer_peer())
     ::destroy_session_scripted()
 }
 

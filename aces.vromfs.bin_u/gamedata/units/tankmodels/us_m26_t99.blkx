@@ -372,7 +372,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1277,8 +1276,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1322,8 +1321,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1331,8 +1330,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1340,8 +1339,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1380,29 +1379,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2527,7 +2526,12 @@
             "head": "bone_turret",
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "gunner_dm",
+            "linkedAnimPart": {
+              "verNode": "bone_gun_mount",
+              "verLimits": [-10.0,20.0],
+              "verOriginLimits": [-10.0,20.0]
+            }
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -2579,7 +2583,7 @@
             "fireConeAngle": 15.0
           },
           {
-            "bullets": 5000
+            "bullets": 5250
           },
           {
             "ChainfireTime": 3.0
@@ -2645,7 +2649,7 @@
           "barrelDP": "gun_barrel_02_dm",
           "brokenBarrelAllowShoot": true,
           "speedYaw": 24.0,
-          "speedPitch": 4.0,
+          "speedPitch": 15.0,
           "fireConeAngle": 1.0,
           "bullets": 44,
           "salvoAmount": 100.0,
@@ -2695,7 +2699,7 @@
           ],
           "limits": {
             "yaw": [0.0,0.0],
-            "pitch": [-10.0,20.0]
+            "pitch": [-10.0,25.0]
           }
         }
       },
@@ -2712,7 +2716,7 @@
           "parkInDeadzone": false,
           "speedYaw": 90.0,
           "speedPitch": 90.0,
-          "bullets": 550,
+          "bullets": 1000,
           "isBulletBelt": true,
           "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
@@ -2822,22 +2826,6 @@
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }
-    }
-  },
-  {
-    "chainIK": {
-      "points": [
-        {
-          "point": {
-            "nameTemplate": "bone_gun_roll_01"
-          }
-        },
-        {
-          "point": {
-            "nameTemplate": "bone_gun_roll_02"
-          }
-        }
-      ]
     }
   },
   {

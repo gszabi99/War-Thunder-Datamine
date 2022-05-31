@@ -30,26 +30,26 @@ local authDataByTypes = {
       verStatusText = data.text
       authTypeImg = data.img
       isShowRestoreLink = isExt2StepAllowed
-      isRememberDevice = ::get_object_value(this.loginScene,"loginbox_code_remember_this_device", false)
-      timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)
+      isRememberDevice = ::get_object_value(loginScene,"loginbox_code_remember_this_device", false)
+      timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", guiScene)
     }
   }
 
   function initScreen()
   {
-    this.reinitCurTimeTimer()
-    ::select_editbox(this.getObj("loginbox_code"))
+    reinitCurTimeTimer()
+    ::select_editbox(getObj("loginbox_code"))
   }
 
   function reinitCurTimeTimer()
   {
-    this.curTimeTimer = null
-    let timerObj = this.scene.findObject("currTimeText")
+    curTimeTimer = null
+    let timerObj = scene.findObject("currTimeText")
     if (!::check_obj(timerObj))
       return
 
     let timerCb = @() timerObj.setValue(time.buildTimeStr(::get_charserver_time_sec(), true))
-    this.curTimeTimer = ::Timer(timerObj, 1, timerCb, this, true)
+    curTimeTimer = ::Timer(timerObj, 1, timerCb, this, true)
     timerCb()
   }
 
@@ -59,17 +59,17 @@ local authDataByTypes = {
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "regular"})
     ::dagor.debug("Login: check_login_pass")
     let result = ::check_login_pass(
-      ::get_object_value(this.loginScene, "loginbox_username",""),
-      ::get_object_value(this.loginScene, "loginbox_password", ""), "",
-      ::get_object_value(this.scene, "loginbox_code", ""),
-      ::get_object_value(this.scene, "loginbox_code_remember_this_device", false),
+      ::get_object_value(loginScene, "loginbox_username",""),
+      ::get_object_value(loginScene, "loginbox_password", ""), "",
+      ::get_object_value(scene, "loginbox_code", ""),
+      ::get_object_value(scene, "loginbox_code_remember_this_device", false),
       true)
-    this.proceedAuth(result)
+    proceedAuth(result)
   }
 
   function showErrorMsg()
   {
-    let txtObj = this.scene.findObject("verStatus")
+    let txtObj = scene.findObject("verStatus")
     if (!::check_obj(txtObj))
       return
 
@@ -80,7 +80,7 @@ local authDataByTypes = {
     errorTimerCb()
 
     // Need this to make both timers tick synchronously
-    this.reinitCurTimeTimer()
+    reinitCurTimeTimer()
   }
 
   function proceedAuth(result)
@@ -88,12 +88,12 @@ local authDataByTypes = {
     switch (result)
     {
       case ::YU2_OK:
-        this.continueLogin(::get_object_value(this.loginScene, "loginbox_username",""))
+        continueLogin(::get_object_value(loginScene, "loginbox_username",""))
         break
 
       case ::YU2_2STEP_AUTH:
       case ::YU2_WRONG_2STEP_CODE:
-        this.showErrorMsg()
+        showErrorMsg()
         break
 
       default:

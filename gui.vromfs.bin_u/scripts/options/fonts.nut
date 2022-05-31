@@ -73,14 +73,14 @@ let function update_font_heights(font)
   sizeOrder = 0 //FONT_SIZE_ORDER
 
   isAvailable = @(sWidth, sHeight) true
-  getFontSizePx = @(sWidth, sHeight) ::round(this.sizeMultiplier * getFontsSh(sWidth, sHeight)).tointeger()
+  getFontSizePx = @(sWidth, sHeight) ::round(sizeMultiplier * getFontsSh(sWidth, sHeight)).tointeger()
   getPixelToPixelFontSizeOutdatedPx = @(sWidth, sHeight) 800 //!!TODO: remove this together with old fonts
   isLowWidthScreen = function()
   {
     let sWidth = ::screen_width()
     let sHeight = ::screen_height()
     let mainScreenSize = screenInfo.getMainScreenSizePx(sWidth, sHeight)
-    let sf = this.getFontSizePx(sWidth, sHeight)
+    let sf = getFontSizePx(sWidth, sHeight)
     return 10.0 / 16 * mainScreenSize[0] / sf < 0.99
   }
 
@@ -89,24 +89,24 @@ let function update_font_heights(font)
     let sWidth = ::screen_width()
     let sHeight = ::screen_height()
     let config = {
-      set = this.fontGenId
-      scrnTgt = this.getFontSizePx(sWidth, sHeight)
-      isWide = this.isLowWidthScreen() ? 0 : 1
-      pxFontTgtOutdated = this.getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
+      set = fontGenId
+      scrnTgt = getFontSizePx(sWidth, sHeight)
+      isWide = isLowWidthScreen() ? 0 : 1
+      pxFontTgtOutdated = getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
     if (config.scrnTgt <= 0) {
       let configStr = ::toString(config) // warning disable: -declared-never-used
       ::script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
     }
     foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
-      config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{this.fontGenId}")
+      config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{fontGenId}")
     return ::handyman.renderCached("%gui/const/const_fonts_css", config)
   }
 
   //text visible in options
-  getOptionText = @() ::loc("fontSize/" + this.id.tolower())
-    + ::loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * this.sizeMultiplier).tointeger()) })
-  getFontExample = @() "small_text; font-pixht: {0}".subst(::round(getFontInitialHt("small_text") * this.sizeMultiplier).tointeger())
+  getOptionText = @() ::loc("fontSize/" + id.tolower())
+    + ::loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * sizeMultiplier).tointeger()) })
+  getFontExample = @() "small_text; font-pixht: {0}".subst(::round(getFontInitialHt("small_text") * sizeMultiplier).tointeger())
 }
 
 enums.addTypesByGlobalName("g_font",
@@ -165,12 +165,13 @@ null,
 
 ::g_font.types.sort(@(a, b) a.sizeOrder <=> b.sizeOrder)
 
-let function getAvailableFontBySaveId(saveId) {
-  let res = enums.getCachedType("saveId", saveId, ::g_font.cache.bySaveId, ::g_font, null)
+g_font.getAvailableFontBySaveId <- function getAvailableFontBySaveId(saveId)
+{
+  let res = enums.getCachedType("saveId", saveId, cache.bySaveId, this, null)
   if (res && res.isAvailable(::screen_width(), ::screen_height()))
     return res
 
-  foreach(font in ::g_font.types)
+  foreach(font in types)
     if (font.saveIdCompatibility
       && ::isInArray(saveId, font.saveIdCompatibility)
       && font.isAvailable(::screen_width(), ::screen_height()))
@@ -179,35 +180,35 @@ let function getAvailableFontBySaveId(saveId) {
   return null
 }
 
-::g_font.getAvailableFonts <- function getAvailableFonts()
+g_font.getAvailableFonts <- function getAvailableFonts()
 {
   let sWidth = ::screen_width()
   let sHeight = ::screen_height()
-  return ::u.filter(this.types, @(f) f.isAvailable(sWidth, sHeight))
+  return ::u.filter(types, @(f) f.isAvailable(sWidth, sHeight))
 }
 
-::g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight)
+g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight)
 {
   local res = null
-  foreach(font in this.types)
+  foreach(font in types)
     if (font.isAvailable(sWidth, sHeight) && (!res || font.sizeMultiplier < res.sizeMultiplier))
       res = font
   return res
 }
 
-::g_font.getFixedFont <- function getFixedFont() //return null if can change fonts
+g_font.getFixedFont <- function getFixedFont() //return null if can change fonts
 {
-  let availableFonts = this.getAvailableFonts()
+  let availableFonts = getAvailableFonts()
   return availableFonts.len() == 1 ? availableFonts[0] : null
 }
 
-let function canChange() {
-  return ::g_font.getFixedFont() == null
+g_font.canChange <- function canChange()
+{
+  return getFixedFont() == null
 }
 
-let function getDefault()
+g_font.getDefault <- function getDefault()
 {
-  let {getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT} = ::g_font //-ident-hides-ident
   let fixedFont = getFixedFont()
   if (fixedFont)
     return fixedFont
@@ -231,7 +232,7 @@ let function getDefault()
   return LARGE
 }
 
-::g_font.getCurrent <- function getCurrent()
+g_font.getCurrent <- function getCurrent()
 {
   if (!canChange())
     return update_font_heights(getDefault())
@@ -259,13 +260,8 @@ let function getDefault()
   return update_font_heights(res || getDefault())
 }
 
-let function saveFontToConfig(font) {
-  if (::getSystemConfigOption(FONTS_SAVE_PATH_CONFIG) != font.saveId)
-    ::setSystemConfigOption(FONTS_SAVE_PATH_CONFIG, font.saveId)
-}
-
 //return isChanged
-::g_font.setCurrent <- function setCurrent(font)
+g_font.setCurrent <- function setCurrent(font)
 {
   if (!canChange())
     return false
@@ -280,18 +276,23 @@ let function saveFontToConfig(font) {
   return isChanged
 }
 
+g_font.saveFontToConfig <- function saveFontToConfig(font)
+{
+  if (::getSystemConfigOption(FONTS_SAVE_PATH_CONFIG) != font.saveId)
+    ::setSystemConfigOption(FONTS_SAVE_PATH_CONFIG, font.saveId)
+}
 
-::g_font.validateSavedConfigFonts <- function validateSavedConfigFonts()
+g_font.validateSavedConfigFonts <- function validateSavedConfigFonts()
 {
   if (canChange())
-    saveFontToConfig(this.getCurrent())
+    saveFontToConfig(getCurrent())
 }
 
 ::reset_applied_fonts_scale <- function reset_applied_fonts_scale()
 {
   ::dagor.debug("[fonts] Resetting appliedFontsSh, sizes of font will be set again")
   appliedFontsSh = 0;
-  update_font_heights(::g_font.getCurrent());
+  update_font_heights(g_font.getCurrent());
 }
 
 ::cross_call_api.getCurrentFontParams <- function() {

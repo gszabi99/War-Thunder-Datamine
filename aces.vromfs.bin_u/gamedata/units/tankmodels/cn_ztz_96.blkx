@@ -191,10 +191,10 @@
           "armorThickness": 35.0
         },
         "ex_armor_10_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 20.0
         },
         "ex_armor_12_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 5.0
         },
         "turret_01_back_dm": {
           "armorThickness": 5.0,
@@ -213,15 +213,12 @@
           "armorClass": "tank_structural_steel",
           "armorThickness": 6.0,
           "secondaryShatterArmorQuality": 0.8
-        },
-        "turret_04_bottom_dm": {
-          "armorThickness": 10.0
         }
       },
       "hull_composite_armor": {
         "composite_armor_hull_01_dm": {
           "hidableInXrayViewer": true,
-          "armorThickness": 0.01,
+          "armorThickness": 0.0,
           "createSecondaryShatters": false,
           "armorClass": "leopard_2a5_turret_nera"
         },
@@ -245,13 +242,13 @@
         "armorClass": "RHA_tank_modern",
         "composite_armor_turret_01_dm": {
           "hidableInXrayViewer": true,
-          "armorThickness": 0.01,
+          "armorThickness": 0.0,
           "createSecondaryShatters": false,
           "armorClass": "leopard_2a5_turret_nera"
         },
         "composite_armor_turret_02_dm": {
           "hidableInXrayViewer": true,
-          "armorThickness": 0.01,
+          "armorThickness": 0.0,
           "createSecondaryShatters": false,
           "armorClass": "CHA_tank"
         },
@@ -365,6 +362,9 @@
         },
         "turret_03_bottom_dm": {
           "armorThickness": 20.0
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 80.0
         },
         "turret_01_bottom_dm": {
           "armorThickness": 50.0
@@ -541,12 +541,6 @@
           "ex_armor_body_02_dm": {
             "hp": 300.0
           }
-        },
-        "tracks_ext": {
-          "armorClass": "tank_traks",
-          "armorThickness": 20.0,
-          "hp": 200.0,
-          "ex_armor_14_dm": []
         }
       },
       "gun": {
@@ -614,7 +608,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1614,8 +1607,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1659,8 +1652,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1668,8 +1661,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1677,8 +1670,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1717,29 +1710,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2932,29 +2925,35 @@
       "mechanics": {
         "maxBrakeForce": 200000.0,
         "driveGearRadius": 0.3,
-        "mainGearRatio": 4.3,
-        "sideGearRatio": 1.0,
+        "mainGearRatio": 0.631,
+        "sideGearRatio": 6.25,
         "gearRatios": [
           {
-            "ratio": -5.786
+            "ratio": -8.0
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 5.786
+            "ratio": 8.173
           },
           {
-            "ratio": 2.7
+            "ratio": 4.4
           },
           {
-            "ratio": 1.98
+            "ratio": 3.485
           },
           {
-            "ratio": 1.357
+            "ratio": 2.787
           },
           {
-            "ratio": 0.92
+            "ratio": 2.027
+          },
+          {
+            "ratio": 1.467
+          },
+          {
+            "ratio": 0.97
           }
         ]
       },
