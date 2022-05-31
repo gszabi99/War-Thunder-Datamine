@@ -149,6 +149,8 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
 
   function onFinish()
   {
+    if (isFinished)
+      return
     isFinished = true
 
     if (errorCode < 0)
