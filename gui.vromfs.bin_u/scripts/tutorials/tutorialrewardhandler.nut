@@ -68,7 +68,7 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateDecoratorButton() {
     local canUseDecorator = decorator != null && canStartPreviewScene(false)
-    let obj = showSceneBtn("btn_use_decorator", canUseDecorator)
+    let obj = this.showSceneBtn("btn_use_decorator", canUseDecorator)
     if (!canUseDecorator)
       return
 

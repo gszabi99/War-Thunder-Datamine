@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let base64 = require("base64")
 
@@ -23,14 +24,14 @@ let canAutoLogin = @() !::is_vendor_tencent() && ::g_login.isAuthorized()
 
 let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
   if (baseUrl == null || baseUrl == "") {
-    dagor.debug("Error: tried to open an empty url")
+    ::dagor.debug("Error: tried to open an empty url")
     return null
   }
 
   local url = clearBorderSymbols(baseUrl, [URL_TAGS_DELIMITER])
-  let urlTags = ::split(baseUrl, URL_TAGS_DELIMITER)
+  let urlTags = split_by_chars(baseUrl, URL_TAGS_DELIMITER)
   if (!urlTags.len()) {
-    dagor.debug("Error: tried to open an empty url")
+    ::dagor.debug("Error: tried to open an empty url")
     return null
   }
   let urlWithoutTags = urlTags.remove(urlTags.len() - 1)
@@ -59,10 +60,10 @@ let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) 
   }
 
   return {
-    url = url
-    urlWithoutTags = urlWithoutTags
-    urlTags = urlTags
-    urlType = urlType
+    url
+    urlWithoutTags
+    urlTags
+    urlType
   }
 }
 
@@ -172,9 +173,9 @@ let function openUrl(baseUrl, forceExternal=false, isAlreadyAuthenticated = fals
 ::cross_call_api.openUrl <- openUrl
 
 return {
-  openUrl = openUrl
-  openUrlByObj = openUrlByObj
-  validateLink = validateLink
-  getAuthenticatedUrlConfig = getAuthenticatedUrlConfig
-  getUrlWithQrRedirect = getUrlWithQrRedirect
+  openUrl
+  openUrlByObj
+  validateLink
+  getAuthenticatedUrlConfig
+  getUrlWithQrRedirect
 }

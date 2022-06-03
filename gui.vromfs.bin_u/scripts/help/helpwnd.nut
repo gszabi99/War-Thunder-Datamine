@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
@@ -111,7 +112,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let subTabsList = visibleTabs[curTabIdx].list
 
     let isSubTabsVisible = subTabsList.len() > 1
-    let subTabsObj = showSceneBtn("sub_tabs_list", isSubTabsVisible)
+    let subTabsObj = this.showSceneBtn("sub_tabs_list", isSubTabsVisible)
     if (!subTabsObj)
       return
 
@@ -247,7 +248,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
                      ? curCountry
                      : tab.defaultValues.country
 
-    backImg["background-image"] = ::format(::getTblValue("imagePattern", tab, ""), curCountry)
+    backImg["background-image"] = format(::getTblValue("imagePattern", tab, ""), curCountry)
     fillActionBars(tab)
     updatePlatformControls()
   }
@@ -635,7 +636,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       if ("frameId" in item)
         scene.findObject(item.frameId).show(isDefaultControls)
 
-    let defControlsFrame = showSceneBtn("not_default_controls_frame", !isDefaultControls)
+    let defControlsFrame = this.showSceneBtn("not_default_controls_frame", !isDefaultControls)
     if (isDefaultControls || !defControlsFrame)
       return
 

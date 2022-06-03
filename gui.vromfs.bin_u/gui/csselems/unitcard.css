@@ -925,6 +925,7 @@ specIconBlock {
 
 specIconBlock > shopTrainedImg, specIconBlock > warningIcon {
   size:ph,ph;
+  background-svg-size:ph,ph;
   background-color:@white;
 }
 
@@ -952,6 +953,7 @@ crewInfoBlock > icon {
   pos:ph/2-h/2, ph/2-h/2;
   position:relative;
   background-color:@white;
+  background-svg-size:1@sIco,1@sIco;
   css-hier-invalidate:yes;
 }
 
@@ -1052,7 +1054,8 @@ rentIcon > icon {
 }
 
 talismanIcon {
-  background-image:#ui/gameuiskin#item_type_talisman;
+  background-image:#ui/gameuiskin#item_type_talisman.svg;
+  background-svg-size:@sIco, @sIco;
   size:@sIco, @sIco;
   pos:pw/2-w/2, -6@sf/@pf_outdated;
   position:absolute;

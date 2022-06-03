@@ -41,7 +41,7 @@ hudChatState.canWriteToChat <- canWriteToChat
   hudChatState.log([])
 }
 
-::interop.mpChatInputChanged <- function (new_chat_input_text) {
+::interop.mpChatInputChanged <- function (_new_chat_input_text) {
   hudChatState.lastInputTime(::get_mission_time())
 }
 

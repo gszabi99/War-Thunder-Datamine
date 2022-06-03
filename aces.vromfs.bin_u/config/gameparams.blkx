@@ -236,9 +236,6 @@
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
-  "allAircraftNodesAnimationHierarchy": true,
-  "aircraftAnimchar": false,
-  "missedNodesMax": 6,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -273,7 +270,9 @@
   "rendinstRadiusMultForBlast": 4.0,
   "isBlastEffectActivated": true,
   "supportShowHintBattleCnt": 5,
+  "playerDustFxSpawnRate": 1.0,
   "showWaveHitcam": true,
+  "waveOffset": [20.0,20.0],
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [400.0,900.0,0.1,1.0],
@@ -310,7 +309,8 @@
       "distScaleEnd": 2000.0,
       "distScale": 6.0,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "fake_rpg": {
       "halfSize": 5.0,
@@ -318,7 +318,8 @@
       "distScaleEnd": 2000.0,
       "distScale": 5.0,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "fake_ak_47": {
       "halfSize": 1.5,
@@ -326,7 +327,10 @@
       "distScaleEnd": 2000.0,
       "distScale": 5.0,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmRed": {
       "halfSize": 3.0,
@@ -335,7 +339,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmRed": {
       "halfSize": 3.0,
@@ -344,7 +351,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmRed": {
       "halfSize": 3.5,
@@ -353,7 +363,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmRed": {
       "halfSize": 3.5,
@@ -362,7 +375,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmRed": {
       "halfSize": 4.0,
@@ -371,7 +387,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmRed": {
       "halfSize": 4.0,
@@ -380,7 +399,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmRed": {
       "halfSize": 4.0,
@@ -389,7 +411,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmRedShip": {
       "halfSize": 12.0,
@@ -400,7 +425,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmRed": {
       "halfSize": 4.0,
@@ -409,7 +437,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmRedShip": {
       "halfSize": 14.0,
@@ -420,7 +451,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmRed": {
       "halfSize": 5.0,
@@ -429,7 +463,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmRedShip": {
       "halfSize": 18.0,
@@ -440,7 +477,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmRedShip": {
       "halfSize": 20.0,
@@ -451,7 +491,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "rocketRed": {
       "halfSize": 20.0,
@@ -459,7 +502,10 @@
       "distScaleEnd": 2000.0,
       "distScale": 1.0,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmDarkRed": {
       "halfSize": 3.0,
@@ -468,7 +514,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmDarkRed": {
       "halfSize": 3.0,
@@ -477,7 +526,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmDarkRed": {
       "halfSize": 3.5,
@@ -486,7 +538,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmDarkRed": {
       "halfSize": 3.5,
@@ -495,7 +550,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmDarkRed": {
       "halfSize": 4.0,
@@ -504,7 +562,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmDarkRed": {
       "halfSize": 4.0,
@@ -513,7 +574,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmDarkRed": {
       "halfSize": 4.0,
@@ -522,7 +586,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmDarkRedShip": {
       "halfSize": 12.0,
@@ -533,7 +600,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmDarkRed": {
       "halfSize": 4.0,
@@ -542,7 +612,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmDarkRedShip": {
       "halfSize": 14.0,
@@ -553,7 +626,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmDarkRed": {
       "halfSize": 5.0,
@@ -562,7 +638,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmDarkRedShip": {
       "halfSize": 18.0,
@@ -573,7 +652,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmDarkRedShip": {
       "halfSize": 20.0,
@@ -584,7 +666,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmBrightRed": {
       "halfSize": 3.0,
@@ -593,7 +678,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmBrightRed": {
       "halfSize": 3.0,
@@ -602,7 +690,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmBrightRed": {
       "halfSize": 3.5,
@@ -611,7 +702,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmBrightRed": {
       "halfSize": 3.5,
@@ -620,7 +714,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmBrightRed": {
       "halfSize": 4.0,
@@ -629,7 +726,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmBrightRed": {
       "halfSize": 4.0,
@@ -638,7 +738,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmBrightRed": {
       "halfSize": 4.0,
@@ -647,7 +750,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmBrightRedShip": {
       "halfSize": 12.0,
@@ -658,7 +764,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmBrightRed": {
       "halfSize": 4.0,
@@ -667,7 +776,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmBrightRedShip": {
       "halfSize": 14.0,
@@ -678,7 +790,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmBrightRed": {
       "halfSize": 5.0,
@@ -687,7 +802,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmBrightRedShip": {
       "halfSize": 18.0,
@@ -698,7 +816,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmBrightRedShip": {
       "halfSize": 20.0,
@@ -709,7 +830,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmWhite": {
       "halfSize": 3.0,
@@ -843,7 +967,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmPaleWhite": {
       "halfSize": 3.0,
@@ -852,7 +979,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmPaleWhite": {
       "halfSize": 3.5,
@@ -861,7 +991,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmPaleWhite": {
       "halfSize": 3.5,
@@ -870,7 +1003,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmPaleWhite": {
       "halfSize": 4.0,
@@ -879,7 +1015,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmPaleWhite": {
       "halfSize": 4.0,
@@ -888,7 +1027,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmPaleWhite": {
       "halfSize": 4.0,
@@ -897,7 +1039,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmPaleWhiteShip": {
       "halfSize": 12.0,
@@ -908,7 +1053,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmPaleWhite": {
       "halfSize": 4.0,
@@ -917,7 +1065,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmPaleWhiteShip": {
       "halfSize": 14.0,
@@ -928,7 +1079,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmPaleWhiteShip": {
       "halfSize": 18.0,
@@ -939,7 +1093,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmPaleWhiteShip": {
       "halfSize": 20.0,
@@ -950,7 +1107,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmLightRed": {
       "halfSize": 3.0,
@@ -959,7 +1119,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmLightRed": {
       "halfSize": 3.0,
@@ -968,7 +1131,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmLightRed": {
       "halfSize": 3.5,
@@ -977,7 +1143,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmLightRed": {
       "halfSize": 3.5,
@@ -986,7 +1155,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmLightRed": {
       "halfSize": 4.0,
@@ -995,7 +1167,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmLightRed": {
       "halfSize": 4.0,
@@ -1004,7 +1179,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmLightRed": {
       "halfSize": 4.0,
@@ -1013,7 +1191,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmLightRedShip": {
       "halfSize": 12.0,
@@ -1024,7 +1205,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmLightRed": {
       "halfSize": 4.0,
@@ -1033,7 +1217,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmLightRedShip": {
       "halfSize": 14.0,
@@ -1044,7 +1231,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmLightRedShip": {
       "halfSize": 18.0,
@@ -1055,7 +1245,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmLightRedShip": {
       "halfSize": 20.0,
@@ -1066,7 +1259,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "noColor": {
       "color1": "#00000000",
@@ -1080,7 +1276,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmGreenBlue": {
       "halfSize": 3.0,
@@ -1089,7 +1288,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmGreenBlue": {
       "halfSize": 3.5,
@@ -1098,7 +1300,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmGreenBlue": {
       "halfSize": 3.5,
@@ -1107,7 +1312,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmGreenBlue": {
       "halfSize": 4.0,
@@ -1116,7 +1324,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmGreenBlue": {
       "halfSize": 4.0,
@@ -1125,7 +1336,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmGreenBlue": {
       "halfSize": 4.0,
@@ -1134,7 +1348,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmGreenBlueShip": {
       "halfSize": 12.0,
@@ -1145,7 +1362,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmGreenBlue": {
       "halfSize": 4.0,
@@ -1154,7 +1374,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmGreenBlueShip": {
       "halfSize": 14.0,
@@ -1165,7 +1388,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmGreenBlue": {
       "halfSize": 5.0,
@@ -1174,7 +1400,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmGreenBlueShip": {
       "halfSize": 18.0,
@@ -1185,7 +1414,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmGreenBlueShip": {
       "halfSize": 20.0,
@@ -1196,7 +1428,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color2": "#34ffabc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmYellow": {
       "halfSize": 3.0,
@@ -1205,7 +1440,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmYellow": {
       "halfSize": 3.0,
@@ -1214,7 +1452,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmYellow": {
       "halfSize": 3.5,
@@ -1223,7 +1464,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmYellow": {
       "halfSize": 3.5,
@@ -1232,7 +1476,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmYellow": {
       "halfSize": 4.0,
@@ -1241,7 +1488,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmYellow": {
       "halfSize": 4.0,
@@ -1250,7 +1500,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmYellow": {
       "halfSize": 4.0,
@@ -1259,7 +1512,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmYellowShip": {
       "halfSize": 12.0,
@@ -1270,7 +1526,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmYellow": {
       "halfSize": 4.0,
@@ -1279,7 +1538,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmYellowShip": {
       "halfSize": 14.0,
@@ -1290,7 +1552,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmYellow": {
       "halfSize": 5.0,
@@ -1299,7 +1564,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmYellowShip": {
       "halfSize": 18.0,
@@ -1310,7 +1578,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmYellowShip": {
       "halfSize": 20.0,
@@ -1321,7 +1592,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmBlue": {
       "halfSize": 3.0,
@@ -1330,7 +1604,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmBlue": {
       "halfSize": 3.0,
@@ -1339,7 +1616,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmBlue": {
       "halfSize": 3.5,
@@ -1348,7 +1628,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmBlue": {
       "halfSize": 3.5,
@@ -1357,7 +1640,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmBlue": {
       "halfSize": 4.0,
@@ -1366,7 +1652,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmBlue": {
       "halfSize": 4.0,
@@ -1375,7 +1664,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmBlue": {
       "halfSize": 4.0,
@@ -1384,7 +1676,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmBlueShip": {
       "halfSize": 12.0,
@@ -1395,7 +1690,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmBlue": {
       "halfSize": 4.0,
@@ -1404,7 +1702,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmBlueShip": {
       "halfSize": 14.0,
@@ -1415,7 +1716,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmBlueShip": {
       "halfSize": 18.0,
@@ -1426,7 +1730,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmBlueShip": {
       "halfSize": 20.0,
@@ -1437,7 +1744,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmDark_Blue": {
       "halfSize": 3.0,
@@ -1446,7 +1756,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmDark_Blue": {
       "halfSize": 3.0,
@@ -1455,7 +1768,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmDark_Blue": {
       "halfSize": 3.5,
@@ -1464,7 +1780,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmDark_Blue": {
       "halfSize": 3.5,
@@ -1473,7 +1792,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmDark_Blue": {
       "halfSize": 4.0,
@@ -1482,7 +1804,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmDark_Blue": {
       "halfSize": 4.0,
@@ -1491,7 +1816,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmDark_Blue": {
       "halfSize": 4.0,
@@ -1500,7 +1828,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmDark_BlueShip": {
       "halfSize": 12.0,
@@ -1511,7 +1842,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmDark_Blue": {
       "halfSize": 4.0,
@@ -1520,7 +1854,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmDark_BlueShip": {
       "halfSize": 14.0,
@@ -1531,7 +1868,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmDark_BlueShip": {
       "halfSize": 18.0,
@@ -1542,7 +1882,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmDark_BlueShip": {
       "halfSize": 20.0,
@@ -1553,7 +1896,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color2": "#0000ffdc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmPink": {
       "halfSize": 3.0,
@@ -1562,7 +1908,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmPink": {
       "halfSize": 3.0,
@@ -1571,7 +1920,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmPink": {
       "halfSize": 3.5,
@@ -1580,7 +1932,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmPink": {
       "halfSize": 3.5,
@@ -1589,7 +1944,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmPink": {
       "halfSize": 4.0,
@@ -1598,7 +1956,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmPink": {
       "halfSize": 4.0,
@@ -1607,7 +1968,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmPink": {
       "halfSize": 4.0,
@@ -1616,7 +1980,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmPinkShip": {
       "halfSize": 12.0,
@@ -1627,7 +1994,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmPink": {
       "halfSize": 4.0,
@@ -1636,7 +2006,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmPinkShip": {
       "halfSize": 14.0,
@@ -1647,7 +2020,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmPinkShip": {
       "halfSize": 18.0,
@@ -1658,7 +2034,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmPinkShip": {
       "halfSize": 20.0,
@@ -1669,7 +2048,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmOrange": {
       "halfSize": 3.0,
@@ -1678,7 +2060,8 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "12mmOrange": {
       "halfSize": 3.0,
@@ -1687,7 +2070,8 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "20mmOrange": {
       "halfSize": 3.5,
@@ -1696,7 +2080,8 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "30mmOrange": {
       "halfSize": 3.5,
@@ -1705,7 +2090,8 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "37mmOrange": {
       "halfSize": 4.0,
@@ -1714,7 +2100,8 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "50mmOrange": {
       "halfSize": 4.0,
@@ -1723,7 +2110,8 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "76mmOrange": {
       "halfSize": 4.0,
@@ -1732,7 +2120,8 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "76mmOrangeShip": {
       "halfSize": 12.0,
@@ -1743,7 +2132,8 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "100mmOrange": {
       "halfSize": 4.0,
@@ -1752,7 +2142,8 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "100mmOrangeShip": {
       "halfSize": 14.0,
@@ -1763,7 +2154,8 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "152mmOrange": {
       "halfSize": 5.0,
@@ -1772,7 +2164,8 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "200mmOrangeShip": {
       "halfSize": 18.0,
@@ -1783,7 +2176,8 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "300mmOrangeShip": {
       "halfSize": 20.0,
@@ -1794,7 +2188,8 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "7mmGreen": {
       "halfSize": 3.0,
@@ -1803,7 +2198,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmGreen": {
       "halfSize": 3.0,
@@ -1812,7 +2210,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmGreen": {
       "halfSize": 3.5,
@@ -1821,7 +2222,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmGreen": {
       "halfSize": 3.5,
@@ -1830,7 +2234,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmGreen": {
       "halfSize": 4.0,
@@ -1839,7 +2246,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmGreen": {
       "halfSize": 4.0,
@@ -1848,7 +2258,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmGreen": {
       "halfSize": 4.0,
@@ -1857,7 +2270,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmGreenShip": {
       "halfSize": 12.0,
@@ -1868,7 +2284,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmGreen": {
       "halfSize": 4.0,
@@ -1877,7 +2296,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmGreenShip": {
       "halfSize": 14.0,
@@ -1888,7 +2310,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmGreen": {
       "halfSize": 5.0,
@@ -1897,7 +2322,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmGreenShip": {
       "halfSize": 18.0,
@@ -1908,7 +2336,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmGreenShip": {
       "halfSize": 20.0,
@@ -1919,7 +2350,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmWhiteGreen": {
       "halfSize": 3.0,
@@ -1928,7 +2362,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmWhiteGreen": {
       "halfSize": 3.0,
@@ -1937,7 +2374,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmWhiteGreen": {
       "halfSize": 3.5,
@@ -1946,7 +2386,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmWhiteGreen": {
       "halfSize": 3.5,
@@ -1955,7 +2398,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmWhiteGreen": {
       "halfSize": 4.0,
@@ -1964,7 +2410,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmWhiteGreen": {
       "halfSize": 4.0,
@@ -1973,7 +2422,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmWhiteGreen": {
       "halfSize": 4.0,
@@ -1982,7 +2434,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmWhiteGreenShip": {
       "halfSize": 12.0,
@@ -1993,7 +2448,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmWhiteGreen": {
       "halfSize": 4.0,
@@ -2002,7 +2460,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmWhiteGreenShip": {
       "halfSize": 14.0,
@@ -2013,7 +2474,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "152mmWhiteGreen": {
       "halfSize": 5.0,
@@ -2022,7 +2486,10 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmWhiteGreenShip": {
       "halfSize": 18.0,
@@ -2033,7 +2500,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmWhiteGreenShip": {
       "halfSize": 20.0,
@@ -2044,7 +2514,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmGold": {
       "halfSize": 3.0,
@@ -2053,7 +2526,10 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmGold": {
       "halfSize": 3.0,
@@ -2062,7 +2538,10 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "20mmGold": {
       "halfSize": 3.5,
@@ -2071,7 +2550,10 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "30mmGold": {
       "halfSize": 3.5,
@@ -2080,7 +2562,10 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "37mmGold": {
       "halfSize": 4.0,
@@ -2089,7 +2574,10 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "50mmGold": {
       "halfSize": 4.0,
@@ -2098,7 +2586,10 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmGold": {
       "halfSize": 4.0,
@@ -2107,7 +2598,10 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "76mmGoldShip": {
       "halfSize": 12.0,
@@ -2118,7 +2612,10 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmGold": {
       "halfSize": 4.0,
@@ -2127,7 +2624,10 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "100mmGoldShip": {
       "halfSize": 14.0,
@@ -2138,7 +2638,10 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "200mmGoldShip": {
       "halfSize": 18.0,
@@ -2149,7 +2652,10 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "300mmGoldShip": {
       "halfSize": 20.0,
@@ -2160,7 +2666,10 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "12mmYellowAAgun": {
       "halfSize": 3.0,
@@ -2168,7 +2677,10 @@
       "distScaleEnd": 4000.0,
       "distScale": 5.0,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "beamGreen": {
       "halfSize": 4.0,
@@ -2746,6 +3258,7 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.2,
+        "payloadCoGMultiplier": 0.0,
         "tankTrackRepairTime": 15.0,
         "tankRepairSpeed": 5.0,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -2815,6 +3328,7 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.0,
+        "payloadCoGMultiplier": 0.2,
         "tankTrackRepairTime": 150.0,
         "tankRepairSpeed": 3.5,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -2886,6 +3400,7 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.0,
+        "payloadCoGMultiplier": 0.2,
         "tankTrackRepairTime": 180.0,
         "tankRepairSpeed": 3.5,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -3653,12 +4168,14 @@
       "off": {
         "serverSideCollectiveDetection": false,
         "instantDetection": true,
-        "timeToLoseInstantDetection": 5.0
+        "timeToLoseInstantDetection": 5.0,
+        "timeToLoseInstantDetectionShip": 1.0
       },
       "on": {
         "serverSideCollectiveDetection": true,
         "instantDetection": true,
-        "timeToLoseInstantDetection": 5.0
+        "timeToLoseInstantDetection": 5.0,
+        "timeToLoseInstantDetectionShip": 1.0
       }
     },
     "distDetection": {
@@ -4251,6 +4768,9 @@
       },
       "amplitude3": {
         "amplitude": 0.6
+      },
+      "amplitude4": {
+        "amplitude": 0.6
       }
     },
     "preset2": {
@@ -4278,6 +4798,9 @@
         "amplitude": 0.7
       },
       "amplitude3": {
+        "amplitude": 0.7
+      },
+      "amplitude4": {
         "amplitude": 0.7
       }
     },
@@ -4307,6 +4830,9 @@
       },
       "amplitude3": {
         "amplitude": 0.7
+      },
+      "amplitude4": {
+        "amplitude": 0.7
       }
     },
     "preset4": {
@@ -4334,6 +4860,9 @@
         "amplitude": 1.0
       },
       "amplitude3": {
+        "amplitude": 0.7
+      },
+      "amplitude4": {
         "amplitude": 0.7
       }
     },
@@ -4363,6 +4892,9 @@
       },
       "amplitude3": {
         "amplitude": 0.5
+      },
+      "amplitude4": {
+        "amplitude": 0.5
       }
     },
     "preset6": {
@@ -4390,6 +4922,9 @@
         "amplitude": 0.75
       },
       "amplitude3": {
+        "amplitude": 0.5
+      },
+      "amplitude4": {
         "amplitude": 0.5
       }
     }
@@ -13713,6 +14248,30 @@
       {
         "p": {
           "name": "wheel_r_01_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
           "modelNames": "alecto_mk_1"
         }
       },
@@ -13732,6 +14291,78 @@
         "p": {
           "name": "wheel_l_04_",
           "modelNames": "alecto_mk_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_04_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_04_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "lancia3ro_100"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "lancia3ro_100"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "lancia3ro_100"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "lancia3ro_100"
         }
       }
     ],
@@ -15712,6 +16343,87 @@
       },
       {
         "excRE": "noise_barrier_e"
+      },
+      {
+        "excRE": "roof_elements_vent"
+      },
+      {
+        "excRE": "roof_elements_ventbox"
+      },
+      {
+        "excRE": "roof_elements_ventpipe"
+      },
+      {
+        "excRE": "roof_elements_air_conditioning"
+      },
+      {
+        "excRE": "roof_elements_base_big"
+      },
+      {
+        "excRE": "roof_elements_base_small"
+      },
+      {
+        "excRE": "roof_elements_bridge_a"
+      },
+      {
+        "excRE": "roof_elements_bridge_b"
+      },
+      {
+        "excRE": "roof_elements_bridge_c"
+      },
+      {
+        "excRE": "roof_elements_door"
+      },
+      {
+        "excRE": "roof_elements_fence"
+      },
+      {
+        "excRE": "roof_elements_light_double"
+      },
+      {
+        "excRE": "roof_elements_light_single"
+      },
+      {
+        "excRE": "roof_elements_mast_a"
+      },
+      {
+        "excRE": "roof_elements_mast_b"
+      },
+      {
+        "excRE": "roof_elements_mast_c"
+      },
+      {
+        "excRE": "roof_elements_mast_d"
+      },
+      {
+        "excRE": "roof_elements_pipe_a"
+      },
+      {
+        "excRE": "roof_elements_pipe_b"
+      },
+      {
+        "excRE": "roof_elements_pipe_c"
+      },
+      {
+        "excRE": "roof_elements_pipe_d"
+      },
+      {
+        "excRE": "roof_elements_powerbox"
+      },
+      {
+        "excRE": "roof_elements_pump"
+      },
+      {
+        "excRE": "roof_elements_satelite_big"
+      },
+      {
+        "excRE": "roof_elements_satelite_small"
+      },
+      {
+        "excRE": "roof_elements_vertical_ladder_a"
+      },
+      {
+        "excRE": "roof_elements_vertical_ladder_b"
       }
     ],
     "hideForMode0re": [
@@ -15950,148 +16662,85 @@
         "excRE": "noise_barrier_e"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_01"
+        "excRE": "roof_elements_vent"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_02"
+        "excRE": "roof_elements_ventbox"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_03"
+        "excRE": "roof_elements_ventpipe"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_04"
+        "excRE": "roof_elements_air_conditioning"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_05"
+        "excRE": "roof_elements_base_big"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_06"
+        "excRE": "roof_elements_base_small"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_07"
+        "excRE": "roof_elements_bridge_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_08"
+        "excRE": "roof_elements_bridge_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_01"
+        "excRE": "roof_elements_bridge_c"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_02"
+        "excRE": "roof_elements_door"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_03"
+        "excRE": "roof_elements_fence"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_04"
+        "excRE": "roof_elements_light_double"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_05"
+        "excRE": "roof_elements_light_single"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_06"
+        "excRE": "roof_elements_mast_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_07"
+        "excRE": "roof_elements_mast_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_08"
+        "excRE": "roof_elements_mast_c"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_01"
+        "excRE": "roof_elements_mast_d"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_02"
+        "excRE": "roof_elements_pipe_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_03"
+        "excRE": "roof_elements_pipe_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_04"
+        "excRE": "roof_elements_pipe_c"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_05"
+        "excRE": "roof_elements_pipe_d"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_06"
+        "excRE": "roof_elements_powerbox"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_07"
+        "excRE": "roof_elements_pump"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_08"
+        "excRE": "roof_elements_satelite_big"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_09"
+        "excRE": "roof_elements_satelite_small"
       },
       {
-        "excRE": "soviet_town_building_5_floors_d_dp_01"
+        "excRE": "roof_elements_vertical_ladder_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_d_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_07"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_08"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_03"
+        "excRE": "roof_elements_vertical_ladder_b"
       }
     ],
     "hideForMode1": [
@@ -17103,7 +17752,7 @@
     "default": {
       "effect": "track_dirt_back",
       "effectFront": "track_dirt_front",
-      "effectTop": "track_dirt_top",
+      "effectTop": "",
       "effectDust": "track_move_dirt",
       "effectBack": "track_dirt_dust"
     },
@@ -17126,7 +17775,14 @@
       "effectFront": "track_dirt_front",
       "effectTop": "track_dirt_top",
       "effectDust": "track_move_dirt",
-      "effectBack": "track_dirt_dust"
+      "effectBack": ""
+    },
+    "ground": {
+      "effect": "track_ground_back",
+      "effectFront": "track_ground_front",
+      "effectTop": "track_ground_top",
+      "effectDust": "track_move_ground",
+      "effectBack": "track_ground_dust"
     }
   },
   "treeDestractible": {
@@ -17292,7 +17948,8 @@
     "dusk": [0.99,1.0]
   },
   "replay": {
-    "segmentLengthSec": 90
+    "segmentLengthSec": 90,
+    "clientSegmentLengthSec": 60
   },
   "wakeFromBullet": {
     "minCal": 0.076,
@@ -17612,7 +18269,8 @@
     "clampingGamma": 1.2,
     "frameWeightMinDynamicStill": 0.11,
     "frameWeightMinDynamicMotion": 0.2,
-    "newframeFalloffDynamicStill": 0.15
+    "newframeFalloffDynamicStill": 0.15,
+    "scaleAabbWithMotionMaxForTAAU": 2.5
   },
   "MicrodetailMultipliers": {
     "airplane": 0.37,

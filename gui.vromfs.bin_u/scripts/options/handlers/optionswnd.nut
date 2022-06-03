@@ -1,3 +1,4 @@
+let { format } = require("string")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
@@ -10,8 +11,39 @@ let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsData.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
 let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
+let { showGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
+
+let function openOptionsWnd(group = null) {
+  let isInFlight = ::is_in_flight()
+  if (isInFlight)
+    ::init_options()
+
+  let options = optionsListModule.getOptionsList()
+
+  if (group != null)
+    foreach (o in options)
+      if (o.name == group)
+        o.selected <- true
+
+  let params = {
+    titleText = isInFlight
+      ? ::is_multiplayer() ? null : ::loc("flightmenu/title")
+      : ::loc("mainmenu/btnGameplay")
+    optGroups = options
+    wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
+    sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
+  }
+
+  params.cancelFunc <- function() {
+    ::set_option_gamma(::get_option_gamma(), false)
+    for (local i = 0; i < SND_NUM_TYPES; i++)
+      set_sound_volume(i, get_sound_volume(i), false)
+  }
+
+  return ::handlersManager.loadHandler(::gui_handlers.Options, params)
+}
 
 ::gui_handlers.Options <- class extends ::gui_handlers.GenericOptionsModal
 {
@@ -57,7 +89,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     groupsObj.setValue(curOption)
 
     let showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
-    showSceneBtn("web_ui_button", showWebUI)
+    this.showSceneBtn("web_ui_button", showWebUI)
   }
 
   function onGroupSelect(obj)
@@ -81,8 +113,11 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     } else
       fillOptions(newGroup)
 
+    let groupName = optGroups[newGroup].name
+    this.showSceneBtn("btn_gpu_benchmark", groupName == "graphicsParameters")
     setupSearch()
-    joinEchoChannel(false);
+    joinEchoChannel(false)
+    ::handlersManager.setLastBaseHandlerStartFunc(@() openOptionsWnd(groupName))
   }
 
   function fillOptions(group)
@@ -114,7 +149,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/socialOptions.blk", this)
 
     let hasFacebook = isAvailableFacebook()
-    let fObj = showSceneBtn("facebook_frame", hasFacebook)
+    let fObj = this.showSceneBtn("facebook_frame", hasFacebook)
     if (hasFacebook && fObj)
     {
       fObj.findObject("facebook_like_btn").tooltip = ::loc("guiHints/facebookLike") + ::loc("ui/colon") + ::get_unlock_reward("facebook_like")
@@ -124,7 +159,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
   function setupSearch()
   {
-    showSceneBtn("search_container", isSearchInCurrentGroupAvaliable())
+    this.showSceneBtn("search_container", isSearchInCurrentGroupAvaliable())
     resetSearch()
   }
 
@@ -159,7 +194,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
     if( ! filterText.len()) {
       showOptionsSelectedNavigation()
-      showSceneBtn("filter_notify", false)
+      this.showSceneBtn("filter_notify", false)
       return
     }
 
@@ -193,7 +228,7 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
       base.showOptionRow(header, true)
     }
 
-    let filterNotifyObj = showSceneBtn("filter_notify", needShowSearchNotify)
+    let filterNotifyObj = this.showSceneBtn("filter_notify", needShowSearchNotify)
     if (needShowSearchNotify && filterNotifyObj != null)
       filterNotifyObj.setValue(::loc("menu/options/maxNumFilterOptions",
         { num = MAX_NUM_VISIBLE_FILTER_OPTIONS }))
@@ -364,9 +399,9 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     guiScene.replaceContent(scene.findObject("optionslist"), "%gui/options/voicechatOptions.blk", this)
 
     let needShowOptions = isCrossNetworkChatEnabled()
-    showSceneBtn("voice_disable_warning", !needShowOptions)
+    this.showSceneBtn("voice_disable_warning", !needShowOptions)
 
-    showSceneBtn("voice_options_block", needShowOptions)
+    this.showSceneBtn("voice_options_block", needShowOptions)
     if (!needShowOptions)
       return
 
@@ -517,6 +552,10 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     }
   }
 
+  function onOpenGpuBenchmark() {
+    showGpuBenchmarkWnd()
+  }
+
   function onPostFxSettings(obj)
   {
     applyFunc = gui_start_postfx_settings
@@ -548,6 +587,11 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
   {
     joinEchoChannel(false);
     base.afterModalDestroy()
+  }
+
+  function fullReloadScene() {
+    doApply()
+    base.fullReloadScene()
   }
 
   function doApply()
@@ -583,8 +627,8 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
     let nameRadio = radio?.station
     if (!nameRadio)
       return
-    msgBox("warning",
-      ::format(::loc("options/msg_remove_radio"), nameRadio),
+    this.msgBox("warning",
+      format(::loc("options/msg_remove_radio"), nameRadio),
       [
         ["ok", (@(nameRadio) function() {
           ::remove_internet_radio_station(nameRadio);
@@ -651,34 +695,5 @@ const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 }
 
 return {
-  openOptionsWnd = function(group = null)
-  {
-    let isInFlight = ::is_in_flight()
-    if (isInFlight)
-      ::init_options()
-
-    let options = optionsListModule.getOptionsList()
-
-    if (group != null)
-      foreach(o in options)
-        if (o.name == group)
-          o.selected <- true
-
-    let params = {
-      titleText = isInFlight ?
-        ::is_multiplayer() ? null : ::loc("flightmenu/title")
-        : ::loc("mainmenu/btnGameplay")
-      optGroups = options
-      wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
-      sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
-    }
-    params.cancelFunc <- function()
-    {
-      ::set_option_gamma(::get_option_gamma(), false)
-      for (local i = 0; i < SND_NUM_TYPES; i++)
-        set_sound_volume(i, get_sound_volume(i), false)
-    }
-
-    return ::handlersManager.loadHandler(::gui_handlers.Options, params)
-  }
+  openOptionsWnd
 }

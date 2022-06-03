@@ -13,7 +13,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     setVersionText()
     ::setProjectAwards(this)
 
-    guiScene.performDelayed(this, function() { doLogin() })
+    this.guiScene.performDelayed(this, function() { this.doLogin() })
   }
 
   function doLogin()
@@ -21,12 +21,12 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     ::dagor.debug("Epic login: check_login_pass")
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "epic"})
     let ret = ::check_login_pass("", "", "epic", "epic", false, false)
-    proceedAuthorizationResult(ret)
+    this.proceedAuthorizationResult(ret)
   }
 
   function proceedAuthorizationResult(result)
   {
-    if (!::checkObj(scene)) //check_login_pass is not instant
+    if (!::checkObj(this.scene)) //check_login_pass is not instant
       return
 
     switch (result)
@@ -39,8 +39,8 @@ let exitGame = require("%scripts/utils/exitGame.nut")
         ::error_message_box("yn1/connect_error", result,
         [
           ["exit", exitGame],
-          ["tryAgain", ::Callback(doLogin, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(doLogin, this) })
+          ["tryAgain", ::Callback(this.doLogin, this)]
+        ], "tryAgain", { cancel_fn = ::Callback(this.doLogin, this) })
     }
   }
 

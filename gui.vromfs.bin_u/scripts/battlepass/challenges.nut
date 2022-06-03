@@ -3,6 +3,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
+let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
 
 let battlePassChallenges = ::Watched([])
 let curSeasonChallenges = ::Computed(@() battlePassChallenges.value
@@ -37,7 +38,7 @@ let curSeasonChallengesByStage = ::Computed(function() {
     if (mode == null)
       continue
 
-    let level = getLevelFromConditions(mode % "condition")
+    let level = getLevelFromConditions(getUnlockConditions(mode))
     if (level == null)
       continue
 
@@ -78,13 +79,13 @@ let function getChallengeStatus(userstatUnlock, unlockConfig) {
 let function getConditionInTitleConfig(unlockBlk) {
   let res = {
     addTitle = ""
-    titleIcon = "#ui/gameuiskin#challenge_medal"
+    titleIcon = "#ui/gameuiskin#challenge_medal.svg"
   }
   let mode = unlockBlk?.mode
   if (mode == null)
     return res
 
-  let condition = (mode % "condition").extend(mode % "visualCondition")
+  let condition = getUnlockConditions(mode)
   let level = getLevelFromConditions(condition)
   if (level != null) {
     if (level > seasonLevel.value)

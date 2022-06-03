@@ -1,3 +1,4 @@
+let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -25,7 +26,7 @@ subscriptions.addListenersWithoutEnv({
       unitName = unit.name + "_shop"
       rank = ::get_roman_numeral(unit?.rank ?? -1)
       country = ::getUnitCountry(unit)
-      link = ::format(::loc("url/wiki_objects"), unit.name)
+      link = format(::loc("url/wiki_objects"), unit.name)
     }
 
     local reciever = facebookPostWallMessage.value? bit_activity.FACEBOOK : bit_activity.NONE

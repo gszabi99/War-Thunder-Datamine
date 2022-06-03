@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::gui_handlers.LoadingUrlMissionModal <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -43,7 +44,7 @@
       return
 
     guiScene.appendWithBlk(holderObj, data, this)
-    showSceneBtn(btnId, false)
+    this.showSceneBtn(btnId, false)
   }
 
   function loadUrlMission()
@@ -67,7 +68,7 @@
   function resetTimer()
   {
     timer = timeToShowCancel
-    showSceneBtn(buttonCancelId, false)
+    this.showSceneBtn(buttonCancelId, false)
   }
 
   function onUpdate(obj, dt)
@@ -86,7 +87,7 @@
 
     timer -= dt
     if (timer < 0)
-      showSceneBtn(buttonCancelId, true)
+      this.showSceneBtn(buttonCancelId, true)
   }
 
   function onLoadingEnded(success, blk)
@@ -115,8 +116,8 @@
 
     updateText(errorText)
     scene.findObject("msgWaitAnimation").show(false)
-    showSceneBtn(buttonCancelId, false)
-    showSceneBtn(buttonOkId, true)
+    this.showSceneBtn(buttonCancelId, false)
+    this.showSceneBtn(buttonOkId, true)
   }
 
   function updateText(text)
@@ -134,7 +135,7 @@
   {
     isCancel = true
     ::abort_download(requestId)
-    showSceneBtn(buttonCancelId, false)
+    this.showSceneBtn(buttonCancelId, false)
   }
 
   function onEventSignOut()

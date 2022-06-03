@@ -96,8 +96,8 @@ let function generateRows(branchBlk, treeRows, treeBlk)
       let posY = iBlk.posXYFrom.y.tointeger()
       let endPosX = iBlk.posXYTo.x.tointeger()
       let endPosY = iBlk.posXYTo.y.tointeger()
-      minPosX = ::min(minPosX ?? posX, posX)
-      maxPosX = ::max(maxPosX ?? endPosX, endPosX)
+      minPosX = min(minPosX ?? posX, posX)
+      maxPosX = max(maxPosX ?? endPosX, endPosX)
       textBlocks.append({
         posX = posX - 1
         posY = posY - 1
@@ -141,8 +141,8 @@ let function generateRows(branchBlk, treeRows, treeBlk)
 
     let posX = itemConfig.posXY.x.tointeger()
     let posY = itemConfig.posXY.y.tointeger()
-    minPosX = ::min(minPosX ?? posX, posX)
-    maxPosX = ::max(maxPosX ?? posX, posX)
+    minPosX = min(minPosX ?? posX, posX)
+    maxPosX = max(maxPosX ?? posX, posX)
     if (itemConfig.showResources && resourcesInColumn?[posX-1] == null)
       resourcesInColumn[posX-1] <- 1
 

@@ -669,8 +669,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -714,8 +714,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -723,8 +723,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -732,8 +732,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -772,29 +772,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -1708,8 +1708,6 @@
     "VehiclePhys": {
       "tracks": {
         "animationMultiplier": 0.71,
-        "height": 0.095,
-        "width": 0.55,
         "tracksTensionK": [6.5,8.0,2.0],
         "trackMesh": "us_t97_phys_track_line",
         "trackLen": 0.176,
@@ -1719,7 +1717,9 @@
         "trackEmitSparks": false,
         "trackMaxHeight": 1.4,
         "trackStartOffset": 0.23,
-        "trackMaxSinking": 0.17
+        "trackMaxSinking": 0.17,
+        "height": 0.095,
+        "width": 0.5
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2392,9 +2392,6 @@
         "superstructure_bottom_dm": {
           "armorThickness": 117.0
         },
-        "superstructure_side_dm": {
-          "armorThickness": 76.0
-        },
         "turret_03_bottom_dm": {
           "armorThickness": 36.0
         },
@@ -2425,6 +2422,9 @@
       },
       "hull_RHA": {
         "armorClass": "RHA_tank",
+        "superstructure_side_dm": {
+          "armorThickness": 20.0
+        },
         "superstructure_top_dm": {
           "armorThickness": 20.0
         },
@@ -2782,6 +2782,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3275,10 +3276,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_it"
+        "image": "#ui/gameuiskin#tank_reinforcement_it.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_it"
+        "image": "#ui/gameuiskin#tank_reinforcement_it.png"
       },
       "art_support": [],
       "105mm_usa_HESH": [],
@@ -3335,9 +3336,11 @@
                   "pitch": [-10.0,20.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-125.0,0.0,20.0],
-                  "lim2": [-125.0,125.0,-10.0,20.0],
-                  "lim3": [125.0,180.0,0.0,20.0]
+                  "lim1": [-180.0,-161.0,0.0,20.0],
+                  "lim2": [-161.0,-122.0,-5.0,20.0],
+                  "lim3": [-122.0,122.0,-10.0,20.0],
+                  "lim4": [122.0,161.0,-5.0,20.0],
+                  "lim5": [161.0,180.0,0.0,20.0]
                 }
               }
             },
@@ -3712,9 +3715,11 @@
             "pitch": [-10.0,20.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-125.0,0.0,20.0],
-            "lim2": [-125.0,125.0,-10.0,20.0],
-            "lim3": [125.0,180.0,0.0,20.0]
+            "lim1": [-180.0,-161.0,0.0,20.0],
+            "lim2": [-161.0,-122.0,-5.0,20.0],
+            "lim3": [-122.0,122.0,-10.0,20.0],
+            "lim4": [122.0,161.0,-5.0,20.0],
+            "lim5": [161.0,180.0,0.0,20.0]
           }
         }
       },

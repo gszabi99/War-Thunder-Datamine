@@ -1,12 +1,20 @@
-let { is_seen_nuclear_event,
-        is_seen_main_nuclear_event,
-        need_show_after_streak } = require("hangarEventCommand")
+let {
+  get_base_game_version = @() ::get_base_game_version() //compatibility with 2.15.1.X
+} = require("app")
+let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
+} = require("hangarEventCommand")
 let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { Version } = require("%sqstd/version.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
 })
+
+let function isNewClientFunc() {
+  let cur = get_base_game_version()
+  return cur == 0 || cur >= Version("2.0.0.0").toint()
+}
 
 let function onNewClientVersion(params) {
   newClientVersionEvent.hasMessage = true
@@ -28,7 +36,7 @@ let function checkNuclearEvent(params = {}) {
     return
 
   let isSeenNuclearEvent = is_seen_nuclear_event()
-  let isNewClient = ::is_version_equals_or_newer("2.0.0.0")
+  let isNewClient = isNewClientFunc()
   let isForceNewClientVersionEvent = isSeenNuclearEvent && isNewClient
   if (!isForceNewClientVersionEvent && !newClientVersionEvent.hasMessage)
     return

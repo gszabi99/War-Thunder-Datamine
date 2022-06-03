@@ -449,7 +449,9 @@
           "armorClass": "tank_traks",
           "armorThickness": 10.0,
           "hp": 150.0,
-          "ex_armor_04_dm": [],
+          "ex_armor_04_dm": {
+            "armorThickness": 15.0
+          },
           "ex_armor_l_05_dm": [],
           "ex_armor_r_05_dm": [],
           "suspension_dm": []
@@ -489,16 +491,13 @@
       "tracks": {
         "armorClass": "tank_traks",
         "allowRicochet": true,
-        "armorThickness": 20.0,
-        "armorEffectiveThicknessMax": 20.0,
-        "hp": 300.0,
-        "genericEffectiveThicknessMax": 20.0,
-        "genericDamageMult": 1.8,
-        "cumulativeDamageMult": 1.8,
+        "armorThickness": 15.0,
+        "hp": 250.0,
+        "genericEffectiveThicknessMax": 15.0,
+        "genericDamageMult": 1.5,
+        "cumulativeDamageMult": 1.5,
         "track_r_dm": [],
-        "track_l_dm": [],
-        "track_r_01_dm": [],
-        "track_l_01_dm": []
+        "track_l_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -733,6 +732,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1357,8 +1357,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1402,8 +1402,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1411,8 +1411,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1420,8 +1420,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1460,29 +1460,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -3486,10 +3486,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk"
+        "image": "#ui/gameuiskin#tank_reinforcement_uk.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk"
+        "image": "#ui/gameuiskin#tank_reinforcement_uk.png"
       },
       "manual_extinguisher": [],
       "tank_tool_kit": [],
@@ -3858,7 +3858,7 @@
         }
       },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight",
+        "image": "#ui/gameuiskin#thermal_sight.png",
         "effects": {
           "nightVision": {
             "gunnerThermal": {

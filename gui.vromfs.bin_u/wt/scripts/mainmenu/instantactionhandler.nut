@@ -1,3 +1,4 @@
+let { format } = require("string")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -559,14 +560,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
   function showNoSuitableVehiclesMsgBox()
   {
-    msgBox("cant_fly", ::loc("events/no_allowed_crafts", " "), [["ok", function() {
+    this.msgBox("cant_fly", ::loc("events/no_allowed_crafts", " "), [["ok", function() {
       startSlotbarPresetsTutorial()
     }]], "ok")
   }
 
   function showBadCurrentUnitMsgBox()
   {
-    msgBox("cant_fly", ::loc("events/no_allowed_crafts", " "), [["ok", function() {
+    this.msgBox("cant_fly", ::loc("events/no_allowed_crafts", " "), [["ok", function() {
       startSlotbarPresetsTutorial()
     }]], "ok")
   }
@@ -654,7 +655,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     // "Ok" button
     buttonsArray.append(["ok", function () {}])
 
-    msgBox("bad_current_unit", msgText, buttonsArray, "ok"/*"#mainmenu/changeMode"*/, { cancel_fn = function () {} })
+    this.msgBox("bad_current_unit", msgText, buttonsArray, "ok"/*"#mainmenu/changeMode"*/, { cancel_fn = function () {} })
   }
 
   function isCurrentGameModeMultiSlotEnabled()
@@ -945,8 +946,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     else
       cost.wp = ::shop_get_unlock_crew_cost(crewId)
 
-    let msg = ::format("%s %s?", ::loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
-    msgBox("unlock_crew", msg, [
+    let msg = format("%s %s?", ::loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
+    this.msgBox("unlock_crew", msg, [
         ["yes", (@(crewId, isGold) function() {
           taskId = ::unlockCrew( crewId, isGold, cost )
           ::sync_handler_simulate_signal("profile_reload")

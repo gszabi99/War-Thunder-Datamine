@@ -1394,7 +1394,8 @@
           "airRadiusPx": 10.0,
           "worldMinDistToShow": 30.0,
           "worldMinDistToShootPos": 5000.0,
-          "showArrows": false
+          "showArrows": false,
+          "viscosity": [0.2,0.1,0.05]
         }
       },
       {
@@ -1860,7 +1861,7 @@
         "iconWwMissionTargetUnitIndicator": "target_unit_icon.svg:22:30:K"
       },
       {
-        "iconRearmZoneSmall": "icon_weapons_in_progress"
+        "iconRearmZoneSmall": "icon_weapons_in_progress.svg:50:50:K"
       },
       {
         "iconScoutBinocular": "binocular"
@@ -2452,14 +2453,14 @@
       "iconTime": "objective_time",
       "iconAA": "objective_aa",
       "iconFighters": "objective_air",
-      "iconBombers": "objective_bomber",
+      "iconBombers": "objective_bomber.svg:36:36:K",
       "iconBuilding": "objective_building",
       "iconCannon": "objective_cannon",
-      "iconShip": "objective_ship",
-      "iconTank": "objective_tank",
+      "iconShip": "objective_ship.svg:36:36:K",
+      "iconTank": "objective_tank.svg:36:36:K",
       "iconCapturing": "neutral_af_small",
       "iconAir": "objective_air",
-      "iconHeli": "objective_helicopter",
+      "iconHeli": "objective_helicopter.svg:36:36:K",
       "iconTroops": "objective_troops",
       "iconTruck": "objective_truck",
       "iconScore": "table_score_icon",
@@ -3221,18 +3222,28 @@
           }
         },
         {
-          "stealth_activate": {
+          "support_plane_change": {
             "shortcutIdx": 28
           }
         },
         {
-          "weapon_lock": {
+          "support_plane_group_attack": {
             "shortcutIdx": 29
           }
         },
         {
-          "tank_terraform": {
+          "stealth_activate": {
             "shortcutIdx": 30
+          }
+        },
+        {
+          "weapon_lock": {
+            "shortcutIdx": 31
+          }
+        },
+        {
+          "tank_terraform": {
+            "shortcutIdx": 32
           }
         }
       ],
@@ -3607,7 +3618,7 @@
       "selectedColor": "#14ff1464",
       "color": "#ff0a0a64",
       "forestallColor": "#c4ffff40",
-      "forestallFailColor": "#ffc4c410",
+      "forestallFailColor": "#32323205",
       "torpForestall": "",
       "forestallFadeTime": 0.5,
       "forestallTimeToStabilze": 1.0,
@@ -3648,7 +3659,7 @@
   },
   {
     "torpedoIndicator": {
-      "iconTorpedo": "torpedo_mark",
+      "iconTorpedo": "torpedo_mark.svg:43:43:K",
       "iconScale": 0.75,
       "screenRadius": 240.0,
       "screenOffset": [0.0,0.0],

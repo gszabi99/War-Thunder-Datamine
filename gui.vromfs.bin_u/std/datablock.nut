@@ -7,7 +7,7 @@ let { isFunction, isDataBlock } = require("underscore.nut")
 let function fillBlock(id, block, data, arrayKey = "array") {
   if (type(data) == "array") {
     let newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
-    foreach (idx, v in data)
+    foreach (v in data)
       fillBlock(v?.label ?? arrayKey, newBl, v)
   }
   else if (type(data) == "table") {
@@ -124,7 +124,7 @@ let function normalizeAndFlattenConvertedBlk(obj){
   if (t == "array" && obj.len()==1) {
     let el = obj[0]
     if (type(el)=="table" && el.len()==1){
-      foreach(k, v in el){
+      foreach(v in el){
         return (type(v)=="array")
           ? v.map(normalizeAndFlattenConvertedBlk)
           : el.map(normalizeAndFlattenConvertedBlk)

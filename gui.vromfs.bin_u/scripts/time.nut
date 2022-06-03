@@ -1,3 +1,5 @@
+let { format, split_by_chars } = require("string")
+let regexp2 = require("regexp2")
 let math = require("math")
 let timeBase = require("timeLoc.nut")
 let dagor_iso8601 = require("dagor.iso8601")
@@ -44,8 +46,8 @@ let buildTabularDateTimeStr = function(t, showSeconds = false)
 {
   let tm = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
   return showSeconds ?
-    ::format("%04d-%02d-%02d %02d:%02d:%02d", tm.year, tm.month+1, tm.day, tm.hour, tm.min, tm.sec) :
-    ::format("%04d-%02d-%02d %02d:%02d", tm.year, tm.month+1, tm.day, tm.hour, tm.min)
+    format("%04d-%02d-%02d %02d:%02d:%02d", tm.year, tm.month+1, tm.day, tm.hour, tm.min, tm.sec) :
+    format("%04d-%02d-%02d %02d:%02d", tm.year, tm.month+1, tm.day, tm.hour, tm.min)
 }
 
 
@@ -65,9 +67,9 @@ let buildDateStr = function(t) {
 let buildTimeStr = function(t, showZeroSeconds = false, showSeconds = true) {
   let timeTable = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
   if (showSeconds && (showZeroSeconds || timeTable.sec > 0))
-    return ::format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
+    return format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
   else
-    return ::format("%d:%02d", timeTable.hour, timeTable.min)
+    return format("%d:%02d", timeTable.hour, timeTable.min)
 }
 
 
@@ -83,7 +85,7 @@ let buildDateTimeStr = function (t, showZeroSeconds = false, showSeconds = true)
 let getCurTimeMillisecStr = function() {
   let tMs = ::get_charserver_time_millisec()
   let timeTbl = unixtime_to_local_timetbl(tMs / 1000 + charToLocalUtcDiff())
-  return ::format("%02d:%02d:%02d.%03d", timeTbl.hour, timeTbl.min, timeTbl.sec, tMs % 1000)
+  return format("%02d:%02d:%02d.%03d", timeTbl.hour, timeTbl.min, timeTbl.sec, tMs % 1000)
 }
 
 
@@ -93,12 +95,12 @@ let getUtcMidnight = function() {
 
 
 let validateTime = function (timeTbl) {
-  timeTbl.year = ::clamp(timeTbl.year, 1970, 2037)
-  timeTbl.month = ::clamp(timeTbl.month, 0, 11)
-  timeTbl.day = ::clamp(timeTbl.day, 1, 31)
-  timeTbl.hour = ::clamp(timeTbl.hour, 0, 23)
-  timeTbl.min = ::clamp(timeTbl.min, 0, 59)
-  timeTbl.sec = ::clamp(timeTbl.sec, 0, 59)
+  timeTbl.year = clamp(timeTbl.year, 1970, 2037)
+  timeTbl.month = clamp(timeTbl.month, 0, 11)
+  timeTbl.day = clamp(timeTbl.day, 1, 31)
+  timeTbl.hour = clamp(timeTbl.hour, 0, 23)
+  timeTbl.min = clamp(timeTbl.min, 0, 59)
+  timeTbl.sec = clamp(timeTbl.sec, 0, 59)
   let check = unixtime_to_utc_timetbl(utc_timetbl_to_unixtime(timeTbl))
   timeTbl.day -= (timeTbl.day == check.day) ? 0 : check.day
 }
@@ -109,7 +111,7 @@ let reNotNumeric = regexp2(@"\D+")
 
 let function getTimeTblFromStringImpl(str) {
   let timeOrderLen = timeOrder.len()
-  let timeArray = ::split(str, ":- ").filter(@(v) v != "")
+  let timeArray = split_by_chars(str, ":- ").filter(@(v) v != "")
   if (timeArray.len() < timeOrderLen)
   {
     if (reDateYmdAtStart.match(str))
@@ -119,7 +121,7 @@ let function getTimeTblFromStringImpl(str) {
   }
 
   let res = {}
-  let lenDiff = ::min(0, timeArray.len() - timeOrderLen)
+  let lenDiff = min(0, timeArray.len() - timeOrderLen)
   for(local p = timeOrderLen - 1; p >= 0; --p) {
     let i = p + lenDiff
     if (i < 0) {
@@ -205,7 +207,7 @@ local function processTimeStamps(text) {
 
       local textTime = ""
       if (time == "{time_countdown=") {
-        textTime = timeBase.hoursToString(::max( 0, t - ::get_charserver_time_sec() ) / timeBase.TIME_HOUR_IN_SECONDS_F, true, true)
+        textTime = timeBase.hoursToString(max( 0, t - ::get_charserver_time_sec() ) / timeBase.TIME_HOUR_IN_SECONDS_F, true, true)
       } else {
         textTime = buildDateTimeStr(t)
       }
@@ -226,9 +228,9 @@ local function preciseSecondsToString(value, canShowZeroMinutes = true) {
   ms = ms % 1000
 
   if (!canShowZeroMinutes && mm == 0)
-    return ::format("%s%02d.%03d", sign, ss, ms)
+    return format("%s%02d.%03d", sign, ss, ms)
 
-  return ::format("%s%d:%02d.%03d", sign, mm, ss, ms)
+  return format("%s%d:%02d.%03d", sign, mm, ss, ms)
 }
 
 

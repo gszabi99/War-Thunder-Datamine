@@ -260,12 +260,10 @@
         },
         "composite_armor_hull_01_dm": {
           "armorThickness": 8.0,
-          "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
         },
         "composite_armor_hull_02_dm": {
           "armorThickness": 8.0,
-          "armorClass": "tank_structural_steel",
           "hidableInXrayViewer": true
         },
         "ex_armor_06_dm": {
@@ -493,6 +491,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -836,6 +835,32 @@
         }
       }
     }
+  },
+  {
+    "xray_viewer_data": [
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_01_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_02_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_hull_02_dm"
+            }
+          }
+        }
+      }
+    ]
   },
   {
     "sound": {
@@ -1408,8 +1433,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1453,8 +1478,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1462,8 +1487,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1471,8 +1496,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1511,29 +1536,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2648,9 +2673,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 15000.0,
+        "Empty": 13400.0,
         "Fuel": 500.0,
-        "TakeOff": 15500.0,
+        "TakeOff": 13900.0,
         "momentOfInertia": [2.5,2.5,6.0],
         "CenterOfGravity": [0.1,0.4,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -2659,8 +2684,6 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "height": 0.06,
-        "width": 0.38,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "fr_amx_13_1_late_phys_track_line",
         "trackLen": 0.122,
@@ -2669,6 +2692,8 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.08,
         "trackMaxHeight": 1.13,
+        "height": 0.06,
+        "width": 0.38,
         "trackStartOffset": 0.12,
         "trackEmitSparks": true
       },
@@ -3447,10 +3472,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "75mm_usa_HE": [],
       "75mm_usa_APCBC": [],

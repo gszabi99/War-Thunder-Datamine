@@ -17,9 +17,9 @@ local blockNameByDirection = {
   elements = null
   isCompositAxis = null
 
-  constructor(_elements = [])
+  constructor(v_elements = [])
   {
-    elements = _elements
+    elements = v_elements
     isCompositAxis = false
   }
 

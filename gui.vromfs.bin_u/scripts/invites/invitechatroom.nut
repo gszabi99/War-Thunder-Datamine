@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::g_invites_classes.ChatRoom <- class extends ::BaseInvite
 {
   //custom class params, not exist in base invite

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -41,7 +42,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     base.initScreen()
 
-    showSceneBtn("modesRadiobuttons", false)
+    this.showSceneBtn("modesRadiobuttons", false)
 
     if(!isSmallScreen)
       createSlotbar(
@@ -101,7 +102,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     {
       let text = ::loc("shop/unlockTier/locked", {rank = ::get_roman_numeral(nextRank)}) + "\n"
                     + ::loc("shop/unlockTier/reqBoughtUnitsPrevRank", {amount = reqUnits, prevRank = ::get_roman_numeral(rank)})
-      msgBox("locked_rank", text, [["ok", function(){}]], "ok", { cancel_fn = function(){}})
+      this.msgBox("locked_rank", text, [["ok", function(){}]], "ok", { cancel_fn = function(){}})
     }
   }
 
@@ -290,7 +291,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       return
 
     updateRepairAllButton()
-    showSceneBtn("btn_back", curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
+    this.showSceneBtn("btn_back", curResearchingUnit == null || ::isUnitResearched(curResearchingUnit))
 
     let unit = getCurAircraft(true, true)
     if (!unit)
@@ -324,7 +325,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       let textSample = ::loc("shop/researchUnit", { unit = ::getUnitName(unit.name) }) + "%s"
       let textValue = flushExp ? ::loc("ui/parentheses/space",
         {text = ::Cost().setRp(flushExp).tostring()}) : ""
-      coloredText = ::format(textSample, textValue)
+      coloredText = format(textSample, textValue)
     }
 
     foreach(navBar in [navBarObj, navBarGroupObj])
@@ -543,7 +544,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     }
   }
   if (resText=="")
-    dagor.debug("Shop.blk checked.")
+    ::dagor.debug("Shop.blk checked.")
   else
     dagor.fatal("Incorrect shop.blk!\n" + resText)
 }

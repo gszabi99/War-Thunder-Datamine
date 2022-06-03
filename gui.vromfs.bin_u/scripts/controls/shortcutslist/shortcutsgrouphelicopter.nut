@@ -308,14 +308,12 @@ return [
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "helicopter_sensor_cue_y"
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ID_IRCM_SWITCH_HELICOPTER"

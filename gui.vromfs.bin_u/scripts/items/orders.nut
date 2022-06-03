@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -174,7 +175,7 @@ g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
   if (cooldownTimeleft > 0)
   {
     let timeText = time.secondsToString(::g_orders.cooldownTimeleft)
-    label += ::format(" (%s)", timeText)
+    label += format(" (%s)", timeText)
   }
   return label
 }
@@ -571,7 +572,7 @@ g_orders.updateOrderStatusObject <- function updateOrderStatusObject(statusObj, 
   let tableTexts = getScoreTableTexts()
   let showTable = tableTexts != null && tableTexts.len()
   let statusTableObj = statusObj.findObject("status_table")
-  let numScores = ::min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
+  let numScores = min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
   if (::checkObj(statusTableObj))
     statusTableObj.show(showTable)
   if (showTable)
@@ -845,7 +846,7 @@ g_orders.getOrderItem <- function getOrderItem(orderObjective)
 /** Called only when no active order. */
 g_orders.updateCooldownTimeleft <- function updateCooldownTimeleft()
 {
-  cooldownTimeleft = ::max(getCooldownTimeleft(), 0)
+  cooldownTimeleft = max(getCooldownTimeleft(), 0)
 }
 
 g_orders.getCooldownTimeleft <- function getCooldownTimeleft()

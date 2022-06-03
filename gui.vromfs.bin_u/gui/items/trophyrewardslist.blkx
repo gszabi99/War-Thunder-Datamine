@@ -49,26 +49,42 @@
           }
         },
         {
-          "tdiv": {
-            "size": "fw, ph",
-            "pos": "1@blockInterval, 0",
-            "position": "relative",
-            "padding": "0.01@scrn_tgt",
-            "overflow-y": "auto",
-            "scrollbarShortcuts": "yes",
-            "tdiv": {
-              "id": "item_info",
-              "width": "pw",
-              "display": "hide",
+          "tdiv": [
+            {
+              "size": "fw, ph"
+            },
+            {
+              "pos": "1@blockInterval, 0"
+            },
+            {
               "flow": "vertical"
             },
-            "textareaNoTab": {
-              "id": "item_info_text",
-              "width": "pw",
-              "display": "hide",
-              "font-bold": "@fontNormal"
+            {
+              "padding": "0.01@scrn_tgt"
+            },
+            {
+              "overflow-y": "auto"
+            },
+            {
+              "scrollbarShortcuts": "yes"
+            },
+            {
+              "tdiv": {
+                "id": "item_info",
+                "width": "pw",
+                "display": "hide",
+                "flow": "vertical"
+              }
+            },
+            {
+              "tdiv": {
+                "id": "prize_info",
+                "width": "pw",
+                "text-align": "center",
+                "flow": "vertical"
+              }
             }
-          }
+          ]
         },
         {
           "chapterSeparator": {

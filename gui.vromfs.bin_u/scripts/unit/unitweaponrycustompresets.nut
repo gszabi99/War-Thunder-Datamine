@@ -47,7 +47,7 @@ let function getCustomPresetsConfig(unit) {
   if (unit.name not in customPresetsConfigByUnit.value)
     loadCustomPresets(unit.name)
 
-  return customPresetsConfigByUnit.value[unit.name]
+  return customPresetsConfigByUnit.value?[unit.name] ?? []
 }
 
 let function convertPresetToBlk(preset) {

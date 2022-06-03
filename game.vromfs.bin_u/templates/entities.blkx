@@ -1,1548 +1,1953 @@
-{
-  "import": "#game_pkg_dev/templates/*.blk",
-  "replicating": {
-    "replication": []
+[
+  {
+    "import": "#game_pkg_dev/templates/*.blk"
   },
-  "msg_sink": {
-    "_extends": "replicating",
-    "_singleton": true,
-    "msg_sink": []
+  {
+    "import": "%danetlibs/route_prober/templates/route_prober.blk"
   },
-  "server_load_stat": {
-    "_extends": "replicating",
-    "_replicated": "server_load_stat__load",
-    "_tracked": "server_load_stat__load",
-    "server_load_stat__frameCnt": 0,
-    "server_load_stat__timer": 1.0,
-    "server_load_stat__load": 0.0
-  },
-  "unit_loader": {
-    "setting__className": "",
-    "setting__playerNo": -1,
-    "setting__unitType": "",
-    "setting__crewSkillK": -1.0,
-    "setting__weapons": "",
-    "setting__skin": "",
-    "setting__canChangeUnit": false,
-    "setting__isPhysPredictionEnabled": false,
-    "setting__loadAnim": false,
-    "setting__unit_class": "",
-    "setting__applyAllMods": false,
-    "setting__closed_waypoints": false,
-    "setting__tm": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "setting__isDelayed": false,
-    "setting__shouldDrawSmallIndForMissTarget": true,
-    "setting__uniqueName": "",
-    "setting__count": 1,
-    "setting__attack_type": "",
-    "setting__army": 0,
-    "setting__formation_type": "cols",
-    "setting__formation_div": 1,
-    "setting__formation_step": [1.0,1.0],
-    "setting__formation_noise": [0.1,0.1],
-    "setting__stealthRadius": -1.0,
-    "setting__supportUnitType": 0,
-    "setting__targetAir": true,
-    "setting__targetGnd": true,
-    "setting__targetAAA": true,
-    "setting__accuracy": 1.0,
-    "setting__maxDeviationAngle": 0.0,
-    "setting__effShootingRate": 1.0,
-    "setting__lightlyArmored": false,
-    "setting__avoidObstacles": false,
-    "setting__targetableByAi": true,
-    "setting__isImmortal": false,
-    "setting__calmDetection": false,
-    "setting__name": "",
-    "setting__flags": 0,
-    "setting__aiReloadMult": 1.0,
-    "setting__speed": 0.0,
-    "setting__routeName": "",
-    "setting__toGround": false,
-    "setting__bullets:list<t>": [],
-    "setting__bulletsCount:list<i>": [],
-    "setting__unit_target_list:list<t>": []
-  },
-  "spawn_point": {
-    "transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "spawnPointType": "",
-    "missionObject:tag": []
-  },
-  "backmodel_spawn_point": {
-    "_extends": "spawn_point",
-    "forPremiumVehicle": false
-  },
-  "route": {
-    "route__routeId": "",
-    "route__isLooped": false,
-    "missionObject:tag": [],
-    "route__wayPointsNames:list<t>": [],
-    "route__wayPoints:list<eid>": []
-  },
-  "way_point": {
-    "way_point__transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "way_point__name": "",
-    "way_point__moveType": "",
-    "way_point__speed": 30.0,
-    "way_point__radius": 5.0,
-    "missionObject:tag": []
-  },
-  "unit_current_route": {
-    "unit_current_route__routeEid:eid": [],
-    "unit_current_route__curWayPoint:eid": []
-  },
-  "unit_target_list": {
-    "unit_target_list:list<t>": []
-  },
-  "delayed_action": {
-    "delayed_action__doAtTime": -1.0,
-    "delayed_action__timer": 0.0
-  },
-  "delayed_unit_shot": {
-    "_extends": "delayed_action",
-    "delayed_unit_shot__unitName": "",
-    "delayed_unit_shot__triggerGroup": 0
-  },
-  "action_by_date": {
-    "action_by_date__yearFrom": 1900,
-    "action_by_date__monthFrom": 1,
-    "action_by_date__dayFrom": 1,
-    "action_by_date__hourFrom": 0,
-    "action_by_date__minFrom": 0,
-    "action_by_date__secFrom": 0,
-    "action_by_date__yearTo": 1901,
-    "action_by_date__monthTo": 1,
-    "action_by_date__dayTo": 1,
-    "action_by_date__hourTo": 0,
-    "action_by_date__minTo": 0,
-    "action_by_date__secTo": 0,
-    "action_by_date__timeFrom": 0,
-    "action_by_date__timeTo": 0,
-    "action_by_date__delayFromCreate": 30.0,
-    "action_by_date__doAtTime": -1.0,
-    "action_by_date__onlyFirstEnter": false
-  },
-  "unit_shot_by_date": {
-    "_extends": "action_by_date",
-    "unit_shot_by_date__unitName": "",
-    "unit_shot_by_date__triggerGroup": 0
-  },
-  "ri_gpu_object": {
-    "_extends": "replicating",
-    "_group": {
-      "_track": true,
-      "ri_gpu_object__name": "ammunition_box_n",
-      "ri_gpu_object__grid_tiling": 4,
-      "ri_gpu_object__grid_size": 16,
-      "ri_gpu_object__cell_size": 8.0,
-      "ri_gpu_object__seed": 0,
-      "ri_gpu_object__up_vector": [0.0,1.0,0.0],
-      "ri_gpu_object__scale_range": [1.0,1.0],
-      "ri_gpu_object__biom_indexes": [-1.0,-1.0,-1.0,-1.0],
-      "ri_gpu_object__material_indexes": [-1.0,-1.0,-1.0,-1.0],
-      "ri_gpu_object__is_using_normal": false,
-      "ri_gpu_object__incline_delta": 0.0,
-      "ri_gpu_object__rotate_range": [0.0,0.0],
-      "ri_gpu_object__map": "",
-      "ri_gpu_object__map_size": [512.0,512.0],
-      "ri_gpu_object__map_offset": [0.0,0.0],
-      "ri_gpu_object__color_from": "#7f7f7f7f",
-      "ri_gpu_object__color_to": "#7f7f7f7f",
-      "ri_gpu_object__on_ri_density": 10.0,
-      "ri_gpu_object__on_ri_noise_gamma": 0.0,
-      "ri_gpu_object__on_ri_noise_tile": 1.0,
-      "ri_gpu_object__on_ri_noise_threshold": 0.5,
-      "ri_gpu_object__on_ri_placer_lod": -1,
-      "ri_gpu_object__max_placed_on_ri": 0,
-      "ri_gpu_object__slope_factor": [1.0,0.0],
-      "ri_gpu_object__hardness": 1.0,
-      "ri_gpu_object__shader_graph": "",
-      "ri_gpu_object__sparse_weight": 0.0,
-      "ri_gpu_object__decal": false,
-      "ri_gpu_object__transparent": false,
-      "ri_gpu_object__place_on_water": false,
-      "ri_gpu_object__enable_displacement": true,
-      "ri_gpu_object__render_into_shadows": false,
-      "ri_gpu_object__coast_range": [-1.0,-1.0],
-      "ri_gpu_object__ri_placer_list:array": [],
-      "ri_gpu_object__biome_params:array": [],
-      "ri_gpu_object__multiple_objects:array": [],
-      "ri_gpu_object__node_based_shader_preload": {
-        "_tags": "render"
-      }
-    },
-    "ri_preload:GpuObjectRiResourcePreload": {
-      "_tags": "render"
+  {
+    "replicating": {
+      "replication": []
     }
   },
-  "light": {
-    "_extends": "replicating",
-    "light__max_radius": 0.0,
-    "light__offset": [0.0,0.0,0.0],
-    "light__color": "#fffac8ff",
-    "light__brightness": 1.0,
-    "transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "_track": true,
-    "_replicate": true
+  {
+    "msg_sink": {
+      "_extends": "replicating",
+      "_singleton": true,
+      "msg_sink": []
+    }
   },
-  "omni_light": {
-    "_extends": "light",
-    "light__nightly": true,
-    "_group": {
-      "_track": true,
-      "_replicate": true,
-      "light__contact_shadows": true,
-      "light__use_box": true,
-      "light__automatic_box": false,
-      "light__box": [
-        [0.0,0.0,0.0],
-        [0.0,0.0,0.0],
-        [0.0,0.0,0.0],
+  {
+    "server_load_stat": {
+      "_extends": "replicating",
+      "_replicated": "server_load_stat__load",
+      "_tracked": "server_load_stat__load",
+      "server_load_stat__frameCnt": 0,
+      "server_load_stat__timer": 1.0,
+      "server_load_stat__load": 0.0
+    }
+  },
+  {
+    "unit_loader": {
+      "setting__className": "",
+      "setting__playerNo": -1,
+      "setting__unitType": "",
+      "setting__crewSkillK": -1.0,
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__canChangeUnit": false,
+      "setting__isPhysPredictionEnabled": false,
+      "setting__loadAnim": false,
+      "setting__unit_class": "",
+      "setting__applyAllMods": false,
+      "setting__closed_waypoints": false,
+      "setting__tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
         [0.0,0.0,0.0]
       ],
-      "light__direction": [0.0,-1.0,0.0],
-      "light__texture_name": ""
-    },
-    "omni_light": {
-      "_tags": "render"
-    },
-    "destroyable_with_rendinst:tag": []
-  },
-  "spot_light": [
-    {
-      "_extends": "light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__nightly": true
-    },
-    {
-      "_group": {
-        "_track": true,
-        "_replicate": true,
-        "light__texture_name": "",
-        "light__max_radius": 45.0,
-        "light__brightness": 100.0
-      }
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "_replicate": true,
-        "_track": true,
-        "spot_light__inner_attenuation": 0.9,
-        "spot_light__dynamic_light": false,
-        "spot_light__shadows": true,
-        "spot_light__dynamic_obj_shadows": false,
-        "spot_light__shadow_shrink": 0
-      }
-    },
-    {
-      "spot_light": {
-        "_tags": "render"
-      }
-    },
-    {
-      "destroyable_with_rendinst:tag": []
-    }
-  ],
-  "spot_light_large": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "_replicate": true
-    },
-    {
-      "light__max_radius": 50.0
-    },
-    {
-      "light__brightness": 200.0
-    }
-  ],
-  "spot_light_large_noshadows": [
-    {
-      "_extends": "spot_light_large"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "_replicate": true
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__dynamic_obj_shadows": false,
-        "spot_light__shadows": false
-      }
-    }
-  ],
-  "spot_light_small": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "_group": {
-        "_replicate": true,
-        "light__max_radius": 5.0,
-        "light__brightness": 15.0
-      }
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__dynamic_obj_shadows": false,
-        "spot_light__shadows": false
-      }
-    }
-  ],
-  "spot_light_huge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 25000.0
-    },
-    {
-      "light__brightness": 250000.0
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__dynamic_obj_shadows": false,
-        "spot_light__shadows": false
-      }
-    }
-  ],
-  "field_light_huge": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 35000.0
-    },
-    {
-      "light__max_radius": 10000.0
-    },
-    {
-      "light__color": "#ffffffff"
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "field_light_orange_largest": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 20000.0
-    },
-    {
-      "light__max_radius": 10000.0
-    },
-    {
-      "light__color": "#ffb978ff"
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "field_light_blue_huge": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 15000.0
-    },
-    {
-      "light__max_radius": 400.0
-    },
-    {
-      "light__color": "#326432ff"
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "field_light_large": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 20.0
-    },
-    {
-      "light__max_radius": 30.0
-    },
-    {
-      "light__color": "#ffffffff"
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "field_light_medium": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 30.0
-    },
-    {
-      "light__max_radius": 30.0
-    },
-    {
-      "light__color": "#ffffffff"
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "field_light_orange": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 2.0
-    },
-    {
-      "light__max_radius": 2.0
-    },
-    {
-      "light__color": "#ff640aff"
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "field_light_orange_large": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 3.0
-    },
-    {
-      "light__max_radius": 2.0
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_orange_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 50.0
-    },
-    {
-      "light__max_radius": 200.0
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_orange_huge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 10000.0
-    },
-    {
-      "light__max_radius": 400.0
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_orange_medium": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 10.0
-    },
-    {
-      "light__max_radius": 15.0
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_orange_medium_a": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 30.0
-    },
-    {
-      "light__max_radius": 20.0
-    },
-    {
-      "light__contact_shadows": false
-    },
-    {
-      "light__color": "#c86414ff"
-    }
-  ],
-  "field_light_orange_medium_b": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 30.0
-    },
-    {
-      "light__max_radius": 20.0
-    },
-    {
-      "light__contact_shadows": true
-    },
-    {
-      "light__color": "#c86414ff"
-    }
-  ],
-  "field_light_orange_small": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 1.0
-    },
-    {
-      "light__max_radius": 1.0
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_orange_smallest": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 0.3
-    },
-    {
-      "light__max_radius": 1.0
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_blue": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__color": "#6464ffff"
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_blue_large": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 300.0
-    },
-    {
-      "light__max_radius": 1000.0
-    },
-    {
-      "light__color": "#0af5ffff"
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_blue_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 10.0
-    },
-    {
-      "light__max_radius": 100.0
-    },
-    {
-      "light__color": "#3232ffff"
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_red": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__color": "#f05032ff"
-    }
-  ],
-  "field_light_red_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 10.0
-    },
-    {
-      "light__max_radius": 100.0
-    },
-    {
-      "light__color": "#f05032ff"
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_green_extralarge": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 10.0
-    },
-    {
-      "light__max_radius": 100.0
-    },
-    {
-      "light__color": "#0a961eff"
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "field_light_green_small": [
-    {
-      "_extends": "field_light_orange"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 5.0
-    },
-    {
-      "light__max_radius": 100.0
-    },
-    {
-      "light__color": "#3cc8149b"
-    },
-    {
-      "light__contact_shadows": false
-    }
-  ],
-  "aircraft_warning_light_red": [
-    {
-      "_extends": "omni_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__brightness": 200.0
-    },
-    {
-      "light__max_radius": 15.0
-    },
-    {
-      "light__color": "#ff0000ff"
-    },
-    {
-      "light__nightly": true
-    }
-  ],
-  "spot_light_red_large": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 75.0
-    },
-    {
-      "light__brightness": 200.0
-    },
-    {
-      "light__color": "#ff0a0aff"
-    }
-  ],
-  "spot_light_magenta_large": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 75.0
-    },
-    {
-      "light__brightness": 200.0
-    },
-    {
-      "light__color": "#ba0affff"
-    }
-  ],
-  "spot_light_orange_large": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 75.0
-    },
-    {
-      "light__brightness": 200.0
-    },
-    {
-      "light__color": "#ff640aff"
-    }
-  ],
-  "spot_light_orange_medium": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 50.0
-    },
-    {
-      "light__brightness": 500.0
-    },
-    {
-      "light__color": "#ff640aff"
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__dynamic_obj_shadows": false,
-        "spot_light__shadows": false
-      }
-    }
-  ],
-  "spot_light_blue_large": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 75.0
-    },
-    {
-      "light__brightness": 200.0
-    },
-    {
-      "light__color": "#0af5ffff"
-    }
-  ],
-  "spot_light_green_large": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 75.0
-    },
-    {
-      "light__brightness": 200.0
-    },
-    {
-      "light__color": "#32ff0aff"
-    }
-  ],
-  "spot_light_orange_extralarge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 300.0
-    },
-    {
-      "light__brightness": 1200.0
-    },
-    {
-      "light__color": "#ff640aff"
-    }
-  ],
-  "spot_light_red_extralarge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 250.0
-    },
-    {
-      "light__brightness": 1200.0
-    },
-    {
-      "light__color": "#ff0a0aff"
-    }
-  ],
-  "spot_light_magenta_extralarge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 250.0
-    },
-    {
-      "light__brightness": 1200.0
-    },
-    {
-      "light__color": "#ba0affff"
-    }
-  ],
-  "spot_light_green_extralarge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 250.0
-    },
-    {
-      "light__brightness": 1200.0
-    },
-    {
-      "light__color": "#32ff0aff"
-    }
-  ],
-  "spot_light_blue_extralarge": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 200.0
-    },
-    {
-      "light__brightness": 55.0
-    },
-    {
-      "light__color": "#0af5ffff"
-    }
-  ],
-  "lamppost_a": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 14.0
-    },
-    {
-      "light__brightness": 60.0
-    },
-    {
-      "light__color": "#ffdca0ff"
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__inner_attenuation": 0.5,
-        "spot_light__dynamic_obj_shadows": true
-      }
-    },
-    {
-      "destroyable_with_rendinst:tag": []
-    }
-  ],
-  "lamppost_b": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 9.0
-    },
-    {
-      "light__brightness": 15.0
-    },
-    {
-      "light__color": "#fffab4ff"
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__inner_attenuation": 0.5,
-        "spot_light__dynamic_obj_shadows": true
-      }
-    },
-    {
-      "destroyable_with_rendinst:tag": []
-    }
-  ],
-  "lamppost_c": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 19.0
-    },
-    {
-      "light__brightness": 150.0
-    },
-    {
-      "light__color": "#fffab4ff"
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__inner_attenuation": 0.5,
-        "spot_light__dynamic_obj_shadows": true
-      }
-    },
-    {
-      "destroyable_with_rendinst:tag": []
-    }
-  ],
-  "spot_light_footbal_field": [
-    {
-      "_extends": "spot_light"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "light__max_radius": 55.0
-    },
-    {
-      "light__brightness": 250.0
-    },
-    {
-      "light__color": "#fffab4ff"
-    },
-    {
-      "_group": {
-        "_tags": "render",
-        "spot_light__dynamic_obj_shadows": true
-      }
-    }
-  ],
-  "floating_rendinst_system": {
-    "_singleton": true,
-    "floatingRiSystem__useRandomWaves": false,
-    "floatingRiSystem__volumePresets:object": {
-      "default_1:object": {
-        "floatVolumesCd": 0.57,
-        "sphereRad": 0.8,
-        "middleDepth": 0.0,
-        "volumesCount": 1
-      },
-      "default_4:object": {
-        "floatVolumesCd": 0.57,
-        "sphereRad": 0.57,
-        "sideDepth": 0.0,
-        "volumesCount": 4
-      },
-      "default_12:object": {
-        "floatVolumesCd": 0.57,
-        "sphereRad": 0.37,
-        "middleDepth": 0.5,
-        "sideDepth": 0.0,
-        "volumesCount": 12
-      }
+      "setting__isDelayed": false,
+      "setting__shouldDrawSmallIndForMissTarget": true,
+      "setting__uniqueName": "",
+      "setting__count": 1,
+      "setting__attack_type": "",
+      "setting__army": 0,
+      "setting__formation_type": "cols",
+      "setting__formation_div": 1,
+      "setting__formation_step": [1.0,1.0],
+      "setting__formation_noise": [0.1,0.1],
+      "setting__stealthRadius": -1.0,
+      "setting__supportUnitType": 0,
+      "setting__targetAir": true,
+      "setting__targetGnd": true,
+      "setting__targetAAA": true,
+      "setting__accuracy": 1.0,
+      "setting__maxDeviationAngle": 0.0,
+      "setting__effShootingRate": 1.0,
+      "setting__lightlyArmored": false,
+      "setting__avoidObstacles": false,
+      "setting__targetableByAi": true,
+      "setting__isImmortal": false,
+      "setting__calmDetection": false,
+      "setting__name": "",
+      "setting__flags": 0,
+      "setting__aiReloadMult": 1.0,
+      "setting__speed": 0.0,
+      "setting__routeName": "",
+      "setting__toGround": false,
+      "setting__bullets:list<t>": [],
+      "setting__bulletsCount:list<i>": [],
+      "setting__unit_target_list:list<t>": []
     }
   },
-  "floating_rendinst_res_group": {
-    "floatingRiGroup__wreckageFloatDuration": 15.0,
-    "floatingRiGroup__updateDist": 1000.0,
-    "floatingRiGroup__interactionType": 0,
-    "floatingRiGroup__interactionDist": 0.0,
-    "floatingRiGroup__elasticity": 0.1,
-    "floatingRiGroup__physUpdateDt": 0.0417,
-    "floatingRiGroup__maxShiftDist": 1000.0,
-    "_group": {
-      "_track": true,
-      "floatingRiGroup__resName": "",
-      "floatingRiGroup__mass": 1.0,
-      "floatingRiGroup__inertiaMult": [80.0,0.1,80.0],
-      "floatingRiGroup__volumesCount": -1,
-      "floatingRiGroup__volumePresetName": "",
-      "floatingRiGroup__geomCenterShift": [0.0,0.0,0.0],
-      "floatingRiGroup__physBboxSizeMul": [1.0,1.0,1.0]
-    },
-    "floatingRiGroup__riPhysFloatingModel": []
-  },
-  "root": {
-    "active": true
-  },
-  "daeditor_selected": {
-    "daeditor__selected:tag": []
-  },
-  "simple_unit": [
-    {
-      "_extends": "root"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "uid": -1
-    },
-    {
-      "className": ""
-    },
-    {
-      "playerNo": -1
-    },
-    {
-      "is_local": false
-    },
-    {
-      "unitVersion": 0
-    },
-    {
-      "unitType": -1
-    },
-    {
-      "canChangeUnit": false
-    },
-    {
-      "missionUnitName": ""
-    },
-    {
-      "_replicated": "uid"
-    },
-    {
-      "_tracked": "playerNo"
-    }
-  ],
-  "unit": {
-    "_extends": "simple_unit"
-  },
-  "simple_ground_unit": {
-    "_extends": "unit",
-    "aim_component": []
-  },
-  "ground_unit": {
-    "_extends": "simple_ground_unit",
-    "move_sys__maxDecel": 0.0,
-    "fire_damage__update_burn_interval": 1.0,
-    "fire_damage__isBurn": false,
-    "toolkit__name": "tank_tool_kit_expendable",
-    "toolkit__enabled_without_mod": true,
-    "extinguisher__name": "manual_extinguisher_expendable",
-    "extinguisher__enabled_without_mod": true,
-    "unit_fire": [],
-    "fire_fx__id:list<i>": [],
-    "fire_fx__fxId:list<i>": [],
-    "fire_fx__paramsId:list<i>": [],
-    "unit_extinguish": [],
-    "unit_crew": [],
-    "unit_repair": [],
-    "unit_fx": [],
-    "fuel_tanks": [],
-    "ammo_stowage": [],
-    "fire_damage": [],
-    "toolkit": [],
-    "extinguisher": []
-  },
-  "light_vehicle": {
-    "_extends": "simple_ground_unit"
-  },
-  "fortification": {
-    "_extends": "simple_ground_unit"
-  },
-  "simple_tank": {
-    "_extends": "simple_ground_unit"
-  },
-  "tank": {
-    "_extends": "ground_unit",
-    "medicalkit__name": "tank_medical_kit_expendable",
-    "medicalkit__enabled_without_mod": false,
-    "medicalkit": [],
-    "track_sound": {
-      "_tags": "sound"
-    },
-    "physical_tracks": {
-      "_tags": "render"
-    },
-    "physical_tracks__isLeft:list<b>": {
-      "_tags": "render"
-    },
-    "physical_tracks_force_update:b": {
-      "_tags": "render",
-      "value": true
-    }
-  },
-  "simple_ship": {
-    "_extends": "simple_ground_unit"
-  },
-  "ship": {
-    "_extends": "ground_unit",
-    "extinguisher__enabled_without_mod": false,
-    "track_sound": {
-      "_tags": "sound"
-    }
-  },
-  "controlled_hero": {
-    "controlledHero:tag": []
-  },
-  "watched_hero": {
-    "watchedHero:tag": []
-  },
-  "player_unit": {
-    "playerUnit:tag": []
-  },
-  "in_flight": {
-    "inFlight:tag": []
-  },
-  "walker": {
-    "_extends": "ground_unit"
-  },
-  "barrage_ballon": {
-    "_extends": "unit"
-  },
-  "infantry_troop": {
-    "_extends": "simple_ground_unit"
-  },
-  "aircraft": {
-    "_extends": "unit"
-  },
-  "weapon": {
-    "_extends": "root"
-  },
-  "gun": {
-    "_extends": "weapon"
-  },
-  "bomb_gun": {
-    "_extends": "weapon"
-  },
-  "rocket_gun": {
-    "_extends": "weapon"
-  },
-  "torpedo_gun": {
-    "_extends": "weapon"
-  },
-  "player": {
-    "player_id": -1,
-    "connId": -1,
-    "_tracked": "connId",
-    "m_player": []
-  },
-  "background_model": {
-    "background_model__model": "",
-    "background_model__skin": "",
-    "background_model__unitName": "",
-    "background_model__weapon": "",
-    "background_model__isPlane": false,
-    "background_model__tm": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "background_model__canOutline": false,
-    "background_model_res": [],
-    "background_model__bullets:list<t>": [],
-    "background_model__spawnEid:eid": []
-  },
-  "level": {
-    "isLocal": true,
-    "level__blk": "",
-    "level__bin": "",
-    "level__environment": "Day",
-    "level__loaded": false,
-    "level__weather": "hazy"
-  },
-  "render_view_cam": {
-    "camera__active": false,
-    "transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "_singleton": true,
-    "camera_view:tag": []
-  },
-  "static_cam": {
-    "camera__active": false,
-    "fov": 90.0,
-    "znear": 0.01,
-    "zfar": 10000.0,
-    "transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "static_camera_view:tag": []
-  },
-  "game_objects": {
-    "_singleton": true,
-    "nonCreatableObj": true,
-    "game_objects": [],
-    "game_objects__createChance:object": {
-      "stationary_mg42": 0.4,
-      "chimney_exhaust": 0.15
-    }
-  },
-  "smoke": {
-    "_extends": "replicating",
-    "smoke__activate_time": 0.0,
-    "smoke__time": 0.0,
-    "_group": {
-      "_replicate": true,
-      "smoke__pos": [0.0,0.0,0.0],
-      "smoke__radius": 0.0,
-      "smoke__visibility_type_flags": 0,
-      "smoke__transparent_for_thermal": false,
-      "smoke__fx_id": -1
-    },
-    "smoke__smoke_fx": {
-      "_tags": "render"
-    }
-  },
-  "camera_fx": {
-    "_extends": "replicating",
-    "_replicate": true,
-    "transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "camera_fx__radius": 10.0,
-    "camera_fx__res": "unknown",
-    "camera_fx": {
-      "_tags": "render"
-    }
-  },
-  "disable_move": {
-    "_singleton": true,
-    "missionObject:tag": [],
-    "disable__targets_list:list<t>": []
-  },
-  "sand_unit": {
-    "sand_unit__noise": 0.0,
-    "sand_unit__moveNoiseK": 0.0,
-    "sand_unit__noiseDecSpd": 20.0,
-    "sand_unit__deathAnimVarId": -1,
-    "sand_unit__deathAnimTimer": -1.0,
-    "sand_unit__deathAnimTime": -1.0
-  },
-  "sand_worm": [
-    {
-      "_extends": "root"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "sand_worm__position": [0.0,0.0]
-    },
-    {
-      "sand_worm__delayed": true
-    },
-    {
-      "sand_worm__radius": 100.0
-    },
-    {
-      "sand_worm__borderColor": "#ff1e00d2"
-    },
-    {
-      "sand_worm__curInactive": 0.0
-    },
-    {
-      "_tracked": "sand_worm__delayed"
-    },
-    {
-      "_tracked": "sand_worm__radius"
-    },
-    {
-      "sand_worm__needSync": false
-    },
-    {
-      "_group": {
-        "_tags": "server",
-        "sand_worm__delayTimer": -1.0,
-        "sand_worm__radiusDecK": 1.4,
-        "sand_worm__inactiveTime": 30.0,
-        "sand_worm__attackRadius": 120.0,
-        "sand_worm__activateTime": [30.0,45.0],
-        "sand_worm__respawnTimeout": [20.0,40.0],
-        "sand_worm__speedK:list<p2>": [
-          {
-            "n": [50.0,10.0]
-          },
-          {
-            "n": [5000.0,1.5]
-          }
-        ],
-        "sand_worm__noiseExcludeAreas:list<t>": [],
-        "sand_worm__excludeAreasId:list<i>": []
-      }
-    },
-    {
-      "_group": {
-        "_tags": "gameClient",
-        "sand_worm__cameraShake": [15.0,10.0,10.0],
-        "sand_worm__cameraShakeTimer": -1.0,
-        "sand_worm__appearSound": "desert/creature_appear",
-        "sand_worm__nearSound": "desert/creature_move",
-        "sand_worm__near_dist": 600.0,
-        "sand_worm__near_shake:list<p3>": [
-          {
-            "n": [600.0,5.0,3.0]
-          },
-          {
-            "n": [500.0,7.0,5.0]
-          },
-          {
-            "n": [400.0,10.0,6.0]
-          },
-          {
-            "n": [300.0,15.0,7.0]
-          },
-          {
-            "n": [250.0,20.0,8.0]
-          },
-          {
-            "n": [200.0,30.0,10.0]
-          },
-          {
-            "n": [170.0,40.0,15.0]
-          },
-          {
-            "n": [140.0,55.0,20.0]
-          },
-          {
-            "n": [100.0,70.0,25.0]
-          }
-        ],
-        "sand_worm__nearSoundEvent:SoundEvent": {
-          "_tags": "sound"
-        }
-      }
-    }
-  ],
-  "sky_laser": [
-    {
-      "_extends": "root"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "sky_laser__weaponIdx": -1
-    },
-    {
-      "sky_laser__uid": -1
-    },
-    {
-      "sky_laser__lastShootAt": -1.0
-    },
-    {
-      "sky_laser__timer": 0.2
-    },
-    {
-      "sky_laser__direction": [0.0,-1.0,0.0]
-    },
-    {
-      "sky_laser__positions:list<p3>": []
-    },
-    {
-      "sky_laser__timings:list<r>": []
-    }
-  ],
-  "sand_worm_render": [
-    {
-      "_extends": "root"
-    },
-    {
-      "_extends": "replicating"
-    },
-    {
-      "sand_worm__victimUid": -1
-    },
-    {
+  {
+    "spawn_point": {
       "transform": [
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
         [0.0,0.0,0.0]
-      ]
-    },
-    {
-      "_tracked": "sand_worm__victimUid"
-    },
-    {
-      "_replicated": "sand_worm__victimUid"
-    },
-    {
+      ],
+      "spawnPointType": "",
+      "missionObject:tag": []
+    }
+  },
+  {
+    "backmodel_spawn_point": {
+      "_extends": "spawn_point",
+      "forPremiumVehicle": false
+    }
+  },
+  {
+    "route": {
+      "route__routeId": "",
+      "route__isLooped": false,
+      "missionObject:tag": [],
+      "route__wayPointsNames:list<t>": [],
+      "route__wayPoints:list<eid>": []
+    }
+  },
+  {
+    "way_point": {
+      "way_point__transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "way_point__name": "",
+      "way_point__moveType": "",
+      "way_point__speed": 30.0,
+      "way_point__radius": 5.0,
+      "missionObject:tag": []
+    }
+  },
+  {
+    "unit_current_route": {
+      "unit_current_route__routeEid:eid": [],
+      "unit_current_route__curWayPoint:eid": []
+    }
+  },
+  {
+    "unit_target_list": {
+      "unit_target_list:list<t>": []
+    }
+  },
+  {
+    "delayed_action": {
+      "delayed_action__doAtTime": -1.0,
+      "delayed_action__timer": 0.0
+    }
+  },
+  {
+    "delayed_unit_shot": {
+      "_extends": "delayed_action",
+      "delayed_unit_shot__unitName": "",
+      "delayed_unit_shot__triggerGroup": 0
+    }
+  },
+  {
+    "action_by_date": {
+      "action_by_date__yearFrom": 1900,
+      "action_by_date__monthFrom": 1,
+      "action_by_date__dayFrom": 1,
+      "action_by_date__hourFrom": 0,
+      "action_by_date__minFrom": 0,
+      "action_by_date__secFrom": 0,
+      "action_by_date__yearTo": 1901,
+      "action_by_date__monthTo": 1,
+      "action_by_date__dayTo": 1,
+      "action_by_date__hourTo": 0,
+      "action_by_date__minTo": 0,
+      "action_by_date__secTo": 0,
+      "action_by_date__timeFrom": 0,
+      "action_by_date__timeTo": 0,
+      "action_by_date__delayFromCreate": 30.0,
+      "action_by_date__doAtTime": -1.0,
+      "action_by_date__onlyFirstEnter": false
+    }
+  },
+  {
+    "unit_shot_by_date": {
+      "_extends": "action_by_date",
+      "unit_shot_by_date__unitName": "",
+      "unit_shot_by_date__triggerGroup": 0
+    }
+  },
+  {
+    "ri_gpu_object": {
+      "_extends": "replicating",
       "_group": {
-        "_tags": "render",
-        "worm_visual__res": "shai_char",
-        "sand_worm__animVarId": -1,
-        "sand_worm__animValue": -1.0,
-        "sand_worm__animTime": 10.0,
-        "sand_worm__animName": "shai_action",
-        "sand_worm__linkNodeId": -1,
-        "sand_worm__linkNodeName": "trigger",
-        "sand_worm__attackSfx": "desert/creature_attack",
-        "sand_worm__attackFxId": -1,
-        "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
-        "worm_visual": []
-      }
-    },
-    {
-      "_group": {
-        "_tags": "server",
-        "sand_worm__delayedTimer": -1.0,
-        "sand_worm__delayedTime": 12.0
+        "_track": true,
+        "ri_gpu_object__name": "ammunition_box_n",
+        "ri_gpu_object__grid_tiling": 4,
+        "ri_gpu_object__grid_size": 16,
+        "ri_gpu_object__cell_size": 8.0,
+        "ri_gpu_object__seed": 0,
+        "ri_gpu_object__up_vector": [0.0,1.0,0.0],
+        "ri_gpu_object__scale_range": [1.0,1.0],
+        "ri_gpu_object__biom_indexes": [-1.0,-1.0,-1.0,-1.0],
+        "ri_gpu_object__material_indexes": [-1.0,-1.0,-1.0,-1.0],
+        "ri_gpu_object__is_using_normal": false,
+        "ri_gpu_object__incline_delta": 0.0,
+        "ri_gpu_object__rotate_range": [0.0,0.0],
+        "ri_gpu_object__map": "",
+        "ri_gpu_object__map_size": [512.0,512.0],
+        "ri_gpu_object__map_offset": [0.0,0.0],
+        "ri_gpu_object__color_from": "#7f7f7f7f",
+        "ri_gpu_object__color_to": "#7f7f7f7f",
+        "ri_gpu_object__on_ri_density": 10.0,
+        "ri_gpu_object__on_ri_noise_gamma": 0.0,
+        "ri_gpu_object__on_ri_noise_tile": 1.0,
+        "ri_gpu_object__on_ri_noise_threshold": 0.5,
+        "ri_gpu_object__on_ri_placer_lod": -1,
+        "ri_gpu_object__max_placed_on_ri": 0,
+        "ri_gpu_object__slope_factor": [1.0,0.0],
+        "ri_gpu_object__hardness": 1.0,
+        "ri_gpu_object__shader_graph": "",
+        "ri_gpu_object__sparse_weight": 0.0,
+        "ri_gpu_object__decal": false,
+        "ri_gpu_object__transparent": false,
+        "ri_gpu_object__place_on_water": false,
+        "ri_gpu_object__enable_displacement": true,
+        "ri_gpu_object__render_into_shadows": false,
+        "ri_gpu_object__coast_range": [-1.0,-1.0],
+        "ri_gpu_object__face_coast": false,
+        "ri_gpu_object__ri_placer_list:array": [],
+        "ri_gpu_object__biome_params:array": [],
+        "ri_gpu_object__multiple_objects:array": [],
+        "ri_gpu_object__node_based_shader_preload": {
+          "_tags": "render"
+        }
+      },
+      "ri_preload:GpuObjectRiResourcePreload": {
+        "_tags": "render"
       }
     }
-  ]
-}
+  },
+  {
+    "light": {
+      "_extends": "replicating",
+      "light__max_radius": 0.0,
+      "light__offset": [0.0,0.0,0.0],
+      "light__color": "#fffac8ff",
+      "light__brightness": 1.0,
+      "transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "_track": true,
+      "_replicate": true
+    }
+  },
+  {
+    "omni_light": {
+      "_extends": "light",
+      "light__nightly": true,
+      "_group": {
+        "_track": true,
+        "_replicate": true,
+        "light__contact_shadows": true,
+        "light__use_box": true,
+        "light__automatic_box": false,
+        "light__box": [
+          [0.0,0.0,0.0],
+          [0.0,0.0,0.0],
+          [0.0,0.0,0.0],
+          [0.0,0.0,0.0]
+        ],
+        "light__direction": [0.0,-1.0,0.0],
+        "light__texture_name": ""
+      },
+      "omni_light": {
+        "_tags": "render"
+      },
+      "destroyable_with_rendinst:tag": []
+    }
+  },
+  {
+    "spot_light": [
+      {
+        "_extends": "light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__nightly": true
+      },
+      {
+        "_group": {
+          "_track": true,
+          "_replicate": true,
+          "light__texture_name": "",
+          "light__max_radius": 45.0,
+          "light__brightness": 100.0
+        }
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "_replicate": true,
+          "_track": true,
+          "spot_light__inner_attenuation": 0.9,
+          "spot_light__dynamic_light": false,
+          "spot_light__shadows": true,
+          "spot_light__dynamic_obj_shadows": false,
+          "spot_light__shadow_shrink": 0
+        }
+      },
+      {
+        "spot_light": {
+          "_tags": "render"
+        }
+      },
+      {
+        "destroyable_with_rendinst:tag": []
+      }
+    ]
+  },
+  {
+    "spot_light_large": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "_replicate": true
+      },
+      {
+        "light__max_radius": 50.0
+      },
+      {
+        "light__brightness": 200.0
+      }
+    ]
+  },
+  {
+    "spot_light_large_noshadows": [
+      {
+        "_extends": "spot_light_large"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "_replicate": true
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__dynamic_obj_shadows": false,
+          "spot_light__shadows": false
+        }
+      }
+    ]
+  },
+  {
+    "spot_light_small": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "_group": {
+          "_replicate": true,
+          "light__max_radius": 5.0,
+          "light__brightness": 15.0
+        }
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__dynamic_obj_shadows": false,
+          "spot_light__shadows": false
+        }
+      }
+    ]
+  },
+  {
+    "spot_light_huge": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 25000.0
+      },
+      {
+        "light__brightness": 250000.0
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__dynamic_obj_shadows": false,
+          "spot_light__shadows": false
+        }
+      }
+    ]
+  },
+  {
+    "field_light_huge": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 35000.0
+      },
+      {
+        "light__max_radius": 10000.0
+      },
+      {
+        "light__color": "#ffffffff"
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "field_light_orange_largest": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 20000.0
+      },
+      {
+        "light__max_radius": 10000.0
+      },
+      {
+        "light__color": "#ffb978ff"
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "field_light_blue_huge": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 15000.0
+      },
+      {
+        "light__max_radius": 400.0
+      },
+      {
+        "light__color": "#326432ff"
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "field_light_large": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 20.0
+      },
+      {
+        "light__max_radius": 30.0
+      },
+      {
+        "light__color": "#ffffffff"
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "field_light_medium": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 30.0
+      },
+      {
+        "light__max_radius": 30.0
+      },
+      {
+        "light__color": "#ffffffff"
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "field_light_orange": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 2.0
+      },
+      {
+        "light__max_radius": 2.0
+      },
+      {
+        "light__color": "#ff640aff"
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "field_light_orange_large": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 3.0
+      },
+      {
+        "light__max_radius": 2.0
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_orange_extralarge": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 50.0
+      },
+      {
+        "light__max_radius": 200.0
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_orange_huge": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 10000.0
+      },
+      {
+        "light__max_radius": 400.0
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_orange_medium": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 10.0
+      },
+      {
+        "light__max_radius": 15.0
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_orange_medium_a": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 30.0
+      },
+      {
+        "light__max_radius": 20.0
+      },
+      {
+        "light__contact_shadows": false
+      },
+      {
+        "light__color": "#c86414ff"
+      }
+    ]
+  },
+  {
+    "field_light_orange_medium_b": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 30.0
+      },
+      {
+        "light__max_radius": 20.0
+      },
+      {
+        "light__contact_shadows": true
+      },
+      {
+        "light__color": "#c86414ff"
+      }
+    ]
+  },
+  {
+    "field_light_orange_small": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 1.0
+      },
+      {
+        "light__max_radius": 1.0
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_orange_smallest": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 0.3
+      },
+      {
+        "light__max_radius": 1.0
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_blue": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__color": "#6464ffff"
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_blue_large": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 300.0
+      },
+      {
+        "light__max_radius": 1000.0
+      },
+      {
+        "light__color": "#0af5ffff"
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_blue_extralarge": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 10.0
+      },
+      {
+        "light__max_radius": 100.0
+      },
+      {
+        "light__color": "#3232ffff"
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_red": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__color": "#f05032ff"
+      }
+    ]
+  },
+  {
+    "field_light_red_extralarge": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 10.0
+      },
+      {
+        "light__max_radius": 100.0
+      },
+      {
+        "light__color": "#f05032ff"
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_green_extralarge": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 10.0
+      },
+      {
+        "light__max_radius": 100.0
+      },
+      {
+        "light__color": "#0a961eff"
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "field_light_green_small": [
+      {
+        "_extends": "field_light_orange"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 5.0
+      },
+      {
+        "light__max_radius": 100.0
+      },
+      {
+        "light__color": "#3cc8149b"
+      },
+      {
+        "light__contact_shadows": false
+      }
+    ]
+  },
+  {
+    "aircraft_warning_light_red": [
+      {
+        "_extends": "omni_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__brightness": 200.0
+      },
+      {
+        "light__max_radius": 15.0
+      },
+      {
+        "light__color": "#ff0000ff"
+      },
+      {
+        "light__nightly": true
+      }
+    ]
+  },
+  {
+    "spot_light_red_large": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 75.0
+      },
+      {
+        "light__brightness": 200.0
+      },
+      {
+        "light__color": "#ff0a0aff"
+      }
+    ]
+  },
+  {
+    "spot_light_magenta_large": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 75.0
+      },
+      {
+        "light__brightness": 200.0
+      },
+      {
+        "light__color": "#ba0affff"
+      }
+    ]
+  },
+  {
+    "spot_light_orange_large": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 75.0
+      },
+      {
+        "light__brightness": 200.0
+      },
+      {
+        "light__color": "#ff640aff"
+      }
+    ]
+  },
+  {
+    "spot_light_orange_medium": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 50.0
+      },
+      {
+        "light__brightness": 500.0
+      },
+      {
+        "light__color": "#ff640aff"
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__dynamic_obj_shadows": false,
+          "spot_light__shadows": false
+        }
+      }
+    ]
+  },
+  {
+    "spot_light_blue_large": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 75.0
+      },
+      {
+        "light__brightness": 200.0
+      },
+      {
+        "light__color": "#0af5ffff"
+      }
+    ]
+  },
+  {
+    "spot_light_green_large": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 75.0
+      },
+      {
+        "light__brightness": 200.0
+      },
+      {
+        "light__color": "#32ff0aff"
+      }
+    ]
+  },
+  {
+    "spot_light_orange_extralarge": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 300.0
+      },
+      {
+        "light__brightness": 1200.0
+      },
+      {
+        "light__color": "#ff640aff"
+      }
+    ]
+  },
+  {
+    "spot_light_red_extralarge": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 250.0
+      },
+      {
+        "light__brightness": 1200.0
+      },
+      {
+        "light__color": "#ff0a0aff"
+      }
+    ]
+  },
+  {
+    "spot_light_magenta_extralarge": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 250.0
+      },
+      {
+        "light__brightness": 1200.0
+      },
+      {
+        "light__color": "#ba0affff"
+      }
+    ]
+  },
+  {
+    "spot_light_green_extralarge": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 250.0
+      },
+      {
+        "light__brightness": 1200.0
+      },
+      {
+        "light__color": "#32ff0aff"
+      }
+    ]
+  },
+  {
+    "spot_light_blue_extralarge": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 200.0
+      },
+      {
+        "light__brightness": 55.0
+      },
+      {
+        "light__color": "#0af5ffff"
+      }
+    ]
+  },
+  {
+    "lamppost_a": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 14.0
+      },
+      {
+        "light__brightness": 60.0
+      },
+      {
+        "light__color": "#ffdca0ff"
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__inner_attenuation": 0.5,
+          "spot_light__dynamic_obj_shadows": true
+        }
+      },
+      {
+        "destroyable_with_rendinst:tag": []
+      }
+    ]
+  },
+  {
+    "lamppost_b": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 9.0
+      },
+      {
+        "light__brightness": 15.0
+      },
+      {
+        "light__color": "#fffab4ff"
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__inner_attenuation": 0.5,
+          "spot_light__dynamic_obj_shadows": true
+        }
+      },
+      {
+        "destroyable_with_rendinst:tag": []
+      }
+    ]
+  },
+  {
+    "lamppost_c": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 19.0
+      },
+      {
+        "light__brightness": 150.0
+      },
+      {
+        "light__color": "#fffab4ff"
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__inner_attenuation": 0.5,
+          "spot_light__dynamic_obj_shadows": true
+        }
+      },
+      {
+        "destroyable_with_rendinst:tag": []
+      }
+    ]
+  },
+  {
+    "spot_light_footbal_field": [
+      {
+        "_extends": "spot_light"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "light__max_radius": 55.0
+      },
+      {
+        "light__brightness": 250.0
+      },
+      {
+        "light__color": "#fffab4ff"
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "spot_light__dynamic_obj_shadows": true
+        }
+      }
+    ]
+  },
+  {
+    "floating_rendinst_system": {
+      "_singleton": true,
+      "floatingRiSystem__useRandomWaves": false,
+      "floatingRiSystem__volumePresets:object": {
+        "default_1:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.8,
+          "middleDepth": 0.0,
+          "volumesCount": 1
+        },
+        "default_4:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.57,
+          "sideDepth": 0.0,
+          "volumesCount": 4
+        },
+        "default_12:object": {
+          "floatVolumesCd": 0.57,
+          "sphereRad": 0.37,
+          "middleDepth": 0.5,
+          "sideDepth": 0.0,
+          "volumesCount": 12
+        }
+      }
+    }
+  },
+  {
+    "floating_rendinst_res_group": {
+      "floatingRiGroup__wreckageFloatDuration": 15.0,
+      "floatingRiGroup__updateDist": 1000.0,
+      "floatingRiGroup__interactionType": 0,
+      "floatingRiGroup__interactionDist": 0.0,
+      "floatingRiGroup__elasticity": 0.1,
+      "floatingRiGroup__physUpdateDt": 0.0417,
+      "floatingRiGroup__maxShiftDist": 1000.0,
+      "_group": {
+        "_track": true,
+        "floatingRiGroup__resName": "",
+        "floatingRiGroup__mass": 1.0,
+        "floatingRiGroup__inertiaMult": [80.0,0.1,80.0],
+        "floatingRiGroup__volumesCount": -1,
+        "floatingRiGroup__volumePresetName": "",
+        "floatingRiGroup__geomCenterShift": [0.0,0.0,0.0],
+        "floatingRiGroup__physBboxSizeMul": [1.0,1.0,1.0]
+      },
+      "floatingRiGroup__riPhysFloatingModel": []
+    }
+  },
+  {
+    "root": {
+      "active": true
+    }
+  },
+  {
+    "daeditor_selected": {
+      "daeditor__selected:tag": []
+    }
+  },
+  {
+    "simple_unit": [
+      {
+        "_extends": "root"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "uid": -1
+      },
+      {
+        "className": ""
+      },
+      {
+        "playerNo": -1
+      },
+      {
+        "is_local": false
+      },
+      {
+        "unitVersion": 0
+      },
+      {
+        "unitType": -1
+      },
+      {
+        "canChangeUnit": false
+      },
+      {
+        "missionUnitName": ""
+      },
+      {
+        "_replicated": "uid"
+      },
+      {
+        "_tracked": "playerNo"
+      }
+    ]
+  },
+  {
+    "unit": {
+      "_extends": "simple_unit"
+    }
+  },
+  {
+    "simple_ground_unit": {
+      "_extends": "unit",
+      "aim_component": []
+    }
+  },
+  {
+    "expendable_mod": {
+      "_extends": "replicating",
+      "mod__enabled_without_mod": true,
+      "mod__count_effects_mod": false,
+      "mod__ownerEid:eid": [],
+      "_group": {
+        "_replicate": true,
+        "mod__total_count": 0,
+        "mod__count": 0
+      }
+    }
+  },
+  {
+    "toolkit_ecs": {
+      "_extends": "expendable_mod",
+      "mod__name": "tank_tool_kit_expendable",
+      "mod__type_name": "toolkit",
+      "mod__enabled_without_mod": false
+    }
+  },
+  {
+    "ship_toolkit_ecs": {
+      "_extends": "expendable_mod",
+      "mod__name": "ship_tool_kit",
+      "mod__type_name": "toolkit"
+    }
+  },
+  {
+    "extinguisher_ecs": {
+      "_extends": "expendable_mod",
+      "mod__name": "manual_extinguisher_expendable",
+      "mod__type_name": "extinguisher"
+    }
+  },
+  {
+    "ship_extinguisher_ecs": {
+      "_extends": "extinguisher_ecs",
+      "mod__enabled_without_mod": false
+    }
+  },
+  {
+    "medicalkit_ecs": {
+      "_extends": "expendable_mod",
+      "mod__name": "tank_medical_kit_expendable",
+      "mod__type_name": "medicalkit",
+      "mod__enabled_without_mod": false,
+      "mod__count_effects_mod": true
+    }
+  },
+  {
+    "ground_unit": {
+      "_extends": "simple_ground_unit",
+      "move_sys__maxDecel": 0.0,
+      "fire_damage__update_burn_interval": 1.0,
+      "fire_damage__isBurn": false,
+      "unit_fire": [],
+      "fire_fx__id:list<i>": [],
+      "fire_fx__fxId:list<i>": [],
+      "fire_fx__paramsId:list<i>": [],
+      "unit_extinguish": [],
+      "unit_crew": [],
+      "unit_repair": [],
+      "unit_fx": [],
+      "fuel_tanks": [],
+      "ammo_stowage": [],
+      "fire_damage": [],
+      "modEids:list<eid>": {
+        "_replicate": true
+      }
+    }
+  },
+  {
+    "light_vehicle": {
+      "_extends": "simple_ground_unit"
+    }
+  },
+  {
+    "fortification": {
+      "_extends": "simple_ground_unit"
+    }
+  },
+  {
+    "simple_tank": {
+      "_extends": "simple_ground_unit"
+    }
+  },
+  {
+    "tank": {
+      "_extends": "ground_unit",
+      "mods:list<t>": [
+        {
+          "mod": "toolkit_ecs"
+        },
+        {
+          "mod": "extinguisher_ecs"
+        },
+        {
+          "mod": "medicalkit_ecs"
+        }
+      ],
+      "track_sound": {
+        "_tags": "sound"
+      },
+      "physical_tracks": {
+        "_tags": "render"
+      },
+      "physical_tracks__isLeft:list<b>": {
+        "_tags": "render"
+      },
+      "physical_tracks_force_update:b": {
+        "_tags": "render",
+        "value": true
+      }
+    }
+  },
+  {
+    "simple_ship": {
+      "_extends": "simple_ground_unit"
+    }
+  },
+  {
+    "ship": {
+      "_extends": "ground_unit",
+      "mods:list<t>": [
+        {
+          "mod": "ship_toolkit_ecs"
+        },
+        {
+          "mod": "ship_extinguisher_ecs"
+        },
+        {
+          "mod": "medicalkit_ecs"
+        }
+      ],
+      "track_sound": {
+        "_tags": "sound"
+      }
+    }
+  },
+  {
+    "controlled_hero": {
+      "controlledHero:tag": []
+    }
+  },
+  {
+    "watched_hero": {
+      "watchedHero:tag": []
+    }
+  },
+  {
+    "player_unit": {
+      "playerUnit:tag": []
+    }
+  },
+  {
+    "in_flight": {
+      "inFlight:tag": []
+    }
+  },
+  {
+    "walker": {
+      "_extends": "ground_unit"
+    }
+  },
+  {
+    "barrage_ballon": {
+      "_extends": "unit"
+    }
+  },
+  {
+    "infantry_troop": {
+      "_extends": "simple_ground_unit"
+    }
+  },
+  {
+    "aircraft": {
+      "_extends": "unit"
+    }
+  },
+  {
+    "weapon": {
+      "_extends": "root"
+    }
+  },
+  {
+    "gun": {
+      "_extends": "weapon"
+    }
+  },
+  {
+    "bomb_gun": {
+      "_extends": "weapon"
+    }
+  },
+  {
+    "rocket_gun": {
+      "_extends": "weapon"
+    }
+  },
+  {
+    "torpedo_gun": {
+      "_extends": "weapon"
+    }
+  },
+  {
+    "player": [
+      {
+        "player_id": -1
+      },
+      {
+        "connId": -1
+      },
+      {
+        "syncVromsStep": 0
+      },
+      {
+        "syncVromsStartAtTime": 0
+      },
+      {
+        "receiveLogerr": false
+      },
+      {
+        "_tracked": "connId"
+      },
+      {
+        "_tracked": "syncVromsStep"
+      },
+      {
+        "m_player": []
+      }
+    ]
+  },
+  {
+    "background_model": {
+      "background_model__model": "",
+      "background_model__skin": "",
+      "background_model__unitName": "",
+      "background_model__weapon": "",
+      "background_model__isPlane": false,
+      "background_model__tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "background_model__canOutline": false,
+      "background_model_res": [],
+      "background_model__bullets:list<t>": [],
+      "background_model__spawnEid:eid": []
+    }
+  },
+  {
+    "level": {
+      "isLocal": true,
+      "level__blk": "",
+      "level__bin": "",
+      "level__environment": "Day",
+      "level__loaded": false,
+      "level__weather": "hazy"
+    }
+  },
+  {
+    "render_view_cam": {
+      "camera__active": false,
+      "transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "_singleton": true,
+      "camera_view:tag": []
+    }
+  },
+  {
+    "static_cam": {
+      "camera__active": false,
+      "fov": 90.0,
+      "znear": 0.01,
+      "zfar": 10000.0,
+      "transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "static_camera_view:tag": []
+    }
+  },
+  {
+    "game_objects": {
+      "_singleton": true,
+      "nonCreatableObj": true,
+      "game_objects": [],
+      "game_objects__createChance:object": {
+        "stationary_mg42": 0.4,
+        "chimney_exhaust": 0.15
+      }
+    }
+  },
+  {
+    "smoke": {
+      "_extends": "replicating",
+      "smoke__activate_time": 0.0,
+      "smoke__time": 0.0,
+      "_group": {
+        "_replicate": true,
+        "smoke__pos": [0.0,0.0,0.0],
+        "smoke__radius": 0.0,
+        "smoke__visibility_type_flags": 0,
+        "smoke__transparent_for_thermal": false,
+        "smoke__fx_id": -1
+      },
+      "smoke__smoke_fx": {
+        "_tags": "render"
+      }
+    }
+  },
+  {
+    "camera_fx": {
+      "_extends": "replicating",
+      "_replicate": true,
+      "transform": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,0.0]
+      ],
+      "camera_fx__radius": 10.0,
+      "camera_fx__res": "unknown",
+      "camera_fx": {
+        "_tags": "render"
+      }
+    }
+  },
+  {
+    "disable_move": {
+      "_singleton": true,
+      "missionObject:tag": [],
+      "disable__targets_list:list<t>": []
+    }
+  },
+  {
+    "sand_unit": {
+      "sand_unit__noise": 0.0,
+      "sand_unit__moveNoiseK": 0.0,
+      "sand_unit__noiseDecSpd": 20.0,
+      "sand_unit__deathAnimVarId": -1,
+      "sand_unit__deathAnimTimer": -1.0,
+      "sand_unit__deathAnimTime": -1.0
+    }
+  },
+  {
+    "sand_worm": [
+      {
+        "_extends": "root"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "sand_worm__position": [0.0,0.0]
+      },
+      {
+        "sand_worm__delayed": true
+      },
+      {
+        "sand_worm__radius": 100.0
+      },
+      {
+        "sand_worm__borderColor": "#ff1e00d2"
+      },
+      {
+        "sand_worm__curInactive": 0.0
+      },
+      {
+        "_tracked": "sand_worm__delayed"
+      },
+      {
+        "_tracked": "sand_worm__radius"
+      },
+      {
+        "sand_worm__needSync": false
+      },
+      {
+        "_group": {
+          "_tags": "server",
+          "sand_worm__delayTimer": -1.0,
+          "sand_worm__radiusDecK": 1.4,
+          "sand_worm__inactiveTime": 30.0,
+          "sand_worm__attackRadius": 120.0,
+          "sand_worm__activateTime": [30.0,45.0],
+          "sand_worm__respawnTimeout": [20.0,40.0],
+          "sand_worm__speedK:list<p2>": [
+            {
+              "n": [50.0,10.0]
+            },
+            {
+              "n": [5000.0,1.5]
+            }
+          ],
+          "sand_worm__noiseExcludeAreas:list<t>": [],
+          "sand_worm__excludeAreasId:list<i>": []
+        }
+      },
+      {
+        "_group": {
+          "_tags": "gameClient",
+          "sand_worm__cameraShake": [15.0,10.0,10.0],
+          "sand_worm__cameraShakeTimer": -1.0,
+          "sand_worm__appearSound": "desert/creature_appear",
+          "sand_worm__nearSound": "desert/creature_move",
+          "sand_worm__near_dist": 600.0,
+          "sand_worm__near_shake:list<p3>": [
+            {
+              "n": [600.0,5.0,3.0]
+            },
+            {
+              "n": [500.0,7.0,5.0]
+            },
+            {
+              "n": [400.0,10.0,6.0]
+            },
+            {
+              "n": [300.0,15.0,7.0]
+            },
+            {
+              "n": [250.0,20.0,8.0]
+            },
+            {
+              "n": [200.0,30.0,10.0]
+            },
+            {
+              "n": [170.0,40.0,15.0]
+            },
+            {
+              "n": [140.0,55.0,20.0]
+            },
+            {
+              "n": [100.0,70.0,25.0]
+            }
+          ],
+          "sand_worm__nearSoundEvent:SoundEvent": {
+            "_tags": "sound"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "sky_laser": [
+      {
+        "_extends": "root"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "sky_laser__weaponIdx": -1
+      },
+      {
+        "sky_laser__uid": -1
+      },
+      {
+        "sky_laser__lastShootAt": -1.0
+      },
+      {
+        "sky_laser__timer": 0.2
+      },
+      {
+        "sky_laser__direction": [0.0,-1.0,0.0]
+      },
+      {
+        "sky_laser__positions:list<p3>": []
+      },
+      {
+        "sky_laser__timings:list<r>": []
+      }
+    ]
+  },
+  {
+    "sand_worm_render": [
+      {
+        "_extends": "root"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "sand_worm__victimUid": -1
+      },
+      {
+        "transform": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [0.0,0.0,0.0]
+        ]
+      },
+      {
+        "_tracked": "sand_worm__victimUid"
+      },
+      {
+        "_replicated": "sand_worm__victimUid"
+      },
+      {
+        "_group": {
+          "_tags": "render",
+          "worm_visual__res": "shai_char",
+          "sand_worm__animVarId": -1,
+          "sand_worm__animValue": -1.0,
+          "sand_worm__animTime": 10.0,
+          "sand_worm__animName": "shai_action",
+          "sand_worm__linkNodeId": -1,
+          "sand_worm__linkNodeName": "trigger",
+          "sand_worm__attackSfx": "desert/creature_attack",
+          "sand_worm__attackFxId": -1,
+          "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
+          "worm_visual": []
+        }
+      },
+      {
+        "_group": {
+          "_tags": "server",
+          "sand_worm__delayedTimer": -1.0,
+          "sand_worm__delayedTime": 12.0
+        }
+      }
+    ]
+  },
+  {
+    "damage_area": [
+      {
+        "_extends": "root"
+      },
+      {
+        "_extends": "replicating"
+      },
+      {
+        "damage_area__fallVel": [0.0,0.0,0.0]
+      },
+      {
+        "damage_area__fallNorm": [0.0,0.0,0.0]
+      },
+      {
+        "damage_area__velocityMult": 0.0
+      },
+      {
+        "damage_area__maxRise": 0.0
+      },
+      {
+        "damage_area__endTime": 0.0
+      },
+      {
+        "damage_area__pos1": [0.0,0.0,0.0]
+      },
+      {
+        "damage_area__pos2": [0.0,0.0,0.0]
+      },
+      {
+        "damage_area__vel": [0.0,0.0,0.0]
+      },
+      {
+        "damage_area__maxFlightTime": 0.0
+      },
+      {
+        "damage_area__maxFlightDist": 0.0
+      },
+      {
+        "damage_area__radius": 0.0
+      },
+      {
+        "damage_area__damage": 0.0
+      },
+      {
+        "damage_area__damageTypeId": -1
+      },
+      {
+        "damage_area__seed": 0
+      },
+      {
+        "damage_area__fxType": ""
+      },
+      {
+        "damage_area__burnFxType": ""
+      },
+      {
+        "damage_area__burnFxSize": 0.0
+      },
+      {
+        "damage_area__flightTime": 0.0
+      },
+      {
+        "damage_area__scorchMarginSize": 0.0
+      },
+      {
+        "damage_area__scorchStrength": 0.0
+      },
+      {
+        "damage_area__scorchDuration": 0.0
+      },
+      {
+        "damage_area__pos2_prev": [0.0,0.0,0.0]
+      },
+      {
+        "damage_area__emitterCount": 5
+      },
+      {
+        "damage_area__emitterDispersion": 0.1
+      },
+      {
+        "_group": {
+          "_track": true,
+          "damage_area__move": true
+        }
+      },
+      {
+        "_group": {
+          "_tags": "server",
+          "damage_area__offenderId": 0,
+          "damage_area__nextUpdateTime": 0.0
+        }
+      },
+      {
+        "_group": {
+          "_tags": "gameClient",
+          "damage_area__emitterVel:list<p3>": [],
+          "damage_area__emitterPos:list<p3>": [],
+          "damage_area__emitterPosPrev:list<p3>": [],
+          "damage_area__emitterFxIds:list<i>": [],
+          "damage_area__burnFxIds:list<i>": [],
+          "damage_area__burnFxCounts:list<i>": []
+        }
+      },
+      {
+        "_group": {
+          "_tags": "gameClient",
+          "damage_area__debugCommonId": 1,
+          "damage_area__debugTraceId": 2,
+          "damage_area__debugEmitterColor": "#ff7f7fff",
+          "damage_area__debugTraceColor": "#ff0000ff",
+          "damage_area__debugCombustColor": "#ffff00ff"
+        }
+      }
+    ]
+  }
+]

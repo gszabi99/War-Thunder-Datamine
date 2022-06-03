@@ -83,6 +83,7 @@ frame {
               position:t='relative';
               pos:t='-w, 0';
               background-image:t='<<icon>>';
+              background-svg-size:t='0.03@scrn_tgt, 0.03@scrn_tgt';
             }
             <<#rewardTooltipId>>
             tooltipObj {

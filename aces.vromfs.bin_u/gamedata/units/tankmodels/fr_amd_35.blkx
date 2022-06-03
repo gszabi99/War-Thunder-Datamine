@@ -227,13 +227,6 @@
           "hp": 20.0
         }
       },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 50.0,
-        "armorThickness": 5.0,
-        "gun_barrel_01_dm": [],
-        "gun_barrel_dm": []
-      },
       "chassis": {
         "hp": 250.0,
         "armorThickness": 10.0,
@@ -245,11 +238,43 @@
         "wheel_l_drive_dm": [],
         "wheel_r_drive_dm": []
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 100.0,
+        "armorThickness": 10.0,
+        "gun_barrel_dm": [],
+        "gun_barrel_01_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_02_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_03_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_04_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_05_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        }
+      },
       "crew": {
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1539,7 +1564,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-7.0,20.0]
+            "pitch": [-12.0,15.0]
           }
         }
       },
@@ -1555,7 +1580,7 @@
             "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk"
           },
           {
-            "emitter": "bone_mg_gun_twin"
+            "emitter": "bone_mg_v_01"
           },
           {
             "flash": "emtr_mg_flame_01"
@@ -1625,15 +1650,15 @@
           },
           {
             "turret": {
-              "head": "bone_mg_gun_twin",
-              "gun": "bone_mg_gun_twin",
-              "gunnerDm": "gunner_dm"
+              "head": "bone_mg_h_01",
+              "gun": "bone_mg_v_01",
+              "gunnerDm": "loader_dm"
             }
           },
           {
             "limits": {
-              "yaw": [-0.0,0.0],
-              "pitch": [-1.0,20.0]
+              "yaw": [-15.0,15.0],
+              "pitch": [-12.0,15.0]
             }
           }
         ]
@@ -2495,7 +2520,7 @@
   {
     "modifications": {
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "manual_extinguisher": [],
       "tank_tool_kit": [],
@@ -2510,7 +2535,7 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "25mm_SA34_APC": []
     }

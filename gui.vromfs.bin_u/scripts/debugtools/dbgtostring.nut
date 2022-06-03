@@ -1,22 +1,24 @@
+let { format } = require("string")
 // warning disable: -file:forbidden-function
 
 let time = require("%scripts/time.nut")
 let sqdebugger = require_optional("sqdebugger")
+let console = require("console")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
 ::dlog <- function dlog(...)
 {
   for (local i = 0; i < vargv.len(); i++)
   {
-    dagor.debug("DLOG: " + vargv[i])
-    dagor.screenlog("" + vargv[i])
+    ::dagor.debug("DLOG: " + vargv[i])
+    ::dagor.screenlog("" + vargv[i])
   }
 }
 
 ::clog <- function clog(...)
 {
   foreach (arg in vargv)
-    ::dagor.console_print(":  ".concat(time.getCurTimeMillisecStr(), ::type(arg) == "string" ? arg : ::toString(arg)))
+    ::dagor.console_print(":  ".concat(time.getCurTimeMillisecStr(), type(arg) == "string" ? arg : ::toString(arg)))
 }
 
 let function initEventBroadcastLogging()
@@ -80,10 +82,10 @@ let DEBUG_TABLE_DATA_PARAMS = {
         else if (typeof(val)=="float") { vType = ":r"; val = val.tostring() + ((val % 1) ? "" : ".0") }
         else if (typeof(val)=="bool") vType = ":b"
         else if (typeof(val)=="string") { vType = ":t"; val = "'" + val + "'" }
-        else if (u.isPoint2(val)) { vType = ":p2"; val = ::format("%s, %s", val.x.tostring(), val.y.tostring()) }
-        else if (u.isPoint3(val)) { vType = ":p3"; val = ::format("%s, %s, %s", val.x.tostring(), val.y.tostring(), val.z.tostring()) }
-        else if (u.isColor4(val)) { vType = ":c";  val = ::format("%d, %d, %d, %d", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a) }
-        else if (u.isTMatrix(val)) { vType = ":m"
+        else if (::u.isPoint2(val)) { vType = ":p2"; val = format("%s, %s", val.x.tostring(), val.y.tostring()) }
+        else if (::u.isPoint3(val)) { vType = ":p3"; val = format("%s, %s, %s", val.x.tostring(), val.y.tostring(), val.z.tostring()) }
+        else if (::u.isColor4(val)) { vType = ":c";  val = format("%d, %d, %d, %d", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a) }
+        else if (::u.isTMatrix(val)) { vType = ":m"
           let arr = []
           for (local j = 0; j < 4; j++)
             arr.append("[" + ::g_string.implode([ val[j].x, val[j].y, val[j].z ], ", ") + "]")
@@ -132,7 +134,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
           }
         }
         else if (dType=="instance")
-          printFn(prefix+addStr2+idText+" = " + ::toString(data, ::min(1, recursionLevel), addStr2))
+          printFn(prefix+addStr2+idText+" = " + ::toString(data, min(1, recursionLevel), addStr2))
         else if (dType=="string")
           printFn(prefix+addStr2+idText+" = \"" + data + "\"")
         else if (dType=="float")
@@ -146,7 +148,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
         printFn(prefix + addStr + (typeof(info) == "array" ? "]" : "}"))
     }
     else if (typeof(info)=="instance")
-      printFn(prefix + addStr + toString(info, ::min(1, recursionLevel), addStr)) //not decrease recursion because it current instance
+      printFn(prefix + addStr + ::toString(info, min(1, recursionLevel), addStr)) //not decrease recursion because it current instance
     else
     {
       let iType = typeof(info)
@@ -171,7 +173,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
 
 ::toString <- function toString(val, recursion = 1, addStr = "")
 {
-  if (::type(val) == "instance")
+  if (type(val) == "instance")
   {
     if (isDataBlock(val))
     {
@@ -183,13 +185,13 @@ let DEBUG_TABLE_DATA_PARAMS = {
         iv.append("" + val.getBlock(i).getBlockName() + " = " + ::toString(val.getBlock(i)))
       return format("DataBlock %s{ %s }", rootBlockName, ::g_string.implode(iv, ", "))
     }
-    else if (u.isPoint2(val))
+    else if (::u.isPoint2(val))
       return format("Point2(%s, %s)", val.x.tostring(), val.y.tostring())
-    else if (u.isPoint3(val))
+    else if (::u.isPoint3(val))
       return format("Point3(%s, %s, %s)", val.x.tostring(), val.y.tostring(), val.z.tostring())
-    else if (u.isColor4(val))
+    else if (::u.isColor4(val))
       return format("Color4(%d/255.0, %d/255.0, %d/255.0, %d/255.0)", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a)
-    else if (u.isTMatrix(val))
+    else if (::u.isTMatrix(val))
     {
       let arr = []
       for (local i = 0; i < 4; i++)
@@ -206,7 +208,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
     {
       local ret = ""
       if (val instanceof ::BaseGuiHandler)
-        ret = ::format("BaseGuiHandler(sceneBlkName = %s)", ::toString(val.sceneBlkName))
+        ret = format("BaseGuiHandler(sceneBlkName = %s)", ::toString(val.sceneBlkName))
       else
       {
         ret += val?.getmetamethod("_tostring") != null
@@ -222,7 +224,7 @@ let DEBUG_TABLE_DATA_PARAMS = {
           //or it make harder to read debugtableData result in log, also arrays in one string generate too long strings
           if (typeof(v) != "function")
           {
-            let index = ::isInArray(::type(idx), [ "float", "null" ]) ? ::toString(idx) : idx
+            let index = ::isInArray(type(idx), [ "float", "null" ]) ? ::toString(idx) : idx
             ret += "\n" + addStr + "  " + index + " = " + ::toString(v, recursion - 1, addStr + "  ")
           }
         }
@@ -232,13 +234,13 @@ let DEBUG_TABLE_DATA_PARAMS = {
   }
   if (val == null)
     return "null"
-  if (::type(val) == "string")
+  if (type(val) == "string")
     return format("\"%s\"", val)
-  if (::type(val) == "float")
+  if (type(val) == "float")
     return val.tostring() + ((val % 1) ? "" : ".0")
-  if (::type(val) != "array" && ::type(val) != "table")
+  if (type(val) != "array" && type(val) != "table")
     return "" + val
-  let isArray = ::type(val) == "array"
+  let isArray = type(val) == "array"
   local str = ""
   if (recursion > 0)
   {
@@ -255,5 +257,6 @@ let DEBUG_TABLE_DATA_PARAMS = {
 }
 
 sqdebugger?.setObjPrintFunc(::debugTableData)
+console.setObjPrintFunc(::debugTableData)
 
 initEventBroadcastLogging()

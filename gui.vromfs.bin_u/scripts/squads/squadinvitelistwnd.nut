@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
@@ -138,7 +139,7 @@
   function updateReceiveApplicationsOption()
   {
     let isAvailable = ::g_squad_manager.canChangeReceiveApplications(false)
-    let obj = showSceneBtn("receive_applications", isAvailable)
+    let obj = this.showSceneBtn("receive_applications", isAvailable)
     if (!isAvailable || !obj)
       return
 
@@ -156,8 +157,8 @@
     let columns = rows && ::ceil(total.tofloat() / rows.tofloat())
 
     let sizeFormat = "%d@mIco"
-    listObj.width = ::format(sizeFormat, columns)
-    listObj.height = ::format(sizeFormat, rows)
+    listObj.width = format(sizeFormat, columns)
+    listObj.height = format(sizeFormat, rows)
   }
 
   function updatePosition()
@@ -194,7 +195,7 @@
 
     ::g_squad_manager.enableApplications(value)
     if (!::g_squad_manager.isApplicationsEnabled() && ::g_squad_manager.getApplicationsToSquad().len() > 0)
-      msgBox("denyAllMembershipApplications", ::loc("squad/ConfirmDenyApplications"),
+      this.msgBox("denyAllMembershipApplications", ::loc("squad/ConfirmDenyApplications"),
         [
           ["yes", function() { ::g_squad_manager.denyAllAplication() }],
           ["no",  function() {} ],

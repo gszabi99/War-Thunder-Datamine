@@ -1,0 +1,337 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_abandoned_town.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/tank_templates/air_spawn_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/abandoned_town/template_abandoned_town_heli_spawns.blk",
+        "rankRange": [20.0,50.0],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/abandoned_town/airfields/template_abandoned_town_airfields_low_ranks.blk",
+        "rankRange": [0.0,5.0],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/abandoned_town/airfields/template_abandoned_town_airfields_mid_ranks.blk",
+        "rankRange": [6.0,19.0],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/abandoned_town/airfields/template_abandoned_town_airfields_high_ranks.blk",
+        "rankRange": [20.0,50.0],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": {
+    "tankModels": {
+      "name": "t1_player01",
+      "tm": [
+        [0.115347,0.0,0.993326],
+        [0.0,1.0,0.0],
+        [-0.993326,0.0,0.115347],
+        [188.806,386.187,648.48]
+      ],
+      "unit_class": "aaa_dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [2.5,2.0],
+        "formation_noise": [0.1,0.1],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": []
+    }
+  },
+  "areas": {
+    "fighters_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [-4783.39,0.0,12088.0],
+        [0.0,13000.0,0.0],
+        [-12088.0,0.0,-4783.39],
+        [227.0,1000.0,381.1]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t1_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [110.389,0.0,-278.954],
+        [0.0,300.0,0.0],
+        [278.954,0.0,110.389],
+        [-2170.21,1000.0,6428.85]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t2_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [-110.389,0.0,278.954],
+        [0.0,300.0,0.0],
+        [-278.954,0.0,-110.389],
+        [2617.62,1000.0,-5661.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bombers_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [-5519.33,0.0,13947.7],
+        [0.0,15000.0,0.0],
+        [-13947.7,0.0,-5519.33],
+        [227.0,1500.0,381.1]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t1_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [110.389,0.0,-278.954],
+        [0.0,300.0,0.0],
+        [278.954,0.0,110.389],
+        [-2538.87,1500.0,7360.72]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t2_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [-110.389,0.0,278.954],
+        [0.0,300.0,0.0],
+        [-278.954,0.0,-110.389],
+        [2983.91,1500.0,-6587.33]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [-11038.8,0.0,27895.4],
+        [0.0,30000.0,0.0],
+        [-27895.4,0.0,-11038.8],
+        [227.0,2000.0,381.1]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t1_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [110.389,0.0,-278.954],
+        [0.0,300.0,0.0],
+        [278.954,0.0,110.389],
+        [-5303.46,2000.0,14346.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [-110.389,0.0,278.954],
+        [0.0,300.0,0.0],
+        [-278.954,0.0,-110.389],
+        [5744.96,2000.0,-13565.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [367.956,0.0,-929.844],
+        [0.0,5000.0,0.0],
+        [929.844,0.0,367.956],
+        [6678.18,0.000732422,-47.4976]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [367.956,0.0,-929.844],
+        [0.0,5000.0,0.0],
+        [929.844,0.0,367.956],
+        [-6202.71,0.000732422,785.028]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_heli_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [178.742,0.0,-199.956],
+        [0.0,268.2,0.0],
+        [199.956,0.0,178.742],
+        [-3103.64,300.0,4109.88]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_heli_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [-131.011,0.0,234.024],
+        [0.0,268.2,0.0],
+        [-234.024,0.0,-131.011],
+        [873.702,300.0,-4578.46]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

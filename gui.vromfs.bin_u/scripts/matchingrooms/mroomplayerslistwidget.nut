@@ -140,7 +140,7 @@
     if (teamList.len() > 0)
     {
       let curValue = objTbl.getValue() ?? -1
-      let validValue = ::clamp(curValue, 0, teamList.len()-1)
+      let validValue = clamp(curValue, 0, teamList.len()-1)
       if (curValue != validValue)
         objTbl.setValue(validValue)
     }

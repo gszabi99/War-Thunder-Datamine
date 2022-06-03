@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
@@ -61,7 +62,7 @@ enum chatRoomTabOrder {
   inviteIcon = "#ui/gameuiskin#chat.svg"
   getInviteClickNameText = function(roomId) {
     let locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
-    return ::format(::loc(locId), getRoomName(roomId))
+    return format(::loc(locId), getRoomName(roomId))
   }
 
   canCreateRoom = function() { return false }
@@ -205,7 +206,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         let langsList = ::getTblValue("langs", r, ::langs_list)
         if (!::isInArray(lang, langsList))
           lang = langsList[0]
-        return ::format("#%s_%s", roomName, lang)
+        return format("#%s_%s", roomName, lang)
       }
       return ""
     }

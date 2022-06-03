@@ -84,25 +84,28 @@
     "explosionFx": "explosion_ship_small"
   },
   {
-    "smokeScreenActivateTime": 10.0
+    "smokeScreenActivateTime": 5.0
   },
   {
     "smokeScreenEffectTime": 30.0
   },
   {
-    "smokeScreenRad": 50.0
+    "smokeScreenRad": 55.0
   },
   {
     "smokeScreenFx": "tank_smokescreen"
   },
   {
-    "smokeScreenOffset": [-48.0,2.0,0.0]
+    "smokeScreenOffset": [-45.0,2.0,0.0]
   },
   {
     "rearmSmokeTimeOnField": 180.0
   },
   {
     "canReloadNonGuns": true
+  },
+  {
+    "supportsCombinedPriSecTriggers": true
   },
   {
     "depthTraceWarningDepth": 5.0
@@ -960,9 +963,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -971,7 +974,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -982,9 +985,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -993,9 +996,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1004,9 +1007,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1015,7 +1018,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -1026,9 +1029,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -1037,9 +1040,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2801,13 +2804,13 @@
           "hp": 2500.0
         },
         "compartment_02_dm": {
-          "hp": 1902.0
+          "hp": 2163.0
         },
         "compartment_03_dm": {
-          "hp": 1800.0
+          "hp": 2500.0
         },
         "compartment_04_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         }
       },
       "control_compartments": {
@@ -2817,13 +2820,13 @@
         "genericDamageMult": 0.5,
         "armorThrough": 15.0,
         "bridge_dm": {
-          "hp": 500.0
+          "hp": 400.0
         },
         "radio_station_dm": {
           "hp": 500.0
         },
         "fire_control_room_01_dm": {
-          "hp": 400.0
+          "hp": 500.0
         }
       },
       "cover": {
@@ -2833,25 +2836,25 @@
         "genericDamageMult": 0.1,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 1500.0
+          "hp": 12500.0
         },
         "cover_02_dm": {
-          "hp": 1500.0
+          "hp": 12500.0
         },
         "cover_03_dm": {
-          "hp": 1500.0
+          "hp": 12500.0
         },
         "cover_04_dm": {
-          "hp": 1500.0
+          "hp": 12500.0
         },
         "cover_05_dm": {
-          "hp": 1467.0
+          "hp": 12500.0
         },
         "cover_06_dm": {
-          "hp": 1382.0
+          "hp": 12500.0
         },
         "cover_07_dm": {
-          "hp": 1043.0
+          "hp": 10438.0
         }
       },
       "superstructures": {
@@ -3067,7 +3070,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "fireDamageMult": 1.5,
-        "pressureDamageMult": 5.0,
+        "pressureDamageMult": 7.0,
         "main_caliber_turret_01_dm": {
           "hp": 350.0
         },
@@ -3081,13 +3084,13 @@
         "armorThickness": 3.0,
         "pressureDamageMult": 3.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 150.0
+          "hp": 220.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 150.0
+          "hp": 220.0
         },
         "auxiliary_caliber_turret_03_dm": {
-          "hp": 150.0
+          "hp": 220.0
         }
       },
       "turrets_aa_caliber": {
@@ -3095,7 +3098,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "fireDamageMult": 2.0,
-        "pressureDamageMult": 1.0
+        "pressureDamageMult": 2.0
       },
       "gun_main_caliber": {
         "armorClass": "tank_barrel",
@@ -3272,19 +3275,19 @@
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
         "elevator_01_dm": {
-          "hp": 750.0
+          "hp": 700.0
         },
         "elevator_02_dm": {
-          "hp": 500.0
+          "hp": 700.0
         },
         "elevator_03_dm": {
-          "hp": 740.0
+          "hp": 700.0
         },
         "elevator_05_dm": {
-          "hp": 500.0
+          "hp": 700.0
         },
         "elevator_06_dm": {
-          "hp": 750.0
+          "hp": 700.0
         }
       },
       "pumps": {
@@ -3358,22 +3361,22 @@
       "sailor1": {
         "dmPart": "bridge_dm",
         "role": "sailor",
-        "crew": 8
+        "crew": 6
       },
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 66
+        "crew": 60
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 51
+        "crew": 52
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 48
+        "crew": 61
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
@@ -3383,12 +3386,12 @@
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
         "role": "sailor",
-        "crew": 9
+        "crew": 5
       },
       "sailor7": {
         "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
-        "crew": 8
+        "crew": 5
       },
       "sailor8": {
         "dmPart": "auxiliary_caliber_turret_01_dm",
@@ -3448,7 +3451,7 @@
       "sailor19": {
         "dmPart": "fire_control_room_01_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 7
       },
       "sailor20": {
         "dmPart": "fire_director_01_dm",
@@ -3506,8 +3509,8 @@
           "dmPartMain": "fire_control_room_01_dm",
           "dmPart": "fire_director_01_dm",
           "measureAccuracy": 1.0,
-          "targetLockTime": 8.0,
-          "calcTime": 4.0,
+          "targetLockTime": 6.0,
+          "calcTime": 3.0,
           "rotationSpeed": 20.0,
           "triggerGroupUse": {
             "primary": true,
@@ -3521,8 +3524,8 @@
           "dmPartMain": "fire_control_room_01_dm",
           "dmPart": "fire_director_02_dm",
           "measureAccuracy": 1.0,
-          "targetLockTime": 8.0,
-          "calcTime": 4.0,
+          "targetLockTime": 6.0,
+          "calcTime": 3.0,
           "rotationSpeed": 20.0,
           "triggerGroupUse": {
             "primary": false,

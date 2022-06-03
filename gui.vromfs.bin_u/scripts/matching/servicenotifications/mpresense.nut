@@ -59,7 +59,7 @@ let { updateContactsGroups } = require("%scripts/contacts/contactsManager.nut")
           else
           {
             if (typeof(p.presences.clanTag) == "array")
-              debugTableData(p.presences.clanTag)
+              ::debugTableData(p.presences.clanTag)
             ::dagor.assertf(false, "Error: presences: incorrect type of clantag = " + p.presences.clanTag + ", for user " + player.name + ", " + player.uid)
           }
         }

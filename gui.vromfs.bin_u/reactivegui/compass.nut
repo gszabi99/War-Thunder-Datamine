@@ -17,7 +17,7 @@ let function generateCompassNumber(line_style, num, width, height, color) {
     flow = FLOW_VERTICAL
     children = [
       line_style.__merge({
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         size = [width, 0.5 * height]
         halign = ALIGN_CENTER
         text = num

@@ -41,6 +41,7 @@ tdiv {
       img {
         size:t='0.055@scrn_tgt, 0.055@scrn_tgt';
         background-image:t='<<icon>>';
+        background-svg-size:t='0.055@scrn_tgt, 0.055@scrn_tgt';
       }
     }
 

@@ -5097,9 +5097,6 @@
               "target": "shootingP1_engine_hit_xray"
             },
             {
-              "target": "shootingP1_player_shot"
-            },
-            {
               "target": "tutorial_tank_arcade_024_second_target_fire02"
             }
           ]
@@ -5163,6 +5160,38 @@
         }
       },
       "actions": [
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
         {
           "triggerDisable": {
             "target": "tutorial_tank_arcade_024_second_target_fire02"
@@ -5232,22 +5261,6 @@
         },
         {
           "missionStopSpeech": []
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
         },
         {
           "wait": {
@@ -9930,15 +9943,15 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false,
-            "debriefingTimer": 5
-          }
-        },
-        {
           "bigQueryAddRecord": {
             "name": "tutorial_tank_basics_arcade",
             "params": "task 8/8: player has finished the tutorial"
+          }
+        },
+        {
+          "missionCompleted": {
+            "timer": false,
+            "debriefingTimer": 5
           }
         }
       ],

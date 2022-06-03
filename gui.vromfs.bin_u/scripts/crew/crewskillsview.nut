@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
 let { getSkillListParameterRowsView } = require("%scripts/crew/crewSkillParameters.nut")
 
@@ -34,7 +35,7 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
     let skillValue = getSkillValue(crewData.id, unit, categorySkill.memberName, categorySkill.skillName)
     let availValue = ::g_crew.getMaxAvailbleStepValue(skillItem, skillValue, crewSkillPoints)
     view.skillRows.append({
-      skillName = ::format("%s (%s)", skillName, memberName)
+      skillName = format("%s (%s)", skillName, memberName)
       totalSteps = ::g_crew.getTotalSteps(skillItem)
       maxSkillCrewLevel = ::g_crew.getSkillMaxCrewLevel(skillItem)
       skillLevel = ::g_crew.getSkillCrewLevel(skillItem, skillValue)

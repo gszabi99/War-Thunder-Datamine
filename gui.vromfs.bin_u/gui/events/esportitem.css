@@ -16,8 +16,14 @@
 @const tournamentNameTextPos: 1@eSItemCountriesTopPos + 2@eSItemIcoSize + 2@eSItemInterval;
 @const itemUnderlineColor: #f3d02f;
 
+@const eSDayBgrWidth: (540@sf/@pf) \ 1;
+@const eSDayBgrHeight: (40@sf/@pf) \ 1;
+@const eSBtnTextPadding: (24@sf/@pf) \ 1;
+@const eSEventBtnWidth: (380@sf/@pf) \ 1;
+@const eSEventBtnHeight: (68@sf/@pf) \ 1;
+
 eSItemDiv {
-  size:@eSItemWidth, 1@eSItemHeight;
+  size:1@eSItemWidth, 1@eSItemHeight;
   behavior:button;
   position:relative;
   margin:1@eSItemMargin;
@@ -39,6 +45,6 @@ eSItemDiv:hover > itemUnderline {
 }
 
 textareaNoTab[visualStyle=sessionSelected] {
-  background-color:@buttonFontColor;
+  background-color:@sessionSelectedColor;
   color:@black;
 }

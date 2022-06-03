@@ -50,12 +50,12 @@
   {
     let itemsAmount = curItem.getAmount()
     let availableAmount = ::g_weaponry_types.SPARE.getMaxAmount(unit, null)  - ::g_weaponry_types.SPARE.getAmount(unit, null)
-    maxAmount = ::min(itemsAmount, availableAmount)
+    maxAmount = min(itemsAmount, availableAmount)
     curAmount = 1
 
     let canChangeAmount = maxAmount > minAmount && !curItem.isExpired()
-    showSceneBtn("slider_block", canChangeAmount)
-    showSceneBtn("buttonMax", canChangeAmount)
+    this.showSceneBtn("slider_block", canChangeAmount)
+    this.showSceneBtn("buttonMax", canChangeAmount)
     if (!canChangeAmount)
       return
 

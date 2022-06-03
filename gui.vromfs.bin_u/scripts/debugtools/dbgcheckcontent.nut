@@ -4,6 +4,8 @@ let dagor_fs = require("dagor.fs")
 let stdpath = require("%sqstd/path.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitInfoTexts = require("%scripts/unit/unitInfoTexts.nut")
+let { format, strip } = require("string")
+let regexp2 = require("regexp2")
 
 local skyquakePath = ::debug_get_skyquake_path()
 
@@ -15,7 +17,7 @@ local skyquakePath = ::debug_get_skyquake_path()
   local count = 0
 
   // Units
-  dagor.debug("UNITS")
+  ::dagor.debug("UNITS")
   count = 0
   foreach (unit in ::all_units)
     if (unit.isInShop)
@@ -24,14 +26,14 @@ local skyquakePath = ::debug_get_skyquake_path()
         local localeId = unit.name + suffix
         if (::loc(localeId, "") == "")
         {
-          dagor.debug("    " + localeId)
+          ::dagor.debug("    " + localeId)
           count++
         }
       }
   dlog(count + " units")
 
   // Unit Descriptions
-  dagor.debug("UNITDESC")
+  ::dagor.debug("UNITDESC")
   count = 0
   local placeholder = ::loc("encyclopedia/no_unit_description")
   foreach (unit in ::all_units)
@@ -41,14 +43,14 @@ local skyquakePath = ::debug_get_skyquake_path()
       local text = ::loc(localeId, "")
       if (text == "" || text == placeholder)
       {
-        dagor.debug("    " + localeId)
+        ::dagor.debug("    " + localeId)
         count++
       }
     }
   dlog(count + " unitdescs")
 
   // Skins
-  dagor.debug("SKINS")
+  ::dagor.debug("SKINS")
   count = 0
   foreach (unit in ::all_units)
     if (unit.isInShop)
@@ -62,7 +64,7 @@ local skyquakePath = ::debug_get_skyquake_path()
           local localeId = unit.name + "/" + skin.name
           if (::loc(localeId, "") == "")
           {
-            dagor.debug("    " + localeId)
+            ::dagor.debug("    " + localeId)
             count++
           }
         }
@@ -70,7 +72,7 @@ local skyquakePath = ::debug_get_skyquake_path()
   dlog(count + " skins")
 
   // Decals
-  dagor.debug("DECALS")
+  ::dagor.debug("DECALS")
   count = 0
   local blk = ::get_decals_blk()
   local total = blk.blockCount()
@@ -80,7 +82,7 @@ local skyquakePath = ::debug_get_skyquake_path()
     local localeId = "decals/" + dblk.getBlockName()
     if (::loc(localeId, "") == "")
     {
-      dagor.debug("    " + localeId)
+      ::dagor.debug("    " + localeId)
       count++
     }
   }
@@ -99,7 +101,7 @@ local skyquakePath = ::debug_get_skyquake_path()
   local brief = []
 
   brief.append("debug_check_unit_naming() // " + ::get_current_language())
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
 
   foreach (unit in ::all_units)
     if (unit.isInShop)
@@ -116,7 +118,7 @@ local skyquakePath = ::debug_get_skyquake_path()
       names[c][suffix] <- []
   }
 
-  dagor.debug("UNLOCALIZED UNIT NAMES:")
+  ::dagor.debug("UNLOCALIZED UNIT NAMES:")
   count = 0
   foreach (c, unitIds in ids)
     foreach (unitId in unitIds)
@@ -127,76 +129,76 @@ local skyquakePath = ::debug_get_skyquake_path()
         if (locName == locId)
         {
           locName = ""
-          dagor.debug(::format("    \"%s\" - not found in localization", locId))
+          ::dagor.debug(format("    \"%s\" - not found in localization", locId))
           count++
         }
         names[c][suffix].append(locName)
       }
   brief.append(count + " unlocalized unit names")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
-  dagor.debug("NAME_SHOP CONFLICTS (IMPORTANT!):")
+  ::dagor.debug("NAME_SHOP CONFLICTS (IMPORTANT!):")
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       for (local j = i + 1; j < unitIds.len(); j++)
         if (names[c]._shop[i] != "" && names[c]._shop[j] != "" && names[c]._shop[i] == names[c]._shop[j])
         {
-          dagor.debug(::format("    '%s_shop', '%s_shop' - both units named \"%s\"",
+          ::dagor.debug(format("    '%s_shop', '%s_shop' - both units named \"%s\"",
             unitIds[i], unitIds[j], names[c]._shop[i]))
           count++
         }
   brief.append(count + " name_shop conflicts:")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
-  dagor.debug("NAME_0 CONFLICTS:")
+  ::dagor.debug("NAME_0 CONFLICTS:")
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       for (local j = i + 1; j < unitIds.len(); j++)
         if (names[c]._0[i] != "" && names[c]._0[j] != "" && names[c]._0[i] == names[c]._0[j])
         {
-          dagor.debug(::format("    '%s_0', '%s_0' - both units named \"%s\"",
+          ::dagor.debug(format("    '%s_0', '%s_0' - both units named \"%s\"",
             unitIds[i], unitIds[j], names[c]._0[i]))
           count++
         }
   brief.append(count + " name_0 conflicts")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
-  dagor.debug("MIXED-UP _SHOP AND _0 NAMES:") // HERE
+  ::dagor.debug("MIXED-UP _SHOP AND _0 NAMES:") // HERE
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._0[i] != "" &&
         ::utf8_strlen(names[c]._shop[i]) > ::utf8_strlen(names[c]._0[i]))
       {
-        dagor.debug(::format("    '%s_shop' (\"%s\") is longer than '%s_0' (\"%s\"), probably names are mixed up",
+        ::dagor.debug(format("    '%s_shop' (\"%s\") is longer than '%s_0' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._shop[i], unitIds[i], names[c]._0[i]))
         count++
       }
   brief.append(count + " _shop and _0 names mixed-up")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
-  dagor.debug("MIXED-UP _SHOP AND _1 NAMES:")
+  ::dagor.debug("MIXED-UP _SHOP AND _1 NAMES:")
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._1[i] != "" &&
         ::utf8_strlen(names[c]._1[i]) > ::utf8_strlen(names[c]._shop[i]))
       {
-        dagor.debug(::format("    '%s_1' (\"%s\") is longer than '%s_shop' (\"%s\"), probably names are mixed up",
+        ::dagor.debug(format("    '%s_1' (\"%s\") is longer than '%s_shop' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._1[i], unitIds[i], names[c]._shop[i]))
         count++
       }
   brief.append(count + " _shop and _1 names mixed-up")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
-  dagor.debug("NAMES WITH WASTED SPACE:")
+  ::dagor.debug("NAMES WITH WASTED SPACE:")
   count = 0
   foreach (c, unitIds in ids)
     foreach (idx, unitId in unitIds)
@@ -206,30 +208,30 @@ local skyquakePath = ::debug_get_skyquake_path()
         local fixed = regexp2(@"\s\s").replace(" ", strip(name))
         if (name.len() > fixed.len())
         {
-          dagor.debug(::format("    \"%s%s\" - need to trim space characters here: \"%s\"",
+          ::dagor.debug(format("    \"%s%s\" - need to trim space characters here: \"%s\"",
             unitId, suffix, name))
           count++
         }
       }
   brief.append(count + " names with wasted space")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
-  dagor.debug("NAMES WITH SUSPICIOUS CHARACTERS (" + ::get_current_language() + "):")
+  ::dagor.debug("NAMES WITH SUSPICIOUS CHARACTERS (" + ::get_current_language() + "):")
   count = 0
   local locale = ::get_current_language()
   local configs = {
     Russian = {
-      suspiciousChars = ::regexp2(@"[abcehkmoptx]")
-      unsuspiciousChars = ::regexp2(@"[dfgijlnqrsuvwyz]")
-      foreignAbc = ::regexp2(@"[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]")
+      suspiciousChars = regexp2(@"[abcehkmoptx]")
+      unsuspiciousChars = regexp2(@"[dfgijlnqrsuvwyz]")
+      foreignAbc = regexp2(@"[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]")
       foreignName = "Latin"
       allowWithPrefix = "▂"
       countriesCheck = [ "country_ussr" ]
     }
     Other = {
-      suspiciousChars = ::regexp2(@"[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]")
-      foreignAbc = ::regexp2(@"[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя]")
+      suspiciousChars = regexp2(@"[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]")
+      foreignAbc = regexp2(@"[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя]")
       foreignName = "Cyrillic"
     }
   }
@@ -253,17 +255,17 @@ local skyquakePath = ::debug_get_skyquake_path()
           continue
 
         local allForeignChars = cfg.foreignAbc.replace("_", origName)
-        dagor.debug(::format("    \"%s%s\" - %s chars in name: \"%s\" -> \"%s\"",
+        ::dagor.debug(format("    \"%s%s\" - %s chars in name: \"%s\" -> \"%s\"",
           unitId, suffix, cfg.foreignName, origName, allForeignChars))
         count++
       }
   }
   brief.append(count + " names with suspicious characters")
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   total += count
 
   brief.append("TOTAL: " + total)
-  dagor.debug(brief[brief.len() - 1])
+  ::dagor.debug(brief[brief.len() - 1])
   foreach (str in brief)
     dagor.screenlog(str)
   return total
@@ -478,7 +480,7 @@ local function unitImagesSearchEverywhere(fn, files, unit, cfg)
         + ::g_string.implode(::g_decorator.getBestSkinsList(unit.name, true), ", ")
     }
 
-  dagor.debug(fullDebugtext)
+  ::dagor.debug(fullDebugtext)
   return "Total units found = " + total
 }
 

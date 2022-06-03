@@ -1,0 +1,328 @@
+[
+  {
+    "hideNodes": [
+      {
+        "node": "depth_charge_25"
+      },
+      {
+        "node": "depth_charge_26"
+      },
+      {
+        "node": "depth_charge_27"
+      },
+      {
+        "node": "depth_charge_28"
+      },
+      {
+        "node": "depth_charge_29"
+      },
+      {
+        "node": "depth_charge_30"
+      },
+      {
+        "node": "depth_charge_31"
+      },
+      {
+        "node": "depth_charge_32"
+      },
+      {
+        "node": "depth_charge_33"
+      },
+      {
+        "node": "depth_charge_34"
+      },
+      {
+        "node": "depth_charge_35"
+      },
+      {
+        "node": "depth_charge_36"
+      },
+      {
+        "node": "depth_charge_37"
+      },
+      {
+        "node": "depth_charge_38"
+      },
+      {
+        "node": "depth_charge_39"
+      },
+      {
+        "node": "depth_charge_40"
+      },
+      {
+        "node": "depth_charge_41"
+      },
+      {
+        "node": "depth_charge_42"
+      },
+      {
+        "node": "depth_charge_43"
+      },
+      {
+        "node": "depth_charge_44"
+      },
+      {
+        "node": "depth_charge_45"
+      },
+      {
+        "node": "depth_charge_46"
+      },
+      {
+        "node": "depth_charge_47"
+      },
+      {
+        "node": "depth_charge_48"
+      },
+      {
+        "node": "depth_charge_49"
+      },
+      {
+        "node": "depth_charge_50"
+      },
+      {
+        "node": "depth_charge_51"
+      },
+      {
+        "node": "depth_charge_52"
+      },
+      {
+        "node": "depth_charge_53"
+      },
+      {
+        "node": "depth_charge_54"
+      },
+      {
+        "node": "depth_charge_55"
+      },
+      {
+        "node": "depth_charge_56"
+      },
+      {
+        "node": "depth_charge_57"
+      },
+      {
+        "node": "depth_charge_58"
+      }
+    ]
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner18",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 5,
+      "useEmitter": true,
+      "emitterGenRange": [1.0,5.0],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": "tt_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [4.0,0.0,0.0],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01",
+        "gunnerDm": "tt_01_dm"
+      },
+      "limits": {
+        "yaw": [-125.0,125.0],
+        "pitch": [0.0,0.0]
+      },
+      "limitsDeadzone": {
+        "yaw": [-50.0,50.0],
+        "pitch": [0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner19",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark15_torpedo.blk",
+      "emitter": "bone_torpedo_06",
+      "bullets": 5,
+      "useEmitter": true,
+      "emitterGenRange": [6.0,10.0],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": "tt_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [4.0,0.0,0.0],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_02",
+        "gun": "tt_02",
+        "gunnerDm": "tt_02_dm"
+      },
+      "limits": {
+        "yaw": [-140.0,140.0],
+        "pitch": [0.0,0.0]
+      },
+      "limitsDeadzone": {
+        "yaw": [-50.0,50.0],
+        "pitch": [0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner20",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_6_mortar.blk",
+      "emitter": "bone_bomb_07",
+      "bullets": 4,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_03_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "bone_bomb_07_dm",
+      "allowableDelta": 60.0,
+      "turret": {
+        "head": "depth_charge_mount_03",
+        "gun": "gun_01"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner21",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_6_mortar.blk",
+      "emitter": "bone_bomb_08",
+      "bullets": 4,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_04_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_08_dm",
+      "allowableDelta": 45.0,
+      "turret": {
+        "head": "depth_charge_mount_04",
+        "gun": "gun_02"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner22",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_6_mortar.blk",
+      "emitter": "bone_bomb_15",
+      "bullets": 4,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_05_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_15_dm",
+      "allowableDelta": 30.0,
+      "turret": {
+        "head": "depth_charge_mount_05",
+        "gun": "gun_03"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner23",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_6_mortar.blk",
+      "emitter": "bone_bomb_16",
+      "bullets": 4,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_06_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_16_dm",
+      "allowableDelta": 60.0,
+      "turret": {
+        "head": "depth_charge_mount_06",
+        "gun": "gun_04"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner24",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_6_mortar.blk",
+      "emitter": "bone_bomb_23",
+      "bullets": 4,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_07_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_23_dm",
+      "allowableDelta": 45.0,
+      "turret": {
+        "head": "depth_charge_mount_07",
+        "gun": "gun_05"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  },
+  {
+    "Weapon": {
+      "trigger": "gunner25",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/depth_charge_mk_6_mortar.blk",
+      "emitter": "bone_bomb_24",
+      "bullets": 4,
+      "external": true,
+      "dropSpeed": 20.0,
+      "useEmitter": true,
+      "barrelDP": "depth_charge_mount_08_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "depth_charge_24_dm",
+      "allowableDelta": 30.0,
+      "turret": {
+        "head": "depth_charge_mount_08",
+        "gun": "gun_06"
+      },
+      "limits": {
+        "yaw": [-0.0,0.0],
+        "pitch": [-0.0,0.0]
+      }
+    }
+  }
+]

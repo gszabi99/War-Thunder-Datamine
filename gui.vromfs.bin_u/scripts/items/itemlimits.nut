@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::g_item_limits <- {
 
   /** Seconds to keep limit data without updating. */
@@ -21,7 +22,7 @@
 
 g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
 {
-  if (requestLockTime < ::max(::dagor.getCurTime() - REQUEST_UNLOCK_TIMEOUT * 1000, 0))
+  if (requestLockTime < max(::dagor.getCurTime() - REQUEST_UNLOCK_TIMEOUT * 1000, 0))
     isRequestLocked = false
 
   if (isRequestLocked)
@@ -35,7 +36,7 @@ g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
   {
     let itemName = itemNamesQueue.pop()
     let limitData = getLimitDataByItemName(itemName)
-    if (limitData.lastUpdateTime < ::max(curTime - ITEM_REFRESH_TIME * 1000, 0))
+    if (limitData.lastUpdateTime < max(curTime - ITEM_REFRESH_TIME * 1000, 0))
     {
       requestBlk["name"] <- itemName
       ++requestSize
@@ -107,7 +108,7 @@ g_item_limits.createLimitData <- function createLimitData(itemName)
 {
   ::dagor.assertf(
     !(itemName in limitDataByItemName),
-    ::format("Limit data with name %s already exists.", itemName)
+    format("Limit data with name %s already exists.", itemName)
   )
 
   let limitData = {

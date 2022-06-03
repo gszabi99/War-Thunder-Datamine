@@ -94,7 +94,7 @@ let time = require("%scripts/time.nut")
   function updateLangsButton()
   {
     let show = ::g_chat.canChooseThreadsLang()
-    let langsBtn = showSceneBtn("threads_search_langs_btn", show)
+    let langsBtn = this.showSceneBtn("threads_search_langs_btn", show)
     if (!show)
       return
 
@@ -109,8 +109,8 @@ let time = require("%scripts/time.nut")
   function updateCategoriesButton()
   {
     let show = ::g_chat_categories.isEnabled()
-    showSceneBtn("buttons_separator", !show)
-    let catBtn = showSceneBtn("btn_categories_filter", show)
+    this.showSceneBtn("buttons_separator", !show)
+    let catBtn = this.showSceneBtn("btn_categories_filter", show)
     if (!show)
       return
 

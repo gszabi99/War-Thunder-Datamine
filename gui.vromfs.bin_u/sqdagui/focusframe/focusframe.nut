@@ -9,11 +9,10 @@ local focusFrame = {
   setAnimFunction = @(func) focusAnim.setAnimFunction(func)
   setHideTgtImageTimeMsec = @(timeMsec) focusAnim.setHideTgtImageTimeMsec(timeMsec)
 
-  enable = function(shouldEnable)
-  {
-    isEnabled = shouldEnable
+  enable = function(shouldEnable) {
+    this.isEnabled = shouldEnable
     focusTarget.setCallbacks(
-      shouldEnable ? onSetTarget.bindenv(this) : null,
+      shouldEnable ? this.onSetTarget.bindenv(this) : null,
       null
     )
   }
@@ -22,7 +21,7 @@ local focusFrame = {
 
   removeAnimObj = function(obj)
   {
-    validateObjList()
+    this.validateObjList()
     foreach(idx, o in animObjList)
       if (o.isEqual(obj))
       {
@@ -49,7 +48,7 @@ local focusFrame = {
     }
 
     if (curObj)
-      playAnimDelayed(curObj, tgtObj)
+      this.playAnimDelayed(curObj, tgtObj)
   }
 
   //!!FIX ME: perform delayed sometimes called instently without real delay. this function try to catch this
@@ -61,7 +60,7 @@ local focusFrame = {
         return
 
       if (shouldCheckDelayedBug && tgtObj.getSize()[0] == -1)
-        playAnimDelayed(curObj, tgtObj, false)
+        this.playAnimDelayed(curObj, tgtObj, false)
       else
         focusAnim.play(curObj, tgtObj)
     })

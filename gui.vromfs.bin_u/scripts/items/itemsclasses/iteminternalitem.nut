@@ -3,7 +3,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 ::items_classes.InternalItem <- class extends ItemCouponBase
 {
   static iType = itemType.INTERNAL_ITEM
-  static typeIcon = "#ui/gameuiskin#item_type_trophies"
+  static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
 
   getContentItem   = function()
   {

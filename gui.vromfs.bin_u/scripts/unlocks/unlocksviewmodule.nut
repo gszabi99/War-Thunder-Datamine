@@ -39,7 +39,7 @@ let function getUnlockDesc(cfg, params = {}) {
   return "\n".join(desc, true)
 }
 
-let function getUnlockConditions(cfg, params = {}) {
+let function getUnlockConditionsText(cfg, params = {}) {
   params.isExpired <- cfg.isExpired
 
   let curVal = params?.curVal ?? (::g_unlocks.isUnlockComplete(cfg) ? null : cfg.curVal)
@@ -61,7 +61,7 @@ let function getUnlockConditions(cfg, params = {}) {
 let function getFullUnlockDesc(cfg, params) {
   return "\n".join([
     getUnlockDesc(cfg, params),
-    getUnlockConditions(cfg, params)], true)
+    getUnlockConditionsText(cfg, params)], true)
 }
 
 return {
@@ -69,5 +69,5 @@ return {
   getSubUnlockLocName
   getFullUnlockDesc
   getUnlockDesc
-  getUnlockConditions
+  getUnlockConditionsText
 }

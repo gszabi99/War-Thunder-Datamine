@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let psn = require("%sonyLib/webApi.nut")
 let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -24,12 +25,12 @@ let function getActivityFeedImageByParam(feed, imagesConfig)
   {
     local url = imagesConfig.mainPart + config.name + feed.imgSuffix
     if (config?.variations)
-      url += ::format("_%.2d", ::math.rnd() % config.variations + 1)
+      url += format("_%.2d", ::math.rnd() % config.variations + 1)
     return url
   }
 
   ::dagor.debug("getActivityFeedImagesByParam: no image name in '"+feed.blkParamName)
-  debugTableData(config)
+  ::debugTableData(config)
   return ""
 }
 
@@ -44,7 +45,7 @@ let function getActivityFeedImageByCountry(feed, imagesConfig) {
     return imagesConfig.mainPart + variants.getParamValue(::math.rnd() % variants.paramCount())
 
   ::dagor.debug("getActivityFeedImagesByCountry: no config for '"+country+"/"+unit+" ("+feed.unitNameId+")")
-  debugTableData(imagesConfig)
+  ::debugTableData(imagesConfig)
   return ""
 }
 
@@ -62,7 +63,7 @@ let function getActivityFeedImages(feed) {
   if (!feedUrl || !imgExt)
   {
     ::dagor.debug("getActivityFeedImages: invalid feed config, url base '"+feedUrl+"', image extension '"+imgExt)
-    debugTableData(imagesConfig)
+    ::debugTableData(imagesConfig)
     return null
   }
 
@@ -82,13 +83,13 @@ let function getActivityFeedImages(feed) {
     }
 
   ::dagor.debug("getActivityFeedImages: could not select method to build image URLs from gui.blk and feed config")
-  debugTableData(feed)
+  ::debugTableData(feed)
   return null
 }
 
 return function(config, customFeedParams) {
   let sendStat = function(tags) {
-    let qualifiedNameParts = split(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
+    let qualifiedNameParts = split_by_chars(::getEnumValName("ps4_activity_feed", config.subType, true), ".")
     tags["type"] <- qualifiedNameParts[1]
     statsd.send_counter("sq.activityfeed", 1, tags)
   }

@@ -25,8 +25,8 @@ let function addContactGroup(group)
     ::broadcastEvent(contactEvent.CONTACTS_GROUP_ADDED)
 }
 
-let function addContact(_contact, groupName, params = {}) {
-  let contact = _contact || verifyContact(params)
+let function addContact(v_contact, groupName, params = {}) {
+  let contact = v_contact || verifyContact(params)
   if (!contact)
     return null
 

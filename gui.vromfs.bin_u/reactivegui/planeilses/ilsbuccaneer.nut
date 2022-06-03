@@ -38,7 +38,7 @@ let buccaneerCCRP = @() {
   ] : []
 }
 
-let function buccaneerAimMark(width, height) {
+let function buccaneerAimMark(_width, _height) {
   return {
     size = flex()
     children = [

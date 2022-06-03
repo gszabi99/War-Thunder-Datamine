@@ -1,4 +1,9 @@
+let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
+
+let exchangedWarpointsExpireDays = {
+  ["Japanese"] = 180
+}
 
 let function getEntitlementConfig(name)
 {
@@ -35,92 +40,201 @@ let function getEntitlementConfig(name)
   return res
 }
 
-let function getEntitlementLocId(item)
+let function getEntitlementLocId(ent)
 {
-  return ("alias" in item) ? item.alias : ("group" in item) ? item.group : (item?.name ?? "unknown")
+  return ("alias" in ent) ? ent.alias : ("group" in ent) ? ent.group : (ent?.name ?? "unknown")
 }
 
-let function getEntitlementAmount(item)
+let function getEntitlementAmount(ent)
 {
-  if ("httl" in item)
-    return item.httl.tofloat() / 24.0
+  if ("httl" in ent)
+    return ent.httl.tofloat() / 24.0
 
   foreach(n in ["ttl", "wpIncome", "goldIncome"])
-    if ((n in item) && item[n] > 0)
-      return item[n]
+    if ((n in ent) && ent[n] > 0)
+      return ent[n]
 
   return 1
 }
 
-let function getEntitlementTimeText(item)
+let function getEntitlementTimeText(ent)
 {
-  if ("ttl" in item)
-    return item.ttl + ::loc("measureUnits/days")
-  if ("httl" in item)
-    return item.httl + ::loc("measureUnits/hours")
+  if ("ttl" in ent)
+    return ent.ttl + ::loc("measureUnits/days")
+  if ("httl" in ent)
+    return ent.httl + ::loc("measureUnits/hours")
   return ""
 }
 
-let function getEntitlementName(item)
+let function getEntitlementName(ent)
 {
   local name = ""
-  if (("useGroupAmount" in item) && item.useGroupAmount && ("group" in item))
+  if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent))
   {
-    name = ::loc("charServer/entitlement/" + item.group)
-    let amountStr = ::g_language.decimalFormat(getEntitlementAmount(item))
+    name = ::loc("charServer/entitlement/" + ent.group)
+    let amountStr = ::g_language.decimalFormat(getEntitlementAmount(ent))
     if(name.indexof("%d") != null)
       name = ::stringReplace(name, "%d", amountStr)
     else
-      name = ::loc("charServer/entitlement/" + item.group, {amount = amountStr})
+      name = ::loc("charServer/entitlement/" + ent.group, {amount = amountStr})
   }
   else
-    name = ::loc("charServer/entitlement/" + getEntitlementLocId(item))
+    name = ::loc("charServer/entitlement/" + getEntitlementLocId(ent))
 
-  let timeText = getEntitlementTimeText(item)
+  let timeText = getEntitlementTimeText(ent)
   if (timeText!="")
     name += " " + timeText
   return name
 }
 
-let function getFirstPurchaseAdditionalAmount(item)
+let function getFirstPurchaseAdditionalAmount(ent)
 {
-  if (!::has_entitlement(item.name))
-    return ::getTblValue("goldIncomeFirstBuy", item, 0)
+  if (!::has_entitlement(ent.name))
+    return ::getTblValue("goldIncomeFirstBuy", ent, 0)
 
   return 0
 }
 
-let function getEntitlementPrice(item)
+let function getEntitlementPrice(ent)
 {
-  if (item?.onlinePurchase ?? false) {
-    let info = bundlesShopInfo.value?[item.name]
+  if (ent?.onlinePurchase ?? false) {
+    let info = bundlesShopInfo.value?[ent.name]
     if (info)
       return ::loc($"priceText/{info?.shop_price_curr}", { price = info?.shop_price ?? 0 }, "")
 
-    let priceText = ::loc("price/" + item.name, "")
+    let priceText = ::loc("price/" + ent.name, "")
     if (priceText == "")
       return ""
 
     let markup = ::steam_is_running() ? 1.0 + getSteamMarkUp()/100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
-    let discount = ::g_discount.getEntitlementDiscount(item.name)
+    let discount = ::g_discount.getEntitlementDiscount(ent.name)
     if (discount)
       totalPrice -= totalPrice * discount * 0.01
 
     return format(::loc("price/common"),
-      item?.chapter == "eagles" ? totalPrice.tostring() : ::g_language.decimalFormat(totalPrice))
+      ent?.chapter == "eagles" ? totalPrice.tostring() : ::g_language.decimalFormat(totalPrice))
   }
-  else if ("goldCost" in item)
-    return ::Cost(0, ::get_entitlement_cost_gold(item.name)).tostring()
+  else if ("goldCost" in ent)
+    return ::Cost(0, ::get_entitlement_cost_gold(ent.name)).tostring()
   return ""
 }
 
+local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
+
+let function getPricePerEntitlement(ent) {
+  let value = getEntitlementAmount(ent)
+  if (value <= 0)
+    return 0
+
+  let cost = getEntitlementPrice(ent)
+  if (cost == "")
+    return 0
+  return cost.tofloat() / value
+}
+
+let function  getEntitlementLocParams() {
+  let rBlk = ::get_ranks_blk()
+  let wBlk = ::get_warpoints_blk()
+
+  let premiumRpMult = rBlk?.xpMultiplier || 1.0
+  let premiumWpMult = wBlk?.wpMultiplier || 1.0
+  let premiumBattleTimeWpMult = premiumWpMult * (wBlk?.battleTimePremMul || 1.0)
+  let premiumOtherModesWpMult = premiumWpMult
+
+  return {
+    bonusRpPercent           = bonusPercentText(premiumRpMult)
+    bonusWpPercent           = bonusPercentText(premiumWpMult)
+    bonusBattleTimeWpPercent = bonusPercentText(premiumBattleTimeWpMult)
+    bonusOtherModesWpPercent = bonusPercentText(premiumOtherModesWpMult)
+  }
+}
+
+let canBuyEntitlement = @(ent)
+  (ent?.hideWhenUnbougth ?? false)
+    || ent?.chapter == "campaign"
+    || ent?.chapter == "license"
+    || ent?.chapter == "bonuses"
+
+let function getEntitlementBundles() {
+  let bundles = {}
+  let eblk = ::OnlineShopModel.getPriceBlk()
+  let numBlocks = eblk.blockCount()
+  for (local i = 0; i < numBlocks; i++) {
+    let ib = eblk.getBlock(i)
+    let name = ib.getBlockName()
+    if (ib?.bundle)
+        bundles[name] <- ib.bundle % "item"
+  }
+  return bundles
+}
+
+let function isBoughtEntitlement(ent) {
+  let bundles = getEntitlementBundles()
+  if (ent?.name != null && bundles?[ent.name] != null)
+  {
+    let isBought = callee()
+    foreach(name in bundles[ent.name])
+      if (!goods?[name] || !isBought(goods[name]))
+        return false
+    return true
+  }
+  let realname = ent?.alias ?? ent.name
+  return (canBuyEntitlement(ent) && ::has_entitlement(realname))
+}
+
+let function getEntitlementDescription(product, productId) {
+  if (product == null)
+    return ""
+
+  let resArr = []
+  let paramTbl =  getEntitlementLocParams()
+  if (product?.useGroupAmount && ("group" in product))
+    paramTbl.amount <- getEntitlementAmount(product).tointeger()
+
+  let locId = "charServer/entitlement/{0}/desc".subst(getEntitlementLocId(product))
+  resArr.append(::loc(locId, paramTbl))
+
+  foreach(giftName in product?.entitlementGift ?? [])
+  {
+    let config = giftName.slice(0, 4) == "Rate" ? getEntitlementConfig(product.name) : getEntitlementConfig(giftName)
+    resArr.append(format(::loc("charServer/gift/entitlement"), getEntitlementName(config)))
+  }
+
+  foreach(airName in product?.aircraftGift ?? [])
+    resArr.append(format(::loc("charServer/gift/aircraft"), ::getUnitName(airName)))
+
+  if (product?.goldIncome && product?.chapter!="eagles")
+    resArr.append(format(::loc("charServer/gift"), "".concat(product.goldIncome, ::loc("gold/short/colored"))))
+
+  if ("afterGiftsDesc" in product)
+    resArr.append("\n{0}".subst(::loc(product.afterGiftsDesc)))
+
+  if (product?.onlinePurchase && !isBoughtEntitlement(product) && ::steam_is_running())
+    resArr.append(::loc("charServer/web_purchase"))
+
+  if (product?.chapter == "warpoints")
+  {
+    let days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
+    if (days > 0)
+      resArr.append(::colorize("warningTextColor",
+        ::loc("charServer/chapter/warpoints/expireWarning", { days = days })))
+  }
+
+  return "\n".join(resArr)
+}
+
 return {
-  getEntitlementConfig = getEntitlementConfig
-  getEntitlementLocId = getEntitlementLocId
-  getEntitlementAmount = getEntitlementAmount
-  getEntitlementName = getEntitlementName
-  getFirstPurchaseAdditionalAmount = getFirstPurchaseAdditionalAmount
-  getEntitlementTimeText = getEntitlementTimeText
-  getEntitlementPrice = getEntitlementPrice
+  getEntitlementConfig
+  getEntitlementLocId
+  getEntitlementAmount
+  getEntitlementName
+  getEntitlementTimeText
+  getEntitlementPrice
+  getEntitlementDescription
+  getFirstPurchaseAdditionalAmount
+  getPricePerEntitlement
+  isBoughtEntitlement
+  getEntitlementLocParams
+  canBuyEntitlement
 }

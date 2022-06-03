@@ -1,3 +1,4 @@
+let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
@@ -128,7 +129,7 @@ web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
   function getFullPath()
   {
     let relPath = ::u.isEmpty(path) ? "" : (path + "/")
-    return ::format("%sunitInfo%s.blk", relPath, curLang)
+    return format("%sunitInfo%s.blk", relPath, curLang)
   }
 
   function startExport()

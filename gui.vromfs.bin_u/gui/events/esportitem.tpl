@@ -46,12 +46,14 @@ eSItemDiv {
       text:t='<<battleDay>>'
     }
 
-    <<#isActive>>
     tdiv {
       id:t='battle_nest'
       left:t='0.5pw-0.5w'
       position:t='relative'
       flow:t='horizontal'
+      <<^isActive>>
+      display:t='hide'
+      <</isActive>>
       img {
         size:t='1@fontHeightNormal, 1@fontHeightNormal'
         top:t='0.5ph-0.5h'
@@ -68,7 +70,7 @@ eSItemDiv {
         text:t='<<battlesNum>>'
       }
     }
-    <</isActive>>
+    include "%gui/events/eSportSession"
     <<#isFinished>>
     img {
       id:t='leaderboard_img'
@@ -92,100 +94,6 @@ eSItemDiv {
       ButtonImg {}
     }
     <</isFinished>>
-    <<#isActive>>
-    <<#sessionTime>>
-    tdiv {
-      id:t='session_nest'
-      width:t='pw'
-      position:t='relative'
-      padding-bottom:t='2@eSItemInterval'
-      flow:t='horizontal'
-      smallFont:t='yes'
-
-      textareaNoTab {
-        position:t='relative'
-        text:t='#tournaments/session'
-      }
-      <<#sessions>>
-      textareaNoTab {
-        id:t='<<sesId>>'
-        position:t='relative'
-        text:t='<<sesNum>>'
-        visualStyle:t='<<#isSelected>>sessionSelected<</isSelected>><<^isSelected>><</isSelected>>'
-      }
-      <</sessions>>
-
-      tdiv{
-        height:t='1@fontHeightSmall'
-        max-width:t='0.7pw'
-        right:t='0'
-        position:t='relative'
-        flow:t='horisontal'
-
-        img {
-          id:t='session_ico'
-          size:t='1@fontHeightSmall, 1@fontHeightSmall'
-          top:t='0.5ph-0.5h'
-          position:t='relative'
-          background-image:t='#ui/gameuiskin#<<^isSesActive>>clock_tour<</isSesActive>><<#isSesActive>>play_tour<</isSesActive>>.svg'
-          background-svg-size:t='1@fontHeightSmall, 1@fontHeightSmall'
-        }
-
-        textareaNoTab {
-          id:t='session_timer'
-          pos:t='1@blockInterval, 0.5ph-0.5h'
-          position:t='relative'
-          text-align:t='right'
-          text:t='<<sessionTime>>'
-        }
-      }
-    }
-    <</sessionTime>>
-    <<#trainingTime>>
-    tdiv {
-      id:t='training_nest'
-      width:t='pw'
-      position:t='relative'
-      flow:t='horizontal'
-      smallFont:t='yes'
-
-      textareaNoTab {
-        position:t='relative'
-        text:t='#tournaments/training'
-      }
-
-      textareaNoTab {
-        id:t='training_time'
-        right:t='0'
-        position:t='relative'
-        text-align:t='right'
-        text:t='<<trainingTime>>'
-      }
-    }
-    <</trainingTime>>
-    <<#startTime>>
-    tdiv {
-      id:t='start_nest'
-      width:t='pw'
-      position:t='relative'
-      flow:t='horizontal'
-      smallFont:t='yes'
-
-      textareaNoTab {
-        position:t='relative'
-        text:t='#tournaments/start'
-      }
-
-      textareaNoTab {
-        id:t='start_time'
-        right:t='0'
-        position:t='relative'
-        text-align:t='right'
-        text:t='<<startTime>>'
-      }
-    }
-    <</startTime>>
-    <</isActive>>
   }
   itemUnderline {
     top:t='1@eSItemHeight+1@eSItemMargin'
@@ -226,7 +134,7 @@ eSItemDiv {
       <</isFinished>>
     }
   }
-  // // CONTENT BOTTOM
+  // COUNTRIES
   tdiv {
     width:t='0.7pw'
     pos:t='1@eSItemPadding, 1@tournamentNameTextPos-h'
@@ -234,13 +142,24 @@ eSItemDiv {
     position:t='absolute'
     padding-bottom:t='1@eSItemPadding'
     <<#countries>>
-    img {
+    tdiv {
       size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
       position:t='relative'
       margin:t='1@eSItemInterval'
       margin-left:t='0'
-      background-image:t='<<icon>>'
-      background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+      img {
+        size:t='2@eSItemIcoSize, 2@eSItemIcoSize'
+        pos:t='0.5pw-0.5w+5@dp, 0.5ph-0.5h'
+        position:t='absolute'
+        background-image:t='#ui/gameuiskin#flag_shadow.png'
+        background-svg-size:t='2@eSItemIcoSize, 2@eSItemIcoSize'
+      }
+      img {
+        size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+        position:t='absolute'
+        background-image:t='<<icon>>'
+        background-svg-size:t='1@eSItemIcoSize, 1@eSItemIcoSize'
+      }
     }
     <</countries>>
   }

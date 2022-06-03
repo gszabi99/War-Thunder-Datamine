@@ -22,7 +22,7 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     ::enableHangarControls(hasVisibleNuclearTimer)
-    showSceneBtn("window", hasVisibleNuclearTimer)
+    this.showSceneBtn("window", hasVisibleNuclearTimer)
     if (hasVisibleNuclearTimer)
       initTimer()
     else
@@ -50,7 +50,7 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
 
     if (activeTime > TIME_TO_EXPLOSION) {
       if (!isExplosionStarted) {
-        showSceneBtn("window", false)
+        this.showSceneBtn("window", false)
 
         set_nuclear_explosion_sound_active()
         ::start_dynamic_lut_texture("nuclear_explosion")

@@ -20,7 +20,7 @@ let generateSpdMarkJ8 = function(num) {
           watch = IlsColor
           size = flex()
           pos = [pw(-40), 0]
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           color = IlsColor.value
           vplace = ALIGN_CENTER
           fontSize = 40
@@ -81,7 +81,7 @@ let J8FlyInfo = @() {
   children = [
     @(){
       watch = OverloadWatch
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -89,7 +89,7 @@ let J8FlyInfo = @() {
     },
     @(){
       watch = MachWatchJ8
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -97,7 +97,7 @@ let J8FlyInfo = @() {
     },
     @(){
       watch = TasWatch
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -114,7 +114,7 @@ let J8AoaInfo = @() {
   children = [
     @(){
       watch = AoaWatch
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -126,7 +126,7 @@ let J8AoaInfo = @() {
       color = IlsColor.value
     },
     @(){
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -144,7 +144,7 @@ let J8ClimbInfo = @() {
   children = [
     @(){
       watch = ClimbJ8Watch
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -156,7 +156,7 @@ let J8ClimbInfo = @() {
       color = IlsColor.value
     },
     {
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -228,7 +228,7 @@ let generateAltMarkJ8 = function(num) {
         @() {
           watch = IlsColor
           size = flex()
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           color = IlsColor.value
           vplace = ALIGN_CENTER
           fontSize = 40
@@ -259,14 +259,14 @@ let J8AltInfo = @() {
   children = [
     @(){
       watch = altValue
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
       text = string.format("H%d", altValue.value)
     },
     {
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
       font = Fonts.hud
@@ -372,7 +372,7 @@ let function J8IIHK(width, height) {
       compassWrap(width, height, 0.05, generateCompassMarkJ8, 0.6),
       {
         pos = [pw(15), ph(75)]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color = IlsColor.value
         fontSize = 40
         font = Fonts.hud
@@ -380,7 +380,7 @@ let function J8IIHK(width, height) {
       },
       {
         pos = [pw(85), ph(75)]
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         color = IlsColor.value
         fontSize = 40
         font = Fonts.hud

@@ -144,7 +144,7 @@
         "composite_armor_hull_01_dm": {
           "armorClass": "spaced_armor_air",
           "hidableInXrayViewer": true,
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "genericArmorQuality": 0.0,
           "cumulativeArmorQuality": 0.0
         },
@@ -273,7 +273,7 @@
         "composite_armor_turret_03_dm": {
           "armorClass": "CHA_tank_modern",
           "hidableInXrayViewer": true,
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "genericArmorQuality": 0.0,
           "cumulativeArmorQuality": 0.0,
           "createSecondaryShatters": false
@@ -288,7 +288,7 @@
         "composite_armor_turret_02_dm": {
           "armorClass": "CHA_tank_modern",
           "hidableInXrayViewer": true,
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "genericArmorQuality": 0.0,
           "cumulativeArmorQuality": 0.0,
           "createSecondaryShatters": false
@@ -386,7 +386,7 @@
           "armorThickness": 200.0
         },
         "turret_03_bottom_dm": {
-          "armorThickness": 150.0
+          "armorThickness": 5.0
         },
         "turret_05_side_dm": {
           "armorClass": "tank_structural_steel",
@@ -740,6 +740,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -2298,8 +2299,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -2343,8 +2344,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -2352,8 +2353,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -2361,8 +2362,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -2401,29 +2402,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2796,6 +2797,7 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
+          "aimForOperatedShell": true,
           "autoLoader": true,
           "speedYaw": 24.0,
           "speedPitch": 3.5,
@@ -3058,9 +3060,6 @@
       },
       "tracks": {
         "animationMultiplier": -0.72,
-        "height": 0.05,
-        "width": 0.65,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
         "tracksTensionK": [3.5,10.0,2.0],
         "trackMesh": "ussr_613_44_16sb_d1_phys_track_line",
         "trackLen": 0.137,
@@ -3069,7 +3068,10 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.2,
-        "trackStartOffset": 0.08
+        "height": 0.05,
+        "width": 0.65,
+        "trackStartOffset": 0.08,
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3747,10 +3749,10 @@
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "modern_tank_laser_rangefinder": {
         "tier": 2
@@ -3793,6 +3795,7 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
+                "aimForOperatedShell": true,
                 "autoLoader": true,
                 "speedYaw": 24.0,
                 "speedPitch": 3.5,

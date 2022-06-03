@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -75,7 +76,7 @@ let needCheckForVictory = ::Watched(false)
 
 ::get_game_mode_loc_name <- function get_game_mode_loc_name(gm)
 {
-  return ::loc(::format("multiplayer/%sMode", ::get_game_mode_name(gm)))
+  return ::loc(format("multiplayer/%sMode", ::get_game_mode_name(gm)))
 }
 
 ::is_skirmish_with_killstreaks <- function is_skirmish_with_killstreaks(misBlk)
@@ -194,7 +195,7 @@ let needCheckForVictory = ::Watched(false)
   if (rewText != "")
   {
     if (highlighted)
-      rewText = ::format("<color=@highlightedTextColor>%s</color>", (additionalReward? ("+(" + rewText + ")") : rewText))
+      rewText = format("<color=@highlightedTextColor>%s</color>", (additionalReward? ("+(" + rewText + ")") : rewText))
     rewText = name + ((name != "")? ::loc("ui/colon"): "") + rewText
   }
   return rewText

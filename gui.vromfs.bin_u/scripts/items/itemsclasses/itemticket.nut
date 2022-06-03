@@ -6,7 +6,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   static iType = itemType.TICKET
   static defaultLocId = "ticket"
   //static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
-  static typeIcon = "#ui/gameuiskin#item_type_tickets"
+  static typeIcon = "#ui/gameuiskin#item_type_tickets.svg"
   static linkActionLocId = "mainmenu/signUp"
 
   static includeInRecentItems = false

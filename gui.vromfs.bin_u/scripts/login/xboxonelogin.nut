@@ -12,9 +12,9 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
   function initScreen()
   {
     animBgLoad()
-    setVersionText(scene)
+    setVersionText(this.scene)
     ::setProjectAwards(this)
-    showTitleLogo(scene, 128)
+    showTitleLogo(this.scene, 128)
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
     let buttonsView = [
@@ -42,13 +42,13 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
     foreach (view in buttonsView)
       data += ::handyman.renderCached("%gui/commonParts/button", view)
 
-    guiScene.prependWithBlk(scene.findObject("authorization_button_place"), data, this)
-    scene.findObject("user_notify_text").setValue(::loc("xbox/reqInstantConnection"))
-    updateGamertag()
+    this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
+    this.scene.findObject("user_notify_text").setValue(::loc("xbox/reqInstantConnection"))
+    this.updateGamertag()
 
     if (::xbox_is_game_started_by_invite())
     {
-      onOk()
+      this.onOk()
       return
     }
 
@@ -57,29 +57,29 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
 
   function onOk()
   {
-    if (isLoginInProcess)
+    if (this.isLoginInProcess)
       return
 
-    isLoginInProcess = true
-    loginStep1_checkGamercard()
+    this.isLoginInProcess = true
+    this.loginStep1_checkGamercard()
   }
 
   function loginStep1_checkGamercard()
   {
     if (::xbox_get_active_user_gamertag() == "")
     {
-      isLoginInProcess = false
-      needAutoLogin = true
-      onChangeGamertag()
+      this.isLoginInProcess = false
+      this.needAutoLogin = true
+      this.onChangeGamertag()
       return
     }
 
-    performLogin()
+    this.performLogin()
   }
 
   function performLogin()
   {
-    needAutoLogin = false
+    this.needAutoLogin = false
     ::xbox_on_login(
       function(result, err_code)
       {
@@ -93,8 +93,8 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
         }
         else if (result == XBOX_LOGIN_STATE_FAILED)
         {
-          msgBox("no_internet_connection", ::loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
-          isLoginInProcess = false
+          this.msgBox("no_internet_connection", ::loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
+          this.isLoginInProcess = false
           ::dagor.logerr($"XBOX: login failed with error - {err_code}")
         }
 
@@ -113,19 +113,19 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
     if (text != "")
       text = ::loc("xbox/playAs", {name = text})
 
-    scene.findObject("xbox_active_usertag").setValue(text)
+    this.scene.findObject("xbox_active_usertag").setValue(text)
   }
 
   function onEventXboxActiveUserGamertagChanged(params)
   {
-    updateGamertag()
-    if (needAutoLogin && ::xbox_get_active_user_gamertag() != "")
-      onOk()
+    this.updateGamertag()
+    if (this.needAutoLogin && ::xbox_get_active_user_gamertag() != "")
+      this.onOk()
   }
 
   function onEventXboxInviteAccepted(p)
   {
-    onOk()
+    this.onOk()
   }
 
   function goBack(obj) {}

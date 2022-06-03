@@ -1,6 +1,5 @@
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 return [
@@ -194,7 +193,7 @@ return [
   {
     id = "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.SUBMARINE
-    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
+    showFunc = ::have_xinput_device
     checkAssign = false
   }
   {

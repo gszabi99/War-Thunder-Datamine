@@ -1,3 +1,5 @@
+let { format } = require("string")
+let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let replayMetadata = require("%scripts/replays/replayMetadata.nut")
 
@@ -43,7 +45,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
 
 ::get_replay_url_by_session_id <- function get_replay_url_by_session_id(sessionId)
 {
-  let sessionIdText = ::format("%0" + REPLAY_SESSION_ID_MIN_LENGHT + "s", sessionId.tostring())
+  let sessionIdText = format("%0" + REPLAY_SESSION_ID_MIN_LENGHT + "s", sessionId.tostring())
   return ::loc("url/server_wt_game_replay", {sessionId = sessionIdText})
 }
 
@@ -156,7 +158,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
     ::set_presence_to_player("menu")
     scene.findObject("chapter_name").setValue(::loc("mainmenu/btnReplays"))
     scene.findObject("chapter_include_block").show(true)
-    showSceneBtn("btn_open_folder", ::is_platform_windows)
+    this.showSceneBtn("btn_open_folder", ::is_platform_windows)
 
     ::update_gamercards()
     loadReplays()
@@ -197,12 +199,12 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
     if (!::checkObj(listObj))
       return
 
-    selItem = replays.len() == 0 ? -1 : ::clamp(selItem, 0, replays.len() - 1)
-    curPage = ::max(0, selItem / replaysPerPage)
+    selItem = replays.len() == 0 ? -1 : clamp(selItem, 0, replays.len() - 1)
+    curPage = max(0, selItem / replaysPerPage)
 
     let view = { items = [] }
     let firstIdx = curPage * replaysPerPage
-    let lastIdx = ::min(replays.len(), ((curPage + 1) * replaysPerPage))
+    let lastIdx = min(replays.len(), ((curPage + 1) * replaysPerPage))
     for (local i = firstIdx; i < lastIdx; i++)
     {
       local iconName = "";
@@ -380,7 +382,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
       foreach (name in replayResultsTable.tablesArray)
       {
         let rows = replayResultsTable.playersRows[name]
-        tables += ::format("table{id:t='%s_table'; width:t='pw'; baseRow:t='yes' %s}",
+        tables += format("table{id:t='%s_table'; width:t='pw'; baseRow:t='yes' %s}",
           name, rows + ::getTblValue(name, replayResultsTable.addTableParams, ""))
       }
     }
@@ -463,7 +465,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
       {
         local params = ""
         foreach(name, value in paramsTable)
-          params += ::format("%s:t='%s'", name, value)
+          params += format("%s:t='%s'", name, value)
         data.addTableParams[team] <- params
       }
     }
@@ -585,7 +587,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
       if (isReplayPressed)
         return
 
-      dagor.debug("gui_nav ::back_from_replays = ::gui_start_replays");
+      ::dagor.debug("gui_nav ::back_from_replays = ::gui_start_replays");
       ::back_from_replays = function() {
         ::SessionLobby.resetPlayersInfo()
         ::gui_start_menuReplays()
@@ -607,7 +609,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
     {
       ::on_del_replay(replays[index].path)
       replays.remove(index)
-      refreshList(::min(index, replays.len() - 1))
+      refreshList(min(index, replays.len() - 1))
     }
   }
 
@@ -628,7 +630,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
 
   function onDelReplay()
   {
-    msgBox("del_replay", ::loc("mainmenu/areYouSureDelReplay"),
+    this.msgBox("del_replay", ::loc("mainmenu/areYouSureDelReplay"),
     [
       ["yes", doDelReplay],
       ["no", doSelectList]
@@ -696,7 +698,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
     let newName = scene.findObject("edit_box_window_text").getValue();
     if (!checkName(newName))
     {
-      msgBox("RenameReplayHandler_invalidName",::loc("msgbox/invalidReplayFileName"),
+      this.msgBox("RenameReplayHandler_invalidName",::loc("msgbox/invalidReplayFileName"),
         [["ok", function() {} ]], "ok");
       return;
     }
@@ -707,7 +709,7 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
         if (::rename_file(basePath, newName))
           afterRenameFunc.call(funcOwner, newName);
         else
-          msgBox("RenameReplayHandler_error",::loc("msgbox/cantRenameReplayFile"),
+          this.msgBox("RenameReplayHandler_error",::loc("msgbox/cantRenameReplayFile"),
             [["ok", function() {} ]], "ok");
       }
 

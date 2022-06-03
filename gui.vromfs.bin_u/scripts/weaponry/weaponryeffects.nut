@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let string = require("%sqstd/string.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -140,7 +141,7 @@ let effectTypeTemplate = {
     if (value == null)
       return ""
 
-    local res = ::format(::loc(getLocId(unit, effects)), valueToString(value))
+    local res = format(::loc(getLocId(unit, effects)), valueToString(value))
     if (!needToShowDiff)
       return res
 

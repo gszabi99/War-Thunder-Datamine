@@ -68,7 +68,7 @@ g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task)
 
 enums.addTypesByGlobalName("g_battle_task_difficulty", {
   EASY = {
-    image = "#ui/gameuiskin#battle_tasks_easy"
+    image = "#ui/gameuiskin#battle_tasks_easy.svg"
     timeParamId = "daily"
     executeOrder = 0
     timeLimit = function() { return time.daysToSeconds(1) }
@@ -77,7 +77,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
   }
 
   MEDIUM = {
-    image = "#ui/gameuiskin#battle_tasks_middle"
+    image = "#ui/gameuiskin#battle_tasks_middle.svg"
     timeParamId = "daily"
     executeOrder = 1
     timeLimit = function() { return time.daysToSeconds(1) }
@@ -86,7 +86,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
   }
 
   HARD = {
-    image = "#ui/gameuiskin#hard_task_medal3"
+    image = "#ui/gameuiskin#hard_task_medal3.svg"
     showSeasonIcon = true
     canIncreaseShopLevel = false
     timeParamId = "specialTasks"

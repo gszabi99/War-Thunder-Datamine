@@ -76,7 +76,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
     scene.findObject("header").setValue(header)
     scene.findObject("message").setValue(message)
     if (!checkId)
-      showSceneBtn("do_not_show_me_again", false)
+      this.showSceneBtn("do_not_show_me_again", false)
     createButtons()
     buttonsContext = null //remove permanent link to context
 
@@ -115,7 +115,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
     if (!markup.len())
     {
       scene.findObject("info_wnd_frame")["class"] = "wnd"
-      showSceneBtn("nav-help", false)
+      this.showSceneBtn("nav-help", false)
     }
     else if (hasBigButton)
       scene.findObject("info_wnd_frame").largeNavBarHeight = "yes"

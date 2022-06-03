@@ -42,8 +42,8 @@ let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpda
     scene.findObject("edit_box_window_header").setValue(title)
     checkWarningFunc = checkWarningFunc ?? @(...) true
 
-    editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
-    showSceneBtn(leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(label)
+    editBoxObj = this.showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
+    this.showSceneBtn(leftAlignedLabel ? "editbox_label_left_aligned" : "editbox_label", true).setValue(label)
 
     let isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
     editBoxObj.enable(isEnabled)
@@ -66,7 +66,7 @@ let { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpda
     value = null
 
     if (!canCancel && !cancelFunc)
-      showSceneBtn("btn_back", false)
+      this.showSceneBtn("btn_back", false)
 
     if (okBtnText != "")
       setColoredDoubleTextToButton(scene, "btn_ok", okBtnText)

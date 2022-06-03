@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null)
@@ -85,10 +86,10 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
         {
           let unit = ::getAircraftByName(unitId)
           let br = unit ? unit.getBattleRating(ediff) : 0.0
-          battleRatingMin = !battleRatingMin ? br : ::min(battleRatingMin, br)
-          battleRatingMax = !battleRatingMax ? br : ::max(battleRatingMax, br)
+          battleRatingMin = !battleRatingMin ? br : min(battleRatingMin, br)
+          battleRatingMax = !battleRatingMax ? br : max(battleRatingMax, br)
         }
-        let battleRatingRange = ::format("%.1f %s %.1f", battleRatingMin, ::loc("ui/mdash"), battleRatingMax)
+        let battleRatingRange = format("%.1f %s %.1f", battleRatingMin, ::loc("ui/mdash"), battleRatingMax)
         presetBattleRatingText = ::loc("shop/battle_rating") + ::loc("ui/colon") + battleRatingRange + "\n"
       }
 
@@ -138,7 +139,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     }
     else
     {
-      let data = ::format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(::loc("shop/slotbarPresets/presetUnknown")))
+      let data = format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(::loc("shop/slotbarPresets/presetUnknown")))
       guiScene.replaceContentFromText(objDesc, data, data.len(), this)
     }
 
@@ -216,7 +217,7 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
                              :
                               ::loc("shop/slotbarPresetsMax")
 
-      showInfoMsgBox(::format(::loc("weaponry/action_not_allowed"), reason))
+      showInfoMsgBox(format(::loc("weaponry/action_not_allowed"), reason))
     }
   }
 
@@ -232,9 +233,9 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
     foreach (unitId in preset.units)
       unitNames.append(::loc(unitId + "_shop"))
     local comment = "(" + ::loc("shop/slotbarPresets/contents") + ::loc("ui/colon") + ::g_string.implode(unitNames, ::loc("ui/comma")) + ")"
-    comment = ::format("textarea{overlayTextColor:t='bad'; text:t='%s'}", ::g_string.stripTags(comment))
+    comment = format("textarea{overlayTextColor:t='bad'; text:t='%s'}", ::g_string.stripTags(comment))
 
-    msgBox("question_delete_preset", msgText,
+    this.msgBox("question_delete_preset", msgText,
     [
       ["delete", (@(chosenValue) function() { ::slotbarPresets.erase(chosenValue) })(chosenValue) ],
       ["cancel", function() {} ]

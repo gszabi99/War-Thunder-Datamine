@@ -406,6 +406,12 @@
           "ignoreDeadWithSplash": true,
           "armorEffectiveThicknessMax": 50.0
         },
+        "composite_armor_turret_12_dm": {
+          "armorThickness": 35.0,
+          "hp": 150.0,
+          "ignoreDeadWithSplash": true,
+          "armorEffectiveThicknessMax": 50.0
+        },
         "turret_07_bottom_dm": {
           "armorThickness": 35.0,
           "hp": 150.0,
@@ -740,6 +746,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1071,26 +1078,98 @@
     }
   },
   {
-    "attachables": {
-      "ex_decor_r_07_dm": true,
-      "ex_decor_r_08_dm": true,
-      "ex_decor_l_10_dm": true,
-      "ex_armor_l_14_dm": true,
-      "ex_armor_r_11_dm": true,
-      "ex_decor_l_11_dm": true,
-      "ex_armor_r_12_dm": true,
-      "ex_armor_l_12_dm": true,
-      "ex_armor_r_13_dm": true,
-      "ex_armor_l_13_dm": true,
-      "ex_armor_r_14_dm": true,
-      "ex_armor_r_15_dm": true,
-      "turret_08_back_dm": true,
-      "turret_08_front_dm": true,
-      "turret_08_top_dm": true,
-      "turret_08_side_dm": true,
-      "ex_armor_l_15_dm": true,
-      "ex_armor_01_dm": true
-    }
+    "attachables": [
+      {
+        "ex_decor_r_07_dm": true
+      },
+      {
+        "ex_decor_r_08_dm": true
+      },
+      {
+        "ex_decor_l_10_dm": true
+      },
+      {
+        "ex_armor_l_14_dm": true
+      },
+      {
+        "ex_armor_r_11_dm": true
+      },
+      {
+        "ex_decor_l_11_dm": true
+      },
+      {
+        "ex_armor_r_12_dm": true
+      },
+      {
+        "ex_armor_l_12_dm": true
+      },
+      {
+        "ex_armor_r_13_dm": true
+      },
+      {
+        "ex_armor_l_13_dm": true
+      },
+      {
+        "ex_armor_r_14_dm": true
+      },
+      {
+        "ex_armor_r_15_dm": true
+      },
+      {
+        "turret_08_back_dm": true
+      },
+      {
+        "turret_08_back_dm": true
+      },
+      {
+        "turret_08_front_dm": true
+      },
+      {
+        "turret_08_top_dm": true
+      },
+      {
+        "turret_08_side_dm": true
+      },
+      {
+        "turret_08_side_dm": true
+      },
+      {
+        "ex_armor_l_15_dm": true
+      },
+      {
+        "ex_armor_01_dm": true
+      },
+      {
+        "ex_armor_l_11_dm": true
+      },
+      {
+        "composite_armor_turret_08_dm": true
+      },
+      {
+        "turret_09_top_dm": true
+      },
+      {
+        "composite_armor_turret_05_dm": true
+      },
+      {
+        "turret_09_back_dm": true
+      },
+      {
+        "composite_armor_turret_07_dm": true
+      },
+      {
+        "gun_mask_05_dm": true
+      },
+      {
+        "fuel_tank_exterior_r_02_dm": true
+      },
+      {
+        "fuel_tank_exterior_l_02_dm": true
+      },
+      {
+        "composite_armor_turret_06_dm": true
+      }
+    ]
   },
   {
     "DamageEffects": [
@@ -1639,8 +1718,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1684,8 +1763,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1693,8 +1772,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1702,8 +1781,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1742,29 +1821,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2395,6 +2474,17 @@
             "layer": {
               "dmPart": "composite_armor_turret_11_dm",
               "xrayTextThickness": 600.0
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_12_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_12_dm"
             }
           }
         }
@@ -3962,10 +4052,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ger"
+        "image": "#ui/gameuiskin#tank_reinforcement_ger.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ger"
+        "image": "#ui/gameuiskin#tank_reinforcement_ger.png"
       },
       "120mm_NATO_APDS_FS": [],
       "120mm_DM_APDS_FS": [],
@@ -4307,7 +4397,7 @@
       },
       "night_vision_system": {
         "tier": 3,
-        "image": "#ui/gameuiskin#thermal_sight",
+        "image": "#ui/gameuiskin#thermal_sight.png",
         "effects": {
           "nightVision": {
             "gunnerThermal": {

@@ -4,6 +4,7 @@ let { isEqualSimple } = require("%sqstd/underscore.nut")
 let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings
@@ -15,7 +16,7 @@ let function getUnitsByUnlock(unlockBlk, ediff) {
   if (!modeBlk)
     return []
 
-  let conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
+  let conditions = getUnlockConditions(modeBlk)
   let unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
   if (unitCond)
     return (unitCond % "class")
@@ -141,7 +142,7 @@ let function getUnitListByUnlockId(unlockId) {
   if (!modeBlk)
     return []
 
-  let conditions = (modeBlk % "condition").extend(modeBlk % "visualCondition")
+  let conditions = getUnlockConditions(modeBlk)
   let unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
   if (!unitCond)
     return []

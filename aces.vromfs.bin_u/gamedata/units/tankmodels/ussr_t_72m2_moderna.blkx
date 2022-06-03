@@ -712,6 +712,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1592,8 +1593,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1637,8 +1638,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1646,8 +1647,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1655,8 +1656,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1695,29 +1696,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2740,6 +2741,7 @@
           "sleeveExtractSound": "shell_eject_hatch",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
+          "maxAdditionalPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
           "autoLoader": true,
@@ -2899,10 +2901,18 @@
           "blk": "gameData/Weapons/groundModels_weapons/30mm_2A42_user_cannon.blk",
           "emitter": "bone_gun_barrel_01",
           "flash": "emtr_gun_flame_01",
+          "sleeveEmitter": "emtr_shell_02",
+          "sleeveMesh": "auto_cannon_cartridge_case",
+          "openHatchTime": 0.0,
+          "sleevesLifeTime": 5.0,
+          "sleeveImpulse": [6.0,0.0,0.5],
+          "sleevesImpulseOffset": 0.04,
+          "linkSleeveToGun": true,
           "jammedReloadTime": 15.0,
           "barrelDP": "gun_barrel_01_dm",
           "breechDP": "cannon_breech_01_dm",
           "allowableDelta": 10.0,
+          "recoilOffset": 0.045,
           "isBulletBelt": true,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2928,6 +2938,7 @@
           "turret": {
             "head": "bone_gun_01",
             "gun": "bone_gun_01",
+            "barrel": "bone_gun_barrel_01",
             "gunnerDm": "gunner_dm",
             "secondGunnerDm": "commander_dm",
             "rotatedTurret": "bone_turret",
@@ -3009,9 +3020,6 @@
       },
       "tracks": {
         "animationMultiplier": -0.72,
-        "height": 0.07,
-        "width": 0.65,
-        "fricSideRot": [5.0,0.0,0.6,0.3],
         "tracksTensionK": [3.5,10.0,2.0],
         "trackMesh": "ussr_613_44_16sb_d1_phys_track_line",
         "trackLen": 0.137,
@@ -3020,7 +3028,10 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.2,
-        "trackStartOffset": 0.12
+        "height": 0.07,
+        "width": 0.65,
+        "trackStartOffset": 0.12,
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3689,10 +3700,10 @@
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "laser_rangefinder_lws": {
         "tier": 3
@@ -3729,6 +3740,7 @@
                 "sleeveExtractSound": "shell_eject_hatch",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
+                "maxAdditionalPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
                 "autoLoader": true,
@@ -3888,10 +3900,18 @@
                 "blk": "gameData/Weapons/groundModels_weapons/30mm_2A42_user_cannon.blk",
                 "emitter": "bone_gun_barrel_01",
                 "flash": "emtr_gun_flame_01",
+                "sleeveEmitter": "emtr_shell_02",
+                "sleeveMesh": "auto_cannon_cartridge_case",
+                "openHatchTime": 0.0,
+                "sleevesLifeTime": 5.0,
+                "sleeveImpulse": [6.0,0.0,0.5],
+                "sleevesImpulseOffset": 0.04,
+                "linkSleeveToGun": true,
                 "jammedReloadTime": 15.0,
                 "barrelDP": "gun_barrel_01_dm",
                 "breechDP": "cannon_breech_01_dm",
                 "allowableDelta": 10.0,
+                "recoilOffset": 0.045,
                 "isBulletBelt": true,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3917,6 +3937,7 @@
                 "turret": {
                   "head": "bone_gun_01",
                   "gun": "bone_gun_01",
+                  "barrel": "bone_gun_barrel_01",
                   "gunnerDm": "gunner_dm",
                   "secondGunnerDm": "commander_dm",
                   "rotatedTurret": "bone_turret",
@@ -4025,7 +4046,7 @@
       },
       "night_vision_system": {
         "tier": 2,
-        "image": "#ui/gameuiskin#thermal_sight",
+        "image": "#ui/gameuiskin#thermal_sight.png",
         "modClass": "protection",
         "effects": {
           "nightVision": {

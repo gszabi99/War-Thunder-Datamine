@@ -74,7 +74,7 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
     let show = ::ps4_headtrack_is_attached() && ::ps4_headtrack_get_enable()
     foreach(o in [::USEROPT_HEADTRACK_SCALE_X, ::USEROPT_HEADTRACK_SCALE_Y])
       showOptionRow(get_option(o), show)
-    showSceneBtn("btn_calibrate", show)
+    this.showSceneBtn("btn_calibrate", show)
   }
 
   function onSwitchModeButton()
@@ -87,9 +87,9 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
   function updateButtons()
   {
-    showSceneBtn("btn_switchMode", true)
-    showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets") && ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
-    showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
+    this.showSceneBtn("btn_switchMode", true)
+    this.showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets") && ::get_game_mode() != ::GM_TRAINING && !::is_platform_xbox)
+    this.showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
     let btnObj = scene.findObject("btn_calibrate")
     if (::checkObj(btnObj))
       btnObj.inactiveColor = ::ps4_headtrack_is_active()? "no" : "yes"
@@ -111,11 +111,11 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
     if (!::ps4_headtrack_is_active())
     {
-      msgBox("not_available", ::loc("options/headtrack_camera_not_work"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      this.msgBox("not_available", ::loc("options/headtrack_camera_not_work"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
       return
     }
 
-    msgBox("calibrate", ::loc("msg/headtrack_calibrate"),
+    this.msgBox("calibrate", ::loc("msg/headtrack_calibrate"),
       [["ok", function() { ::ps4_headtrack_calibrate() } ]],
       "ok", { cancel_fn = function() {}})
   }

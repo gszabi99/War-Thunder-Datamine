@@ -1,3 +1,5 @@
+from "frp" import Watched, Computed
+
 let timeBase = require("%scripts/timeLoc.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")

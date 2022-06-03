@@ -49,7 +49,7 @@ let gatherAllItemsForCategory = function(onFoundCb, onFinishCb = @() null, lastC
 }
 
 // Send requests on skus extended info, per category separatly.
-local requestLinksFullInfo = @(category) null
+local requestLinksFullInfo = @(_category) null
 let fillLinkFullInfo = @(category = "") gatherAllItemsForCategory(
   requestLinksFullInfo,
   finalizeCollectData,
@@ -81,7 +81,7 @@ requestLinksFullInfo = function(category) {
   fillLinkFullInfo(category)
 }
 
-local requestCategoryFullLinksList = @(category) null
+local requestCategoryFullLinksList = @(_category) null
 requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([category], psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
   function(response, err) {
     if (err) {
@@ -115,7 +115,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
   }
 )
 
-local collectCategories = @(response, err = null) null
+local collectCategories = @(_response, _err = null) null
 collectCategories = function(response, err = null) {
   if (err) {
     statsd.send_counter("sq.ingame_store.v2.request", 1,
@@ -180,7 +180,7 @@ let collectCategoriesAndItems = @(catalog = []) psn.send(
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
+let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(_r, _err) null) {
   psn.send(psn.inGameCatalog.get(idsArray, psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {

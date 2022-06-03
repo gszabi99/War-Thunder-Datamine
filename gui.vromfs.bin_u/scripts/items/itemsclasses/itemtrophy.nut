@@ -7,7 +7,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
   static iType = itemType.TROPHY
   static defaultLocId = "trophy"
   static defaultIconStyle = "default_chest_debug"
-  static typeIcon = "#ui/gameuiskin#item_type_trophies"
+  static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
   static isPreferMarkupDescInTooltip = true
   static userlogOpenLoc = "open_trophy"
   static hasTopRewardAsFirstItem = true
@@ -67,16 +67,16 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     foreach (datablock in blksArray)
     {
       let content = datablock % "i"
-      foreach (_prize in content)
+      foreach (p in content)
       {
         let prize = ::DataBlock()
-        prize.setFrom(_prize)
+        prize.setFrom(p)
 
-        let needMultiAwardInfo = _prize?.ranksRange != null && _prize?.resourceType != null && _prize.blockCount() == 0
+        let needMultiAwardInfo = p?.ranksRange != null && p?.resourceType != null && p.blockCount() == 0
         if (needMultiAwardInfo)
         {
           prize["multiAwardsOnWorthGold"] = 0
-          prize.addBlock(_prize.resourceType).setFrom(_prize)
+          prize.addBlock(p.resourceType).setFrom(p)
         }
 
         contentRaw.append(prize)
@@ -185,10 +185,10 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
         else
         {
           let subContent = subTrophy.getContent(recursionUsedIds)
-          foreach (_si in subContent)
+          foreach (sc in subContent)
           {
             let si = ::DataBlock()
-            si.setFrom(_si)
+            si.setFrom(sc)
 
             if (countMul != 1)
               si.count = (si?.count ?? 1) * countMul
@@ -214,18 +214,18 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
     return _unpackContent([], false)
   }
 
-  function _extractTopPrize(_recursionUsedIds)
+  function _extractTopPrize(recursionUsedIds)
   {
-    if (::isInArray(id, _recursionUsedIds))
+    if (::isInArray(id, recursionUsedIds))
     {
       ::dagor.debug("id = " + id)
-      ::debugTableData(_recursionUsedIds)
+      ::debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + id + ". Array " + ::toString(_recursionUsedIds))
+                               "Infinite recursion detected in trophy: " + id + ". Array " + ::toString(recursionUsedIds))
       return
     }
 
-    _recursionUsedIds.append(id)
+    recursionUsedIds.append(id)
     local topPrizeBlk = null
     foreach(prize in contentRaw)
     {
@@ -235,7 +235,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
       if (prize?.trophy)
       {
         let subTrophy = ::ItemsManager.findItemById(prize.trophy)
-        topPrizeBlk = subTrophy ? subTrophy.getTopPrize(_recursionUsedIds) : null
+        topPrizeBlk = subTrophy ? subTrophy.getTopPrize(recursionUsedIds) : null
       }
       else {
         topPrizeBlk = prize
@@ -248,13 +248,13 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc,
         break
       }
     }
-    _recursionUsedIds.pop()
+    recursionUsedIds.pop()
   }
 
-  function getTopPrize(_recursionUsedIds = [])
+  function getTopPrize(recursionUsedIds = [])
   {
     if (!topPrize)
-      _extractTopPrize(_recursionUsedIds)
+      _extractTopPrize(recursionUsedIds)
     return topPrize
   }
 

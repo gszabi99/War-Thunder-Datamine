@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 761.0,
-      "temperature": 18.0
-    },
     "player": {
       "army": 1,
       "wing": ""
@@ -17,10 +13,14 @@
     "mission": {
       "level": "levels/ruhr.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear"
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 761.0,
+      "temperature": 18.0
     },
     "spectator_points": []
   },
@@ -43,7 +43,7 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_01.blk",
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_01.blk",
         "rankRange": [0.0,3.0],
         "importAreas": true,
         "importUnits": true,
@@ -60,7 +60,7 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_02.blk",
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_02.blk",
         "rankRange": [4.0,7.0],
         "importAreas": true,
         "importUnits": true,
@@ -77,7 +77,7 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_03.blk",
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_03.blk",
         "rankRange": [8.0,11.0],
         "importAreas": true,
         "importUnits": true,
@@ -94,7 +94,7 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_04.blk",
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_04.blk",
         "rankRange": [12.0,16.0],
         "importAreas": true,
         "importUnits": true,
@@ -111,7 +111,7 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_05.blk",
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_05.blk",
         "rankRange": [17.0,20.0],
         "importAreas": true,
         "importUnits": true,
@@ -128,8 +128,8 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_06.blk",
-        "rankRange": [21.0,25.0],
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_06.blk",
+        "rankRange": [21.0,250.0],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -145,8 +145,8 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_ussr_rank_07.blk",
-        "rankRange": [26.0,50.0],
+        "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t1_cn_rank_07.blk",
+        "rankRange": [260.0,500.0],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -180,7 +180,7 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t2_jpn_rank_02.blk",
-        "rankRange": [4.0,6.0],
+        "rankRange": [4.0,7.0],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -197,7 +197,7 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t2_jpn_rank_03.blk",
-        "rankRange": [7.0,11.0],
+        "rankRange": [8.0,11.0],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -248,7 +248,7 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t2_jpn_rank_06.blk",
-        "rankRange": [21.0,25.0],
+        "rankRange": [21.0,250.0],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -265,7 +265,7 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/units_sets/plane_sets_hunters/ht_t2_jpn_rank_07.blk",
-        "rankRange": [26.0,50.0],
+        "rankRange": [260.0,500.0],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -292,64 +292,7 @@
   "dialogs": [],
   "airfields": [],
   "effects": [],
-  "units": [
-    {
-      "squad": {
-        "name": "ht_t1_hunters_squad",
-        "tm": [
-          [0.0871558,0.0,-0.996195],
-          [0.0,1.0,0.0],
-          [0.996195,0.0,0.0871558],
-          [2359.7,253.2,-32470.2]
-        ],
-        "props": [
-          {
-            "squad_members": "ht_t1_hunter_rank_01"
-          },
-          {
-            "squad_members": "ht_t1_hunter_rank_02"
-          },
-          {
-            "squad_members": "ht_t1_hunter_rank_03"
-          },
-          {
-            "squad_members": "ht_t1_hunter_rank_04"
-          },
-          {
-            "squad_members": "ht_t1_hunter_rank_05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ht_t2_hunters_squad",
-        "tm": [
-          [0.0871558,0.0,-0.996195],
-          [0.0,1.0,0.0],
-          [0.996195,0.0,0.0871558],
-          [-1451.54,253.2,-32831.3]
-        ],
-        "props": [
-          {
-            "squad_members": "ht_t2_hunter_rank_01"
-          },
-          {
-            "squad_members": "ht_t2_hunter_rank_02"
-          },
-          {
-            "squad_members": "ht_t2_hunter_rank_03"
-          },
-          {
-            "squad_members": "ht_t2_hunter_rank_04"
-          },
-          {
-            "squad_members": "ht_t2_hunter_rank_05"
-          }
-        ]
-      }
-    }
-  ],
+  "units": [],
   "areas": {
     "ht_t2_hunter_retreat_point": {
       "type": "Point",
@@ -357,7 +300,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [0.0,350.0,-30000.0]
+        [0.0,1350.0,-30000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -368,7 +311,29 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [0.0,350.0,30000.0]
+        [0.0,1350.0,30000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "ht_t2_hunter_spawn_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,3350.0,-30000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "ht_t1_hunter_spawn_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,3350.0,30000.0]
       ],
       "objLayer": 0,
       "props": []

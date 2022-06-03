@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
@@ -90,7 +91,7 @@ g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg)
 {
   //space work as close link. but non-breakable space - work as other symbols.
   //rnd for duplicate blocked messages
-  return ::format("BL_%02d_%s", ::math.rnd() % 99, ::stringReplace(msg, " ", ::nbsp))
+  return format("BL_%02d_%s", ::math.rnd() % 99, ::stringReplace(msg, " ", ::nbsp))
 }
 
 
@@ -104,7 +105,7 @@ g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link)
 g_chat.makeBlockedMsg <- function makeBlockedMsg(msg, replacelocId = "chat/blocked_message")
 {
   local link = convertBlockedMsgToLink(msg)
-  return ::format("<Link=%s>%s</Link>", link, ::loc(replacelocId))
+  return format("<Link=%s>%s</Link>", link, ::loc(replacelocId))
 }
 
 g_chat.makeXBoxRestrictedMsg <- function makeXBoxRestrictedMsg(msg)
@@ -347,7 +348,7 @@ g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk)
 
   if ((dataBlk?.caps ?? "") != "")
   {
-    let capsList = ::split(dataBlk.caps, ",");
+    let capsList = split_by_chars(dataBlk.caps, ",");
     foreach(idx, prop in capsList)
     {
       if (prop in userCaps)
@@ -355,8 +356,8 @@ g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk)
     }
   }
 
-  dagor.debug("ChatProgressCapsChanged: "+userCapsGen)
-  debugTableData(userCaps);
+  ::dagor.debug("ChatProgressCapsChanged: "+userCapsGen)
+  ::debugTableData(userCaps);
   ::broadcastEvent("ChatProgressCapsChanged")
 }
 
@@ -562,7 +563,7 @@ g_chat.generateInviteMenu <- function generateInviteMenu(playerName)
       text = room.getRoomName()
       show = true
       action = (@(playerName, room) function () {
-          ::gchat_raw_command(::format("INVITE %s %s",
+          ::gchat_raw_command(format("INVITE %s %s",
                                         ::gchat_escape_target(playerName),
                                         ::gchat_escape_target(room.id)))
           })(playerName, room)
@@ -650,7 +651,7 @@ g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message)
 
   let res = systemMsg.jsonStringToLang(jsonString, null, "\n   ")
   if (!res)
-    dagor.debug("Chat: failed to localize json message: " + message)
+    ::dagor.debug("Chat: failed to localize json message: " + message)
   return res || ""
 }
 

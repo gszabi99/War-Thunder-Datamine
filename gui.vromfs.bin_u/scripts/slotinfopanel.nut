@@ -1,3 +1,4 @@
+let { format } = require("string")
 let protectionAnalysis = require("%scripts/dmViewer/protectionAnalysis.nut")
 let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
 } = require("%scripts/crew/crewSkills.nut")
@@ -131,7 +132,7 @@ let function getSkillCategoryView(crewData, unit) {
 
       let savedIndex = ::g_login.isProfileReceived() ?
         ::load_local_account_settings(configSavePath, 0) : 0
-      listboxObj.setValue(::min(savedIndex, showTabsCount - 1))
+      listboxObj.setValue(min(savedIndex, showTabsCount - 1))
       updateContentVisibility()
 
       listboxObj.show(view.items.len() > 1)
@@ -221,7 +222,7 @@ let function getSkillCategoryView(crewData, unit) {
     let collapseBtnContainer = scene.findObject("slot_collapse")
     if(::checkObj(collapseBtnContainer))
       collapseBtnContainer.collapsed = isPanelHidden ? "yes" : "no"
-    showSceneBtn("slot_info_content", ! isPanelHidden)
+    this.showSceneBtn("slot_info_content", ! isPanelHidden)
     updateVisibleTabContent(true)
     if (::g_login.isProfileReceived())
       ::save_local_account_settings(configSavePath, currentIndex)
@@ -243,7 +244,7 @@ let function getSkillCategoryView(crewData, unit) {
 
       let isActive = index == currentIndex
       if (isTabSwitch)
-        showSceneBtn(tabInfo.contentId, isActive)
+        this.showSceneBtn(tabInfo.contentId, isActive)
       if(isActive)
         tabInfo.fillerFunction.call(this)
     }
@@ -428,7 +429,7 @@ let function getSkillCategoryView(crewData, unit) {
     }
     let blk = ::handyman.renderCached("%gui/crew/crewInfo", view)
     guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
-    showSceneBtn("crew_name", false)
+    this.showSceneBtn("crew_name", false)
     updateHeader(::g_crew.getCrewName(crewData))
   }
 
@@ -504,7 +505,7 @@ let function getSkillCategoryView(crewData, unit) {
       if (::checkObj(obj))
       {
         obj.setValue(discount > 0? ("-" + discount + "%") : "")
-        obj.tooltip = ::format(::loc("discount/mods/tooltip"), discount.tostring())
+        obj.tooltip = format(::loc("discount/mods/tooltip"), discount.tostring())
       }
     }
   }

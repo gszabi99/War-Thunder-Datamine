@@ -55,11 +55,11 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
       url = clearBorderSymbols(url, [" "])
 
     if (name == "")
-      return msgBox("warning",
+      return this.msgBox("warning",
           ::loc("options/no_name_radio"),
           [["ok", function() {}]], "ok")
     if (url == "")
-      return msgBox("warning",
+      return this.msgBox("warning",
           ::loc("options/no_url_radio"),
           [["ok", function() {}]], "ok")
 
@@ -71,11 +71,11 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
       foreach (radio in listRadio)
       {
         if (radio == name)
-          return msgBox("warning",
+          return this.msgBox("warning",
             ::loc("options/msg_name_exists_radio"),
             [["ok", function() {}]], "ok")
         if (radio == url)
-          return msgBox("warning",
+          return this.msgBox("warning",
             ::loc("options/msg_url_exists_radio"),
             [["ok", function() {}]], "ok")
       }

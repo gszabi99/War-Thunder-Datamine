@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -58,7 +59,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
     let playerArr = [1]
     numUnits = ::get_player_group(units, playerArr)
-    dagor.debug("numUnits = "+numUnits)
+    ::dagor.debug("numUnits = "+numUnits)
 
     initData()
 
@@ -82,8 +83,8 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       }
       if (isRespawn || forceTacticalControl)
       {
-        dagor.debug("[TMAP] isRespawn = "+isRespawn)
-        dagor.debug("[TMAP] 2 forceTacticalControl = " + forceTacticalControl)
+        ::dagor.debug("[TMAP] isRespawn = "+isRespawn)
+        ::dagor.debug("[TMAP] 2 forceTacticalControl = " + forceTacticalControl)
         isActiveTactical = true
       }
       else
@@ -97,9 +98,9 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     update(null, 0.03)
     updateTitle()
 
-    showSceneBtn("btn_select", isActiveTactical)
-    showSceneBtn("btn_back", true)
-    showSceneBtn("screen_button_back", useTouchscreen)
+    this.showSceneBtn("btn_select", isActiveTactical)
+    this.showSceneBtn("btn_back", true)
+    this.showSceneBtn("screen_button_back", useTouchscreen)
   }
 
   function reinitScreen(params = {})
@@ -156,7 +157,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       }
       if (!::is_aircraft_active(units[focus]))
       {
-        dagor.debug("still no active aircraft");
+        ::dagor.debug("still no active aircraft");
         guiScene.performDelayed(this, function()
         {
           doClose()
@@ -178,7 +179,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     {
       if (::is_aircraft_delayed(units[i]))
       {
-        dagor.debug("unit "+i+" is delayed");
+        ::dagor.debug("unit "+i+" is delayed");
         continue;
       }
 
@@ -236,7 +237,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       else
         pilotFullName = "Pilot "+(i+1).tostring()
 
-      dagor.debug("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
+      ::dagor.debug("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
 
       scene.findObject("pilot_text" + i).setValue(pilotFullName)
       let objTr = scene.findObject("pilot_name" + i)
@@ -336,7 +337,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       updatePlayer()
     }
     else
-      dagor.debug("onFocusDown - can't find aircraft that is active and not delayed")
+      ::dagor.debug("onFocusDown - can't find aircraft that is active and not delayed")
   }
 
   function onFocusUp(obj)

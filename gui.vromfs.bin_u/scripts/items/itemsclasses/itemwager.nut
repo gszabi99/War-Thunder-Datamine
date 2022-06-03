@@ -1,3 +1,4 @@
+let { format } = require("string")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 
 ::items_classes.Wager <- class extends ::BaseItem
@@ -5,7 +6,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
   static iType = itemType.WAGER
   static defaultLocId = "wager"
   static defaultIconStyle = "default_wager_debug"
-  static typeIcon = "#ui/gameuiskin#item_type_wagers"
+  static typeIcon = "#ui/gameuiskin#item_type_wagers.svg"
   static defaultWinIcon = "kills"
   static defaultTextType = "maxwins_text"
 
@@ -132,7 +133,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
       foreach (index, rewardDataType in rewardDataTypes)
       {
         if (rewardDataType.name in reward)
-          bestIndex = ::max(bestIndex, index)
+          bestIndex = max(bestIndex, index)
       }
     }
     if (bestIndex == -1)
@@ -366,7 +367,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
     else if (minWager == maxWager)
       stakeText = ::Cost(minWager).toStringWithParams(costParam)
     else
-      stakeText = ::format("%s-%s",
+      stakeText = format("%s-%s",
         ::Cost(minWager).toStringWithParams(costParam),
         ::Cost(maxWager).toStringWithParams(costParam))
     if (stakeText != "")
@@ -539,7 +540,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
       return true
     }
 
-    local bodyText = ::format(::loc("msgbox/conflictingWager"), getWagerDescriptionForMessageBox(uids[0]))
+    local bodyText = format(::loc("msgbox/conflictingWager"), getWagerDescriptionForMessageBox(uids[0]))
     bodyText += "\n" + getWagerDescriptionForMessageBox(::get_current_wager_uid())
     let item = this
     ::scene_msg_box("conflicting_wager_message_box", null, bodyText,
