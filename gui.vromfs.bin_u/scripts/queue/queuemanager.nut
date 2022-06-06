@@ -235,9 +235,9 @@ foreach (fn in [
 
   function cantSquadQueueMsgBox(params = null, reasonText = "")
   {
-    ::dagor.debug("Error: cant join queue with squad. " + reasonText)
+    dagor.debug("Error: cant join queue with squad. " + reasonText)
     if (params)
-      ::debugTableData(params)
+      debugTableData(params)
 
     local msg = ::loc("squad/cant_join_queue")
     if (reasonText)
@@ -278,9 +278,9 @@ foreach (fn in [
   function joinQueue(params)
   {
     if (params == null)
-      return ::dagor.debug("Error: cancel join queue because params = null.")
+      return dagor.debug("Error: cancel join queue because params = null.")
     if (findQueue(params))
-      return ::dagor.debug("Error: cancel join queue because already exist.")
+      return dagor.debug("Error: cancel join queue because already exist.")
 
     isLeaveDelayed = false
     lastQueueReqParams = clone params

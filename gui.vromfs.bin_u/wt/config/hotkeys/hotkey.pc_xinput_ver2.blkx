@@ -1014,50 +1014,6 @@
     },
     {
       "event": {
-        "name": "decal_rotate_rangeMin",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 2
-          }
-        }
-      }
-    },
-    {
-      "event": {
-        "name": "decal_rotate_rangeMax",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 3
-          }
-        }
-      }
-    },
-    {
-      "event": {
-        "name": "decal_scale_rangeMin",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 1
-          }
-        }
-      }
-    },
-    {
-      "event": {
-        "name": "decal_scale_rangeMax",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 0
-          }
-        }
-      }
-    },
-    {
-      "event": {
         "name": "ID_CHANGE_CREW",
         "shortcut": {
           "button": {
@@ -1786,6 +1742,36 @@
     },
     {
       "event": {
+        "name": "rudder_right_rangeSet"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_right_rangeMax"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_right_rangeMin"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left_rangeSet"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left_rangeMax"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left_rangeMin"
+      }
+    },
+    {
+      "event": {
         "name": "zoom_rangeSet"
       }
     },
@@ -2160,6 +2146,16 @@
             "buttonId": 1
           }
         }
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_left"
+      }
+    },
+    {
+      "event": {
+        "name": "rudder_right"
       }
     },
     {
@@ -4103,6 +4099,30 @@
         "rangeMax": 1.0,
         "inverse": false,
         "nonlinearity": 2.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "rudder_left": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
+        "kAdd": 0.0,
+        "kMul": 1.0,
+        "relSens": 1.0,
+        "relative": false
+      },
+      "rudder_right": {
+        "axisId": -1,
+        "innerDeadzone": 0.02,
+        "rangeMin": -1.0,
+        "rangeMax": 1.0,
+        "inverse": false,
+        "nonlinearity": 0.0,
         "kAdd": 0.0,
         "kMul": 1.0,
         "relSens": 1.0,

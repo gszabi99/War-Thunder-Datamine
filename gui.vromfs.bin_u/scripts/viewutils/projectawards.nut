@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 ::setProjectAwards <- function setProjectAwards(handler)

@@ -33,7 +33,7 @@ let { addContactGroup } = require("%scripts/contacts/contactsManager.nut")
 
   //TEST ONLY!
   //foreach (id, data in blk)
-  //  ::dagor.debug("FACEBOOK FRIEND: id="+id+" name="+data.name)
+  //  dagor.debug("FACEBOOK FRIEND: id="+id+" name="+data.name)
 
   if(::no_dump_facebook_friends.len()==0)
   {

@@ -49,7 +49,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     for(local i = firstItemIndex; i < armies.surrounded.len() && viewsArray.len() < itemsPerPage; i++)
       viewsArray.append(armies.surrounded[i].getView())
 
-    firstItemIndex = max(firstItemIndex - armies.surrounded.len(), 0)
+    firstItemIndex = ::max(firstItemIndex - armies.surrounded.len(), 0)
     for(local i = firstItemIndex; i < armies.common.len() && viewsArray.len() < itemsPerPage; i++)
       viewsArray.append(armies.common[i].getView())
 

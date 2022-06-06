@@ -1,15 +1,16 @@
 #default:no-func-decl-sugar
 #default:no-class-decl-sugar
-from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-
-clear_vm_entity_systems()
-start_es_loading()
 
 require("%globalScripts/ui_globals.nut")
 
+let __string = require("string")
 foreach (name, func in require("dagor.localize"))
   ::dagor[name] <- func
 
+::regexp<-__string.regexp
+::split <-__string.split
+::format <-__string.format
+::strip<-__string.strip
 let __math = require("math")
 ::fabs<-__math.fabs
 ::kwarg <- require("%sqstd/functools.nut").kwarg
@@ -339,7 +340,7 @@ global const LEADERBOARD_VALUE_INHISTORY = "value_inhistory"
 {
   ::math.init_rnd(get_local_unixtime())
 }
-::randomize()
+randomize()
 
 //------- vvv files before login vvv ----------
 
@@ -381,7 +382,8 @@ foreach(fn in [
 ])
   require(fn)
 
-let game = require("app").getShortAppName()
+let { getShortAppName } = ::require_native("app")
+let game = getShortAppName()
 let gameMnt = { mecha = "%mechaScripts", vrThunder = "%vrtScripts", wt = "%wtScripts" }?[game]
 ::dagor.debug($"Load UI scripts by game: {game} (mnt = {gameMnt})")
 require_optional($"{gameMnt}/onScriptLoad.nut")
@@ -394,7 +396,7 @@ foreach (fn in [
 
   "%sqDagui/guiBhv/allBhv.nut"
   "%scripts/bhvCreditsScroll.nut"
-  "%globalScripts/cubicBezierSolver.nut"
+  "%scripts/cubicBezierSolver.nut"
   "%scripts/onlineShop/urlType.nut"
   "%scripts/onlineShop/url.nut"
 
@@ -470,7 +472,6 @@ foreach (fn in [
   "%scripts/debugTools/dbgFonts.nut"
   "%scripts/debugTools/dbgAvatarsList.nut"
   "%scripts/debugTools/dbgMarketplace.nut"
-  "%scripts/debugTools/dbgCrewLock.nut"
 
   //used before xbox login
   "%scripts/social/xboxSquadManager.nut"
@@ -503,8 +504,6 @@ require("%scripts/clientState/elems/copyrightText.nut")
 require("%sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
   // end of Independent Modules
 
-end_es_loading()
-
 let platform = require("%scripts/clientState/platform.nut")
 ::cross_call_api.platform <- {
   getPlayerName = platform.getPlayerName
@@ -525,7 +524,7 @@ local isFullScriptsLoaded = false
   if (isFullScriptsLoaded)
     return
   isFullScriptsLoaded = true
-  start_es_loading()
+
   // Independent Modules with mainHandler. Need load this befor rest handlers
   require("%scripts/baseGuiHandlerWT.nut")
   // end of Independent Modules with mainHandler
@@ -561,7 +560,6 @@ local isFullScriptsLoaded = false
   // end of Independent Modules
 
   require("%scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
-  end_es_loading()
 }
 
 //app does not exist on script load, so we cant to use ::app->shouldDisableMenu
@@ -576,7 +574,7 @@ local isFullScriptsLoaded = false
   }
 }
 
-if (::is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLogerr") == null)
+if (::is_platform_pc && !::isProductionCircuit() && getSystemConfigOption("debug/netLogerr") == null)
   ::setSystemConfigOption("debug/netLogerr", true)
 
 if (::g_login.isAuthorized() //scripts reload

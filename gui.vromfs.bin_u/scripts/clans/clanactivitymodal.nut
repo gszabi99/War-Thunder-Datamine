@@ -1,4 +1,3 @@
-let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -36,14 +35,14 @@ let platformModule = require("%scripts/clientState/platform.nut")
     hasClanExperience  = isShowPeriodActivity && ::clan_get_my_clan_id() == clanData.id
     let history = isShowPeriodActivity ? memberData.expActivity : memberData.activityHistory
     let headerTextObj = scene.findObject("clan_activity_header_text")
-    headerTextObj.setValue(format("%s - %s", ::loc("clan/activity"),
+    headerTextObj.setValue(::format("%s - %s", ::loc("clan/activity"),
       platformModule.getPlayerName(memberData.nick)))
 
     let maxActivityToday = [(isShowPeriodActivity ? memberData.curPeriodActivity : memberData.curActivity).tostring()]
     if (maxActivityPerDay > 0)
       maxActivityToday.append((isShowPeriodActivity ? clanData.maxActivityPerPeriod : maxActivityPerDay).tostring())
     scene.findObject("clan_activity_today_value").setValue(::g_string.implode(maxActivityToday, " / "))
-    scene.findObject("clan_activity_total_value").setValue(format("%d",
+    scene.findObject("clan_activity_total_value").setValue(::format("%d",
       isShowPeriodActivity ? memberData.totalPeriodActivity : memberData.totalActivity))
 
     fillActivityHistory(history)

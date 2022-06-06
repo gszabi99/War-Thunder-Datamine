@@ -18,7 +18,7 @@ let function startPseudoThread(actionsList, onCrash = null, step = 0)
       }
       catch(e)
       {
-        ::dagor.debug("Crash in pseudo thread step = " + curStep + ", status = " + stepStatus)
+        dagor.debug("Crash in pseudo thread step = " + curStep + ", status = " + stepStatus)
         if (onCrash)
         {
           onCrash()

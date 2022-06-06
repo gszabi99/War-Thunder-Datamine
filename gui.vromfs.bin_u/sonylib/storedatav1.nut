@@ -51,7 +51,7 @@ let makeRequestForNextCategory = function(onFoundCb, onFinishCb = @() null, last
 }
 
 // Send requests on skus extended info, per category separatly.
-local requestLinksFullInfo = @(_category) null
+local requestLinksFullInfo = @(category) null
 let fillLinkFullInfo = @(category = "") makeRequestForNextCategory(
   requestLinksFullInfo,
   finalizeCollectData,
@@ -63,7 +63,7 @@ let onReceivedResponeOnFullInfo = function(response, category, linksList) {
     return
 
   if (response != null)
-    response.each(function(linkBlock, _idx) {
+    response.each(function(linkBlock, idx) {
       let label = linkBlock.label
 
       // Received full info, we don't need short
@@ -132,7 +132,7 @@ requestLinksFullInfo = function(category) {
 // It is recursible, fill info on receive data.
 // On receiving final items, checked by total_result and size params,
 // send another request for next category.
-local requestCategoryFullLinksList = @(_category) null
+local requestCategoryFullLinksList = @(category) null
 requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(category, STORE_REQUEST_ADDITIONAL_FLAGS),
   function(response, err) {
     if (err) {
@@ -166,7 +166,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(ca
 // For usability, save it in linear structure.
 // Full links info will be sended later
 
-local collectCategories = @(_response, _err = null) null
+local collectCategories = @(response, err = null) null
 collectCategories = function(response, err = null) {
   if (err) {
     statsd.send_counter("sq.ingame_store.request", 1,
@@ -227,7 +227,7 @@ let collectCategoriesAndItems = @() psn.send(
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(_r, _err) null) {
+let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
   psn.send(psn.commerce.detail(idsArray, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {

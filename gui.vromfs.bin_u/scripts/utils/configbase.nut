@@ -1,4 +1,4 @@
-let class ConfigBase
+::ConfigBase <- class
 {
   //main params to set in constructor
   id = ""
@@ -25,99 +25,99 @@ let class ConfigBase
       if (key in this)
         this[key] = value
 
-    if (!this.isActual)
-      this.isActual = function() { return true }
-    if (!this.requestUpdate)
-      this.requestUpdate = function() { return -1 }
-    if (!this.getImpl)
+    if (!isActual)
+      isActual = function() { return true }
+    if (!requestUpdate)
+      requestUpdate = function() { return -1 }
+    if (!getImpl)
     {
-      ::dagor.assertf(false, "Configs: Not exist 'get' function in config " + this.id)
-      this.getImpl = function() { return ::DataBlock() }
+      ::dagor.assertf(false, "Configs: Not exist 'get' function in config " + id)
+      getImpl = function() { return ::DataBlock() }
     }
-    this.cbList = []
-    this.errorCbList = []
+    cbList = []
+    errorCbList = []
   }
 
   function get()
   {
-    this.checkUpdate()
-    if (this.needScriptedCache)
+    checkUpdate()
+    if (needScriptedCache)
     {
-      if (!this.cache)
-        this.cache = this.getImpl()
-      return this.cache
+      if (!cache)
+        cache = getImpl()
+      return cache
     }
-    return this.getImpl()
+    return getImpl()
   }
 
   function checkUpdate(cb = null, onErrorCb = null, showProgressBox = false, fireCbWhenNoRequest = true)
   {
-    if (this.isActual())
+    if (isActual())
     {
       if (fireCbWhenNoRequest)
         cb?()
       return true
     }
 
-    this.update(cb, onErrorCb, showProgressBox)
+    update(cb, onErrorCb, showProgressBox)
     return false
   }
 
   function addCbToList(cb, onErrorCb)
   {
     if (cb)
-      this.cbList.append(cb)
+      cbList.append(cb)
     if (onErrorCb)
-      this.errorCbList.append(onErrorCb)
+      errorCbList.append(onErrorCb)
   }
 
   function isRequestInProgress()
   {
-    return this.lastRequestTime > this.lastUpdateTime
-        && this.lastRequestTime + this.requestTimeoutMsec > ::dagor.getCurTime()
+    return lastRequestTime > lastUpdateTime && lastRequestTime + requestTimeoutMsec > ::dagor.getCurTime()
   }
 
   function canRequest(forceUpdate = false)
   {
-    return (!this.isRequestInProgress() && ::isInMenu()
-           && (forceUpdate || this.lastRequestTime + this.requestDelayMsec < ::dagor.getCurTime()))
+    return (!isRequestInProgress() && ::isInMenu()
+           && (forceUpdate || lastRequestTime + requestDelayMsec < ::dagor.getCurTime()))
   }
 
   function onUpdateComplete()
   {
-    this.invalidateCache()
-    this.onConfigUpdate?()
+    invalidateCache()
+    if (onConfigUpdate)
+      onConfigUpdate()
 
-    ::broadcastEvent(this.cbName)
+    ::broadcastEvent(cbName)
 
-    foreach(cb in this.cbList)
+    foreach(cb in cbList)
       cb()
-    this.cbList.clear()
-    this.errorCbList.clear()
+    cbList.clear()
+    errorCbList.clear()
 
-    this.lastUpdateTime = ::dagor.getCurTime()
+    lastUpdateTime = ::dagor.getCurTime()
   }
 
   function onUpdateError(errCode)
   {
-    foreach(cb in this.errorCbList)
+    foreach(cb in errorCbList)
       cb(errCode)
-    this.cbList.clear()
-    this.errorCbList.clear()
+    cbList.clear()
+    errorCbList.clear()
   }
 
   function update(cb = null, onErrorCb = null, showProgressBox = false, forceUpdate = false)
   {
-    if (!this.canRequest(forceUpdate))
+    if (!canRequest(forceUpdate))
     {
-      if (this.isRequestInProgress())
-        this.addCbToList(cb, onErrorCb)
+      if (isRequestInProgress())
+        addCbToList(cb, onErrorCb)
       else
         onErrorCb?(-2)
       return
     }
 
-    let taskId = this.requestUpdate()
+    let taskId = requestUpdate()
     if (taskId == -1)
     {
       ::update_entitlements_limited() //code sure that he better know about prices actuality, so need to update profile
@@ -125,17 +125,17 @@ let class ConfigBase
       return
     }
 
-    ::dagor.debug($"Configs: request config update {this.id}. isActual = {this.isActual()}")
-    this.lastRequestTime = ::dagor.getCurTime()
-    this.addCbToList(cb, onErrorCb)
-    let successCb = ::Callback(this.onUpdateComplete, this)
-    let errorCb = ::Callback(this.onUpdateError, this)
-    ::g_tasker.addTask(taskId, { showProgressBox }, successCb, errorCb)
+    ::dagor.debug("Configs: request config update " + id + ". isActual = " + isActual())
+    lastRequestTime = ::dagor.getCurTime()
+    addCbToList(cb, onErrorCb)
+    let successCb = ::Callback(onUpdateComplete, this)
+    let errorCb = ::Callback(onUpdateError, this)
+    ::g_tasker.addTask(taskId, { showProgressBox = showProgressBox }, successCb, errorCb)
   }
 
   function invalidateCache()
   {
-    this.cache = null
+    cache = null
   }
 }
 

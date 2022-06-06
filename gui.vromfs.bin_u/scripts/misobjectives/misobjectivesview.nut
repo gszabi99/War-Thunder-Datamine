@@ -55,7 +55,7 @@
   function refreshList()
   {
     let newList = getNewList()
-    let total = max(newList.len(), curList.len())
+    let total = ::max(newList.len(), curList.len())
     local lastObj = null
     for(local i = 0; i < total; i++)
     {

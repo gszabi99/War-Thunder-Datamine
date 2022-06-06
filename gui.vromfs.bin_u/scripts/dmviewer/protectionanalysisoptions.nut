@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -213,7 +212,7 @@ options.addTypes({
         if (hasUnitAtRank(rank, unitType, country, true, false))
           values.append(rank)
       items = ::u.map(values, @(r) {
-        text = format(::loc("conditions/unitRank/format"), get_roman_numeral(r))
+        text = ::format(::loc("conditions/unitRank/format"), get_roman_numeral(r))
       })
       let preferredRank = value ?? options.targetUnit.rank
       value = values?[::find_nearest(preferredRank, values)] ?? 0
@@ -234,7 +233,7 @@ options.addTypes({
       list.sort(@(a, b) a.br <=> b.br)
       values = ::u.map(list, @(v) v.unit)
       items = ::u.map(list, @(v) {
-        text  = format("[%.1f] %s", v.br, ::getUnitName(v.id))
+        text  = ::format("[%.1f] %s", v.br, ::getUnitName(v.id))
         image = ::image_for_air(v.unit)
         addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
       })
@@ -305,7 +304,7 @@ options.addTypes({
             local isDub = false
             if (isBulletBelt)
             {
-              locName = " ".concat(format(::loc("caliber/mm"), bulletsSet.caliber),
+              locName = " ".concat(::format(::loc("caliber/mm"), bulletsSet.caliber),
                 ::loc($"{bulletName}/name/short"))
               let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
@@ -324,25 +323,16 @@ options.addTypes({
             if (isDub)
               continue
 
-            local addDiv = ""
-
-            if (isBulletBelt)
-            {
-              local bSet = bulletsSet.__merge({ bullets = [bulletName] })
-              let bData = bulletsSet.bulletDataByType[bulletName]
-
-              foreach(param in ["explosiveType", "explosiveMass", "bulletAnimation"])
-              {
-                bSet[param] <- bData?[param]
-              }
-
-              addDiv = SINGLE_BULLET.getMarkup(unit.name, bulletName, {
+            let addDiv = isBulletBelt
+              ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
                 modName = value,
-                bSet,
+                //Generate set of identical bullets by getting rid of all bullets excluding current.
+                bSet = bulletsSet.__merge(
+                  { bullets = [bulletName] },
+                  bulletsSet.bulletDataByType[bulletName]
+                ),
                 bulletParams })
-            }
-            else
-              addDiv = MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
+              : MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
             values.append({
@@ -472,7 +462,7 @@ options.addTypes({
       step     = 100
       let preferredDistance = value >= 0 ? value
         : (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
-      value = clamp(preferredDistance, minValue, maxValue)
+      value = ::clamp(preferredDistance, minValue, maxValue)
     }
 
     updateView = function(handler, scene) {

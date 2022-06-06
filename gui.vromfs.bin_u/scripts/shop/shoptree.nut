@@ -1,4 +1,3 @@
-let { format } = require("string")
 let function getReqAirPosInArray(reqName, arr)
 {
   foreach(r, row in arr)
@@ -180,17 +179,16 @@ let function getBranchesTbl(rangeData)
       item.childs += rangeData[i + 1].childs + (1 + rankK * rangeData[i + 1].rank)
     if (item.name in addCount)
       item.childs += addCount.rawdelete(item.name)
-    let itemReqAir = item?.futureReqAir ?? item?.reqAir
-    if (itemReqAir)
-      if (itemReqAir == "")
+    if (item?.reqAir)
+      if (item.reqAir == "")
         item.header = true
       else
       {
-        addCount[itemReqAir] <- item.childs + (1 + rankK*item.rank) + ((itemReqAir in addCount) ? addCount[itemReqAir] : 0)
-        if (itemReqAir in brIdxTbl)
-          brIdxTbl[itemReqAir].append(i)
+        addCount[item.reqAir] <- item.childs + (1 + rankK*item.rank) + ((item.reqAir in addCount) ? addCount[item.reqAir] : 0)
+        if (item.reqAir in brIdxTbl)
+          brIdxTbl[item.reqAir].append(i)
         else
-          brIdxTbl[itemReqAir] <- [i]
+          brIdxTbl[item.reqAir] <- [i]
       }
 
     if (item.childs > rangeData[maxCountId].childs)
@@ -208,7 +206,7 @@ let function getBranchesTbl(rangeData)
     foreach(idx, item in b)
       test += ((idx==0)? "\n" : ", ") + item.air.name + " ("+item.air.rank+","+item.childs+")"
                + (item?.reqAir ? "("+item.reqAir+")":"")
-  ::dagor.debug(test)
+  dagor.debug(test)
 */
   return branches
 }
@@ -400,7 +398,7 @@ let function generatePageTreeByRank(page)
             if (item != null)
             {
               if (rangeTree[i][j + firstCol] != null)
-                ::dagor.debug("GP: try to fill not empty cell!!!!! ")
+                dagor.debug("GP: try to fill not empty cell!!!!! ")
               rangeTree[i][j + firstCol] = item
             }
         }
@@ -452,7 +450,7 @@ let function generatePageTreeByRankPosXY(page)
   }
   if (unitsWithWrongPositions.len() > 0)
   {
-    let message = format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
+    let message = ::format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
                              page.name,
                              ::g_string.implode(unitsWithWrongPositions, "\n")
                             )
@@ -514,7 +512,7 @@ let function generateTreeData(page)
       if (typeof(item)=="integer") testText += "."
       else testText += "A"
     }
-  ::dagor.debug(testText + "\n done.")
+  dagor.debug(testText + "\n done.")
 */
   //fill Lines and clear table
   fillLinesInPage(page)

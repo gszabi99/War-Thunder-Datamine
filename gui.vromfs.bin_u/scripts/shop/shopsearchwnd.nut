@@ -1,4 +1,3 @@
-let { format } = require("string")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -110,7 +109,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
               ico = ::getUnitClassIco(u)
               type = getUnitRole(u)
               tooltipId = ::g_tooltip.getIdUnit(u.name)
-              text = ::colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
+              text = ::colorize("fadedTextColor", ::format("[%.1f]", u.getBattleRating(ediff))) +
                 ::nbsp + ::getUnitName(u, true)
               isUsable = u.isUsable()
               canBuy   = ::canBuyUnit(u) || ::canBuyUnitOnline(u)
@@ -154,7 +153,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       local columnHeight = 0
       foreach (armyUnits in countryUnits)
         columnHeight += slotHeight * (0.5 + armyUnits.len())
-      maxColumnHeight = max(maxColumnHeight, columnHeight)
+      maxColumnHeight = ::max(maxColumnHeight, columnHeight)
     }
     return maxColumnHeight <= visibleHeight
   }

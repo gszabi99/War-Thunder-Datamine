@@ -102,11 +102,11 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
   scene = null
   guiScene = null
 
-  function init(nest) {
+  function init(_nest) {
     if (!::has_feature("TankDetailedDamageIndicator"))
       return
 
-    scene = nest.findObject("crew_state")
+    scene = _nest.findObject("crew_state")
 
     if (!::checkObj(scene))
       return

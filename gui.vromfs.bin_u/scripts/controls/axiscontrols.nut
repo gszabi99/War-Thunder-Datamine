@@ -1,4 +1,3 @@
-let { format } = require("string")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 
 ::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys
@@ -346,6 +345,10 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
     //!!FIX ME: Have to adjust the code below taking values from the table and only when they change
     local val = curDevice.getAxisPosRaw(bindAxisNum) / 32000.0
+    if (setupAxisMode == ::AXIS_RUDDER_LEFT && val > 0)
+      val = -val
+    else if (setupAxisMode == ::AXIS_RUDDER_RIGHT && val < 0)
+      val = -val
 
     let isInv = scene.findObject("invertAxis").getValue()
 
@@ -392,7 +395,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
         continue
 
       let leftPos = (valsArray[idx] + 1.0) * 0.5
-      obj.left = format("%.3f(pw - w)", leftPos)
+      obj.left = ::format("%.3f(pw - w)", leftPos)
     }
   }
 
@@ -412,7 +415,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
         if (("values" in item) && (value in item.values) && (item.values[value]=="zoom"))
         {
           let msg = format(::loc("msg/zoomAssignmentsConflict"), ::loc("controls/mouse_z"))
-          this.msgBox("zoom_axis_assigned", msg,
+          msgBox("zoom_axis_assigned", msg,
           [
             ["replace", (@(wheelObj) function() {
               if (wheelObj && wheelObj.isValid())
@@ -447,7 +450,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
     let msg = ::loc("hotkeys/msg/unbind_axis_question", {
       action=actionText
     })
-    this.msgBox("controls_axis_bind_existing_axis", msg, [
+    msgBox("controls_axis_bind_existing_axis", msg, [
       ["add", function() { doBindAxis() }],
       ["replace", function() {
         foreach(item in alreadyBindedAxes) {
@@ -493,8 +496,8 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
       return
 
     let showScReset = item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT
-    this.showSceneBtn("btn_axis_reset_shortcut", showScReset)
-    this.showSceneBtn("btn_axis_assign", showScReset)
+    showSceneBtn("btn_axis_reset_shortcut", showScReset)
+    showSceneBtn("btn_axis_assign", showScReset)
   }
 
   function onTblSelect()
@@ -592,7 +595,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 
     let msg = ::loc("hotkeys/msg/unbind_question", {action = actions})
 
-    this.msgBox("controls_axis_bind_existing_shortcut", msg, [
+    msgBox("controls_axis_bind_existing_shortcut", msg, [
       ["add", (@(devs, btns, item) function() {
         doBind(devs, btns, item)
       })(devs, btns, item)],

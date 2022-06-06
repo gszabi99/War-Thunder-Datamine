@@ -1,4 +1,3 @@
-let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let time = require("%scripts/time.nut")
@@ -157,7 +156,7 @@ local ItemGenerator = class {
       {
         let item = ::ItemsManager.findItemById(cfg.itemdefid)
         let generator = !item ? collection?[cfg.itemdefid] : null
-        let rank = contentRank != null ? min(cfg.quantity, contentRank) : cfg.quantity
+        let rank = contentRank != null ? ::min(cfg.quantity, contentRank) : cfg.quantity
         if (item)
         {
           if (item.isHiddenItem())
@@ -235,7 +234,7 @@ local ItemGenerator = class {
       return null
 
     let allowableItems = {}
-    foreach (itemId in split_by_chars(allowableItemsForRecipes, "_"))
+    foreach (itemId in ::split(allowableItemsForRecipes, "_"))
       allowableItems[::to_integer_safe(itemId, itemId, false)] <- true
 
     return allowableItems

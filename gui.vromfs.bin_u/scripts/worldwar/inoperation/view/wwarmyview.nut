@@ -15,9 +15,9 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
   static unitsInArmyRowsMax = 5
 
-  constructor(v_formation)
+  constructor(_formation)
   {
-    formation = v_formation
+    formation = _formation
     name = formation.name
     setRedrawArmyStatusData()
   }

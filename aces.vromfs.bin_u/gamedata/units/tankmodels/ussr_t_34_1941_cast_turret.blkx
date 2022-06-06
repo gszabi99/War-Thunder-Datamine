@@ -1620,15 +1620,7 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "height": 0.04,
-        "width": 0.55,
-        "tracksTensionK": [3.0,8.0,1.5],
-        "trackMesh": "ussr_t_34_44sb_2_phys_track_line",
-        "trackLen": 0.172,
-        "trackCount": 72,
-        "trackFadeTime": 0.5,
-        "trackCntPeriod": 2,
-        "trackMaxSinking": 0.17,
-        "trackMaxHeight": 1.04
+        "width": 0.55
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2500,6 +2492,18 @@
           "hp": 20.0
         }
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 150.0,
+        "gun_barrel_dm": {
+          "armorThickness": 30.0
+        },
+        "gun_barrel_01_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        }
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 300.0,
@@ -2538,37 +2542,6 @@
           "ex_armor_body_l_02_dm": [],
           "ex_armor_body_l_03_dm": [],
           "ex_armor_body_l_04_dm": []
-        }
-      },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 150.0,
-        "armorThickness": 30.0,
-        "gun_barrel_dm": [],
-        "gun_barrel_01_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_02_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_03_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_04_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_05_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
         }
       },
       "tracks": {
@@ -2917,7 +2890,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3187,10 +3159,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "76mm_AP_1942": [],
       "76mm_AP_1942_ammo_pack": {

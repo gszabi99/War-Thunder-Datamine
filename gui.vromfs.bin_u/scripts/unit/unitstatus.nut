@@ -1,5 +1,5 @@
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { isWeaponAux, getLastPrimaryWeapon, getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { isWeaponAux, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
@@ -55,7 +55,7 @@ let function getBitStatus(unit, params = {})
 
   let unitExpGranted      = unit.getExp()
   let diffExp = isSquadVehicle
-    ? min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
+    ? ::min(::clan_get_exp(), ::getUnitReqExp(unit) - unitExpGranted)
     : (params?.diffExp ?? 0)
   let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
 
@@ -142,16 +142,11 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
   return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 }
 
-let function getCurrentPreset(unit) {
-  let secondaryWep = getLastWeapon(unit?.name ?? "")
-  return secondaryWep != "" ? unit.getWeapons().findvalue(@(w) w.name == secondaryWep) : null
-}
-
 let function hasCountermeasures(unit) {
   if (unit == null)
     return false
 
-  return (getCurrentPreset(unit)?.hasCountermeasures ?? false)
+  return unit.getAvailableSecondaryWeapons().hasCountermeasures
     || isAvailablePrimaryWeapon(unit, "flares") || isAvailablePrimaryWeapon(unit, "chaffs")
 }
 
@@ -159,7 +154,7 @@ let function bombNbr(unit) {
   if (unit == null)
     return -1
 
-  return getCurrentPreset(unit)?.bombsNbr ?? -1
+  return unit.getAvailableSecondaryWeapons().bombsNbr
 }
 
 let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !::is_unlocked_scripted(-1, unit.reqUnlock)
@@ -172,5 +167,4 @@ return {
   bombNbr
   isUnitHaveSecondaryWeapons
   isRequireUnlockForUnit
-  getCurrentPreset
 }

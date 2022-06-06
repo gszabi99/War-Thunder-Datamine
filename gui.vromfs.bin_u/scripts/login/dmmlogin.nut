@@ -15,7 +15,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 
     let isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
     if (isAutologin) {
-      this.guiScene.performDelayed(this, function() { this.doLogin() })
+      guiScene.performDelayed(this, function() { doLogin() })
       return
     }
 
@@ -28,7 +28,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
       isToBattle = true
       titleButtonFont = true
     })
-    this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
+    guiScene.prependWithBlk(scene.findObject("authorization_button_place"), data, this)
   }
 
   function doLogin()
@@ -39,12 +39,12 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     statsd.send_counter("sq.game_start.request_login", 1, {login_type = "dmm"})
     let ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
       ::dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
-    this.proceedAuthorizationResult(ret)
+    proceedAuthorizationResult(ret)
   }
 
   function proceedAuthorizationResult(result)
   {
-    if (!::checkObj(this.scene)) //check_login_pass is not instant
+    if (!::checkObj(scene)) //check_login_pass is not instant
       return
 
     switch (result)
@@ -54,29 +54,29 @@ let exitGame = require("%scripts/utils/exitGame.nut")
         ::g_login.addState(LOGIN_STATE.AUTHORIZED)
         break
       case ::YU2_NOT_FOUND:
-        this.msgBox("dmm_error_not_found_user", ::loc("yn1/error/DMM_NOT_FOUND", {link = ::loc("warthunder_dmm_link")}),
+        msgBox("dmm_error_not_found_user", ::loc("yn1/error/DMM_NOT_FOUND", {link = ::loc("warthunder_dmm_link")}),
         [
           ["exit", exitGame ],
-          ["tryAgain", ::Callback(this.doLogin, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(this.doLogin, this) })
+          ["tryAgain", ::Callback(doLogin, this)]
+        ], "tryAgain", { cancel_fn = ::Callback(doLogin, this) })
         break
       default:
         ::error_message_box("yn1/connect_error", result,
         [
           ["exit", exitGame],
-          ["tryAgain", ::Callback(this.doLogin, this)]
-        ], "tryAgain", { cancel_fn = ::Callback(this.doLogin, this) })
+          ["tryAgain", ::Callback(doLogin, this)]
+        ], "tryAgain", { cancel_fn = ::Callback(doLogin, this) })
     }
   }
 
   function goBack()
   {
-    this.onExit()
+    onExit()
   }
 
   function onExit()
   {
-    this.msgBox("login_question_quit_game", ::loc("mainmenu/questionQuitGame"),
+    msgBox("login_question_quit_game", ::loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no", @() null]

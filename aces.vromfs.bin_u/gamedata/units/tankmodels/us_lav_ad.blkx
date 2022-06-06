@@ -610,7 +610,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1499,8 +1498,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1544,8 +1543,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1553,8 +1552,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1562,8 +1561,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1602,29 +1601,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2557,7 +2556,7 @@
   },
   {
     "sound": {
-      "EngineName": "engine_mctav6",
+      "EngineName": "engine_patria",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_wheels",
@@ -2590,7 +2589,7 @@
           "speedYaw": 57.0,
           "speedPitch": 45.0,
           "rotationAnimScale": "gun_rotate_01:CRS",
-          "bullets": 1155,
+          "bullets": 1000,
           "fireConeAngle": 5.0,
           "ChainfireTime": 3.0,
           "DelayAfterShoot": 1.0,
@@ -2618,12 +2617,12 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-8.0,60.0]
+            "pitch": [-8.0,65.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,130.0,-8.0,60.0],
-            "lim2": [130.0,155.0,-1.0,60.0],
-            "lim3": [155.0,180.0,-8.0,60.0]
+            "lim1": [-180.0,130.0,-8.0,65.0],
+            "lim2": [130.0,155.0,-1.0,65.0],
+            "lim3": [155.0,180.0,-8.0,65.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -2770,7 +2769,7 @@
           {
             "limits": {
               "yaw": [-180.0,180.0],
-              "pitch": [-8.0,60.0]
+              "pitch": [-8.0,65.0]
             }
           }
         ]
@@ -2900,7 +2899,7 @@
   {
     "sensors": {
       "sensor": {
-        "blk": "gameData/sensors/it_tv_tracker_3jb10.blk",
+        "blk": "gameData/sensors/sam_tv_ir_track.blk",
         "turretIndex": 0,
         "dmPart": "optic_gun_dm"
       }
@@ -3680,10 +3679,10 @@
         "fatalExplosion": true,
         "shells": {
           "ammo_body_dm": {
-            "count": 770
+            "count": 500
           },
           "ammo_turret_dm": {
-            "count": 385
+            "count": 500
           }
         }
       },
@@ -3760,10 +3759,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "lav_ad_hydra_70": {
         "invertEnableLogic": false,
@@ -3779,10 +3778,10 @@
               "fatalExplosion": true,
               "shells": {
                 "ammo_body_dm": {
-                  "count": 770
+                  "count": 500
                 },
                 "ammo_turret_dm": {
-                  "count": 385
+                  "count": 500
                 }
               }
             },
@@ -3914,7 +3913,7 @@
                 "speedYaw": 57.0,
                 "speedPitch": 45.0,
                 "rotationAnimScale": "gun_rotate_01:CRS",
-                "bullets": 1155,
+                "bullets": 1000,
                 "fireConeAngle": 5.0,
                 "ChainfireTime": 3.0,
                 "DelayAfterShoot": 1.0,
@@ -3936,12 +3935,12 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-8.0,60.0]
+                  "pitch": [-8.0,65.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,130.0,-8.0,60.0],
-                  "lim2": [130.0,155.0,-1.0,60.0],
-                  "lim3": [155.0,180.0,-8.0,60.0]
+                  "lim1": [-180.0,130.0,-8.0,65.0],
+                  "lim2": [130.0,155.0,-1.0,65.0],
+                  "lim3": [155.0,180.0,-8.0,65.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -4089,7 +4088,7 @@
                 {
                   "limits": {
                     "yaw": [-180.0,180.0],
-                    "pitch": [-8.0,60.0]
+                    "pitch": [-8.0,65.0]
                   }
                 },
                 {
@@ -4159,12 +4158,6 @@
                   "allowableDelta": 180.0
                 },
                 {
-                  "speedYaw": 0.0
-                },
-                {
-                  "speedPitch": 0.0
-                },
-                {
                   "defaultYaw": 0.0
                 },
                 {
@@ -4172,6 +4165,12 @@
                 },
                 {
                   "barrelDP": "gun_barrel_03_dm"
+                },
+                {
+                  "speedYaw": 17.0
+                },
+                {
+                  "speedPitch": 35.0
                 },
                 {
                   "fireConeAngle": 1.0
@@ -4225,8 +4224,8 @@
                 },
                 {
                   "limits": {
-                    "yaw": [-180.0,180.0],
-                    "pitch": [-8.0,60.0]
+                    "yaw": [-0.0,0.0],
+                    "pitch": [-0.0,0.0]
                   }
                 }
               ]
@@ -4447,7 +4446,7 @@
       "70mm_stinger_block2_aam": [],
       "70mm_stinger_block2_aam_ammo_pack": [],
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "tier": 4,
         "effects": {
           "nightVision": {
@@ -4481,20 +4480,13 @@
           "distanceThresholdMaxRealistic": [1000.0,3000.0,5000.0,9999.0],
           "timeMeasurementRange": [0.5,0.5],
           "rcostAddParam": 0.98,
-          "sensors": [
-            {
-              "sensor": {
-                "blk": "gameData/sensors/it_tv_tracker_3jb10.blk",
-                "turretIndex": 0,
-                "dmPart": "optic_gun_dm"
-              }
-            },
-            {
-              "sensor": {
-                "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-              }
+          "sensors": {
+            "sensor": {
+              "blk": "gameData/sensors/sam_tv_ir_track.blk",
+              "turretIndex": 0,
+              "dmPart": "optic_gun_dm"
             }
-          ]
+          }
         }
       }
     }

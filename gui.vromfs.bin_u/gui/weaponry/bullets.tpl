@@ -4,7 +4,6 @@ img{
   pos:t='0, 0'
   position:t='absolute'
   background-image:t='<<img>>'
-  background-svg-size:t='pw,ph'
 }
 <</addIco>>
 <<#bullets>>
@@ -14,7 +13,6 @@ img{
   position:t='absolute'
   background-image:t='<<image>>'
   background-repeat:t='aspect-ratio'
-  background-svg-size:t='<<sizex>>,<<sizey>>'
 
   <<#useTooltip>>
   title:t='$tooltipObj'

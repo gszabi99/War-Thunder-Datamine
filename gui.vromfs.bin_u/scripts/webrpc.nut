@@ -12,8 +12,8 @@
     if (!(func in handlers))
       return "RPC method not found"
 
-    ::dagor.debug("called RPC function " + func)
-    ::debugTableData(call)
+    dagor.debug("called RPC function " + func)
+    debugTableData(call)
     return handlers[func](call["params"])
   }
 }
@@ -25,7 +25,7 @@
   }
   catch (e)
   {
-    ::dagor.debug("web rpc failed: " + e)
+    dagor.debug("web rpc failed: " + e)
     return e
   }
 }

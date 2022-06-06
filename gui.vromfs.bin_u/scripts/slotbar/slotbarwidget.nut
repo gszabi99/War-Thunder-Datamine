@@ -1,4 +1,3 @@
-let { format } = require("string")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let Callback = callback.Callback
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -764,7 +763,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         cost.getTextAccordingToBalance()),
       cost)
     ignoreCheckSlotbar = true
-    this.msgBox("need_money", msgText,
+    msgBox("need_money", msgText,
       [["ok",
         function() {
           ignoreCheckSlotbar = false
@@ -861,7 +860,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (curSlotCountryId >= 0 && curSlotCountryId != countryIdx && countryIdx in ::g_crews_list.get()
         && !::isCountryAvailable(::g_crews_list.get()[countryIdx].country) && ::unlocked_countries.len())
     {
-      this.msgBox("notAvailableCountry", ::loc("mainmenu/countryLocked/tooltip"),
+      msgBox("notAvailableCountry", ::loc("mainmenu/countryLocked/tooltip"),
              [["ok", (@(obj) function() {
                if (::checkObj(obj))
                  obj.setValue(curSlotCountryId)
@@ -1077,8 +1076,8 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function updateConsoleButtonsVisible(isVisible)
   {
-    this.showSceneBtn("prev_country_btn", isVisible)
-    this.showSceneBtn("next_country_btn", isVisible)
+    showSceneBtn("prev_country_btn", isVisible)
+    showSceneBtn("next_country_btn", isVisible)
   }
 
   function forceUpdate()
@@ -1438,7 +1437,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   function updateSlotbarHint() {
-    let obj = this.showSceneBtn("slotbarHint", slotbarHintText != "")
+    let obj = showSceneBtn("slotbarHint", slotbarHintText != "")
     if (obj != null && slotbarHintText != "")
      obj.findObject("slotbarHintText").setValue(slotbarHintText)
   }

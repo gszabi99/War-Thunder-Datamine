@@ -20,7 +20,7 @@ let generateSpdMarkShimadzu = function(num) {
           watch = IlsColor
           size = flex()
           pos = [ofs, 0]
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_DTEXT
           color = IlsColor.value
           vplace = ALIGN_CENTER
           fontSize = 40
@@ -101,7 +101,7 @@ let generateAltMarkShimadzu = function(num) {
         @() {
           watch = IlsColor
           size = flex()
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_DTEXT
           color = IlsColor.value
           vplace = ALIGN_CENTER
           fontSize = 40
@@ -140,7 +140,7 @@ let ShimadzuMach = @() {
   watch = [MachWatch, IlsColor]
   size = flex()
   pos = [pw(12), ph(72)]
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   color = IlsColor.value
   fontSize = 50
   text = string.format(MachWatch.value < 100 ? ".%02d" : "%.2f", MachWatch.value < 100 ? MachWatch.value : MachWatch.value / 100.0)
@@ -151,7 +151,7 @@ let ShimadzuOverload = @() {
   watch = [OverloadWatch, IlsColor]
   size = flex()
   pos = [pw(12), ph(77)]
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   color = IlsColor.value
   fontSize = 50
   text = string.format("%.1fG", OverloadWatch.value / 10.0)
@@ -225,7 +225,7 @@ let function f16CcipMark(width, height) {
   }
 }
 
-let function f16CcrpMark(_width, height) {
+let function f16CcrpMark(width, height) {
   return {
     size = flex()
     children = [
@@ -273,7 +273,7 @@ let ShimadzuMode = @() {
   watch = [CCIPMode, BombingMode]
   size = flex()
   pos = [pw(78), ph(77)]
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   color = IlsColor.value
   fontSize = 50
   font = Fonts.hud

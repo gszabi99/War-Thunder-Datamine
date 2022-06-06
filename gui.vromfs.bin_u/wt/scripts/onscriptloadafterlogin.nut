@@ -9,7 +9,6 @@ require("mainmenu/instantActionHandler.nut")
 require("mainmenu/mainMenuHandler.nut")
 require("hud/updateHudConfig.nut")
 require("flightMenu/updateFlightMenuButtonTypes.nut")
-require("mainmenu/autoStartBattleHandler.nut")
 
 foreach (fn in [
   "%scripts/money.nut"

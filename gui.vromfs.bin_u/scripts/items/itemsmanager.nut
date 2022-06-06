@@ -552,7 +552,7 @@ local lastItemDefsUpdatedelayedCall = 0
     if (!blk)
     {
       if (::is_dev_version)
-        ::dagor.debug("Error: found removed item: " + slot.id)
+        dagor.debug("Error: found removed item: " + slot.id)
       continue //skip removed items
     }
 

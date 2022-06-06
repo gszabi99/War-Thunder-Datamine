@@ -1,4 +1,3 @@
-let { format } = require("string")
 ::tribunal <- {
   maxComplaintCount = 10
   minComplaintCount = 5
@@ -38,7 +37,7 @@ let { format } = require("string")
     ::tribunal.complaintsData = get_player_complaint_counts()
     if (complaintsData && complaintsData.complaint_count_own >= maxComplaintsFromMe)
     {
-      let text = format(::loc("charServer/complaintsLimitExpired"), maxComplaintsFromMe)
+      let text = ::format(::loc("charServer/complaintsLimitExpired"), maxComplaintsFromMe)
       ::showInfoMsgBox(text, "tribunal_msg_box")
       return false
     }
@@ -76,7 +75,7 @@ let { format } = require("string")
     local text = ::loc("charServer/complaintToYou"
       + (complaintsCount >= maxComplaintCount ? "MoreThen" : ""))
 
-    text = format(text, min(complaintsCount, maxComplaintCount)) + "\n" + textReasons
+    text = ::format(text, min(complaintsCount, maxComplaintCount)) + "\n" + textReasons
 
     ::showInfoMsgBox(text, "tribunal_msg_box")
   }

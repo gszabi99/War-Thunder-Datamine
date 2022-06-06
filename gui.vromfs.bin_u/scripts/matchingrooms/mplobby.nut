@@ -151,8 +151,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function updateTableHeader()
   {
-    let commonHeader = this.showSceneBtn("common_list_header", !isInfoByTeams)
-    let byTeamsHeader = this.showSceneBtn("list_by_teams_header", isInfoByTeams)
+    let commonHeader = showSceneBtn("common_list_header", !isInfoByTeams)
+    let byTeamsHeader = showSceneBtn("list_by_teams_header", isInfoByTeams)
     let teamsNest = isInfoByTeams ? byTeamsHeader : commonHeader.findObject("num_teams")
 
     let maxMembers = ::SessionLobby.getMaxMembersCount()
@@ -238,11 +238,11 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   {
     viewPlayer = player
     updatePlayerInfo(player)
-    this.showSceneBtn("btn_usercard", player != null && !::show_console_buttons && ::has_feature("UserCards"))
+    showSceneBtn("btn_usercard", player != null && !::show_console_buttons && ::has_feature("UserCards"))
     updateOptionsButton()
   }
 
-  updateOptionsButton = @() this.showSceneBtn("btn_user_options",
+  updateOptionsButton = @() showSceneBtn("btn_user_options",
     ::show_console_buttons && viewPlayer != null && isPlayersListHovered)
 
   function updatePlayerInfo(player)
@@ -384,7 +384,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   function updateButtons()
   {
     let readyData = getReadyData()
-    let readyBtn = this.showSceneBtn("btn_ready", readyData.readyBtnText.len())
+    let readyBtn = showSceneBtn("btn_ready", readyData.readyBtnText.len())
     setDoubleTextToButton(scene, "btn_ready", readyData.readyBtnText)
     readyBtn.inactiveColor = readyData.isVisualDisabled ? "yes" : "no"
     scene.findObject("cant_ready_reason").setValue(readyData.readyBtnHint)
@@ -400,10 +400,10 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     }
 
     let isReady = ::SessionLobby.isReady
-    this.showSceneBtn("btn_not_ready", ::SessionLobby.isUserCanChangeReady() && isReady)
-    this.showSceneBtn("btn_ses_settings", ::SessionLobby.canChangeSettings())
-    this.showSceneBtn("btn_team", !isReady && ::SessionLobby.canChangeTeam())
-    this.showSceneBtn("btn_spectator", !isReady && ::SessionLobby.canBeSpectator()
+    showSceneBtn("btn_not_ready", ::SessionLobby.isUserCanChangeReady() && isReady)
+    showSceneBtn("btn_ses_settings", ::SessionLobby.canChangeSettings())
+    showSceneBtn("btn_team", !isReady && ::SessionLobby.canChangeTeam())
+    showSceneBtn("btn_spectator", !isReady && ::SessionLobby.canBeSpectator()
       && !::SessionLobby.isSpectatorSelectLocked)
   }
 
@@ -430,7 +430,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
   function updateSessionStatus()
   {
     let needSessionStatus = !isInfoByTeams && !::SessionLobby.isRoomInSession
-    let sessionStatusObj = this.showSceneBtn("session_status", needSessionStatus)
+    let sessionStatusObj = showSceneBtn("session_status", needSessionStatus)
     if (needSessionStatus)
       sessionStatusObj.setValue(::SessionLobby.getMembersReadyStatus().statusText)
 
@@ -441,7 +441,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       countTbl = ::SessionLobby.getMembersCountByTeams()
     foreach(idx, team in tableTeams)
     {
-      let teamObj = this.showSceneBtn("team_status_" + team.id, needTeamStatus)
+      let teamObj = showSceneBtn("team_status_" + team.id, needTeamStatus)
       if (!teamObj || !needTeamStatus)
         continue
 
@@ -454,7 +454,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       {
         let maxDisbalance = ::SessionLobby.getMaxDisbalance()
         let otherTeamSize = countTbl[team.opponentTeamCode]
-        if (teamSize - maxDisbalance > max(otherTeamSize, minSize))
+        if (teamSize - maxDisbalance > ::max(otherTeamSize, minSize))
           status = ::loc("multiplayer/playersTeamDisbalance", { maxDisbalance = maxDisbalance })
       }
       teamObj.setValue(status)
@@ -469,7 +469,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       return
 
     isTimerVisible = isVisibleNow
-    let timerObj = this.showSceneBtn("battle_start_countdown", isTimerVisible)
+    let timerObj = showSceneBtn("battle_start_countdown", isTimerVisible)
     if (timerObj && isTimerVisible)
       timerObj.setValue(timers[0].text)
   }
@@ -521,14 +521,14 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
     if (::SessionLobby.isReady)
     {
-      this.msgBox("cannot_options_on_ready", ::loc("multiplayer/cannotOptionsOnReady"),
+      msgBox("cannot_options_on_ready", ::loc("multiplayer/cannotOptionsOnReady"),
         [["ok", function() {}]], "ok", {cancel_fn = function() {}})
       return
     }
 
     if (::SessionLobby.isRoomInSession)
     {
-      this.msgBox("cannot_options_on_ready", ::loc("multiplayer/cannotOptionsWhileInBattle"),
+      msgBox("cannot_options_on_ready", ::loc("multiplayer/cannotOptionsWhileInBattle"),
         [["ok", function() {}]], "ok", {cancel_fn = function() {}})
       return
     }
@@ -576,7 +576,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 
   function onCancel()
   {
-    this.msgBox("ask_leave_lobby", ::loc("flightmenu/questionQuitGame"),
+    msgBox("ask_leave_lobby", ::loc("flightmenu/questionQuitGame"),
     [
       ["yes", doQuit],
       ["no", function() { }]
@@ -610,7 +610,7 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       msg += "\n" + ::loc("ask/startGameAnyway")
     }
 
-    this.msgBox("ask_start_session", msg, buttons, defButton, { cancel_fn = function() {}})
+    msgBox("ask_start_session", msg, buttons, defButton, { cancel_fn = function() {}})
   }
 
   function onCustomChatCancel()

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")

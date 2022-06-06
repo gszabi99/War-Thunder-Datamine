@@ -42,7 +42,6 @@
 @const goldButtonHoverColor:    #7e592e;
 @const goldButtonPushedColor:   #33292e;
 
-@const eSBattleBtnColor:         #bc1313;   @const eSBattleBtnColorHover:    #ff3b00;   @const eSBattleBtnColorPushed:   #910b0b;   @const eSBattleBtnColorDisabled: #efbc1313; 
 
 
 
@@ -2598,26 +2597,6 @@ Button_text.image[visualStyle=tournament]:hover > img {
 Button_text[visualStyle=tournament]:hover {
   color:@white;
   border-color:@white;
-}
-Button_text[visualStyle=tournament_battle] {
-  height:1@eSEventBtnHeight;
-  background-color:@eSBattleBtnColor;
-  border: no;
-  font:@fontBigBold;
-}
-Button_text[visualStyle=tournament_battle]:hover {
-  color: @buttonFontColor;
-  background-color:@eSBattleBtnColorHover;
-}
-Button_text[visualStyle=tournament_battle]:pushed {
-  color: @buttonFontColor;
-  background-color:@eSBattleBtnColorPushed;
-}
-Button_text[visualStyle=tournament_battle][inactiveColor=yes] {
-  background-color:@eSBattleBtnColorDisabled;
-}
-Button_text[visualStyle=tournament_battle][isCancel=yes] {
-  background-color:#636363;
 }
 
 Button_text[parentWidth=yes] {

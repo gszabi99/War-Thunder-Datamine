@@ -16,7 +16,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     let spawnsBlk = ::getTblValue("spawns", getMisStateBlk())
     let usedSpawns = ::getTblValue(::my_user_id_str, spawnsBlk, 0)
-    return max(0, maxRespawns - usedSpawns)
+    return ::max(0, maxRespawns - usedSpawns)
   }
 
   function getRespawnInfoTextForUnit(unit)
@@ -183,7 +183,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           expClassName = expClassName.slice(0, expClassName.len() - 5)
         }
         if (expClassName in limitByExpClassName)
-          limitByExpClassName[expClassName] = min(value, limitByExpClassName[expClassName])
+          limitByExpClassName[expClassName] = ::min(value, limitByExpClassName[expClassName])
         else
           limitByExpClassName[expClassName] <- value
       }

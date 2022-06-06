@@ -1,6 +1,6 @@
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
-let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
+let { bombNbr, hasCountermeasures } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 
 let options = {
@@ -143,8 +143,7 @@ options.addTypes({
     triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
     needSetToReqData = true
     isShowForRandomUnit = false
-    isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
-      && (getCurrentPreset(p.unit)?.hasBombs ?? false)
+    isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter()) && p.unit.getAvailableSecondaryWeapons().hasBombs
   }
   bomb_series = {
     sortIdx = idx++
@@ -162,8 +161,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     isShowForUnit = @(p) p.unit.isShipOrBoat()
-      && p.unit.isDepthChargeAvailable()
-      && (getCurrentPreset(p.unit)?.hasDepthCharges ?? false)
+      && p.unit.isDepthChargeAvailable() && p.unit.getAvailableSecondaryWeapons().hasDepthCharges
   }
   rocket_fuse_dist = {
     sortIdx = idx++
@@ -174,7 +172,7 @@ options.addTypes({
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
-      && (getCurrentPreset(p.unit)?.hasRocketDistanceFuse ?? false)
+      && p.unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse
   }
   torpedo_dive_depth = {
     sortIdx = idx++
@@ -185,8 +183,7 @@ options.addTypes({
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
     isAvailableInMission = @() !::get_option_torpedo_dive_depth_auto()
-    isShowForUnit = @(p) p.unit.isShipOrBoat()
-      && (getCurrentPreset(p.unit)?.hasTorpedoes ?? false)
+    isShowForUnit = @(p) p.unit.isShipOrBoat() && p.unit.getAvailableSecondaryWeapons().hasTorpedoes
   }
   fuel_amount = {
     sortIdx = idx++

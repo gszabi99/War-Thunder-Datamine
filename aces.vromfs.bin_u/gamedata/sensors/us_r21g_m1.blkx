@@ -433,10 +433,13 @@
             "clearTargetsOfInterest": []
           },
           {
-            "updateTargetOfInterest": []
+            "addTargetOfInterest": []
           },
           {
             "setLastTargetOfInterestActive": []
+          },
+          {
+            "updateActiveTargetOfInterest": []
           },
           {
             "setCenterAzimuth": {
@@ -701,7 +704,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "MediumAltDesignationTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "command": "selectTarget",
             "stateTo": "MediumAltSearch",
             "actions": {
@@ -713,7 +716,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "LowAltDesignationTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "command": "selectTarget",
             "stateTo": "LowAltSearch",
             "actions": {
@@ -780,7 +783,7 @@
         {
           "finishedMediumAltBoresightTrack": {
             "stateFrom": "MediumAltBoresightTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "stateTo": "MediumAltBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -939,7 +942,7 @@
         {
           "finishedLowAltBoresightTrack": {
             "stateFrom": "LowAltBoresightTrack",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "stateTo": "LowAltBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -1080,7 +1083,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": [],
+            "updateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1100,10 +1103,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
-            "clearTargetsOfInterest": {
-              "timeOut": 1.0
-            },
+            "extrapolateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1117,6 +1117,9 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            },
+            "checkActiveTargetOfInerestInertialTimeout": {
+              "timeOut": 1.0
             }
           }
         }

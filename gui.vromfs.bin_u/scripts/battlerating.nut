@@ -24,7 +24,7 @@ let function calcSquadMrank(brData) {
     if (name != "error" && brData[name].len() > 0)
     {
       let val = brData[name][0].mrank
-      maxBR = max(maxBR, val)
+      maxBR = ::max(maxBR, val)
     }
   }
   return maxBR

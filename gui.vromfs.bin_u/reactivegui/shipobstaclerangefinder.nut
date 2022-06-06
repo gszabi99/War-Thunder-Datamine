@@ -14,7 +14,7 @@ return @(){
   flow = FLOW_HORIZONTAL
   children = [
     @() {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))
@@ -25,7 +25,7 @@ return @(){
     }
     @() {
       watch = distanceToObstacle
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))
@@ -34,7 +34,7 @@ return @(){
       color = alert
     }
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       font = Fonts.medium_text_hud
       fontFxColor = Color(0, 0, 0, 50)
       fontFxFactor = min(64, hdpx(64))

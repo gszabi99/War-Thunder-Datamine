@@ -29,7 +29,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       case "class":
         return getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
       case "type_and_class":
-        return min(
+        return ::min(
           getUnitTypeLeftRespawns(::get_es_unit_type(unit), stateData),
           getUnitClassLeftRespawns(unit.expClass.getExpClass(), stateData)
         )
@@ -178,13 +178,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) //stateData is a table or blk
   {
     let respawns = stateData?[(isDsUnitType ? esUnitType : ::get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
-    return max(0, respawns) //dont have unlimited respawns
+    return ::max(0, respawns) //dont have unlimited respawns
   }
 
   function getUnitClassLeftRespawns(expClass, stateData) //stateData is a table or blk
   {
     let respawns = stateData?[expClass] ?? 0
-    return max(0, respawns) //dont have unlimited respawns
+    return ::max(0, respawns) //dont have unlimited respawns
   }
 
   function getUnitInitialRespawns(unit)

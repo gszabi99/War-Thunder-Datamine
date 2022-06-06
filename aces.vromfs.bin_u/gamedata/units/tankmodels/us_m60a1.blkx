@@ -663,8 +663,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -708,8 +708,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -717,8 +717,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -726,8 +726,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -766,29 +766,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -1753,6 +1753,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.71,
+        "height": 0.095,
+        "width": 0.55,
         "tracksTensionK": [6.5,10.0,3.0],
         "trackMesh": "us_t142_phys_track_line",
         "trackLen": 0.176,
@@ -1761,9 +1763,7 @@
         "trackConnector": true,
         "trackEmitSparks": false,
         "trackMaxHeight": 1.55,
-        "trackStartOffset": 0.4,
-        "height": 0.095,
-        "width": 0.55
+        "trackStartOffset": 0.4
       },
       "mechanics": {
         "maxBrakeForce": 195000.0,
@@ -2386,8 +2386,7 @@
           "armorThickness": 117.0
         },
         "superstructure_side_dm": {
-          "armorClass": "RHA_tank",
-          "armorThickness": 20.0
+          "armorThickness": 25.0
         },
         "turret_03_bottom_dm": {
           "armorThickness": 36.0
@@ -2541,6 +2540,9 @@
         "turret_07_front_dm": {
           "armorThickness": 36.0
         },
+        "turret_07_top_dm": {
+          "armorThickness": 49.0
+        },
         "turret_08_back_dm": {
           "armorThickness": 128.8
         },
@@ -2591,8 +2593,7 @@
         "ex_decor_l_07_dm": [],
         "ex_decor_l_08_dm": [],
         "ex_decor_l_11_dm": [],
-        "ex_decor_r_11_dm": [],
-        "turret_07_top_dm": []
+        "ex_decor_r_11_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -2771,7 +2772,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3318,11 +3318,9 @@
             "pitch": [-10.0,20.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-161.0,0.0,20.0],
-            "lim2": [-161.0,-122.0,-5.0,20.0],
-            "lim3": [-122.0,122.0,-10.0,20.0],
-            "lim4": [122.0,161.0,-5.0,20.0],
-            "lim5": [161.0,180.0,0.0,20.0]
+            "lim1": [-180.0,-125.0,0.0,20.0],
+            "lim2": [-125.0,125.0,-10.0,20.0],
+            "lim3": [125.0,180.0,0.0,20.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
@@ -3629,10 +3627,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "art_support": [],
       "105mm_usa_HESH": [],

@@ -1,4 +1,3 @@
-let { format } = require("string")
 ::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
   function createView()
@@ -11,9 +10,9 @@ let { format } = require("string")
       let typeName = clanType.getTypeName()
       clanTypeItems.append({
         numItems = ::g_clan_type.types.len() - 1
-        itemTooltip = format("#clan/clan_type/%s/tooltip", typeName)
-        itemText = format("#clan/clan_type/%s", typeName)
-        typePrice = format("(%s)", clanType.getCreateCost().getTextAccordingToBalance())
+        itemTooltip = ::format("#clan/clan_type/%s/tooltip", typeName)
+        itemText = ::format("#clan/clan_type/%s", typeName)
+        typePrice = ::format("(%s)", clanType.getCreateCost().getTextAccordingToBalance())
         typeName = typeName
         typeTextId = getTypeTextId(clanType)
       })
@@ -32,7 +31,7 @@ let { format } = require("string")
 
   function getTypeTextId(clanType)
   {
-    return format("clan_type_text_%s", clanType.getTypeName())
+    return ::format("clan_type_text_%s", clanType.getTypeName())
   }
 
   function updateTypeCosts()
@@ -119,7 +118,7 @@ let { format } = require("string")
       let msgText = warningIfGold(format(::loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
-      this.msgBox("need_money", msgText, [["ok", function() { createClan(createCost) } ],
+      msgBox("need_money", msgText, [["ok", function() { createClan(createCost) } ],
         ["cancel"]], "ok")
     }
   }

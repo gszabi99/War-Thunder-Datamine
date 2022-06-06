@@ -1,6 +1,5 @@
 // warning disable: -file:forbidden-function
-let { get_mp_session_id_str = @() ::get_mp_session_id() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
+
 let dbg_dump = require("%scripts/debugTools/dbgDump.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let g_path = require("%sqstd/path.nut")
@@ -33,7 +32,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
     { id = "get_mission_status", value = ::getTblValue("isSucceed", debriefingResult) ? ::MISSION_STATUS_SUCCESS : ::MISSION_STATUS_RUNNING }
     { id = "get_mission_restore_type", value = ::getTblValue("restoreType", debriefingResult, 0) }
     { id = "get_local_player_country", value = ::getTblValue("country", debriefingResult, "") }
-    { id = "get_mp_session_id", value = ::getTblValue("sessionId", debriefingResult, get_mp_session_id_str()) }
+    { id = "get_mp_session_id", value = ::getTblValue("sessionId", debriefingResult, ::get_mp_session_id()) }
     { id = "get_mp_tbl_teams", value = ::getTblValue("mpTblTeams", debriefingResult, ::get_mp_tbl_teams()) }
     { id = "_fake_sessionlobby_unit_type_mask", value = debriefingResult?.unitTypesMask }
     { id = "stat_get_benchmark", value = ::getTblValue("benchmark", debriefingResult, ::stat_get_benchmark()) }
@@ -272,6 +271,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
     "is_menu_state"
     "get_cur_rank_info"
     "get_cur_warpoints"
+    "is_has_multiplayer"
     "get_option_gun_target_dist"
     "get_option_bomb_activation_type"
     "get_option_bomb_activation_time"

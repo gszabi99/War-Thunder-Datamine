@@ -1,6 +1,5 @@
 let { is_stereo_mode } = ::require_native("vr")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { sin, cos, pow, atan2, abs, sqrt } = require("math")
 
 ::joystickInterface <- {
   maxAbsoluteAxisValue = 1.0
@@ -10,7 +9,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
   {
     let res = []
     if (isForWheelmenu) {
-      if (::have_xinput_device() || is_stereo_mode())
+      if (::is_xinput_device() || is_stereo_mode())
         res.append(getPlayerCurUnit()?.unitType.wheelmenuAxis ?? [])
       else
         res.append(["decal_move_x", "decal_move_y"], ["camx", "camy"])
@@ -93,7 +92,7 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
     local maxDeviationSq=0, rawX=0, rawY=0
     foreach(idx, data in axisData)
     {
-      let deviationSq = pow(data[0], 2) + pow(data[1], 2)
+      let deviationSq = ::pow(data[0], 2) + ::pow(data[1], 2)
       if (deviationSq > maxDeviationSq)
       {
         maxDeviationSq = deviationSq
@@ -102,19 +101,19 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
       }
     }
 
-    if (sqrt(maxDeviationSq) <= deadzone)
+    if (::sqrt(maxDeviationSq) <= deadzone)
       return result
 
     let signX = rawX >= 0 ? 1 : -1
     let signY = rawY >= 0 ? 1 : -1
     let denominator = maxAbsoluteAxisValue - deadzone //to normalize
-    let rawSide = sqrt(pow(rawX, 2) + pow(rawY, 2))
+    let rawSide = ::sqrt(::pow(rawX, 2) + ::pow(rawY, 2))
 
     result.x = rawX
     result.y = rawY
-    result.angle = atan2(rawY, rawX)
-    result.normX = (min(abs(rawX), maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signX
-    result.normY = (min(abs(rawY), maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signY
+    result.angle = ::atan2(rawY, rawX)
+    result.normX = (min(::abs(rawX), maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signX
+    result.normY = (min(::abs(rawY), maxAbsoluteAxisValue) - deadzone).tofloat() / denominator * signY
     result.rawLength = rawSide
     result.normLength = (min(rawSide, maxAbsoluteAxisValue) - deadzone).tofloat() / denominator
 
@@ -132,9 +131,9 @@ let { sin, cos, pow, atan2, abs, sqrt } = require("math")
    */
   function getPositionDelta(dt, nonlinearityPower, axisValues)
   {
-    let distance = pow(axisValues.normLength, nonlinearityPower) * dt
-    let dx =   distance * cos(axisValues.angle)
-    let dy = - distance * sin(axisValues.angle)
+    let distance = ::pow(axisValues.normLength, nonlinearityPower) * dt
+    let dx =   distance * ::cos(axisValues.angle)
+    let dy = - distance * ::sin(axisValues.angle)
     return [dx, dy]
   }
 

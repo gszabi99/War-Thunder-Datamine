@@ -1,4 +1,3 @@
-let { format } = require("string")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { setPollBaseUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
@@ -160,15 +159,15 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       config.ps4ActivityFeedData.params,
       bit_activity.PS4_ACTIVITY_FEED
     )
-    this.showSceneBtn("btn_post_ps4_activity_feed", false)
+    showSceneBtn("btn_post_ps4_activity_feed", false)
   }
 
   function updateButtons()
   {
-    this.showSceneBtn("btn_sendEmail", ::getTblValue("showSendEmail", config, false)
+    showSceneBtn("btn_sendEmail", ::getTblValue("showSendEmail", config, false)
                                   && !::is_vietnamese_version())
 
-    this.showSceneBtn("btn_postLink", ::has_feature("FacebookWallPost")
+    showSceneBtn("btn_postLink", ::has_feature("FacebookWallPost")
                                  && ::getTblValue("showPostLink", config, false))
 
     local linkText = ::g_promo.getLinkText(config)
@@ -179,7 +178,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
 
     let show = linkText != "" && ::g_promo.isLinkVisible(config)
-    let linkObj = this.showSceneBtn("btn_link_to_site", show)
+    let linkObj = showSceneBtn("btn_link_to_site", show)
     if (show)
     {
       if (::checkObj(linkObj))
@@ -195,20 +194,20 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         imageObj.link = linkText
     }
     let showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in config)
-    this.showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
+    showSceneBtn("btn_post_ps4_activity_feed", showPs4ActivityFeed)
 
 
     let showSetAir = unit != null && unit.isUsable() && !::isUnitInSlotbar(unit)
     let canBuyOnline = unit != null && ::canBuyUnitOnline(unit)
     let canBuy = unit != null && !unit.isRented() && !unit.isBought() && (::canBuyUnit(unit) || canBuyOnline)
-    this.showSceneBtn("btn_set_air", showSetAir)
-    let okObj = this.showSceneBtn("btn_ok", !showSetAir)
+    showSceneBtn("btn_set_air", showSetAir)
+    let okObj = showSceneBtn("btn_ok", !showSetAir)
     if ("okBtnText" in config)
       okObj.setValue(::loc(config.okBtnText))
 
-    this.showSceneBtn("btn_close", !showSetAir || !needShowUnitTutorial)
+    showSceneBtn("btn_close", !showSetAir || !needShowUnitTutorial)
 
-    let buyObj = this.showSceneBtn("btn_buy_unit", canBuy)
+    let buyObj = showSceneBtn("btn_buy_unit", canBuy)
     if (canBuy && ::checkObj(buyObj))
     {
       let locText = ::loc("shop/btnOrderUnit", { unit = ::getUnitName(unit.name) })
@@ -218,7 +217,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     let actionText = ::g_language.getLocTextFromConfig(config, "actionText", "")
     let showActionBtn = actionText != "" && config?.action
-    let actionObj = this.showSceneBtn("btn_action", showActionBtn)
+    let actionObj = showSceneBtn("btn_action", showActionBtn)
     if (showActionBtn)
       actionObj.setValue(actionText)
 
@@ -290,15 +289,15 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function sendInvitationEmail()
   {
-    let linkString = format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let msg_head = format(::loc("mainmenu/invitationHead"), ::my_user_name)
-    let msg_body = format(::loc("mainmenu/invitationBody"), linkString)
+    let linkString = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    let msg_head = ::format(::loc("mainmenu/invitationHead"), ::my_user_name)
+    let msg_body = ::format(::loc("mainmenu/invitationBody"), linkString)
     ::shell_launch("mailto:yourfriend@email.com?subject=" + msg_head + "&body=" + msg_body)
   }
 
   function onFacebookPostLink()
   {
-    let link = format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+    let link = ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
     let message = ::loc("facebook/wallMessage")
     ::make_facebook_login_and_do((@(link, message) function() {
                  ::scene_msg_box("facebook_login", null, ::loc("facebook/uploading"), null, null)

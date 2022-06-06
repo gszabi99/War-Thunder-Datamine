@@ -137,7 +137,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
         {
           let teamInfoObj = scene.findObject(teamName)
           if (::checkObj(teamInfoObj))
-            maxTeamContentWidth = max(teamInfoObj.getSize()[0], maxTeamContentWidth)
+            maxTeamContentWidth = ::max(teamInfoObj.getSize()[0], maxTeamContentWidth)
         }
 
         battleDescObj.width = (2*maxTeamContentWidth) + "+4@framePadding"
@@ -214,7 +214,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
     let needShowWinChance = battleView.needShowWinChance()
-    let winCahnceObj = this.showSceneBtn("win_chance", needShowWinChance)
+    let winCahnceObj = showSceneBtn("win_chance", needShowWinChance)
     if (!needShowWinChance || !winCahnceObj)
       return
     let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")

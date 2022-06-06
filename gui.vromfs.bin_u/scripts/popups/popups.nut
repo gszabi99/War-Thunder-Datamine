@@ -157,7 +157,7 @@ g_popups.savePopup <- function savePopup(newPopup)
   if (index >= 0)
     suspendedPopupsList.remove(index)
 
-  suspendedPopupsList.insert(max(index, 0), newPopup)
+  suspendedPopupsList.insert(::max(index, 0), newPopup)
 }
 
 g_popups.canShowPopup <- function canShowPopup()

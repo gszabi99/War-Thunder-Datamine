@@ -72,19 +72,19 @@ let globalEnv = require("globalEnv")
         if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
           options.helpersMode = globalEnv.EM_MOUSE_AIM
         else
-          options.helpersMode = max(options.helpersMode, globalEnv.EM_INSTRUCTOR)
+          options.helpersMode = ::max(options.helpersMode, globalEnv.EM_INSTRUCTOR)
         break
 
       case ::USEROPT_INSTRUCTOR_ENABLED:
         if (options.instructorEnabled)
-          options.helpersMode = min(options.helpersMode, globalEnv.EM_INSTRUCTOR)
+          options.helpersMode = ::min(options.helpersMode, globalEnv.EM_INSTRUCTOR)
         else
-          options.helpersMode = max(options.helpersMode, globalEnv.EM_REALISTIC)
+          options.helpersMode = ::max(options.helpersMode, globalEnv.EM_REALISTIC)
         break
 
       case ::USEROPT_AUTOTRIM:
         if (options.autotrim)
-          options.helpersMode = min(options.helpersMode, globalEnv.EM_REALISTIC)
+          options.helpersMode = ::min(options.helpersMode, globalEnv.EM_REALISTIC)
         else
           options.helpersMode = globalEnv.EM_FULL_REAL
         break

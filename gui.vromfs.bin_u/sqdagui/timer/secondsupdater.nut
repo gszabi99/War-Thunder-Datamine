@@ -1,7 +1,7 @@
 let u = require("%sqStdLibs/helpers/u.nut")
 ::g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
 
-let class SecondsUpdater
+local SecondsUpdater = class
 {
   timer = 0.0
   updateFunc = null
@@ -16,7 +16,7 @@ let class SecondsUpdater
     if (u.isSecondsUpdater(userData))
       return userData
 
-    local _timerObj = _nestObj.findObject(this.getTimerObjIdByNestObj(_nestObj))
+    local _timerObj = _nestObj.findObject(getTimerObjIdByNestObj(_nestObj))
     if (_timerObj == null)
       return null
 
@@ -32,29 +32,29 @@ let class SecondsUpdater
     if (!_updateFunc)
       return ::dagor.assertf(false, "Error: no updateFunc in seconds updater.")
 
-    this.nestObj    = _nestObj
-    this.updateFunc = _updateFunc
-    this.params     = _params
-    local lastUpdaterByNestObject = this.getUpdaterByNestObj(_nestObj)
+    nestObj    = _nestObj
+    updateFunc = _updateFunc
+    params     = _params
+    local lastUpdaterByNestObject = getUpdaterByNestObj(_nestObj)
     if (lastUpdaterByNestObject != null)
       lastUpdaterByNestObject.remove()
 
-    if (this.updateFunc(this.nestObj, this.params))
+    if (updateFunc(nestObj, params))
       return
 
-    this.timerObj = useNestAsTimerObj ? this.nestObj : this.createTimerObj(this.nestObj)
-    if (!this.timerObj)
+    timerObj = useNestAsTimerObj ? nestObj : createTimerObj(nestObj)
+    if (!timerObj)
       return
 
-    this.destroyTimerObjOnFinish = !useNestAsTimerObj
-    this.timerObj.timer_handler_func = "onUpdate"
-    this.timerObj.timer_interval_msec = "1000"
-    this.timerObj.setUserData(this)
+    destroyTimerObjOnFinish = !useNestAsTimerObj
+    timerObj.timer_handler_func = "onUpdate"
+    timerObj.timer_interval_msec = "1000"
+    timerObj.setUserData(this)
   }
 
   function createTimerObj(_nestObj)
   {
-    local blkText = "dummy {id:t = '" + this.getTimerObjIdByNestObj(_nestObj) + "' behavior:t = 'Timer' }"
+    local blkText = "dummy {id:t = '" + getTimerObjIdByNestObj(_nestObj) + "' behavior:t = 'Timer' }"
     _nestObj.getScene().appendWithBlk(_nestObj, blkText, null)
     local index = _nestObj.childrenCount() - 1
     local resObj = index >= 0 ? _nestObj.getChild(index) : null
@@ -65,18 +65,18 @@ let class SecondsUpdater
 
   function onUpdate(obj, dt)
   {
-    if (this.updateFunc(this.nestObj, this.params))
-      this.remove()
+    if (updateFunc(nestObj, params))
+      remove()
   }
 
   function remove()
   {
-    if (!::check_obj(this.timerObj))
+    if (!::check_obj(timerObj))
       return
 
-    this.timerObj.setUserData(null)
-    if (this.destroyTimerObjOnFinish)
-      this.timerObj.getScene().destroyElement(this.timerObj)
+    timerObj.setUserData(null)
+    if (destroyTimerObjOnFinish)
+      timerObj.getScene().destroyElement(timerObj)
   }
 
   function getTimerObjIdByNestObj(_nestObj)

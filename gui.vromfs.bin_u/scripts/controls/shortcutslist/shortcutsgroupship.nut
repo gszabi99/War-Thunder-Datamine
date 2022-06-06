@@ -131,11 +131,6 @@ return [
     optionType = ::USEROPT_SINGLE_SHOT_BY_TURRET
   }
   {
-    id = "shipCombinePriSecTriggers"
-    type = CONTROL_TYPE.SWITCH_BOX
-    optionType = ::USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS
-  }
-  {
     id = "ID_SHIP_WEAPON_TORPEDOES"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
@@ -278,12 +273,14 @@ return [
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
+    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ship_sensor_cue_y"
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
+    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ship_zoom"
@@ -394,7 +391,7 @@ return [
     id = "ID_SHIP_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.SHIP
     checkAssign = false
-    showFunc = ::have_xinput_device
+    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_6"
@@ -445,7 +442,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
     checkAssign = @() ::is_xinput_device()
   }
   {
@@ -454,7 +451,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.SHIP
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
     checkAssign = @() ::is_xinput_device()
   }
   {
@@ -468,16 +465,6 @@ return [
     checkAssign = false
   }
   //
-
-
-
-
-
-
-
-
-
-
 
 
 

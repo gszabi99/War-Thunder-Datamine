@@ -84,28 +84,25 @@
     "explosionFx": "explosion_ship_small"
   },
   {
-    "smokeScreenActivateTime": 5.0
+    "smokeScreenActivateTime": 10.0
   },
   {
     "smokeScreenEffectTime": 30.0
   },
   {
-    "smokeScreenRad": 55.0
+    "smokeScreenRad": 50.0
   },
   {
     "smokeScreenFx": "tank_smokescreen"
   },
   {
-    "smokeScreenOffset": [-45.0,2.0,0.0]
+    "smokeScreenOffset": [-48.0,2.0,0.0]
   },
   {
     "rearmSmokeTimeOnField": 180.0
   },
   {
     "canReloadNonGuns": true
-  },
-  {
-    "supportsCombinedPriSecTriggers": false
   },
   {
     "depthTraceWarningDepth": 5.0
@@ -958,9 +955,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -969,7 +966,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -980,9 +977,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -991,9 +988,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -1002,9 +999,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -1013,7 +1010,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -1024,9 +1021,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -1035,9 +1032,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -1354,8 +1351,8 @@
         "dmPartMain": "bridge_dm",
         "dmPart": "rangefinder_01_dm",
         "measureAccuracy": 0.85,
-        "targetLockTime": 24.0,
-        "calcTime": 14.0,
+        "targetLockTime": 30.0,
+        "calcTime": 18.0,
         "rotationSpeed": 20.0,
         "triggerGroupUse": {
           "primary": true,
@@ -4202,16 +4199,16 @@
         "genericDamageMult": 0.15,
         "armorThrough": 35.0,
         "compartment_01_dm": {
-          "hp": 2000.0
+          "hp": 1800.0
         },
         "compartment_02_dm": {
           "hp": 2500.0
         },
         "compartment_03_dm": {
-          "hp": 2000.0
+          "hp": 1800.0
         },
         "compartment_04_dm": {
-          "hp": 2000.0
+          "hp": 1800.0
         }
       },
       "control_compartments": {
@@ -4221,7 +4218,7 @@
         "genericDamageMult": 0.5,
         "armorThrough": 15.0,
         "bridge_dm": {
-          "hp": 425.0
+          "hp": 500.0
         },
         "radio_station_dm": {
           "hp": 500.0
@@ -4234,25 +4231,25 @@
         "genericDamageMult": 0.1,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 12486.0
+          "hp": 1248.0
         },
         "cover_02_dm": {
-          "hp": 10421.0
+          "hp": 1042.0
         },
         "cover_03_dm": {
-          "hp": 10000.0
+          "hp": 1000.0
         },
         "cover_04_dm": {
-          "hp": 10000.0
+          "hp": 1000.0
         },
         "cover_05_dm": {
-          "hp": 10000.0
+          "hp": 1000.0
         },
         "cover_06_dm": {
-          "hp": 10000.0
+          "hp": 1000.0
         },
         "cover_07_dm": {
-          "hp": 10000.0
+          "hp": 1000.0
         }
       },
       "superstructures": {
@@ -4365,13 +4362,13 @@
         "genericDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
-          "hp": 2400.0
+          "hp": 2584.0
         },
         "engine_room_02_dm": {
-          "hp": 2400.0
+          "hp": 2780.0
         },
         "engine_room_03_dm": {
-          "hp": 2400.0
+          "hp": 2000.0
         }
       },
       "engine_rooms": {
@@ -4381,10 +4378,10 @@
         "explosionDamageMult": 1.2,
         "armorThrough": 150.0,
         "transmission_01_dm": {
-          "hp": 2400.0
+          "hp": 2002.0
         },
         "transmission_02_dm": {
-          "hp": 2400.0
+          "hp": 2253.0
         }
       },
       "funnels": {
@@ -4507,18 +4504,18 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "fireDamageMult": 1.5,
-        "pressureDamageMult": 7.0,
+        "pressureDamageMult": 5.0,
         "main_caliber_turret_01_dm": {
-          "hp": 350.0
+          "hp": 275.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 350.0
+          "hp": 279.0
         },
         "main_caliber_turret_03_dm": {
-          "hp": 350.0
+          "hp": 277.0
         },
         "main_caliber_turret_04_dm": {
-          "hp": 350.0
+          "hp": 278.0
         }
       },
       "turrets_aux_caliber": {
@@ -4527,10 +4524,10 @@
         "armorThickness": 3.0,
         "pressureDamageMult": 3.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 175.0
+          "hp": 100.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 175.0
+          "hp": 100.0
         }
       },
       "turrets_aa_caliber": {
@@ -4538,12 +4535,12 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "fireDamageMult": 2.0,
-        "pressureDamageMult": 2.0,
+        "pressureDamageMult": 1.0,
         "aa_turret_01_dm": {
-          "hp": 100.0
+          "hp": 46.0
         },
         "aa_turret_02_dm": {
-          "hp": 100.0
+          "hp": 46.0
         }
       },
       "gun_main_caliber": {
@@ -4609,16 +4606,16 @@
         "fireProtectionHp": 5.0,
         "armorThrough": 150.0,
         "ammunition_storage_shells_01_dm": {
-          "hp": 1243.0
+          "hp": 1500.0
         },
         "ammunition_storage_shells_02_dm": {
-          "hp": 1237.0
+          "hp": 1500.0
         },
         "ammunition_storage_shells_03_dm": {
-          "hp": 1200.0
+          "hp": 1316.0
         },
         "ammunition_storage_shells_04_dm": {
-          "hp": 1200.0
+          "hp": 1498.0
         }
       },
       "ammo_storages_charges": {
@@ -4636,7 +4633,7 @@
         "fireProtectionHp": 3.0,
         "armorThrough": 100.0,
         "ammunition_storage_aux_01_dm": {
-          "hp": 828.0
+          "hp": 1000.0
         }
       },
       "ammo_first_stage": {
@@ -4709,13 +4706,13 @@
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
         "elevator_01_dm": {
-          "hp": 700.0
+          "hp": 500.0
         },
         "elevator_02_dm": {
-          "hp": 550.0
+          "hp": 500.0
         },
         "elevator_03_dm": {
-          "hp": 550.0
+          "hp": 500.0
         }
       },
       "pumps": {
@@ -4779,7 +4776,7 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 11
+        "crew": 10
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
@@ -4789,12 +4786,12 @@
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 11
+        "crew": 10
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 11
+        "crew": 10
       },
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -4849,22 +4846,22 @@
       "sailor16": {
         "dmPart": "engine_room_01_dm",
         "role": "sailor",
-        "crew": 16
+        "crew": 18
       },
       "sailor17": {
         "dmPart": "engine_room_02_dm",
         "role": "sailor",
-        "crew": 17
+        "crew": 20
       },
       "sailor18": {
         "dmPart": "engine_room_03_dm",
         "role": "sailor",
-        "crew": 16
+        "crew": 15
       },
       "sailor19": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 14
       },
       "sailor20": {
         "dmPart": "transmission_02_dm",
@@ -4903,7 +4900,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.07,
+          "salvoRndK": 0.1,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -4972,7 +4969,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.07,
+          "salvoRndK": 0.1,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -5036,7 +5033,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.07,
+          "salvoRndK": 0.1,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
@@ -5113,7 +5110,7 @@
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
           "turretLongSalvo": true,
-          "salvoRndK": 0.07,
+          "salvoRndK": 0.1,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,

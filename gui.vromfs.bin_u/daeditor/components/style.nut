@@ -28,11 +28,5 @@ return {
       Color(10,10,10,160)
     ]
     GridRowHover = Color(50,50,50,160)
-
-    comboboxBorderColor = Color(60,60,60,255)
-    ControlBgOpaque     = Color(28,28,28,240)
-    TextHighlight       = Color(220,220,220,160)
-    TextHover           = Color(0,0,0)
-    TextActive          = Color(120,120,120,120)
   }
 }

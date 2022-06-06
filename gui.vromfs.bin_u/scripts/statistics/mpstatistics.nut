@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let mpChatModel = require("%scripts/chat/mpChatModel.nut")
 let avatars = require("%scripts/user/avatars.nut")
@@ -430,7 +429,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       local shouldShow = true
       if (isTeamplay)
         shouldShow = tbl && tbl.len() > 0
-      this.showSceneBtn("team2-root", shouldShow)
+      showSceneBtn("team2-root", shouldShow)
     }
 
     if (!isTeamplay && minRow >= 0)
@@ -561,7 +560,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     let teamObj1 = scene.findObject("team1_info")
     let teamObj2 = scene.findObject("team2_info")
 
-    let playerTeamIdx = clamp(playerTeam - 1, 0, 1)
+    let playerTeamIdx = ::clamp(playerTeam - 1, 0, 1)
     let teamTxt = ["", ""]
     switch (gameType & (::GT_MP_SCORE | ::GT_MP_TICKETS))
     {
@@ -572,12 +571,12 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
         let scoreFormat = "%s" + ::loc("multiplayer/score") + ::loc("ui/colon") + "%d"
         if (tbl.len() > playerTeamIdx)
         {
-          setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
+          setTeamInfoText(teamObj1, ::format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
           setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
         }
         if (tbl.len() > 1 - playerTeamIdx && !showLocalTeamOnly)
         {
-          setTeamInfoText(teamObj2, format(scoreFormat, teamTxt[1], tbl[1-playerTeamIdx].score))
+          setTeamInfoText(teamObj2, ::format(scoreFormat, teamTxt[1], tbl[1-playerTeamIdx].score))
           setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
         }
         break
@@ -594,12 +593,12 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
 
           if (tbl.len() > playerTeamIdx)
           {
-            setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
+            setTeamInfoText(teamObj1, ::format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
             setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
           }
           if (tbl.len() > 1 - playerTeamIdx && !showLocalTeamOnly)
           {
-            setTeamInfoText(teamObj2, format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
+            setTeamInfoText(teamObj2, ::format(scoreformat, teamTxt[1], tbl[1 - playerTeamIdx].tickets, tbl[1 - playerTeamIdx].score))
             setTeamInfoTeam(teamObj2, (playerTeam == friendlyTeam)? "red" : "blue")
           }
         }
@@ -732,7 +731,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     let tdData = ::handyman.renderCached(("%gui/statistics/statTableHeaderCell"), view)
     let trId = "team-header" + teamNum
     let trSize = ::getTblValue("tr_size", markupData, "0,0")
-    let trData = format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
+    let trData = ::format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
     return trData
   }
 
@@ -798,7 +797,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
     setPlayerInfo()
 
     let player = getSelectedPlayer()
-    this.showSceneBtn("btn_user_options", isOnline && player && !player.isBot && !isSpectate && ::show_console_buttons)
+    showSceneBtn("btn_user_options", isOnline && player && !player.isBot && !isSpectate && ::show_console_buttons)
     updateListLabelsSquad()
   }
 
@@ -922,7 +921,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       local data = ""
       if (fill)
         foreach(id in ["gc_time_end", "gc_score_limit", "gc_time_to_kick"])
-          data += format(blockSample, id, "")
+          data += ::format(blockSample, id, "")
       guiScene.replaceContentFromText(leftBlockObj, data, data.len(), this)
     }
 
@@ -932,7 +931,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT
       local data = ""
       if (fill)
         foreach(id in ["gc_spawn_score", "gc_wp_respawn_balance", "gc_race_checkpoints", "gc_mp_tickets_rounds"])
-          data += format(blockSample, id, "pos:t='pw-w, 0'; position:t='relative';")
+          data += ::format(blockSample, id, "pos:t='pw-w, 0'; position:t='relative';")
       guiScene.replaceContentFromText(rightBlockObj, data, data.len(), this)
     }
   }

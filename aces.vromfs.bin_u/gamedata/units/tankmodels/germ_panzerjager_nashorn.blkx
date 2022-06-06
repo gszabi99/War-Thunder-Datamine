@@ -1105,7 +1105,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 1.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1681,8 +1680,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1726,8 +1725,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1735,8 +1734,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1744,8 +1743,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1784,29 +1783,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2994,6 +2993,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.5,
+        "height": 0.06,
+        "width": 0.4,
         "tracksTensionK": [3.0,8.0,1.5],
         "trackMesh": "ger_kgs61_400_120_phys_track_line",
         "trackLen": 0.12,
@@ -3002,9 +3003,7 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.17,
-        "trackStartOffset": 0.19,
-        "height": 0.06,
-        "width": 0.4
+        "trackStartOffset": 0.19
       },
       "collisionProps": {
         "cls_body": "convex_hull",
@@ -3720,10 +3719,10 @@
       "new_tank_horizontal_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ger.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ger"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ger.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ger"
       },
       "88mm_ger_kwk43_APCR": [],
       "88mm_ger_kwk43_HEAT": [],

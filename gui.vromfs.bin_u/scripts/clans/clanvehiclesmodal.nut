@@ -79,12 +79,12 @@ local handlerClass = class extends vehiclesModal.handlerClass
   function updateBuyBtn()
   {
     if (!lastSelectedUnit)
-      return this.showSceneBtn("btn_buy_unit", false)
+      return showSceneBtn("btn_buy_unit", false)
 
     let canBuyIngame = ::canBuyUnit(lastSelectedUnit)
     let canBuyOnline = ::canBuyUnitOnline(lastSelectedUnit)
     let needShowBuyUnitBtn = canBuyIngame || canBuyOnline
-    this.showSceneBtn("btn_buy_unit", needShowBuyUnitBtn)
+    showSceneBtn("btn_buy_unit", needShowBuyUnitBtn)
     if (!needShowBuyUnitBtn)
       return
 
@@ -96,13 +96,13 @@ local handlerClass = class extends vehiclesModal.handlerClass
   function updateSpendExpBtn()
   {
     if (!lastSelectedUnit)
-      return this.showSceneBtn("btn_spend_exp", false)
+      return showSceneBtn("btn_spend_exp", false)
 
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(lastSelectedUnit) - ::getUnitExp(lastSelectedUnit))
+    let flushExp = ::min(::clan_get_exp(), ::getUnitReqExp(lastSelectedUnit) - ::getUnitExp(lastSelectedUnit))
     let needShowSpendBtn = (flushExp > 0 || needChosenResearchOfSquadron())
       && lastSelectedUnit.isSquadronVehicle() && ::canResearchUnit(lastSelectedUnit)
 
-    this.showSceneBtn("btn_spend_exp", needShowSpendBtn)
+    showSceneBtn("btn_spend_exp", needShowSpendBtn)
     if (!needShowSpendBtn)
       return
 
@@ -128,7 +128,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
       return
 
     hasSpendExpProcess = true
-    let flushExp = min(::clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
+    let flushExp = ::min(::clan_get_exp(), ::getUnitReqExp(unit) - ::getUnitExp(unit))
     let canFlushExp = flushExp > 0
 
     let afterDoneFunc = function() {

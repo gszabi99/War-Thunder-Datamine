@@ -1,4 +1,3 @@
-let { format } = require("string")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -72,7 +71,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::gui_start_briefing_restart <- function gui_start_briefing_restart()
 {
-  ::dagor.debug("gui_start_briefing_restart")
+  dagor.debug("gui_start_briefing_restart")
   let missionName = ::current_campaign_mission
   if (missionName != null)
   {
@@ -365,7 +364,7 @@ let function get_mission_desc_text(missionBlk)
   }
 
   if (missionBlk.getStr("recommendedPlayers","") != "")
-    descrAdd += ("\n" + format(::loc("players_recommended"), missionBlk.getStr("recommendedPlayers","1-4")) + "\n")
+    descrAdd += ("\n" + ::format(::loc("players_recommended"), missionBlk.getStr("recommendedPlayers","1-4")) + "\n")
 
   return descrAdd
 }
@@ -418,7 +417,7 @@ let function get_mission_desc_text(missionBlk)
 
     let gt = ::get_game_type(); //we know it after select_mission()
 
-    ::dagor.debug(format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, missionName))
+    dagor.debug(::format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, missionName))
 
     let title = ::loc_current_mission_name()
     local desc = ::loc_current_mission_desc()
@@ -450,19 +449,19 @@ let function get_mission_desc_text(missionBlk)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     if (optionItems.len()>0)
     {
-      let listObj = this.showSceneBtn("optionslist", true)
+      let listObj = showSceneBtn("optionslist", true)
       listObj.height = "" + optionItems.len() + "*@baseTrHeight" //bad solution, but freeheight doesn't work correct
     }
     optionsContainers.append(container.descr)
 
     if (restoreType == ::ERT_TACTICAL_CONTROL)
     {
-      this.showSceneBtn("attempts", false)
-      this.showSceneBtn("lbl_attempts", false)
+      showSceneBtn("attempts", false)
+      showSceneBtn("lbl_attempts", false)
     }
 
     if (isRestart)
-      this.showSceneBtn("btn_back", false)
+      showSceneBtn("btn_back", false)
   }
 
   function onApply(obj)
@@ -818,7 +817,7 @@ let function get_mission_desc_text(missionBlk)
 
   function onExit()
   {
-    this.showSceneBtn("mission_box", false)
+    showSceneBtn("mission_box", false)
     ::quit_to_debriefing()
   }
 

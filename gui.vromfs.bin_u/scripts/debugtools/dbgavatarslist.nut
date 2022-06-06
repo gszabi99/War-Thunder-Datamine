@@ -1,4 +1,3 @@
-let { format } = require("string")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdPath = require("%sqstd/path.nut")
@@ -155,7 +154,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
     if (u.isEqual(configBlk, configBlkOriginal))
       return base.goBack()
 
-    this.msgBox("save", "should save changes?",
+    msgBox("save", "should save changes?",
     [
       ["yes", saveAndExit ],
       ["no", base.goBack ]
@@ -206,8 +205,8 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
 
     if (shouldUpdateBorder)
     {
-      let editBorder = this.showSceneBtn("edit_border", isInEditMode)
-      let mainBorder = this.showSceneBtn("main_border", !isInEditMode && avatarBlk.size < 1)
+      let editBorder = showSceneBtn("edit_border", isInEditMode)
+      let mainBorder = showSceneBtn("main_border", !isInEditMode && avatarBlk.size < 1)
       let curBorder = isInEditMode ? editBorder : mainBorder
       curBorder.pos = format("%.2fpw, %.2fph", avatarBlk.pos.x, avatarBlk.pos.y)
       curBorder.size = format("%.2fpw,%.2fph", avatarBlk.size, avatarBlk.size)
@@ -226,7 +225,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
     return configBlk[selectedAvatar]
   }
 
-  roundVal = @(val) stdMath.round_by_value(clamp(val, 0.0, 1.0), 0.01)
+  roundVal = @(val) stdMath.round_by_value(::clamp(val, 0.0, 1.0), 0.01)
 
   function getMousePosPart()
   {
@@ -266,7 +265,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
     let pos2 = getMousePosPart()
     validateCorners(pos1, pos2)
     avatarBlk.pos = pos1
-    avatarBlk.size = max(pos2.x - pos1.x, pos2.y - pos1.y)
+    avatarBlk.size = ::max(pos2.x - pos1.x, pos2.y - pos1.y)
   }
 
   function onEditUpdate(obj = null, dt = 0.0)
@@ -317,7 +316,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
         hasChanges = true
       }
 
-      let realSize = roundVal(max(size[0], size[1]).tofloat() / objSize[0])
+      let realSize = roundVal(::max(size[0], size[1]).tofloat() / objSize[0])
       if (fabs(avatarBlk.size - realSize) > 0.001)
       {
         avatarBlk.size = realSize
@@ -330,7 +329,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
     if (hasChanges)
     {
       let avatarBlk = getSelAvatarBlk()
-      let maxSize = min(1.0 - avatarBlk.pos.x, 1.0 - avatarBlk.pos.y)
+      let maxSize = ::min(1.0 - avatarBlk.pos.x, 1.0 - avatarBlk.pos.y)
       if (avatarBlk.size > maxSize)
         avatarBlk.size = roundVal(maxSize)
       shouldUpdateBorder = false

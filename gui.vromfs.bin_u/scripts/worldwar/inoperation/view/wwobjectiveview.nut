@@ -11,14 +11,14 @@
 
   isLastObjective = false
 
-  constructor(v_staticBlk, v_dynamicBlk, v_side, v_isLastObjective = false)
+  constructor(_staticBlk, _dynamicBlk, _side, _isLastObjective = false)
   {
-    staticBlk = v_staticBlk
-    dynamicBlk = v_dynamicBlk
-    side = ::ww_side_val_to_name(v_side)
+    staticBlk = _staticBlk
+    dynamicBlk = _dynamicBlk
+    side = ::ww_side_val_to_name(_side)
     oType = ::g_ww_objective_type.getTypeByTypeName(staticBlk.type)
     id = staticBlk.getBlockName()
-    isLastObjective = v_isLastObjective
+    isLastObjective = _isLastObjective
 
     let statusType = oType.getObjectiveStatus(dynamicBlk?.winner, side)
     status = statusType.name

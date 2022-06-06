@@ -29,8 +29,6 @@ return {
   TARGET_HUE_AIRCRAFT_HUD_ALERT_MEDIUM = 17
   TARGET_HUE_AIRCRAFT_HUD_ALERT_HIGH = 18
 
-  TARGET_HUE_ARBITER_HUD = 19
-
   setAlertAircraftHues = @(v1, v2, v3, index) null
   setAlertHelicopterHues = @(v1, v2, v3, index) null
   getAlertAircraftHues = @() -1

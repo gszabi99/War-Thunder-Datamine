@@ -1,4 +1,3 @@
-let { format } = require("string")
 ::g_script_reloader.loadOnce("%scripts/ranks_common_shared.nut")
 
 let avatars = require("%scripts/user/avatars.nut")
@@ -15,7 +14,7 @@ let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
   wpFirstWinInDayMul = 1.0
 }
 
-let current_user_profile = {
+::current_user_profile <- {
   name = ""
   icon = "cardicon_default"
   pilotId = 0
@@ -85,7 +84,7 @@ let current_user_profile = {
     let prev = (rank > 0) ? expTbl[rank - 1] : 0
     let next = expTbl[rank]
     local cur = (exp == null)
-                ? ::get_player_exp_by_country(country, profileData)
+                ? get_player_exp_by_country(country, profileData)
                 : exp
     res = {
       rank    = rank
@@ -99,7 +98,7 @@ let current_user_profile = {
 ::get_player_rank_by_country <- function get_player_rank_by_country(c = null, profileData=null)
 {
   if (!profileData)
-    profileData = current_user_profile
+    profileData = ::current_user_profile
   if (c == null || c == "")
     return profileData.rank
   if (c in profileData.ranks)
@@ -110,7 +109,7 @@ let current_user_profile = {
 ::get_player_exp_by_country <- function get_player_exp_by_country(c = null, profileData=null)
 {
   if (!profileData)
-    profileData = current_user_profile
+    profileData = ::current_user_profile
   if (c == null || c == "")
     return profileData.exp
   if (c in profileData.exp_by_country)
@@ -145,7 +144,7 @@ let current_user_profile = {
   return 0
 }
 
-let function get_cur_session_country()
+::get_cur_session_country <- function get_cur_session_country()
 {
   if (::is_multiplayer())
   {
@@ -163,42 +162,42 @@ let function get_cur_session_country()
 {
   let info = ::get_cur_rank_info()
 
-  current_user_profile.name = info.name //::is_online_available() ? info.name : "" ;
+  ::current_user_profile.name = info.name //::is_online_available() ? info.name : "" ;
   if (::my_user_name!=info.name && info.name!="")
     ::my_user_name = info.name
 
-  current_user_profile.balance = info.wp
-  current_user_profile.country = info.country || "country_0"
-  current_user_profile.aircrafts = info.aircrafts
-  current_user_profile.gold = info.gold
-  current_user_profile.pilotId = info.pilotId
-  current_user_profile.icon = avatars.getIconById(info.pilotId)
-  current_user_profile.medals = ::get_num_unlocked(::UNLOCKABLE_MEDAL, true)
-  //dagor.debug("unlocked medals: "+current_user_profile.medals)
+  ::current_user_profile.balance = info.wp
+  ::current_user_profile.country = info.country || "country_0"
+  ::current_user_profile.aircrafts = info.aircrafts
+  ::current_user_profile.gold = info.gold
+  ::current_user_profile.pilotId = info.pilotId
+  ::current_user_profile.icon = avatars.getIconById(info.pilotId)
+  ::current_user_profile.medals = ::get_num_unlocked(::UNLOCKABLE_MEDAL, true)
+  //dagor.debug("unlocked medals: "+::current_user_profile.medals)
 
   //Show the current country in the game when you select an outcast.
-  if (current_user_profile.country=="country_0")
+  if (::current_user_profile.country=="country_0")
   {
-    let country = get_cur_session_country()
+    let country = ::get_cur_session_country()
     if (country && country!="")
-      current_user_profile.country = "country_" + country
+      ::current_user_profile.country = "country_" + country
   }
-  if (current_user_profile.country!="country_0")
-    current_user_profile.countryRank <- ::get_player_rank_by_country(current_user_profile.country)
+  if (::current_user_profile.country!="country_0")
+    ::current_user_profile.countryRank <- ::get_player_rank_by_country(::current_user_profile.country)
 
   let isInClan = ::clan_get_my_clan_id() != "-1"
-  current_user_profile.clanTag <- isInClan ? ::clan_get_my_clan_tag() : ""
-  current_user_profile.clanName <- isInClan  ? ::clan_get_my_clan_name() : ""
-  current_user_profile.clanType <- isInClan  ? ::clan_get_my_clan_type() : ""
-  ::clanUserTable[::my_user_name] <- current_user_profile.clanTag
+  ::current_user_profile.clanTag <- isInClan ? ::clan_get_my_clan_tag() : ""
+  ::current_user_profile.clanName <- isInClan  ? ::clan_get_my_clan_name() : ""
+  ::current_user_profile.clanType <- isInClan  ? ::clan_get_my_clan_type() : ""
+  ::clanUserTable[::my_user_name] <- ::current_user_profile.clanTag
 
-  current_user_profile.exp <- info.exp
-  current_user_profile.free_exp <- ::shop_get_free_exp()
-  current_user_profile.rank <- ::get_rank_by_exp(current_user_profile.exp)
-  current_user_profile.prestige <- ::get_prestige_by_rank(current_user_profile.rank)
-  current_user_profile.rankProgress <- ::calc_rank_progress(current_user_profile)
+  ::current_user_profile.exp <- info.exp
+  ::current_user_profile.free_exp <- ::shop_get_free_exp()
+  ::current_user_profile.rank <- ::get_rank_by_exp(::current_user_profile.exp)
+  ::current_user_profile.prestige <- ::get_prestige_by_rank(::current_user_profile.rank)
+  ::current_user_profile.rankProgress <- ::calc_rank_progress(::current_user_profile)
 
-  return current_user_profile
+  return ::current_user_profile
 }
 
 ::get_balance <- function get_balance()
@@ -215,7 +214,7 @@ let function get_cur_session_country()
 
 ::on_mission_started_mp <- function on_mission_started_mp()
 {
-  ::dagor.debug("on_mission_started_mp - CLIENT")
+  dagor.debug("on_mission_started_mp - CLIENT")
   ::g_streaks.clear()
   ::before_first_flight_in_session = true;
   ::clear_spawn_score();
@@ -250,23 +249,7 @@ let airTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]
   }
 }
 
-let function get_aircraft_rank(curAir)
-{
-  return ::get_wpcost_blk()?[curAir]?.rank ?? 0
-}
-
 let minValuesToShowRewardPremium = persist("minValuesToShowRewardPremium", @() ::Watched({ wp = 0, exp = 0 }))
-
-let function haveCountryRankAir(country, rank)
-{
-  let crews = ::g_crews_list.get()
-  foreach (c in crews)
-    if (c.country == country)
-      foreach(crew in c.crews)
-        if (("aircraft" in crew) && get_aircraft_rank(crew.aircraft)>=rank)
-          return true
-  return false
-}
 
 //!!FIX ME: should to remove from this function all what not about unit.
 ::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0)
@@ -328,14 +311,14 @@ let function haveCountryRankAir(country, rank)
     if (::get_profile_info().rank < tbl.minLevel)
     {
       if (!silent)
-        ::showInfoMsgBox(format(::loc("charServer/needRankFmt"), tbl.minLevel), "in_demo_only_minlevel")
+        ::showInfoMsgBox(::format(::loc("charServer/needRankFmt"), tbl.minLevel), "in_demo_only_minlevel")
       return false
     }
 
   if (("minRank" in tbl) && ("rankCountry" in tbl))
   {
     let country = $"country_{tbl.rankCountry}"
-    if (!haveCountryRankAir(country, tbl.minRank))
+    if (!::haveCountryRankAir(country, tbl.minRank))
     {
       if (!silent)
       {
@@ -379,7 +362,7 @@ let function haveCountryRankAir(country, rank)
           handler.msgBox("no_entitlement", text,
           [
             ["yes", (@(guiScene, handler, entitlement) function() { guiScene.performDelayed(handler, (@(entitlement) function() {
-                this.onOnlineShopPremium();
+                onOnlineShopPremium();
               })(entitlement)) })(guiScene, handler, entitlement) ],
             ["no", function() {} ]
           ], "yes")
@@ -396,6 +379,21 @@ let function haveCountryRankAir(country, rank)
   return true;
 }
 
+::get_aircraft_rank <- function get_aircraft_rank(curAir)
+{
+  return ::get_wpcost_blk()?[curAir]?.rank ?? 0
+}
+
+::haveCountryRankAir <- function haveCountryRankAir(country, rank)
+{
+  let crews = ::g_crews_list.get()
+  foreach (c in crews)
+    if (c.country == country)
+      foreach(crew in c.crews)
+        if (("aircraft" in crew) && get_aircraft_rank(crew.aircraft)>=rank)
+          return true
+  return false
+}
 
 let playerRankByCountries = {}
 let function updatePlayerRankByCountries() {

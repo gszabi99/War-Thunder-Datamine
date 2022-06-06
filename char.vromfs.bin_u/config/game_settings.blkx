@@ -2431,7 +2431,7 @@
       "condition": ""
     },
     "Chat": {
-      "condition": ""
+      "condition": "role_DEVELOPER"
     },
     "ChatThreadLang": [
       {
@@ -3604,9 +3604,23 @@
     "IsraelAircraftUnlocked": {
       "condition": ""
     },
-    "IsraelTankUnlocked": {
-      "condition": ""
-    },
+    "IsraelTankUnlocked": [
+      {
+        "condition": "role_GAIJIN"
+      },
+      {
+        "condition": "role_DEVELOPER"
+      },
+      {
+        "condition": "role_TESTER"
+      },
+      {
+        "condition": "role_ALPHA_TESTER"
+      },
+      {
+        "condition": "wt_access_israel_tanks_unlocks"
+      }
+    ],
     "MissionsChapterHidden": [
       {
         "condition": "role_GAIJIN"
@@ -4093,34 +4107,6 @@
       "condition": ""
     },
     "WeaponryCustomPresets": {
-      "condition": ""
-    },
-    "BattleAutoStart": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "TestTankActionTutorial": {
-      "condition": "ab_test_tank_action_tutorial_hidden"
-    },
-    "PS5HeadTracking": [
-      {
-        "condition": "role_GAIJIN"
-      },
-      {
-        "condition": "role_DEVELOPER"
-      },
-      {
-        "condition": "role_TESTER"
-      }
-    ],
-    "replayRewind": {
       "condition": ""
     }
   }

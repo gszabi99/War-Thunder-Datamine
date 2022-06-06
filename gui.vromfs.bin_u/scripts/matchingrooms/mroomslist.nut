@@ -1,4 +1,3 @@
-let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let u = require("%sqstd/underscore.nut")
@@ -221,7 +220,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   {
     if (rooms.len() > MAX_SESSIONS_LIST_LEN)
     {
-      let message = format("Error in SessionLobby::updateRoomsList:\nToo long rooms list - %d", rooms.len())
+      let message = ::format("Error in SessionLobby::updateRoomsList:\nToo long rooms list - %d", rooms.len())
       ::script_net_assert_once("too long rooms list", message)
 
       rooms.resize(MAX_SESSIONS_LIST_LEN)

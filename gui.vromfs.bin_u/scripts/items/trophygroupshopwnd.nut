@@ -200,7 +200,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
   function updateButtonsBar()
   {
     let isButtonsBarVisible = !::show_console_buttons || getItemsListObj().isHovered()
-    this.showSceneBtn("item_actions_bar", isButtonsBarVisible)
+    showSceneBtn("item_actions_bar", isButtonsBarVisible)
   }
 
   function updateButtons(obj = null)
@@ -210,11 +210,11 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
     let isPurchased = isTrophyPurchased(obj.getValue())
     let mainActionData = trophy.getMainActionData()
-    this.showSceneBtn("btn_main_action", !isPurchased)
+    showSceneBtn("btn_main_action", !isPurchased)
     setDoubleTextToButton(scene,
       "btn_main_action",
       mainActionData?.btnName,
       mainActionData?.btnColoredName || mainActionData?.btnName)
-    this.showSceneBtn("warning_text", isPurchased)
+    showSceneBtn("warning_text", isPurchased)
   }
 }

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { doesLocTextExist = @(k) true } = require("dagor.localize")
@@ -126,7 +125,7 @@ g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNee
     foreach (cfg in configs)
     {
       isShow = cfg.isShow
-      key = format(cfg.keyFormat, idx)
+      key = ::format(cfg.keyFormat, idx)
       let locId = $"{TIP_LOC_KEY_PREFIX}{key}"
       tip = doesLocTextExist(locId) ? ::loc(locId, "") : "" // Using doesLocTextExist() to avoid warnings spam in log.
       if (tip != "")

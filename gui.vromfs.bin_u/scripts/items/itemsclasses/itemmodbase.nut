@@ -116,7 +116,7 @@ local ModificationBase = class extends ::BaseItem
 
     let res = ::LayersIcon.findLayerCfg("mod_upgrade_rank")
     if (res)
-      res.img = $"#ui/gameuiskin#item_rank_{clamp(rankRange.y, 1, 6)}.png"
+      res.img = "#ui/gameuiskin#item_rank_" + ::clamp(rankRange.y, 1, 6)
     return res
   }
 }

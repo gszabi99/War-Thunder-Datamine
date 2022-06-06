@@ -1,4 +1,3 @@
-let { format } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let asyncActions = require("%sqStdLibs/helpers/asyncActions.nut")
@@ -112,7 +111,7 @@ local ExchangeRecipes = class {
     let componentItemdefArray = componentsArray.map(@(c) c.itemdefid)
     let items = ::ItemsManager.getInventoryList(itemType.ALL,
       @(item) ::isInArray(item.id, componentItemdefArray))
-    hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
+    hasChestInComponents = ::u.search(items, @(i) i.iType == itemType.CHEST) != null
     foreach (component in componentsArray)
     {
       let curQuantity = items.filter(@(i) i.id == component.itemdefid).reduce(
@@ -422,8 +421,8 @@ local ExchangeRecipes = class {
 
   static function getRecipesCraftTimeText(recipes)
   {
-    let minSeconds = max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
-    let maxSeconds = max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
+    let minSeconds = ::max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
+    let maxSeconds = ::max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
     if (minSeconds <= 0 && maxSeconds <= 0)
       return ""
 
@@ -445,8 +444,8 @@ local ExchangeRecipes = class {
     local markRecipeBlk = ::load_local_account_settings(markRecipeSaveId)
     if (!markRecipeBlk)
       markRecipeBlk = ::DataBlock()
-    foreach(i in newMarkedRecipesUid)
-      markRecipeBlk[i] = MARK_RECIPE.USED
+    foreach(_uid in newMarkedRecipesUid)
+      markRecipeBlk[_uid] = MARK_RECIPE.USED
 
     ::save_local_account_settings(markRecipeSaveId, markRecipeBlk)
   }
@@ -455,7 +454,7 @@ local ExchangeRecipes = class {
   {
     if (!(params?.showCurQuantities ?? true))
       return component.reqQuantity > 1 ?
-        (::nbsp + format(::loc("weapons/counter/right/short"), component.reqQuantity)) : ""
+        (::nbsp + ::format(::loc("weapons/counter/right/short"), component.reqQuantity)) : ""
 
     let locId = params?.needShowItemName ?? true ? "ui/parentheses/space" : "ui/parentheses"
     let locText = ::loc(locId, { text = component.curQuantity + "/" + component.reqQuantity })
@@ -588,15 +587,15 @@ local ExchangeRecipes = class {
       let itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
       foreach(item in itemsList)
       {
-        foreach(i in item.uids)
+        foreach(_uid in item.uids)
         {
-          let leftByUid = usedUidsList?[i] ?? item.amountByUids[i]
+          let leftByUid = usedUidsList?[_uid] ?? item.amountByUids[_uid]
           if (leftByUid <= 0)
             continue
 
-          let count = min(leftCount, leftByUid)
-          res.append([ i, count ])
-          usedUidsList[i] <- leftByUid - count
+          let count = ::min(leftCount, leftByUid)
+          res.append([ _uid, count ])
+          usedUidsList[_uid] <- leftByUid - count
           leftCount -= count
           if (!leftCount)
             break
@@ -614,6 +613,7 @@ local ExchangeRecipes = class {
     let usedUidsList = {}
     let recipe = this //to not remove recipe until operation complete
     params = params ?? {}
+    params.rewardTitle <- getRewardTitleLocId(false)
     if (componentItem.canRecraftFromRewardWnd())
       params.reUseRecipeUid <- uid
 
@@ -651,7 +651,7 @@ local ExchangeRecipes = class {
     if (params?.cb)
       params.cb()
 
-    let resultItemsShowOpening  = u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
+    let resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen()
     let isHasFakeRecipes = parentGen && hasFakeRecipes(parentGen.getRecipes())
     let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
@@ -665,7 +665,7 @@ local ExchangeRecipes = class {
       let isUserstatRewards = userstatItemRewardData != null
       let rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
         : parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
-        : ""
+        : (params?.rewardTitle ?? "")
       let rewardListLocId = isUserstatRewards ? userstatItemsListLocId
         : params?.rewardListLocId ? params.rewardListLocId
         : parentRecipe ? componentItem.getItemsListLocId()

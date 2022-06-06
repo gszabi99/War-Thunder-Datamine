@@ -40,7 +40,7 @@ let altitude = @() {
       ]
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(50), ph(69)]
       size = flex()
       color = MfdRadarColor.value
@@ -48,7 +48,7 @@ let altitude = @() {
       text = "5"
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(50), ph(44)]
       size = flex()
       color = MfdRadarColor.value
@@ -56,7 +56,7 @@ let altitude = @() {
       text = "10"
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(50), ph(19)]
       size = flex()
       color = MfdRadarColor.value
@@ -64,7 +64,7 @@ let altitude = @() {
       text = "15"
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(50), ph(-6)]
       size = flex()
       color = MfdRadarColor.value
@@ -128,7 +128,7 @@ let roll = @(){
       children = [
         @() {
           watch = digitalAlt
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_DTEXT
           pos = [pw(20), ph(47)]
           size = flex()
           color = MfdRadarColor.value
@@ -168,7 +168,7 @@ let distance = @() {
       ]
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(0), ph(60)]
       size = flex()
       color = MfdRadarColor.value
@@ -176,7 +176,7 @@ let distance = @() {
       text = (DistanceMax.value * 0.33).tointeger()
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(0), ph(27)]
       size = flex()
       color = MfdRadarColor.value
@@ -184,7 +184,7 @@ let distance = @() {
       text = (DistanceMax.value * 0.66).tointeger()
     },
     {
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       pos = [pw(50), ph(-6)]
       size = flex()
       color = MfdRadarColor.value

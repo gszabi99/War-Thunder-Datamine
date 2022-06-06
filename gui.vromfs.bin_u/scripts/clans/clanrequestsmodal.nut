@@ -132,9 +132,9 @@ let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
       if (index in candidatesList)
         curCandidate = candidatesList[index];
     }
-    this.showSceneBtn("btn_approve", !::show_console_buttons && curCandidate != null && (isInArray("MEMBER_ADDING", myRights) || ::clan_get_admin_editor_mode()))
-    this.showSceneBtn("btn_reject", !::show_console_buttons && curCandidate != null && isInArray("MEMBER_REJECT", myRights))
-    this.showSceneBtn("btn_user_options", curCandidate != null && ::show_console_buttons)
+    showSceneBtn("btn_approve", !::show_console_buttons && curCandidate != null && (isInArray("MEMBER_ADDING", myRights) || ::clan_get_admin_editor_mode()))
+    showSceneBtn("btn_reject", !::show_console_buttons && curCandidate != null && isInArray("MEMBER_REJECT", myRights))
+    showSceneBtn("btn_user_options", curCandidate != null && ::show_console_buttons)
   }
 
   function onUserCard()

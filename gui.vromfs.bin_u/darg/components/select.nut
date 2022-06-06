@@ -4,10 +4,10 @@ let defStyle = require("select.style.nut")
 
 let mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elemCtor = null, style=null) elemCtor==null ? function selItem(p, idx, list){
   let stateFlags = Watched(0)
-  isCurrent = isCurrent ?? @(p, _idx) p==state.value
+  isCurrent = isCurrent ?? @(p, idx) p==state.value
   let onClick = onClickCtor!=null ? onClickCtor(p, idx) : @() state(p)
   let text = textCtor != null ? textCtor(p, idx, stateFlags) : p
-  let {textOvr = {}, textCommonColor, textActiveColor, textHoverColor, borderColor, borderRadius, borderWidth,
+  let {textCommonColor, textActiveColor, textHoverColor, borderColor, borderRadius, borderWidth,
         bkgActiveColor, bkgHoverColor, bkgNormalColor, padding} = defStyle.elemStyle.__merge(style ?? {})
   return function(){
     let selected = isCurrent(p, idx)
@@ -29,14 +29,14 @@ let mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elemCt
       stopHover = true
       watch = [stateFlags, state]
       children = {
-        rendObj = ROBJ_TEXT, text=text,
+        rendObj = ROBJ_DTEXT, text=text,
         color = (stateFlags.value & S_HOVER)
           ? textHoverColor
           : selected
             ? textActiveColor
             : textCommonColor,
         padding = borderRadius
-      }.__update(textOvr)
+      }
       onClick
       borderColor
       borderWidth = nBw

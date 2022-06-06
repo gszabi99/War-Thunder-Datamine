@@ -60,7 +60,7 @@ let time = require("%scripts/time.nut")
     curLangs = threadInfo.langs
 
     let show = ::g_chat.canChooseThreadsLang()
-    this.showSceneBtn("language_block", show)
+    showSceneBtn("language_block", show)
     if (show)
       updateLangButton()
   }
@@ -81,8 +81,8 @@ let time = require("%scripts/time.nut")
   function initCategories()
   {
     let show = ::g_chat_categories.isEnabled()
-    this.showSceneBtn("thread_category_header", show)
-    let cListObj = this.showSceneBtn("categories_list", show)
+    showSceneBtn("thread_category_header", show)
+    let cListObj = showSceneBtn("categories_list", show)
     if (show)
       ::g_chat_categories.fillCategoriesListObj(cListObj, threadInfo.category, this)
   }
@@ -197,7 +197,7 @@ let time = require("%scripts/time.nut")
     if (!list.len())
       return
 
-    let maxPos = min(list.len(), 14)
+    let maxPos = ::min(list.len(), 14)
     let menu = []
     for(local i = 0; i < maxPos; i++)
       menu.append({
@@ -213,7 +213,7 @@ let time = require("%scripts/time.nut")
     if (!list.len())
       return
 
-    place = clamp(place, 0, list.len() - 1)
+    place = ::clamp(place, 0, list.len() - 1)
     let curPlace = ::find_in_array(list, threadInfo)
     if (curPlace >= 0 && curPlace < place)
       place++

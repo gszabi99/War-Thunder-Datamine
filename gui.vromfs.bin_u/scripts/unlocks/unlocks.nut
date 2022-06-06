@@ -1,5 +1,3 @@
-let { format, strip, split_by_chars } = require("string")
-let regexp2 = require("regexp2")
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasFeatureBasic } = require("%scripts/user/features.nut")
@@ -176,7 +174,7 @@ local unlockConditionUnitclasses = {
 
 ::get_image_for_unlockable_medal <- function get_image_for_unlockable_medal(id, big = false)
 {
-  return format(big ? "!@ui/medals/%s_big" : "!@ui/medals/%s", id)
+  return ::format(big ? "!@ui/medals/%s_big" : "!@ui/medals/%s", id)
 }
 
 
@@ -772,7 +770,7 @@ local unlockConditionUnitclasses = {
     let maxStreak = ::getTblValue("maxStreak", config.similarAwardNamesList, 1)
     local repeatText = ::loc("streaks/rewarded_count", { count = ::colorize("activeTextColor", amount) })
     if (!::g_unlocks.hasSpecialMultiStageLocId(config.id, maxStreak))
-      repeatText = format(::loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
+      repeatText = ::format(::loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
     obj.findObject("mult_awards_text").setValue(repeatText)
   }
 
@@ -782,11 +780,11 @@ local unlockConditionUnitclasses = {
   {
     local cond = ""
     if (config?.minVal && config.maxVal)
-      cond += format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
+      cond += ::format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
     else if (config?.minVal)
-      cond += format(::loc("streaks/min_limit"), config.minVal)
+      cond += ::format(::loc("streaks/min_limit"), config.minVal)
     else if (config.maxVal)
-      cond += format(::loc("streaks/max_limit"), config.maxVal)
+      cond += ::format(::loc("streaks/max_limit"), config.maxVal)
 
     desc = ::g_string.implode([desc, cond, ::UnlockConditions.getMultipliersText(config)], "\n")
   }
@@ -1001,7 +999,7 @@ local unlockConditionUnitclasses = {
       return ::loc("options/crew")
 
     case ::UNLOCKABLE_DYNCAMPAIGN:
-      let parts = split_by_chars(id, "_")
+      let parts = ::split(id, "_")
       local countryId = (parts.len() > 1) ? "country_" + parts[parts.len() - 1] : null
       if (::isInArray(countryId, shopCountriesList))
         parts.pop()
@@ -1196,15 +1194,15 @@ local unlockConditionUnitclasses = {
           name = ::loc("streaks/" + id + "/multiple", name)
           desc = ::loc("streaks/" + id + "/multiple/desc", desc)
         }
-        else if (::g_unlocks.isUnlockMultiStageLocId(id))
+        else (::g_unlocks.isUnlockMultiStageLocId(id))
         {
           let stageId = ::g_unlocks.getMultiStageId(id, maxStreak)
           name = ::loc("streaks/" + stageId)
           iconStyle = "streak_" + stageId
         }
 
-        name = format(name, maxStreak)
-        desc = format(desc, maxStreak)
+        name = ::format(name, maxStreak)
+        desc = ::format(desc, maxStreak)
       }
       else
       {
@@ -1214,7 +1212,7 @@ local unlockConditionUnitclasses = {
         {
           let descValue = unlockBlk?.stage ? (unlockBlk?.stage.param ?? 0) : (unlockBlk?.mode.num ?? 0)
           if (descValue > 0)
-            desc = format(desc, descValue)
+            desc = ::format(desc, descValue)
           else
             desc = ::loc("streaks/" + id + "/multiple/desc", desc)
         }
@@ -1245,7 +1243,7 @@ local unlockConditionUnitclasses = {
       {
         res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id = config.unlockId)
             ?.getDescriptionTitle() ?? ""
-        res.image = "#ui/gameuiskin#item_type_aerobatic_smoke.svg"
+        res.image = "#ui/gameuiskin#item_type_aerobatic_smoke"
       }
       break
 
@@ -1508,15 +1506,15 @@ local unlockConditionUnitclasses = {
   {
     let simUnlock = ::g_unlocks.getUnlockById(simAward.unlockId)
     let simStreak = simUnlock.stage.param.tointeger() + simAward.stage
-    maxStreak = max(simStreak, maxStreak)
-    let simAwName = format(name, simStreak)
+    maxStreak = ::max(simStreak, maxStreak)
+    let simAwName = ::format(name, simStreak)
     if (simAwName in res.similarAwardNamesList)
       res.similarAwardNamesList[simAwName]++
     else
       res.similarAwardNamesList[simAwName] <- 1
   }
 
-  let mainAwName = format(name, streak)
+  let mainAwName = ::format(name, streak)
   if (mainAwName in res.similarAwardNamesList)
     res.similarAwardNamesList[mainAwName]++
   else
@@ -1597,8 +1595,8 @@ local unlockConditionUnitclasses = {
 
   favoriteUnlocksLimit = 20
 
-  unitNameReg = regexp2(@"[.*/].+")
-  skinNameReg = regexp2(@"^[^/]*/")
+  unitNameReg = ::regexp2(@"[.*/].+")
+  skinNameReg = ::regexp2(@"^[^/]*/")
   cache = {}
   cacheArray = []
   cacheByType = {} //<unlockTypeName> = { byName = { <unlockId> = <unlockBlk> }, inOrder = [<unlockBlk>] }
@@ -1802,7 +1800,7 @@ g_unlocks.checkDependingUnlocks <- function checkDependingUnlocks(unlockBlk)
   if (!unlockBlk || !unlockBlk?.hideUntilPrevUnlocked)
     return true
 
-  let prevUnlocksArray = split_by_chars(unlockBlk.hideUntilPrevUnlocked, "; ")
+  let prevUnlocksArray = ::split(unlockBlk.hideUntilPrevUnlocked, "; ")
   foreach (prevUnlockId in prevUnlocksArray)
     if (!::is_unlocked_scripted(-1, prevUnlockId))
       return false
@@ -1862,7 +1860,7 @@ g_unlocks.getMultiStageId <- function getMultiStageId(unlockId, repeatInARow)
 
 g_unlocks.checkUnlockString <- function checkUnlockString(string)
 {
-  let unlocks = split_by_chars(string, ";")
+  let unlocks = ::split(string, ";")
   foreach (unlockIdSrc in unlocks)
   {
     local unlockId = strip(unlockIdSrc)
@@ -2061,8 +2059,8 @@ g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
       let currentTime = get_charserver_time_sec()
       let isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
 
-      ::dagor.debug("unlock " + id + " is visible by time ? " + isVisibleUnlock)
-      ::dagor.debug("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
+      dagor.debug("unlock " + id + " is visible by time ? " + isVisibleUnlock)
+      dagor.debug("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
         + ", beginDate = " + cond.beginDate + ", endDate = " + cond.endDate
         + ", visibleDaysBefore = " + (unlock?.visibleDaysBefore ?? "?")
         + ", visibleDays = " + (unlock?.visibleDays ?? "?")

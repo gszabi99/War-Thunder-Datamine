@@ -13,10 +13,10 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   presetInfo = null
   nameLocId = null
 
-  constructor(v_name, v_respawnsLeft, params = {})
+  constructor(_name, _respawnsLeft, params = {})
   {
-    name = v_name
-    respawnsLeft = v_respawnsLeft
+    name = _name
+    respawnsLeft = _respawnsLeft
     distributed = params?.distributed ?? ::RESPAWNS_UNLIMITED
     presetInfo = params?.presetInfo
     nameLocId = params?.nameLocId

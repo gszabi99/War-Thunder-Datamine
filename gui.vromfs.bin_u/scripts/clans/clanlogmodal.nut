@@ -1,4 +1,3 @@
-let { format } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10

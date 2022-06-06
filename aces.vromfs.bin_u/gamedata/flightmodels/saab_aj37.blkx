@@ -5,7 +5,12 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
-  "jetEnginePowerFullScale": true,
+  "JetNozzlesAnim1": [0.3,0.5],
+  "JetNozzlesAnim2": [0.5,1.0],
+  "JetNozzlesAnim3": [1.0,0.0],
+  "JetNozzlesAngleAnim1": [-1.75,1.0],
+  "JetNozzlesAngleAnim2": [-0.707,0.5],
+  "JetNozzlesAngleAnim3": [0.0,0.0],
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
   "haveCCIPForBombs": true,
@@ -216,12 +221,6 @@
       },
       "tank6_dm": {
         "hp": 39.5
-      },
-      "tank7_dm": {
-        "hp": 51.1
-      },
-      "tank8_dm": {
-        "hp": 51.1
       }
     },
     "wood": {
@@ -1605,114 +1604,6 @@
       "part": [
         {
           "name": "tank6_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.0001,
-            "leak": 0.3
-          }
-        },
-        {
-          "onHit": {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 70.0,
-            "fire": 0.01,
-            "leak": 0.9
-          }
-        },
-        {
-          "onKill": {
-            "fire": 0.01,
-            "leak": 9.99
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 70.0,
-            "fire": 50.0,
-            "leak": 10.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "tank7_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.0001,
-            "leak": 0.3
-          }
-        },
-        {
-          "onHit": {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 70.0,
-            "fire": 0.01,
-            "leak": 0.9
-          }
-        },
-        {
-          "onKill": {
-            "fire": 0.01,
-            "leak": 9.99
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 70.0,
-            "fire": 50.0,
-            "leak": 10.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "tank8_dm"
         },
         {
           "onHit": {
@@ -3433,6 +3324,7 @@
     },
     "aden_air_targets": [],
     "aden_ground_targets": [],
+    "aden_stealth": [],
     "aden_belt_pack": {
       "reqModification": "countermeasures_belt_pack",
       "tier": 2
@@ -3514,9 +3406,7 @@
     "emtr_break_wing2_l_to": [-1.62912,-0.264284,4.54098],
     "emtr_break_wing2_r_from": [-1.62912,-0.264284,-4.04245],
     "emtr_break_wing2_r_to": [-1.62912,-0.264284,-4.54098],
-    "emtr_break_wing_tail": [-4.57669,0.0,0.0],
-    "finCut": true,
-    "emtr_break_tail_from": [-4.90621,0.343456,1.27097e-06],
-    "emtr_break_tail_to": [-5.93694,0.343456,1.27097e-06]
+    "emtr_break_wing_tail": [-4.59074,0.0,0.0],
+    "finCut": false
   }
 }

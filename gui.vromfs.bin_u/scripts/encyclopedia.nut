@@ -1,4 +1,3 @@
-let { format } = require("string")
 let persistent = { encyclopediaData = [] }
 
 ::g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
@@ -101,7 +100,7 @@ let open = function()
 
     let canShowLinkButtons = !::is_vendor_tencent() && ::has_feature("AllowExternalLink")
     foreach(btn in ["faq", "support", "wiki"])
-      this.showSceneBtn("button_" + btn, canShowLinkButtons)
+      showSceneBtn("button_" + btn, canShowLinkButtons)
     ::move_mouse_on_child_by_value(scene.findObject("items_list"))
   }
 

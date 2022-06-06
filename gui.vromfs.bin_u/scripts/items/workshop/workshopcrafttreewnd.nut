@@ -1,7 +1,6 @@
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 
 ::dagui_propid.add_name_id("itemId")
 
@@ -219,7 +218,7 @@ let getArrowView = ::kwarg(function getArrowView(arrow, itemSizes, isInMultipleA
     isInMultipleArrow = isInMultipleArrow
     isOutMultipleArrow = isOutMultipleArrow
   }
-  return sizeAndPosViewConfig[arrowType](arrowParam, KWARG_NON_STRICT)
+  return sizeAndPosViewConfig[arrowType](arrowParam)
 })
 
 let viewItemsParams = {
@@ -620,7 +619,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       }
       let textBlocks = bodiesConfig[idx].textBlocks
       textBlocks.sort(@(a, b) a.endPosY <=> b.endPosY)
-      visibleItemsCountY = max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
+      visibleItemsCountY = ::max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
       curBodiesOffset += isShowHeaderPlace || idx == 0 || visibleItemsCountYByBodies[idx-1] == 0 ? 0
         : (bodiesConfig[idx-1].bodyTitlesCount * titleHeight

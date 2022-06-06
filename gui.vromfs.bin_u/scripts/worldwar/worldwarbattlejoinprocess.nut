@@ -11,9 +11,9 @@ let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
   static activeJoinProcesses = []   //cant modify staic self
   processStartTime = -1
 
-  constructor (v_wwBattle, v_side)
+  constructor (_wwBattle, _side)
   {
-    if (!v_wwBattle || !v_wwBattle.isValid())
+    if (!_wwBattle || !_wwBattle.isValid())
       return
 
     if (activeJoinProcesses.len())
@@ -25,8 +25,8 @@ let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
     activeJoinProcesses.append(this)
     processStartTime = ::dagor.getCurTime()
 
-    wwBattle = v_wwBattle
-    side = v_side
+    wwBattle = _wwBattle
+    side = _side
     joinStep1_squad()
   }
 

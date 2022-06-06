@@ -6472,26 +6472,10 @@
             "event": "regularCheck",
             "recalculateTree": []
           },
-          "sequencer": {
-            "selector": {
-              "selectStrategy": "ordered",
-              "selectOnSuccess": true,
-              "setGroupLeaderAs": {
-                "varName": "vip"
-              },
-              "setHostAs": {
-                "varName": "vip"
-              }
-            },
-            "isPlayerAttackActive": {
-              "botVarName": "vip"
-            },
-            "updateVipThreat": {
-              "vipVarName": "vip",
-              "targetType": "airplane",
-              "targetToAnchorDist": [23000.0,24000.0],
-              "targetToAnchorMeetDist": [0.0,0.0]
-            }
+          "updateHostThreat": {
+            "targetType": "airplane",
+            "targetToAnchorDist": [3000.0,4000.0],
+            "targetToAnchorMeetDist": [0.0,0.0]
           },
           "selector": [
             {
@@ -6523,35 +6507,21 @@
             "recalculateTree": []
           },
           "ifThenElse": {
-            "sequencer": {
-              "setHostAs": {
-                "varName": "vip"
-              },
-              "setUnitAsLeader": {
-                "varName": "vip"
-              }
-            },
+            "findLeader": [],
             "followTarget": {
               "offsetFromBot": false,
               "useTarget": false,
               "offset": [0.0,600.0,0.0]
             },
-            "ifThenElse": {
-              "findLeader": [],
-              "followTarget": {
-                "offsetFromBot": true,
-                "useTarget": false
+            "sequencer": {
+              "setControls": {
+                "controls": "flaps",
+                "setTo": 0.0,
+                "timeTo": 0.0
               },
-              "sequencer": {
-                "setControls": {
-                  "controls": "flaps",
-                  "setTo": 0.0,
-                  "timeTo": 0.0
-                },
-                "orbitHere": {
-                  "speed": 250.0,
-                  "alt": 600.0
-                }
+              "orbitHere": {
+                "speed": 250.0,
+                "alt": 600.0
               }
             }
           }
@@ -6658,62 +6628,31 @@
               },
               {
                 "sequencer": {
-                  "setGroupLeaderAs": {
-                    "varName": "vip"
+                  "hasWeaponTypes": {
+                    "weaponType": "bombs"
                   },
-                  "setBotPlayerTargetAs": {
-                    "botVarName": "vip",
-                    "varName": "playerTarget"
-                  },
-                  "setAsTarget": {
-                    "varName": "playerTarget"
+                  "updateHostThreat": {
+                    "targetType": "ship",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
                   }
                 }
               },
               {
                 "sequencer": {
-                  "setHostAs": {
-                    "varName": "vip"
-                  },
-                  "selector": [
+                  "hasWeaponTypes": [
                     {
-                      "selectStrategy": "ordered"
+                      "weaponType": "cannons"
                     },
                     {
-                      "selectOnSuccess": true
-                    },
-                    {
-                      "sequencer": {
-                        "hasWeaponTypes": {
-                          "weaponType": "bombs"
-                        },
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "ship",
-                          "targetToAnchorDist": [5000.0,8000.0],
-                          "targetToAnchorMeetDist": [0.0,0.0]
-                        }
-                      }
-                    },
-                    {
-                      "sequencer": {
-                        "hasWeaponTypes": [
-                          {
-                            "weaponType": "cannons"
-                          },
-                          {
-                            "weaponType": "rockets"
-                          }
-                        ],
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "boat",
-                          "targetToAnchorDist": [5000.0,8000.0],
-                          "targetToAnchorMeetDist": [0.0,0.0]
-                        }
-                      }
+                      "weaponType": "rockets"
                     }
-                  ]
+                  ],
+                  "updateHostThreat": {
+                    "targetType": "boat",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
+                  }
                 }
               }
             ]
@@ -6731,11 +6670,9 @@
                   "selector": {
                     "selectStrategy": "ordered",
                     "torpedoTarget": {
-                      "instantAttack": true,
                       "fireMode": "salvo"
                     },
                     "bombTarget": {
-                      "instantAttack": true,
                       "fireMode": "salvo"
                     }
                   }
@@ -6749,11 +6686,9 @@
                   "selector": {
                     "selectStrategy": "ordered",
                     "bombTarget": {
-                      "instantAttack": true,
                       "fireMode": "salvo"
                     },
                     "fighterAttackGround": {
-                      "instantAttack": true,
                       "fireMode": "salvo"
                     }
                   }
@@ -6806,37 +6741,21 @@
           },
           {
             "ifThenElse": {
-              "sequencer": {
-                "setHostAs": {
-                  "varName": "vip"
-                },
-                "setUnitAsLeader": {
-                  "varName": "vip"
-                }
-              },
+              "findLeader": [],
               "followTarget": {
                 "offsetFromBot": false,
                 "useTarget": false,
                 "offset": [0.0,600.0,0.0]
               },
-              "ifThenElse": {
-                "findLeader": {
-                  "findOwnedUnit": false
+              "sequencer": {
+                "setControls": {
+                  "controls": "flaps",
+                  "setTo": 0.0,
+                  "timeTo": 0.0
                 },
-                "followTarget": {
-                  "offsetFromBot": true,
-                  "useTarget": false
-                },
-                "sequencer": {
-                  "setControls": {
-                    "controls": "flaps",
-                    "setTo": 0.0,
-                    "timeTo": 0.0
-                  },
-                  "orbitHere": {
-                    "speed": 250.0,
-                    "alt": 600.0
-                  }
+                "orbitHere": {
+                  "speed": 250.0,
+                  "alt": 600.0
                 }
               }
             }
@@ -6944,62 +6863,31 @@
               },
               {
                 "sequencer": {
-                  "setGroupLeaderAs": {
-                    "varName": "vip"
+                  "hasWeaponTypes": {
+                    "weaponType": "bombs"
                   },
-                  "setBotPlayerTargetAs": {
-                    "botVarName": "vip",
-                    "varName": "playerTarget"
-                  },
-                  "setAsTarget": {
-                    "varName": "playerTarget"
+                  "updateHostThreat": {
+                    "targetType": "ship",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
                   }
                 }
               },
               {
                 "sequencer": {
-                  "setHostAs": {
-                    "varName": "vip"
-                  },
-                  "selector": [
+                  "hasWeaponTypes": [
                     {
-                      "selectStrategy": "ordered"
+                      "weaponType": "cannons"
                     },
                     {
-                      "selectOnSuccess": true
-                    },
-                    {
-                      "sequencer": {
-                        "hasWeaponTypes": {
-                          "weaponType": "bombs"
-                        },
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "ship",
-                          "targetToAnchorDist": [5000.0,8000.0],
-                          "targetToAnchorMeetDist": [0.0,0.0]
-                        }
-                      }
-                    },
-                    {
-                      "sequencer": {
-                        "hasWeaponTypes": [
-                          {
-                            "weaponType": "cannons"
-                          },
-                          {
-                            "weaponType": "rockets"
-                          }
-                        ],
-                        "updateVipThreat": {
-                          "vipVarName": "vip",
-                          "targetType": "boat",
-                          "targetToAnchorDist": [5000.0,8000.0],
-                          "targetToAnchorMeetDist": [0.0,0.0]
-                        }
-                      }
+                      "weaponType": "rockets"
                     }
-                  ]
+                  ],
+                  "updateHostThreat": {
+                    "targetType": "boat",
+                    "targetToAnchorDist": [5000.0,8000.0],
+                    "targetToAnchorMeetDist": [0.0,0.0]
+                  }
                 }
               }
             ]
@@ -7015,7 +6903,6 @@
                     "type": "bigShip"
                   },
                   "diveBombTarget": {
-                    "instantAttack": true,
                     "fireMode": "salvo"
                   }
                 }
@@ -7028,11 +6915,9 @@
                   "selector": {
                     "selectStrategy": "ordered",
                     "diveBombTarget": {
-                      "instantAttack": true,
                       "fireMode": "salvo"
                     },
                     "fighterAttackGround": {
-                      "instantAttack": true,
                       "fireMode": "salvo"
                     }
                   }
@@ -7085,37 +6970,21 @@
           },
           {
             "ifThenElse": {
-              "sequencer": {
-                "setHostAs": {
-                  "varName": "vip"
-                },
-                "setUnitAsLeader": {
-                  "varName": "vip"
-                }
-              },
+              "findLeader": [],
               "followTarget": {
                 "offsetFromBot": false,
                 "useTarget": false,
                 "offset": [0.0,600.0,0.0]
               },
-              "ifThenElse": {
-                "findLeader": {
-                  "findOwnedUnit": false
+              "sequencer": {
+                "setControls": {
+                  "controls": "flaps",
+                  "setTo": 0.0,
+                  "timeTo": 0.0
                 },
-                "followTarget": {
-                  "offsetFromBot": true,
-                  "useTarget": false
-                },
-                "sequencer": {
-                  "setControls": {
-                    "controls": "flaps",
-                    "setTo": 0.0,
-                    "timeTo": 0.0
-                  },
-                  "orbitHere": {
-                    "speed": 250.0,
-                    "alt": 600.0
-                  }
+                "orbitHere": {
+                  "speed": 250.0,
+                  "alt": 600.0
                 }
               }
             }

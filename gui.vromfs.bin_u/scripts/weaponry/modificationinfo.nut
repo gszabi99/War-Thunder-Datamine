@@ -60,7 +60,7 @@ let function findAnyNotResearchedMod(unit)
 let function isModAvailableOrFree(unitName, modName)
 {
   return (::shop_is_modification_available(unitName, modName, true)
-          || (!::wp_get_modification_cost(unitName, modName) && !::wp_get_modification_cost_gold(unitName, modName)))
+          || (!::wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
 let function getModBlock(modName, blockName, templateKey)

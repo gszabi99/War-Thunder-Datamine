@@ -157,7 +157,7 @@ local summaryNameArray = [
           timePlayed  = ev?.timePlayed || 0
           unitRank    = ev?.unitRank || 0
         })
-        data.minKills = max(data.minKills, kills)
+        data.minKills = ::max(data.minKills, kills)
       }
       let additionalUnitTypesBlk = blk?.additionalUnitTypes[unitType.lowerName]
       if (additionalUnitTypesBlk)
@@ -467,7 +467,7 @@ local summaryNameArray = [
           continue
 
         let curUnitType = ::get_es_unit_type(unit)
-        saveBlk[curUnitType.tostring()] = max(::getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
+        saveBlk[curUnitType.tostring()] = ::max(::getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
       }
 
     if (!::u.isEqual(saveBlk, loadedBlk))

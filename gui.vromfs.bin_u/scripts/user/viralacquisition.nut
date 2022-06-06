@@ -1,11 +1,10 @@
-let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]
 let awards = [[70000, 0], [300000, 100], [0, 2500]]
 
-let getLinkString = @() format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
+let getLinkString = @() ::format(::loc("msgBox/viralAcquisition"), ::my_user_id_str)
 
 local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
   locId = "/".concat(locId, "separatedVessels") // add separatedVessels postfix when vessels ranks are not equal to other ranks
@@ -31,7 +30,7 @@ let function showViralAcquisitionWnd() {
   ::copy_to_clipboard(getLinkString())
 
   let formatImg = "ui/images/%s.jpg?P1"
-  local image = format(formatImg, "facebook_invite")
+  local image = ::format(formatImg, "facebook_invite")
   local height = 400
   let guiBlk = GUI.get()
 
@@ -39,7 +38,7 @@ let function showViralAcquisitionWnd() {
       && guiBlk.invites_notification_window_images.paramCount() > 0) {
     let paramNum = ::math.rnd() % guiBlk.invites_notification_window_images.paramCount()
     let newHeight = guiBlk.invites_notification_window_images.getParamName(paramNum)
-    let newImage = format(formatImg, guiBlk.invites_notification_window_images.getParamValue(paramNum))
+    let newImage = ::format(formatImg, guiBlk.invites_notification_window_images.getParamValue(paramNum))
     if (!regexp2(@"\D+").match(newHeight))
     {
       height = newHeight

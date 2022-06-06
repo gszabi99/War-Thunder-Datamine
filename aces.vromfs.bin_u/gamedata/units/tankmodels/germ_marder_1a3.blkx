@@ -478,7 +478,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1397,8 +1396,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1442,8 +1441,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1451,8 +1450,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1460,8 +1459,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1500,29 +1499,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -1993,7 +1992,7 @@
           "sleeveImpulse": [0.0,0.1,-3.0],
           "sleevesImpulseOffset": 0.01,
           "linkSleeveToGun": true,
-          "recoilOffset": 0.02,
+          "recoilOffset": 0.01,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2248,9 +2247,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 32700.0,
+        "Empty": 28400.0,
         "Fuel": 800.0,
-        "TakeOff": 33500.0,
+        "TakeOff": 29200.0,
         "momentOfInertia": [2.5,2.5,6.0],
         "CenterOfGravity": [0.15,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -2260,17 +2259,7 @@
       "tracks": {
         "animationMultiplier": 0.63,
         "height": 0.085,
-        "width": 0.45,
-        "tracksTensionK": [7.5,9.0,4.0],
-        "trackMesh": "ger_diehl_828a_phys_track_line",
-        "trackLen": 0.147,
-        "trackCount": 91,
-        "trackFadeTime": 1.1,
-        "trackConnector": true,
-        "trackEmitSparks": false,
-        "trackMaxHeight": 1.22,
-        "trackStartOffset": 0.01,
-        "trackMaxSinking": 0.17
+        "width": 0.635
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2342,15 +2331,13 @@
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.2,-0.16,0.14],
-        "defaultGearRadius": 0.33,
-        "frontBackGearRadius": 0.34,
-        "topGearRadius": 0.14,
+        "suspensionOffsets": [-0.2,-0.15,0.37],
+        "defaultGearRadius": 0.3,
+        "frontBackGearRadius": 0.27,
+        "topGearRadius": 0.15,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15,
-        "wheel_r_drive": 0.31,
-        "wheel_l_drive": 0.31
+        "dampeningCompressionRatio": 0.15
       }
     }
   },
@@ -3006,10 +2993,10 @@
       "tank_new_gun": [],
       "art_support": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ger.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ger"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ger.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ger"
       },
       "airstrike": [],
       "improved_optics": [],
@@ -3043,7 +3030,7 @@
                 "sleeveImpulse": [0.0,0.1,-3.0],
                 "sleevesImpulseOffset": 0.01,
                 "linkSleeveToGun": true,
-                "recoilOffset": 0.02,
+                "recoilOffset": 0.01,
                 "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3335,7 +3322,7 @@
         }
       },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "tier": 1,
         "effects": {
           "nightVision": {

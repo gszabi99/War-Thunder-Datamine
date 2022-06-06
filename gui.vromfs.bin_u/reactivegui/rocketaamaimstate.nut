@@ -16,7 +16,6 @@ let aamAimState = {
   IlsTrackerVisible = Watched(false)
 
   GuidanceLockState = Watched(-1)
-  GuidanceLockSnr = Watched(0.0)
 }
 
 interopGen({

@@ -1,7 +1,4 @@
-let { format } = require("string")
-let regexp2 = require("regexp2")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditionsModule.nut")
-
 /*
   ::UnlockConditions API:
 
@@ -231,7 +228,7 @@ let function getRankMultipliersTable(blk) {
     bothStr = "%s"+ ::loc("ui/mdash") + "%s"
   }
 
-  regExpNumericEnding = regexp2("\\d+$")
+  regExpNumericEnding = ::regexp2("\\d+$")
 
   nestedUnlockModes = ["unlockOpenCount", "unlockStageCount", "unlocks", "char_unlocks"]
 
@@ -254,31 +251,31 @@ let function getRankMultipliersTable(blk) {
 
     formatParams = formatParamsDefault.__merge(formatParams)
     let { rangeStr, itemStr, valueStr, maxOnlyStr, minOnlyStr, bothStr } = formatParams
-    let a = val.x.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.x) : format(valueStr, val.x) : ""
-    let b = val.y.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.y) : format(valueStr, val.y) : ""
+    let a = val.x.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.x) : ::format(valueStr, val.x) : ""
+    let b = val.y.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.y) : ::format(valueStr, val.y) : ""
     if (a == "" && b == "")
       return ""
 
     local range = ""
     if (a != "" && b != "")
       range = a == b
-        ? format(itemStr, a)
-        : format(bothStr,
-          format(itemStr, a),
-          format(itemStr, b))
+        ? ::format(itemStr, a)
+        : ::format(bothStr,
+          ::format(itemStr, a),
+          ::format(itemStr, b))
     else if (a == "")
-      range = format(maxOnlyStr, format(itemStr, b))
+      range = ::format(maxOnlyStr, ::format(itemStr, b))
     else
-      range = format(minOnlyStr, format(itemStr, a))
+      range = ::format(minOnlyStr, ::format(itemStr, a))
 
-    return format(rangeStr, range)
+    return ::format(rangeStr, range)
   }
 
   function getRangeString(val1, val2, formatStr = "%s")
   {
     val1 = val1.tostring()
     val2 = val2.tostring()
-    return (val1 == val2) ? format(formatStr, val1) : format(formatStr, val1) + ::loc("ui/mdash") + format(formatStr, val2)
+    return (val1 == val2) ? ::format(formatStr, val1) : ::format(formatStr, val1) + ::loc("ui/mdash") + ::format(formatStr, val2)
   }
 
   function hideConditionsFromBlk(blk, unlockBlk)
@@ -756,7 +753,7 @@ UnlockConditions.getDiffTextArrayByPoint3 <- function getDiffTextArrayByPoint3(v
 
 UnlockConditions._getDiffValueText <- function _getDiffValueText(value, formatStr = "%s", lessIsBetter = false)
 {
-  return lessIsBetter? getRangeString(1, value, formatStr) : format(formatStr, value.tostring())
+  return lessIsBetter? getRangeString(1, value, formatStr) : ::format(formatStr, value.tostring())
 }
 
 UnlockConditions.getMainProgressCondition <- function getMainProgressCondition(conditions)
@@ -818,7 +815,7 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
 
   local conditionsText = ::g_string.implode(condTextsList, separator)
   if (inlineText && conditionsText != "")
-    conditionsText = format("(%s)", conditionsText)
+    conditionsText = ::format("(%s)", conditionsText)
 
   let pieces = [mainConditionText, conditionsText]
 
@@ -1043,9 +1040,9 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
              cType == "country" || cType == "playerCountry" || cType == "usedInSessionTag" || cType == "lastInSessionTag")
       text = ::loc("unlockTag/" + v)
     else if (cType == "targetDistance")
-      text = format( ::loc($"conditions/{(condition.gt ? "min" : "max")}_limit"), v.tostring())
+      text = ::format( ::loc($"conditions/{(condition.gt ? "min" : "max")}_limit"), v.tostring())
     else if (::isInArray(cType, [ "ammoMass", "bulletCaliber" ]))
-      text = format( ::loc(condition.notLess ? "conditions/min_limit" : "conditions/less"), v.tostring())
+      text = ::format( ::loc(condition.notLess ? "conditions/min_limit" : "conditions/less"), v.tostring())
     else if (::isInArray(cType, [ "activity", "playerUnitRank", "offenderUnitRank", "playerUnitMRank", "offenderUnitMRank",
       "crewsUnitRank", "crewsUnitMRank", "minStat", "higherBR" ])) {
       text = v.tostring()
@@ -1182,7 +1179,7 @@ UnlockConditions.getMultipliersText <- function getMultipliersText(condition)
   if ((multiplierTable?.WWBattleForOwnClan ?? 1) > 1)
     return "{0}{1}{2}".subst(::loc("conditions/mulWWBattleForOwnClan"),
                              ::loc("ui/colon"),
-                             ::colorize("unlockActiveColor", format("x%d", multiplierTable.WWBattleForOwnClan)))
+                             ::colorize("unlockActiveColor", ::format("x%d", multiplierTable.WWBattleForOwnClan)))
 
   let isMultipliersByDiff = multiplierTable?.ArcadeBattle != null
   foreach (param, num in multiplierTable) {
@@ -1268,7 +1265,7 @@ UnlockConditions.getProgressBarData <- function getProgressBarData(modeType, cur
   }
 
   res.show = res.show && maxVal > 1 && curVal < maxVal
-  res.value = clamp(1000 * curVal / (maxVal || 1), 0, 1000)
+  res.value = ::clamp(1000 * curVal / (maxVal || 1), 0, 1000)
   return res
 }
 

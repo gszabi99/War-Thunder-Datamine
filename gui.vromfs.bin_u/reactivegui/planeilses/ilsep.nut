@@ -12,7 +12,7 @@ let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode
 let function angleTxtEP(num, isLeft, textFont) {
   return @() {
     watch = IlsColor
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     vplace = ALIGN_BOTTOM
     hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
     color = IlsColor.value
@@ -25,7 +25,7 @@ let function angleTxtEP(num, isLeft, textFont) {
 let EPAltCCIPWatched = Computed(@() string.format(Altitude.value < 1000 ? "%d" : "%.1f", Altitude.value < 1000 ? Altitude.value : Altitude.value / 1000))
 let EPAltCCIP = @() {
   watch = [EPAltCCIPWatched, IlsColor]
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   pos = [pw(-150), ph(-20)]
   size = flex()
   color = IlsColor.value
@@ -127,7 +127,7 @@ let EP12Speed = @() {
   @() {
     watch = EP12SpeedValue
     size = SIZE_TO_CONTENT
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     pos = [pw(46), ph(80)]
     color = IlsColor.value
     fontSize = 50
@@ -155,7 +155,7 @@ let generateAltMarkEP = function(num) {
       ( num % 20 > 0 ? null :
         @() {
           watch = IlsColor
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_DTEXT
           color = IlsColor.value
           vplace = ALIGN_CENTER
           fontSize = 40

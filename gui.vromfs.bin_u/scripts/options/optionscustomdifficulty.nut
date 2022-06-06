@@ -198,7 +198,7 @@ local { getCdOption, getCdBaseDifficulty } = ::require_native("guiOptions")
 
 ::gui_start_cd_options <- function gui_start_cd_options(afterApplyFunc, owner = null)
 {
-  ::dagor.debug("gui_start_cd_options called")
+  dagor.debug("gui_start_cd_options called")
   if (::SessionLobby.isInRoom())
   {
     let curDiff = ::SessionLobby.getMissionParam("custDifficulty", null)

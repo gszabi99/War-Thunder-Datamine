@@ -189,12 +189,9 @@
           "armorThickness": 2.0
         },
         "ex_armor_body_02_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 25.0
         },
         "turret_08_top_dm": {
-          "armorThickness": 10.0
-        },
-        "turret_07_side_dm": {
           "armorThickness": 10.0
         }
       },
@@ -314,6 +311,9 @@
         },
         "turret_07_front_dm": {
           "armorThickness": 36.0
+        },
+        "turret_07_side_dm": {
+          "armorThickness": 10.0
         },
         "turret_06_back_dm": {
           "armorThickness": 82.0
@@ -509,7 +509,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1435,8 +1434,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1480,8 +1479,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1489,8 +1488,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1498,8 +1497,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1538,29 +1537,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2751,6 +2750,8 @@
       },
       "tracks": {
         "animationMultiplier": 0.51,
+        "height": 0.12,
+        "width": 0.5,
         "tracksTensionK": [4.5,8.0,2.0],
         "trackMesh": "us_t97_phys_track_line",
         "trackLen": 0.176,
@@ -2760,9 +2761,7 @@
         "trackEmitSparks": false,
         "trackMaxHeight": 1.5,
         "trackStartOffset": 0.1,
-        "trackMaxSinking": 0.05,
-        "height": 0.12,
-        "width": 0.5
+        "trackMaxSinking": 0.05
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -3450,7 +3449,7 @@
         "headPosOnShooting": [0.1,3.4,0.55]
       },
       {
-        "detectionHeight": 2.97
+        "detectionHeight": 3.06
       }
     ]
   },
@@ -3589,10 +3588,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_il"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_il"
       },
       "art_support": [],
       "105mm_usa_HESH": [],

@@ -218,9 +218,9 @@ let function removeResearchBlock(researchBlock)
     let isBought = ::isUnitBought(unit)
     let isUsable = ::isUnitUsable(unit)
 
-    this.showSceneBtn("btn_buy", !isBought)
-    this.showSceneBtn("btn_exit", isBought)
-    this.showSceneBtn("btn_trainCrew", isUsable)
+    showSceneBtn("btn_buy", !isBought)
+    showSceneBtn("btn_exit", isBought)
+    showSceneBtn("btn_trainCrew", isUsable)
   }
 
   function purchaseUnit()
