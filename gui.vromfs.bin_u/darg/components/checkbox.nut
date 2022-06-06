@@ -13,7 +13,7 @@ let defBoxStyle = {
 let function defMkText(text, state=null, stateFlags=null, style = null){
   return @(){
     watch = [state, stateFlags]
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     text = text
   }.__update(style ?? {})
 }

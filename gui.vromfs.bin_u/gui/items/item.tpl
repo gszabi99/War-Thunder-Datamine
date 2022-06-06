@@ -302,7 +302,7 @@ itemDiv {
       size:t='@unlockIconSize, @unlockIconSize';
       pos:t='pw-w  -1@itemPadding +1@dp, ph -0.5@dIco -1@dp +1@itemPadding -0.6h'
       position:t='absolute'
-      background-image:t='#ui/gameuiskin#favorite.png';
+      background-image:t='#ui/gameuiskin#favorite';
       <<^isAllBought>>display:t='hide'<</isAllBought>>
     }
     <</needAllBoughtIcon>>
@@ -376,9 +376,6 @@ itemDiv {
   }
   title:t='$tooltipObj';
   tooltip-float:t='<<^tooltipFloat>>horizontal<</tooltipFloat>><<tooltipFloat>>'
-  <</tooltipId>>
-  <<^tooltipId>>
-  tooltip:t='<<tooltip>>'
   <</tooltipId>>
   <</isTooltipByHold>>
 }

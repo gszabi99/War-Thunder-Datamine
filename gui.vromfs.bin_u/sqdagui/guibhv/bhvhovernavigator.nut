@@ -16,16 +16,16 @@ setValue only move mouse to child
   }
 
   onFocus = @(obj, event) ::RETCODE_NOTHING
-  getValue = @(obj) this.getHoveredChild(obj).hoveredIdx ?? -1
-  setValue = @(obj, value) this.selectItem(obj, value)
-  getSelectedValue = @(obj) this.getValue(obj)
+  getValue = @(obj) getHoveredChild(obj).hoveredIdx ?? -1
+  setValue = @(obj, value) selectItem(obj, value)
+  getSelectedValue = @(obj) getValue(obj)
   getCanSelectNone = @(obj) true
   selectItem = @(obj, idx, idxObj = null, needSound = true, needSetMouse = false)
     base.selectItem(obj, idx, idxObj, needSound, true)
 
   function onLMouse(obj, mx, my, is_up, bits) {
     if (!is_up && (bits & ::BITS_MOUSE_DBL_CLICK) && (bits & ::BITS_MOUSE_BTN_L)) {
-      this.activateAction(obj)
+      activateAction(obj)
       return ::RETCODE_HALT
     }
     return ::RETCODE_NOTHING
@@ -35,7 +35,7 @@ setValue only move mouse to child
   {
     if (btn_id != 2)  //right mouse button
       return ::RETCODE_NOTHING
-    if (is_up && this.findClickedObj(obj, mx, my))
+    if (is_up && findClickedObj(obj, mx, my))
       obj.sendNotify("r_click")
     return ::RETCODE_PROCESSED
   }

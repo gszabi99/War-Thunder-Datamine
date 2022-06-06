@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")

@@ -1,8 +1,4 @@
-let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-
-#explicit-this
-#no-root-fallback
 
 global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
@@ -63,44 +59,44 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function loadHandler(handlerClass, params = {})
   {
-    this._loadHandlerRecursionLevel++
+    _loadHandlerRecursionLevel++
 
-    let hType = this.getHandlerType(handlerClass)
-    this.beforeLoadHandler(hType)
+    let hType = getHandlerType(handlerClass)
+    beforeLoadHandler(hType)
 
-    let restoreData = this.restoreDataOnLoadHandler?[handlerClass]
+    let restoreData = restoreDataOnLoadHandler?[handlerClass]
     if (restoreData)
-      delete this.restoreDataOnLoadHandler[handlerClass]
+      delete restoreDataOnLoadHandler[handlerClass]
 
     if (restoreData?.openData)
       params = ::u.extend({}, params, restoreData.openData)
 
     let startTime = ::dagor.getCurTime()
-    let dbgName = this.onLoadHandlerDebug(handlerClass, params)
+    let dbgName = onLoadHandlerDebug(handlerClass, params)
 
     local handler = null
     if (hType == handlerType.MODAL)
-      handler = this.loadModalHandler(handlerClass, params)
+      handler = loadModalHandler(handlerClass, params)
     else if (hType==handlerType.CUSTOM)
-      handler = this.loadCustomHandler(handlerClass, params)
+      handler = loadCustomHandler(handlerClass, params)
     else
-      handler = this.loadBaseHandler(handlerClass, params)
+      handler = loadBaseHandler(handlerClass, params)
 
     ::dagor.debug(format("GuiManager: loading time = %d (%s)", (::dagor.getCurTime() - startTime),  dbgName))
 
     if (restoreData?.stateData)
       handler.restoreHandler(restoreData.stateData)
 
-    this.restoreHandlers(handlerClass)
+    restoreHandlers(handlerClass)
 
     if (hType == handlerType.BASE && ::saved_scene_msg_box)
       ::saved_scene_msg_box()
 
-    this._loadHandlerRecursionLevel--
-    if (!this._loadHandlerRecursionLevel)
-      this.onActiveHandlersChanged()
+    _loadHandlerRecursionLevel--
+    if (!_loadHandlerRecursionLevel)
+      onActiveHandlersChanged()
     if (hType == handlerType.BASE || hType == handlerType.ROOT)
-      this.checkActionsDelayGuiScene()
+      checkActionsDelayGuiScene()
     return handler
   }
 
@@ -114,7 +110,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function getHandlerClassDebugName(handlerClass)
   {
-    let className = this.getHandlerClassName(handlerClass)
+    let className = getHandlerClassName(handlerClass)
     if (className)
       return "::gui_handlers." + className
     return " sceneBlk = " + (handlerClass?.sceneBlkName ?? "null")
@@ -122,16 +118,16 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function onLoadHandlerDebug(handlerClass, params)
   {
-    let handlerName = this.getHandlerClassDebugName(handlerClass)
+    let handlerName = getHandlerClassDebugName(handlerClass)
     ::dagor.debug("GuiManager: load handler " + handlerName)
 
-    this.lastLoadedHandlerName = handlerName
+    lastLoadedHandlerName = handlerName
     return handlerName
   }
 
   function initHandler(handler)
   {
-    this.beforeInitHandler(handler)
+    beforeInitHandler(handler)
 
     local result
     try
@@ -141,10 +137,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     }
     catch (errorMessage)
     {
-      let handlerName = this.getHandlerClassDebugName(handler)
-      let message = format("Error on init handler %s:\n%s", handlerName, errorMessage)
+      let handlerName = getHandlerClassDebugName(handler)
+      let message = ::format("Error on init handler %s:\n%s", handlerName, errorMessage)
       ::script_net_assert_once(handlerName, message)
-      let hType = this.getHandlerType(handler.getclass())
+      let hType = getHandlerType(handler.getclass())
       if (hType == handlerType.MODAL)
       {
         if (::check_obj(handler.scene))
@@ -157,7 +153,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
         handler.scene = null
       }
       else
-        this.onBaseHandlerLoadFailed(handler)
+        onBaseHandlerLoadFailed(handler)
       result = false
     }
     return result
@@ -172,7 +168,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function destroyHandler(handler) //destroy handler with it subhandlers.
                                                    //destroy handler scene, so accurate use with custom handlers
   {
-    if (!this.isHandlerValid(handler))
+    if (!isHandlerValid(handler))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
       ::script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui::ObjScene::act")
@@ -181,7 +177,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     handler.onDestroy()
     foreach(sh in handler.subHandlers)
-      this.destroyHandler(sh)
+      destroyHandler(sh)
     handler.guiScene.destroyElement(handler.scene)
   }
 
@@ -193,37 +189,37 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       return null
     }
 
-    let reloadScene = this.updatePostLoadCss() || this.needReloadScene()
+    let reloadScene = updatePostLoadCss() || needReloadScene()
     let reload = !handlerClass.keepLoaded || reloadScene
     if (!reload)
     {
-      let handler = this.findAndReinitHandler(handlerClass, params)
+      let handler = findAndReinitHandler(handlerClass, params)
       if (handler)
       {
-        this.setLastBaseHandlerStartFuncByHandler(handlerClass, params)
+        setLastBaseHandlerStartFuncByHandler(handlerClass, params)
         ::broadcastEvent("NewSceneLoaded")
         return handler
       }
     }
 
     if (reloadScene)
-      this.clearScene()
+      clearScene()
 
-    let handler = this.createHandler(handlerClass, guiScene, params)
-    let newLoadedRootHandler = this.loadHandlerScene(handler)
-    this.switchBaseHandler(handler)
+    let handler = createHandler(handlerClass, guiScene, params)
+    let newLoadedRootHandler = loadHandlerScene(handler)
+    switchBaseHandler(handler)
 
     local initResult = true
     if (newLoadedRootHandler)
-      initResult = this.initHandler(newLoadedRootHandler)
-    initResult = initResult && this.initHandler(handler)
+      initResult = initHandler(newLoadedRootHandler)
+    initResult = initResult && initHandler(handler)
     if (!initResult)
       return null
 
-    this.handlers[handlerType.BASE].append(handler.weakref())
-    this.lastGuiScene = handler.guiScene
+    handlers[handlerType.BASE].append(handler.weakref())
+    lastGuiScene = handler.guiScene
 
-    this.setLastBaseHandlerStartFuncByHandler(handlerClass, params)
+    setLastBaseHandlerStartFuncByHandler(handlerClass, params)
     ::broadcastEvent("NewSceneLoaded")
     return handler
   }
@@ -232,13 +228,13 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!handler.sceneBlkName)
     {
-      ::callstack()
+      callstack()
       ::dagor.assertf(false, "Error: cant load base handler w/o sceneBlkName.")
       return null
     }
 
-    let id = "root_scene_" + ++this.sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
-    if (!handler.rootHandlerClass || this.getHandlerType(handler) != handlerType.BASE)
+    let id = "root_scene_" + ++sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
+    if (!handler.rootHandlerClass || getHandlerType(handler) != handlerType.BASE)
     {
       let rootObj = handler.guiScene.getRoot()
       handler.scene = handler.guiScene.createElementByObject(rootObj, handler.sceneBlkName, "rootScene", handler)
@@ -249,12 +245,12 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     local newLoadedRootHandler = null
     let guiScene = ::get_cur_gui_scene()
-    local rootHandler = this.findHandlerClassInScene(handler.rootHandlerClass)
-    if (!this.isHandlerValid(rootHandler, true))
+    local rootHandler = findHandlerClassInScene(handler.rootHandlerClass)
+    if (!isHandlerValid(rootHandler, true))
     {
       rootHandler = handler.rootHandlerClass(guiScene, {})
-      this.loadHandlerScene(rootHandler)
-      this.handlers[handlerType.ROOT].append(rootHandler.weakref())
+      loadHandlerScene(rootHandler)
+      handlers[handlerType.ROOT].append(rootHandler.weakref())
       subscriptions.subscribeHandler(rootHandler)
       newLoadedRootHandler = rootHandler
     }
@@ -270,27 +266,27 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!handlerClass.sceneBlkName && !handlerClass.sceneTplName)
     {
-      ::callstack()
+      callstack()
       ::dagor.assertf(handlerClass.sceneBlkName!=null, "Error: cant load modal handler w/o sceneBlkName or sceneTplName.")
       return null
     }
-    local handler = this.findHandlerClassInScene(handlerClass)
+    local handler = findHandlerClassInScene(handlerClass)
     if (handler && !handlerClass.multipleInstances)
     {
-      this.reinitHandler(handler, params)
+      reinitHandler(handler, params)
       return handler
     }
 
     let guiScene = ::get_gui_scene()
-    handler = this.createHandler(handlerClass, guiScene, params)
-    this.handlers[handlerType.MODAL].append(handler.weakref())
+    handler = createHandler(handlerClass, guiScene, params)
+    handlers[handlerType.MODAL].append(handler.weakref())
 
     let scene = guiScene.loadModal("", handler.sceneBlkName || "%gui/emptyScene.blk", "rootScene", handler)
-    scene.id = "modal_wnd_" + ++this.sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
+    scene.id = "modal_wnd_" + ++sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
     handler.scene = scene
 
     handler.initHandlerSceneTpl()
-    let initResult = this.initHandler(handler)
+    let initResult = initHandler(handler)
     if (!initResult)
       return null
 
@@ -300,21 +296,21 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function loadCustomHandler(handlerClass, params = {})
   {
     let guiScene = ::get_gui_scene()
-    let handler = this.createHandler(handlerClass, guiScene, params)
+    let handler = createHandler(handlerClass, guiScene, params)
     if (!handler.sceneBlkName && !handler.sceneTplName)
     {
-      ::callstack()
+      callstack()
       ::dagor.assertf(false, "Error: cant load custom handler w/o sceneBlkName or sceneTplName.")
       return null
     }
 
     if (!handler.initCustomHandlerScene())
-      this.loadHandlerScene(handler)
-    let initResult = this.initHandler(handler)
+      loadHandlerScene(handler)
+    let initResult = initHandler(handler)
     if (!initResult)
       return null
 
-    this.handlers[handlerType.CUSTOM].append(handler.weakref())
+    handlers[handlerType.CUSTOM].append(handler.weakref())
     return handler
   }
 
@@ -327,68 +323,68 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function findAndReinitHandler(handlerClass, params)
   {
-    let curHandler = this.getActiveBaseHandler()
+    let curHandler = getActiveBaseHandler()
     if (curHandler && curHandler.getclass() == handlerClass)
     {
-      this.reinitHandler(curHandler, params)
+      reinitHandler(curHandler, params)
       return curHandler
     }
 
-    let handler = this.findHandlerClassInScene(handlerClass)
+    let handler = findHandlerClassInScene(handlerClass)
     if (!handler)
       return null
 
-    this.switchBaseHandler(handler)
-    this.reinitHandler(handler, params)
+    switchBaseHandler(handler)
+    reinitHandler(handler, params)
     return handler
   }
 
   function switchBaseHandler(handler)
   {
     let guiScene = ::get_cur_gui_scene()
-    this.closeAllModals(guiScene)
+    closeAllModals(guiScene)
 
-    let curHandler = this.getActiveBaseHandler()
-    this.showBaseHandler(curHandler, false)
-    this.onBaseHandlerSwitch()
+    let curHandler = getActiveBaseHandler()
+    showBaseHandler(curHandler, false)
+    onBaseHandlerSwitch()
     if (handler)
     {
-      this.switchRootHandlerChecked(handler.rootHandlerClass)
-      this.showBaseHandler(handler, true)
+      switchRootHandlerChecked(handler.rootHandlerClass)
+      showBaseHandler(handler, true)
     }
 
-    this.removeHandlerFromListByGuiScene(this.activeBaseHandlers, guiScene)
+    removeHandlerFromListByGuiScene(activeBaseHandlers, guiScene)
 
     if (handler)
-      this.activeBaseHandlers.append(handler)
+      activeBaseHandlers.append(handler)
 
-    if (this.isMainGuiSceneActive())
+    if (isMainGuiSceneActive())
       ::current_base_gui_handler = handler
 
-    this.updateLoadingFlag()
+    updateLoadingFlag()
 
-    this.onSwitchBaseHandler()
+    onSwitchBaseHandler()
 
     ::broadcastEvent("SwitchedBaseHandler")
   }
 
   function switchRootHandlerChecked(rootHandlerClass)
   {
-    let curRootHandler = this.getActiveRootHandler()
+    let curRootHandler = getActiveRootHandler()
     if ((!curRootHandler && !rootHandlerClass)
         || (curRootHandler && curRootHandler.getclass() == rootHandlerClass))
       return
 
     if (curRootHandler)
-      this.showBaseHandler(curRootHandler, false)
+      showBaseHandler(curRootHandler, false)
 
-    this.removeHandlerFromListByGuiScene(this.activeRootHandlers, ::get_cur_gui_scene())
+    removeHandlerFromListByGuiScene(activeRootHandlers, ::get_cur_gui_scene())
 
-    let newRootHandler = rootHandlerClass && this.findHandlerClassInScene(rootHandlerClass)
+    let newRootHandler = rootHandlerClass && findHandlerClassInScene(rootHandlerClass)
     if (newRootHandler)
     {
-      this.activeRootHandlers.append(newRootHandler)
-      this.showBaseHandler(newRootHandler, true)
+      activeRootHandlers.append(newRootHandler)
+      showBaseHandler(newRootHandler, true)
     }
   }
 
@@ -409,13 +405,13 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function showBaseHandler(handler, show)
   {
-    if (!this.isHandlerValid(handler, false))
-      return this.clearInvalidHandlers()
+    if (!isHandlerValid(handler, false))
+      return clearInvalidHandlers()
 
     if (!show && !handler.keepLoaded)
     {
-      this.destroyHandler(handler)
-      this.clearInvalidHandlers()
+      destroyHandler(handler)
+      clearInvalidHandlers()
       return
     }
 
@@ -437,55 +433,55 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       return
     }
 
-    this.sendEventToHandlers("onDestroy", guiScene)
+    sendEventToHandlers("onDestroy", guiScene)
 
-    this.beforeClearScene(guiScene)
+    beforeClearScene(guiScene)
 
-    guiScene.loadScene(this.getRootScreenBlkPath(), this)
+    guiScene.loadScene(getRootScreenBlkPath(), this)
 
-    this.updateCssParams(guiScene)
-    this.setGuiRootOptions(guiScene, false)
-    this.startActionsDelay()
+    updateCssParams(guiScene)
+    setGuiRootOptions(guiScene, false)
+    startActionsDelay()
     guiScene.initCursor("%gui/cursor.blk", "normal")
     if (!guiScene.isEqual(::get_cur_gui_scene()))
     {
-      this.onClearScene(guiScene)
+      onClearScene(guiScene)
       ::broadcastEvent("GuiSceneCleared")
       return
     }
 
-    this.lastGuiScene = guiScene
+    lastGuiScene = guiScene
 
-    if (!this.isNeedFullReloadAfterClearScene())
-      this.needFullReload = false
+    if (!isNeedFullReloadAfterClearScene())
+      needFullReload = false
 
-    this.updateLoadingFlag()
-    this.onClearScene(guiScene)
+    updateLoadingFlag()
+    onClearScene(guiScene)
     ::broadcastEvent("GuiSceneCleared")
   }
 
   function updateLoadingFlag()
   {
-    let oldVal = this.isInLoading
-    this.isInLoading = !this.isMainGuiSceneActive()
-                  || (!this.getActiveBaseHandler() && !this.getActiveRootHandler())//empty screen count as loading too
+    let oldVal = isInLoading
+    isInLoading = !isMainGuiSceneActive()
+                  || (!getActiveBaseHandler() && !getActiveRootHandler())//empty screen count as loading too
 
-    if (oldVal != this.isInLoading)
+    if (oldVal != isInLoading)
       ::broadcastEvent("LoadingStateChange")
   }
 
   function emptyScreen()
   {
     ::dagor.debug("GuiManager: load emptyScreen")
-    this.setLastBaseHandlerStartFunc(function() { ::handlersManager.emptyScreen() })
-    this.lastLoadedHandlerName = "emptyScreen"
+    setLastBaseHandlerStartFunc(function() { ::handlersManager.emptyScreen() })
+    lastLoadedHandlerName = "emptyScreen"
 
-    if (this.updatePostLoadCss() || this.getActiveBaseHandler() || this.getActiveRootHandler() || this.needReloadScene())
-      this.clearScene()
-    this.switchBaseHandler(null)
+    if (updatePostLoadCss() || getActiveBaseHandler() || getActiveRootHandler() || needReloadScene())
+      clearScene()
+    switchBaseHandler(null)
 
-    if (!this._loadHandlerRecursionLevel)
-      this.onActiveHandlersChanged()
+    if (!_loadHandlerRecursionLevel)
+      onActiveHandlersChanged()
   }
 
   function isMainGuiSceneActive()
@@ -513,25 +509,25 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function needReloadScene()
   {
-    return this.needFullReload || ::always_reload_scenes || !::check_obj(::get_cur_gui_scene()["root_loaded"])
-           || this.isNeedReloadSceneSpecific()
+    return needFullReload || ::always_reload_scenes || !::check_obj(::get_cur_gui_scene()["root_loaded"])
+           || isNeedReloadSceneSpecific()
   }
 
   function startSceneFullReload(startSceneFunc = null)
   {
-    startSceneFunc = startSceneFunc || this.getLastBaseHandlerStartFunc()
+    startSceneFunc = startSceneFunc || getLastBaseHandlerStartFunc()
     if (!startSceneFunc)
       return
 
-    this.needFullReload = true
-    this.isFullReloadInProgress = true
+    needFullReload = true
+    isFullReloadInProgress = true
     startSceneFunc()
-    this.isFullReloadInProgress = false
+    isFullReloadInProgress = false
   }
 
   function markfullReloadOnSwitchScene(needReloadOnActivateHandlerToo = true)
   {
-    this.needFullReload = true
+    needFullReload = true
     if (!needReloadOnActivateHandlerToo)
       return
 
@@ -542,34 +538,34 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function onEventScriptsReloaded(p)
   {
-    this.markfullReloadOnSwitchScene(false)
-    let startData = this.findLastBaseHandlerStartData(::get_gui_scene())
+    markfullReloadOnSwitchScene(false)
+    let startData = findLastBaseHandlerStartData(::get_gui_scene())
     if (!startData)
       return
 
     let startFunc = startData.startFunc
-    let backSceneFunc = this.getActiveBaseHandler()?.backSceneFunc
+    let backSceneFunc = getActiveBaseHandler()?.backSceneFunc
     if (backSceneFunc)
       startData.startFunc = backSceneFunc
-    this.activeBaseHandlers.clear()
+    activeBaseHandlers.clear()
     startFunc()
   }
 
   function checkPostLoadCssOnBackToBaseHandler()
   {
-    this.needCheckPostLoadCss = true
+    needCheckPostLoadCss = true
   }
 
   function checkPostLoadCss(isForced = false)
   {
-    if (!this.needCheckPostLoadCss && !isForced)
+    if (!needCheckPostLoadCss && !isForced)
       return false
     let handler = ::handlersManager.getActiveBaseHandler()
     if (!handler || !handler.isSceneActiveNoModals())
       return false
 
-    this.needCheckPostLoadCss = false
-    if (!this.updatePostLoadCss())
+    needCheckPostLoadCss = false
+    if (!updatePostLoadCss())
       return false
 
     handler.fullReloadScene()
@@ -578,19 +574,19 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function onEventModalWndDestroy(p)
   {
-    if (!this.checkPostLoadCss() && !this._loadHandlerRecursionLevel)
-      this.onActiveHandlersChanged()
+    if (!checkPostLoadCss() && !_loadHandlerRecursionLevel)
+      onActiveHandlersChanged()
   }
 
   function onEventMsgBoxCreated(p)
   {
-    if (!this._loadHandlerRecursionLevel)
-      this.onActiveHandlersChanged()
+    if (!_loadHandlerRecursionLevel)
+      onActiveHandlersChanged()
   }
 
   function isModal(handlerClass)
   {
-    return this.getHandlerType(handlerClass) == handlerType.MODAL
+    return getHandlerType(handlerClass) == handlerType.MODAL
   }
 
   function getHandlerType(handlerClass)
@@ -605,9 +601,9 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function clearInvalidHandlers()
   {
-    foreach(hType, group in this.handlers)
+    foreach(hType, group in handlers)
       for(local i = group.len()-1; i >= 0; i--)
-        if (!this.isHandlerValid(group[i], false))
+        if (!isHandlerValid(group[i], false))
           group.remove(i)
   }
 
@@ -620,44 +616,44 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
     ::destroy_all_msg_boxes(guiScene)
 
-    let group = this.handlers[handlerType.MODAL]
+    let group = handlers[handlerType.MODAL]
     for(local i = group.len()-1; i >= 0; i--)
     {
       let handler = group[i]
       if (guiScene && handler && !guiScene.isEqual(handler.guiScene))
         continue
 
-      this.destroyHandler(handler)
+      destroyHandler(handler)
       group.remove(i)
     }
   }
 
   function destroyModal(handler)
   {
-    if (!this.isHandlerValid(handler, true))
+    if (!isHandlerValid(handler, true))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
       ::script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui::ObjScene::act")
       return
     }
 
-    foreach(idx, h in this.handlers[handlerType.MODAL])
-      if (this.isHandlerValid(h, true) && h.scene.isEqual(handler.scene))
+    foreach(idx, h in handlers[handlerType.MODAL])
+      if (isHandlerValid(h, true) && h.scene.isEqual(handler.scene))
       {
-        this.handlers[handlerType.MODAL].remove(idx)
+        handlers[handlerType.MODAL].remove(idx)
         break
       }
-    this.destroyHandler(handler)
+    destroyHandler(handler)
   }
 
   function findHandlerClassInScene(searchClass, checkGuiScene = true)
   {
-    let searchType = this.getHandlerType(searchClass)
-    if (searchType in this.handlers)
-      foreach(handler in this.handlers[searchType])
+    let searchType = getHandlerType(searchClass)
+    if (searchType in handlers)
+      foreach(handler in handlers[searchType])
         if (!searchClass || (handler && handler.getclass() == searchClass))
         {
-          if (this.isHandlerValid(handler, checkGuiScene))
+          if (isHandlerValid(handler, checkGuiScene))
             return handler
         }
     return null
@@ -665,8 +661,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function isAnyModalHandlerActive()
   {
-    foreach(handler in this.handlers[handlerType.MODAL])
-      if (this.isHandlerValid(handler, true))
+    foreach(handler in handlers[handlerType.MODAL])
+      if (isHandlerValid(handler, true))
         return true
     return false
   }
@@ -674,8 +670,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function getActiveBaseHandler()
   {
     let curGuiScene = ::get_cur_gui_scene()
-    foreach(handler in this.activeBaseHandlers)
-      if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && this.isHandlerValid(handler, false))
+    foreach(handler in activeBaseHandlers)
+      if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && isHandlerValid(handler, false))
         return handler
     return null
   }
@@ -683,17 +679,17 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function getActiveRootHandler()
   {
     let curGuiScene = ::get_cur_gui_scene()
-    foreach(handler in this.activeRootHandlers)
-      if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && this.isHandlerValid(handler, false))
+    foreach(handler in activeRootHandlers)
+      if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && isHandlerValid(handler, false))
         return handler
     return null
   }
 
   function sendEventToHandlers(eventFuncName, guiScene = null, params = null)
   {
-    foreach(hType, hList in this.handlers)
+    foreach(hType, hList in handlers)
       foreach(handler in hList)
-        if (this.isHandlerValid(handler)
+        if (isHandlerValid(handler)
             && (!guiScene || handler.guiScene.isEqual(guiScene))
             && eventFuncName in handler && type(handler[eventFuncName]) == "function")
           if (params)
@@ -721,17 +717,17 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
       return false
     restoreData.handlerClass <- restoreHandler.getclass()
     if (triggerHandlerClass == null)
-      triggerHandlerClass = this.getActiveBaseHandler()
+      triggerHandlerClass = getActiveBaseHandler()
     if (!triggerHandlerClass)
       return false
 
     if (triggerHandlerClass == restoreData.handlerClass)
     {
-      this.restoreDataOnLoadHandler[restoreData.handlerClass] <- restoreData
+      restoreDataOnLoadHandler[restoreData.handlerClass] <- restoreData
       return true
     }
 
-    this.restoreDataByTriggerHandler[triggerHandlerClass] <- restoreData
+    restoreDataByTriggerHandler[triggerHandlerClass] <- restoreData
     return true
   }
 
@@ -741,13 +737,13 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
    */
   function restoreHandlers(triggerHandlerClass)
   {
-    let restoreData = this.restoreDataByTriggerHandler?[triggerHandlerClass]
+    let restoreData = restoreDataByTriggerHandler?[triggerHandlerClass]
     if (restoreData == null)
       return
-    this.restoreDataByTriggerHandler[triggerHandlerClass] <- null
+    restoreDataByTriggerHandler[triggerHandlerClass] <- null
 
     let openData = restoreData?.openData
-    let handler = this.loadHandler(restoreData.handlerClass, openData || {})
+    let handler = loadHandler(restoreData.handlerClass, openData || {})
 
     let stateData = restoreData?.stateData
     if (stateData != null)
@@ -756,9 +752,9 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function findLastBaseHandlerStartData(guiScene)
   {
-    for(local i = this.lastBaseHandlerStartData.len() - 1; i >= 0; i--)
-      if (this.lastBaseHandlerStartData[i].guiScene.isEqual(guiScene))
-        return this.lastBaseHandlerStartData[i]
+    for(local i = lastBaseHandlerStartData.len() - 1; i >= 0; i--)
+      if (lastBaseHandlerStartData[i].guiScene.isEqual(guiScene))
+        return lastBaseHandlerStartData[i]
     return null
   }
 
@@ -766,7 +762,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!guiScene)
       guiScene = ::get_gui_scene()
-    local data = this.findLastBaseHandlerStartData(guiScene)
+    local data = findLastBaseHandlerStartData(guiScene)
     return data && data.startFunc
   }
 
@@ -774,11 +770,11 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!guiScene)
       guiScene = ::get_gui_scene()
-    local data = this.findLastBaseHandlerStartData(guiScene)
+    local data = findLastBaseHandlerStartData(guiScene)
     if (!data)
     {
       data = { guiScene, startFunc = null, handlerLocId}
-      this.lastBaseHandlerStartData.append(data)
+      lastBaseHandlerStartData.append(data)
     }
     data.startFunc = startFunc
     data.handlerLocId = handlerLocId
@@ -786,8 +782,8 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function setLastBaseHandlerStartFuncByHandler(handlerClass, params)
   {
-    let handlerClassName = this.getHandlerClassName(handlerClass)
-    this.setLastBaseHandlerStartFunc(function() {
+    let handlerClassName = getHandlerClassName(handlerClass)
+    setLastBaseHandlerStartFunc(function() {
                                  let hClass = ::gui_handlers?[handlerClassName] ?? handlerClass
                                  ::handlersManager.loadHandler(hClass, params)
                                }, null, handlerClass?.handlerLocId)
@@ -796,44 +792,44 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false)
   {
     local isNewHandlerCreated = true
-    let prevHandler = this.findHandlerClassInScene(handlerClass)
+    let prevHandler = findHandlerClassInScene(handlerClass)
     if (prevHandler)
       if (!needDestroyIfAlreadyOnTop && prevHandler.scene.getModalCounter() == 0)
         isNewHandlerCreated = false
       else
-        this.destroyModal(prevHandler)
+        destroyModal(prevHandler)
 
-    this.loadHandler(handlerClass, params)
+    loadHandler(handlerClass, params)
     return isNewHandlerCreated
   }
 
   //run delayed action same with guiScene.performDelayed, but it will survive guiScene reload and switch
   function doDelayed(action)
   {
-    this.delayedActions.append(action)
-    if (this.delayedActions.len() == 1)
-      this.startActionsDelay()
+    delayedActions.append(action)
+    if (delayedActions.len() == 1)
+      startActionsDelay()
   }
 
   function startActionsDelay()
   {
-    if (!this.delayedActions.len())
+    if (!delayedActions.len())
       return
-    this.delayedActionsGuiScene = ::get_cur_gui_scene()
-    this.delayedActionsGuiScene.performDelayed(this, function()
+    delayedActionsGuiScene = ::get_cur_gui_scene()
+    delayedActionsGuiScene.performDelayed(this, function()
     {
-      this.delayedActionsGuiScene = null
-      let actions = clone this.delayedActions
-      this.delayedActions.clear()
+      delayedActionsGuiScene = null
+      let actions = clone delayedActions
+      delayedActions.clear()
       foreach(action in actions)
         action()
     })
   }
 
   function checkActionsDelayGuiScene() {
-    if (this.delayedActions.len()
-      && (!this.delayedActionsGuiScene || !this.delayedActionsGuiScene.isEqual(::get_cur_gui_scene())))
-      this.startActionsDelay()
+    if (delayedActions.len()
+      && (!delayedActionsGuiScene || !delayedActionsGuiScene.isEqual(::get_cur_gui_scene())))
+      startActionsDelay()
   }
 }
 //=======================  global functions  ==============================

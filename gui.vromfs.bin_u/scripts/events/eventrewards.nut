@@ -128,7 +128,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
         return (cost > ::zero_money) ? cost : null
       }
       getIconStyle = function(value, blk) {
-        let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles.png" : "#ui/gameuiskin#items_warpoints.png"
+        let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles" : "#ui/gameuiskin#items_warpoints"
         return ::LayersIcon.getIconData(null, img)
       }
       getRowIcon = function(value, blk) {

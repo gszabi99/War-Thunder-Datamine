@@ -249,7 +249,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       for (local i = 0; i < blk.paramCount(); i++)
       {
         let id = blk.getParamName(i)
-        seenTasks[id] <- max(blk.getParamValue(i), ::getTblValue(id, seenTasks, 0))
+        seenTasks[id] <- ::max(blk.getParamValue(i), ::getTblValue(id, seenTasks, 0))
       }
 
     seenTasksInited = true

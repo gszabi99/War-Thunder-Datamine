@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
@@ -727,7 +726,7 @@ local leaderboardFilterArray = [
         ::gui_modal_new_clan()
     }
     else
-      this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
   function onEventClanInfoUpdate(params = {})
@@ -747,7 +746,7 @@ local leaderboardFilterArray = [
 
   function onCancelRequest()
   {
-    this.msgBox("cancel_request_question",
+    msgBox("cancel_request_question",
            ::loc("clan/cancel_request_question"),
            [
              ["ok", @() ::g_clans.cancelMembership()],
@@ -886,7 +885,7 @@ local leaderboardFilterArray = [
     objFrameBlock.show(true)
     let rewObj = scene.findObject("clan_battle_season_reward_description")
     if (::checkObj(rewObj))
-      rewObj.setValue(format(::loc("clan/battle_season/reward_description"), topPlayersRewarded))
+      rewObj.setValue(::format(::loc("clan/battle_season/reward_description"), topPlayersRewarded))
 
     let clanTableObj = scene.findObject("clan_battle_season_reward_table");
     if (!::checkObj(clanTableObj))

@@ -1,21 +1,11 @@
 let { is_stereo_mode } = ::require_native("vr")
-let { hasFeature } = require("%scripts/user/features.nut")
-let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
-
-let function isHeadTrackerAvailable() {
-  return isPlatformPC
-      || (::ps4_headtrack_is_attached()
-        && (isPlatformPS4 || (isPlatformPS5 && hasFeature("PS5HeadTracking"))))
-      || ::is_tracker_joystick()
-}
-
 
 return [
 //-------------------------------------------------------
   {
     id = "ID_COMMON_TRACKER_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = isHeadTrackerAvailable
+    showFunc = @() !::is_platform_xbox || ::ps4_headtrack_is_attached() || ::is_tracker_joystick()
   }
   {
     id = "headtrack_enable"
@@ -26,6 +16,7 @@ return [
   }
   {
     id = "ID_TRACKER_RESET_POSITION"
+    showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     checkGroup = ctrlGroups.COMMON
     checkAssign = false
   }
@@ -54,6 +45,7 @@ return [
   {
     id = "trackIrZoom"
     type = CONTROL_TYPE.SWITCH_BOX
+    showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     value = @(joyParams) joyParams.trackIrZoom
     setValue = function(joyParams, objValue) {
       let prev = joyParams.trackIrZoom
@@ -65,7 +57,7 @@ return [
   {
     id = "trackIrForLateralMovement"
     type = CONTROL_TYPE.SWITCH_BOX
-    showFunc = @() ::ps4_headtrack_is_attached()
+    showFunc = @() !::is_platform_xbox
     value = @(joyParams) joyParams.trackIrForLateralMovement
     setValue = function(joyParams, objValue) {
       let prev = joyParams.trackIrForLateralMovement
@@ -77,6 +69,7 @@ return [
   {
     id = "trackIrAsHeadInTPS"
     type = CONTROL_TYPE.SWITCH_BOX
+    showFunc = @() !::is_platform_xbox || ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     value = @(joyParams) joyParams.trackIrAsHeadInTPS
     setValue = function(joyParams, objValue) {
       let prev = joyParams.trackIrAsHeadInTPS
@@ -88,13 +81,13 @@ return [
   {
     id = "headtrack_scale_x"
     type = CONTROL_TYPE.SLIDER
-    showFunc = @() ::ps4_headtrack_is_attached()
+    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     optionType = ::USEROPT_HEADTRACK_SCALE_X
   }
   {
     id = "headtrack_scale_y"
     type = CONTROL_TYPE.SLIDER
-    showFunc = @() ::ps4_headtrack_is_attached()
+    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_HEADTRACK_ENABLE, true)
     optionType = ::USEROPT_HEADTRACK_SCALE_Y
   }
 ]

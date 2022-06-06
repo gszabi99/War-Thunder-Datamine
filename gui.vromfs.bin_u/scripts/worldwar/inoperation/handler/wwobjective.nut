@@ -60,7 +60,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       unseenIcon = unseenIcon
       objectiveBlock = getObjectiveBlocksArray()
       reqFullMissionObjectsButton = reqFullMissionObjectsButton
-      hiddenObjectives = max(objectivesList.primaryCount - getShowMaxObjectivesCount().x, 0)
+      hiddenObjectives = ::max(objectivesList.primaryCount - getShowMaxObjectivesCount().x, 0)
       hasObjectiveDesc = hasObjectiveDesc
     }
     let data = ::handyman.renderCached(objectiveItemTpl, view)
@@ -148,9 +148,9 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let singleObjectiveHeight = guiScene.calcString("1@objectiveHeight", null)
     let allowObjectives = availObjectivesHeight / singleObjectiveHeight
     let res = ::Point2(0, 0)
-    res.x = max(1, min(objectivesCount.x, allowObjectives))
+    res.x = ::max(1, ::min(objectivesCount.x, allowObjectives))
     if (allowObjectives > res.x)
-      res.y = max(1, min(objectivesCount.y, allowObjectives))
+      res.y = ::max(1, ::min(objectivesCount.y, allowObjectives))
     return res
   }
 

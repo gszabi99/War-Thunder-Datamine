@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -84,7 +83,7 @@ if need - put commented in array above
     let unitReqExp          = ::getUnitReqExp(air)
     local unitExpGranted      = ::getUnitExp(air)
     let diffExp = isSquadronVehicle
-      ? min(::clan_get_exp(), unitReqExp - unitExpGranted)
+      ? ::min(::clan_get_exp(), unitReqExp - unitExpGranted)
       : (params?.diffExp ?? 0)
     if (isSquadronVehicle && isVehicleInResearch)
       unitExpGranted += diffExp
@@ -480,7 +479,7 @@ if need - put commented in array above
     let bitStatus = isReqForFakeUnit ? bit_unit_status.disabled
       : (isFakeAirRankOpen || !isLocalState ? bit_unit_status.owned
         : bit_unit_status.locked)
-    let nameForLoc = isReqForFakeUnit ? split_by_chars(air.name, "_")?[0] : air.name
+    let nameForLoc = isReqForFakeUnit ? ::split(air.name, "_")?[0] : air.name
     let fakeSlotView = params.__merge({
       slotId              = "td_" + id
       slotInactive        = true
@@ -554,7 +553,7 @@ if need - put commented in array above
   }
 
   if (params?.fullBlock ?? true)
-    res = format("unitCell{%s}", res)
+    res = ::format("unitCell{%s}", res)
 
   return res
 }
@@ -619,7 +618,7 @@ if need - put commented in array above
 {
   ::dagor.assertf(countryId != null, "Country ID is null.")
   ::dagor.assertf(idInCountry != null, "Crew IDX is null.")
-  local objId = format("slot_%s_%s", countryId.tostring(), idInCountry.tostring())
+  local objId = ::format("slot_%s_%s", countryId.tostring(), idInCountry.tostring())
   if (isBonus)
     objId += "-bonus"
   return objId
@@ -750,7 +749,7 @@ if need - put commented in array above
     if (curSlotIdInCountry >= 0 && maxSpawns > 1)
     {
       let leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
-      priceText += format("(%s/%s)", leftSpawns.tostring(), maxSpawns.tostring())
+      priceText += ::format("(%s/%s)", leftSpawns.tostring(), maxSpawns.tostring())
     }
   } else if (isLocalState && priceText == "") {
     let { overlayPrice = -1, showAsTrophyContent = false, isReceivedPrizes = false } = params
@@ -792,7 +791,7 @@ if need - put commented in array above
   let unitExpReq          = ::getUnitReqExp(unit)
   let unitExpGranted      = ::getUnitExp(unit)
   let diffSquadronExp     = isSquadronVehicle
-     ? min(::clan_get_exp(), unitExpReq - unitExpGranted)
+     ? ::min(::clan_get_exp(), unitExpReq - unitExpGranted)
      : 0
   let flushExp = ::getTblValue("flushExp", params, 0)
   let isFull = (flushExp > 0 && flushExp >= unitExpReq)
@@ -826,22 +825,22 @@ if need - put commented in array above
       isReserve = isReserve || ::isUnitDefault(u)
       rank = rank || u.rank
       let br = u.getBattleRating(ediff)
-      minBR = !minBR ? br : min(minBR, br)
-      maxBR = !maxBR ? br : max(maxBR, br)
+      minBR = !minBR ? br : ::min(minBR, br)
+      maxBR = !maxBR ? br : ::max(maxBR, br)
     }
     return isReserve ? reserveText :
-      showBR  ? (minBR != maxBR ? format("%.1f-%.1f", minBR, maxBR) : format("%.1f", minBR)) :
+      showBR  ? (minBR != maxBR ? ::format("%.1f-%.1f", minBR, maxBR) : ::format("%.1f", minBR)) :
       ::get_roman_numeral(rank)
   }
 
   if (unit?.isFakeUnit)
     return unit?.isReqForFakeUnit || unit?.rank == null
       ? ""
-      : format(::loc("events/rank"), ::get_roman_numeral(unit.rank))
+      : ::format(::loc("events/rank"), ::get_roman_numeral(unit.rank))
 
   let isReserve = ::isUnitDefault(unit)
   let isSpare = crew && isInFlight ? ::is_spare_aircraft_in_slot(crew.idInCountry) : false
-  let battleRatingStr = format("%.1f", unit.getBattleRating(ediff))
+  let battleRatingStr = ::format("%.1f", unit.getBattleRating(ediff))
   let reserveToShowStr = (battleRatingStr == "1.0") ? reserveText :
     "".join([reserveText, ::loc("ui/parentheses/space", { text = battleRatingStr })])
 

@@ -12,10 +12,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   myClanQueueTime = -1
   cachedClanId = -1 //need to update clan data if clan changed
 
-  constructor(v_map, v_data = null)
+  constructor(_map, _data = null)
   {
-    map = v_map
-    data = v_data
+    map = _map
+    data = _data
   }
 
   function isMapActive()
@@ -43,7 +43,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   function getMyClanQueueJoinTime()
   {
     gatherMyClanDataOnce()
-    return max(0, myClanQueueTime)
+    return ::max(0, myClanQueueTime)
   }
 
   function resetCache()
@@ -71,7 +71,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       if (myGroup)
       {
         myClanCountries.append(country)
-        myClanQueueTime = max(myClanQueueTime, ::getTblValue("at", myGroup, -1))
+        myClanQueueTime = ::max(myClanQueueTime, ::getTblValue("at", myGroup, -1))
       }
     }
 

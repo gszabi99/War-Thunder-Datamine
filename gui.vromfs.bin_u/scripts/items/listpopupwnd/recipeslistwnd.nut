@@ -37,12 +37,12 @@ local MIN_ITEMS_IN_ROW = 7
 
     local maxRecipeLen = 1
     foreach(r in recipesList)
-      maxRecipeLen = max(maxRecipeLen, r.getVisibleMarkupComponents())
+      maxRecipeLen = ::max(maxRecipeLen, r.getVisibleMarkupComponents())
 
     let recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
     let recipeHeightPx = ::to_pixels("0.5@itemHeight")
     let minColumns = ::ceil(MIN_ITEMS_IN_ROW.tofloat() / maxRecipeLen).tointeger()
-    let columns = max(minColumns,
+    let columns = ::max(minColumns,
       stdMath.calc_golden_ratio_columns(recipesList.len(), recipeWidthPx / (recipeHeightPx || 1)))
     let rows = ::ceil(recipesList.len().tofloat() / columns).tointeger()
 
@@ -50,7 +50,7 @@ local MIN_ITEMS_IN_ROW = 7
     local columnWidth = 0
     foreach(i, recipe in recipesList)
     {
-      columnWidth = max(columnWidth, recipe.getVisibleMarkupComponents())
+      columnWidth = ::max(columnWidth, recipe.getVisibleMarkupComponents())
       if ((i + 1) % (rows + 1))
         continue
       itemsInRow += columnWidth
@@ -64,7 +64,7 @@ local MIN_ITEMS_IN_ROW = 7
       recipesList = recipesList
       columns
       rows
-      itemsInRow = max(itemsInRow, MIN_ITEMS_IN_ROW)
+      itemsInRow = ::max(itemsInRow, MIN_ITEMS_IN_ROW)
       hasMarkers
       showRecipeAsProduct = showRecipeAsProduct
     }

@@ -92,32 +92,32 @@ let function getTierIcon(weaponry, itemsNum)
   let isBlock = (weaponry?.amountPerTier ?? 0) > 1
 
   if (iconType != null)
-    return $"{path}{iconType}.png"
+    return $"{path}{iconType}"
 
   if (triggerType == TRIGGER_TYPE.TORPEDOES)
-    return $"{path}air_torpedo.png"
+    return $"{path}air_torpedo"
 
   if (triggerType == TRIGGER_TYPE.ATGM)
-    return $"{path}atgm_type2_x2.png"
+    return $"{path}atgm_type2_x2"
 
   if (::isInArray(triggerType,
     [TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON, TRIGGER_TYPE.ADD_GUN]))
-      return isBlock || isGroup ? $"{path}multibarrel_gun.png" : $"{path}machine_gun.png"
+      return isBlock || isGroup ? $"{path}multibarrel_gun" : $"{path}machine_gun"
 
   if (triggerType == TRIGGER_TYPE.AGM)
-    return $"{path}missile_air_to_earth.png"
+    return $"{path}missile_air_to_earth"
 
   if (triggerType == TRIGGER_TYPE.AAM)
-    return isBlock || isGroup ? $"{path}missile_air_to_air_group.png" : $"{path}missile_air_to_air.png"
+    return isBlock || isGroup ? $"{path}missile_air_to_air_group" : $"{path}missile_air_to_air"
 
   if (triggerType == TRIGGER_TYPE.FLARES)
-    return $"{path}ltc.png"
+    return $"{path}ltc"
 
   let size = getWeaponrySize(weaponry.massKg)
   let wStr = isBlock && triggerType == TRIGGER_TYPE.ROCKETS ? "nar" : triggerType
   let groupStr = isBlock || isGroup ? $"{size}_group" : size
 
-  return $"{path}{wStr}_{groupStr}.png"
+  return $"{path}{wStr}_{groupStr}"
 }
 
 local function createTier(weaponry, presetName, itemsNum = 0)
@@ -238,7 +238,7 @@ let function getPredefinedTiers(preset)
           let iconType = weaponry.iconType
           foreach (idx, tier in weaponry.tiers)
           {
-            let tierId = min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
+            let tierId = ::min(idx, TIERS_NUMBER-1) // To avoid possible mistakes from config with incorrect tier idx
             let params = {
               tierId = tierId
               tType = triggerType
@@ -423,7 +423,6 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
     customNameText    = preset?.customNameText
     tiers             = {}
     dependentWeaponPreset = {}
-    bannedWeaponPreset = {}
     tiersView         = {}
     weaponPreset      = ::u.copy(preset)
   }
@@ -439,7 +438,6 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
         presetView.totalMass += weapon.num * weapon.massKg
         presetView.tiers.__update(weapon.tiers)
         presetView.dependentWeaponPreset.__update(weapon.dependentWeaponPreset)
-        presetView.bannedWeaponPreset.__update(weapon.bannedWeaponPreset)
       }
     }
   presetView.tiersView = getTiers(unit, presetView)
@@ -495,150 +493,73 @@ let function editSlotInPresetImpl(preset, slots, cb) {
 let findAvailableWeapon = @(availableWeapons, presetId, tierId)
   availableWeapons.findvalue(@(w) w.presetId == presetId && w.tier == tierId)
 
-let function getAvailableWeaponName(availableWeapons, presetId, tierId, weaponBlkCache = {}) {
+let function getAvailableWeaponName(availableWeapons, presetId, tierId) {
   let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
   if (wBlk == null)
     return presetId
-  return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, weaponBlkCache).weaponBlkPath)
-}
-
-let function addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
-  foreach (slot in (wBlk % "dependentWeaponPreset")) {
-    let dependWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
-    if (dependWBlk == null)
-      continue
-
-    let dependWeaponTier = dependWBlk.tier
-    editSlotParams.slots.append({slot = dependWBlk.slot, presetId = dependWBlk.presetId, tierId = dependWeaponTier})
-    if (preset.tiers?[dependWeaponTier] == null || preset.tiers[dependWeaponTier].presetId == dependWBlk.presetId)
-      continue
-
-    let dependWeaponName = getAvailableWeaponName(availableWeapons, dependWBlk.presetId,
-      dependWeaponTier, editSlotParams.weaponBlkCache)
-    let curWeaponName = getAvailableWeaponName(availableWeapons, preset.tiers[dependWeaponTier].presetId,
-      dependWeaponTier, editSlotParams.weaponBlkCache)
-    let currentWeapon = ::loc($"weapons/{curWeaponName}")
-    editSlotParams.msgTextArray.append(::loc("editWeaponsSlot/requiredDependedWeaponInOccupiedSlot", {
-      currentWeapon
-      dependWeapon = ::loc($"weapons/{dependWeaponName}")
-      tierNum = dependWeaponTier + 1
-    }))
-    appendOnce(currentWeapon, editSlotParams.removedWeapon)
-    editSlotParams.removedWeaponCount++
-  }
-}
-
-let function addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams) {
-  let weaponsToRemove = []
-  foreach (slot in (wBlk % "bannedWeaponPreset")) {
-    let bannedWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
-    if (bannedWBlk == null)
-      continue
-
-    let bannedWeaponTier = bannedWBlk.tier
-    if (preset.tiers?[bannedWeaponTier].presetId != bannedWBlk.presetId)
-      continue
-
-    editSlotParams.slots.append({tierId = bannedWeaponTier})
-    let bannedWeaponName = getAvailableWeaponName(availableWeapons, bannedWBlk.presetId,
-      bannedWeaponTier, editSlotParams.weaponBlkCache)
-    let bannedWeapon = ::loc($"weapons/{bannedWeaponName}")
-    appendOnce(bannedWeapon, editSlotParams.removedWeapon)
-    weaponsToRemove.append({ bannedWeapon, tierNum = bannedWeaponTier + 1})
-    editSlotParams.removedWeaponCount++
-  }
-  if (weaponsToRemove.len() == 0)
-    return
-
-  editSlotParams.msgTextArray.append(::loc("editWeaponsSlot/bannedWeapons", {
-    bannedWeapons = ::loc("ui/comma").join(weaponsToRemove.map(@(w) ::loc("editWeaponsSlot/weaponInSlot", {
-      weapon = w.bannedWeapon
-      tierNum = w.tierNum
-    })))
-  }))
-}
-
-let function addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBlk, editSlotParams) {
-  if (presetId not in preset.bannedWeaponPreset)
-    return
-
-  let weapons = preset.bannedWeaponPreset[presetId].filter(@(w) w.slot == wBlk.slot) ?? []
-  let weaponsToRemove = []
-  foreach (weapon in weapons) {
-    editSlotParams.slots.append({tierId = weapon.bannedByTier})
-    let weaponName = getAvailableWeaponName(availableWeapons, weapon.bannedByPresetId,
-      weapon.bannedByTier, editSlotParams.weaponBlkCache)
-    let weaponLocName = ::loc($"weapons/{weaponName}")
-      appendOnce(weaponLocName, editSlotParams.removedWeapon)
-    weaponsToRemove.append({ weaponLocName, tierNum = weapon.bannedByTier + 1})
-    editSlotParams.removedWeaponCount++
-  }
-  if (weaponsToRemove.len() == 0)
-    return
-
-  editSlotParams.msgTextArray.append(::loc("editWeaponsSlot/bannedByWeapons", {
-    currentWeapon = ::loc($"weapons/{getAvailableWeaponName(availableWeapons, presetId, tierId, editSlotParams.weaponBlkCache)}")
-    weapons = ::loc("ui/comma").join(weaponsToRemove.map(@(w) ::loc("editWeaponsSlot/weaponInSlot", {
-      weapon = w.weaponLocName
-      tierNum = w.tierNum
-    })))
-  }))
-}
-
-let function addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, editSlotParams) {
-  let curPresetInTier = preset.tiers?[tierId]
-  if (curPresetInTier == null)
-    return
-
-  let {presetId, slot} = curPresetInTier
-  if (presetId not in preset.dependentWeaponPreset)
-    return
-
-  let dependentWeapons = preset.dependentWeaponPreset[presetId].filter(@(w) w.slot == slot) ?? []
-  let weaponsToRemove = []
-  foreach (dependentWeapon in dependentWeapons) {
-    editSlotParams.slots.append({tierId = dependentWeapon.reqForTier})
-    let dependWeaponName = getAvailableWeaponName(availableWeapons, dependentWeapon.reqForPresetId,
-      dependentWeapon.reqForTier, editSlotParams.weaponBlkCache)
-    let dependWeapon = ::loc($"weapons/{dependWeaponName}")
-    appendOnce(dependWeapon,editSlotParams. removedWeapon)
-    weaponsToRemove.append({ dependWeapon, tierNum = dependentWeapon.reqForTier + 1})
-    editSlotParams.removedWeaponCount++
-  }
-  if (weaponsToRemove.len() == 0)
-    return
-
-  editSlotParams.msgTextArray.append(::loc("editWeaponsSlot/requiredForDependedWeapon", {
-    currentWeapon = ::loc($"weapons/{getAvailableWeaponName(availableWeapons, presetId, tierId, editSlotParams.weaponBlkCache)}")
-    dependWeapons = ::loc("ui/comma").join(weaponsToRemove.map(@(w) ::loc("editWeaponsSlot/weaponInSlot", {
-      weapon = w.dependWeapon
-      tierNum = w.tierNum
-    })))
-  }))
+  return getWeaponNameByBlkPath(getWeaponBlkParams(wBlk.blk, {}).weaponBlkPath)
 }
 
 let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
-  let editSlotParams = {
-    slots = []
-    msgTextArray = []
-    removedWeapon = []
-    weaponBlkCache = {}
-    removedWeaponCount = 0
-  }
+  let slots = []
+  let msgTextArray = []
+  let removedWeapon = []
+  local removedWeaponCount = 0
   if (presetId == "")
-    editSlotParams.slots.append({tierId})
+    slots.append({tierId})
   else {
     let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
     if (wBlk != null) {
-      editSlotParams.slots.append({slot = wBlk.slot, presetId = wBlk.presetId, tierId})
-      addDependedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams)
-      addBannedWeaponsParams(preset, availableWeapons, wBlk, editSlotParams)
-      addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBlk, editSlotParams)
+      slots.append({slot = wBlk.slot, presetId = wBlk.presetId, tierId})
+      foreach (slot in (wBlk % "dependentWeaponPreset")) {
+        let dependWBlk = availableWeapons.findvalue(@(w) w.presetId == slot.preset && w.slot == slot.slot)
+        if (dependWBlk == null)
+          continue
+
+        let dependWeaponTier = dependWBlk.tier
+        slots.append({slot = dependWBlk.slot, presetId = dependWBlk.presetId, tierId = dependWeaponTier})
+        if (preset.tiers?[dependWeaponTier] == null || preset.tiers[dependWeaponTier].presetId == dependWBlk.presetId)
+          continue
+
+        let dependWeaponName = getAvailableWeaponName(availableWeapons, dependWBlk.presetId, dependWeaponTier)
+        let curWeaponName = getAvailableWeaponName(availableWeapons, preset.tiers[dependWeaponTier].presetId, dependWeaponTier)
+        let currentWeapon = ::loc($"weapons/{curWeaponName}")
+        msgTextArray.append(::loc("editWeaponsSlot/requiredDependedWeaponInOccupiedSlot", {
+          currentWeapon
+          dependWeapon = ::loc($"weapons/{dependWeaponName}")
+          tierNum = dependWeaponTier + 1
+        }))
+        appendOnce(currentWeapon, removedWeapon)
+        removedWeaponCount++
+      }
     }
   }
-  addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, editSlotParams)
 
-  let {msgTextArray, slots, removedWeapon, removedWeaponCount} = editSlotParams
+  let curPresetInTier = preset.tiers?[tierId]
+  let curPresetIdInTier = curPresetInTier?.presetId ?? ""
+  if (curPresetIdInTier != "" && (curPresetIdInTier in preset.dependentWeaponPreset)) {
+    let dependentWeapons = preset.dependentWeaponPreset[curPresetIdInTier].filter(
+      @(w) w.slot == curPresetInTier?.slot) ?? []
+    let dependetWeaponToRemove = []
+    foreach (dependentWeapon in dependentWeapons) {
+      slots.append({tierId = dependentWeapon.reqForTier})
+      let dependWeaponName = getAvailableWeaponName(availableWeapons, dependentWeapon.reqForPresetId,
+        dependentWeapon.reqForTier)
+      let dependWeapon = ::loc($"weapons/{dependWeaponName}")
+      appendOnce(dependWeapon, removedWeapon)
+      dependetWeaponToRemove.append({ dependWeapon, tierNum = dependentWeapon.reqForTier + 1})
+      removedWeaponCount++
+    }
+    if (dependetWeaponToRemove.len() > 0)
+      msgTextArray.append(::loc("editWeaponsSlot/requiredForDependedWeapon", {
+        currentWeapon = ::loc($"weapons/{getAvailableWeaponName(availableWeapons, curPresetIdInTier, tierId)}")
+        dependWeapons = ::loc("ui/comma").join(dependetWeaponToRemove.map(@(w) ::loc("editWeaponsSlot/weaponInSlot", {
+          weapon = w.dependWeapon
+          tierNum = w.tierNum
+        })))
+      }))
+  }
+
   if (msgTextArray.len() == 0) {
     editSlotInPresetImpl(preset, slots, cb)
     return
@@ -656,14 +577,14 @@ let function editSlotInPreset(preset, tierId, presetId, availableWeapons, cb) {
     "ok", { cancel_fn = @() null })
 }
 
-let function getPresetDisbalanceText(preset, maxDisbalance, notUseforDisbalance) {
+let function getPresetDisbalanceText(preset, maxDisbalance) {
   if (maxDisbalance < 0)
     return ""
 
   let massBySide = [0, 0]
   let centerIdx = TIERS_NUMBER/2
   foreach (idx, tier in preset.tiersView) {
-    if (notUseforDisbalance?[idx] ?? false)
+    if (idx == centerIdx)
       continue
 
     let sideIdx = idx < centerIdx ? 0 : 1

@@ -1,13 +1,5 @@
-let { format, split_by_chars } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let time = require("%scripts/time.nut")
-let {
-  get_game_version = @() ::get_game_version(), //compatibility with 2.15.1.X
-  get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
-} = require("app")
-let {
-  is_mplayer_host = @() ::is_mplayer_host() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let { updateModItem } = require("%scripts/weaponry/weaponryVisual.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
@@ -40,8 +32,6 @@ let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { is_replay_turned_on, is_replay_saved, is_replay_present,
-  on_save_replay, on_view_replay } = require("replays")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -127,16 +117,16 @@ let statTooltipColumnParamByType = {
   let gm = ::get_game_mode()
   if (::back_from_replays != null)
   {
-     ::dagor.debug("gui_nav gui_start_debriefing back_from_replays");
+     dagor.debug("gui_nav gui_start_debriefing back_from_replays");
      let temp_func = ::back_from_replays
-     ::dagor.debug("gui_nav back_from_replays = null");
+     dagor.debug("gui_nav back_from_replays = null");
      ::back_from_replays = null
      temp_func()
      ::update_gamercards()
      return
   }
   else
-    ::dagor.debug("gui_nav gui_start_debriefing back_from_replays is null");
+    dagor.debug("gui_nav gui_start_debriefing back_from_replays is null");
 
   if (gm == ::GM_BENCHMARK)
   {
@@ -326,7 +316,7 @@ let statTooltipColumnParamByType = {
         if (victoryBonus != "")
           resReward = "".concat(::loc("debriefing/MissionWinReward"), ::loc("ui/colon"), victoryBonus)
 
-        let currentMajorVersion = get_game_version() >> 16
+        let currentMajorVersion = ::get_game_version() >> 16
         let lastWinVersion = ::load_local_account_settings(LAST_WON_VERSION_SAVE_ID, 0)
         isFirstWinInMajorUpdate = currentMajorVersion > lastWinVersion
         save_local_account_settings(LAST_WON_VERSION_SAVE_ID, currentMajorVersion)
@@ -385,7 +375,7 @@ let statTooltipColumnParamByType = {
     }
     ::first_generation <- false //for dynamic campaign
     isInited = false
-    ::check_logout_scheduled()
+    check_logout_scheduled()
 
     ::g_squad_utils.updateMyCountryData() //to update broken airs for squad.
 
@@ -680,14 +670,14 @@ let statTooltipColumnParamByType = {
     let iconObj = scene.findObject("active_wager_result_icon")
     if (!::checkObj(iconObj))
       return
-    iconObj["background-image"] = success ? "#ui/gameuiskin#favorite.png" : "#ui/gameuiskin#icon_primary_fail.svg"
+    iconObj["background-image"] = success ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#icon_primary_fail.svg"
   }
 
   function handlePveReward()
   {
     let isVisible = !!pveRewardInfo && pveRewardInfo.isVisible
 
-    this.showSceneBtn("pve_trophy_block", isVisible)
+    showSceneBtn("pve_trophy_block", isVisible)
     if (! isVisible)
       return
 
@@ -783,7 +773,7 @@ let statTooltipColumnParamByType = {
 
   function fillPveRewardProgressBar()
   {
-    let pveTrophyPlaceObj = this.showSceneBtn("pve_trophy_progress", true)
+    let pveTrophyPlaceObj = showSceneBtn("pve_trophy_progress", true)
     if (!pveTrophyPlaceObj)
       return
 
@@ -825,7 +815,7 @@ let statTooltipColumnParamByType = {
   function fillPveRewardTrophyChest(trophyItem)
   {
     let isVisible = !!trophyItem
-    let trophyPlaceObj = this.showSceneBtn("pve_trophy_chest", isVisible)
+    let trophyPlaceObj = showSceneBtn("pve_trophy_chest", isVisible)
     if (!isVisible || !trophyPlaceObj)
       return
 
@@ -835,13 +825,13 @@ let statTooltipColumnParamByType = {
 
   function fillPveRewardTrophyContent(trophyItem, isRewardReceivedEarlier)
   {
-    this.showSceneBtn("pve_award_already_received", isRewardReceivedEarlier)
+    showSceneBtn("pve_award_already_received", isRewardReceivedEarlier)
     fillTrophyContentDiv(trophyItem, "pve_trophy_content")
   }
 
   function fillTrophyContentDiv(trophyItem, containerObjId)
   {
-    let trophyContentPlaceObj = this.showSceneBtn(containerObjId, !!trophyItem)
+    let trophyContentPlaceObj = showSceneBtn(containerObjId, !!trophyItem)
     if (!trophyItem || !trophyContentPlaceObj)
       return
 
@@ -1097,7 +1087,7 @@ let statTooltipColumnParamByType = {
       if (::checkObj(objTarget))
       {
         objTarget["background-image"] = havePremium.value ?
-          "#ui/gameuiskin#medal_premium.png" : "#ui/gameuiskin#medal_bonus.png"
+          "#ui/gameuiskin#medal_premium" : "#ui/gameuiskin#medal_bonus"
         objTarget.tooltip = ::g_string.implode(textArray, "\n\n")
       }
 
@@ -1158,7 +1148,7 @@ let statTooltipColumnParamByType = {
       config.locId = "win_session_after_update"
       config.subType = ps4_activity_feed.MISSION_SUCCESS_AFTER_UPDATE
       customConfig.blkParamName = "MAJOR_UPDATE"
-      let ver = split_by_chars(get_game_version_str(), ".")
+      let ver = split(::get_game_version_str(), ".")
       customConfig.version <- ver[0]+"."+ver[1]
       customConfig.imgSuffix <- "_" + ver[0] + "_" + ver[1]
       customConfig.shouldForceLogo <- true
@@ -1418,7 +1408,7 @@ let statTooltipColumnParamByType = {
       let expInvestUnitTotal = getExpInvestUnitTotal()
       if (expInvestUnitTotal > 0)
       {
-        let msg = format(::loc("debriefing/all_units_researched"),
+        let msg = ::format(::loc("debriefing/all_units_researched"),
           ::Cost().setRp(expInvestUnitTotal).tostring())
         let noUnitObj = scene.findObject("no_air_text")
         if (::checkObj(noUnitObj))
@@ -1627,10 +1617,10 @@ let statTooltipColumnParamByType = {
     let gapMid   = guiScene.calcString("@debrPad", null)
     let gapsPerRow = gapSides * 2 + gapMid * (DEBR_LEADERBOARD_LIST_COLUMNS - 1)
 
-    let posFirst  = format("%d, %d", gapSides, gapMid)
-    let posCommon = format("%d, %d", gapMid,   gapMid)
+    let posFirst  = ::format("%d, %d", gapSides, gapMid)
+    let posCommon = ::format("%d, %d", gapMid,   gapMid)
     let itemParams = {
-      width  = format("(pw - %d) / %d", gapsPerRow, DEBR_LEADERBOARD_LIST_COLUMNS)
+      width  = ::format("(pw - %d) / %d", gapsPerRow, DEBR_LEADERBOARD_LIST_COLUMNS)
       pos    = posCommon
       margin = "0"
     }
@@ -1919,7 +1909,7 @@ let statTooltipColumnParamByType = {
     let cb = ::Callback(onBuyPremiumAward, this)
 
     let msgText = format(::loc("msgbox/EarnNow"), entNameText, getCurAwardText(), price.getTextAccordingToBalance())
-    this.msgBox("not_all_mapped", msgText,
+    msgBox("not_all_mapped", msgText,
     [
       ["ok", function() {
         if (!::check_balance_msgBox(price, cb))
@@ -1946,7 +1936,7 @@ let statTooltipColumnParamByType = {
 
     foreach(row in debriefingRows)
       if (!row.show)
-        this.showSceneBtn("row_" + row.id, row.show)
+        showSceneBtn("row_" + row.id, row.show)
 
     updateBuyPremiumAwardButton()
     reinitTotal()
@@ -2223,7 +2213,7 @@ let statTooltipColumnParamByType = {
     let contentPadStr = isSingleRow ? "debrBarContentPad" : "debrPad"
 
     let gapMax = gapMin * debrTopBarGAPMax
-    let gap = clamp(stdMath.lerp(total, maxValue, gapMin, gapMax, visible), gapMin, gapMax)
+    let gap = ::clamp(stdMath.lerp(total, maxValue, gapMin, gapMax, visible), gapMin, gapMax)
     let pos = $"{gap}@{contentPadStr}, 0.5ph-0.5h"
 
     for (local i = 0; i < containerObj.childrenCount(); i++)
@@ -2261,7 +2251,7 @@ let statTooltipColumnParamByType = {
       {
         local data = ""
         foreach (f in filters)
-          data += format("RadioButton { text:t='#%s'; style:t='color:@white'; RadioButtonImg{} }\n", f.title)
+          data += ::format("RadioButton { text:t='#%s'; style:t='color:@white'; RadioButtonImg{} }\n", f.title)
         guiScene.replaceContentFromText(obj, data, data.len(), this)
         obj.setValue(filterIdx)
       }
@@ -2356,7 +2346,7 @@ let statTooltipColumnParamByType = {
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     if (battleTasksArray.len() > 0)
-      listObj.setValue(clamp(curSelected, 0, listObj.childrenCount() - 1))
+      listObj.setValue(::clamp(curSelected, 0, listObj.childrenCount() - 1))
   }
 
   function updateBattleTasksStatusImg()
@@ -2398,7 +2388,7 @@ let statTooltipColumnParamByType = {
       config = battleTasksConfigs?[taskId]
     }
 
-    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && (config?.names ?? []).len() != 0)
+    showSceneBtn("btn_requirements_list", ::show_console_buttons && (config?.names ?? []).len() != 0)
   }
 
   function onTaskReroll(obj)
@@ -2412,7 +2402,7 @@ let statTooltipColumnParamByType = {
       return
 
     if (::check_balance_msgBox(::g_battle_tasks.rerollCost))
-      this.msgBox("reroll_perform_action",
+      msgBox("reroll_perform_action",
              ::loc("msgbox/battleTasks/reroll",
                   {cost = ::g_battle_tasks.rerollCost.tostring(),
                     taskName = ::g_battle_tasks.getLocalizedTaskNameById(task)
@@ -2653,18 +2643,18 @@ let statTooltipColumnParamByType = {
   function updateListsButtons()
   {
     let isAnimDone = state==debrState.done
-    let isReplayReady = ::has_feature("ClientReplay") && is_replay_present() && is_replay_turned_on()
+    let isReplayReady = ::has_feature("ClientReplay") && ::is_replay_present() && ::is_replay_turned_on()
     let player = getSelectedPlayer()
     let buttonsList = {
       btn_show_all = isAnimDone && giftItems != null && giftItems.len() > VISIBLE_GIFT_NUMBER
       btn_view_replay = isAnimDone && isReplayReady && !isMp
-      btn_save_replay = isAnimDone && isReplayReady && !is_replay_saved()
+      btn_save_replay = isAnimDone && isReplayReady && !::is_replay_saved()
       btn_user_options = isAnimDone && (curTab == "players_stats") && player && !player.isBot && ::show_console_buttons
       btn_view_highlights = isAnimDone && ::is_highlights_inited()
     }
 
     foreach(btn, show in buttonsList)
-      this.showSceneBtn(btn, show)
+      showSceneBtn(btn, show)
 
     let showFacebookBtn = isAnimDone && (curTab == "my_stats" || curTab == "players_stats")
     ::show_facebook_screenshot_button(scene, showFacebookBtn)
@@ -2707,7 +2697,7 @@ let statTooltipColumnParamByType = {
     ::set_presence_to_player("replay")
     ::req_unlock_by_client("view_replay", false)
     autosave_replay();
-    on_view_replay("")
+    ::on_view_replay("")
     isInProgress = true
   }
 
@@ -2715,15 +2705,15 @@ let statTooltipColumnParamByType = {
   {
     if (isInProgress)
       return
-    if (is_replay_saved() || !is_replay_present())
+    if (::is_replay_saved() || !::is_replay_present())
       return
 
     let afterFunc = function(newName)
     {
-      let result = on_save_replay(newName);
+      let result = ::on_save_replay(newName);
       if (!result)
       {
-        this.msgBox("save_replay_error", ::loc("replays/save_error"),
+        msgBox("save_replay_error", ::loc("replays/save_error"),
           [
             ["ok", function() { } ]
           ], "ok")
@@ -2771,7 +2761,7 @@ let statTooltipColumnParamByType = {
     {
       if (debriefingResult.isSucceed)
       {
-        ::dagor.debug("VIDEO: campaign = "+ ::current_campaign_id + "mission = "+ ::current_campaign_mission)
+        dagor.debug("VIDEO: campaign = "+ ::current_campaign_id + "mission = "+ ::current_campaign_mission)
         if ((::current_campaign_mission == "jpn_guadalcanal_m4")
             || (::current_campaign_mission == "us_guadalcanal_m4"))
           needCheckForVictory(true)
@@ -2789,7 +2779,7 @@ let statTooltipColumnParamByType = {
         if (::SessionLobby.isInRoom() && getDynamicResult() == ::MISSION_STATUS_RUNNING)
         {
           ::go_debriefing_next_func = ::gui_start_dynamic_summary
-          if (is_mplayer_host())
+          if (::is_mplayer_host())
             recalcDynamicLayout()
         }
         else
@@ -2860,7 +2850,7 @@ let statTooltipColumnParamByType = {
     }
     else
     {
-      ::dagor.debug("no mission_settings.layout, destroy session")
+      dagor.debug("no mission_settings.layout, destroy session")
       ::destroy_session_scripted()
     }
   }
@@ -3222,7 +3212,7 @@ let statTooltipColumnParamByType = {
   function updateInventoryButton()
   {
     let actionData = getInvetoryGiftActionData()
-    let actionBtn = this.showSceneBtn("btn_inventory_gift_action", actionData != null)
+    let actionBtn = showSceneBtn("btn_inventory_gift_action", actionData != null)
     if (actionData && actionBtn)
       setColoredDoubleTextToButton(scene, "btn_inventory_gift_action", actionData.btnText)
   }

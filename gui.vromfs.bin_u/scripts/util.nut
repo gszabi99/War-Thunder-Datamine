@@ -1,11 +1,6 @@
-let { format } = require("string")
-let { fabs } = require("math")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
-let {
-  is_mplayer_host = @() ::is_mplayer_host(), //compatibility with 2.16.0.X
-  is_mplayer_peer = @() ::is_mplayer_peer() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
+
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
 let { isPlatformSony, getPlayerName } = require("%scripts/clientState/platform.nut")
@@ -19,8 +14,8 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 let { havePremium } = require("%scripts/user/premium.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
-let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
-let allowingMultAircraft = [1.3, 1.5, 2, 2.5, 3, 4, 5, 10]
+::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
+::allowingMultAircraft <- [1.3, 1.5, 2, 2.5, 3, 4, 5, 10]
 ::fakeBullets_prefix <- "fake"
 const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 ::EATT_UNKNOWN <- -1
@@ -36,8 +31,9 @@ const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 ::flight_menu_handler <- null
 ::postfx_settings_handler <- null
 ::credits_handler <- null
+::gui_start_logout_scheduled <- false
 
-local gui_start_logout_scheduled = false
+::delayed_gblk_error_popups <- []
 
 ::g_script_reloader.registerPersistentData("util", ::getroottable(),
   ["current_campaign_id", "current_campaign_mission"])
@@ -86,14 +82,14 @@ foreach (i, v in ::cssColorsMapDark)
   return (text.len() && text.slice(0,1)!="#")? ::g_string.stripTags(text) : text
 }
 
-let function get_gamepad_specific_localization(locId)
+::get_gamepad_specific_localization <- function get_gamepad_specific_localization(locId)
 {
   if (!::show_console_buttons)
     return ::loc(locId)
 
   return ::loc(locId + "/gamepad_specific", locId)
 }
-::cross_call_api.get_gamepad_specific_localization <- get_gamepad_specific_localization
+::cross_call_api.get_gamepad_specific_localization <- ::get_gamepad_specific_localization
 
 
 ::locEnding <- function locEnding(locId, ending, defValue = null)
@@ -128,13 +124,13 @@ let function get_gamepad_specific_localization(locId)
 ::current_wait_screen_txt <- ""
 ::show_wait_screen <- function show_wait_screen(txt)
 {
-  ::dagor.debug("GuiManager: show_wait_screen "+txt)
+  dagor.debug("GuiManager: show_wait_screen "+txt)
   if (::checkObj(::current_wait_screen))
   {
     if (::current_wait_screen_txt == txt)
-      return ::dagor.debug("already have this screen, just ignore")
+      return dagor.debug("already have this screen, just ignore")
 
-    ::dagor.debug("wait screen already exist, remove old one.")
+    dagor.debug("wait screen already exist, remove old one.")
     ::current_wait_screen.getScene().destroyElement(::current_wait_screen)
     ::current_wait_screen = null
     ::reset_msg_box_check_anim_time()
@@ -142,16 +138,16 @@ let function get_gamepad_specific_localization(locId)
 
   let guiScene = ::get_main_gui_scene()
   if (guiScene == null)
-    return ::dagor.debug("guiScene == null")
+    return dagor.debug("guiScene == null")
 
   let needAnim = ::need_new_msg_box_anim()
   ::current_wait_screen = guiScene.loadModal("", "%gui/waitBox.blk", needAnim ? "massTransp" : "div", null)
   if (!::checkObj(::current_wait_screen))
-    return ::dagor.debug("Error: failed to create wait screen")
+    return dagor.debug("Error: failed to create wait screen")
 
   let obj = ::current_wait_screen.findObject("wait_screen_msg")
   if (!::checkObj(obj))
-    return ::dagor.debug("Error: failed to find wait_screen_msg")
+    return dagor.debug("Error: failed to find wait_screen_msg")
 
   obj.setValue(::loc(txt))
   ::current_wait_screen_txt = txt
@@ -160,7 +156,7 @@ let function get_gamepad_specific_localization(locId)
 
 ::close_wait_screen <- function close_wait_screen()
 {
-  ::dagor.debug("close_wait_screen")
+  dagor.debug("close_wait_screen")
   if (!::checkObj(::current_wait_screen))
     return
 
@@ -180,10 +176,10 @@ let function get_gamepad_specific_localization(locId)
 
 ::in_on_lost_psn <- false
 
-// left for future ps3/ps4 realisation
-let function on_lost_psn()
+// leaved for future ps3/ps4 realisation
+::on_lost_psn <- function on_lost_psn()
 {
-  ::dagor.debug("on_lost_psn")
+  dagor.debug("on_lost_psn")
   let guiScene = ::get_gui_scene()
   let handler = ::current_base_gui_handler
   if (handler == null)
@@ -202,7 +198,7 @@ let function on_lost_psn()
 
   if (!::isInMenu())
   {
-    gui_start_logout_scheduled = true
+    ::gui_start_logout_scheduled = true
     ::destroy_session_scripted()
     ::quit_to_debriefing()
     ::interrupt_multiplayer(true)
@@ -223,9 +219,9 @@ let function on_lost_psn()
 
 ::check_logout_scheduled <- function check_logout_scheduled()
 {
-  if (gui_start_logout_scheduled)
+  if (::gui_start_logout_scheduled)
   {
-    gui_start_logout_scheduled = false
+    ::gui_start_logout_scheduled = false
     on_lost_psn()
   }
 }
@@ -462,10 +458,10 @@ let function on_lost_psn()
   return s;
 }
 
-local last_update_entitlements_time = ::dagor.getCurTime()
+::last_update_entitlements_time <- ::dagor.getCurTime()
 ::get_update_entitlements_timeout_msec <- function get_update_entitlements_timeout_msec()
 {
-  return last_update_entitlements_time - ::dagor.getCurTime() + 20000
+  return ::last_update_entitlements_time - ::dagor.getCurTime() + 20000
 }
 
 ::update_entitlements_limited <- function update_entitlements_limited(force=false)
@@ -474,7 +470,7 @@ local last_update_entitlements_time = ::dagor.getCurTime()
     return -1
   if (force || ::get_update_entitlements_timeout_msec() < 0)
   {
-    last_update_entitlements_time = ::dagor.getCurTime()
+    ::last_update_entitlements_time = ::dagor.getCurTime()
     return ::update_entitlements()
   }
   return -1
@@ -523,7 +519,7 @@ local last_update_entitlements_time = ::dagor.getCurTime()
 }
 
 //need to remove
-let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=false)
+::getPriceText <- function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=false)
 {
   local text = ""
   if (gold!=0 || showGold)
@@ -567,7 +563,7 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
     return ""
   let rpPriceText = exp_value.tostring() + ::loc("currency/researchPoints/sign/colored")
   let coloredPriceText = ::colorTextByValues(rpPriceText, exp_value, 0)
-  return format(::loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
+  return ::format(::loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
 }
 
 ::getCrewSpText <- function getCrewSpText(sp, colored=true)
@@ -594,7 +590,7 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
   if (color == "")
     return text
 
-  return format("<color=@%s>%s</color>", color, text)
+  return ::format("<color=@%s>%s</color>", color, text)
 }
 
 ::getObjIdByPrefix <- function getObjIdByPrefix(obj, prefix, idProp = "id")
@@ -732,10 +728,15 @@ let function getPriceText(wp, gold=0, colored = true, showWp=false, showGold=fal
 
 ::buildTableRowNoPad <- function buildTableRowNoPad(rowName, rowData, even=null, trParams="")
 {
-  return ::buildTableRow(rowName, rowData, even, trParams, "0")
+  return buildTableRow(rowName, rowData, even, trParams, "0")
 }
 
-let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeCallback)
+::invoke_multi_array <- function invoke_multi_array(multiArray, invokeCallback)
+{
+  ::_invoke_multi_array(multiArray, [], 0, invokeCallback)
+}
+
+::_invoke_multi_array <- function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeCallback)
 {
   if (currentIndex == multiArray.len())
   {
@@ -747,23 +748,17 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
     foreach (name in multiArray[currentIndex])
     {
       currentArray.append(name)
-      _invoke_multi_array(multiArray, currentArray, currentIndex + 1, invokeCallback)
+      ::_invoke_multi_array(multiArray, currentArray, currentIndex + 1, invokeCallback)
       currentArray.pop()
     }
   }
   else
   {
     currentArray.append(multiArray[currentIndex])
-    _invoke_multi_array(multiArray, currentArray, currentIndex + 1, invokeCallback)
+    ::_invoke_multi_array(multiArray, currentArray, currentIndex + 1, invokeCallback)
     currentArray.pop()
   }
 }
-
-::invoke_multi_array <- function invoke_multi_array(multiArray, invokeCallback)
-{
-  _invoke_multi_array(multiArray, [], 0, invokeCallback)
-}
-
 
 ::showCurBonus <- function showCurBonus(obj, value, tooltipLocName="", isDiscount=true, fullUpdate=false, tooltip = null)
 {
@@ -816,7 +811,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
       if (awp > wp) wp = awp
     }
 
-  local bonusData = ::getBonus(exp, wp, "item", "Aircraft", airName)
+  local bonusData = getBonus(exp, wp, "item", "Aircraft", airName)
 
   foreach (name, result in bonusData)
     obj[name] = result
@@ -834,7 +829,7 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
   wp = stdMath.roundToDigits(wp, 2)
 
   let multiplier = exp > wp?  exp : wp
-  let image = ::getBonusImage(imgType, multiplier, airName==""? "country": "air")
+  let image = getBonusImage(imgType, multiplier, airName==""? "country": "air")
 
   local tooltipText = ""
   let locEnd = (typeof(airName)=="string")? "/tooltip" : "/group/tooltip"
@@ -854,7 +849,22 @@ let function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeC
   return data
 }
 
-let function find_max_lower_value(val, list)
+::getBonusImage <- function getBonusImage(bType, multiplier, useBy)
+{
+  if ((bType != "item" && bType != "country") || multiplier == 1.0)
+    return ""
+
+  let allowingMult = useBy=="country"? ::allowingMultCountry : ::allowingMultAircraft
+
+  multiplier = ::find_max_lower_value(multiplier, allowingMult)
+  if (multiplier == null)
+    return ""
+
+  multiplier = ::stringReplace(multiplier.tostring(), ".", "_")
+  return ("#ui/gameuiskin#" + bType + "_bonus_mult_" + multiplier)
+}
+
+::find_max_lower_value <- function find_max_lower_value(val, list)
 {
   local res = null
   local found = false
@@ -875,21 +885,6 @@ let function find_max_lower_value(val, list)
       res = v
   }
   return res
-}
-
-::getBonusImage <- function getBonusImage(bType, multiplier, useBy)
-{
-  if ((bType != "item" && bType != "country") || multiplier == 1.0)
-    return ""
-
-  let allowingMult = useBy=="country"? allowingMultCountry : allowingMultAircraft
-
-  multiplier = find_max_lower_value(multiplier, allowingMult)
-  if (multiplier == null)
-    return ""
-
-  multiplier = ::stringReplace(multiplier.tostring(), ".", "_")
-  return $"#ui/gameuiskin#{bType}_bonus_mult_{multiplier}.png"
 }
 
 ::checkObj <- function checkObj(obj)
@@ -917,12 +912,12 @@ let function find_max_lower_value(val, list)
 ::roman_numerals <- ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
                          "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
 
-let get_roman_numeral_lookup = [
+::get_roman_numeral_lookup <- [
   "","I","II","III","IV","V","VI","VII","VIII","IX",
   "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
   "","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
 ]
-const MAX_ROMAN_DIGIT = 3
+::max_roman_digit <- 3
 
 //Function from http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
 ::get_roman_numeral <- function get_roman_numeral(num)
@@ -943,11 +938,11 @@ const MAX_ROMAN_DIGIT = 3
 
   local roman = ""
   local i = -1
-  while (num > 0 && i++ < MAX_ROMAN_DIGIT)
+  while (num > 0 && i++ < ::max_roman_digit)
   {
     let digit = num % 10
     num = num / 10
-    roman = ::getTblValue(digit + (i * 10), get_roman_numeral_lookup, "") + roman
+    roman = ::getTblValue(digit + (i * 10), ::get_roman_numeral_lookup, "") + roman
   }
   return thousands + roman
 }
@@ -986,7 +981,7 @@ const MAX_ROMAN_DIGIT = 3
         if (tag == parameter)
         {
           result[parameter]++
-          maxYear = max(year, maxYear)
+          maxYear = ::max(year, maxYear)
         }
     }
     if (maxYear)
@@ -1047,15 +1042,15 @@ const MAX_ROMAN_DIGIT = 3
   for (local i = 0; i <= lastShowPage; i++)
   {
     if (i == cur_page)
-      buttonsMid += format(numPageText, (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : ""))
+      buttonsMid += ::format(numPageText, (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : ""))
     else if ((cur_page - 1 <= i && i <= cur_page + 1)       //around current page
              || (i == my_page)                              //equal my page
              || (i < 3)                                     //always show first 2 entrys
              || (show_last_page && i == lastShowPage))      //show last entry if show_last_page
-      buttonsMid += format(numButtonText, i.tostring(), (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : ""))
+      buttonsMid += ::format(numButtonText, i.tostring(), (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : ""))
     else
     {
-      buttonsMid += format(numPageText, "...", "")
+      buttonsMid += ::format(numPageText, "...", "")
       if (my_page != null && i < my_page && (my_page < cur_page || i > cur_page))
         i = my_page - 1
       else if (i < cur_page)
@@ -1100,14 +1095,14 @@ const MAX_ROMAN_DIGIT = 3
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message)
 {
 //  dlog("GP: on have to start char op message! = " +message)
-  ::dagor.debug("on_have_to_start_chard_op "+message)
+  dagor.debug("on_have_to_start_chard_op "+message)
 
   if (message == "sync_clan_vs_profile")
   {
     let taskId = ::clan_request_sync_profile()
     ::add_bg_task_cb(taskId, function(){
       ::requestMyClanData(true)
-      ::update_gamercards()
+      update_gamercards()
     })
   }
   else if (message == "clan_info_reload")
@@ -1133,13 +1128,13 @@ const MAX_ROMAN_DIGIT = 3
 {
   let mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(optionsMode)
-  local value = ::get_option(oType)
+  local value = get_option(oType)
   value = value.values[value.value]
   setGuiOptionsMode(mainOptionsMode)
   return value
 }
 
-let function startCreateWndByGamemode(handler, obj)
+::startCreateWndByGamemode <- function startCreateWndByGamemode(handler, obj)
 {
   let gm = ::match_search_gm
   if (gm == ::GM_EVENT)
@@ -1161,7 +1156,7 @@ let function startCreateWndByGamemode(handler, obj)
   else if (gm == ::GM_SKIRMISH)
     ::gui_create_skirmish()
   else if (gm == ::GM_DOMINATION || gm == ::GM_TOURNAMENT)
-    ::gui_start_mislist()
+    gui_start_mislist()
   else //any coop - create dyncampaign
   {
     ::mission_settings.coop = true
@@ -1183,7 +1178,7 @@ let function startCreateWndByGamemode(handler, obj)
     if (::checkAllowed.bindenv(handler)(tbl))
     {
       ::match_search_gm = gm
-      startCreateWndByGamemode(handler, null)
+      ::startCreateWndByGamemode(handler, null)
     }
   })(handler, gm))
 }
@@ -1382,17 +1377,17 @@ let function startCreateWndByGamemode(handler, obj)
   }
 }
 
-local informTexQualityRestrictedDone = false
+::informTexQualityRestrictedDone <- false
 ::informTexQualityRestricted <- function informTexQualityRestricted()
 {
-  if (informTexQualityRestrictedDone)
+  if (::informTexQualityRestrictedDone)
     return
   let message = ::loc("msgbox/graphicsOptionValueReduced/lowVideoMemory", {
     name =  ::colorize("userlogColoredText", ::loc("options/texQuality"))
     value = ::colorize("userlogColoredText", ::loc("options/quality_medium"))
   })
   ::showInfoMsgBox(message, "sysopt_tex_quality_restricted")
-  informTexQualityRestrictedDone = true
+  ::informTexQualityRestrictedDone = true
 }
 
 ::is_myself_anyof_moderators <- function is_myself_anyof_moderators()
@@ -1435,13 +1430,13 @@ local informTexQualityRestrictedDone = false
 // Server message
 //
 
-local server_message_text = ""
-local server_message_end_time = 0
+::server_message_text <- ""
+::server_message_end_time <- 0
 
 ::show_aas_notify <- function show_aas_notify(text, timeseconds)
 {
-  server_message_text = ::loc(text)
-  server_message_end_time = ::dagor.getCurTime() + timeseconds * 1000
+  ::server_message_text = ::loc(text)
+  ::server_message_end_time = ::dagor.getCurTime() + timeseconds * 1000
   ::broadcastEvent("ServerMessage")
   ::update_gamercards()
 }
@@ -1456,7 +1451,7 @@ local server_message_end_time = 0
     return false
 
   local text = ""
-  if (::dagor.getCurTime() < server_message_end_time)
+  if (::dagor.getCurTime() < ::server_message_end_time)
     text = server_message_text
 
   serverMessageObject.setValue(text)
@@ -1506,6 +1501,24 @@ local server_message_end_time = 0
   return value.tofloat()
 }
 
+/**
+ * Uses gui scene if specified scene is not valid.
+ * Returns null if object was found but is not valid.
+ */
+::get_object_from_scene <- function get_object_from_scene(name, scene = null)
+{
+  local obj
+  if (::checkObj(scene))
+    obj = scene.findObject(name)
+  else
+  {
+    let guiScene = ::get_cur_gui_scene()
+    if (guiScene != null)
+      obj = guiScene[name]
+  }
+  return ::checkObj(obj) ? obj : null
+}
+
 const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ::gen_rnd_password <- function gen_rnd_password(charsAmount)
 {
@@ -1538,7 +1551,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::get_team_color <- function get_team_color(teamId)
 {
-  return ::is_team_friendly(teamId) ? "hudColorBlue" : "hudColorRed"
+  return is_team_friendly(teamId) ? "hudColorBlue" : "hudColorRed"
 }
 
 ::get_mplayer_color <- function get_mplayer_color(player)
@@ -1575,7 +1588,39 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   return colored ? ::colorize(::get_mplayer_color(player), name) : name
 }
 
-::is_multiplayer <- @() is_mplayer_host() || is_mplayer_peer()
+::is_multiplayer <- function is_multiplayer()
+{
+  return ::is_mplayer_host() || ::is_mplayer_peer()
+}
+
+::show_gblk_error_popup <- function show_gblk_error_popup(errCode, path)
+{
+  if (!::g_login.isLoggedIn())
+  {
+    ::delayed_gblk_error_popups.append({ type = errCode, path = path })
+    return
+  }
+
+  let title = ::loc("gblk/saveError/title")
+  let msg = ::loc(::format("gblk/saveError/text/%d", errCode), {path=path})
+  ::g_popups.add(title, msg, null, [{id="copy_button",
+                              text=::loc("gblk/saveError/copy"),
+                              func=(@(msg) function() {::copy_to_clipboard(msg)})(msg)}])
+}
+
+::pop_gblk_error_popups <- function pop_gblk_error_popups()
+{
+  if (!::g_login.isLoggedIn())
+    return
+
+  let total = ::delayed_gblk_error_popups.len()
+  for(local i = 0; i < total; i++)
+  {
+    let data = ::delayed_gblk_error_popups[i]
+    ::show_gblk_error_popup(data.type, data.path)
+  }
+  ::delayed_gblk_error_popups.clear()
+}
 
 ::get_dagui_obj_aabb <- function get_dagui_obj_aabb(obj)
 {
@@ -1594,7 +1639,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 
 ::destroy_session_scripted <- function destroy_session_scripted()
 {
-  let needEvent = is_mplayer_peer()
+  let needEvent = ::is_mplayer_peer()
   ::destroy_session()
   if (needEvent)
     //need delay after destroy session before is_multiplayer become false

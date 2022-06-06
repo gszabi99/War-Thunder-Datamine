@@ -1,7 +1,6 @@
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { is_replay_playing } = require("replays")
 
 let buttons = {
   types = []
@@ -88,7 +87,7 @@ enums.addTypes(buttons, {
     canShowOnMissionFailed = true
     getUpdatedLabelText = function getUpdatedLabelText() {
       return ::loc(
-        is_replay_playing() ? "flightmenu/btnQuitReplay"
+        ::is_replay_playing() ? "flightmenu/btnQuitReplay"
         : (::get_mission_status() == ::MISSION_STATUS_SUCCESS
             && ::get_game_mode() == ::GM_DYNAMIC) ? "flightmenu/btnCompleteMission"
         : "flightmenu/btnQuitMission"

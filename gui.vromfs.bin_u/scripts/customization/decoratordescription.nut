@@ -1,4 +1,3 @@
-let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
@@ -20,7 +19,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     let imgSize = params?.imgSize ?? {}
     let imgRatio = decoratorType.getRatio(decorator)
     let iDivObj = iObj.getParent()
-    iDivObj.height = imgSize?[1] ?? format("%d*@decalIconHeight", ((imgRatio < 3) ? 2 : 1))
+    iDivObj.height = imgSize?[1] ?? ::format("%d*@decalIconHeight", ((imgRatio < 3) ? 2 : 1))
     iDivObj.width  = imgSize?[0] ?? $"{imgRatio}h"
     iDivObj.show(true)
   }
@@ -101,7 +100,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   cObj.show(true)
 
   local iconName = isDefaultSkin ? ""
-    : isAllowed ? "favorite.png"
+    : isAllowed ? "favorite"
     : "locked.svg"
 
   let canShowProgress = !isTrophyContent && !isReceivedPrizes
@@ -146,7 +145,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     ::showBtn("progress", false, cObj)
 
   if (iconName != "")
-    iconName = format("#ui/gameuiskin#%s", iconName)
+    iconName = ::format("#ui/gameuiskin#%s", iconName)
   cObj.findObject("state")["background-image"] = iconName
 
   let additionalDescriptionMarkup = params?.additionalDescriptionMarkup

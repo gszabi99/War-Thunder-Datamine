@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { updateModItem, createModItem } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -135,7 +134,7 @@ local armyIdByMask = {
           unitClassTooltipText = ::loc(unitClassData.tooltipTextLocId)
           unitClass = unitClassData.flyOutUnitClass
           unitClassesView = isUnitsGroup ? getUnitClassesView(unit, unitClass) : null
-          maxValue = min(maxUnitClassValue, maxValue)
+          maxValue = ::min(maxUnitClassValue, maxValue)
           maxUnitClassValue = maxUnitClassValue
           totalValue = maxValue
           value = value
@@ -260,7 +259,7 @@ local armyIdByMask = {
     let selUnitsInfo = getSelectedUnitsInfo()
     foreach (idx, unitTable in unitsList)
     {
-      let unitSliderObj = this.showSceneBtn(unitTable.unitName + "_" + unitTable.armyGroupIdx,
+      let unitSliderObj = showSceneBtn(unitTable.unitName + "_" + unitTable.armyGroupIdx,
         unitTable.armyGroupIdx == selectedGroupIdx)
 
       setUnitSliderEnable(unitSliderObj, selUnitsInfo, unitTable)
@@ -375,7 +374,7 @@ local armyIdByMask = {
     foreach (unitClass, cl in selUnitsInfo.classes)
     {
       let range = currentOperation.getQuantityToFlyOut(unitClass, selUnitsInfo.selectedUnitsMask)
-      let clamped = clamp(cl.amount, range.x, range.y)
+      let clamped = ::clamp(cl.amount, range.x, range.y)
       isEnable = isEnable && clamped == cl.amount
     }
 
@@ -547,7 +546,7 @@ local armyIdByMask = {
 
   function updateUnitValue(unitIndex, value)
   {
-    let curValue = clamp(value, 0, unitsList[unitIndex].maxValue)
+    let curValue = ::clamp(value, 0, unitsList[unitIndex].maxValue)
     if (curValue == unitsList[unitIndex].value)
       return
 
@@ -603,7 +602,7 @@ local armyIdByMask = {
 
   function getSliderButtonText(value, totalValue)
   {
-    return format("%d/%d", value, totalValue)
+    return ::format("%d/%d", value, totalValue)
   }
 
   function onButtonDec(obj)
@@ -806,7 +805,7 @@ local armyIdByMask = {
 
   function getUnitClassMaxValue(unitClass)
   {
-    return max(currentOperation.getQuantityToFlyOut(unitClass, unitClass).y,
+    return ::max(currentOperation.getQuantityToFlyOut(unitClass, unitClass).y,
                  currentOperation.getQuantityToFlyOut(unitClass, WW_UNIT_CLASS.COMBINED).y)
   }
 

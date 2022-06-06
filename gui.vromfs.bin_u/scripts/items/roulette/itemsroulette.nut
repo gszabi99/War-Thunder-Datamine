@@ -49,28 +49,6 @@ let ROULETTE_DEBUG_PARAMS_DEFAULTS = {
   trophyDrop = {}
 }
 
-let function getRandomItem(trophyData) {
-  local res = null
-  local rndChance = ::math.frnd() * trophyData.trophy.reduce(@(res, v) res + v.dropChance, 0.0)
-
-  foreach (item in trophyData.trophy) {
-    res = item
-    rndChance -= item.dropChance
-    if (rndChance < 0)
-      break
-  }
-
-  res.dropChance -= res.dropChance * res.multDiff
-  return res
-}
-
-let function getRandomItems(trophyData) {
-  let self = callee()
-  return ::array(trophyData.count, null)
-    .map(@(_) getRandomItem(trophyData))
-    .reduce(@(acc, v) acc.extend(v?.trophy ? self(v) : [v]), [])
-}
-
 ::ItemsRoulette <- ROULETTE_PARAMS_DEFAULTS.__merge({debugData = ROULETTE_DEBUG_PARAMS_DEFAULTS})
 
 ItemsRoulette.resetData <- function resetData()
@@ -109,7 +87,7 @@ ItemsRoulette.reinitParams <- function reinitParams()
 ItemsRoulette.logDebugData <- function logDebugData()
 {
   ::dagor.debug("ItemsRoulette: Print debug data of previously finished roulette")
-  ::debugTableData(::ItemsRoulette.debugData, {recursionLevel = 10})
+  debugTableData(::ItemsRoulette.debugData, {recursionLevel = 10})
 }
 
 ItemsRoulette.init <- function init(trophyName, rewardsArray, imageObj, handler, afterDoneFunc = null)
@@ -181,7 +159,7 @@ ItemsRoulette.init <- function init(trophyName, rewardsArray, imageObj, handler,
   }
 
   let anim = rouletteAnim.get(trophyItem.getOpeningAnimId())
-  ::dagor.debug("ItemsRoulette: open trophy " + trophyItem.id + ", animaton = " + anim.id)
+  dagor.debug("ItemsRoulette: open trophy " + trophyItem.id + ", animaton = " + anim.id)
   anim.startAnim(rouletteObj, insertRewardIdx)
 
   placeObj.getScene().applyPendingChanges(false)
@@ -250,7 +228,7 @@ ItemsRoulette.generateItemsArray <- function generateItemsArray(trophyName)
   ::ItemsRoulette.debugData.result.append(debug)
   return {
     trophy = itemsArray,
-    count = 1
+    count = countContent
   }
 }
 
@@ -391,7 +369,7 @@ ItemsRoulette.fillDropChances <- function fillDropChances(trophyBlock)
 
   let drop = trophyBlockTrophiesItemsCount > 0? (slots * trophyBlockItemsCount / trophyBlockTrophiesItemsCount) : 0
 
-  let dropTrophy = max(drop, trophyBlockItemsCount * ::ItemsRoulette.items_roulette_min_trophy_drop_mult)
+  let dropTrophy = ::max(drop, trophyBlockItemsCount * ::ItemsRoulette.items_roulette_min_trophy_drop_mult)
 
   trophyBlock.dropChance = dropTrophy / ::getTblValue("count", trophyBlock, 1)
   trophyBlock.multDiff = 1 - ::ItemsRoulette.getChanceMultiplier(true, trophyBlock.dropChance)
@@ -410,7 +388,7 @@ ItemsRoulette.fillDropChances <- function fillDropChances(trophyBlock)
 
 ItemsRoulette.getItemsStack <- function getItemsStack(trophyData)
 {
-  let rndItemsArray = getRandomItems(trophyData)
+  let rndItemsArray = ::array(trophyData.count, null).map(@(elem) ::ItemsRoulette.getRandomItem(trophyData))
 
   foreach(item in rndItemsArray)
   {
@@ -427,6 +405,28 @@ ItemsRoulette.getItemsStack <- function getItemsStack(trophyData)
   }
 
   return rndItemsArray
+}
+
+ItemsRoulette.getRandomItem <- function getRandomItem(trophyBlock)
+{
+  local res = null
+  local rndChance = ::math.frnd() * trophyBlock.trophy.reduce(@(res, v) res + v.dropChance, 0.0)
+
+  foreach(idx, item in trophyBlock.trophy)
+  {
+    rndChance -= item.dropChance
+    res = trophyBlock.trophy[idx]
+
+    if (rndChance < 0)
+      break
+  }
+
+  res.dropChance -= res.dropChance * res.multDiff
+
+  if ("trophy" in res)
+    return getRandomItem(res)
+
+  return res
 }
 
 ItemsRoulette.getCurrentReward <- function getCurrentReward(rewardsArray)
@@ -450,7 +450,7 @@ ItemsRoulette.getHiddenTopPrizeReward <- function getHiddenTopPrizeReward(params
 {
   let showType = params?.show_type ?? "vehicle"
   let layerCfg = clone ::LayersIcon.findLayerCfg("item_place_single")
-  layerCfg.img <- $"#ui/gameuiskin#item_{showType}.png"
+  layerCfg.img <- "#ui/gameuiskin#item_" + showType
   let image = ::LayersIcon.genDataFromLayer(layerCfg)
   let layout = ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("roulette_item_place"), image)
 
@@ -481,7 +481,7 @@ ItemsRoulette.insertHiddenTopPrize <- function insertHiddenTopPrize(readyItemsAr
   else
   {
     let idxMax = insertRewardIdx
-    let idxMin = max(insertRewardIdx /5*4, 0)
+    let idxMin = ::max(insertRewardIdx /5*4, 0)
     insertIdx = idxMin + ((idxMax - idxMin) * ::math.frnd()).tointeger()
     if (insertIdx == insertRewardIdx)
       insertIdx++

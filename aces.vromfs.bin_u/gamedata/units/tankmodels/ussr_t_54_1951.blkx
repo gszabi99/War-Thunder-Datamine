@@ -139,7 +139,6 @@
         },
         "superstructure_bottom_dm": {
           "armorThickness": 40.0,
-          "armorClass": "tank_steel_wheels",
           "hidableInViewer": true
         },
         "ex_armor_02_dm": {
@@ -149,8 +148,7 @@
           "armorThickness": 20.0
         },
         "body_side_dm": {
-          "armorThickness": 20.0,
-          "armorClass": "tank_steel_wheels"
+          "armorThickness": 20.0
         },
         "turret_03_front_dm": {
           "armorThickness": 160.0
@@ -166,7 +164,7 @@
           "armorClass": "CHA_tank"
         },
         "turret_04_top_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 10.0
         }
       },
       "turret": {
@@ -727,7 +725,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1305,8 +1302,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1350,8 +1347,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1359,8 +1356,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1368,8 +1365,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1408,29 +1405,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2555,6 +2552,9 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
+        "height": 0.06,
+        "width": 0.65,
+        "fricSideRot": [5.0,0.0,0.6,0.3],
         "tracksTensionK": [3.5,10.0,2.0],
         "trackMesh": "ussr_54_44_004_13g_phys_track_line",
         "trackLen": 0.137,
@@ -2563,10 +2563,7 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.16,
-        "height": 0.06,
-        "width": 0.58,
-        "trackStartOffset": 0.05,
-        "fricSideRot": [5.0,0.0,0.6,0.3]
+        "trackStartOffset": 0.05
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -3231,10 +3228,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "100mm_APHE_ammo_pack": [],
       "100mm_APCBC_ammo_pack": [],

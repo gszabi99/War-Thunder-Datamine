@@ -619,42 +619,36 @@
       "createSecondaryShatters": false,
       "compartments": {
         "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.5,
+        "stopChanceOnDeadPart": 0.3,
         "armorClass": "ship_wood",
         "armorThickness": 45.0,
         "hidableInViewer": true,
         "fireProtectionHp": 3.0,
         "compartment_01_dm": {
-          "hp": 1470.0
+          "hp": 1111.0
         },
         "compartment_02_dm": {
-          "hp": 1470.0
+          "hp": 1500.0
         },
         "compartment_03_dm": {
-          "hp": 1470.0
+          "hp": 1500.0
         },
         "compartment_04_dm": {
-          "hp": 1394.0
+          "hp": 996.0
         },
         "compartment_05_dm": {
-          "hp": 1280.0
+          "hp": 710.0
         },
         "compartment_06_dm": {
-          "hp": 1280.0
-        }
-      },
-      "control_compartments": {
-        "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.5,
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 1.0,
-        "hidableInViewer": true,
-        "fireProtectionHp": 3.0,
+          "hp": 650.0
+        },
         "bridge_dm": {
-          "hp": 260.0
+          "armorThickness": 1.0,
+          "hp": 360.0
         },
         "radio_station_dm": {
-          "hp": 230.0
+          "armorThickness": 1.0,
+          "hp": 150.0
         }
       },
       "superstructures": {
@@ -766,28 +760,28 @@
         "armorThickness": 4.0,
         "fireProtectionHp": 10.0,
         "engine_01_dm": {
-          "hp": 760.0
+          "hp": 932.0
         },
         "engine_02_dm": {
-          "hp": 760.0
+          "hp": 932.0
         },
         "engine_03_dm": {
-          "hp": 760.0
+          "hp": 932.0
         },
         "engine_04_dm": {
-          "hp": 760.0
+          "hp": 932.0
         },
         "transmission_01_dm": {
-          "hp": 760.0
+          "hp": 500.0
         },
         "transmission_02_dm": {
-          "hp": 752.0
+          "hp": 500.0
         },
         "transmission_03_dm": {
-          "hp": 751.0
+          "hp": 500.0
         },
         "transmission_04_dm": {
-          "hp": 760.0
+          "hp": 500.0
         }
       },
       "steering_gear": {
@@ -899,10 +893,10 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "main_caliber_turret_01_dm": {
-          "hp": 210.0
+          "hp": 150.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 210.0
+          "hp": 150.0
         }
       },
       "turrets_aux_caliber": {
@@ -1034,7 +1028,7 @@
   },
   {
     "tank_crew": {
-      "minCrewMemberRepairCount": 0,
+      "minCrewMemberRepairCount": 14,
       "minCrewMemberAliveCount": 12,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1044,12 +1038,12 @@
       "sailor2": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 8
       },
       "sailor3": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 8
       },
       "sailor4": {
         "dmPart": "compartment_04_dm",
@@ -1059,12 +1053,12 @@
       "sailor5": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 4
       },
       "sailor6": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 4
       },
       "sailor7": {
         "dmPart": "radio_station_dm",
@@ -1812,9 +1806,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -1823,7 +1817,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -1834,9 +1828,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -1845,9 +1839,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -1856,9 +1850,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -1867,7 +1861,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -1878,9 +1872,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -1889,9 +1883,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2205,10 +2199,10 @@
             "measureAccuracy": 1.0
           },
           {
-            "targetLockTime": 6.0
+            "targetLockTime": 8.0
           },
           {
-            "calcTime": 3.0
+            "calcTime": 4.0
           },
           {
             "rotationSpeed": 20.0

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
@@ -87,10 +86,10 @@ let function getTierDescTbl(unit, params) {
 
   if (::isInArray(tType, CONSUMABLE_TYPES))
     header = isBlock ?
-      "".concat(header, format(::loc("weapons/counter"), amountPerTier)) : header
+      "".concat(header, ::format(::loc("weapons/counter"), amountPerTier)) : header
   else if (ammo > 0)
     header = "".concat(header, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
-      isBlock && isGun ? amountPerTier : ammo, ")")
+      isBlock && !isGun ? amountPerTier : ammo, ")")
 
   // Need to replace header with new one contains right weapons amount calculated per tier
   let descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)

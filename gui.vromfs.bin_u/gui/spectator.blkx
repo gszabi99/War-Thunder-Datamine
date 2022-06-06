@@ -28,7 +28,7 @@
           "position": "absolute",
           "pos": "-1@spectatorBw -4@dp, 1@spectatorTopOffset",
           "min-height": "2@sIco",
-          "background-image": "#ui/gameuiskin#expandable_item_ww_transp_reflect.png",
+          "background-image": "#ui/gameuiskin#expandable_item_ww_transp_reflect",
           "background-position": "2, 2, 0, 2",
           "background-repeat": "expand",
           "background-color": "#99999999",
@@ -76,7 +76,7 @@
           "position": "absolute",
           "pos": "pw - w + 4@dp +1@spectatorBw, 1@spectatorTopOffset",
           "min-height": "2@sIco",
-          "background-image": "#ui/gameuiskin#expandable_item_ww_transp.png",
+          "background-image": "#ui/gameuiskin#expandable_item_ww_transp",
           "background-position": "0, 2, 2, 2",
           "background-repeat": "expand",
           "background-color": "#99999999",
@@ -611,33 +611,13 @@
           },
           {
             "hoverButton": {
-              "id": "ID_REPLAY_BACKWARD",
-              "on_click": "onBtnBackward",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_restart.svg"
-              }
-            }
-          },
-          {
-            "hoverButton": {
               "id": "ID_REPLAY_PAUSE",
               "on_click": "onBtnShortcut",
               "is_shortcut": "yes",
+              "withSeparation": "yes",
               "icon": {
                 "id": "icon",
                 "background-image": "#ui/gameuiskin#replay_pause.svg"
-              }
-            }
-          },
-          {
-            "hoverButton": {
-              "id": "ID_REPLAY_FORWARD",
-              "on_click": "onBtnForward",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_restart.svg",
-                "rotation": "180"
               }
             }
           },
@@ -671,6 +651,9 @@
                 "position": "relative"
               },
               {
+                "enable": "no"
+              },
+              {
                 "text": {
                   "id": "txt_replay_time_current",
                   "width": "0.10@sf",
@@ -693,7 +676,7 @@
                   "id": "timeline_progress",
                   "top": "ph/2-h/2",
                   "position": "relative",
-                  "width": "1@spectatorTimerProgressWidth",
+                  "width": "3@spectatorToolbarBtnSize",
                   "max": "1000",
                   "value": "0"
                 }

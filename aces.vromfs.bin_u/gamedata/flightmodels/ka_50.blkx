@@ -1368,7 +1368,6 @@
     "mirror": true,
     "mirrorPos": [2.731,0.974,0.0],
     "mirrorNorm": [-1.0,-0.3,0.0],
-    "gunLightRadiusMul": 0.01,
     "lightPos": [2.908533,0.111968,0.000123],
     "lightColor": [0.01,0.6,0.1],
     "lightRadius": 0.45,
@@ -1390,14 +1389,14 @@
       "weapon3": [0.0,1.0],
       "gears": [0.0,1.0],
       "gears_lamp": [0.0,0.0],
-      "speed": [0.0,97.222],
+      "speed": [0.0,97.22],
       "compass": [0.0,360.0],
       "compass1": [0.0,360.0],
       "vario": [-30.0,30.0],
       "g_meter": [-2.0,4.0],
       "g_meter_min": [-2.0,4.0],
       "g_meter_max": [-2.0,4.0],
-      "altitude_hour": [0.0,10000.0],
+      "altitude_hour": [0.0,30000.0],
       "altitude_min": [0.0,1000.0],
       "radio_altitude": [0.0,300.0],
       "altitude_koef": 1.0,
@@ -1411,15 +1410,12 @@
       "clock_hour": [0.0,12.0],
       "clock_min": [0.0,60.0],
       "clock_sec": [0.0,60.0],
-      "rpm": [0.0,16400.0],
-      "rpm1": [0.0,16400.0],
-      "prop_rpm": [0.0,300.0],
+      "rpm": [0.0,12600.0],
+      "rpm1": [0.0,12600.0],
       "oil_temperature": [0.0,150.0],
       "oil_temperature1": [0.0,150.0],
-      "water_temperature_hour": [0.0,1200.0],
-      "water_temperature1_hour": [0.0,1200.0],
-      "water_temperature_min": [0.0,1200.0],
-      "water_temperature1_min": [0.0,1200.0],
+      "water_temperature": [0.0,1200.0],
+      "water_temperature1": [0.0,1200.0],
       "fuel": [0.0,800.0],
       "fuel1": [0.0,800.0]
     },
@@ -1680,12 +1676,6 @@
           "recoilMultiplier": 0.5
         },
         {
-          "invertedLimitsInViewer": true
-        },
-        {
-          "swapLimitsInViewer": true
-        },
-        {
           "parkInDeadzone": false
         },
         {
@@ -1754,7 +1744,6 @@
         "blk": "gameData/flightModels/weaponPresets/ka_50_rocket_vyhr.blk",
         "reqModification": "ka_9K121",
         "weaponConfig": {
-          "presetType": "ARMORED",
           "Weapon": [
             {
               "blk": "gameData/Weapons/rocketGuns/su_9M127.blk"
@@ -1854,7 +1843,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
                 },
                 {
                   "tier": {
@@ -4321,22 +4310,6 @@
         "separateDm": true,
         "dp": "gear_3c%d"
       }
-    },
-    {
-      "dp": [
-        {
-          "dm": "_ClipHookRoot"
-        },
-        {
-          "separateDm": true
-        },
-        {
-          "dp": "hook"
-        },
-        {
-          "dp": "hook_catch"
-        }
-      ]
     },
     {
       "dp": [

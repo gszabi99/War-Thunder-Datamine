@@ -1,6 +1,5 @@
 // warning disable: -file:forbidden-function
-let { get_mp_session_id_str = @() ::get_mp_session_id() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
+
 let dbg_dump = require("%scripts/debugTools/dbgDump.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let g_path = require("%sqstd/path.nut")
@@ -33,7 +32,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
     { id = "get_mission_status", value = ::getTblValue("isSucceed", debriefingResult) ? ::MISSION_STATUS_SUCCESS : ::MISSION_STATUS_RUNNING }
     { id = "get_mission_restore_type", value = ::getTblValue("restoreType", debriefingResult, 0) }
     { id = "get_local_player_country", value = ::getTblValue("country", debriefingResult, "") }
-    { id = "get_mp_session_id", value = ::getTblValue("sessionId", debriefingResult, get_mp_session_id_str()) }
+    { id = "get_mp_session_id", value = ::getTblValue("sessionId", debriefingResult, ::get_mp_session_id()) }
     { id = "get_mp_tbl_teams", value = ::getTblValue("mpTblTeams", debriefingResult, ::get_mp_tbl_teams()) }
     { id = "_fake_sessionlobby_unit_type_mask", value = debriefingResult?.unitTypesMask }
     { id = "stat_get_benchmark", value = ::getTblValue("benchmark", debriefingResult, ::stat_get_benchmark()) }
@@ -49,6 +48,9 @@ let { havePremium } = require("%scripts/user/premium.nut")
     "get_mission_difficulty_int"
     "get_premium_reward_wp"
     "get_premium_reward_xp"
+    "is_replay_turned_on"
+    "is_replay_present"
+    "is_replay_saved"
     "is_worldwar_enabled"
     "ww_is_operation_loaded"
     "ww_get_operation_id"
@@ -122,6 +124,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
     disable_user_log_entry = function(idx) { if (idx in ::_fake_userlogs) ::_fake_userlogs[idx].disabled = true }
     shown_userlog_notifications = []
     autosave_replay = @() null
+    on_save_replay = @(fn) true
     is_era_available = function(...) { return true }
     get_current_mission_desc = @(outBlk) outBlk.setFrom(
       ::getroottable()?._fake_get_current_mission_desc ?? ::get_current_mission_info_cached())
@@ -268,6 +271,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
     "is_menu_state"
     "get_cur_rank_info"
     "get_cur_warpoints"
+    "is_has_multiplayer"
     "get_option_gun_target_dist"
     "get_option_bomb_activation_type"
     "get_option_bomb_activation_time"

@@ -1,4 +1,3 @@
-let regexp2 = require("regexp2")
 let { getTierWeaponsParams, getCustomWeaponryPresetView, editSlotInPreset, getPresetDisbalanceText
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -7,7 +6,6 @@ let { openPopupList } = require("%scripts/popups/popupList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { addCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { getUnitWeaponSlots } = require("%scripts/weaponry/weaponryPresets.nut")
 
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
@@ -33,12 +31,11 @@ let function openEditPresetName(name, okFunc) {
   availableWeapons     = null
   favoriteArr          = null
   maxDisbalance        = -1
-  notUseforDisbalance  = null
 
   getSceneTplView = @() { presets = getPresetMarkup() }
 
   function initScreen() {
-    updateUnitDisbalanceParams()
+    maxDisbalance = ::get_full_unit_blk(unit.name)?.WeaponSlots.maxDisbalance ?? -1
     checkWeightDisbalance()
     presetNest = scene.findObject("presetNest")
     ::move_mouse_on_obj(presetNest.findObject("presetHeader_"))
@@ -73,7 +70,7 @@ let function openEditPresetName(name, okFunc) {
     let curPresetId = curTier?.presetId ?? ""
     local maxWidth = 0
     foreach (p in params)
-      maxWidth = max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
+      maxWidth = ::max(maxWidth, getStringWidthPx(p.name, "fontMedium"))
     foreach (p in params)
       if (p.id != curPresetId)
         buttons.append({
@@ -164,7 +161,7 @@ let function openEditPresetName(name, okFunc) {
     let tierObj = getCurrenTierObj()
     let isWeaponsAvailable = isTierObj(tierObj)
       && availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger()).len() > 0
-    this.showSceneBtn("editTier", presetNest.findObject("tiersNest_").isHovered()
+    showSceneBtn("editTier", presetNest.findObject("tiersNest_").isHovered()
       && isWeaponsAvailable)
   }
 
@@ -182,7 +179,7 @@ let function openEditPresetName(name, okFunc) {
   onPresetSelect = @() null
 
   function onPresetSave() {
-    let disbalanceText = getPresetDisbalanceText(preset, maxDisbalance, notUseforDisbalance)
+    let disbalanceText = getPresetDisbalanceText(preset, maxDisbalance)
     if (disbalanceText != "") {
       ::showInfoMsgBox($"{::loc("msg/can_not_save_preset")}\n{disbalanceText}", "can_not_save_disbalanced_preset")
       return
@@ -198,27 +195,18 @@ let function openEditPresetName(name, okFunc) {
   }
 
   function goBack() {
-    this.msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
+    msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
       [
         ["yes", base.goBack],
         ["cancel", function () {}]
       ], "cancel")
   }
 
-  function updateUnitDisbalanceParams() {
-    let unitBlk = ::get_full_unit_blk(unit.name)
-    maxDisbalance = unitBlk?.WeaponSlots.maxDisbalance ?? -1
-    notUseforDisbalance = {}
-    foreach (slot in getUnitWeaponSlots(unitBlk))
-      if (slot?.notUseforDisbalanceCalculation ?? false)
-        notUseforDisbalance[slot?.tier ?? slot.index] <- true
-  }
-
   function checkWeightDisbalance() {
     if (maxDisbalance < 0)
       return
 
-    let disbalanceText = getPresetDisbalanceText(preset, maxDisbalance, notUseforDisbalance)
+    let disbalanceText = getPresetDisbalanceText(preset, maxDisbalance)
     scene.findObject("weightDisbalance").setValue(disbalanceText)
     scene.findObject("savePreset").inactiveColor = disbalanceText != "" ? "yes" : "no"
   }

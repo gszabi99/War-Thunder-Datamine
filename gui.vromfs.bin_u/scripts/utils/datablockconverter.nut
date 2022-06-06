@@ -16,7 +16,6 @@
  *      @return {null|bool|integer|float|string|array|table|DataBlock} -
  *        Data in its original state.
  */
-let { isDataBlock } = require("%sqstd/datablock.nut")
 
 let keyToStr = function(key)
 {
@@ -39,7 +38,7 @@ let strToKey = function(str)
 
 let dataToBlk = function(data)
 {
-  let dataType = isDataBlock(data) ? "DataBlock" : type(data)
+  let dataType = ::u.isDataBlock(data) ? "DataBlock" : type(data)
   switch (dataType)
   {
     case "null":
@@ -74,7 +73,7 @@ let blkToData = function(blk)
   {
     return null
   }
-  if (!isDataBlock(blk))
+  if (!::u.isDataBlock(blk))
   {
     return blk == "__null" ? null : blk
   }

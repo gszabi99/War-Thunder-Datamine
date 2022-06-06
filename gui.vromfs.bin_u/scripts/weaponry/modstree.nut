@@ -348,7 +348,7 @@ local modsTree = {
         let corners = getBranchCorners(item)
         let block = {
           name = typeof(item[0])=="string"? ::loc("modification/category/" + item[0]) : ""
-          width = max(corners[1].guiPosX - corners[0].guiPosX, 1)
+          width = ::max(corners[1].guiPosX - corners[0].guiPosX, 1)
         }
         res.blocks.append(block)
       }
@@ -387,8 +387,8 @@ local modsTree = {
     if (notInTreeMods.len()==0)
       return
 
-    ::dagor.debug("incorrect modification requirements for air " + air.name)
-    ::debugTableData(notInTreeMods)
+    dagor.debug("incorrect modification requirements for air " + air.name)
+    debugTableData(notInTreeMods)
     foreach(mod in notInTreeMods)
     {
       local prevName = ""
@@ -406,7 +406,7 @@ local modsTree = {
         res = "is premium"
       else
         res = "have another incorrect requirement"
-      ::dagor.debug("modification " + prevName + " required for " + mod.name + " " + res)
+      dagor.debug("modification " + prevName + " required for " + mod.name + " " + res)
     }
     ::dagor.assertf(false, "Error: found incorrect modifications requirement for air " + air.name)
   }

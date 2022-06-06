@@ -74,7 +74,7 @@ let styling = {
         watch = stateFlags
 
         children = {
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_DTEXT
           margin = sh(1)
           text = desc?.text ?? "???"
           group = buttonGrp

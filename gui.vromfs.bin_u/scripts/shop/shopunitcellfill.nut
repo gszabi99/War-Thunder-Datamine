@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
@@ -164,7 +163,7 @@ let function updateCardStatus(obj, id, statusTbl) {
     discountObj.setValue("")
   else {
     discountObj.setValue($"-{discount}%")
-    discountObj.tooltip = format(::loc("discount/buy/tooltip"), discount.tostring())
+    discountObj.tooltip = ::format(::loc("discount/buy/tooltip"), discount.tostring())
   }
 
   let hasBonus = expMul > 1 || wpMul > 1
@@ -173,13 +172,13 @@ let function updateCardStatus(obj, id, statusTbl) {
     bonusObj.bonusType = expMul > 1 && wpMul > 1 ? "wp_exp"
       : expMul > 1 ? "exp"
       : "wp"
-    bonusObj["background-image"] = ::getBonusImage("item", max(expMul, wpMul), "air")
+    bonusObj["background-image"] = ::getBonusImage("item", ::max(expMul, wpMul), "air")
     let locEnd = isGroup ? "/group/tooltip" : "/tooltip"
     let tooltipArr = []
     if (expMul > 1)
-      tooltipArr.append(format(::loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
+      tooltipArr.append(::format(::loc($"bonus/expitemAircraftMul{locEnd}"), $"x{expMul}"))
     if (wpMul > 1)
-      tooltipArr.append(format(::loc($"bonus/wpitemAircraftMul{locEnd}"), $"x{wpMul}"))
+      tooltipArr.append(::format(::loc($"bonus/wpitemAircraftMul{locEnd}"), $"x{wpMul}"))
     bonusObj.tooltip = "\n".join(tooltipArr, true)
   }
 }
@@ -274,7 +273,7 @@ let function getUnitResearchStatusTbl(unit, params) {
   let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle = unit.isSquadronVehicle()
   let unitCurExp = ::getUnitExp(unit)
-  let diffExp = isSquadronVehicle ? min(::clan_get_exp(), unitReqExp - unitCurExp) : 0
+  let diffExp = isSquadronVehicle ? ::min(::clan_get_exp(), unitReqExp - unitCurExp) : 0
   let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
   if (isLockedSquadronVehicle && unitCurExp <= 0)
     return {}
@@ -309,7 +308,7 @@ let function getUnitTimedStatusTbl(unit) {
 let function getFakeUnitStatusTbl(unit, params) {
   let { showBR = false, getEdiffFunc = ::get_current_ediff } = params
 
-  let nameForLoc = unit?.isReqForFakeUnit ? split_by_chars(unit.name, "_")?[0] : unit.name
+  let nameForLoc = unit?.isReqForFakeUnit ? ::split(unit.name, "_")?[0] : unit.name
   let { esUnitType } = unitTypes.getByName(unit.name, false)
   let isFakeAirRankOpen = ::get_units_count_at_rank(unit?.rank, esUnitType, unit?.country, true)
   let bitStatus = unit?.isReqForFakeUnit ? bit_unit_status.disabled
@@ -388,8 +387,8 @@ let function getGroupStatusTbl(group, params) {
     let hasTalisman = ::isUnitSpecial(unit) || ::shop_is_modification_enabled(unit.name, "premExpMul")
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     isTalismanComplete = isTalismanComplete && hasTalisman
-    expMul = max(expMul, ::wp_shop_get_aircraft_xp_rate(unit.name))
-    wpMul = max(wpMul, ::wp_shop_get_aircraft_wp_rate(unit.name))
+    expMul = ::max(expMul, ::wp_shop_get_aircraft_xp_rate(unit.name))
+    wpMul = ::max(wpMul, ::wp_shop_get_aircraft_wp_rate(unit.name))
 
     if (!hasObjective && !shopResearchMode
         && (bit_unit_status.locked & curBitStatus) == 0

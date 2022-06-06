@@ -1,5 +1,3 @@
-let { format } = require("string")
-let regexp2 = require("regexp2")
 let stdMath = require("%sqstd/math.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
@@ -103,7 +101,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
     eventDescription = ::create_event_description(scene)
     showOnlyAvailableRooms = ::load_local_account_settings("events/showOnlyAvailableRooms", true)
-    let obj = this.showSceneBtn("only_available_rooms", true)
+    let obj = showSceneBtn("only_available_rooms", true)
     obj.setValue(showOnlyAvailableRooms)
     refreshList()
     fillRoomsList()
@@ -129,7 +127,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
     frameObj.top = "1@battleBtnBottomOffset - 1@frameFooterHeight - h"
 
-    let roomsListBtn = this.showSceneBtn("btn_rooms_list", true)
+    let roomsListBtn = showSceneBtn("btn_rooms_list", true)
     roomsListBtn.btnName = "B"
     roomsListBtn.isOpened = "yes"
     guiScene.applyPendingChanges(false)
@@ -273,7 +271,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let hasRoom = curRoomId.len() != 0
 
     let isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
-    this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredIdx >= 0)
+    showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredIdx >= 0)
 
     let reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
@@ -283,7 +281,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     let isReady = ::g_squad_manager.isMeReady()
     let isSquadMember = ::g_squad_manager.isSquadMember()
 
-    let joinButtonObj = this.showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
+    let joinButtonObj = showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
     joinButtonObj.inactiveColor = reasonData.activeJoinButton || isSquadMember ? "no" : "yes"
     joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
     let availTeams = ::events.getAvailableTeams(roomMGM)
@@ -298,16 +296,16 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
-      startText += format(" (%s)", battlePriceText)
+      startText += ::format(" (%s)", battlePriceText)
 
     setColoredDoubleTextToButton(scene, "btn_join_event", startText)
-    let reasonTextObj = this.showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
+    let reasonTextObj = showSceneBtn("cant_join_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
 
-    this.showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(event))
+    showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(event))
 
     let isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
-    let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isHeader)
+    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
       let isCollapsedChapter = ::isInArray(curChapterId, collapsedChapterNamesArray)
@@ -406,7 +404,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
           let tier = ::events.getTierNumByRule(rule)
           if (tier > 0)
           {
-            flags = flags | (eRoomFlags.ROOM_TIER >> (min(tier, 5) - 1))
+            flags = flags | (eRoomFlags.ROOM_TIER >> (::min(tier, 5) - 1))
             break
           }
         }

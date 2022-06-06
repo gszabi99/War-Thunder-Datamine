@@ -1,4 +1,3 @@
-let { format } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { isModUpgradeable, hasActiveOverdrive } = require("%scripts/weaponry/modificationInfo.nut")
@@ -32,7 +31,7 @@ elemViewType.addTypes({
       params.__merge({
         subscriptions = [params?.unit || "", params?.mod || ""]
       }))
-    createMarkup = @(params, objId = null) format("modUpgradeImg { id:t='%s'; value:t='%s' } ",
+    createMarkup = @(params, objId = null) ::format("modUpgradeImg { id:t='%s'; value:t='%s' } ",
       objId || "", ::g_string.stripTags(getBhvParamsString(params)))
 
     updateView = function(obj, params)

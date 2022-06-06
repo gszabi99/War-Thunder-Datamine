@@ -39,37 +39,37 @@
       "actions": [
         {
           "comment": {
-            "value": "maksimal'noe kolichestvo aktivnyh baz - TRI"
+            "value": "максимальное количество активных баз - ТРИ"
           }
         },
         {
           "comment": {
-            "value": "poluchaem balansnyj uroven' missii"
+            "value": "получаем балансный уровень миссии"
           }
         },
         {
           "comment": {
-            "value": "bdt_army_both_zero: -1 -vsegda dlya obeih armij. 0 - dlya obeih armij no mozhet menyat'sya upravlyayushchim shablonom, 1 i 2 - dlya armii A i B"
+            "value": "bdt_army_both_zero: -1 -всегда для обеих армий. 0 - для обеих армий но может меняться управляющим шаблоном, 1 и 2 - для армии А и Б"
           }
         },
         {
           "comment": {
-            "value": "bdt_t1_total_bases_max_count - maksimal'neo kolichestvo baz dostupnyh dlya vybora."
+            "value": "bdt_t1_total_bases_max_count - максимальнео количество баз доступных для выбора."
           }
         },
         {
           "comment": {
-            "value": "bdt_t1_active_bases_max_count - maksimal'noe kolichestvo odnovremenno aktivnyh baz"
+            "value": "bdt_t1_active_bases_max_count - максимальное количество одновременно активных баз"
           }
         },
         {
           "comment": {
-            "value": "naznachaem svojstva celyam"
+            "value": "назначаем свойства целям"
           }
         },
         {
           "comment": {
-            "value": "naznachaem svojstva zenitkam"
+            "value": "назначаем свойства зениткам"
           }
         },
         {
@@ -79,7 +79,7 @@
         },
         {
           "comment": {
-            "value": "zapuskaem  shablon"
+            "value": "запускаем  шаблон"
           }
         },
         {
@@ -221,7 +221,7 @@
         },
         {
           "comment": {
-            "value": "special'no ne delayed chtoby pervaya pachka celej poyavilas'  srazu"
+            "value": "специально не delayed чтобы первая пачка целей появилась  сразу"
           }
         },
         {
@@ -231,12 +231,12 @@
         },
         {
           "comment": {
-            "value": "zapuskaem proverku unichtozheniya"
+            "value": "запускаем проверку уничтожения"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem proverku vosstanovleniya"
+            "value": "запускаем проверку восстановления"
           }
         },
         {
@@ -312,7 +312,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "aktiviruem spavnery baz"
+            "value": "активируем спавнеры баз"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_start"
@@ -374,7 +374,7 @@
             "var": "bdt_t1_cur_base_spawn_idx"
           },
           "comment": {
-            "value": "restart"
+            "value": "рестарт"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_start"
@@ -423,42 +423,42 @@
           },
           {
             "comment": {
-              "value": "kolichestvo aktivnyh zon men'she razreshennogo"
+              "value": "количество активных зон меньше разрешенного"
             }
           },
           {
             "comment": {
-              "value": "vybiraem sluchajnyj indeks zony"
+              "value": "выбираем случайный индекс зоны"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya zony"
+              "value": "собираем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya ob'ekta"
+              "value": "собираем имя объекта"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya tajmera"
+              "value": "собираем имя таймера"
             }
           },
           {
             "comment": {
-              "value": "poluchaem znachenie tajmera"
+              "value": "получаем значение таймера"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya peremennoj zony"
+              "value": "собираем имя переменной зоны"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya zenitok"
+              "value": "собираем имя зениток"
             }
           },
           {
@@ -468,7 +468,7 @@
           },
           {
             "comment": {
-              "value": "vypolnyaem proverku dostupno li imya"
+              "value": "выполняем проверку доступно ли имя"
             }
           },
           {
@@ -600,7 +600,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "dostigli maksimuma zon"
+            "value": "достигли максимума зон"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_restart"
@@ -722,12 +722,12 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya zenitok"
+              "value": "собираем имя зениток"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya ob'ekta"
+              "value": "собираем имя объекта"
             }
           },
           {
@@ -773,7 +773,7 @@
         },
         "actions": {
           "comment": {
-            "value": "imya pustoe, mozhno proveryat' dal'she"
+            "value": "имя пустое, можно проверять дальше"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_check_name"
@@ -781,7 +781,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "imya zanyato, idem dal'she po ciklu"
+            "value": "имя занято, идем дальше по циклу"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_rotator"
@@ -849,7 +849,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "imya zony - validno"
+            "value": "имя зоны - валидно"
           },
           "triggerEnable": {
             "target": "bdt_t1_frontline_start"
@@ -857,7 +857,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "imya zony - ne validno. generiruem ego zanovo"
+            "value": "имя зоны - не валидно. генерируем его заново"
           },
           "varModify": {
             "operator": "add",
@@ -892,22 +892,22 @@
         "actions": [
           {
             "comment": {
-              "value": "gotovimsya k proverke ne nahoditsya li zona na chuzhoj territorii"
+              "value": "готовимся к проверке не находится ли зона на чужой территории"
             }
           },
           {
             "comment": {
-              "value": "poluchaem imya peremennoj s armiej"
+              "value": "получаем имя переменной с армией"
             }
           },
           {
             "comment": {
-              "value": "poluchaem indeks armii"
+              "value": "получаем индекс армии"
             }
           },
           {
             "comment": {
-              "value": "proveryaem armiyu"
+              "value": "проверяем армию"
             }
           },
           {
@@ -973,12 +973,12 @@
         "actions": [
           {
             "comment": {
-              "value": "v predelah zon komandy A"
+              "value": "в пределах зон команды А"
             }
           },
           {
             "comment": {
-              "value": "sozdaem imya zony"
+              "value": "создаем имя зоны"
             }
           },
           {
@@ -1007,7 +1007,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "vyshli za predely territorii A"
+            "value": "вышли за пределы территории А"
           },
           "varModify": {
             "operator": "add",
@@ -1084,47 +1084,47 @@
         "actions": [
           {
             "comment": {
-              "value": "proyavlyaem ob'ekt"
+              "value": "проявляем объект"
             }
           },
           {
             "comment": {
-              "value": "proverili chto ob'ekt sushchestvuet"
+              "value": "проверили что объект существует"
             }
           },
           {
             "comment": {
-              "value": "zapominaem imya zony v odnu iz peremennyh"
+              "value": "запоминаем имя зоны в одну из переменных"
             }
           },
           {
             "comment": {
-              "value": "zapominaem imya zony"
+              "value": "запоминаем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "uvelichivaem peremennuyu kolichestva tekushchih zon na odnu"
+              "value": "увеличиваем переменную количества текущих зон на одну"
             }
           },
           {
             "comment": {
-              "value": "daem zadanie"
+              "value": "даем задание"
             }
           },
           {
             "comment": {
-              "value": "govorim chto cel' dostupna dlya bomberov"
+              "value": "говорим что цель доступна для бомберов"
             }
           },
           {
             "comment": {
-              "value": "naznachaem tajmer"
+              "value": "назначаем таймер"
             }
           },
           {
             "comment": {
-              "value": "zapuskaem spavny zenitok"
+              "value": "запускаем спавны зениток"
             }
           },
           {
@@ -1209,7 +1209,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "ob'ekta ne sushchestvuet. zapuskaem golovnoj skript"
+            "value": "объекта не существует. запускаем головной скрипт"
           },
           "varModify": {
             "operator": "add",
@@ -1238,7 +1238,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "aktiviruem spavnery baz"
+            "value": "активируем спавнеры баз"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_start"
@@ -1300,7 +1300,7 @@
             "var": "bdt_t2_cur_base_spawn_idx"
           },
           "comment": {
-            "value": "restart"
+            "value": "рестарт"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_start"
@@ -1349,42 +1349,42 @@
           },
           {
             "comment": {
-              "value": "kolichestvo aktivnyh zon men'she razreshennogo"
+              "value": "количество активных зон меньше разрешенного"
             }
           },
           {
             "comment": {
-              "value": "vybiraem sluchajnyj indeks zony"
+              "value": "выбираем случайный индекс зоны"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya zony"
+              "value": "собираем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya ob'ekta"
+              "value": "собираем имя объекта"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya tajmera"
+              "value": "собираем имя таймера"
             }
           },
           {
             "comment": {
-              "value": "poluchaem znachenie tajmera"
+              "value": "получаем значение таймера"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya peremennoj zony"
+              "value": "собираем имя переменной зоны"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya zenitok"
+              "value": "собираем имя зениток"
             }
           },
           {
@@ -1394,7 +1394,7 @@
           },
           {
             "comment": {
-              "value": "vypolnyaem proverku dostupno li imya"
+              "value": "выполняем проверку доступно ли имя"
             }
           },
           {
@@ -1526,7 +1526,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "dostigli maksimuma zon"
+            "value": "достигли максимума зон"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_restart"
@@ -1648,12 +1648,12 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya zenitok"
+              "value": "собираем имя зениток"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya ob'ekta"
+              "value": "собираем имя объекта"
             }
           },
           {
@@ -1699,7 +1699,7 @@
         },
         "actions": {
           "comment": {
-            "value": "imya pustoe, mozhno proveryat' dal'she"
+            "value": "имя пустое, можно проверять дальше"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_check_name"
@@ -1707,7 +1707,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "imya zanyato, idem dal'she po ciklu"
+            "value": "имя занято, идем дальше по циклу"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_rotator"
@@ -1768,7 +1768,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "imya zony - validno"
+            "value": "имя зоны - валидно"
           },
           "triggerEnable": {
             "target": "bdt_t2_frontline_start"
@@ -1776,7 +1776,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "imya zony - ne validno. generiruem ego zanovo"
+            "value": "имя зоны - не валидно. генерируем его заново"
           },
           "varModify": {
             "operator": "add",
@@ -1811,22 +1811,22 @@
         "actions": [
           {
             "comment": {
-              "value": "gotovimsya k proverke ne nahoditsya li zona na chuzhoj territorii"
+              "value": "готовимся к проверке не находится ли зона на чужой территории"
             }
           },
           {
             "comment": {
-              "value": "poluchaem imya peremennoj s armiej"
+              "value": "получаем имя переменной с армией"
             }
           },
           {
             "comment": {
-              "value": "poluchaem indeks armii"
+              "value": "получаем индекс армии"
             }
           },
           {
             "comment": {
-              "value": "proveryaem armiyu"
+              "value": "проверяем армию"
             }
           },
           {
@@ -1892,17 +1892,17 @@
         "actions": [
           {
             "comment": {
-              "value": "v predelah zon komandy A"
+              "value": "в пределах зон команды А"
             }
           },
           {
             "comment": {
-              "value": "sozdaem imya zony"
+              "value": "создаем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "spavnim zonu"
+              "value": "спавним зону"
             }
           },
           {
@@ -1926,7 +1926,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "vyshli za predely territorii A"
+            "value": "вышли за пределы территории А"
           },
           "varModify": {
             "operator": "add",
@@ -2016,47 +2016,47 @@
           },
           {
             "comment": {
-              "value": "proyavlyaem ob'ekt"
+              "value": "проявляем объект"
             }
           },
           {
             "comment": {
-              "value": "proverili chto ob'ekt sushchestvuet"
+              "value": "проверили что объект существует"
             }
           },
           {
             "comment": {
-              "value": "zapominaem imya zony v odnu iz peremennyh"
+              "value": "запоминаем имя зоны в одну из переменных"
             }
           },
           {
             "comment": {
-              "value": "zapominaem imya zony"
+              "value": "запоминаем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "uvelichivaem peremennuyu kolichestva tekushchih zon na odnu"
+              "value": "увеличиваем переменную количества текущих зон на одну"
             }
           },
           {
             "comment": {
-              "value": "daem zadanie"
+              "value": "даем задание"
             }
           },
           {
             "comment": {
-              "value": "govorim chto cel' dostupna dlya bomberov"
+              "value": "говорим что цель доступна для бомберов"
             }
           },
           {
             "comment": {
-              "value": "naznachaem tajmer"
+              "value": "назначаем таймер"
             }
           },
           {
             "comment": {
-              "value": "spavnim zenitki"
+              "value": "спавним зенитки"
             }
           },
           {
@@ -2141,7 +2141,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "ob'ekta ne sushchestvuet. zapuskaem golovnoj skript"
+            "value": "объекта не существует. запускаем головной скрипт"
           },
           "varModify": {
             "operator": "add",
@@ -2270,7 +2270,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "net zony dlya spavna"
+              "value": "нет зоны для спавна"
             },
             "triggerEnable": {
               "target": "bdt_t1_aaa_spawn_rotator"
@@ -2391,7 +2391,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "net zony dlya spavna"
+              "value": "нет зоны для спавна"
             },
             "triggerEnable": {
               "target": "bdt_t2_aaa_spawn_rotator"
@@ -2420,22 +2420,22 @@
         "actions": [
           {
             "comment": {
-              "value": "zahvatili territoriyu komandy A"
+              "value": "захватили территорию команды А"
             }
           },
           {
             "comment": {
-              "value": "proveryaem ne nado li ubrat' bazu"
+              "value": "проверяем не надо ли убрать базу"
             }
           },
           {
             "comment": {
-              "value": "imya zahvachennoj zony v peremennoj bdt_capture_t1_frontline_name"
+              "value": "имя захваченной зоны в переменной bdt_capture_t1_frontline_name"
             }
           },
           {
             "comment": {
-              "value": "nachinaem poisk"
+              "value": "начинаем поиск"
             }
           },
           {
@@ -2476,17 +2476,17 @@
         "actions": [
           {
             "comment": {
-              "value": "uvelichivaem indeks na 1"
+              "value": "увеличиваем индекс на 1"
             }
           },
           {
             "comment": {
-              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+              "value": "составляем имя переменной, в которой хранится имя аирфилда"
             }
           },
           {
             "comment": {
-              "value": "poluchaem imya bombovoj zony"
+              "value": "получаем имя бомбовой зоны"
             }
           },
           {
@@ -2571,12 +2571,12 @@
           },
           {
             "comment": {
-              "value": "polchaem imya peremennoj gde hranitsya armiya zony v kotoroj fild"
+              "value": "полчаем имя переменной где хранится армия зоны в которой филд"
             }
           },
           {
             "comment": {
-              "value": "poluchaem armiyu"
+              "value": "получаем армию"
             }
           },
           {
@@ -2601,7 +2601,7 @@
           },
           {
             "comment": {
-              "value": "proveryaem ne nahoditsya li airfild v iskomoj zone"
+              "value": "проверяем не находится ли аирфилд в искомой зоне"
             }
           },
           {
@@ -2715,22 +2715,22 @@
         "actions": [
           {
             "comment": {
-              "value": "bombovaya zona v isomoj zone. nado ee otklyuchit'"
+              "value": "бомбовая зона в исомой зоне. надо ее отключить"
             }
           },
           {
             "comment": {
-              "value": "sozdaem imya zony"
+              "value": "создаем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "ubivaem zonu"
+              "value": "убиваем зону"
             }
           },
           {
             "comment": {
-              "value": "pryachem zentiku"
+              "value": "прячем зентику"
             }
           },
           {
@@ -2789,12 +2789,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "aerodrom ne v iskomoj zone otklyuchat' ne nado"
+              "value": "аэродром не в искомой зоне отключать не надо"
             }
           },
           {
             "comment": {
-              "value": "proveryaem sleduyushchij"
+              "value": "проверяем следующий"
             }
           },
           {
@@ -2821,22 +2821,22 @@
         "actions": [
           {
             "comment": {
-              "value": "zahvatili territoriyu komandy A"
+              "value": "захватили территорию команды А"
             }
           },
           {
             "comment": {
-              "value": "proveryaem ne nado li ubrat' bazu"
+              "value": "проверяем не надо ли убрать базу"
             }
           },
           {
             "comment": {
-              "value": "imya zahvachennoj zony v peremennoj bdt_capture_t1_frontline_name"
+              "value": "имя захваченной зоны в переменной bdt_capture_t1_frontline_name"
             }
           },
           {
             "comment": {
-              "value": "nachinaem poisk"
+              "value": "начинаем поиск"
             }
           },
           {
@@ -2877,17 +2877,17 @@
         "actions": [
           {
             "comment": {
-              "value": "uvelichivaem indeks na 1"
+              "value": "увеличиваем индекс на 1"
             }
           },
           {
             "comment": {
-              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+              "value": "составляем имя переменной, в которой хранится имя аирфилда"
             }
           },
           {
             "comment": {
-              "value": "poluchaem imya bombovoj zony"
+              "value": "получаем имя бомбовой зоны"
             }
           },
           {
@@ -2972,12 +2972,12 @@
           },
           {
             "comment": {
-              "value": "polchaem imya peremennoj gde hranitsya armiya zony v kotoroj fild"
+              "value": "полчаем имя переменной где хранится армия зоны в которой филд"
             }
           },
           {
             "comment": {
-              "value": "poluchaem armiyu"
+              "value": "получаем армию"
             }
           },
           {
@@ -3002,7 +3002,7 @@
           },
           {
             "comment": {
-              "value": "proveryaem ne nahoditsya li airfild v iskomoj zone"
+              "value": "проверяем не находится ли аирфилд в искомой зоне"
             }
           },
           {
@@ -3116,22 +3116,22 @@
         "actions": [
           {
             "comment": {
-              "value": "aerodrom v isomoj zone. nado ego otklyuchit'"
+              "value": "аэродром в исомой зоне. надо его отключить"
             }
           },
           {
             "comment": {
-              "value": "sozdaem imya zony"
+              "value": "создаем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "ubivaem zonu"
+              "value": "убиваем зону"
             }
           },
           {
             "comment": {
-              "value": "pryachem zenitku"
+              "value": "прячем зенитку"
             }
           },
           {
@@ -3190,12 +3190,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "aerodrom ne v iskomoj zone otklyuchat' ne nado"
+              "value": "аэродром не в искомой зоне отключать не надо"
             }
           },
           {
             "comment": {
-              "value": "proveryaem sleduyushchij"
+              "value": "проверяем следующий"
             }
           },
           {
@@ -3251,7 +3251,7 @@
           },
           {
             "comment": {
-              "value": "4000 dlya istorii"
+              "value": "4000 для истории"
             }
           },
           {
@@ -3324,7 +3324,7 @@
           },
           {
             "comment": {
-              "value": "6000 dlya istorii"
+              "value": "6000 для истории"
             }
           },
           {
@@ -3397,7 +3397,7 @@
           },
           {
             "comment": {
-              "value": "10000 dlya istorii"
+              "value": "10000 для истории"
             }
           },
           {
@@ -3470,7 +3470,7 @@
           },
           {
             "comment": {
-              "value": "16000 dlya istorii"
+              "value": "16000 для истории"
             }
           },
           {
@@ -3543,7 +3543,7 @@
           },
           {
             "comment": {
-              "value": "22000 dlya istorii"
+              "value": "22000 для истории"
             }
           },
           {
@@ -3607,7 +3607,7 @@
           },
           {
             "comment": {
-              "value": "28000 dlya istorii"
+              "value": "28000 для истории"
             }
           },
           {
@@ -3682,7 +3682,7 @@
             "var": "bdt_destroy_t1_bombing_zone_idx"
           },
           "comment": {
-            "value": "nachinaem poisk"
+            "value": "начинаем поиск"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t1_rotator"
@@ -3714,27 +3714,27 @@
         "actions": [
           {
             "comment": {
-              "value": "indeks men'she treh proveryaem"
+              "value": "индекс меньше трех проверяем"
             }
           },
           {
             "comment": {
-              "value": "uvelichivaem indeks na 1"
+              "value": "увеличиваем индекс на 1"
             }
           },
           {
             "comment": {
-              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+              "value": "составляем имя переменной, в которой хранится имя аирфилда"
             }
           },
           {
             "comment": {
-              "value": "poluchaem imya bombovoj zony"
+              "value": "получаем имя бомбовой зоны"
             }
           },
           {
             "comment": {
-              "value": "proveryaem imya zony"
+              "value": "проверяем имя зоны"
             }
           },
           {
@@ -3778,7 +3778,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "indeks vyshel za diapazon. restartim"
+            "value": "индекс вышел за диапазон. рестартим"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t1_start"
@@ -3807,12 +3807,12 @@
         "actions": [
           {
             "comment": {
-              "value": "zapolnyaem imya zenitki"
+              "value": "заполняем имя зенитки"
             }
           },
           {
             "comment": {
-              "value": "zona est' - proveryaem status"
+              "value": "зона есть - проверяем статус"
             }
           },
           {
@@ -3824,7 +3824,7 @@
         "else_actions": [
           {
             "comment": {
-              "value": "net takoj zony idem dal'she"
+              "value": "нет такой зоны идем дальше"
             }
           },
           {
@@ -3873,12 +3873,12 @@
         "actions": [
           {
             "comment": {
-              "value": "zona unichtozhena"
+              "value": "зона уничтожена"
             }
           },
           {
             "comment": {
-              "value": "opustoshaem imya zony"
+              "value": "опустошаем имя зоны"
             }
           },
           {
@@ -3893,22 +3893,22 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya obzhektiva"
+              "value": "собираем имя обжектива"
             }
           },
           {
             "comment": {
-              "value": "govorim chto obzhektiv vypolnen"
+              "value": "говорим что обжектив выполнен"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya tajmera"
+              "value": "собираем имя таймера"
             }
           },
           {
             "comment": {
-              "value": "naznachaem tajmer"
+              "value": "назначаем таймер"
             }
           },
           {
@@ -3918,12 +3918,12 @@
           },
           {
             "comment": {
-              "value": "ubivaem zenitki"
+              "value": "убиваем зенитки"
             }
           },
           {
             "comment": {
-              "value": "umen'shaem kolichestvo aktivnyh baz"
+              "value": "уменьшаем количество активных баз"
             }
           },
           {
@@ -4046,7 +4046,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "zona cela - idem dal'she po ciklu"
+            "value": "зона цела - идем дальше по циклу"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t1_rotator"
@@ -4073,7 +4073,7 @@
             "var": "bdt_destroy_t2_bombing_zone_idx"
           },
           "comment": {
-            "value": "nachinaem poisk"
+            "value": "начинаем поиск"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_rotator"
@@ -4105,27 +4105,27 @@
         "actions": [
           {
             "comment": {
-              "value": "indeks men'she treh proveryaem"
+              "value": "индекс меньше трех проверяем"
             }
           },
           {
             "comment": {
-              "value": "uvelichivaem indeks na 1"
+              "value": "увеличиваем индекс на 1"
             }
           },
           {
             "comment": {
-              "value": "sostavlyaem imya peremennoj, v kotoroj hranitsya imya airfilda"
+              "value": "составляем имя переменной, в которой хранится имя аирфилда"
             }
           },
           {
             "comment": {
-              "value": "poluchaem imya bombovoj zony"
+              "value": "получаем имя бомбовой зоны"
             }
           },
           {
             "comment": {
-              "value": "proveryaem imya zony"
+              "value": "проверяем имя зоны"
             }
           },
           {
@@ -4169,7 +4169,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "indeks vyshel za diapazon. restartim"
+            "value": "индекс вышел за диапазон. рестартим"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_start"
@@ -4198,12 +4198,12 @@
         "actions": [
           {
             "comment": {
-              "value": "poluchaem ob'ekta targeta bombovoj zony"
+              "value": "получаем объекта таргета бомбовой зоны"
             }
           },
           {
             "comment": {
-              "value": "zona est' - proveryaem status"
+              "value": "зона есть - проверяем статус"
             }
           },
           {
@@ -4220,7 +4220,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "net takoj zony idem dal'she"
+            "value": "нет такой зоны идем дальше"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_rotator"
@@ -4248,17 +4248,17 @@
         "actions": [
           {
             "comment": {
-              "value": "zona unichtozhena"
+              "value": "зона уничтожена"
             }
           },
           {
             "comment": {
-              "value": "opustoshaem imya zony"
+              "value": "опустошаем имя зоны"
             }
           },
           {
             "comment": {
-              "value": "pryachem ob'ekt"
+              "value": "прячем объект"
             }
           },
           {
@@ -4268,22 +4268,22 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya obzhektiva"
+              "value": "собираем имя обжектива"
             }
           },
           {
             "comment": {
-              "value": "govorim chto obzhektiv vypolnen"
+              "value": "говорим что обжектив выполнен"
             }
           },
           {
             "comment": {
-              "value": "sobiraem imya tajmera"
+              "value": "собираем имя таймера"
             }
           },
           {
             "comment": {
-              "value": "naznachaem tajmer"
+              "value": "назначаем таймер"
             }
           },
           {
@@ -4293,12 +4293,12 @@
           },
           {
             "comment": {
-              "value": "ubivaem zenitki"
+              "value": "убиваем зенитки"
             }
           },
           {
             "comment": {
-              "value": "umen'shaem kolichestvo aktivnyh baz"
+              "value": "уменьшаем количество активных баз"
             }
           },
           {
@@ -4421,7 +4421,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "zona cela - idem dal'she po ciklu"
+            "value": "зона цела - идем дальше по циклу"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_rotator"
@@ -4789,12 +4789,12 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya obzhektiva"
+              "value": "собираем имя обжектива"
             }
           },
           {
             "comment": {
-              "value": "proveryaem status"
+              "value": "проверяем статус"
             }
           },
           {
@@ -4914,12 +4914,12 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya obzhektiva"
+              "value": "собираем имя обжектива"
             }
           },
           {
             "comment": {
-              "value": "proveryaem status"
+              "value": "проверяем статус"
             }
           },
           {
@@ -5185,17 +5185,17 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya peremennoj gde hranitsya tajmer"
+              "value": "собираем имя переменной где хранится таймер"
             }
           },
           {
             "comment": {
-              "value": "poluchaem znachenie tajmera"
+              "value": "получаем значение таймера"
             }
           },
           {
             "comment": {
-              "value": "proveryaem znachenie tajmera"
+              "value": "проверяем значение таймера"
             }
           },
           {
@@ -5260,12 +5260,12 @@
         "actions": [
           {
             "comment": {
-              "value": "tajmer bol'she nulya - umen'shaem ego"
+              "value": "таймер больше нуля - уменьшаем его"
             }
           },
           {
             "comment": {
-              "value": "idem dal'she po ciklu"
+              "value": "идем дальше по циклу"
             }
           },
           {
@@ -5283,7 +5283,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "idem dal'she pociklu"
+            "value": "идем дальше поциклу"
           },
           "triggerEnable": {
             "target": "bdt_t1_restore_rotator"
@@ -5346,17 +5346,17 @@
           },
           {
             "comment": {
-              "value": "sobiraem imya peremennoj gde hranitsya tajmer"
+              "value": "собираем имя переменной где хранится таймер"
             }
           },
           {
             "comment": {
-              "value": "poluchaem znachenie tajmera"
+              "value": "получаем значение таймера"
             }
           },
           {
             "comment": {
-              "value": "proveryaem znachenie tajmera"
+              "value": "проверяем значение таймера"
             }
           },
           {
@@ -5421,12 +5421,12 @@
         "actions": [
           {
             "comment": {
-              "value": "tajmer bol'she nulya - umen'shaem ego"
+              "value": "таймер больше нуля - уменьшаем его"
             }
           },
           {
             "comment": {
-              "value": "idem dal'she po ciklu"
+              "value": "идем дальше по циклу"
             }
           },
           {
@@ -5444,7 +5444,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "idem dal'she pociklu"
+            "value": "идем дальше поциклу"
           },
           "triggerEnable": {
             "target": "bdt_t2_restore_rotator"

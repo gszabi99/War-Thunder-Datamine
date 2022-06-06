@@ -875,7 +875,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "probuem poluchit' defoltnoe imya celi esli rezhim bfd"
+          "value": "пробуем получить дефолтное имя цели если режим bfd"
         },
         "triggerEnable": {
           "target": "at_assaults_t1_default_name_for_bfd"
@@ -911,7 +911,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "probuem poluchit' defoltnoe imya celi esli rezhim bfd"
+          "value": "пробуем получить дефолтное имя цели если режим bfd"
         },
         "triggerEnable": {
           "target": "at_assaults_t2_default_name_for_bfd"
@@ -941,17 +941,17 @@
       "actions": [
         {
           "comment": {
-            "value": "celi s takim imenem net, i rezhim: bfd "
+            "value": "цели с таким именем нет, и режим: bfd "
           }
         },
         {
           "comment": {
-            "value": "probuem prosto ispol'zovat' obshchuyu kvestovuyu gruppu v kachestve celi"
+            "value": "пробуем просто использовать общую квестовую группу в качестве цели"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem proverku validnosti celi"
+            "value": "запускаем проверку валидности цели"
           }
         },
         {
@@ -968,7 +968,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "rezhim ne bfd i cel' ne sushchestvuet. chto-to poshlo ne tak"
+          "value": "режим не bfd и цель не существует. что-то пошло не так"
         },
         "varSetBool": {
           "value": false,
@@ -1005,17 +1005,17 @@
       "actions": [
         {
           "comment": {
-            "value": "celi s takim imenem net, i rezhim: bfd "
+            "value": "цели с таким именем нет, и режим: bfd "
           }
         },
         {
           "comment": {
-            "value": "probuem prosto ispol'zovat' obshchuyu kvestovuyu gruppu v kachestve celi"
+            "value": "пробуем просто использовать общую квестовую группу в качестве цели"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem proverku validnosti celi"
+            "value": "запускаем проверку валидности цели"
           }
         },
         {
@@ -1032,7 +1032,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "rezhim ne bfd i cel' ne sushchestvuet. chto-to poshlo ne tak"
+          "value": "режим не bfd и цель не существует. что-то пошло не так"
         },
         "varSetBool": {
           "value": false,
@@ -1073,12 +1073,12 @@
       "actions": [
         {
           "comment": {
-            "value": "zapuskaem proverku togo nuzhen li spavn ili prikaz otdaetsya uzhe otspavnennym yunitam"
+            "value": "запускаем проверку того нужен ли спавн или приказ отдается уже отспавненным юнитам"
           }
         },
         {
           "comment": {
-            "value": "sbrasyvaem aktivnost'"
+            "value": "сбрасываем активность"
           }
         },
         {
@@ -1094,7 +1094,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "cel' uzhe ubita - probuem zapustit' snova"
+          "value": "цель уже убита - пробуем запустить снова"
         },
         "systemLog": {
           "value": "tried to find target but is not valid",
@@ -1133,12 +1133,12 @@
       "actions": [
         {
           "comment": {
-            "value": "zapuskaem proverku togo nuzhen li spavn ili prikaz otdaetsya uzhe otspavnennym yunitam"
+            "value": "запускаем проверку того нужен ли спавн или приказ отдается уже отспавненным юнитам"
           }
         },
         {
           "comment": {
-            "value": "sbrasyvaem aktivnost'"
+            "value": "сбрасываем активность"
           }
         },
         {
@@ -1154,7 +1154,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "cel' uzhe ubita - probuem zapustit' snova"
+          "value": "цель уже убита - пробуем запустить снова"
         },
         "systemLog": {
           "value": "tried to find target but is not valid",
@@ -1208,22 +1208,32 @@
         },
         {
           "comment": {
-            "value": "proverili, chto nuzhen spavn"
+            "value": "проверили, что нужен спавн"
           }
         },
         {
           "comment": {
-            "value": "spavnim bomberov"
+            "value": "спавним бомберов"
           }
         },
         {
           "comment": {
-            "value": "base properties for assaults"
+            "value": "спавним прикрытие"
           }
         },
         {
           "comment": {
-            "value": "need to check before spawn cover"
+            "value": "запрещаем прикрышке бояться и задаем точность"
+          }
+        },
+        {
+          "comment": {
+            "value": "задаем точность штурмовикам"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем выдачу целей"
           }
         },
         {
@@ -1236,83 +1246,18 @@
           }
         },
         {
-          "unitLoadBehTree": {
-            "name": "missionAssault",
-            "objects": "@at_assaults_t1_name"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@at_assaults_t1_name",
-            "accuracy": 0.7,
-            "effShootingRate": 0.7,
-            "airEffShootingRate": 0.7,
-            "throttle": 0.8,
-            "startFullSpeed": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "at_assaults_t1_spawn_cover"
-          }
-        }
-      ],
-      "else_actions": {
-        "comment": {
-          "value": "spavn ne nuzhen. zapuskaem perevydachu celej"
-        },
-        "triggerEnable": {
-          "target": "at_assaults_t1_tasks_gain"
-        }
-      }
-    },
-    "at_assaults_t1_spawn_cover": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "at_assaults_pve_mode",
-          "value": false,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": [
-        {
-          "comment": {
-            "value": "spavnim prikrytie"
-          }
-        },
-        {
-          "comment": {
-            "value": "zapreshchaem prikryshke boyat'sya i zadaem tochnost'"
-          }
-        },
-        {
-          "comment": {
-            "value": "zapuskaem vydachu celej"
-          }
-        },
-        {
           "unitRespawn": {
             "delay": 0.0,
             "offset": [0.0,500.0,0.0],
             "object": "@at_assaults_t1_cover_name",
             "target": "@at_assaults_t1_spawn_name",
             "resetFormation": false
+          }
+        },
+        {
+          "unitLoadBehTree": {
+            "name": "missionAssault",
+            "objects": "@at_assaults_t1_name"
           }
         },
         {
@@ -1331,6 +1276,20 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t1_name",
+            "accuracy": 0.7,
+            "effShootingRate": 0.7,
+            "airEffShootingRate": 0.7,
+            "throttle": 0.8,
+            "startFullSpeed": true
+          }
+        },
+        {
           "triggerEnable": {
             "target": "at_assaults_t1_tasks_gain"
           }
@@ -1338,7 +1297,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "no need to spawn cover"
+          "value": "спавн не нужен. запускаем перевыдачу целей"
         },
         "triggerEnable": {
           "target": "at_assaults_t1_tasks_gain"
@@ -1388,22 +1347,32 @@
         },
         {
           "comment": {
-            "value": "proverili, chto nuzhen spavn"
+            "value": "проверили, что нужен спавн"
           }
         },
         {
           "comment": {
-            "value": "spavnim bomberov"
+            "value": "спавним бомберов"
           }
         },
         {
           "comment": {
-            "value": "base properties for assaults"
+            "value": "спавним прикрытие"
           }
         },
         {
           "comment": {
-            "value": "need to check before spawn cover"
+            "value": "запрещаем прикрышке бояться и задаем точность"
+          }
+        },
+        {
+          "comment": {
+            "value": "задаем точность штурмовикам"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем выдачу целей"
           }
         },
         {
@@ -1416,83 +1385,18 @@
           }
         },
         {
-          "unitLoadBehTree": {
-            "name": "missionAssault",
-            "objects": "@at_assaults_t2_name"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@at_assaults_t2_name",
-            "accuracy": 0.7,
-            "effShootingRate": 0.7,
-            "airEffShootingRate": 0.7,
-            "throttle": 0.8,
-            "startFullSpeed": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "at_assaults_t2_spawn_cover"
-          }
-        }
-      ],
-      "else_actions": {
-        "comment": {
-          "value": "spavn ne nuzhen. zapuskaem perevydachu celej"
-        },
-        "triggerEnable": {
-          "target": "at_assaults_t2_tasks_gain"
-        }
-      }
-    },
-    "at_assaults_t2_spawn_cover": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "at_assaults_pve_mode",
-          "value": false,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": [
-        {
-          "comment": {
-            "value": "spavnim prikrytie"
-          }
-        },
-        {
-          "comment": {
-            "value": "zapreshchaem prikryshke boyat'sya i zadaem tochnost'"
-          }
-        },
-        {
-          "comment": {
-            "value": "zapuskaem vydachu celej"
-          }
-        },
-        {
           "unitRespawn": {
             "delay": 0.0,
             "offset": [0.0,500.0,0.0],
             "object": "@at_assaults_t2_cover_name",
             "target": "@at_assaults_t2_spawn_name",
             "resetFormation": false
+          }
+        },
+        {
+          "unitLoadBehTree": {
+            "name": "missionAssault",
+            "objects": "@at_assaults_t2_name"
           }
         },
         {
@@ -1511,6 +1415,20 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@at_assaults_t2_name",
+            "accuracy": 0.7,
+            "effShootingRate": 0.7,
+            "airEffShootingRate": 0.7,
+            "throttle": 0.8,
+            "startFullSpeed": true
+          }
+        },
+        {
           "triggerEnable": {
             "target": "at_assaults_t2_tasks_gain"
           }
@@ -1518,7 +1436,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "no need to spawn cover"
+          "value": "спавн не нужен. запускаем перевыдачу целей"
         },
         "triggerEnable": {
           "target": "at_assaults_t2_tasks_gain"
@@ -1553,62 +1471,62 @@
       "actions": [
         {
           "comment": {
-            "value": "govorim assaltam letet' k celi"
+            "value": "говорим ассалтам лететь к цели"
           }
         },
         {
           "comment": {
-            "value": "govorim fajteram letet' za bomberami"
+            "value": "говорим файтерам лететь за бомберами"
           }
         },
         {
           "comment": {
-            "value": "govorim fajteram prikryvat' bomberov"
+            "value": "говорим файтерам прикрывать бомберов"
           }
         },
         {
           "comment": {
-            "value": "zapreshchaem proverku na dostizhenie tochki evakuacii"
+            "value": "запрещаем проверку на достижение точки эвакуации"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem miganie na karte"
+            "value": "включаем мигание на карте"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem otobrazhenie indikatorvo snizu"
+            "value": "запускаем отображение индикаторво снизу"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na dostizhenie celi"
+            "value": "включаем проверку на достижение цели"
           }
         },
         {
           "comment": {
-            "value": "vydaem obzhektiv komande A"
+            "value": "выдаем обжектив команде А"
           }
         },
         {
           "comment": {
-            "value": "vydaem obzhektiv komande B"
+            "value": "выдаем обжектив команде Б"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem trigery otslezhivaniya obzhektivov"
+            "value": "включаем тригеры отслеживания обжективов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem trigger na smert' assaltov"
+            "value": "включаем триггер на смерть ассалтов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na detekt"
+            "value": "включаем проверку на детект"
           }
         },
         {
@@ -1682,52 +1600,24 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_cover_name",
             "follow_offset": [0.0,500.0,0.0]
           }
         },
         {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "@at_assaults_t1_cover_name"
-            },
-            {
-              "target": "t2_players_squad"
-            },
-            {
-              "target": "ht_t2_hunter"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "targetTypeName": "airplane"
-            },
-            {
-              "targetDistMax": 4000.0
-            },
-            {
-              "maxNumAttackersPerTarget": 1
-            },
-            {
-              "attackAltRange": [250.0,7000.0]
-            },
-            {
-              "anchorTarget": "@at_assaults_t1_name"
-            },
-            {
-              "targetToAnchorDist": [3000.0,4000.0]
-            },
-            {
-              "resetObjectToFollow": false
-            }
-          ]
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@at_assaults_t1_cover_name",
+            "target": "t2_players_squad",
+            "fireRandom": true,
+            "targetTypeName": "airplane",
+            "targetDistMax": 4000.0,
+            "maxNumAttackersPerTarget": 1,
+            "attackAltRange": [250.0,7000.0],
+            "anchorTarget": "@at_assaults_t1_name",
+            "targetToAnchorDist": [3000.0,4000.0],
+            "resetObjectToFollow": false
+          }
         },
         {
           "triggerDisable": {
@@ -1815,62 +1705,62 @@
       "actions": [
         {
           "comment": {
-            "value": "govorim assaltam letet' k celi"
+            "value": "говорим ассалтам лететь к цели"
           }
         },
         {
           "comment": {
-            "value": "govorim fajteram letet' za bomberami"
+            "value": "говорим файтерам лететь за бомберами"
           }
         },
         {
           "comment": {
-            "value": "govorim fajteram prikryvat' bomberov"
+            "value": "говорим файтерам прикрывать бомберов"
           }
         },
         {
           "comment": {
-            "value": "zapreshchaem proverku na dostizhenie tochki evakuacii"
+            "value": "запрещаем проверку на достижение точки эвакуации"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem miganie na karte"
+            "value": "включаем мигание на карте"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem otobrazhenie indikatorvo snizu"
+            "value": "запускаем отображение индикаторво снизу"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na dostizhenie celi"
+            "value": "включаем проверку на достижение цели"
           }
         },
         {
           "comment": {
-            "value": "vydaem obzhektiv komande A"
+            "value": "выдаем обжектив команде А"
           }
         },
         {
           "comment": {
-            "value": "vydaem obzhektiv komande B"
+            "value": "выдаем обжектив команде Б"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem trigery otslezhivaniya obzhektivov"
+            "value": "включаем тригеры отслеживания обжективов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem trigger na smert' assaltov"
+            "value": "включаем триггер на смерть ассалтов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na detekt"
+            "value": "включаем проверку на детект"
           }
         },
         {
@@ -1939,9 +1829,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           }
@@ -1964,52 +1851,24 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_cover_name",
             "follow_offset": [0.0,500.0,0.0]
           }
         },
         {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "@at_assaults_t2_cover_name"
-            },
-            {
-              "target": "t1_players_squad"
-            },
-            {
-              "target": "ht_t1_hunter"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "targetTypeName": "airplane"
-            },
-            {
-              "targetDistMax": 4000.0
-            },
-            {
-              "maxNumAttackersPerTarget": 1
-            },
-            {
-              "attackAltRange": [250.0,7000.0]
-            },
-            {
-              "anchorTarget": "@at_assaults_t2_name"
-            },
-            {
-              "targetToAnchorDist": [3000.0,4000.0]
-            },
-            {
-              "resetObjectToFollow": false
-            }
-          ]
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@at_assaults_t2_cover_name",
+            "target": "t1_players_squad",
+            "fireRandom": true,
+            "targetTypeName": "airplane",
+            "targetDistMax": 4000.0,
+            "maxNumAttackersPerTarget": 1,
+            "attackAltRange": [250.0,7000.0],
+            "anchorTarget": "@at_assaults_t2_name",
+            "targetToAnchorDist": [3000.0,4000.0],
+            "resetObjectToFollow": false
+          }
         },
         {
           "triggerDisable": {
@@ -2103,32 +1962,32 @@
       "actions": [
         {
           "comment": {
-            "value": "dostigli celi. mozhno atakovat'"
+            "value": "достигли цели. можно атаковать"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
           "comment": {
-            "value": "govorim letet' na bazu"
+            "value": "говорим лететь на базу"
           }
         },
         {
           "comment": {
-            "value": "govorim atakovat' cel'"
+            "value": "говорим атаковать цель"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na dostizhenie konechnoj tochki"
+            "value": "включаем проверку на достижение конечной точки"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
@@ -2159,9 +2018,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [350.0,500.0]
           }
@@ -2217,32 +2073,32 @@
       "actions": [
         {
           "comment": {
-            "value": "dostigli celi. mozhno atakovat'"
+            "value": "достигли цели. можно атаковать"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
           "comment": {
-            "value": "govorim letet' na bazu"
+            "value": "говорим лететь на базу"
           }
         },
         {
           "comment": {
-            "value": "govorim atakovat' cel'"
+            "value": "говорим атаковать цель"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na dostizhenie konechnoj tochki"
+            "value": "включаем проверку на достижение конечной точки"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
@@ -2273,9 +2129,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [350.0,500.0]
           }
@@ -2331,22 +2184,22 @@
       "actions": [
         {
           "comment": {
-            "value": "bombery dostigli konechnoj tochki"
+            "value": "бомберы достигли конечной точки"
           }
         },
         {
           "comment": {
-            "value": "zapreshchaem proverku na smert'"
+            "value": "запрещаем проверку на смерть"
           }
         },
         {
           "comment": {
-            "value": "pryachem bomberov"
+            "value": "прячем бомберов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku okonchaniya pryatan'ya bobrov"
+            "value": "включаем проверку окончания прятанья бобров"
           }
         },
         {
@@ -2396,27 +2249,27 @@
       "actions": [
         {
           "comment": {
-            "value": "bombery dostigli konechnoj tochki"
+            "value": "бомберы достигли конечной точки"
           }
         },
         {
           "comment": {
-            "value": "pryachem yastrebov"
+            "value": "прячем ястребов"
           }
         },
         {
           "comment": {
-            "value": "vyklyuchaem apdejt obzhektivov"
+            "value": "выключаем апдейт обжективов"
           }
         },
         {
           "comment": {
-            "value": "izmenyaem obzhektivy"
+            "value": "изменяем обжективы"
           }
         },
         {
           "comment": {
-            "value": "proveryaem aktivnost' igrokov"
+            "value": "проверяем активность игроков"
           }
         },
         {
@@ -2426,12 +2279,12 @@
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
           "comment": {
-            "value": "govorim chto shablon t1 ne aktiven"
+            "value": "говорим что шаблон t1 не активен"
           }
         },
         {
@@ -2537,17 +2390,17 @@
         },
         {
           "comment": {
-            "value": "izmenyaem obzhektivy"
+            "value": "изменяем обжективы"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
@@ -2630,22 +2483,22 @@
       "actions": [
         {
           "comment": {
-            "value": "bombery dostigli konechnoj tochki"
+            "value": "бомберы достигли конечной точки"
           }
         },
         {
           "comment": {
-            "value": "zapreshchaem proverku na smert'"
+            "value": "запрещаем проверку на смерть"
           }
         },
         {
           "comment": {
-            "value": "pryachem bomberov"
+            "value": "прячем бомберов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku okonchaniya pryatan'ya bobrov"
+            "value": "включаем проверку окончания прятанья бобров"
           }
         },
         {
@@ -2694,27 +2547,27 @@
       "actions": [
         {
           "comment": {
-            "value": "bombery dostigli konechnoj tochki"
+            "value": "бомберы достигли конечной точки"
           }
         },
         {
           "comment": {
-            "value": "pryachem yastrebov"
+            "value": "прячем ястребов"
           }
         },
         {
           "comment": {
-            "value": "vyklyuchaem apdejt obzhektivov"
+            "value": "выключаем апдейт обжективов"
           }
         },
         {
           "comment": {
-            "value": "izmenyaem obzhektivy"
+            "value": "изменяем обжективы"
           }
         },
         {
           "comment": {
-            "value": "proveryaem aktivnost' igrokov"
+            "value": "проверяем активность игроков"
           }
         },
         {
@@ -2724,12 +2577,12 @@
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
           "comment": {
-            "value": "govorim chto shablon t1 ne aktiven"
+            "value": "говорим что шаблон t1 не активен"
           }
         },
         {
@@ -2835,17 +2688,17 @@
         },
         {
           "comment": {
-            "value": "izmenyaem obzhektivy"
+            "value": "изменяем обжективы"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
@@ -2999,12 +2852,12 @@
         },
         {
           "comment": {
-            "value": "uvelichivaem vremya aktivnosti kvesta dlya komandy A"
+            "value": "увеличиваем время активности квеста для команды А"
           }
         },
         {
           "comment": {
-            "value": "proveryaem aktivnost' igrokov"
+            "value": "проверяем активность игроков"
           }
         },
         {
@@ -3056,12 +2909,12 @@
         },
         {
           "comment": {
-            "value": "uvelichivaem vremya aktivnosti kvesta dlya komandy A"
+            "value": "увеличиваем время активности квеста для команды А"
           }
         },
         {
           "comment": {
-            "value": "proveryaem aktivnost' igrokov"
+            "value": "проверяем активность игроков"
           }
         },
         {
@@ -3113,12 +2966,12 @@
         },
         {
           "comment": {
-            "value": "uvelichivaem vremya aktivnosti kvesta dlya komandy B"
+            "value": "увеличиваем время активности квеста для команды Б"
           }
         },
         {
           "comment": {
-            "value": "proveryaem aktivnost' igrokov"
+            "value": "проверяем активность игроков"
           }
         },
         {
@@ -3170,12 +3023,12 @@
         },
         {
           "comment": {
-            "value": "uvelichivaem vremya aktivnosti kvesta dlya komandy B"
+            "value": "увеличиваем время активности квеста для команды Б"
           }
         },
         {
           "comment": {
-            "value": "proveryaem aktivnost' igrokov"
+            "value": "проверяем активность игроков"
           }
         },
         {
@@ -3231,42 +3084,42 @@
         },
         {
           "comment": {
-            "value": "shturmoviki pogibli"
+            "value": "штурмовики погибли"
           }
         },
         {
           "comment": {
-            "value": "zapreshchaem proverku evakuacii"
+            "value": "запрещаем проверку эвакуации"
           }
         },
         {
           "comment": {
-            "value": "vyklyuchaem apdejt obzhektivov"
+            "value": "выключаем апдейт обжективов"
           }
         },
         {
           "comment": {
-            "value": "proveryaem mozhno li zakryvat' kvest komande atakerov"
+            "value": "проверяем можно ли закрывать квест команде атакеров"
           }
         },
         {
           "comment": {
-            "value": "vystavlyaem statusy obzhektivam"
+            "value": "выставляем статусы обжективам"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
           "comment": {
-            "value": "govorim chto shablon t1 ne aktiven"
+            "value": "говорим что шаблон t1 не активен"
           }
         },
         {
@@ -3356,22 +3209,22 @@
       "actions": [
         {
           "comment": {
-            "value": "vystavlyaem statusy obzhektivam"
+            "value": "выставляем статусы обжективам"
           }
         },
         {
           "comment": {
-            "value": "proveryaem final'nuyu aktivnost' igrokov"
+            "value": "проверяем финальную активность игроков"
           }
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
           "comment": {
-            "value": "govorim chto shablon t1 ne aktiven"
+            "value": "говорим что шаблон t1 не активен"
           }
         },
         {
@@ -3462,42 +3315,42 @@
         },
         {
           "comment": {
-            "value": "shturmoviki pogibli"
+            "value": "штурмовики погибли"
           }
         },
         {
           "comment": {
-            "value": "zapreshchaem proverku evakuacii"
+            "value": "запрещаем проверку эвакуации"
           }
         },
         {
           "comment": {
-            "value": "vyklyuchaem apdejt obzhektivov"
+            "value": "выключаем апдейт обжективов"
           }
         },
         {
           "comment": {
-            "value": "proveryaem mozhno li zakryvat' kvest komande atakerov"
+            "value": "проверяем можно ли закрывать квест команде атакеров"
           }
         },
         {
           "comment": {
-            "value": "vystavlyaem statusy obzhektivam"
+            "value": "выставляем статусы обжективам"
           }
         },
         {
           "comment": {
-            "value": "prekrashchaem slezhenie za poterej celi"
+            "value": "прекращаем слежение за потерей цели"
           }
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
           "comment": {
-            "value": "govorim chto shablon t1 ne aktiven"
+            "value": "говорим что шаблон t1 не активен"
           }
         },
         {
@@ -3587,22 +3440,22 @@
       "actions": [
         {
           "comment": {
-            "value": "vystavlyaem statusy obzhektivam"
+            "value": "выставляем статусы обжективам"
           }
         },
         {
           "comment": {
-            "value": "proveryaem final'nuyu aktivnost' igrokov"
+            "value": "проверяем финальную активность игроков"
           }
         },
         {
           "comment": {
-            "value": "zhdem 30 sekund i ubiraem obzhektiv"
+            "value": "ждем 30 секунд и убираем обжектив"
           }
         },
         {
           "comment": {
-            "value": "govorim chto shablon t2 ne aktiven"
+            "value": "говорим что шаблон t2 не активен"
           }
         },
         {
@@ -3683,22 +3536,22 @@
       "actions": [
         {
           "comment": {
-            "value": "govorim chto ne nuzhen spavn assaltov i ohrany"
+            "value": "говорим что не нужен спавн ассалтов и охраны"
           }
         },
         {
           "comment": {
-            "value": "skidyvaem schetchik popytok poiska novoj celi"
+            "value": "скидываем счетчик попыток поиска новой цели"
           }
         },
         {
           "comment": {
-            "value": "ubiraem nachal'nuyu zaderzhku respauna"
+            "value": "убираем начальную задержку респауна"
           }
         },
         {
           "comment": {
-            "value": "cel' poteryana. probuem najti novuyu"
+            "value": "цель потеряна. пробуем найти новую"
           }
         },
         {
@@ -3755,22 +3608,22 @@
       "actions": [
         {
           "comment": {
-            "value": "govorim chto ne nuzhen spavn assaltov i ohrany"
+            "value": "говорим что не нужен спавн ассалтов и охраны"
           }
         },
         {
           "comment": {
-            "value": "skidyvaem schetchik popytok poiska novoj celi"
+            "value": "скидываем счетчик попыток поиска новой цели"
           }
         },
         {
           "comment": {
-            "value": "ubiraem nachal'nuyu zaderzhku respauna"
+            "value": "убираем начальную задержку респауна"
           }
         },
         {
           "comment": {
-            "value": "cel' poteryana. probuem najti novuyu"
+            "value": "цель потеряна. пробуем найти новую"
           }
         },
         {
@@ -3830,12 +3683,12 @@
       "actions": [
         {
           "comment": {
-            "value": "est' komu evakuirovat'sya"
+            "value": "есть кому эвакуироваться"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na dostizhenie konechnoj tochki"
+            "value": "включаем проверку на достижение конечной точки"
           }
         },
         {
@@ -3856,9 +3709,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [350.0,500.0]
           }
@@ -3921,12 +3771,12 @@
       "actions": [
         {
           "comment": {
-            "value": "est' komu evakuirovat'sya"
+            "value": "есть кому эвакуироваться"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku na dostizhenie konechnoj tochki"
+            "value": "включаем проверку на достижение конечной точки"
           }
         },
         {
@@ -3947,9 +3797,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [350.0,500.0]
           }
@@ -4011,7 +3858,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "shablon ne aktiven dlya obeih komand. govorim chto on ne aktiven"
+          "value": "шаблон не активен для обеих команд. говорим что он не активен"
         },
         "varSetBool": {
           "value": false,
@@ -4297,27 +4144,27 @@
       "actions": [
         {
           "comment": {
-            "value": "govorim chto bombery ne obnaruzheny"
+            "value": "говорим что бомберы не обнаружены"
           }
         },
         {
           "comment": {
-            "value": "snachala nado najti bomberov. pryachem ih"
+            "value": "сначала надо найти бомберов. прячем их"
           }
         },
         {
           "comment": {
-            "value": "vydaem kvest na zashchitu"
+            "value": "выдаем квест на защиту"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem otslezhivanie pozicii bomberov"
+            "value": "включаем отслеживание позиции бомберов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem skript obnaruzheniya"
+            "value": "включаем скрипт обнаружения"
           }
         },
         {
@@ -4403,7 +4250,7 @@
       "else_actions": [
         {
           "comment": {
-            "value": "bombery izvestny srazu"
+            "value": "бомберы известны сразу"
           }
         },
         {
@@ -4493,7 +4340,7 @@
           "target": "at_t1_assaults_detected_by_players"
         },
         "comment": {
-          "value": "vrag obnaruzhil bomberov"
+          "value": "враг обнаружил бомберов"
         },
         "unitSetStealth": {
           "set": true,
@@ -4563,7 +4410,7 @@
         },
         {
           "comment": {
-            "value": "vrag obnaruzhil bomberov"
+            "value": "враг обнаружил бомберов"
           }
         },
         {
@@ -4635,27 +4482,27 @@
       "actions": [
         {
           "comment": {
-            "value": "govorim chto bombery ne obnaruzheny"
+            "value": "говорим что бомберы не обнаружены"
           }
         },
         {
           "comment": {
-            "value": "snachala nado najti bomberov. pryachem ih"
+            "value": "сначала надо найти бомберов. прячем их"
           }
         },
         {
           "comment": {
-            "value": "vydaem kvest na zashchitu"
+            "value": "выдаем квест на защиту"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem otslezhivanie pozicii bomberov"
+            "value": "включаем отслеживание позиции бомберов"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem skript obnaruzheniya"
+            "value": "включаем скрипт обнаружения"
           }
         },
         {
@@ -4741,7 +4588,7 @@
       "else_actions": [
         {
           "comment": {
-            "value": "bombery izvestny srazu"
+            "value": "бомберы известны сразу"
           }
         },
         {
@@ -4831,7 +4678,7 @@
           "target": "at_t2_assaults_detected_by_players"
         },
         "comment": {
-          "value": "vrag obnaruzhil bomberov"
+          "value": "враг обнаружил бомберов"
         },
         "unitSetStealth": {
           "set": true,
@@ -4901,7 +4748,7 @@
         },
         {
           "comment": {
-            "value": "vrag obnaruzhil bomberov"
+            "value": "враг обнаружил бомберов"
           }
         },
         {
@@ -4982,9 +4829,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@at_assaults_t1_cover_name"
         },
         "triggerEnable": {
@@ -5025,9 +4869,6 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
           "object": "@at_assaults_t2_cover_name"
         },
         "triggerEnable": {
@@ -5151,7 +4992,7 @@
         },
         "actions": {
           "comment": {
-            "value": "ryadom est' odin iz igrokov komandy A"
+            "value": "рядом есть один из игроков команды А"
           },
           "varModify": {
             "operator": "add",
@@ -5161,7 +5002,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "ryadom net igrokov komandy A"
+            "value": "рядом нет игроков команды А"
           }
         }
       },
@@ -5199,7 +5040,7 @@
         },
         "actions": {
           "comment": {
-            "value": "ryadom est' odin iz igrokov komandy A"
+            "value": "рядом есть один из игроков команды А"
           },
           "varModify": {
             "operator": "add",
@@ -5209,7 +5050,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "ryadom net igrokov komandy A"
+            "value": "рядом нет игроков команды А"
           }
         }
       },
@@ -5247,7 +5088,7 @@
         },
         "actions": {
           "comment": {
-            "value": "ryadom est' odin iz igrokov komandy B"
+            "value": "рядом есть один из игроков команды Б"
           },
           "varModify": {
             "operator": "add",
@@ -5257,7 +5098,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "ryadom net igrokov komandy B"
+            "value": "рядом нет игроков команды Б"
           }
         }
       },
@@ -5295,7 +5136,7 @@
         },
         "actions": {
           "comment": {
-            "value": "ryadom est' odin iz igrokov komandy B"
+            "value": "рядом есть один из игроков команды Б"
           },
           "varModify": {
             "operator": "add",
@@ -5305,7 +5146,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "ryadom net igrokov komandy B"
+            "value": "рядом нет игроков команды Б"
           }
         }
       },
@@ -5326,12 +5167,12 @@
         "actions": [
           {
             "comment": {
-              "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
+              "value": "считаем процент активности от обющей активности задания"
             }
           },
           {
             "comment": {
-              "value": "proveryaem aktivnost'"
+              "value": "проверяем активность"
             }
           },
           {
@@ -5387,7 +5228,7 @@
         },
         "actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla 25% ili vyshe"
+            "value": "активность игроков при выполнении задания была 25% или выше"
           },
           "triggerEnable": {
             "target": "t1_major_task_completed"
@@ -5395,7 +5236,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla nizhe 25%"
+            "value": "активность игроков при выполнении задания была ниже 25%"
           },
           "triggerEnable": {
             "target": "t1_tiny_task_completed"
@@ -5419,12 +5260,12 @@
         "actions": [
           {
             "comment": {
-              "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
+              "value": "считаем процент активности от обющей активности задания"
             }
           },
           {
             "comment": {
-              "value": "proveryaem aktivnost'"
+              "value": "проверяем активность"
             }
           },
           {
@@ -5480,7 +5321,7 @@
         },
         "actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla 25% ili vyshe"
+            "value": "активность игроков при выполнении задания была 25% или выше"
           },
           "triggerEnable": {
             "target": "t2_major_task_completed"
@@ -5488,7 +5329,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla nizhe 25%"
+            "value": "активность игроков при выполнении задания была ниже 25%"
           },
           "triggerEnable": {
             "target": "t2_tiny_task_completed"
@@ -5512,12 +5353,12 @@
         "actions": [
           {
             "comment": {
-              "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
+              "value": "считаем процент активности от обющей активности задания"
             }
           },
           {
             "comment": {
-              "value": "proveryaem aktivnost'"
+              "value": "проверяем активность"
             }
           },
           {
@@ -5583,7 +5424,7 @@
         },
         "actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla 25% ili vyshe"
+            "value": "активность игроков при выполнении задания была 25% или выше"
           },
           "triggerEnable": {
             "target": "t1_major_task_completed"
@@ -5591,7 +5432,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla nizhe 25%"
+            "value": "активность игроков при выполнении задания была ниже 25%"
           },
           "triggerEnable": {
             "target": "t1_tiny_task_completed"
@@ -5615,12 +5456,12 @@
         "actions": [
           {
             "comment": {
-              "value": "schitaem procent aktivnosti ot obyushchej aktivnosti zadaniya"
+              "value": "считаем процент активности от обющей активности задания"
             }
           },
           {
             "comment": {
-              "value": "proveryaem aktivnost'"
+              "value": "проверяем активность"
             }
           },
           {
@@ -5686,7 +5527,7 @@
         },
         "actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla 25% ili vyshe"
+            "value": "активность игроков при выполнении задания была 25% или выше"
           },
           "triggerEnable": {
             "target": "t2_major_task_completed"
@@ -5694,7 +5535,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "aktivnost' igrokov pri vypolnenii zadaniya byla nizhe 25%"
+            "value": "активность игроков при выполнении задания была ниже 25%"
           },
           "triggerEnable": {
             "target": "t2_tiny_task_completed"
@@ -5718,7 +5559,7 @@
       "conditions": [],
       "actions": {
         "comment": {
-          "value": "zadaem nachal'nye znacheniya aktivnosti"
+          "value": "задаем начальные значения активности"
         },
         "varSetInt": [
           {
@@ -5756,7 +5597,7 @@
       "conditions": [],
       "actions": {
         "comment": {
-          "value": "zadaem nachal'nye znacheniya aktivnosti"
+          "value": "задаем начальные значения активности"
         },
         "varSetInt": [
           {
@@ -5819,9 +5660,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [1200.0,1500.0]
           },
@@ -5874,9 +5712,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [1200.0,1500.0]
           },
@@ -5929,9 +5764,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [1200.0,1500.0]
           },
@@ -5984,9 +5816,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6039,9 +5868,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6094,9 +5920,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t1_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6149,9 +5972,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6204,9 +6024,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6259,9 +6076,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6314,9 +6128,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6369,9 +6180,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           },
@@ -6424,9 +6232,6 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
-            "target_var_name": "",
-            "target_var_comp_op": "equal",
-            "target_var_value": 0,
             "object": "@at_assaults_t2_name",
             "altRange": [1200.0,1500.0]
           },
@@ -7688,8 +7493,7 @@
     "at_assaults_t1_search_timer_var_name": "",
     "at_assaults_t2_search_timer_var_name": "",
     "at_assaults_t1_target_choise": 0,
-    "at_assaults_t2_target_choise": 0,
-    "at_assaults_pve_mode": false
+    "at_assaults_t2_target_choise": 0
   },
   "dialogs": [],
   "airfields": [],

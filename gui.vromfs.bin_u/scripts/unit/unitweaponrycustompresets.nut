@@ -47,7 +47,7 @@ let function getCustomPresetsConfig(unit) {
   if (unit.name not in customPresetsConfigByUnit.value)
     loadCustomPresets(unit.name)
 
-  return customPresetsConfigByUnit.value?[unit.name] ?? []
+  return customPresetsConfigByUnit.value[unit.name]
 }
 
 let function convertPresetToBlk(preset) {
@@ -98,7 +98,7 @@ let getBaseCustomPresetConfig = @(presetName, presetBlk) {
   cost = 0
   type = weaponsItem.weapon
   customNameText = presetBlk?.name ?? ""
-  image = "#ui/gameuiskin#custom_preset.png"
+  image = "#ui/gameuiskin#custom_preset"
 }
 
 let function initCustomPreset(unit) {

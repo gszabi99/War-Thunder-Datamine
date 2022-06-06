@@ -1,5 +1,3 @@
-let { format } = require("string")
-let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let avatars = require("%scripts/user/avatars.nut")
@@ -218,7 +216,7 @@ let selMedalIdx = {}
       sheetsList.append(lowerCaseTab)
       unlockFilters[lowerCaseTab]  <- null
 
-      let defaultImage = format(tabImageNameTemplate, defaultTabImageName)
+      let defaultImage = ::format(tabImageNameTemplate, defaultTabImageName)
 
       if (cb.customMenuTab in customCategoryConfig)
       {
@@ -265,7 +263,7 @@ let selMedalIdx = {}
       }
       else
       {
-        tabImage = format(tabImageNameTemplate, sheet.tolower())
+        tabImage = ::format(tabImageNameTemplate, sheet.tolower())
         tabText = tabLocalePrefix + sheet
       }
 
@@ -346,7 +344,7 @@ let selMedalIdx = {}
     let sheet = getCurSheet()
     curFilterType = ""
     foreach(btn in ["btn_top_place", "btn_pagePrev", "btn_pageNext", "checkbox_only_for_bought"])
-      this.showSceneBtn(btn, false)
+      showSceneBtn(btn, false)
 
     if (sheet == "Profile")
     {
@@ -456,8 +454,8 @@ let selMedalIdx = {}
           updateDifficultySwitch(divObj)
       }
     }
-    this.showSceneBtn("pages_list", pages)
-    this.showSceneBtn("unit_type_list", subPages)
+    showSceneBtn("pages_list", pages)
+    showSceneBtn("unit_type_list", subPages)
   }
 
   function onPageChange(obj)
@@ -664,10 +662,8 @@ let selMedalIdx = {}
     let unlocksObj = scene.findObject(containerObjId)
 
     let isAchievementPage = pageTypeId == ::UNLOCKABLE_ACHIEVEMENT
-    if (isAchievementPage && curAchievementGroupName == "")
-      curAchievementGroupName = curUnlockId == ""
-        ? findGroupName(@(g) g.len() > 0)
-        : findGroupName((@(g) g.contains(curUnlockId)).bindenv(this))
+    if (isAchievementPage && curAchievementGroupName == "" && curUnlockId != "")
+      curAchievementGroupName = findGroupNameByUnlockId(curUnlockId)
 
     let ediff = getShopDiffCode()
 
@@ -718,7 +714,7 @@ let selMedalIdx = {}
     collapse(curAchievementGroupName != "" ? curAchievementGroupName : null)
 
     let total = unlocksObj.childrenCount()
-    curIndex = total ? clamp(curIndex, 0, total - 1) : -1
+    curIndex = total ? ::clamp(curIndex, 0, total - 1) : -1
     unlocksObj.setValue(curIndex)
 
     itemSelectFunc?(unlocksObj)
@@ -744,12 +740,12 @@ let selMedalIdx = {}
     return itemsView.sort(@(a, b) a.itemText <=> b.itemText)
   }
 
-  function findGroupName(func) {
+  function findGroupNameByUnlockId(unlockId) {
     foreach (chapterName, chapter in unlocksTree) {
-      if (chapter.rootItems.findindex(func) != null)
+      if (chapter.rootItems.contains(unlockId))
         return chapterName
 
-      let groupId = chapter.groups.findindex(func)
+      let groupId = chapter.groups.findindex(@(g) g.contains(unlockId))
       if (groupId != null)
         return $"{chapterName}/{groupId}"
     }
@@ -995,7 +991,7 @@ let selMedalIdx = {}
 
   function fillSkinDescr(name)
   {
-    let objDesc = this.showSceneBtn("item_desc", true)
+    let objDesc = showSceneBtn("item_desc", true)
     let unlockBlk = ::g_unlocks.getUnlockById(name)
     let decoratorType = ::g_decorator_type.SKINS
     let decorator = ::g_decorator.getDecoratorById(name)
@@ -1081,7 +1077,7 @@ let selMedalIdx = {}
     if (unlockBlk)
       ::g_unlock_view.fillUnlockFav(name, objDesc)
 
-    this.showSceneBtn("unlocks_list", false)
+    showSceneBtn("unlocks_list", false)
     guiScene.setUpdatesEnabled(true, true)
   }
 
@@ -1152,7 +1148,7 @@ let selMedalIdx = {}
       return
 
     let cost = ::get_unlock_cost(unlockId)
-    this.msgBox("question_buy_unlock",
+    msgBox("question_buy_unlock",
       ::warningIfGold(
         ::loc("onlineShop/needMoneyQuestion",
           { purchase = ::colorize("unlockHeaderColor", ::get_unlock_name_text(-1, unlockId)),
@@ -1230,8 +1226,8 @@ let selMedalIdx = {}
   function printUnlocksList(unlocksList)
   {
     let achievaAmount = unlocksList.len()
-    let unlocksListObj = this.showSceneBtn("unlocks_list", true)
-    this.showSceneBtn("item_desc", false)
+    let unlocksListObj = showSceneBtn("unlocks_list", true)
+    showSceneBtn("item_desc", false)
     local blockAmount = unlocksListObj.childrenCount()
 
     guiScene.setUpdatesEnabled(false, false)
@@ -1565,7 +1561,7 @@ let selMedalIdx = {}
       afterOkFunc = @() null
     }
 
-    this.msgBox("question_change_name", ::loc(textLocId),
+    msgBox("question_change_name", ::loc(textLocId),
       [
         ["ok", function() {
           openUrl(::loc("url/changeName"), false, false, "profile_page")
@@ -1577,7 +1573,7 @@ let selMedalIdx = {}
 
   function onChangeAccount()
   {
-    this.msgBox("question_change_name", ::loc("mainmenu/questionChangePlayer"),
+    msgBox("question_change_name", ::loc("mainmenu/questionChangePlayer"),
       [
         ["yes", function() {
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, null)

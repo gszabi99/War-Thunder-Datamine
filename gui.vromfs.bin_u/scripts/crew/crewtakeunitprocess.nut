@@ -1,4 +1,3 @@
-let { format } = require("string")
 let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
@@ -130,7 +129,7 @@ enum CTU_PROGRESS {
       if (!crew)
         locId = unit ? "shop/needMoneyQuestion_hireAndTrainCrew"
                      : "shop/needMoneyQuestion_purchaseCrew"
-      let msgText = ::warningIfGold(format(::loc(locId), cost.getTextAccordingToBalance()), cost)
+      let msgText = ::warningIfGold(::format(::loc(locId), cost.getTextAccordingToBalance()), cost)
       ::scene_msg_box("need_money", null, msgText,
         [ ["ok", nextStepCb],
           ["cancel", removeCb ]
@@ -281,7 +280,7 @@ enum CTU_PROGRESS {
     if (isEqual(activeProcesses[0]))
       return false
 
-    let msg = format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
+    let msg = ::format("Previous CrewTakeUnitProcess is not finished (progress = %s) ",
                          ::getEnumValName("CTU_PROGRESS", activeProcesses[0].curProgress))
     ::script_net_assert_once("can't start take crew", msg)
     return false

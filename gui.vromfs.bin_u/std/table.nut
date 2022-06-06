@@ -17,7 +17,7 @@ local function getValInTblPath(table, path, startIdx=0){
     return null
   if (startIdx > 0)
     path = path.slice(startIdx)
-  foreach (pathPart in path){
+  foreach (idx, pathPart in path){
     curTbl = curTbl?[pathPart]
     if (curTbl==null)
       return null

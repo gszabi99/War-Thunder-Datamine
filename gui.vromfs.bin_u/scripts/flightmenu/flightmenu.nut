@@ -1,6 +1,3 @@
-let {
-  is_mplayer_host = @() ::is_mplayer_host() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
@@ -8,7 +5,6 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { is_replay_playing } = require("replays")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
@@ -169,14 +165,14 @@ let { is_replay_playing } = require("replays")
     else
     if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
     {
-      this.msgBox("question_restart_mission", ::loc("flightmenu/questionRestartMission"),
+      msgBox("question_restart_mission", ::loc("flightmenu/questionRestartMission"),
       [
         ["yes", restartBriefing],
         ["no"]
       ], "no", { cancel_fn = @() null })
     }
     else
-    if (is_replay_playing())
+    if (::is_replay_playing())
       ::restart_replay()
     else
       ::restart_current_mission()
@@ -207,14 +203,14 @@ let { is_replay_playing } = require("replays")
     if (("is_offline_version" in getroottable()) && ::is_offline_version)
       return ::restart_mission();
 
-    if (is_replay_playing())
+    if (::is_replay_playing())
     {
       quitToDebriefing()
     }
     else if (::get_mission_status() == ::MISSION_STATUS_RUNNING)
     {
       local text = ""
-      if (is_mplayer_host())
+      if (::is_mplayer_host())
         text = ::loc("flightmenu/questionQuitMissionHost")
       else if (::get_game_mode() == ::GM_DOMINATION)
       {
@@ -233,7 +229,7 @@ let { is_replay_playing } = require("replays")
         text += ::loc("flightmenu/questionQuitMissionInProgress")
       } else
         text = ::loc("flightmenu/questionQuitMission")
-      this.msgBox("question_quit_mission", text,
+      msgBox("question_quit_mission", text,
       [
         ["yes", sendDisconnectMessage],
         ["no"]
@@ -242,7 +238,7 @@ let { is_replay_playing } = require("replays")
     else if (isMissionFailed)
     {
       let text = ::loc("flightmenu/questionQuitMission")
-      this.msgBox("question_quit_mission", text,
+      msgBox("question_quit_mission", text,
       [
         ["yes", function()
         {
@@ -269,7 +265,7 @@ let { is_replay_playing } = require("replays")
 
   function onQuitGame(obj)
   {
-    this.msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
+    msgBox("question_quit_flight", ::loc("flightmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no"]
@@ -288,7 +284,7 @@ let { is_replay_playing } = require("replays")
   {
     if (canBailout())
     {
-      this.msgBox("question_bailout", getPlayerCurUnit()?.unitType.getBailoutQuestionText() ?? "",
+      msgBox("question_bailout", getPlayerCurUnit()?.unitType.getBailoutQuestionText() ?? "",
         [
           ["yes", doBailout],
           ["no"]

@@ -1,5 +1,5 @@
 from "%darg/ui_imports.nut" import *
-from "string" import regexp, split_by_chars
+from "string" import regexp, split
 
 /*
   todo:
@@ -22,14 +22,14 @@ let rexEng = regexp(@"[a-z,A-Z]*")
 let function isStringEng(str){
   return rexEng.match(str)
 }
-let function isStringLikelyEmail(str, _verbose=true) {
+let function isStringLikelyEmail(str, verbose=true) {
 // this check is not rfc fully compatible. We check that @ exist and correctly used, and that let and domain parts exist and they are correct length.
 // Domain part also have at least one period and main domain at least 2 symbols
 // also come correct emails on google are against RFC, for example a.a.a@gmail.com.
 
   if (type(str)!="string")
     return false
-  let splitted = split_by_chars(str,"@")
+  let splitted = split(str,"@")
   if (splitted.len()<2)
     return false
   local locpart = splitted[0]
@@ -163,7 +163,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
   if (placeholder != null) {
     let phBase = {
       text = placeholder
-      rendObj = ROBJ_TEXT
+      rendObj = ROBJ_DTEXT
       font
       fontSize
       color = colors.placeHolderColor
@@ -177,7 +177,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
 
   let inputObj = @() {
     watch = [text_state, stateFlags]
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     behavior = Behaviors.TextInput
 
     size
@@ -240,7 +240,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
 
 let export = class{
   defaultColors = defaultColors
-  _call = @(_self, text_state, options = {}, frameCtor = defaultFrame) textInput(text_state, options, frameCtor)
+  _call = @(self, text_state, options = {}, frameCtor = defaultFrame) textInput(text_state, options, frameCtor)
 }()
 
 return export

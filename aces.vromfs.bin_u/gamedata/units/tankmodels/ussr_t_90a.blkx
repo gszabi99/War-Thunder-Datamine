@@ -156,7 +156,7 @@
         "composite_armor_hull_01_dm": {
           "armorClass": "spaced_armor_air",
           "hidableInXrayViewer": true,
-          "armorThickness": 0.01,
+          "armorThickness": 0.0,
           "genericArmorQuality": 0.0,
           "cumulativeArmorQuality": 0.0
         },
@@ -342,7 +342,7 @@
         },
         "composite_armor_turret_02_dm": {
           "hidableInXrayViewer": true,
-          "armorThickness": 0.01,
+          "armorThickness": 0.0,
           "genericArmorQuality": 0.0,
           "cumulativeArmorQuality": 0.0,
           "createSecondaryShatters": false
@@ -422,7 +422,7 @@
           "armorThickness": 80.0
         },
         "superstructure_back_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 45.0
         },
         "body_bottom_dm": {
           "armorThickness": 20.0
@@ -508,8 +508,7 @@
           "armorThickness": 40.0
         },
         "turret_front_dm": {
-          "armorThickness": 120.0,
-          "variableThickness": true
+          "armorThickness": 120.0
         },
         "turret_07_front_dm": {
           "armorThickness": 45.0
@@ -673,7 +672,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1685,8 +1683,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1730,8 +1728,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1739,8 +1737,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1748,8 +1746,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1788,29 +1786,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -3735,10 +3733,10 @@
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
       },
       "laser_rangefinder_ircm_lws_t_90a": [],
       "125mm_ussr_HE_VT": [],
@@ -4095,7 +4093,7 @@
         }
       },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "tier": 2,
         "modClass": "protection",
         "effects": {

@@ -1,5 +1,4 @@
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { is_replay_playing } = require("replays")
 
 local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 {
@@ -39,7 +38,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     setSceneTitle(getCurMpTitle())
     refreshPlayerInfo()
 
-    this.showSceneBtn("btn_back", true)
+    showSceneBtn("btn_back", true)
 
     wasTimeLeft = -1
     scene.findObject("stat_update").setUserData(this)
@@ -49,7 +48,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
     updateStats()
 
-    this.showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
+    showSceneBtn("btn_activateorder", !isResultMPStatScreen && ::g_orders.showActivateOrderButton())
     let ordersButton = scene.findObject("btn_activateorder")
     if (::checkObj(ordersButton))
     {
@@ -67,7 +66,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     ::set_mute_sound_in_flight_menu(false)
     ::in_flight_menu(true)
     forceUpdate()
-    if (is_replay_playing())
+    if (::is_replay_playing())
       selectLocalPlayer()
     showMissionResult()
   }
@@ -120,7 +119,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     }
 
     let text = ::loc("flightmenu/questionQuitMission")
-    this.msgBox("question_quit_mission", text,
+    msgBox("question_quit_mission", text,
       [
         ["yes", function()
           {

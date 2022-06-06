@@ -1,4 +1,3 @@
-let { format } = require("string")
 let chard = require("chard")
 
 const PROCESS_TIME_OUT = 60000
@@ -27,7 +26,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
     return
   }
 
-  let msgText = ::warningIfGold(format(::loc("shop/needMoneyQuestion_retraining"),
+  let msgText = ::warningIfGold(::format(::loc("shop/needMoneyQuestion_retraining"),
     cost.getTextAccordingToBalance()), cost)
   ::scene_msg_box("train_crew_unit", null, msgText,
     [ ["ok", function() {

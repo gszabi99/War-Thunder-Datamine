@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 
@@ -95,12 +94,12 @@ local updateGiftUnitsDiscountTask = -1
 
       if (currentTime < startTime) {
         let updateTimeSec = startTime - currentTime
-        minUpdateDiscountsTimeSec = min(minUpdateDiscountsTimeSec ?? updateTimeSec, updateTimeSec)
+        minUpdateDiscountsTimeSec = ::min(minUpdateDiscountsTimeSec ?? updateTimeSec, updateTimeSec)
         continue
       }
 
       let updateTimeSec = endTime - currentTime
-      minUpdateDiscountsTimeSec = min(minUpdateDiscountsTimeSec ?? updateTimeSec, updateTimeSec)
+      minUpdateDiscountsTimeSec = ::min(minUpdateDiscountsTimeSec ?? updateTimeSec, updateTimeSec)
       foreach (unitName, discount in discountConfigBlk)
         if (unitName in giftUnits)
           discountsList.entitlementUnits[unitName] <- discount
@@ -133,7 +132,7 @@ g_discount.getUnitDiscount <- function getUnitDiscount(unit)
 {
   if (!canBeVisibleOnUnit(unit))
     return 0
-  return max(getUnitDiscountByName(unit.name),
+  return ::max(getUnitDiscountByName(unit.name),
                getEntitlementUnitDiscount(unit.name))
 }
 
@@ -141,7 +140,7 @@ g_discount.getGroupDiscount <- function getGroupDiscount(list)
 {
   local res = 0
   foreach(unit in list)
-    res = max(res, getUnitDiscount(unit))
+    res = ::max(res, getUnitDiscount(unit))
   return res
 }
 
@@ -236,7 +235,7 @@ g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, gif
                             ? entlBlock.singleDiscount
                             : 0
 
-  discount = max(discount, singleDiscount)
+  discount = ::max(discount, singleDiscount)
   if (discount == 0)
     return
 
@@ -270,11 +269,11 @@ g_discount.generateDiscountInfo <- function generateDiscountInfo(discountsTable,
       continue
 
     discountText += ::loc("discount/list_string", {itemName = ::loc(locId), discount = discount}) + "\n"
-    maxDiscount = max(maxDiscount, discount)
+    maxDiscount = ::max(maxDiscount, discount)
   }
 
   if (discountsTable.len() > 20)
-    discountText = format(::loc("discount/buy/tooltip"), maxDiscount.tostring())
+    discountText = ::format(::loc("discount/buy/tooltip"), maxDiscount.tostring())
 
   if (discountText == "")
     return {}

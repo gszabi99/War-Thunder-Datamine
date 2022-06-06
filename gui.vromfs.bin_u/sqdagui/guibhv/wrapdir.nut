@@ -11,8 +11,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
   function getWrapDir(isVertical, isPositive) {
     if (isVertical)
-      return isPositive ? this.DOWN : this.UP
-    return isPositive ? this.RIGHT : this.LEFT
+      return isPositive ? DOWN : UP
+    return isPositive ? RIGHT : LEFT
   }
 }
 

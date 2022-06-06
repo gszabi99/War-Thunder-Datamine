@@ -648,7 +648,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     let countryName = getCountryNameBySide(side)
     let teamName = getTeamNameBySide(side)
 
-    ::dagor.debug("ww: join ww battle op:" + opId.tostring() + ", battle:" + id +
+    dagor.debug("ww: join ww battle op:" + opId.tostring() + ", battle:" + id +
                 ", country:" + countryName + ", team:" + teamName)
 
     ::WwBattleJoinProcess(this, side)

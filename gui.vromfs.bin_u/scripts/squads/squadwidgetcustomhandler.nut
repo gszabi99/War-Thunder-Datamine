@@ -75,12 +75,12 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
   {
     let indexStr = mebmerObjIndex.tostring()
     let isVisible = member != null
-    let memberObj = this.showSceneBtn("member_" + indexStr, isVisible)
+    let memberObj = showSceneBtn("member_" + indexStr, isVisible)
     if (!isVisible || !::checkObj(memberObj))
       return
 
-    this.showSceneBtn("member_waiting_" + indexStr, !member.isActualData())
-    this.showSceneBtn("member_state_block_" + indexStr, member.isActualData())
+    showSceneBtn("member_waiting_" + indexStr, !member.isActualData())
+    showSceneBtn("member_state_block_" + indexStr, member.isActualData())
 
     memberObj["uid"] = member.uid
     memberObj["isMe"] = member.isMe()? "yes" : "no"
@@ -119,22 +119,22 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     let canInvite = ::g_squad_manager.canInviteMember()
     let isInTransition = ::g_squad_manager.isStateInTransition()
 
-    let plusButtonObj = this.showSceneBtn("btn_squadPlus", canInvite)
+    let plusButtonObj = showSceneBtn("btn_squadPlus", canInvite)
     if (plusButtonObj && canInvite)
       plusButtonObj.enable(::ps4_is_ugc_enabled() && ::ps4_is_chat_enabled())
 
-    this.showSceneBtn("wait_icon", isInTransition)
+    showSceneBtn("wait_icon", isInTransition)
 
-    this.showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
+    showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
       && ::g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE)
-    let btnSquadReady = this.showSceneBtn("btn_squad_ready", ::g_squad_manager.canSwitchReadyness())
+    let btnSquadReady = showSceneBtn("btn_squad_ready", ::g_squad_manager.canSwitchReadyness())
     btnSquadReady.findObject("text").setValue(
       ::loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
 
-    this.showSceneBtn("btn_squadInvites", ::gui_handlers.squadInviteListWnd.canOpen())
+    showSceneBtn("btn_squadInvites", ::gui_handlers.squadInviteListWnd.canOpen())
     updateVisibleNewApplications()
 
-    let btnSquadLeave = this.showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
+    let btnSquadLeave = showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
     btnSquadLeave.tooltip = ::loc("squadAction/leave")
 
     scene.show(isInTransition || canInvite || ::g_squad_manager.isInSquad())
@@ -172,7 +172,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     if (!::g_squad_manager.isInSquad())
       return
 
-    this.msgBox("leave_squad", ::loc("squad/ask/leave"),
+    msgBox("leave_squad", ::loc("squad/ask/leave"),
       [
         ["yes", function() {
           ::g_squad_manager.leaveSquad()

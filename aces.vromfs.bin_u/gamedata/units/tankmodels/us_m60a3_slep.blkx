@@ -129,6 +129,9 @@
         "superstructure_bottom_dm": {
           "armorThickness": 117.0
         },
+        "superstructure_side_dm": {
+          "armorThickness": 20.0
+        },
         "turret_03_bottom_dm": {
           "armorThickness": 36.0
         },
@@ -161,9 +164,6 @@
         },
         "superstructure_back_dm": {
           "armorThickness": 25.0
-        },
-        "superstructure_side_dm": {
-          "armorThickness": 20.0
         },
         "ex_armor_body_02_dm": {
           "armorThickness": 25.0
@@ -603,7 +603,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1600,8 +1599,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1645,8 +1644,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1654,8 +1653,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1663,8 +1662,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1703,29 +1702,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -3162,17 +3161,17 @@
       },
       "tracks": {
         "animationMultiplier": -0.71,
-        "height": 0.085,
-        "width": 0.635,
-        "tracksTensionK": [8.0,8.0,15.0],
-        "trackMesh": "us_m1_abrams_phys_track_line",
-        "trackLen": 0.192,
+        "height": 0.095,
+        "width": 0.55,
+        "tracksTensionK": [6.5,8.0,2.0],
+        "trackMesh": "us_t142_phys_track_line",
+        "trackLen": 0.176,
         "trackCount": 80,
         "trackFadeTime": 1.1,
         "trackConnector": true,
         "trackEmitSparks": false,
         "trackMaxHeight": 1.4,
-        "trackStartOffset": 0.1
+        "trackStartOffset": 0.24
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3240,8 +3239,8 @@
         "wheel_l_04": 0.333,
         "wheel_l_05": 0.328,
         "wheel_l_06": 0.35,
-        "wheel_r_drive": 0.31,
-        "wheel_l_drive": 0.31,
+        "wheel_r_drive": 0.34,
+        "wheel_l_drive": 0.34,
         "wheel_r_front": 0.35,
         "wheel_l_front": 0.35,
         "wheel_l_top_01": 0.255,
@@ -3251,11 +3250,6 @@
         "wheel_r_top_02": 0.255,
         "wheel_r_top_03": 0.255
       }
-    }
-  },
-  {
-    "trackEffects": {
-      "top": false
     }
   },
   {
@@ -3845,7 +3839,7 @@
       "sightName": "abrams_sight",
       "headPos": [0.0,3.9,-8.7],
       "headPosOnShooting": [-0.3,3.7,0.5],
-      "detectionHeight": 3.14,
+      "detectionHeight": 3.213,
       "bone_turret": "bone_turret_02"
     }
   },
@@ -3865,10 +3859,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "art_support": [],
       "120mm_NATO_APDS_FS": [],
@@ -4274,7 +4268,7 @@
         }
       },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "effects": {
           "nightVision": {
             "gunnerThermal": {

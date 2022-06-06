@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -9,12 +8,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarUnitName } = ::require_native("hudActionBar")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { onSpectatorMode, switchSpectatorTargetById,
-  getSpectatorTargetId = @() ::get_spectator_target_id(), // compatibility with 2.15.1.X
-  getSpectatorTargetName = @() ::get_spectator_target_name() // compatibility with 2.15.1.X
-} = require("guiSpectator")
-let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchors,
-  get_replay_info, get_replay_props, move_to_anchor } = require("replays")
+local { onSpectatorMode, switchSpectatorTargetById } = require_native("guiSpectator")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -149,8 +143,8 @@ enum SPECTATOR_CHAT_TAB {
 
     gameType = ::get_game_type()
     let mplayerTable = ::get_local_mplayer() || {}
-    let isReplay = is_replay_playing()
-    let replayProps = get_replay_props()
+    let isReplay = ::is_replay_playing()
+    let replayProps = ("get_replay_props" in getroottable()) ? ::get_replay_props() : {}
 
     if (isReplay)
     {
@@ -170,9 +164,6 @@ enum SPECTATOR_CHAT_TAB {
     canSeeMissionTimer  = !canControlTimeline && mode == SPECTATOR_MODE.SKIRMISH
     canSeeOppositeTeam  = mode != SPECTATOR_MODE.RESPAWN
     canSendChatMessages = mode != SPECTATOR_MODE.REPLAY
-    let canRewind = canControlTimeline && ::has_feature("replayRewind")
-    let anchors = get_replay_anchors()
-    let curAnchorIdx = getCurAnchorIdx(anchors)
 
     fillTabs()
     historyLog = []
@@ -208,14 +199,10 @@ enum SPECTATOR_CHAT_TAB {
         ID_REPLAY_SLOWER            = canControlTimeline
         ID_REPLAY_FASTER            = canControlTimeline
         ID_REPLAY_PAUSE             = canControlTimeline
-        ID_REPLAY_BACKWARD          = canRewind
-        ID_REPLAY_FORWARD           = canRewind
     })
     ::enableBtnTable(objReplayControls, {
-        ID_PREV_PLANE               = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
-        ID_NEXT_PLANE               = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
-        ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
-        ID_REPLAY_FORWARD           = anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len()
+        ID_PREV_PLANE = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
+        ID_NEXT_PLANE = mode != SPECTATOR_MODE.REPLAY || isMultiplayer
     })
     foreach(id, show in {
           txt_replay_time_speed       = canControlTimeline
@@ -259,7 +246,7 @@ enum SPECTATOR_CHAT_TAB {
 
     if (mode == SPECTATOR_MODE.REPLAY)
     {
-      let timeSpeeds = get_time_speeds_list()
+      let timeSpeeds = ("get_time_speeds_list" in getroottable()) ? ::get_time_speeds_list() : [ ::get_time_speed() ]
       replayTimeSpeedMin = timeSpeeds[0]
       replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
@@ -296,7 +283,6 @@ enum SPECTATOR_CHAT_TAB {
     scene.findObject("update_timer").setUserData(this)
 
     updateClientHudOffset()
-    fillAnchorsMarkers()
   }
 
   function reinitScreen()
@@ -326,7 +312,7 @@ enum SPECTATOR_CHAT_TAB {
         cornerImgTiny = true
       })
 
-    let tabsObj = this.showSceneBtn("tabs", true)
+    let tabsObj = showSceneBtn("tabs", true)
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
@@ -365,7 +351,7 @@ enum SPECTATOR_CHAT_TAB {
         spectatorModeInited = true
         onSpectatorMode(true)
         catchingFirstTarget = isMultiplayer && gotRefereeRights
-        ::dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
+        dagor.debug("Spectator: init " + ::getEnumValName("SPECTATOR_MODE", mode))
       }
       updateCooldown = 0.0
     }
@@ -376,7 +362,7 @@ enum SPECTATOR_CHAT_TAB {
     updateCooldown -= dt
     let isUpdateByCooldown = updateCooldown <= 0.0
 
-    let targetNick  = getSpectatorTargetName()
+    let targetNick  = ::get_spectator_target_name()
     let hudUnitType = ::getAircraftByName(getActionBarUnitName())?.esUnitType ?? ::ES_UNIT_TYPE_INVALID
     let isTargetSwitched = targetNick != lastTargetNick || hudUnitType != lastHudUnitType
     lastTargetNick  = targetNick
@@ -508,11 +494,11 @@ enum SPECTATOR_CHAT_TAB {
   function getTargetPlayer()
   {
     if (!isMultiplayer)
-      return (getSpectatorTargetName().len() && teams.len() && teams[0].players.len())
+      return (::get_spectator_target_name().len() && teams.len() && teams[0].players.len())
         ? teams[0].players[0]
         : null
 
-    let targetId = getSpectatorTargetId()
+    let targetId = ::get_spectator_target_id()
     if (targetId >= 0)
       return getPlayer(targetId)
 
@@ -578,10 +564,10 @@ enum SPECTATOR_CHAT_TAB {
         replayPaused = ::is_game_paused()
         scene.findObject("ID_REPLAY_PAUSE").findObject("icon")["background-image"] = replayPaused ? "#ui/gameuiskin#replay_play.svg" : "#ui/gameuiskin#replay_pause.svg"
       }
-      if (get_time_speed() != replayTimeSpeed)
+      if (::get_time_speed() != replayTimeSpeed)
       {
-        replayTimeSpeed = get_time_speed()
-        scene.findObject("txt_replay_time_speed").setValue(format("%.3fx", replayTimeSpeed))
+        replayTimeSpeed = ::get_time_speed()
+        scene.findObject("txt_replay_time_speed").setValue(::format("%.3fx", replayTimeSpeed))
         scene.findObject("ID_REPLAY_SLOWER").enable(replayTimeSpeed > replayTimeSpeedMin)
         scene.findObject("ID_REPLAY_FASTER").enable(replayTimeSpeed < replayTimeSpeedMax)
       }
@@ -597,15 +583,6 @@ enum SPECTATOR_CHAT_TAB {
       {
         replayTimeProgress = progress
         scene.findObject("timeline_progress").setValue(replayTimeProgress)
-      }
-
-      if (::has_feature("replayRewind")) {
-        let anchors = get_replay_anchors()
-        let curAnchorIdx = getCurAnchorIdx(anchors)
-        ::enableBtnTable(scene, {
-          ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
-          ID_REPLAY_FORWARD           = anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len()
-        })
       }
     }
 
@@ -1338,6 +1315,13 @@ enum SPECTATOR_CHAT_TAB {
         return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
         break
 
+      case ::HUD_MSG_STREAK: // Any player got streak (deprecated)
+        if (::HUD_MSG_STREAK_EX > 0) // compatibility
+          return ""
+        let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
+        return timestamp + ::colorize("streakTextColor", ::loc("unlocks/streak") + ::loc("ui/colon") + text)
+        break
+
       // Mission objectives
       case ::HUD_MSG_OBJECTIVE: // Hero team mission objective
         let text = ::HudBattleLog.msgEscapeCodesToCssColors(msg.text)
@@ -1437,7 +1421,7 @@ enum SPECTATOR_CHAT_TAB {
       foreach (p in positions)
       {
         posStr = p
-        let pos = split_by_chars(posStr, ",")
+        let pos = ::split(posStr, ",")
         if (pos.len() != 2)
           break
         foreach (i, v in pos)
@@ -1458,50 +1442,6 @@ enum SPECTATOR_CHAT_TAB {
       if (obj?.pos != posStr)
         obj.pos = posStr
     }
-  }
-
-  function getCurAnchorIdx(anchors) {
-    let count = anchors.len()
-    if (count == 0)
-      return -1
-
-    let replayCurTime = ::get_usefull_total_time() * 1000
-    return (anchors.findindex(@(v) v > replayCurTime) ?? count) - 1
-  }
-
-  function moveToNextAnchor(directionIdx) {
-    let anchors = get_replay_anchors()
-    let nextIdx = getCurAnchorIdx(anchors) + directionIdx
-    if (nextIdx < 0 || nextIdx >= anchors.len())
-      return
-    move_to_anchor(nextIdx)
-  }
-
-  onBtnBackward = @() moveToNextAnchor(-1)
-  onBtnForward  = @() moveToNextAnchor(1)
-  onAnchorMarkerClick = @(obj) move_to_anchor(obj.id.tointeger())
-
-  function fillAnchorsMarkers() {
-    if (!canControlTimeline || !::has_feature("replayRewind"))
-      return
-    let anchors = get_replay_anchors()
-    if (anchors.len() == 0 || replayTimeTotal <= 0)
-      return
-
-    let timeTotal = replayTimeTotal
-    let data = ::handyman.renderCached("%gui/replays/replayAnchorMark", {
-      anchors = anchors.map(function(v, idx) {
-        let anchorTimeS = v/1000.0
-        return {
-          idx
-          posX = $"{anchorTimeS/timeTotal}pw - 2@dp"
-          tooltip = ::loc("replay/move_to_time", {
-            time = time.preciseSecondsToString(anchorTimeS) })
-        }
-      })
-    })
-    guiScene.replaceContentFromText(scene.findObject("timeline_progress"),
-      data, data.len(), this)
   }
 }
 

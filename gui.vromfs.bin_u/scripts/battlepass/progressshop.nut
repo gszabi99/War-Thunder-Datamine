@@ -160,7 +160,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     let contentObj = scene.findObject("wnd_content")
     let data = ::handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow"), {
-      chImages = "#ui/onlineShop/battle_pass_header.ddsx"
+      chImages = "#ui/onlineShop/battle_pass_header"
       descText = ::loc("battlePass/buy/desc", { count = maxSeasonLvl.value })
       rows = rowsView
     })
@@ -229,7 +229,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
           cost = goodsConfig.cost.getTextAccordingToBalance()}),
       goodsConfig.cost)
     let onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curGoodsIdx)
-    this.msgBox("purchase_ask", msgText,
+    msgBox("purchase_ask", msgText,
       [
         ["yes", function() {
           if (::check_balance_msgBox(goodsConfig.cost)) {

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -36,12 +35,12 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
 
       let parameterView = {
         descriptionLabel = parameterName.indexof("weapons/") == 0 ? ::loc(parameterName)
-          : ::loc(format("crewSkillParameter/%s", parameterName))
+          : ::loc(::format("crewSkillParameter/%s", parameterName))
         valueItems = []
       }
 
       if (needMemberName)
-        parameterView.descriptionLabel += format(" (%s)", ::loc("crew/" + value.memberName))
+        parameterView.descriptionLabel += ::format(" (%s)", ::loc("crew/" + value.memberName))
 
       let params = {
         idx = idx

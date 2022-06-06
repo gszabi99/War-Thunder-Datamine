@@ -77,7 +77,7 @@ let countPartsTotal = function(partsArray, partsCfg)
 
 let getPercentValueByCounts = function(alive, total, aliveMin)
 {
-  return clamp(stdMath.lerp(aliveMin - 1, total, 0.0, 1.0, alive), 0.0, 1.0)
+  return ::clamp(stdMath.lerp(aliveMin - 1, total, 0.0, 1.0, alive), 0.0, 1.0)
 }
 
 let getStateByValue = function(cur, vMax, crit, vMin)
@@ -217,7 +217,7 @@ enums.addTypesByGlobalName("g_hud_enemy_debuffs", {
       let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
 
       let maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
-      let percent = clamp(stdMath.lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
+      let percent = ::clamp(stdMath.lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
       return {
         state = getStateByValue(alive, total, minCrewCount + 1, minCrewCount)
         label = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(percent)

@@ -5,7 +5,7 @@ enum GuidanceLockResult {
   RESULT_TRACKING = 3
 }
 
-let agmAimTracker = @(color_watched, is_background) function() {
+let agmAimTracker = @(is_background, color_watched) function() {
 
   let tSize = TrackerSize.value
 

@@ -113,7 +113,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     ::show_obj(getTabsListObj(), checkEnableShop)
     ::show_obj(getSheetsListObj(), isInMenu)
-    this.showSceneBtn("sorting_block", false)
+    showSceneBtn("sorting_block", false)
 
     updateWarbondsBalance()
     moveMouseToMainList()
@@ -364,10 +364,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
     let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
     let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
-    let itemsCountX = max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
-      / max(1, ::to_pixels(itemWidthWithSpace)), 1)
-    let itemsCountY = max(::to_pixels(mainBlockHeight)
-      / max(1, ::to_pixels(itemHeightWithSpace)), 1)
+    let itemsCountX = ::max(::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
+      / ::max(1, ::to_pixels(itemWidthWithSpace)), 1)
+    let itemsCountY = ::max(::to_pixels(mainBlockHeight)
+      / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
     let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
@@ -401,7 +401,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       if (lastIdx >= 0)
         curPage = (lastIdx / itemsPerPage).tointeger()
       else if (curPage * itemsPerPage > itemsList.len())
-        curPage = max(0, ((itemsList.len() - 1) / itemsPerPage).tointeger())
+        curPage = ::max(0, ((itemsList.len() - 1) / itemsPerPage).tointeger())
     }
 
     fillPage()
@@ -459,8 +459,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
       emptyListObj.show(data.len() == 0)
       emptyListObj.enable(data.len() == 0)
-      this.showSceneBtn("items_shop_to_marketplace_button", adviseMarketplace)
-      this.showSceneBtn("items_shop_to_shop_button", adviseShop)
+      showSceneBtn("items_shop_to_marketplace_button", adviseMarketplace)
+      showSceneBtn("items_shop_to_shop_button", adviseShop)
       let emptyListTextObj = scene.findObject("empty_items_list_text")
       if (::checkObj(emptyListTextObj))
       {
@@ -512,11 +512,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function findLastValue(prevValue)
   {
     let offset = curPage * itemsPerPage
-    let total = clamp(itemsList.len() - offset, 0, itemsPerPage)
+    let total = ::clamp(itemsList.len() - offset, 0, itemsPerPage)
     if (!total)
       return -1
 
-    local res = clamp(prevValue, 0, total - 1)
+    local res = ::clamp(prevValue, 0, total - 1)
     if (curItem)
       for(local i = 0; i < total; i++)
       {
@@ -605,7 +605,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     let item = getCurItem()
     markItemSeen(item)
     infoHandler?.updateHandlerData(item, true, true)
-    this.showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
+    showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     updateButtons()
   }
 
@@ -631,7 +631,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function updateButtonsBar() {
     let obj = getItemsListObj()
     let isButtonsVisible = isMouseMode || (::check_obj(obj) && obj.isHovered())
-    this.showSceneBtn("item_actions_bar", isButtonsVisible)
+    showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
 
@@ -647,7 +647,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     let needShowCraftTree = craftTree != null
     let openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
 
-    let craftTreeBtnObj = this.showSceneBtn("btn_open_craft_tree", needShowCraftTree)
+    let craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
     if (curSet != null && needShowCraftTree)
     {
       craftTreeBtnObj.setValue(openCraftTreeBtnText)
@@ -659,7 +659,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
 
-    let buttonObj = this.showSceneBtn("btn_main_action", showMainAction)
+    let buttonObj = showSceneBtn("btn_main_action", showMainAction)
     let canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction)
     {
@@ -674,10 +674,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
     scene.findObject("activate_info_text").setValue(activateText)
-    this.showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
+    showSceneBtn("btn_preview", item ? (item.canPreview() && ::isInMenu()) : false)
 
     let altActionText = item ? item.getAltActionName({ canConsume = canCraftOnlyInCraftTree }) : ""
-    this.showSceneBtn("btn_alt_action", altActionText != "")
+    showSceneBtn("btn_alt_action", altActionText != "")
     setColoredDoubleTextToButton(scene, "btn_alt_action", altActionText)
 
     local warningText = ""
@@ -686,7 +686,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     setWarningText(warningText)
 
     let showLinkAction = item && item.hasLink()
-    let linkObj = this.showSceneBtn("btn_link_action", showLinkAction)
+    let linkObj = showSceneBtn("btn_link_action", showLinkAction)
     if (showLinkAction)
     {
       let linkActionText = ::loc(item.linkActionLocId)
@@ -941,7 +941,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function onEventActiveHandlersChanged(p)
   {
-    this.showSceneBtn("black_screen", ::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd) != null)
+    showSceneBtn("black_screen", ::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd) != null)
   }
 
   function updateWarbondsBalance()

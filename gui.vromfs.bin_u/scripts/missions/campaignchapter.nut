@@ -1,4 +1,3 @@
-let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
@@ -150,7 +149,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     missions = new_missions
     if (missions.len() <= 0 && !canSwitchMisListType && !misListType.canBeEmpty)
     {
-      this.msgBox("no_missions", ::loc("missions/no_missions_msgbox"), [["ok"]], "ok")
+      msgBox("no_missions", ::loc("missions/no_missions_msgbox"), [["ok"]], "ok")
       goBack()
       return
     }
@@ -208,7 +207,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
       if (::g_mislist_type.isUrlMission(mission))
       {
-        let medalIcon = misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite.png" : ""
+        let medalIcon = misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
         view.items.append({
           itemIcon = medalIcon
           id = mission.id
@@ -225,15 +224,15 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         {
           case 0:
             elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_arcade.png"
+            medalIcon = "#ui/gameuiskin#mission_complete_arcade"
             break
           case 1:
             elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_realistic.png"
+            medalIcon = "#ui/gameuiskin#mission_complete_realistic"
             break
           case 2:
             elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_simulator.png"
+            medalIcon = "#ui/gameuiskin#mission_complete_simulator"
             break
           case 3:
             elemCssId = "mission_item_unlocked"
@@ -243,7 +242,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       else if (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH)
       {
         elemCssId = "mission_item_unlocked"
-        medalIcon = misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite.png" : ""
+        medalIcon = misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
       }
       else if (mission.isUnlocked)
       {
@@ -424,7 +423,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
 
     isOnlyFavorites = ::loadLocalByAccount(getFavoritesSaveId(), false)
-    let checkObj = this.showSceneBtn("favorite_missions_switch", true)
+    let checkObj = showSceneBtn("favorite_missions_switch", true)
     if (checkObj)
       checkObj.setValue(isOnlyFavorites)
   }
@@ -455,7 +454,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     let medalObj = listObj.getChild(curMissionIdx).findObject("medal_icon")
     if (medalObj)
-      medalObj["background-image"] = misListType.isMissionFavorite(curMission) ? "#ui/gameuiskin#favorite.png" : ""
+      medalObj["background-image"] = misListType.isMissionFavorite(curMission) ? "#ui/gameuiskin#favorite" : ""
   }
 
   function goBack()
@@ -517,7 +516,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       {
         local msg = ::loc("ui/unavailable")
         if ("mustHaveUnit" in curMission)
-          msg = format("%s\n%s", ::loc("unlocks/need_to_unlock"), ::getUnitName(curMission.mustHaveUnit))
+          msg = ::format("%s\n%s", ::loc("unlocks/need_to_unlock"), ::getUnitName(curMission.mustHaveUnit))
         ::showInfoMsgBox(msg)
       }
       return false
@@ -604,13 +603,13 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     let hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
     let isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == curMission)
 
-    this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
+    showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
 
     let isHeader  = curMission?.isHeader ?? false
     let isMission = curMission != null && !isHeader
 
     let isShowFavoritesBtn = isCurItemInFocus && isMission && misListType.canMarkFavorites()
-    let favObj = this.showSceneBtn("btn_favorite", isShowFavoritesBtn)
+    let favObj = showSceneBtn("btn_favorite", isShowFavoritesBtn)
     if (::check_obj(favObj) && isShowFavoritesBtn)
       favObj.setValue(misListType.isMissionFavorite(curMission) ?
         ::loc("mainmenu/btnFavoriteUnmark") : ::loc("mainmenu/btnFavorite"))
@@ -627,7 +626,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
 
     let isShowStartBtn = startText != ""
-    let startBtnObj = this.showSceneBtn("btn_start", isShowStartBtn)
+    let startBtnObj = showSceneBtn("btn_start", isShowStartBtn)
     if (::check_obj(startBtnObj) && isShowStartBtn)
     {
       let enabled = isHeader || (isMission && checkStartBlkMission())
@@ -641,16 +640,16 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       isShowSquadBtn = isShowSquadBtn
                        && (!("blk" in curMission)
                           || (curMission.blk.getBool("gt_cooperative", false) && !::is_user_mission(curMission.blk)))
-    this.showSceneBtn("btn_inviteSquad", isShowSquadBtn)
+    showSceneBtn("btn_inviteSquad", isShowSquadBtn)
 
-    this.showSceneBtn("btn_refresh", misListType.canRefreshList)
-    this.showSceneBtn("btn_refresh_console", misListType.canRefreshList && ::show_console_buttons)
-    this.showSceneBtn("btn_add_mission", misListType.canAddToList)
-    this.showSceneBtn("btn_modify_mission", isCurItemInFocus && isMission && misListType.canModify(curMission))
-    this.showSceneBtn("btn_delete_mission", isCurItemInFocus && isMission && misListType.canDelete(curMission))
+    showSceneBtn("btn_refresh", misListType.canRefreshList)
+    showSceneBtn("btn_refresh_console", misListType.canRefreshList && ::show_console_buttons)
+    showSceneBtn("btn_add_mission", misListType.canAddToList)
+    showSceneBtn("btn_modify_mission", isCurItemInFocus && isMission && misListType.canModify(curMission))
+    showSceneBtn("btn_delete_mission", isCurItemInFocus && isMission && misListType.canDelete(curMission))
 
     let linkData = misListType.getInfoLinkData()
-    let linkObj = this.showSceneBtn("btn_user_missions_info_link", linkData != null)
+    let linkObj = showSceneBtn("btn_user_missions_info_link", linkData != null)
     if (linkObj && linkData)
     {
       linkObj.link = linkData.link
@@ -659,7 +658,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
 
     if (gm == ::GM_CAMPAIGN)
-      this.showSceneBtn("btn_purchase_campaigns", ::has_feature("OnlineShopPacks") && ::get_not_purchased_campaigns().len() > 0)
+      showSceneBtn("btn_purchase_campaigns", ::has_feature("OnlineShopPacks") && ::get_not_purchased_campaigns().len() > 0)
   }
 
   function getEmptyListMsg()
@@ -1057,7 +1056,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       let backBtn = navObj.findObject("btn_back")
       if (::checkObj(backBtn)) guiScene.destroyElement(backBtn)
 
-      this.showSceneBtn("btn_inviteSquad", ::enable_coop_in_SingleMissions)
+      showSceneBtn("btn_inviteSquad", ::enable_coop_in_SingleMissions)
     }
 
     let frameObj = scene.findObject("header_buttons")
@@ -1104,7 +1103,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       return
 
     let isFilterVisible = misListType != ::g_mislist_type.URL && filterDataArray.len() != 0
-    let nestObj = this.showSceneBtn("filter_nest", isFilterVisible)
+    let nestObj = showSceneBtn("filter_nest", isFilterVisible)
 
     if (!isFilterVisible)
       return

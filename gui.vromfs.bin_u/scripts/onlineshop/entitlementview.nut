@@ -13,13 +13,13 @@ let function getIncomeView(gold, wp) {
   let res = []
   if (gold)
     res.append({
-      icon = "#ui/gameuiskin#item_type_eagles.svg"
+      icon = "#ui/gameuiskin#item_type_eagles"
       title = gold.tostring()
     })
 
   if (wp)
     res.append({
-      icon = "#ui/gameuiskin#item_type_warpoints.svg"
+      icon = "#ui/gameuiskin#item_type_warpoints"
       title = wp.tostring()
     })
 
@@ -30,7 +30,7 @@ let getEntitlementGiftView = @(entitlement) (entitlement?.entitlementGift ?? [])
   let config = getEntitlementConfig(giftId)
   if (config)
     return {
-      icon = "#ui/gameuiskin#item_type_premium.svg"
+      icon = "#ui/gameuiskin#item_type_premium"
       title = ::colorize("userlogColoredText", getEntitlementName(config))
     }
 

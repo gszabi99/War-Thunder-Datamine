@@ -29,7 +29,7 @@ let function dtext(val, params={}, addchildren = null) {
     watchedtext = true
   }
   let ret = {
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     size = SIZE_TO_CONTENT
     halign = ALIGN_LEFT
   }.__update(params, {text = txt})

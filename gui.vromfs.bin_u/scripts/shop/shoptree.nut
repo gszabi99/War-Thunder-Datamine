@@ -1,4 +1,3 @@
-let { format } = require("string")
 let function getReqAirPosInArray(reqName, arr)
 {
   foreach(r, row in arr)
@@ -53,9 +52,11 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null)
     return null
 
   let res = {
-    offset = (headRow != null) ? headRow : 0
+    offset = (headRow != null) ? headRow : 0/*branch[0].air.rank //for rowIdx==rank*/
     tbl = []
   }
+  //if (headRow!=null)
+  //  res.tbl.append([null])  //place for headAir in rowIdx==rank generation
 
   local prevAir = null
   foreach(idx, item in branch)
@@ -96,7 +97,8 @@ let function makeTblByBranch(branch, ranksHeight, headRow = null)
   return res
 }
 
-let function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem=null)
+local appendBranches
+appendBranches = function(rangeData, headIdx, branches, brIdxTbl, prevItem=null)
 {
   if (rangeData[headIdx].used)
     return
@@ -177,17 +179,16 @@ let function getBranchesTbl(rangeData)
       item.childs += rangeData[i + 1].childs + (1 + rankK * rangeData[i + 1].rank)
     if (item.name in addCount)
       item.childs += addCount.rawdelete(item.name)
-    let itemReqAir = item?.futureReqAir ?? item?.reqAir
-    if (itemReqAir)
-      if (itemReqAir == "")
+    if (item?.reqAir)
+      if (item.reqAir == "")
         item.header = true
       else
       {
-        addCount[itemReqAir] <- item.childs + (1 + rankK*item.rank) + ((itemReqAir in addCount) ? addCount[itemReqAir] : 0)
-        if (itemReqAir in brIdxTbl)
-          brIdxTbl[itemReqAir].append(i)
+        addCount[item.reqAir] <- item.childs + (1 + rankK*item.rank) + ((item.reqAir in addCount) ? addCount[item.reqAir] : 0)
+        if (item.reqAir in brIdxTbl)
+          brIdxTbl[item.reqAir].append(i)
         else
-          brIdxTbl[itemReqAir] <- [i]
+          brIdxTbl[item.reqAir] <- [i]
       }
 
     if (item.childs > rangeData[maxCountId].childs)
@@ -205,7 +206,7 @@ let function getBranchesTbl(rangeData)
     foreach(idx, item in b)
       test += ((idx==0)? "\n" : ", ") + item.air.name + " ("+item.air.rank+","+item.childs+")"
                + (item?.reqAir ? "("+item.reqAir+")":"")
-  ::dagor.debug(test)
+  dagor.debug(test)
 */
   return branches
 }
@@ -314,8 +315,6 @@ let function getReqAirs(page)
           reqUnit.extend(air.fakeReqUnits)
         if (air?.reqAir)
           reqUnit.append(air.reqAir)
-        if (air?.futureReqAir)
-          reqUnit.append(air.futureReqAir)
         foreach (unitName in reqUnit)
           if (unitName in reqAirs)
             reqAirs[unitName].append({ air = air, pos = [i,j] })
@@ -344,16 +343,13 @@ let function fillLinesInPage(page)
         if (searchName in reqAirs)
         {
           let arrowCount = reqAirs[searchName].len()
-          let hasNextFutureReqLine = arrowCount > 1
-            && reqAirs[searchName].findvalue(@(req) req.air?.futureReqAir != null) != null
-          foreach (req in reqAirs[searchName])
+          foreach(req in reqAirs[searchName])
             page.lines.append({
               air = req.air,
               line = [i, j, req.pos[0], req.pos[1]]
               group = [::isUnitGroup(air), ::isUnitGroup(req.air)]
               reqAir = air
               arrowCount = arrowCount
-              hasNextFutureReqLine
             })
           reqAirs.rawdelete(searchName)
         }
@@ -402,7 +398,7 @@ let function generatePageTreeByRank(page)
             if (item != null)
             {
               if (rangeTree[i][j + firstCol] != null)
-                ::dagor.debug("GP: try to fill not empty cell!!!!! ")
+                dagor.debug("GP: try to fill not empty cell!!!!! ")
               rangeTree[i][j + firstCol] = item
             }
         }
@@ -454,7 +450,7 @@ let function generatePageTreeByRankPosXY(page)
   }
   if (unitsWithWrongPositions.len() > 0)
   {
-    let message = format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
+    let message = ::format("Error: Wrong rank position in shop config for unitType = %s\nunits: %s\n",
                              page.name,
                              ::g_string.implode(unitsWithWrongPositions, "\n")
                             )
@@ -516,7 +512,7 @@ let function generateTreeData(page)
       if (typeof(item)=="integer") testText += "."
       else testText += "A"
     }
-  ::dagor.debug(testText + "\n done.")
+  dagor.debug(testText + "\n done.")
 */
   //fill Lines and clear table
   fillLinesInPage(page)

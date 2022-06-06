@@ -77,18 +77,18 @@ itemDiv {
 }
 
 itemDiv[enableBackground=yes] {
-  background-image:#ui/gameuiskin#lr_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_frame_bg;
   background-color:@white;
   background-repeat:expand;
   background-position:3,4,3,3;
 }
 
 itemDiv[enableBackground=yes][active=yes] {
-  background-image:#ui/gameuiskin#lr_frame_bg_active.png;
+  background-image:#ui/gameuiskin#lr_frame_bg_active;
 }
 
 itemDiv[enableBackground=yes][today=yes] {
-  background-image:#ui/gameuiskin#lr_red_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_red_frame_bg;
 }
 
 recipe[isRecipeLocked = no] > itemDiv {
@@ -115,7 +115,7 @@ itemDiv > wink {
   position:absolute;
   input-transparent:yes;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#item_glow.png;
+  background-image:#ui/gameuiskin#item_glow;
   background-position:3, 0, 3, 4;
   background-color:@shopItemWinkColor;
 
@@ -171,25 +171,25 @@ itemDiv > arrowNext {
   pos:-2@dp, 50%ph-50%h;
   position:absolute;
   size:1@arrowOfEveryDayLoginAwardHeight,1@arrowOfEveryDayLoginAwardWidth;
-  background-image:#ui/gameuiskin#lr_arrow_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_arrow_frame_bg;
   background-color:@white;
   background-repeat:expand;
   css-hier-invalidate:yes;
 }
 
 itemDiv > arrowNext[arrowType=double] {
-  background-image:#ui/gameuiskin#lr_duble_arrow_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_duble_arrow_frame_bg;
   size:27@sf/@pf,1@arrowOfEveryDayLoginAwardWidth;
   pos:-11@sf/@pf, 50%ph-50%h;
 }
 itemDiv > arrowNext[arrowType=triple] {
-  background-image:#ui/gameuiskin#lr_triple_arrow_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_triple_arrow_frame_bg;
   size:35@sf/@pf,1@arrowOfEveryDayLoginAwardWidth;
   pos:-19@sf/@pf, 50%ph-50%h;
 }
 
 awardItemDiv > itemDiv > arrowNext[colored=yes] {
-  background-image:#ui/gameuiskin#lr_red_arrow_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_red_arrow_frame_bg;
 }
 
 itemDiv > Button_text {
@@ -231,7 +231,7 @@ awardItemDiv > awardItemHeader {
 
 awardItemDiv > awardItemHeader[today=yes] {
   re-type:9rect;
-  background-image:#ui/gameuiskin#lr_red_marker_bg.png;
+  background-image:#ui/gameuiskin#lr_red_marker_bg;
   background-color:@white;
   background-repeat:expand;
   background-position:3;
@@ -239,12 +239,12 @@ awardItemDiv > awardItemHeader[today=yes] {
 
 awardItemDiv > awardItemHeader[havePeriodReward=yes] {
   re-type:9rect;
-  background-image:#ui/gameuiskin#lr_red_marker_bg.png;
+  background-image:#ui/gameuiskin#lr_red_marker_bg;
   background-color:@white;
   background-repeat:expand;
   background-position:3;
   foreground-color:#66666666;
-  foreground-image:#ui/gameuiskin#pattern_dark_diag_lines.png;
+  foreground-image:#ui/gameuiskin#pattern_dark_diag_lines;
   foreground-repeat:repeat;
   foreground-position:2;
 }
@@ -300,7 +300,7 @@ awardItemHeader > arrowCurrent {
   pos:50%pw-50%w, ph-4@sf/@pf;
   position:absolute;
   size:1@arrowOfEveryDayLoginAwardWidth,1@arrowOfEveryDayLoginAwardHeight;
-  background-image:#ui/gameuiskin#lr_red_marker_arrow.png;
+  background-image:#ui/gameuiskin#lr_red_marker_arrow;
   background-color:@white;
   background-repeat:expand;
   order-popup:yes;
@@ -314,11 +314,11 @@ itemHighlight {
   background-position:0;
   background-repeat:expand;
   background-color:@white;
-  background-image:#ui/gameuiskin#spot_w.png;
+  background-image:#ui/gameuiskin#spot_w;
   foreground-repeat:repeat;
   foreground-color:#0F0F0F0F;
   foreground-position:0;
-  foreground-image:#ui/gameuiskin#pattern_b.png;
+  foreground-image:#ui/gameuiskin#pattern_b;
 }
 
 itemHighlight[highlight=none] {
@@ -375,7 +375,7 @@ openAnim[animation=hide] {
 
 roulette {
   re-type:9rect;
-  background-image:#ui/gameuiskin#lr_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_frame_bg;
   background-color:#CCCCCCCC;
   background-repeat:expand;
   background-position:3,4,3,3;
@@ -384,7 +384,7 @@ roulette {
 recieved_reward_indicator {
   re-type:9rect;
   size:20@sf/@pf, 10@sf/@pf;
-  background-image:#ui/gameuiskin#roulette_arrow.png;
+  background-image:#ui/gameuiskin#roulette_arrow;
   background-color:@white;
   background-repeat:expand;
   input-transparent:yes;
@@ -394,7 +394,7 @@ rewards_fade {
   re-type:9rect;
   background-color:@white;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#horizontal_fade.png;
+  background-image:#ui/gameuiskin#horizontal_fade;
   input-transparent:yes;
 }
 
@@ -407,11 +407,11 @@ everyDayRewardProgress {
   behaviour:progress;
   background-position:6,6;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#selectbox_bg.png;
+  background-image:#ui/gameuiskin#selectbox_bg;
   background-color:@white;
   foreground-position:4,4;
   foreground-repeat:expand;
-  foreground-image:#ui/gameuiskin#progress_bar.png;
+  foreground-image:#ui/gameuiskin#progress_bar;
   min:0;
   max:10000;
 
@@ -422,7 +422,7 @@ everyDayRewardProgress > filledRewardProgressBox {
   re-type:9rect;
   background-position:4,4;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#progress_bar.png;
+  background-image:#ui/gameuiskin#progress_bar;
 }
 
 everyDayRewardProgress > additionalProgress {
@@ -430,7 +430,7 @@ everyDayRewardProgress > additionalProgress {
   behaviour:progress;
   foreground-position:4,4;
   foreground-repeat:expand;
-  foreground-image:#ui/gameuiskin#progress_bar.png;
+  foreground-image:#ui/gameuiskin#progress_bar;
   min:0;
   max:10000;
 

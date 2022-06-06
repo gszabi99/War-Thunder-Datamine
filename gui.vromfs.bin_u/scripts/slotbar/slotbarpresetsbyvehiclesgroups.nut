@@ -84,7 +84,7 @@ let function validatePresets(presetId, groupsList, countryPresets) {
     }
 
     let defaultUnitsListByGroups = clone countryGroupsList.defaultUnitsListByGroups
-    let maxVisibleSlots = max(::get_crew_count(countryId), defaultUnitsListByGroups.len())
+    let maxVisibleSlots = ::max(::get_crew_count(countryId), defaultUnitsListByGroups.len())
     let presetUnits = countryPreset.units
     presetUnits.resize(maxVisibleSlots, null)
     let emptySLots = []

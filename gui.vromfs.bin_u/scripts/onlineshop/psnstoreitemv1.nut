@@ -6,7 +6,6 @@ let statsd = require("statsd")
 let { serviceLabel } = require("%sonyLib/webApi.nut")
 let { subscribe } = require("eventbus")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { targetPlatform } = require("%scripts/clientState/platform.nut")
 
 let IMAGE_TYPE_INDEX = 1 //240x240
 let BQ_DEFAULT_ACTION_ERROR = -1
@@ -69,7 +68,6 @@ local Ps4ShopPurchasableItem = class
 
   id = ""
   category = ""
-  srvLabel = serviceLabel
   releaseDate = 0
   price = 0           // Price with discount as number
   listPrice = 0       // Original price without discount as number
@@ -93,25 +91,24 @@ local Ps4ShopPurchasableItem = class
 
   skuInfo = null
 
-  constructor(blk, release_date) {
+  constructor(blk, _releaseDate)
+  {
     id = blk.label
     name = blk.name
     category = blk?.category ?? ""
     description = blk?.long_desc ?? ""
-    releaseDate = release_date //PSN not give releaseDate param. but it return data in sorted order by release date
+    releaseDate = _releaseDate //PSN not give releaseDate param. but it return data in sorted order by release date
 
     let imagesArray = blk?.images != null ? (blk.images % "array") : []
     let imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE_INDEX)
-
-    let psnShopBlk = GUI.get()?.ps4_ingame_shop
     if (imageIndex != null && imagesArray[imageIndex]?.url)
       imagePath = $"{imagesArray[imageIndex].url}?P1"
-    else if (psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
-      imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"
-
-    let customServiceLabelBlk = psnShopBlk?.customServiceLabel[targetPlatform]
-    if (customServiceLabelBlk)
-      srvLabel = customServiceLabelBlk?[id] ?? serviceLabel
+    else {
+      let psnShopBlk = GUI.get()?.ps4_ingame_shop
+      let ingameShopImages = psnShopBlk?.items
+      if (ingameShopImages?[id] != null && psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
+        imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"
+    }
 
     updateSkuInfo(blk)
   }
@@ -214,7 +211,7 @@ local Ps4ShopPurchasableItem = class
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
-      srvLabel,
+      serviceLabel,
       "storeCheckoutClosed",
       eventData
     )
@@ -226,7 +223,7 @@ local Ps4ShopPurchasableItem = class
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,
-      srvLabel,
+      serviceLabel,
       "storeDescriptionClosed",
       eventData
     )

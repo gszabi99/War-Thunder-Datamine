@@ -36,7 +36,7 @@ g_mis_custom_state.getCurMissionRules <- function getCurMissionRules()
     rulesClass = findRulesClassByName(rulesName)
 
   let chosenRulesName = (rulesClass == ::mission_rules.Empty) ? "empty" : rulesName
-  ::dagor.debug("Set mission custom rules to " + chosenRulesName + ". In mission info was " + rulesName)
+  dagor.debug("Set mission custom rules to " + chosenRulesName + ". In mission info was " + rulesName)
 
   curRules = rulesClass()
 

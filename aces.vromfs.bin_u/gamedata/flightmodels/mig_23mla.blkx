@@ -4,11 +4,12 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gearSinkRangeLR": 0.274,
   "gearSinkRangeC": 0.333,
-  "jetEnginePowerFullScale": true,
+  "JetNozzlesAnim1": [0.3,0.5],
+  "JetNozzlesAnim2": [0.5,1.0],
+  "JetNozzlesAnim3": [1.0,0.0],
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
   "ilsASP23": true,
-  "hasMissileCommandLine": false,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2179,12 +2180,6 @@
     },
     {
       "preset": {
-        "name": "mig_23mla_fire_bomb_zb_500",
-        "blk": "gameData/FlightModels/weaponPresets/mig_23mla_fire_bomb_zb_500.blk"
-      }
-    },
-    {
-      "preset": {
         "name": "mig_23mla_bomb_fab500m_62_r60",
         "blk": "gameData/FlightModels/weaponPresets/mig_23mla_bomb_fab500m_62_r60.blk"
       }
@@ -2683,29 +2678,6 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "napalm_large",
-            "name": "zb_500",
-            "reqModification": "zb_500",
-            "ShowNodes": [
-              {
-                "node": "pylon_3"
-              },
-              {
-                "node": "pylon_3_bomb_ub32"
-              }
-            ],
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
-              "emitter": "fab_500m_62_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        },
-        {
-          "WeaponPreset": {
             "iconType": "nar_ap_middle",
             "name": "ub_16_57_s5k",
             "reqModification": "mig_21_ub32",
@@ -2915,7 +2887,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/p_62_2_l_r_60_x2.blk",
+              "blk": "gameData/Weapons/containers/p_62_2_l_r_60m_x2.blk",
               "emitter": "apu_60m_2_l2",
               "external": true,
               "separate": true,
@@ -3065,7 +3037,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/p_62_2_r_r_60_x2.blk",
+              "blk": "gameData/Weapons/containers/p_62_2_r_r_60m_x2.blk",
               "emitter": "apu_60m_2_r2",
               "external": true,
               "separate": true,
@@ -3389,29 +3361,6 @@
         },
         {
           "WeaponPreset": {
-            "iconType": "napalm_large",
-            "name": "zb_500",
-            "reqModification": "zb_500",
-            "ShowNodes": [
-              {
-                "node": "pylon_4"
-              },
-              {
-                "node": "pylon_4_bomb_ub32"
-              }
-            ],
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
-              "emitter": "fab_500m_62_002",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        },
-        {
-          "WeaponPreset": {
             "iconType": "nar_ap_middle",
             "name": "ub_16_57_s5k",
             "reqModification": "mig_21_ub32",
@@ -3676,18 +3625,13 @@
     },
     "ns23_new_gun": {
       "reqModification": "ns23_belt_pack",
-      "tier": 2
+      "tier": 3
     },
     "il_28sh_upk23_gunpod": {
       "prevModification": "ns23_new_gun",
       "deactivationIsAllowed": false,
-      "tier": 3,
+      "tier": 4,
       "modClass": "weapon"
-    },
-    "zb_500": {
-      "prevModification": "il_28sh_upk23_gunpod",
-      "modClass": "weapon",
-      "tier": 4
     },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],

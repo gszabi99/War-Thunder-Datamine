@@ -66,16 +66,4 @@ return [
     checkGroup = ctrlGroups.HANGAR
     checkAssign = false
   }
-  {
-    id = "decal_rotate"
-    type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HANGAR
-    checkAssign = false
-  }
-  {
-    id = "decal_scale"
-    type = CONTROL_TYPE.AXIS
-    checkGroup = ctrlGroups.HANGAR
-    checkAssign = false
-  }
 ]

@@ -112,10 +112,10 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
     let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
     let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-0.08@scrn_tgt-1@blockInterval"
-    let itemsCountX = max(::to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
-      / max(1, ::to_pixels(itemWidthWithSpace)), 1)
-    let itemsCountY = max(::to_pixels(mainBlockHeight)
-      / max(1, ::to_pixels(itemHeightWithSpace)), 1)
+    let itemsCountX = ::max(::to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
+      / ::max(1, ::to_pixels(itemWidthWithSpace)), 1)
+    let itemsCountY = ::max(::to_pixels(mainBlockHeight)
+      / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
     let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     getItemsListObj().width = contentWidth
@@ -236,34 +236,34 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     markAwardSeen(award)
     fillItemDesc(award)
     fillCommonDesc(award)
-    this.showSceneBtn("jumpToDescPanel", ::show_console_buttons && award != null)
+    showSceneBtn("jumpToDescPanel", ::show_console_buttons && award != null)
     updateButtons()
   }
 
   function updateButtonsBar() {
     let obj = getItemsListObj()
     let isButtonsVisible =  isMouseMode || (::check_obj(obj) && obj.isHovered())
-    this.showSceneBtn("item_actions_bar", isButtonsVisible)
+    showSceneBtn("item_actions_bar", isButtonsVisible)
     return isButtonsVisible
   }
 
   function updateButtons()
   {
     if (::has_feature("BattlePass"))
-      this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
+      showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
 
     if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
 
     let award = getCurAward()
-    this.showSceneBtn("btn_specialTasks", award != null
+    showSceneBtn("btn_specialTasks", award != null
       && award.isRequiredSpecialTasksComplete()
       && !::isHandlerInScene(::gui_handlers.BattleTasksWnd)
     )
 
-    this.showSceneBtn("btn_preview", (award?.canPreview() ?? false) && ::isInMenu())
+    showSceneBtn("btn_preview", (award?.canPreview() ?? false) && ::isInMenu())
 
-    let mainActionBtn = this.showSceneBtn("btn_main_action", award != null)
+    let mainActionBtn = showSceneBtn("btn_main_action", award != null)
     if (!award)
       return
 
@@ -292,7 +292,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
   function updateAwardPrices()
   {
     let listObj = getItemsListObj()
-    let total = min(listObj.childrenCount(), curPageAwards.len())
+    let total = ::min(listObj.childrenCount(), curPageAwards.len())
     for(local i = 0; i < total; i++)
     {
       let childObj = listObj.getChild(i)

@@ -527,7 +527,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -873,31 +872,6 @@
     }
   },
   {
-    "attachables": {
-      "ex_armor_turret_01_dm": true,
-      "ex_armor_turret_02_dm": true,
-      "ex_armor_turret_03_dm": true,
-      "ex_armor_turret_04_dm": true,
-      "ex_armor_turret_05_dm": true,
-      "ex_armor_turret_06_dm": true,
-      "ex_armor_turret_l_01_dm": true,
-      "ex_armor_turret_l_02_dm": true,
-      "ex_armor_turret_l_03_dm": true,
-      "ex_armor_turret_l_04_dm": true,
-      "ex_armor_turret_l_05_dm": true,
-      "ex_armor_turret_r_02_dm": true,
-      "ex_armor_turret_r_03_dm": true,
-      "ex_armor_turret_r_04_dm": true,
-      "ex_armor_turret_r_05_dm": true,
-      "ex_decor_body_l_01_dm": true,
-      "ex_decor_body_l_02_dm": true,
-      "ex_decor_body_l_04_dm": true,
-      "ex_decor_body_r_01_dm": true,
-      "ex_decor_body_r_02_dm": true,
-      "ex_decor_body_r_07_dm": true
-    }
-  },
-  {
     "DamageEffects": [
       {
         "part": [
@@ -1194,8 +1168,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1239,8 +1213,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1248,8 +1222,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1257,8 +1231,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1297,29 +1271,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -3369,10 +3343,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_uk"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_uk"
       },
       "120mm_britain_L1_HESH": [],
       "tank_rangefinder": [],

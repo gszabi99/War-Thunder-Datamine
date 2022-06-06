@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
 
 ::gui_handlers.CrewUnitSpecHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -45,7 +44,7 @@ let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.
 
   function getRowName(rowIndex)
   {
-    return format("skill_row%d", rowIndex)
+    return ::format("skill_row%d", rowIndex)
   }
 
   function applyRowButton(obj)

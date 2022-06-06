@@ -31,11 +31,11 @@ let function definitionFunc(shArray, shEnum)
     }
 
     if (sh.id in shEnum)
-      ::dagor.assertf(false, "Shortcuts: Found duplicate " + sh.id)
+      dagor.assertf(false, "Shortcuts: Found duplicate " + sh.id)
 
     enums.addTypes(shEnum, {[sh.id] = sh}, function() {
-        if (this.reqInMouseAim == null)
-          this.reqInMouseAim = this.checkAssign
+        if (reqInMouseAim == null)
+          reqInMouseAim = checkAssign
       },
     "id")
   }

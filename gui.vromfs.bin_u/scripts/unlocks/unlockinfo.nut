@@ -1,5 +1,5 @@
 let function getMedalRibbonImg(unlockId) {
-  return $"!@ui/medals/{unlockId}_ribbon.ddsx"
+  return $"!@ui/medals/{unlockId}_ribbon"
 }
 
 let function hasMedalRibbonImg(unlockId) {

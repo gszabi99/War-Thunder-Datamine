@@ -1,4 +1,3 @@
-let { split_by_chars } = require("string")
 /**
  *  dbg_dump is a tool for debugging complex scripts, which have
  *  a lot of different states, which takes a lot of time and
@@ -101,7 +100,7 @@ let getFuncResult = function(func, a = [])
 
 local pathGet = function(env, path, defVal)
 {
-  let keys = split_by_chars(path, ".")
+  let keys = ::split(path, ".")
   foreach(key in keys)
     if (key in env)
       env = env[key]
@@ -112,7 +111,7 @@ local pathGet = function(env, path, defVal)
 
 local pathSet = function(env, path, val)
 {
-  let keys = split_by_chars(path, ".")
+  let keys = ::split(path, ".")
   let lastIdx = keys.len() - 1
   foreach(idx, key in keys)
   {
@@ -124,7 +123,7 @@ local pathSet = function(env, path, val)
 
 local pathDelete = function(env, path)
 {
-  let keys = split_by_chars(path, ".")
+  let keys = ::split(path, ".")
   let lastIdx = keys.len() - 1
   foreach(idx, key in keys)
   {

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
@@ -272,7 +271,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       for(local j = 0; j < row.blockCount(); j++)
       {
         let param = row.getBlock(j)
-        if (param.paramCount() <= 0 || param?[valueKey] == null)
+        if(param.paramCount() <= 0 || param[valueKey] == null)
           continue
         table[param.getBlockName()] <- param[valueKey]
       }
@@ -460,7 +459,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   {
     rowsInPage = rowsInPage > 0
       ? rowsInPage
-      : max(::ceil((scene.findObject("lb_table_nest").getSize()[1]
+      : ::max(::ceil((scene.findObject("lb_table_nest").getSize()[1]
         - ::to_pixels("1@leaderboardHeaderHeight"))
           / (::to_pixels("1@rows16height") || 1)).tointeger() - 2, 19)
   }
@@ -496,8 +495,8 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   function noLbDataError()
   {
     guiScene.replaceContentFromText(scene.findObject("lb_players_table"), "", 0, this)
-    ::dagor.debug("Error: Empty leaderboard block without endOfList")
-    this.msgBox("not_available", ::loc("multiplayer/lbError"), [["ok", function() { goBack() } ]], "ok")
+    dagor.debug("Error: Empty leaderboard block without endOfList")
+    msgBox("not_available", ::loc("multiplayer/lbError"), [["ok", function() { goBack() } ]], "ok")
   }
 
   function getSelectedRowData()
@@ -732,7 +731,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    let modesObj = this.showSceneBtn("modes_list", true)
+    let modesObj = showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }
@@ -894,7 +893,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
   {
     let updateTime = ::getTblValue("updateTime", pageData, 0)
     let timeStr = updateTime > 0
-                    ? format("%s %s %s",
+                    ? ::format("%s %s %s",
                                ::loc("mainmenu/lbUpdateTime"),
                                time.buildDateStr(updateTime),
                                time.buildTimeStr(updateTime, false, false))

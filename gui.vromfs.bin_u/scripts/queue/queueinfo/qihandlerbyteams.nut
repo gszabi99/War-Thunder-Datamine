@@ -1,4 +1,3 @@
-let { format } = require("string")
 ::gui_handlers.QiHandlerByTeams <- class extends ::gui_handlers.QiHandlerBase
 {
   timerUpdateObjId = "queue_box"
@@ -25,7 +24,7 @@ let { format } = require("string")
     {
       let show = ::isInArray(team, teams)
                    && (!queueStats.isSymmetric || team == Team.A)
-      let blockObj = this.showSceneBtn(team + "_block", show)
+      let blockObj = showSceneBtn(team + "_block", show)
       if (!show)
         continue
 
@@ -52,7 +51,7 @@ let { format } = require("string")
         if (clusterName == "")
           playersCountText = ::loc("events/players_count")
         else
-          playersCountText = format("%s (%s)", ::loc("events/max_players_count"),
+          playersCountText = ::format("%s (%s)", ::loc("events/max_players_count"),
                                       ::g_clusters.getClusterLocName(clusterName))
         playersCountText += ::loc("ui/colon") + players
         tableMarkup = getQueueTableMarkup(queueStats, teamName, clusters)

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
@@ -131,7 +130,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     {
       view.tabs.append({
         id = sheet
-        tabImage = format(tabImageNameTemplate, sheet.tolower())
+        tabImage = ::format(tabImageNameTemplate, sheet.tolower())
         tabName = tabLocalePrefix + sheet
         navImagesText = ::get_navigation_images_text(idx, sheetsList.len())
       })
@@ -157,7 +156,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function notFoundPlayerMsg()
   {
-    this.msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = ("name" in player)? player.name : "" }),
+    msgBox("incorrect_user", ::loc("chat/error/item-not-found", { nick = ("name" in player)? player.name : "" }),
         [
           ["ok", function() { goBack() } ]
         ], "ok")
@@ -195,7 +194,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
     if (!blk?.nick || blk.nick == "") //!!FIX ME: Check incorrect user by no uid in answer.
     {
-      this.msgBox("user_not_played", ::loc("msg/player_not_played_our_game"),
+      msgBox("user_not_played", ::loc("msg/player_not_played_our_game"),
         [
           ["ok", function() { goBack() } ]
         ], "ok")
@@ -310,8 +309,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     fillAdditionalName(curPlayerExternalIds?.steamName ?? "", "steamName")
     fillAdditionalName(curPlayerExternalIds?.facebookName ?? "", "facebookName")
 
-    this.showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
-    this.showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (curPlayerExternalIds?.psnId ?? "") != "")
+    showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (curPlayerExternalIds?.xboxId ?? "") != "")
+    showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (curPlayerExternalIds?.psnId ?? "") != "")
   }
 
   function fillAdditionalName(name, link)
@@ -378,7 +377,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (childrenCount <= 0)
       return
 
-    switchObj.setValue(clamp(curMode, 0, childrenCount - 1))
+    switchObj.setValue(::clamp(curMode, 0, childrenCount - 1))
   }
 
   function onStatsModeChange(obj)
@@ -432,7 +431,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         id = countryId
         image = ::get_country_icon(countryId)
         tooltip = "#" + countryId
-        objects = format(countFmt, pl.countryStats[countryId].medalsCount)
+        objects = ::format(countFmt, pl.countryStats[countryId].medalsCount)
       })
 
       if (countryId == curCountryId)
@@ -456,7 +455,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       return
 
     let medalsList = getCountryMedals(countryId, player)
-    this.showSceneBtn("medals_empty", !medalsList.len())
+    showSceneBtn("medals_empty", !medalsList.len())
 
     let view = {
       ribbons = getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
@@ -499,8 +498,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function fillTitlesBlock(pl)
   {
-    this.showSceneBtn("medals_block", false)
-    this.showSceneBtn("titles_block", true)
+    showSceneBtn("medals_block", false)
+    showSceneBtn("titles_block", true)
 
     let titles = []
     foreach (id in pl.titles)
@@ -520,7 +519,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     titles.sort(@(a, b) a.lowerText <=> b.lowerText)
 
     let titlesTotal = titles.len()
-    this.showSceneBtn("titles_empty", !titlesTotal)
+    showSceneBtn("titles_empty", !titlesTotal)
     if (!titlesTotal)
       return
 
@@ -776,7 +775,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     let listObj = scene.findObject("airs_stats_table")
     let size = listObj.getSize()
     let rowsHeigt = size[1] -guiScene.calcString("@leaderboardHeaderHeight", null)
-    statsPerPage =   max(1, (rowsHeigt / guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
+    statsPerPage =   ::max(1, (rowsHeigt / guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
   }
 
   function updateStatPage()
@@ -1019,7 +1018,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       data += format("option {text:t='%s'}", mode.text)
     }
 
-    let modesObj = this.showSceneBtn("leaderboard_modes_list", true)
+    let modesObj = showSceneBtn("leaderboard_modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(0)
   }

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
@@ -65,7 +64,7 @@ let function getFavoriteVoiceMessagesVariants() {
     }
     indexInCategory++;
 
-    result.append("" + categoryIndex + "-" + indexInCategory + ": " + format(::loc(record.name + "_0"),
+    result.append("" + categoryIndex + "-" + indexInCategory + ": " + ::format(::loc(record.name + "_0"),
       ::loc("voice_message_target_placeholder")));
   }
   return result;
@@ -88,7 +87,7 @@ let function getVoiceMessageListLine(index, is_category, name, squad, targetName
 
   return {
     shortcutText = scText
-    name = is_category ? getCategoryLoc(name) : format(::loc(name + "_0"), targetName)
+    name = is_category ? getCategoryLoc(name) : ::format(::loc(name + "_0"), targetName)
     chatMode = squad ? "squad" : "team"
   }
 }

@@ -10,8 +10,6 @@
 // Result: "何かがおかしい******フラップが壊れています"
 //
 
-let regexp2 = require("regexp2")
-
 local debugLogFunc = null
 
 local dict = {
@@ -40,14 +38,14 @@ local function init(langSources) {
         switch (typeof vSrc)
         {
           case "string":
-            v = regexp2(vSrc)
+            v = ::regexp2(vSrc)
             break
           case "table":
             v = clone vSrc
             if ("value" in v)
-              v.value = regexp2(v.value)
+              v.value = ::regexp2(v.value)
             if ("arr" in v)
-              v.arr = v.arr.map(@(av) regexp2(av))
+              v.arr = v.arr.map(@(av) ::regexp2(av))
             break
           default:
             ::dagor.assertf(false, "Wrong var type in DirtyWordsFilter config")
@@ -85,73 +83,73 @@ local alphabet = {
 
 local preparereplace = [
   {
-    pattern = regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
+    pattern = ::regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
     replace = " "
   },
   {
-    pattern = regexp2(@"[\!\:\_]")
+    pattern = ::regexp2(@"[\!\:\_]")
     replace = " "
   }
 ];
 
 
-local prepareex = regexp2("(а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за)")
+local prepareex = ::regexp2("(а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за)")
 
 
 local prepareword = [
   {
-    pattern = regexp2("ё")
+    pattern = ::regexp2("ё")
     replace = "е"
   },
   {
-    pattern = regexp2(@"&[Ee][Uu][Mm][Ll];")
+    pattern = ::regexp2(@"&[Ee][Uu][Mm][Ll];")
     replace = "е"
   },
   {
-    pattern = regexp2("&#203;")
+    pattern = ::regexp2("&#203;")
     replace = "е"
   },
   {
-    pattern = regexp2(@"&[Cc][Ee][Nn][Tt];")
+    pattern = ::regexp2(@"&[Cc][Ee][Nn][Tt];")
     replace = "с"
   },
   {
-    pattern = regexp2("&#162;")
+    pattern = ::regexp2("&#162;")
     replace = "с"
   },
   {
-    pattern = regexp2("&#120;")
+    pattern = ::regexp2("&#120;")
     replace = "х"
   },
   {
-    pattern = regexp2("&#121;")
+    pattern = ::regexp2("&#121;")
     replace = "у"
   },
   {
-    pattern = regexp2(@"\|\/\|")
+    pattern = ::regexp2(@"\|\/\|")
     replace = "и"
   },
   {
-    pattern = regexp2(@"3[\.\,]14[\d]{0,}")
+    pattern = ::regexp2(@"3[\.\,]14[\d]{0,}")
     replace = "пи"
   },
   {
-    pattern = regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
+    pattern = ::regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
     replace = ""
   },
   {
-    pattern = regexp2(@"[\!\:\_]")
+    pattern = ::regexp2(@"[\!\:\_]")
     replace = ""
   },
   {
-    pattern = regexp2(@"[u]{3,}")
+    pattern = ::regexp2(@"[u]{3,}")
     replace = "u"
   }
 ];
 
 
 local preparewordwhile = {
-  pattern = regexp2(@"(.)\\1\\1")
+  pattern = ::regexp2(@"(.)\\1\\1")
   replace = "\\1\\1"
 }
 
@@ -307,7 +305,7 @@ local function checkPhrase(text)
 
   foreach (w in words)
     if (!checkWord(w))
-      phrase = regexp2(w).replace(getMaskedWord(w), phrase)
+      phrase = ::regexp2(w).replace(getMaskedWord(w), phrase)
 
   return phrase
 }

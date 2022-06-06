@@ -117,10 +117,8 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   let rewardValue = config[rewardType] // warning disable: -access-potentially-nulled
   local style = "reward_" + rewardType
 
-  if (rewardType == "multiAwardsOnWorthGold" || rewardType == "modsForBoughtUnit"){
-    let trophyMultiAward = TrophyMultiAward(::DataBlockAdapter(config))
-    image = onlyImage ? trophyMultiAward.getOnlyRewardImage() : trophyMultiAward.getRewardImage()
-  }
+  if (rewardType == "multiAwardsOnWorthGold" || rewardType == "modsForBoughtUnit")
+    image = TrophyMultiAward(::DataBlockAdapter(config)).getRewardImage()
   else if (::trophyReward.isRewardItem(rewardType))
   {
     let item = ::ItemsManager.findItemById(rewardValue)
@@ -175,10 +173,7 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   if (!imageAsItem)
     return resultImage
 
-  let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
-  return ::handyman.renderCached(("%gui/items/item"), {items = [tooltipConfig.__update({
-    layered_image = resultImage,
-    hasFocusBorder = true })]})
+  return ::handyman.renderCached(("%gui/items/item"), {items = [{layered_image = resultImage}]})
 }
 
 trophyReward.getDecoratorVisualConfig <- function getDecoratorVisualConfig(config)
@@ -279,7 +274,7 @@ trophyReward.getType <- function getType(config)
         return param
 
   ::dagor.debug("TROPHYREWARD::GETTYPE recieved bad config")
-  ::debugTableData(config)
+  debugTableData(config)
   return ""
 }
 
@@ -292,6 +287,19 @@ trophyReward.getName <- function getName(config)
   let item = ::ItemsManager.findItemById(config[rewardType])
   if (item)
     return item.getName()
+
+  return ""
+}
+
+trophyReward.getDecription <- function getDecription(config, isFull = false)
+{
+  let rewardType = ::trophyReward.getType(config)
+  if (!::trophyReward.isRewardItem(rewardType))
+    return ::trophyReward.getRewardText(config, isFull)
+
+  let item = ::ItemsManager.findItemById(config[rewardType])
+  if (item)
+    return item.getDescription()
 
   return ""
 }
@@ -432,15 +440,4 @@ trophyReward.getRewardType <- function getRewardType(prize)
     if (rewardType in prize)
       return rewardType
   return ""
-}
-
-trophyReward.getFullDescriptonView <- function getFullDescriptonView(prizeConfig = {}) {
-  let view = {
-    textTitle = getRewardText(prizeConfig, false)
-    prizeImg = getImageByConfig(prizeConfig, true)
-    textDesc = ::PrizesView.getDescriptonView(prizeConfig).textDesc
-    markupDesc = ::PrizesView.getDescriptonView(prizeConfig).markupDesc
-  }
-
-  return ::handyman.renderCached("%gui/items/trophyRewardDesc", view)
 }

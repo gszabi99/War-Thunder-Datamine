@@ -17,11 +17,11 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   queueStats = null //created on first stats income. We dont know stats version before
   selfActivated = false
 
-  constructor(queueId, v_queueType, v_params)
+  constructor(queueId, _queueType, _params)
   {
     id = queueId
-    queueType = v_queueType
-    params = v_params || {}
+    queueType = _queueType
+    params = _params || {}
 
     typeBit = queueType.bit
     queueUidsList = {}

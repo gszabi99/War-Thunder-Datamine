@@ -332,17 +332,17 @@
       "actions": [
         {
           "comment": {
-            "value": "zadaem nachal'nuyu skorost' unichtozheniya nazemki"
+            "value": "задаем начальную скорость уничтожения наземки"
           }
         },
         {
           "comment": {
-            "value": "zadaem znacheniya dlya predotvrashcheniya dlinnyh sessij"
+            "value": "задаем значения для предотвращения длинных сессий"
           }
         },
         {
           "comment": {
-            "value": "nachinaetsya logika missii"
+            "value": "начинается логика миссии"
           }
         },
         {
@@ -699,7 +699,38 @@
   "variables": [],
   "dialogs": [],
   "airfields": [],
-  "effects": [],
+  "effects": {
+    "effect_01": {
+      "type": "townSmokeBig",
+      "tm": [
+        [211.6,0.0,0.0],
+        [0.0,211.6,0.0],
+        [0.0,0.0,211.6],
+        [-19534.5,124.25,1261.0]
+      ],
+      "density": 10.0
+    },
+    "effect_02": {
+      "type": "townSmokeBig",
+      "tm": [
+        [211.6,0.0,0.0],
+        [0.0,211.6,0.0],
+        [0.0,0.0,211.6],
+        [-18580.3,173.0,1956.05]
+      ],
+      "density": 10.0
+    },
+    "effect_03": {
+      "type": "townSmokeBig",
+      "tm": [
+        [211.6,0.0,0.0],
+        [0.0,211.6,0.0],
+        [0.0,0.0,211.6],
+        [-19470.1,173.0,286.25]
+      ],
+      "density": 10.0
+    }
+  },
   "units": [
     {
       "objectGroups": {

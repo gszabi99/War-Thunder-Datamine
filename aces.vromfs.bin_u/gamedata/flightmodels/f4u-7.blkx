@@ -220,6 +220,9 @@
       },
       "oil2_dm": {
         "hp": 11.5
+      },
+      "oil3_dm": {
+        "hp": 11.5
       }
     },
     "steel_pilot": {
@@ -1293,6 +1296,17 @@
     {
       "part": {
         "name": "oil2_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "oil3_dm",
         "onHit": {
           "leak_oil": 0.95
         },
@@ -6066,22 +6080,6 @@
         "separateDm": true,
         "dp": "gear_3c%d"
       }
-    },
-    {
-      "dp": [
-        {
-          "dm": "_ClipHookRoot"
-        },
-        {
-          "separateDm": true
-        },
-        {
-          "dp": "hook"
-        },
-        {
-          "dp": "hook_catch"
-        }
-      ]
     },
     {
       "dp": [

@@ -4,9 +4,9 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 {
   mapId = ""
 
-  constructor(v_mapId)
+  constructor(_mapId)
   {
-    mapId = v_mapId
+    mapId = _mapId
   }
 
   function isEqual(opGroup)

@@ -34,7 +34,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!onlyDevicesChoice)
       updateProfileIcon(true)
 
-    this.showSceneBtn("ct_xinput", ::have_xinput_device())
+    showSceneBtn("ct_xinput", ::have_xinput_device())
   }
 
   function onChangePilotIcon()
@@ -91,12 +91,12 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
     let text = ::loc("msgbox/controlPresetApply")
     let onOk = ::Callback(@() doControlTypeApply(ct_id), this)
-    this.msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
+    msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
   }
 
   function doControlTypeApply(ctId)
   {
-    ::setControlTypeByID(ctId)
+    setControlTypeByID(ctId)
     goBack()
   }
 }

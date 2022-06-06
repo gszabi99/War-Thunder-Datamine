@@ -66,6 +66,9 @@
             "source": "constant",
             "value": 0.0
           },
+          "setScopeRange": {
+            "scopeRangeIndex": 0
+          },
           "setTargetDesignationRange": {
             "azimuthRange": [-9.0,9.0],
             "distanceRange": [300.0,2750.0]
@@ -108,8 +111,9 @@
             "value": true
           },
           "clearTargetsOfInterest": [],
-          "updateTargetOfInterest": [],
+          "addTargetOfInterest": [],
           "setLastTargetOfInterestActive": [],
+          "updateActiveTargetOfInterest": [],
           "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
@@ -202,7 +206,7 @@
         {
           "finishedTrack": {
             "stateFrom": "track",
-            "event": "targetsOfInterestCleanup",
+            "event": "activeTargetOfInterestInertialTimeOut",
             "stateTo": "lock",
             "actions": {
               "setFsmActive": {
@@ -252,7 +256,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": [],
+            "updateActiveTargetOfInterest": [],
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
@@ -266,10 +270,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
-            "clearTargetsOfInterest": {
-              "timeOut": 0.5
-            },
+            "extrapolateActiveTargetOfInterest": [],
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
@@ -277,6 +278,9 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            },
+            "checkActiveTargetOfInerestInertialTimeout": {
+              "timeOut": 0.5
             }
           }
         }

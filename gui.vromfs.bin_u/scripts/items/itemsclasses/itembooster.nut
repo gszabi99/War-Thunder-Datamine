@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
@@ -7,8 +6,8 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 {
   static iType = itemType.BOOSTER
   static defaultLocId = "rateBooster"
-  static defaultIcon = "#ui/gameuiskin#items_booster_shape1.png"
-  static typeIcon = "#ui/gameuiskin#item_type_boosters.svg"
+  static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
+  static typeIcon = "#ui/gameuiskin#item_type_boosters"
   canBuy = true
   allowBigPicture = false
 
@@ -23,19 +22,19 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   eventTypeData = {}
   static eventTypesTable = [{
                               name = null,
-                              iconImg = "#ui/gameuiskin#item_type_boosters.svg"
+                              iconImg = "#ui/gameuiskin#item_type_boosters"
                             },
                             {
                               name = "kill",
-                              iconImg = "#ui/gameuiskin#item_type_booster_event_kill.svg"
+                              iconImg = "#ui/gameuiskin#booster_event_kill"
                             },
                             {
                               name = "kill_ground",
-                              iconImg = "#ui/gameuiskin#item_type_booster_event_kill_ground.svg"
+                              iconImg = "#ui/gameuiskin#booster_event_kill_ground"
                             },
                             {
                               name = "assist",
-                              iconImg = "#ui/gameuiskin#item_type_booster_event_assist.svg"
+                              iconImg = "#ui/gameuiskin#booster_event_assist"
                             }]
 
   eventType = null
@@ -211,7 +210,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     let effectsDiff = getBoostersEffectsDiffByItem()
     let bodyText = ::loc("msgbox/existingBoosters", {
                         newBooster = getName(),
-                        newBoosterEffect = getDiffEffectText(format("%.02f", effectsDiff).tofloat())
+                        newBoosterEffect = getDiffEffectText(::format("%.02f", effectsDiff).tofloat())
                       })
     let savedThis = this
     handler.msgBox("activate_additional_booster", bodyText, [
@@ -306,14 +305,14 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   {
     let effects = getEffectTypes()
     return ::ItemsManager.getInventoryList(itemType.BOOSTER,
-             function (v_item) {
-               if (!v_item.isActive(true) || v_item.personal != personal)
+             (@(effects) function (_item) {
+               if (!_item.isActive(true) || _item.personal != personal)
                  return false
                foreach(e in effects)
-                 if (e.checkBooster(v_item))
+                 if (e.checkBooster(_item))
                    return true
                return false
-             }.bindenv(this))
+             })(effects).bindenv(this))
   }
 
   function getIcon(addItemName = true)
@@ -350,7 +349,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
   function _getMulIconCfg()
   {
     let layersArray = []
-    let mul = max(wpRate, xpRate)
+    let mul = ::max(wpRate, xpRate)
     let numsArray = ::getArrayFromInt(mul)
     if (numsArray.len() > 0)
     {
@@ -372,8 +371,8 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 
       foreach(idx, layerCfg in layersArray)
       {
-        layersArray[idx].offsetY <- format("%.3fp.p.h * %d", mulIconSymbolsOffsetYMul, idx)
-        layersArray[idx].x <- format("%.3fp.p.h", mulIconSymbolsSpacing)
+        layersArray[idx].offsetY <- ::format("%.3fp.p.h * %d", mulIconSymbolsOffsetYMul, idx)
+        layersArray[idx].x <- ::format("%.3fp.p.h", mulIconSymbolsSpacing)
         layersArray[idx].position <- "relative"
       }
     }
@@ -386,7 +385,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     local desc = getEffectText(wpRate, xpRate, colored)
 
     if (!personal)
-      desc += format(" (%s)", ::loc("boostEffect/group"))
+      desc += ::format(" (%s)", ::loc("boostEffect/group"))
     return desc
   }
 
@@ -486,7 +485,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
     local res = getTotalStopSessions() - stopProgress
     if (spentInSessionTimeMin && ::is_in_flight())
       res -= (time.secondsToMinutes(::get_usefull_total_time()) / spentInSessionTimeMin).tointeger()
-    return max(0, res)
+    return ::max(0, res)
   }
 
   function getExpireFlightTime()
@@ -556,9 +555,9 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       let efTypeName = efType.name
       let valTbl = ::getTblValue(efTypeName, stackParams, {})
       let minVal = ::getTblValue("min", valTbl)
-      valTbl.min <- minVal ? min(minVal, value) : value
+      valTbl.min <- minVal ? ::min(minVal, value) : value
       let maxVal = ::getTblValue("max", valTbl)
-      valTbl.max <- maxVal ? max(maxVal, value) : value
+      valTbl.max <- maxVal ? ::max(maxVal, value) : value
       stackParams[efTypeName] <- valTbl
     }
   }
@@ -648,7 +647,7 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
       desc = getEffectText(wpRate, xpRate, colored)
 
     if (!personal)
-      desc += format(" (%s)", ::loc("boostEffect/group"))
+      desc += ::format(" (%s)", ::loc("boostEffect/group"))
     return desc
   }
 

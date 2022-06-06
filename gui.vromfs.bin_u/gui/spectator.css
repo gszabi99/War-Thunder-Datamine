@@ -7,7 +7,6 @@
 @const spectatorUnitBlockWidth: 1.375@tableIcoSize;
 @const spectatorIconBlockWidth: 2@cIco + 1@spectatorUnitBlockWidth;
 @const spectatorBw: 1@bw - 1@bwInVr;
-@const spectatorTimerProgressWidth: 240@sf/@pf;
 
 spectatorFrame {
   background-color: @frameSpectatorBackgroundColor;
@@ -65,7 +64,7 @@ table.spectatorTeamTable > tr > td > highlight {
   size:1@spectatorTableWidth, ph;
   position:absolute;
   re-type:9rect;
-  background-image:#ui/gameuiskin#expandable_item_sub_transp_sym.png;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp_sym;
   background-position:0, 4;
   background-repeat:expand;
   background-color:@switchButtonOnColor;
@@ -79,7 +78,7 @@ table.spectatorTeamTable > tr[hero=yes] > td > highlight {
 td.spectatorTeamCell > hr {
   size:1@spectatorTableWidth, 1@dp;
   position:absolute;
-  background-image:#ui/gameuiskin#expandable_item_sub_transp.png;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp;
   background-position:1;
   background-repeat:expand;
   background-color:#30000000;
@@ -339,28 +338,4 @@ historyLog {
   font:@fontSmall;
   paragraph-indent:0;
   padding:0;
-}
-
-reaplayAnchor {
-  size:6@dp, ph + 7@dp;
-  top:ph-h;
-  position:absolute;
-  behaviour:button;
-  css-hier-invalidate:yes;
-  total-input-transparent:yes;
-}
-
-anchorMarker {
-  size:2@dp, ph;
-  pos:0.5pw-0.5w, 0;
-  position:relative;
-  background-color:#00CC00;
-}
-
-reaplayAnchor:hover > anchorMarker {
-  background-color:#67E667;
-}
-
-reaplayAnchor:pushed > anchorMarker {
-  background-color:#008500;
 }

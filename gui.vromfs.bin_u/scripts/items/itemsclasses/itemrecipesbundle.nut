@@ -5,7 +5,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 ::items_classes.RecipesBundle <- class extends ::items_classes.Chest {
   static iType = itemType.RECIPES_BUNDLE
   static defaultLocId = "recipes_bundle"
-  static typeIcon = "#ui/gameuiskin#items_blueprint.png"
+  static typeIcon = "#ui/gameuiskin#items_blueprint"
 
   isDisassemble         = @() itemDef?.tags?.isDisassemble == true
   updateNameLoc         = @(locName) isDisassemble() ? ::loc("item/disassemble_header", { name = locName })

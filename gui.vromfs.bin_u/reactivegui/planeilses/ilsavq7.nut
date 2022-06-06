@@ -32,7 +32,7 @@ let function speedometer(width, height) {
 
   let hundreds = @() {
     watch = [Speed, IlsColor]
-    rendObj = ROBJ_TEXT
+    rendObj = ROBJ_DTEXT
     pos = [width * 0.15, height * 0.72]
     size = flex()
     color = IlsColor.value
@@ -83,7 +83,7 @@ let altmeterGrid = @() {
 let altThousand = Computed(@() (floor((Altitude.value * metrToFeet) / 1000)).tointeger())
 let thousands = @() {
   watch = [altThousand, IlsColor]
-  rendObj = ROBJ_TEXT
+  rendObj = ROBJ_DTEXT
   color = IlsColor.value
   fontSize = 70
   font = Fonts.usa_ils
@@ -341,5 +341,4 @@ return {
   AVQ7Basic = basicInformation
   AVQ7BombingMode = bombingMode
   AVQ7CCIPMode = CCIP
-  AVQ7CCRP = rotatedBombReleaseReticle
 }

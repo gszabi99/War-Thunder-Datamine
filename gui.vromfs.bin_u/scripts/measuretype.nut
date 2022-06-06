@@ -1,4 +1,3 @@
-let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
@@ -28,7 +27,7 @@ g_measure_type._getMeasureUnitsText <- function _getMeasureUnitsText(value, addM
 g_measure_type._getMeasureUnitsName <- function _getMeasureUnitsName()
 {
   let unitName = (userOptCode != -1) ? ::get_option_unit_type(orderCode) : name
-  return ::loc(format("measureUnits/%s", unitName))
+  return ::loc(::format("measureUnits/%s", unitName))
 }
 
 g_measure_type._isMetricSystem <- function _isMetricSystem()

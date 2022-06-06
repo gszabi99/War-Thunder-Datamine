@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 let contentPreview = require("%scripts/customization/contentPreview.nut")
@@ -82,7 +81,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
     units = []
     if ("units" in blk)
-      units = split_by_chars(blk.units, "; ")
+      units = ::split(blk.units, "; ")
 
     allowedUnitTypes = blk?.unitType ? (blk % "unitType") : []
 

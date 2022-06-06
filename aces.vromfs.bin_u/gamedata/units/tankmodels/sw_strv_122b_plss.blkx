@@ -358,16 +358,6 @@
           "createSecondaryShatters": false,
           "armorClass": "tank_structural_steel"
         },
-        "turret_07_bottom_dm": {
-          "armorThickness": 20.0,
-          "createSecondaryShatters": false,
-          "armorClass": "tank_structural_steel"
-        },
-        "turret_12_bottom_dm": {
-          "armorThickness": 20.0,
-          "createSecondaryShatters": false,
-          "armorClass": "tank_structural_steel"
-        },
         "turret_09_back_dm": {
           "armorThickness": 20.0
         },
@@ -375,9 +365,6 @@
           "armorThickness": 20.0
         },
         "turret_10_bottom_dm": {
-          "armorThickness": 20.0
-        },
-        "turret_10_top_dm": {
           "armorThickness": 20.0
         },
         "ex_decor_l_10_dm": {
@@ -423,7 +410,7 @@
           "hidableInViewer": true
         },
         "ex_armor_body_10_dm": {
-          "armorThickness": 30.0,
+          "armorThickness": 20.0,
           "hidableInViewer": true
         },
         "turret_02_back_dm": {
@@ -469,7 +456,7 @@
           "ignoreDeadWithSplash": true,
           "armorEffectiveThicknessMax": 50.0
         },
-        "composite_armor_turret_13_dm": {
+        "turret_07_bottom_dm": {
           "armorThickness": 35.0,
           "hp": 150.0,
           "ignoreDeadWithSplash": true,
@@ -625,6 +612,9 @@
           "armorThickness": 20.0
         },
         "turret_12_back_dm": {
+          "armorThickness": 45.0
+        },
+        "turret_12_bottom_dm": {
           "armorThickness": 45.0
         },
         "turret_12_front_dm": {
@@ -877,7 +867,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1228,8 +1217,6 @@
       "ex_armor_l_13_dm": true,
       "ex_armor_r_14_dm": true,
       "ex_armor_r_15_dm": true,
-      "turret_12_bottom_dm": true,
-      "turret_07_bottom_dm": true,
       "turret_08_back_dm": true,
       "turret_08_front_dm": true,
       "turret_08_top_dm": true,
@@ -1798,8 +1785,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1843,8 +1830,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1852,8 +1839,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1861,8 +1848,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1901,29 +1888,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2564,17 +2551,6 @@
           "armorArrayText": {
             "layer": {
               "dmPart": "composite_armor_turret_12_dm"
-            }
-          }
-        }
-      },
-      {
-        "armorArrayTurret": {
-          "xrayDmPart": "composite_armor_turret_13_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_turret_13_dm"
             }
           }
         }
@@ -4151,10 +4127,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_sw.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_sw"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_sw.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_sw"
       },
       "120mm_DM_APDS_FS": [],
       "120mm_DM_HE_FS": [],
@@ -4494,7 +4470,7 @@
       },
       "night_vision_system": {
         "tier": 3,
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "effects": {
           "nightVision": {
             "gunnerThermal": {
@@ -4511,19 +4487,6 @@
               "ghosting": 0.6,
               "noiseFactor": 0.2
             }
-          }
-        }
-      },
-      "mine_protection_improvement": {
-        "invertEnableLogic": false,
-        "turn_it_off": false,
-        "effects": {
-          "rcostAddParam": 0.92,
-          "changeMass": 2400.0
-        },
-        "disableModEffects": {
-          "hideNodes": {
-            "node": "ex_armor_body_10"
           }
         }
       }

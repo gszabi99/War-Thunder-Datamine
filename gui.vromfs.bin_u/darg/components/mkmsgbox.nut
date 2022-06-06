@@ -140,8 +140,6 @@ let function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
         children = btnsDesc.value.map(function(desc, idx) {
           let conHover = desc?.onHover
           let function onHover(on){
-            if (!on)
-              return
             curBtnIdx.update(idx)
             conHover?()
           }

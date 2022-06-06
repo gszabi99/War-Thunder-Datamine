@@ -6,7 +6,7 @@ warbondShopLevel {
   status = <<status>>
   background-image:t='<<levelIcon>>.svg'
   hasOverlayIcon:t='<<#hasOverlayIcon>>yes<</hasOverlayIcon>><<^hasOverlayIcon>>no<</hasOverlayIcon>>'
-  foreground-image:t='<<levelIcon>>_overlay.png'
+  foreground-image:t='<<levelIcon>>_overlay'
   total-input-transparent:t='yes'
 
   textareaNoTab {

@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 
 ::gui_handlers.CreateRoomWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -77,7 +76,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
         navImagesText = ::get_navigation_images_text(idx, tabsList.len())
       })
 
-    let tabsObj = this.showSceneBtn("tabs_list", true)
+    let tabsObj = showSceneBtn("tabs_list", true)
     let data = ::handyman.renderCached("%gui/frameHeaderTabs", view)
     guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
@@ -94,7 +93,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 
     let curTabBlock = curTab.tabBlockName
     foreach(blockName in tabBlocksList)
-      this.showSceneBtn(blockName, blockName == curTabBlock)
+      showSceneBtn(blockName, blockName == curTabBlock)
 
     checkValues()
   }
@@ -102,8 +101,8 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
   function initCategories()
   {
     let show = ::g_chat_categories.isEnabled()
-    this.showSceneBtn("thread_category_header", show)
-    let cListObj = this.showSceneBtn("categories_list", show)
+    showSceneBtn("thread_category_header", show)
+    let cListObj = showSceneBtn("categories_list", show)
     if (show)
       ::g_chat_categories.fillCategoriesListObj(cListObj, ::g_chat_categories.defaultCategoryName, this)
   }
@@ -178,7 +177,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
     {
       ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, (@(name, invitationsOnly) function () {
         if(invitationsOnly)
-          ::gchat_raw_command(format("MODE %s +i", ::gchat_escape_target(name)))
+          ::gchat_raw_command(::format("MODE %s +i", ::gchat_escape_target(name)))
       })(name, invitationsOnly))
     }
   }

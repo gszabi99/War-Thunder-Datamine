@@ -40,12 +40,12 @@
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",
                        "craftsInfoByUnitsGroups", "isEacInited", "fakeName"]
 
-  constructor(v_uid, v_isInvite = false, v_isApplication = false)
+  constructor(_uid, _isInvite = false, _isApplication = false)
   {
-    uid = v_uid.tostring()
-    isInvite = v_isInvite
-    isApplication = v_isApplication
-    isNewApplication = v_isApplication
+    uid = _uid.tostring()
+    isInvite = _isInvite
+    isApplication = _isApplication
+    isNewApplication = _isApplication
 
     initUniqueInstanceValues()
 

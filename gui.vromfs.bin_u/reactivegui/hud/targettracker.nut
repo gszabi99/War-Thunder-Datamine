@@ -18,7 +18,7 @@ let styleLineForeground = {
 }
 
 
-let function lockSight(colorWatched, width, height, _posX, _posY) {
+let function lockSight(colorWatched, width, height, posX, posY) {
   return @() styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [width, height]

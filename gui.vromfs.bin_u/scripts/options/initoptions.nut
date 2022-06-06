@@ -48,7 +48,7 @@ if (showedUnit.value != null)
   ::countUsageAmountOnce()
   ::generateUnitShopInfo()
 
-  ::dagor.debug("update_all_units called, got "+::all_units.len()+" items");
+  dagor.debug("update_all_units called, got "+::all_units.len()+" items");
 }
 
 ::usageAmountCounted <- false

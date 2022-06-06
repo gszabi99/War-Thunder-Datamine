@@ -32,25 +32,25 @@ enum PRESENCE_SORT
 enums.addTypesByGlobalName("g_contact_presence", {
   UNKNOWN = {
     sortOrder = PRESENCE_SORT.UNKNOWN
-    iconName = "player_unknown.png"
+    iconName = "player_unknown"
     iconColor = "contactUnknownColor"
   }
 
   OFFLINE = {
     sortOrder = PRESENCE_SORT.OFFLINE
-    iconName = "player_offline.png"
+    iconName = "player_offline"
     iconColor = "contactOfflineColor"
   }
 
   ONLINE = {
     sortOrder = PRESENCE_SORT.ONLINE
-    iconName = "player_online.png"
+    iconName = "player_online"
     iconColor = "contactOnlineColor"
   }
 
   IN_QUEUE = {
     sortOrder = PRESENCE_SORT.IN_QUEUE
-    iconName = "player_in_queue.png"
+    iconName = "player_in_queue"
   }
 
   IN_GAME = {
@@ -60,25 +60,25 @@ enums.addTypesByGlobalName("g_contact_presence", {
 
   SQUAD_OFFLINE = {
     sortOrder = PRESENCE_SORT.SQUAD_OFFLINE
-    iconName = "squad_not_ready.png"
+    iconName = "squad_not_ready"
     iconColor = "contactOfflineColor"
   }
 
   SQUAD_NOT_READY = {
     sortOrder = PRESENCE_SORT.SQUAD_NOT_READY
-    iconName = "squad_not_ready.png"
+    iconName = "squad_not_ready"
     textColor = "@userlogColoredText"
   }
 
   SQUAD_READY = {
     sortOrder = PRESENCE_SORT.SQUAD_READY
-    iconName = "squad_ready.png"
+    iconName = "squad_ready"
     textColor = "@userlogColoredText"
   }
 
   SQUAD_LEADER = {
     sortOrder = PRESENCE_SORT.SQUAD_LEADER
-    iconName = "squad_leader.png"
+    iconName = "squad_leader"
     textColor = "@userlogColoredText"
   }
 },

@@ -29,8 +29,8 @@ tdiv {
             isBelongsToMyClan:t='yes'
           <</isBelongsToMyClan>>
           background {
-            background-image:t='#ui/gameuiskin#ww_army.png'
-            foreground-image:t='#ui/gameuiskin#ww_select_army.png'
+            background-image:t='#ui/gameuiskin#ww_army'
+            foreground-image:t='#ui/gameuiskin#ww_select_army'
             pos:t='50%pw-50%w, 50%ph-50%h'
             position:t='absolute'
           }

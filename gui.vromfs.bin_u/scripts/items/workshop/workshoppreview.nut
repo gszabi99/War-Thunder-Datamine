@@ -30,7 +30,7 @@ let minWindowWidthScale = 1.33  //1.33@sf
     return {
       headerText = ::loc(blk?.main_header ?? "items/workshop")
       bgImage = blk?.main_image
-      windowWidthScale = max(mainImageScale, minWindowWidthScale)
+      windowWidthScale = ::max(mainImageScale, minWindowWidthScale)
       mainImageScale = mainImageScale
       infoBlocks = infoBlocks
     }

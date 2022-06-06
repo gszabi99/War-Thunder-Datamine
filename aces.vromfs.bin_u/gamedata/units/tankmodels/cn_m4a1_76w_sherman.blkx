@@ -677,8 +677,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -722,8 +722,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -731,8 +731,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -740,8 +740,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -780,29 +780,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2808,19 +2808,10 @@
           "armorThickness": 63.5
         }
       },
-      "body_shields": {
-        "armorClass": "tank_structural_steel",
-        "stopChanceOnDeadPart": 0.0,
-        "createSecondaryShatters": false,
-        "hp": 300.0,
-        "armorThickness": 5.0,
-        "ex_decor_06_dm": []
-      },
       "mask": {
         "armorClass": "CHA_tank",
         "gun_mask_dm": {
-          "armorThickness": 88.9,
-          "variableThickness": true
+          "armorThickness": 88.9
         },
         "gun_mask_01_dm": {
           "armorThickness": 98.0
@@ -2920,18 +2911,6 @@
         },
         "ex_armor_01_dm": []
       },
-      "submodule": {
-        "armorClass": "tank_traks",
-        "armorThickness": 20.0,
-        "hp": 200.0,
-        "ex_decor_r_01_dm": [],
-        "ex_decor_r_02_dm": [],
-        "ex_decor_r_03_dm": [],
-        "ex_decor_r_04_dm": [],
-        "ex_decor_r_05_dm": [],
-        "ex_decor_l_04_dm": [],
-        "ex_decor_l_05_dm": []
-      },
       "gun": {
         "armorClass": "tank_barrel",
         "hp": 150.0,
@@ -2958,6 +2937,18 @@
           "hp": 50.0
         }
       },
+      "submodule": {
+        "armorClass": "tank_traks",
+        "armorThickness": 20.0,
+        "hp": 200.0,
+        "ex_decor_r_01_dm": [],
+        "ex_decor_r_02_dm": [],
+        "ex_decor_r_03_dm": [],
+        "ex_decor_r_04_dm": [],
+        "ex_decor_r_05_dm": [],
+        "ex_decor_l_04_dm": [],
+        "ex_decor_l_05_dm": []
+      },
       "tracks": {
         "armorClass": "tank_traks",
         "allowRicochet": true,
@@ -2977,7 +2968,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3653,10 +3643,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_cn.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_cn.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
       "75mm_usa_HE": [],
       "75mm_usa_APCBC": [],

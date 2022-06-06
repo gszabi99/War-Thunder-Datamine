@@ -1,7 +1,3 @@
-let { format } = require("string")
-
-const MAX_TEXTURE_SIZE_IN_ATLAS = 512
-
 ::view_fullscreen_image <- function view_fullscreen_image(obj)
 {
   ::handlersManager.loadHandler(::gui_handlers.ShowImage, { showObj = obj })
@@ -66,7 +62,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     imgObj["max-width"] = maxSize[0].tostring()
     imgObj["max-height"] = maxSize[1].tostring()
     imgObj["background-image"] = image
-    imgObj["background-svg-size"] = format("%d, %d", maxSize[0], maxSize[1])
+    imgObj["background-svg-size"] = ::format("%d, %d", maxSize[0], maxSize[1])
     imgObj["background-repeat"] = showObj?["background-repeat"] ?? "aspect-ratio"
 
     frameObj = scene.findObject("imgFrame")
@@ -129,13 +125,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
   if (::u.isEmpty(image))
     return
 
-  let params = { image, ratio, maxSize }
-  let hClass = ::gui_handlers.ShowImageSimple
-  let handler = ::handlersManager.findHandlerClassInScene(hClass)
-  if (handler == null)
-    ::handlersManager.loadHandler(hClass, params)
-  else
-    handler.reinitScreen(params)
+  ::handlersManager.loadHandler(::gui_handlers.ShowImageSimple, { image = image, ratio = ratio, maxSize = maxSize })
 }
 
 ::gui_handlers.ShowImageSimple <- class extends ::gui_handlers.BaseGuiHandlerWT
@@ -179,27 +169,13 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
         size = [ maxSize[0], maxSize[0] / ratio ]
     }
 
-    let isSvg = image.contains(".svg")
-
     imgObj["background-image"] = image
-    imgObj.width  = format("%d", size[0])
-    imgObj.height = format("%d", size[1])
-    if (isSvg) {
-      let isForAtlas = image.contains("gameuiskin#")
-      let texSize = isForAtlas
-        ? size.map(@(d) min(d, MAX_TEXTURE_SIZE_IN_ATLAS))
-        : size
-      imgObj["background-svg-size"] = format("%d, %d", texSize[0], texSize[1])
-    }
+    imgObj.width  = ::format("%d", size[0])
+    imgObj.height = ::format("%d", size[1])
+    imgObj["background-svg-size"] = ::format("%d, %d", size[0], size[1])
     imgObj["background-repeat"] = "aspect-ratio"
 
     scene.findObject("btn_back").show(true)
-  }
-
-  function reinitScreen(params = {})
-  {
-    setParams(params)
-    initScreen()
   }
 
   function onBack()

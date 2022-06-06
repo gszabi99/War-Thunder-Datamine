@@ -136,7 +136,7 @@ local CHOOSE_WEAPON_PARAMS = {
       weaponryListMarkup += createModItemLayout(idx, unit, weaponryItem, weaponryItem.type, params)
     }
 
-    selIdx = max(wasSelIdx, 0)
+    selIdx = ::max(wasSelIdx, 0)
     let res = {
       weaponryList = weaponryListMarkup
       columns = cols
@@ -160,7 +160,7 @@ local CHOOSE_WEAPON_PARAMS = {
   function updateItems()
   {
     let listObj = scene.findObject("weapons_list")
-    let total = min(list.len(), listObj.childrenCount())
+    let total = ::min(list.len(), listObj.childrenCount())
     for(local i = 0; i < total; i++)
     {
       let config = list[i]

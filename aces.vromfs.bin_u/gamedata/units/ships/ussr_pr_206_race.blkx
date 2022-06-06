@@ -1506,36 +1506,30 @@
       "createSecondaryShatters": false,
       "compartments": {
         "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.5,
+        "stopChanceOnDeadPart": 0.3,
         "armorClass": "ship_structural_steel",
         "armorThickness": 6.0,
         "hidableInViewer": true,
         "fireProtectionHp": 3.0,
         "compartment_01_dm": {
-          "hp": 1470.0
+          "hp": 1358.0
         },
         "compartment_02_dm": {
-          "hp": 1432.0
+          "hp": 1023.0
         },
         "compartment_03_dm": {
-          "hp": 1280.0
+          "hp": 740.0
         },
         "compartment_04_dm": {
-          "hp": 1280.0
-        }
-      },
-      "control_compartments": {
-        "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.5,
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 1.0,
-        "hidableInViewer": true,
-        "fireProtectionHp": 3.0,
+          "hp": 500.0
+        },
         "bridge_dm": {
-          "hp": 260.0
+          "armorThickness": 1.0,
+          "hp": 384.0
         },
         "radio_station_dm": {
-          "hp": 230.0
+          "armorThickness": 1.0,
+          "hp": 150.0
         }
       },
       "superstructures": {
@@ -1623,22 +1617,22 @@
         "armorThickness": 4.0,
         "fireProtectionHp": 10.0,
         "engine_01_dm": {
-          "hp": 610.0
+          "hp": 559.0
         },
         "engine_02_dm": {
-          "hp": 626.0
+          "hp": 574.0
         },
         "engine_03_dm": {
-          "hp": 610.0
+          "hp": 560.0
         },
         "transmission_01_dm": {
-          "hp": 610.0
+          "hp": 500.0
         },
         "transmission_02_dm": {
-          "hp": 610.0
+          "hp": 500.0
         },
         "transmission_03_dm": {
-          "hp": 610.0
+          "hp": 500.0
         }
       },
       "steering_gear": {
@@ -1710,10 +1704,10 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "main_caliber_turret_01_dm": {
-          "hp": 170.0
+          "hp": 113.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 170.0
+          "hp": 113.0
         }
       },
       "turrets_aux_caliber": {
@@ -1898,8 +1892,8 @@
   },
   {
     "tank_crew": {
+      "minCrewMemberRepairCount": 7,
       "minCrewMemberAliveCount": 6,
-      "minCrewMemberRepairCount": 0,
       "sailor1": {
         "dmPart": "bridge_dm",
         "role": "sailor",
@@ -1908,7 +1902,7 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 3
+        "crew": 4
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
@@ -1923,7 +1917,7 @@
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 3
+        "crew": 2
       },
       "sailor10": {
         "dmPart": "radio_station_dm",

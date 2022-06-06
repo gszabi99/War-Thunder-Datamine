@@ -186,8 +186,7 @@
           "armorThickness": 140.0
         },
         "turret_01_top_dm": {
-          "armorThickness": 250.0,
-          "variableThickness": true
+          "armorThickness": 30.0
         },
         "turret_02_top_dm": {
           "armorThickness": 60.0
@@ -214,8 +213,7 @@
           "hp": 10000.0
         },
         "turret_04_front_dm": {
-          "armorThickness": 10.0,
-          "armorClass": "RHA_tank"
+          "armorThickness": 120.0
         },
         "turret_05_front_dm": {
           "armorThickness": 240.0
@@ -272,8 +270,7 @@
         "ex_decor_01_dm": [],
         "ex_decor_04_dm": [],
         "turret_06_top_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank"
+          "armorThickness": 5.0
         },
         "timber": {
           "armorClass": "ship_wood",
@@ -426,7 +423,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1337,8 +1333,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1382,8 +1378,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1391,8 +1387,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1400,8 +1396,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1440,29 +1436,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2397,6 +2393,9 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
+        "height": 0.06,
+        "width": 0.58,
+        "fricSideRot": [5.0,0.0,0.6,0.3],
         "tracksTensionK": [3.5,10.0,2.0],
         "trackMesh": "ussr_54_44_004_13g_phys_track_line",
         "trackLen": 0.137,
@@ -2405,10 +2404,7 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.25,
-        "height": 0.06,
-        "width": 0.58,
-        "trackStartOffset": 0.03,
-        "fricSideRot": [5.0,0.0,0.6,0.3]
+        "trackStartOffset": 0.03
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -3545,10 +3541,10 @@
       "tank_new_gun": [],
       "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_cn.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_cn.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
       "115mm_APDS_FS_ammo_pack": [],
       "115mm_HEAT_FS_ammo_pack": [],

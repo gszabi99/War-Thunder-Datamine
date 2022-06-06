@@ -37,9 +37,9 @@ let function mkIteratee(func){
   if (params == 3)
     return func
   else if (params==2)
-    return function(value, index, _list) {return func.pcall(null, value, index)}
+    return function(value, index, list) {return func.pcall(null, value, index)}
   else
-    return function(value, _index, _list) {return func.pcall(null, value)}
+    return function(value, index, list) {return func.pcall(null, value)}
 }
 
 /**
@@ -132,7 +132,7 @@ let function invert(table) {
 local function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true) {
   let res = {}
   if (func == null)
-    func = function (_val1, val2) {return val2}
+    func = function (val1, val2) {return val2}
   foreach(key, value in tbl1)
     res[key] <- func(value, tbl2?[key] ?? defValue)
   if (!addParams)
@@ -285,7 +285,7 @@ let function chunk(list, count) {
 let function indexBy(list, iteratee) {
   let res = {}
   if (isString(iteratee)){
-    foreach (val in list)
+    foreach (idx, val in list)
       res[val[iteratee]] <- val
   }
   else if (isFunction(iteratee)){

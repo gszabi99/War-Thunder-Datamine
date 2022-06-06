@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
@@ -157,7 +156,7 @@ let getCssString = function()
 
   cssString = ""
   foreach(name, value in controlsList)
-    cssString += format("@const control_%s:%s;", name, getTexture(name))
+    cssString += ::format("@const control_%s:%s;", name, getTexture(name))
   return cssString
 }
 
@@ -169,13 +168,13 @@ let getMouseTexture = function(idx, preset = curPreset)
     return preset + ps4TouchpadImagesByMouseIdx[idx] + SVG_EXT
 
   if (idx in mouseButtonTextures)
-    return $"#ui/gameuiskin#{mouseButtonTextures[idx]}.png"
+    return "#ui/gameuiskin#" + mouseButtonTextures[idx]
 
   return getTextureByButtonIdx(idx)
 }
 
 let getMouseAxisTexture = @(axisVal)
-  axisVal in mouseAxesImages ? $"#ui/gameuiskin#{mouseAxesImages[axisVal]}.png" : ""
+  axisVal in mouseAxesImages ? "#ui/gameuiskin#"+mouseAxesImages[axisVal] : ""
 
 ::cross_call_api.getTextureName <- getTexture
 

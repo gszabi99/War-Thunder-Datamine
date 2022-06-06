@@ -225,12 +225,6 @@
         },
         "ex_armor_body_05_dm": {
           "armorThickness": 30.0
-        },
-        "turret_01_back_dm": {
-          "armorThickness": 10.0
-        },
-        "turret_01_top_dm": {
-          "armorThickness": 10.0
         }
       },
       "hull_composite_armor": {
@@ -351,6 +345,12 @@
         },
         "turret_03_side_dm": {
           "armorThickness": 80.0
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 10.0
         }
       },
       "body_side_screens": {
@@ -406,10 +406,12 @@
         "armorThickness": 3.0,
         "hidableInViewer": true,
         "createSecondaryShatters": false,
+        "ex_decor_05_dm": [],
         "ex_decor_l_04_dm": [],
         "ex_decor_l_05_dm": [],
         "ex_decor_r_04_dm": [],
-        "ex_decor_r_05_dm": []
+        "ex_decor_r_05_dm": [],
+        "ex_decor_01_dm": []
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
@@ -429,10 +431,9 @@
         "ex_decor_body_r_04_dm": [],
         "ex_decor_body_r_05_dm": [],
         "ex_decor_body_r_06_dm": [],
+        "ex_decor_body_r_08_dm": [],
         "ex_decor_body_l_03_dm": [],
-        "ex_decor_01_dm": [],
         "ex_decor_04_dm": [],
-        "ex_decor_05_dm": [],
         "ex_decor_07_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": [],
@@ -452,11 +453,7 @@
         "ex_armor_08_dm": [],
         "ex_armor_09_dm": [],
         "ex_armor_11_dm": [],
-        "superstructure_bottom_dm": [],
-        "ex_decor_body_r_08_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern"
-        }
+        "superstructure_bottom_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -603,7 +600,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1561,8 +1557,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1606,8 +1602,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1615,8 +1611,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1624,8 +1620,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1664,29 +1660,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -3753,10 +3749,10 @@
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_cn.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_cn.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_cn"
       },
       "105mm_china_HE_VT": [],
       "105mm_TYPE83_HESH": [],

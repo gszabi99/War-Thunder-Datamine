@@ -13,13 +13,13 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
     animBgLoad()
     setVersionText()
     ::setProjectAwards(this)
-    showTitleLogo(this.scene, 128)
+    showTitleLogo(scene, 128)
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
     let lp = ::get_login_pass()
-    this.defaultSaveLoginFlagVal = lp.login != ""
-    this.defaultSavePasswordFlagVal = lp.password != ""
-    this.defaultSaveAutologinFlagVal = ::is_autologin_enabled()
+    defaultSaveLoginFlagVal = lp.login != ""
+    defaultSavePasswordFlagVal = lp.password != ""
+    defaultSaveAutologinFlagVal = ::is_autologin_enabled()
 
     //Called init while in loading, so no need to call again authorization.
     //Just wait, when the loading will be over.
@@ -30,34 +30,34 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
     if (!::has_feature("AllowSteamAccountLinking"))
     {
       if (!useSteamLoginAuto) //can be null or false
-        this.goToLoginWnd(useSteamLoginAuto == null)
+        goToLoginWnd(useSteamLoginAuto == null)
       else
-        this.authorizeSteam()
+        authorizeSteam()
       return
     }
 
     if (useSteamLoginAuto == true)
     {
-      this.authorizeSteam("steam-known")
+      authorizeSteam("steam-known")
       return
     }
     else if (useSteamLoginAuto == false)
     {
-      this.goToLoginWnd(false)
+      goToLoginWnd(false)
       return
     }
 
-    this.showSceneBtn("button_exit", true)
-    this.showLoginProposal()
+    showSceneBtn("button_exit", true)
+    showLoginProposal()
   }
 
   function showLoginProposal()
   {
     ::scene_msg_box("steam_link_method_question",
-      this.guiScene,
+      guiScene,
       ::loc("steam/login/linkQuestion" + (::has_feature("AllowSteamAccountLinking")? "" : "/noLink")),
-      [["#mainmenu/loginWithGaijin", ::Callback(this.goToLoginWnd, this) ],
-       ["#mainmenu/loginWithSteam", ::Callback(this.authorizeSteam, this)],
+      [["#mainmenu/loginWithGaijin", ::Callback(goToLoginWnd, this) ],
+       ["#mainmenu/loginWithSteam", ::Callback(authorizeSteam, this)],
        ["exit", exitGame]
       ],
       "#mainmenu/loginWithGaijin"
@@ -69,7 +69,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
     switch(result)
     {
       case ::YU2_NOT_FOUND:
-        this.goToLoginWnd()
+        goToLoginWnd()
         break
       case ::YU2_OK:
         if (::steam_is_running() && !::has_feature("AllowSteamAccountLinking"))
@@ -82,12 +82,12 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
 
   function onLoginErrorTryAgain()
   {
-    this.showLoginProposal()
+    showLoginProposal()
   }
 
   function authorizeSteam(steamKey = "steam")
   {
-    this.onSteamAuthorization(steamKey)
+    onSteamAuthorization(steamKey)
   }
 
   function goToLoginWnd(disableAutologin = true)
@@ -100,7 +100,7 @@ let { setGuiOptionsMode } = ::require_native("guiOptions")
   function goBack(obj)
   {
     ::scene_msg_box("steam_question_quit_game",
-      this.guiScene,
+      guiScene,
       ::loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],

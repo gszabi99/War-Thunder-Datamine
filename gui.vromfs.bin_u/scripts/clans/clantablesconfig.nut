@@ -15,7 +15,7 @@ let clanTableFieldsByPage = {
   clans_search = [
     { id = "fits_requirements", icon = "#ui/gameuiskin#lb_fits_requirements.svg",
       type = ::g_lb_data_type.TEXT, sort = false, byDifficulty = false
-      getCellImage = @(clanData) isFitsRequirements(clanData) ? "#ui/gameuiskin#favorite.png"
+      getCellImage = @(clanData) isFitsRequirements(clanData) ? "#ui/gameuiskin#favorite"
         : "#ui/gameuiskin#icon_primary_fail.svg"
       getCellTooltipText = function(clanData) {
         let reqText = clanInfoView.getClanRequirementsText(clanData?.membership_req)

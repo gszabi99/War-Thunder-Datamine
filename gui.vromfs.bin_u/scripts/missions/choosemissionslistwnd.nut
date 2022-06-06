@@ -18,7 +18,7 @@
   missionsList = null
   selMissions = null
   onApplyListCb = null
-  choosenIcon = "#ui/gameuiskin#favorite.png"
+  choosenIcon = "#ui/gameuiskin#favorite"
 
   misListObj = null
   selMissionsMap = null  //{ missionName = (bool)isSelected }
@@ -108,7 +108,7 @@
 
   function updateButtons()
   {
-    let chooseBtn = this.showSceneBtn("btn_choose", !!curMission)
+    let chooseBtn = showSceneBtn("btn_choose", !!curMission)
     if (curMission)
       chooseBtn.setValue(isMissionSelected(curMission) ? ::loc("misList/unselectMission") : ::loc("misList/selectMission"))
 

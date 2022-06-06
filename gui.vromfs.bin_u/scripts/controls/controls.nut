@@ -1,4 +1,3 @@
-let { format } = require("string")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let globalEnv = require("globalEnv")
 let controllerState = require("controllerState")
@@ -188,7 +187,7 @@ local axisMappedOnMouse = {
   for (local i = 0; i < MouseAxis.NUM_MOUSE_AXIS_TOTAL; ++i)
   {
     if (shortcutId == joyParams.getMouseAxis(i))
-      return 1 << min(i, MOUSE_AXIS.TOTAL - 1)
+      return 1 << ::min(i, MOUSE_AXIS.TOTAL - 1)
   }
 
   return MOUSE_AXIS.NOT_AXIS
@@ -287,7 +286,7 @@ local axisMappedOnMouse = {
     initNavigation()
     initMainParams()
 
-    if (!::fetch_devices_inited_once())
+    if (!fetch_devices_inited_once())
       ::gui_start_controls_type_choice()
 
     if (controllerState?.add_event_handler) {
@@ -397,7 +396,7 @@ local axisMappedOnMouse = {
     foreach (idx, data in filledControlGroupTab)
     {
       let show = filterText == "" || data.text.indexof(filterText) != null
-      this.showSceneBtn(data.id, show)
+      showSceneBtn(data.id, show)
     }
   }
 
@@ -434,13 +433,13 @@ local axisMappedOnMouse = {
     let isImportExportAllowed = !isTutorial
       && (isScriptOpenFileDialogAllowed() || ::is_platform_windows)
 
-    this.showSceneBtn("btn_exportToFile", isImportExportAllowed)
-    this.showSceneBtn("btn_importFromFile", isImportExportAllowed)
-    this.showSceneBtn("btn_switchMode", isPlatformSony || isPlatformXboxOne || ::is_platform_shield_tv())
-    this.showSceneBtn("btn_backupManager", ::gui_handlers.ControlsBackupManager.isAvailable())
-    this.showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets"))
-    this.showSceneBtn("btn_clearAll", !isTutorial)
-    this.showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
+    showSceneBtn("btn_exportToFile", isImportExportAllowed)
+    showSceneBtn("btn_importFromFile", isImportExportAllowed)
+    showSceneBtn("btn_switchMode", isPlatformSony || isPlatformXboxOne || ::is_platform_shield_tv())
+    showSceneBtn("btn_backupManager", ::gui_handlers.ControlsBackupManager.isAvailable())
+    showSceneBtn("btn_controlsWizard", ::has_feature("ControlsPresets"))
+    showSceneBtn("btn_clearAll", !isTutorial)
+    showSceneBtn("btn_controlsHelp", ::has_feature("ControlsHelp"))
   }
 
   function fillControlGroupsList()
@@ -585,7 +584,7 @@ local axisMappedOnMouse = {
     let controlTblObj = scene.findObject(optionTableId);
     if (::checkObj(controlTblObj))
       guiScene.replaceContentFromText(controlTblObj, data, data.len(), this);
-    this.showSceneBtn("helpers_mode", isHelpersVisible)
+    showSceneBtn("helpers_mode", isHelpersVisible)
     if (navigationHandlerWeak)
       navigationHandlerWeak.setNavItems(navigationItems)
     updateSceneOptions()
@@ -703,11 +702,17 @@ local axisMappedOnMouse = {
     return ""
   }
 
-  function updateAxisText(item)
+  function updateAxisText(device, item)
   {
     let itemTextObj = scene.findObject("txt_sc_" + item.id)
     if (!::checkObj(itemTextObj))
       return
+
+    if (device == null)
+    {
+      itemTextObj.setValue(::loc("joystick/no_available_joystick"))
+      return
+    }
 
     let axis = item.axisIndex >= 0
       ? curJoyParams.getAxis(item.axisIndex)
@@ -759,10 +764,12 @@ local axisMappedOnMouse = {
 
   function updateSceneOptions()
   {
+    let device = ::joystick_get_default()
+
     for(local i=0; i < ::shortcutsList.len(); i++)
     {
       if (::shortcutsList[i].type == CONTROL_TYPE.AXIS && ::shortcutsList[i].axisIndex>=0)
-        updateAxisText(::shortcutsList[i])
+        updateAxisText(device, ::shortcutsList[i])
       else
       if (::shortcutsList[i].type== CONTROL_TYPE.SLIDER)
         updateSliderValue(::shortcutsList[i])
@@ -899,7 +906,7 @@ local axisMappedOnMouse = {
         if (value == filter)
         {
           if (idx != filterId)
-            this.msgBox("cant_change_controls", ::loc("msgbox/tutorial_controls_type_locked"),
+            msgBox("cant_change_controls", ::loc("msgbox/tutorial_controls_type_locked"),
                    [["ok", (@(filterObj, idx) function() {
                        if (::checkObj(filterObj))
                          filterObj.setValue(idx)
@@ -1008,15 +1015,15 @@ local axisMappedOnMouse = {
       }
     }
 
-    this.showSceneBtn("btn_preset", filter!=globalEnv.EM_MOUSE_AIM)
-    this.showSceneBtn("btn_defaultpreset", filter==globalEnv.EM_MOUSE_AIM)
+    showSceneBtn("btn_preset", filter!=globalEnv.EM_MOUSE_AIM)
+    showSceneBtn("btn_defaultpreset", filter==globalEnv.EM_MOUSE_AIM)
 
     dontCheckControlsDupes = ::refillControlsDupes()
   }
 
   function loadPresetWithMsg(msg, presetSelected, askKeyboardDefault=false)
   {
-    this.msgBox(
+    msgBox(
       "controls_restore_question", msg,
       [
         ["yes", function() {
@@ -1029,7 +1036,7 @@ local axisMappedOnMouse = {
                 applySelectedPreset(::get_controls_preset_by_selected_type(name).fileName)
               }
             ])
-            this.msgBox("ask_kbd_type", ::loc("controls/askKeyboardWasdType"), presets, "classic")
+            msgBox("ask_kbd_type", ::loc("controls/askKeyboardWasdType"), presets, "classic")
             return
           }
 
@@ -1106,9 +1113,9 @@ local axisMappedOnMouse = {
     let isShortcut = item != null && (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
     let isAxis = item != null && item.type == CONTROL_TYPE.AXIS
 
-    this.showSceneBtn("btn_reset_shortcut", isShortcut)
-    this.showSceneBtn("btn_reset_axis", isAxis)
-    let btnA = this.showSceneBtn("btn_assign", isShortcut || isAxis)
+    showSceneBtn("btn_reset_shortcut", isShortcut)
+    showSceneBtn("btn_reset_axis", isAxis)
+    let btnA = showSceneBtn("btn_assign", isShortcut || isAxis)
     btnA.setValue(isAxis ? ::loc("mainmenu/btnEditAxis") : ::loc("mainmenu/btnAssign"))
 
     checkCurrentNavagationSection()
@@ -1165,7 +1172,11 @@ local axisMappedOnMouse = {
       obj.setValue(::get_shortcut_text({shortcuts = shortcuts, shortcutId = shortcutId}))
 
     if (item.type == CONTROL_TYPE.AXIS)
-      updateAxisText(item)
+    {
+      let device = ::joystick_get_default()
+      if (device != null)
+        updateAxisText(device, item)
+    }
   }
 
   function bindShortcut(devs, btns, shortcutId)
@@ -1190,7 +1201,7 @@ local axisMappedOnMouse = {
         ::loc("ui/comma")
       )
     })
-    this.msgBox("controls_bind_existing_shortcut", msg, [
+    msgBox("controls_bind_existing_shortcut", msg, [
       ["add", (@(curBinding, devs, btns, shortcutId) function() {
         doBind(devs, btns, shortcutId)
       })(curBinding, devs, btns, shortcutId)],
@@ -1507,8 +1518,9 @@ local axisMappedOnMouse = {
 
   function onEventControlsChangedAxes(p)
   {
+    let device = ::joystick_get_default()
     foreach (axis in p.changedAxes)
-      updateAxisText(axis)
+      updateAxisText(device, axis)
   }
 
   function doApply()
@@ -1579,7 +1591,7 @@ local axisMappedOnMouse = {
 
     let msg = ::loc("controls/warningUnmapped") + ::loc("ui/colon") + "\n" +
       buildMsgFromGroupsList(reqList)
-    this.msgBox("not_all_mapped", msg,
+    msgBox("not_all_mapped", msg,
     [
       ["resetToDefaults", function()
       {
@@ -1623,7 +1635,7 @@ local axisMappedOnMouse = {
       let msg = format(::loc("msg/zoomAssignmentsConflict"),
         ::remapAxisName(curPreset, axis.axisId))
       guiScene.performDelayed(this, @()
-        this.msgBox("zoom_axis_assigned", msg,
+        msgBox("zoom_axis_assigned", msg,
         [
           ["replace", (@(zoomAxisIndex) function() {
             setAxisBind(zoomAxisIndex, -1, axisName)
@@ -1648,7 +1660,7 @@ local axisMappedOnMouse = {
           ? ::loc("msg/replaceMouseViewToScroll")
           : ::loc("msg/replaceMouseViewToScrollNoAim")
         guiScene.performDelayed(this, @()
-          this.msgBox("mouse_used_for_view", msg,
+          msgBox("mouse_used_for_view", msg,
           [
             ["replace", function() {
               ::set_controls_preset("")
@@ -1737,7 +1749,7 @@ local axisMappedOnMouse = {
       })
     }
     else if (!::export_current_layout())
-      this.msgBox("errorSavingPreset", ::loc("msgbox/errorSavingPreset"),
+      msgBox("errorSavingPreset", ::loc("msgbox/errorSavingPreset"),
              [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
@@ -1766,7 +1778,7 @@ local axisMappedOnMouse = {
       if (::import_current_layout())
         ::broadcastEvent("ControlsPresetChanged")
       else
-        this.msgBox("errorLoadingPreset", ::loc("msgbox/errorLoadingPreset"),
+        msgBox("errorLoadingPreset", ::loc("msgbox/errorLoadingPreset"),
                [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
     }
   }
@@ -1837,7 +1849,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   if (("condition" in item) && !item.condition())
     return hotkeyData
 
-  let trAdd = format("id:t='%s'; even:t='%s'; %s", hotkeyData.id, even? "yes" : "no", rowParams)
+  let trAdd = ::format("id:t='%s'; even:t='%s'; %s", hotkeyData.id, even? "yes" : "no", rowParams)
   local res = ""
   local elemTxt = ""
   local elemIdTxt = "controls/" + item.id
@@ -1845,7 +1857,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
   if (item.type == CONTROL_TYPE.SECTION)
   {
     let hotkeyId = "hotkeys/" + item.id
-    res = format("tr { %s inactive:t='yes';" +
+    res = ::format("tr { %s inactive:t='yes';" +
                    "td { width:t='@controlsLeftRow'; overflow:t='visible';" +
                      "optionBlockHeader { text:t='#%s'; }}\n" +
                    "td { width:t='pw-1@controlsLeftRow'; }\n" +
@@ -1898,7 +1910,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
       elemTxt = createOptFunc(item.id, item.options, value, callBack, true)
     }
     else
-      ::dagor.debug("Error: No optionType nor options field");
+      dagor.debug("Error: No optionType nor options field");
   }
   else if (item.type== CONTROL_TYPE.SLIDER)
   {
@@ -1965,7 +1977,7 @@ let mkTextShortcutRow = ::kwarg(@(scId, id, trAdd, trName, shortcutText = "")
 
   if (elemTxt!="")
   {
-    res = format("tr { css-hier-invalidate:t='all'; width:t='pw'; %s " +
+    res = ::format("tr { css-hier-invalidate:t='all'; width:t='pw'; %s " +
                    "td { width:t='@controlsLeftRow'; overflow:t='hidden'; optiontext { text:t ='%s'; }} " +
                    "td { width:t='pw-1@controlsLeftRow'; cellType:t='right'; padding-left:t='@optPad'; %s } " +
                  "}\n",
@@ -2623,7 +2635,7 @@ let function getWeaponFeatures(weaponsList)
       }
       if (bulletsChoice > 1)
         for (local i = 0; i < bulletsChoice; i++)
-          controls.append(format(actionBarShortcutFormat, i + 1))
+          controls.append(::format(actionBarShortcutFormat, i + 1))
     }
   }
 

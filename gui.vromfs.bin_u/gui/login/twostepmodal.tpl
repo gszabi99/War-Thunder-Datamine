@@ -5,7 +5,7 @@ root {
     size:t='1@twoStepLoginBgrImgWidth, 1@twoStepLoginBgrImgHeight'
     pos:t='0.5pw-0.5w, 0.5ph-0.5h'
     position:t='absolute'
-    background-image:t='#ui/images/two_step_form_bg.tga'
+    background-image:t='#ui/images/two_step_form_bg'
     background-color:t='@white'
     css-hier-invalidate:t='yes'
     total-input-transparent:t='yes'

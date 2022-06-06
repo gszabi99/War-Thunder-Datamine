@@ -29,7 +29,7 @@ let fillUserNick = function (nestObj, headerLocId = null) {
 
   let cfg = ::get_profile_info()
   let data =  ::handyman.renderCached("%gui/firstChoice/userNick", {
-      userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}.png" : ""
+      userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}" : ""
       userName = ::colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
     })
   guiScene.replaceContentFromText(nestObj, data, data.len())

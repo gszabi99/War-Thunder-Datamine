@@ -374,7 +374,7 @@
       "onHitChanceMultFire": 40.0,
       "dynamicKv": true,
       "explodeTreshold": 0.1,
-      "fuseDelay": 0.0,
+      "fuseDelayDist": 0.0,
       "fuseOnWater": true,
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
@@ -400,17 +400,32 @@
         "kinetic": {
           "damageType": "generic"
         },
-        "shatter": {
-          "useRealShatters": true,
-          "countPortion": 1.0,
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [0.0,180.0],
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
             "countPortion": 1.0
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [0.0,179.0],
+              "countPortion": 0.5
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [180.0,359.0],
+              "countPortion": 0.5
+            }
           }
-        }
+        ]
       },
       "armorpower": {
         "ArmorPower0m": [3.0,10.0],
@@ -940,7 +955,7 @@
           "onHitChanceMultFire": 40.0,
           "dynamicKv": true,
           "explodeTreshold": 0.1,
-          "fuseDelay": 0.0,
+          "fuseDelayDist": 0.0,
           "fuseOnWater": true,
           "groundCollisionEffect": "hit_8_11mm_dirt_he",
           "ricochetEffect": "hit_8_11mm_metal_he",
@@ -966,17 +981,32 @@
             "kinetic": {
               "damageType": "generic"
             },
-            "shatter": {
-              "useRealShatters": true,
-              "countPortion": 1.0,
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,180.0],
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
                 "countPortion": 1.0
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [0.0,179.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [180.0,359.0],
+                  "countPortion": 0.5
+                }
               }
-            }
+            ]
           },
           "armorpower": {
             "ArmorPower0m": [3.0,10.0],
@@ -1239,7 +1269,7 @@
           "onHitChanceMultFire": 40.0,
           "dynamicKv": true,
           "explodeTreshold": 0.1,
-          "fuseDelay": 0.0,
+          "fuseDelayDist": 0.0,
           "fuseOnWater": true,
           "groundCollisionEffect": "hit_8_11mm_dirt_he",
           "ricochetEffect": "hit_8_11mm_metal_he",
@@ -1265,17 +1295,32 @@
             "kinetic": {
               "damageType": "generic"
             },
-            "shatter": {
-              "useRealShatters": true,
-              "countPortion": 1.0,
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,180.0],
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
                 "countPortion": 1.0
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [0.0,179.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [180.0,359.0],
+                  "countPortion": 0.5
+                }
               }
-            }
+            ]
           },
           "armorpower": {
             "ArmorPower0m": [3.0,10.0],
@@ -1400,7 +1445,7 @@
           "onHitChanceMultFire": 40.0,
           "dynamicKv": true,
           "explodeTreshold": 0.1,
-          "fuseDelay": 0.0,
+          "fuseDelayDist": 0.0,
           "fuseOnWater": true,
           "groundCollisionEffect": "hit_8_11mm_dirt_he",
           "ricochetEffect": "hit_8_11mm_metal_he",
@@ -1426,17 +1471,32 @@
             "kinetic": {
               "damageType": "generic"
             },
-            "shatter": {
-              "useRealShatters": true,
-              "countPortion": 1.0,
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,180.0],
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
                 "countPortion": 1.0
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [0.0,179.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [180.0,359.0],
+                  "countPortion": 0.5
+                }
               }
-            }
+            ]
           },
           "armorpower": {
             "ArmorPower0m": [3.0,10.0],
@@ -1561,7 +1621,7 @@
           "onHitChanceMultFire": 40.0,
           "dynamicKv": true,
           "explodeTreshold": 0.1,
-          "fuseDelay": 0.0,
+          "fuseDelayDist": 0.0,
           "fuseOnWater": true,
           "groundCollisionEffect": "hit_8_11mm_dirt_he",
           "ricochetEffect": "hit_8_11mm_metal_he",
@@ -1587,17 +1647,32 @@
             "kinetic": {
               "damageType": "generic"
             },
-            "shatter": {
-              "useRealShatters": true,
-              "countPortion": 1.0,
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [0.0,180.0],
+            "shatter": [
+              {
+                "useRealShatters": true
+              },
+              {
                 "countPortion": 1.0
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [0.0,179.0],
+                  "countPortion": 0.5
+                }
+              },
+              {
+                "segment": {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.0,
+                  "angles": [180.0,359.0],
+                  "countPortion": 0.5
+                }
               }
-            }
+            ]
           },
           "armorpower": {
             "ArmorPower0m": [3.0,10.0],

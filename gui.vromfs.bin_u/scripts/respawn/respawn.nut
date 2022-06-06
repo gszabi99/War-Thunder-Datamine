@@ -1,6 +1,3 @@
-let { format } = require("string")
-let { is_has_multiplayer = @() ::is_has_multiplayer() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
 let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
   selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer } = require_native("guiRespawn")
@@ -33,11 +30,7 @@ let { showedUnit, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { guiStartMPStatScreenFromGame,
   guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { onSpectatorMode, switchSpectatorTarget,
-  getSpectatorTargetId = @() ::get_spectator_target_id(), // compatibility with 2.15.1.X
-  getSpectatorTargetName = @() ::get_spectator_target_name(), // compatibility with 2.15.1.X
-  getSpectatorTargetTitle = @() ::get_spectator_target_title() // compatibility with 2.15.1.X
-} = require("guiSpectator")
+local { onSpectatorMode, switchSpectatorTarget } = require_native("guiSpectator")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 
@@ -80,7 +73,7 @@ enum ESwitchSpectatorTarget
   slotDelayDataByCrewIdx = {}
 
   //temporary hack before real fix will appear at all platforms.
-  needCheckSlotReady = true //compatibility with "1.51.7.81"
+  needCheckSlotReady = true //!::is_version_equals_or_newer("1.51.7.81")
   slotReadyAtHostMask = 0
   slotsCostSum = 0 //refreash slotbar when unit costs sum will changed after initslotbar.
   currCrewNamesList = null
@@ -164,8 +157,8 @@ enum ESwitchSpectatorTarget
 
   function initScreen()
   {
-    this.showSceneBtn("tactical-map-box", true)
-    this.showSceneBtn("tactical-map", true)
+    showSceneBtn("tactical-map-box", true)
+    showSceneBtn("tactical-map", true)
     if (curRespawnBase != null)
       selectRespawnBase(curRespawnBase.mapId)
 
@@ -202,7 +195,7 @@ enum ESwitchSpectatorTarget
     autostartShowTime = blk.autostartShowTime;
     autostartShowInColorTime = blk.autostartShowInColorTime;
 
-    ::dagor.debug($"stayOnRespScreen = {stayOnRespScreen}")
+    dagor.debug($"stayOnRespScreen = {stayOnRespScreen}")
 
     let spectator = isSpectator()
     haveSlotbar = (gameType & (::GT_VERSUS | ::GT_COOPERATIVE)) &&
@@ -213,7 +206,7 @@ enum ESwitchSpectatorTarget
 
     if (fetchChangeAircraftOnStart() && !stayOnRespScreen && !spectator)
     {
-      ::dagor.debug("fetchChangeAircraftOnStart() true")
+      dagor.debug("fetchChangeAircraftOnStart() true")
       isRespawn = true
       stayOnRespScreen = false
       canChangeAircraft = true
@@ -236,8 +229,8 @@ enum ESwitchSpectatorTarget
     updateButtons()
     ::add_tags_for_mp_players()
 
-    this.showSceneBtn("screen_button_back", useTouchscreen && !isRespawn)
-    this.showSceneBtn("gamercard_bottom", isRespawn)
+    showSceneBtn("screen_button_back", useTouchscreen && !isRespawn)
+    showSceneBtn("gamercard_bottom", isRespawn)
 
     if (gameType & ::GT_RACE)
     {
@@ -529,7 +522,7 @@ enum ESwitchSpectatorTarget
     if (showedUnit.value == null)
       showedUnit(getAircraftByName(::last_ca_aircraft))
 
-    ::dagor.debug($"initScreen aircraft {::last_ca_aircraft} showedUnit {showedUnit.value}")
+    dagor.debug($"initScreen aircraft {::last_ca_aircraft} showedUnit {showedUnit.value}")
 
     scene.findObject("CA_div").show(haveSlotbar)
     updateSessionWpBalance()
@@ -537,7 +530,7 @@ enum ESwitchSpectatorTarget
     if (haveSlotbar)
     {
       let needWaitSlotbar = !::g_mis_loading_state.isReadyToShowRespawn() && !isSpectator()
-      this.showSceneBtn("slotbar_load_wait", needWaitSlotbar)
+      showSceneBtn("slotbar_load_wait", needWaitSlotbar)
       if (!isSpectator() && ::g_mis_loading_state.isReadyToShowRespawn()
           && (needRefreshSlotbarOnReinit || !slotbarWeak))
       {
@@ -718,7 +711,7 @@ enum ESwitchSpectatorTarget
     let newMask = getCrewSlotReadyMask()
     if (newMask != slotReadyAtHostMask)
     {
-      ::dagor.debug("Error: is_crew_slot_was_ready_at_host or is_crew_available_in_session have changed without cb. force reload slots")
+      dagor.debug("Error: is_crew_slot_was_ready_at_host or is_crew_available_in_session have changed without cb. force reload slots")
       statsd.send_counter("sq.errors.change_disabled_slots", 1, {mission = ::get_current_mission_name()})
       needReinitSlotbar = true
     }
@@ -726,7 +719,7 @@ enum ESwitchSpectatorTarget
     let newSlotsCostSum = getSlotsSpawnCostSumNoWeapon()
     if (newSlotsCostSum != slotsCostSum)
     {
-      ::dagor.debug("Error: slots spawn cost have changed without cb. force reload slots")
+      dagor.debug("Error: slots spawn cost have changed without cb. force reload slots")
       statsd.send_counter("sq.errors.changed_slots_spawn_cost", 1, {mission = ::get_current_mission_name()})
       needReinitSlotbar = true
     }
@@ -885,7 +878,7 @@ enum ESwitchSpectatorTarget
   function updateTacticalMapHint()
   {
     local hint = ""
-    local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left.png"
+    local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
     if (!isRespawn)
       hint = ::colorize("activeTextColor", ::loc("voice_message_attention_to_point_2"))
@@ -1144,7 +1137,7 @@ enum ESwitchSpectatorTarget
     let air = getCurSlotUnit()
     if (!air)
     {
-      ::dagor.debug("getCurSlotUnit() returned null?")
+      dagor.debug("getCurSlotUnit() returned null?")
       return null
     }
 
@@ -1166,7 +1159,7 @@ enum ESwitchSpectatorTarget
     ::g_decorator.setCurSkinToHangar(air.name)
     if (!weapon || !skin)
     {
-      ::dagor.debug("no weapon or skin selected?")
+      dagor.debug("no weapon or skin selected?")
       return null
     }
 
@@ -1290,12 +1283,12 @@ enum ESwitchSpectatorTarget
     }
 
     if (!silent)
-      ::dagor.debug($"Try to select aircraft {unit.name}")
+      dagor.debug($"Try to select aircraft {unit.name}")
 
     if (!::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, !silent))
     {
       if (!silent)
-        ::dagor.debug($"is_crew_slot_was_ready_at_host return false for {crew.idInCountry} - {unit.name}")
+        dagor.debug($"is_crew_slot_was_ready_at_host return false for {crew.idInCountry} - {unit.name}")
       return { text = ::loc("aircraft_not_repaired"), id = "aircraft_not_repaired" }
     }
 
@@ -1343,8 +1336,8 @@ enum ESwitchSpectatorTarget
         break;
 
       default:
-        ::dagor.debug($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
-        ::debugTableData(lastRequestData)
+        dagor.debug($"Respawn Erorr: aircraft accepted cb result = {result}, on request:")
+        debugTableData(lastRequestData)
         lastRequestData = null
         if (!::checkObj(guiScene["char_connecting_error"]))
           ::showInfoMsgBox(::loc($"changeAircraftResult/{result}"), "char_connecting_error")
@@ -1372,7 +1365,7 @@ enum ESwitchSpectatorTarget
       if (!doRespawnCalled)
         isApplyPressed = false
       else
-        ::dagor.debug("Something has changed in the aircraft selection, but too late - do_respawn was called before.")
+        dagor.debug("Something has changed in the aircraft selection, but too late - do_respawn was called before.")
     updateApplyText()
   }
 
@@ -1393,7 +1386,7 @@ enum ESwitchSpectatorTarget
       applyText = ::loc("mainmenu/toBattle")
       tooltipText = ::loc("mainmenu/selectAircraftTooltip")
       if (::is_platform_pc)
-        tooltipEndText = format(" [%s]", ::loc("key/Enter"))
+        tooltipEndText = ::format(" [%s]", ::loc("key/Enter"))
 
       if (haveSlotbar)
       {
@@ -1433,7 +1426,7 @@ enum ESwitchSpectatorTarget
     let comma = ::loc("ui/comma")
 
     if (shortCostText.len())
-      applyTextShort = format("%s<b> %s</b>", ::loc("mainmenu/toBattle/short"), shortCostText)
+      applyTextShort = ::format("%s<b> %s</b>", ::loc("mainmenu/toBattle/short"), shortCostText)
 
     let costText = comma.join(costTextArr, true)
     if (costText.len())
@@ -1663,7 +1656,7 @@ enum ESwitchSpectatorTarget
 
   function doRespawn()
   {
-    ::dagor.debug("doRespawnPlayer called")
+    dagor.debug("doRespawnPlayer called")
     ::before_first_flight_in_session = false
     doRespawnCalled = doRespawnPlayer()
     if (!doRespawnCalled)
@@ -1819,14 +1812,14 @@ enum ESwitchSpectatorTarget
     let buttons = {
       btn_select =          showButtons && isRespawn && !isNoRespawns && !stayOnRespScreen && !doRespawnCalled && !isSpectate
       btn_select_no_enter = showButtons && isRespawn && !isNoRespawns && !stayOnRespScreen && !doRespawnCalled && isSpectate
-      btn_spectator =       showButtons && isRespawn && isFriendlyUnitsExists && (!isSpectate || is_has_multiplayer())
-      btn_mpStat =          showButtons && isRespawn && is_has_multiplayer()
+      btn_spectator =       showButtons && isRespawn && isFriendlyUnitsExists && (!isSpectate || ::is_has_multiplayer())
+      btn_mpStat =          showButtons && isRespawn && ::is_has_multiplayer()
       btn_QuitMission =     showButtons && isRespawn && isNoRespawns && ::g_mis_loading_state.isReadyToShowRespawn()
       btn_back =            showButtons && useTouchscreen && !isRespawn
       btn_activateorder =   showButtons && isRespawn && ::g_orders.showActivateOrderButton() && (!isSpectate || !::show_console_buttons)
     }
     foreach(id, value in buttons)
-      this.showSceneBtn(id, value)
+      showSceneBtn(id, value)
 
     let crew = getCurCrew()
     let slotObj = crew && ::get_slot_obj(scene, crew.idCountry, crew.idInCountry)
@@ -2000,15 +1993,15 @@ enum ESwitchSpectatorTarget
     if (!::checkObj(scene))
       return
 
-    let name = getSpectatorTargetName()
+    let name = ::get_spectator_target_name()
     if (name == lastSpectatorTargetName)
       return
     lastSpectatorTargetName = name
 
-    let title = getSpectatorTargetTitle()
+    let title = ::get_spectator_target_title()
     let text = $"{name} {title}"
 
-    let targetId = getSpectatorTargetId()
+    let targetId = ::get_spectator_target_id()
     let player = ::get_mplayers_list(GET_MPLAYERS_LIST, true).findvalue(@(p) p.id == targetId)
     let color = player != null ? ::get_mplayer_color(player) : "teamBlueColor"
 
@@ -2227,7 +2220,7 @@ enum ESwitchSpectatorTarget
     local unitOptionsHeight = unitOptionsObj.getSize()[1]
     if (hOversize > 0)
     {
-      unitOptionsHeight = max(unitOptionsObj.getSize()[1] - hOversize,
+      unitOptionsHeight = ::max(unitOptionsObj.getSize()[1] - hOversize,
         unitOptionsObj.getSize()[1] / 2)
       unitOptionsObj.height = unitOptionsHeight
     }
@@ -2236,8 +2229,8 @@ enum ESwitchSpectatorTarget
     canSwitchChatSize = chatObj.getSize()[1] < maxChatHeight
       && objectivesObj.getSize()[1] > ::g_dagui_utils.toPixels(guiScene, "1@minMisObjHeight")
 
-    this.showSceneBtn("mis_obj_text_header", !canSwitchChatSize)
-    this.showSceneBtn("mis_obj_button_header", canSwitchChatSize)
+    showSceneBtn("mis_obj_text_header", !canSwitchChatSize)
+    showSceneBtn("mis_obj_button_header", canSwitchChatSize)
 
     isChatFullSize = !canSwitchChatSize ? true : ::loadLocalByScreenSize("isRespawnChatFullSize", null)
     updateChatSize(isChatFullSize)
@@ -2345,7 +2338,7 @@ enum ESwitchSpectatorTarget
   if (!crews)
     return false
 
-  ::dagor.debug($"Looking for country {country} in team {team}")
+  dagor.debug($"Looking for country {country} in team {team}")
 
   let missionRules = ::g_mis_custom_state.getCurMissionRules()
   let leftRespawns = missionRules.getLeftRespawns()
@@ -2372,9 +2365,9 @@ enum ESwitchSpectatorTarget
       && curSpawnScore < air.getMinimumSpawnScore())
       continue
 
-    ::dagor.debug($"has_available_slots true: unit {air.name} in slot {c.idInCountry}")
+    dagor.debug($"has_available_slots true: unit {air.name} in slot {c.idInCountry}")
     return true
   }
-  ::dagor.debug("has_available_slots false")
+  dagor.debug("has_available_slots false")
   return false
 }

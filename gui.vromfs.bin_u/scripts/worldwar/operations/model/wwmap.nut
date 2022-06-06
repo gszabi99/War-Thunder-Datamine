@@ -1,4 +1,3 @@
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -13,10 +12,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   name = ""
   data = null
 
-  constructor(v_name, v_data)
+  constructor(_name, _data)
   {
-    data = v_data
-    name = v_name
+    data = _data
+    name = _name
   }
 
   function _tostring()
@@ -113,7 +112,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       let t = (c.deg - d) * 60
       let m  = t.tointeger()
       let s = (t - m) * 60
-      coords.append(format("%d%s%02d%s%02d%s%s", d, ud, m, um, s, us, c.hem))
+      coords.append(::format("%d%s%02d%s%02d%s%s", d, ud, m, um, s, us, c.hem))
     }
     return ::g_string.implode(coords, ::loc("ui/comma"))
   }

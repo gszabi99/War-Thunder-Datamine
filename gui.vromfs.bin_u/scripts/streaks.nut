@@ -1,6 +1,4 @@
-let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
-let { is_replay_playing } = require("replays")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_FADE_OUT_TIME = 1.5
@@ -40,7 +38,7 @@ g_streaks.addStreak <- function addStreak(id, header, score)
 
 g_streaks.isStreaksAvailable <- function isStreaksAvailable()
 {
-  return !is_replay_playing()
+  return !::is_replay_playing()
 }
 
 g_streaks.checkNextState <- function checkNextState()
@@ -229,12 +227,12 @@ g_streaks.clear <- function clear()
   {
     text = ::loc("streaks/" + stageId + "/other")
     if (text == "")
-      text = format(::loc("streaks/default/other"), ::loc("streaks/" + stageId))
+      text = ::format(::loc("streaks/default/other"), ::loc("streaks/" + stageId))
   }
 
   if (stageparam)
     text = format(text, stageparam)
   if (!isMyStreak && colorId != 0)
-    text = format("\x1b%03d%s\x1b %s", colorId, platformModule.getPlayerName(playerNick), text)
+    text = ::format("\x1b%03d%s\x1b %s", colorId, platformModule.getPlayerName(playerNick), text)
   return text
 }

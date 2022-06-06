@@ -1,4 +1,3 @@
-let { format, split_by_chars } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
@@ -289,7 +288,7 @@ local InventoryClient = class {
 
     return "auto_login auto_local sso_service=any " + url + "?a=" + ::WT_APPID +
       (::steam_is_running()
-        ? format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
+        ? ::format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
         : "")
   }
 
@@ -333,7 +332,7 @@ local InventoryClient = class {
       return
 
     needRefreshItems = true
-    ::dagor.debug("schedule requestItems")
+    dagor.debug("schedule requestItems")
     g_delayed_actions.add(requestItemsInternal.bindenv(this), 100)
   }
 
@@ -411,8 +410,8 @@ local InventoryClient = class {
         cbList = [],
         shouldRefreshAll = false,
         fireCb = function() {
-          foreach(c in cbList)
-            c()
+          foreach(_cb in cbList)
+            _cb()
         }
       }
     pendingItemDefRequest.shouldRefreshAll = shouldRefreshAll || pendingItemDefRequest.shouldRefreshAll
@@ -456,7 +455,7 @@ local InventoryClient = class {
       return requestData.fireCb()
 
     let itemdefidsString = ::g_string.implode(itemdefidsRequest, ",")
-    ::dagor.debug("Request itemdefs " + itemdefidsString)
+    dagor.debug("Request itemdefs " + itemdefidsString)
 
     lastItemdefsRequestTime = ::dagor.getCurTime()
     let steamLanguage = ::g_language.getCurrentSteamLanguage()
@@ -538,8 +537,8 @@ local InventoryClient = class {
       return null
 
     let parsedTags = ::DataBlock()
-    foreach (pair in split_by_chars(tags, ";")) {
-      let parsed = split_by_chars(pair, ":")
+    foreach (pair in ::split(tags, ";")) {
+      let parsed = ::split(pair, ":")
       if (parsed.len() == 2) {
         let v = parsed[1]
         parsedTags[parsed[0]] <- tagsValueRemap?[v] ?? v
@@ -551,7 +550,7 @@ local InventoryClient = class {
   function parseRecipesString(recipesStr)
   {
     let recipes = []
-    foreach (recipe in split_by_chars(recipesStr || "", ";"))
+    foreach (recipe in ::split(recipesStr || "", ";"))
     {
       let parsedRecipe = {
         components = []
@@ -559,7 +558,7 @@ local InventoryClient = class {
         requirement = null
         recipeStr = recipe
       }
-      foreach (component in split_by_chars(recipe, ","))
+      foreach (component in ::split(recipe, ","))
       {
         let requirement = ::g_string.cutPrefix(component, "require=")
         if (requirement != null) {
@@ -568,8 +567,8 @@ local InventoryClient = class {
         }
         let reqItems = ::g_string.cutPrefix(component, "req_items=")
         if (reqItems != null) {
-          foreach (reqItem in split_by_chars(reqItems, "+")) {
-            let pair = split_by_chars(reqItem, "x")
+          foreach (reqItem in ::split(reqItems, "+")) {
+            let pair = ::split(reqItem, "x")
             if (!pair.len())
               continue
             parsedRecipe.reqItems.append({
@@ -580,7 +579,7 @@ local InventoryClient = class {
           continue
         }
 
-        let pair = split_by_chars(component, "x")
+        let pair = ::split(component, "x")
         if (!pair.len())
           continue
         parsedRecipe.components.append({

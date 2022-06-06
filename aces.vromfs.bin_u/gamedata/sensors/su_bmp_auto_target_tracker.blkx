@@ -182,8 +182,9 @@
             "scanPattern": "track"
           },
           "clearTargetsOfInterest": [],
-          "updateTargetOfInterest": [],
+          "addTargetOfInterest": [],
           "setLastTargetOfInterestActive": [],
+          "updateActiveTargetOfInterest": [],
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -305,7 +306,7 @@
         ],
         "finishedTrack": {
           "stateFrom": "track",
-          "event": "targetsOfInterestCleanup",
+          "event": "activeTargetOfInterestInertialTimeOut",
           "stateTo": "standby",
           "command": "designateTarget",
           "actions": {
@@ -347,7 +348,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": [],
+            "updateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -367,10 +368,7 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateTargetsOfInterest": [],
-            "clearTargetsOfInterest": {
-              "timeOut": 2.0
-            },
+            "extrapolateActiveTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -384,6 +382,9 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            },
+            "checkActiveTargetOfInerestInertialTimeout": {
+              "timeOut": 2.0
             }
           }
         }

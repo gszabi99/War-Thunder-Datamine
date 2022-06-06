@@ -11,8 +11,12 @@ contactItem {
     pos:t='pw - w, ph/2 - h/2'; position:t='absolute'
   }
 
-  cardAvatar {
+  img {
     id:t='pilotIconImg'
+    position:t='relative'
+    pos:t='0, ph/2 - h/2'
+    size:t='@cIco, @cIco'
+    behavior:t='bhvAvatar'
     value:t='<<pilotIcon>>'
   }
 
@@ -161,7 +165,7 @@ contactItem {
       showConsoleImage:t='no'
       input-transparent:t='yes';
       img {
-        background-image:t='#ui/gameuiskin#btn_facebook_friends_add.png';
+        background-image:t='#ui/gameuiskin#btn_facebook_friends_add';
       }
     }*/
   }

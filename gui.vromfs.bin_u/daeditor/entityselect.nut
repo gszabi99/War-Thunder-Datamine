@@ -9,7 +9,7 @@ let mkWindow = require("components/window.nut")
 let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%darg/components/combobox.nut")
 let scrollbar = require("%darg/components/scrollbar.nut")
-let { format } = require("string")
+let string = require("string")
 let entity_editor = require("entity_editor")
 
 let selectedGroup = Watched("")
@@ -23,7 +23,7 @@ let statusAnimTrigger = { lastN = null }
 
 let numSelectedEntities = Computed(function() {
   local nSel = 0
-  foreach (v in selectionState.value) {
+  foreach (k, v in selectionState.value) {
     if (v)
       ++nSel
   }
@@ -45,7 +45,7 @@ let function matchEntityByText(eid, text) {
 let filteredEntites = Computed(function() {
   local entities = allEntities.value
   if (filterString.value != "")
-    entities = entities.filter(@(eid) matchEntityByText(eid, filterString.value))
+    entities = entities.filter(@(eid, idx) matchEntityByText(eid, filterString.value))
  return entities
 })
 
@@ -60,9 +60,9 @@ let function applySelection(cb) {
 
 // use of filteredEntites here would be more correct here, but reapplying name check should faster than
 // linear search in array (O(N) vs O(N^2))
-let selectAllFiltered = @() applySelection(@(eid, _cur) matchEntityByText(eid, filterString.value))
+let selectAllFiltered = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.value))
 
-let selectNone = @() applySelection(@(_eid, _cur) false)
+let selectNone = @() applySelection(@(eid, cur) false)
 
 // invert filtered, deselect unfiltered
 let selectInvert = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.value) ? !cur : false)
@@ -107,18 +107,18 @@ let function statusLine() {
     flow = FLOW_HORIZONTAL
     children = [
       {
-         rendObj = ROBJ_TEXT
+         rendObj = ROBJ_DTEXT
          size = [flex(), SIZE_TO_CONTENT]
-         text = format("%d %s selected", nSel, nSel==1 ? "entity" : "entities")
+         text = string.format("%d %s selected", nSel, nSel==1 ? "entity" : "entities")
          animations = [
            { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=statusAnimTrigger }
          ]
       }
       {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         halign = ALIGN_RIGHT
         size = [flex(), SIZE_TO_CONTENT]
-        text = format("%d listed   ", filteredEntitiesCount.value)
+        text = string.format("%d listed   ", filteredEntitiesCount.value)
         color = Color(170,170,170)
      }
     ]
@@ -167,14 +167,14 @@ let function listRow(eid, idx) {
           })
         }
         else {
-          applySelection(@(eid_, _cur) eid_==eid)
+          applySelection(@(eid_, cur) eid_==eid)
         }
       }
 
       onDoubleClick = @() doSelectEid(eid)
 
       children = {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         text = $"{eid}  |  {g_entity_mgr.getEntityTemplateName(eid)}"
         margin = fsh(0.5)
       }
@@ -190,7 +190,7 @@ let function listRowMoreLeft(num, idx) {
       size = [flex(), SIZE_TO_CONTENT]
       color
       children = {
-        rendObj = ROBJ_TEXT
+        rendObj = ROBJ_DTEXT
         text = $"{num} more ..."
         margin = fsh(0.5)
         color = Color(160,160,160,160)
@@ -210,8 +210,8 @@ let function initEntitiesList() {
   selectionState.trigger()
 }
 
-selectedGroup.subscribe(@(_) initEntitiesList())
-de4workMode.subscribe(@(_) gui_scene.resetTimeout(0.1, initEntitiesList))
+selectedGroup.subscribe(@(v) initEntitiesList())
+de4workMode.subscribe(@(v) gui_scene.resetTimeout(0.1, initEntitiesList))
 
 let function entitySelectRoot() {
   let templatesGroups = ["(all workset entities)"].extend(entity_editor.get_instance().getEcsTemplatesGroups())

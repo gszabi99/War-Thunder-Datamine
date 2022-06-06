@@ -1,4 +1,3 @@
-let { format } = require("string")
 let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
 let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
   getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
@@ -15,13 +14,13 @@ let function getBulletsCountText(curVal, maxVal, unallocated, guns)
 {
   local restText = ""
   if (unallocated && curVal < maxVal)
-    restText = ::colorize("userlogColoredText", format(" %s", ::loc("ui/parentheses",
-      { text = format("+%d", guns * min(unallocated, maxVal - curVal)) })))
+    restText = ::colorize("userlogColoredText", ::format(" %s", ::loc("ui/parentheses",
+      { text = ::format("+%d", guns * ::min(unallocated, maxVal - curVal)) })))
   let valColor = (!curVal || maxVal == 0) ? "badTextColor"
     : (curVal == maxVal) ? "goodTextColor"
     : "activeTextColor"
   let valText = ::colorize(valColor, guns * curVal)
-  return format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
+  return ::format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
 }
 
 let function getStatusIcon(unit, item)
@@ -176,8 +175,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
       showStatus = true
     else if (visualItem.type == weaponsItem.modification ||
       visualItem.type == weaponsItem.expendables)
-        showStatus = (canBeDisabled && statusTbl.amount)
-          || (statusTbl.showPrice && !statusTbl.unlocked)
+        showStatus = canBeDisabled && statusTbl.amount
   res.isShowStatusImg = showStatus && (! statusTbl.unlocked || ! isSwitcher)
   res.hideStatusRadio = !showStatus || !statusTbl.unlocked ||
     !isSwitcher || isFakeBullet(visualItem.name)
@@ -191,7 +189,7 @@ let function getWeaponItemViewParams(id, unit, item, params = {})
     if (res.isShowDiscount)
     {
       res.discountText = "".concat("-", discount, "%")
-      res.discountTooltip = format(
+      res.discountTooltip = ::format(
         ::loc("".concat("discount/", statusTbl.discountType, "/tooltip")), discount.tostring())
     }
     if (priceText != "")

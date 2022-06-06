@@ -102,9 +102,6 @@
     "canReloadNonGuns": true
   },
   {
-    "supportsCombinedPriSecTriggers": true
-  },
-  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -849,7 +846,7 @@
       "createSecondaryShatters": false,
       "compartments": {
         "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.5,
+        "stopChanceOnDeadPart": 0.3,
         "armorClass": "ship_structural_steel",
         "armorThickness": 6.0,
         "hidableInViewer": true,
@@ -871,20 +868,14 @@
         },
         "compartment_06_dm": {
           "hp": 999.0
-        }
-      },
-      "control_compartments": {
-        "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.5,
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 1.0,
-        "hidableInViewer": true,
-        "fireProtectionHp": 3.0,
+        },
         "bridge_dm": {
-          "hp": 230.0
+          "armorThickness": 1.0,
+          "hp": 250.0
         },
         "radio_station_dm": {
-          "hp": 260.0
+          "armorThickness": 1.0,
+          "hp": 150.0
         }
       },
       "superstructures": {
@@ -966,17 +957,17 @@
         "armorThickness": 4.0,
         "fireProtectionHp": 10.0,
         "engine_room_01_dm": {
-          "hp": 760.0
+          "hp": 1000.0
         },
         "funnel_01_dm": {
           "shatterDamageMult": 1.0,
-          "hp": 417.0
+          "hp": 382.0
         },
         "transmission_01_dm": {
-          "hp": 760.0
+          "hp": 500.0
         },
         "transmission_02_dm": {
-          "hp": 760.0
+          "hp": 500.0
         }
       },
       "steering_gear": {
@@ -1047,20 +1038,20 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "main_caliber_turret_01_dm": {
-          "hp": 170.0
+          "hp": 137.0
         }
       },
       "turrets_aux_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 120.0
+          "hp": 75.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 120.0
+          "hp": 75.0
         },
         "auxiliary_caliber_turret_03_dm": {
-          "hp": 120.0
+          "hp": 75.0
         }
       },
       "turrets_aa_caliber": {
@@ -1279,7 +1270,7 @@
   },
   {
     "tank_crew": {
-      "minCrewMemberRepairCount": 0,
+      "minCrewMemberRepairCount": 20,
       "minCrewMemberAliveCount": 17,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -2052,9 +2043,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2063,7 +2054,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2074,9 +2065,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -2085,9 +2076,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -2096,9 +2087,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 8000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "drown"
           }
         }
       },
@@ -2107,7 +2098,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2118,9 +2109,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2129,9 +2120,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 20000.0,
+            "conditionDamage": 16000.0,
             "kill": true,
-            "killEffect": "destruction"
+            "killEffect": "hullBreak"
           }
         }
       },
@@ -2434,7 +2425,7 @@
           "errExplTime": 0.0,
           "speedYaw": 45.0,
           "speedPitch": 35.0,
-          "bullets": 2200,
+          "bullets": 2240,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_01",
@@ -2505,7 +2496,7 @@
           "errExplTime": 0.0,
           "speedYaw": 45.0,
           "speedPitch": 35.0,
-          "bullets": 2200,
+          "bullets": 2240,
           "useGunnerTargetingQuality": false,
           "turret": {
             "head": "main_caliber_turret_01",
@@ -3593,7 +3584,7 @@
           "explosionEvent": "ammo_explosion_1",
           "fireEvent": "ammo_fire_1",
           "ammunition_storage_01_dm": {
-            "count": 4400
+            "count": 4480
           }
         }
       },

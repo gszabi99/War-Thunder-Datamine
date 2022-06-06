@@ -392,6 +392,22 @@
         "ex_decor_l_05_dm": [],
         "superstructure_side_dm": []
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 200.0,
+        "armorThickness": 35.0,
+        "gun_barrel_dm": [],
+        "gun_barrel_01_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_02_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        }
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 250.0,
@@ -451,69 +467,25 @@
           }
         }
       },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 35.0,
-        "gun_barrel_dm": [],
-        "gun_barrel_01_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_02_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_03_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_04_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_05_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_06_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_07_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_08_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        }
-      },
       "tracks": {
         "armorClass": "tank_traks",
         "allowRicochet": true,
-        "armorThickness": 15.0,
-        "hp": 250.0,
-        "genericEffectiveThicknessMax": 15.0,
-        "genericDamageMult": 1.5,
-        "cumulativeDamageMult": 1.5,
+        "armorThickness": 20.0,
+        "armorEffectiveThicknessMax": 20.0,
+        "hp": 300.0,
+        "genericEffectiveThicknessMax": 20.0,
+        "genericDamageMult": 1.8,
+        "cumulativeDamageMult": 1.8,
         "track_r_dm": [],
-        "track_l_dm": []
+        "track_l_dm": [],
+        "track_r_01_dm": [],
+        "track_l_01_dm": []
       },
       "crew": {
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1429,8 +1401,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1474,8 +1446,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1483,8 +1455,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1492,8 +1464,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1532,29 +1504,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -3463,10 +3435,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
       "airstrike": [],
       "improved_optics": [],
@@ -3714,7 +3686,7 @@
         }
       },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "effects": {
           "nightVision": {
             "gunnerThermal": {

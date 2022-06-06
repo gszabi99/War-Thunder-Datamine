@@ -46,32 +46,17 @@
         },
         {
           "comment": {
-            "value": "special'no ne na init"
+            "value": "специально не на init"
           }
         },
         {
           "comment": {
-            "value": "SHABLON ZAMENYAET SOBOJ land_units_death_template"
+            "value": "ШАБЛОН ЗАМЕНЯЕТ СОБОЙ land_units_death_template"
           }
         },
         {
           "comment": {
-            "value": "poetomu imena triggerov i peremennyh nameryano ostavleny konfliktuyushchimi"
-          }
-        },
-        {
-          "comment": {
-            "value": "-------------------------------------------------------------------------"
-          }
-        },
-        {
-          "comment": {
-            "value": "shablon, vklyuchayushchij zavisimost' kolichestva nazemki"
-          }
-        },
-        {
-          "comment": {
-            "value": "ot kolichestva igrokov"
+            "value": "поэтому имена триггеров и переменных намеряно оставлены конфликтующими"
           }
         },
         {
@@ -81,22 +66,12 @@
         },
         {
           "comment": {
-            "value": "kolichestvo nazemki"
+            "value": "шаблон, включающий зависимость количества наземки"
           }
         },
         {
           "comment": {
-            "value": "4 igroka v komande: 11"
-          }
-        },
-        {
-          "comment": {
-            "value": "10 igrokovv komande: 21"
-          }
-        },
-        {
-          "comment": {
-            "value": "vse igroki: 29 (vsya)"
+            "value": "от количества игроков"
           }
         },
         {
@@ -106,37 +81,22 @@
         },
         {
           "comment": {
-            "value": "spisok peremennyh"
+            "value": "количество наземки"
           }
         },
         {
           "comment": {
-            "value": "pa_cur_tickets - tekushchee kolichestvo ochkov komandy"
+            "value": "4 игрока в команде: 11"
           }
         },
         {
           "comment": {
-            "value": "pa_tickets_cost - stoimost' smerti nazemki"
+            "value": "10 игроковв команде: 21"
           }
         },
         {
           "comment": {
-            "value": "pa_units_quantity - kolichestvo aktivnyh yunitov"
-          }
-        },
-        {
-          "comment": {
-            "value": "t1_land_death_counter - kolichestvo umershih yunitov komandy A"
-          }
-        },
-        {
-          "comment": {
-            "value": "t2_land_death_counter - kolichestvo umershih yunitov komandy B"
-          }
-        },
-        {
-          "comment": {
-            "value": "pa_players_count - kolichestvo aktivnyh igrokov"
+            "value": "все игроки: 29 (вся)"
           }
         },
         {
@@ -146,22 +106,62 @@
         },
         {
           "comment": {
-            "value": "pryachem vseh yunitov"
+            "value": "список переменных"
           }
         },
         {
           "comment": {
-            "value": "po lyubomu probuzhdaem 5ppl skvad, chtoby ne pustoval schetchik vragov"
+            "value": "pa_cur_tickets - текущее количество очков команды"
           }
         },
         {
           "comment": {
-            "value": "vklyuchaem proverku kolichestva aktivnyh igrokov cherez 30 sekund"
+            "value": "pa_tickets_cost - стоимость смерти наземки"
           }
         },
         {
           "comment": {
-            "value": "zapolnyaem imya skvada dlya subquest_units"
+            "value": "pa_units_quantity - количество активных юнитов"
+          }
+        },
+        {
+          "comment": {
+            "value": "t1_land_death_counter - количество умерших юнитов команды А"
+          }
+        },
+        {
+          "comment": {
+            "value": "t2_land_death_counter - количество умерших юнитов команды Б"
+          }
+        },
+        {
+          "comment": {
+            "value": "pa_players_count - количество активных игроков"
+          }
+        },
+        {
+          "comment": {
+            "value": "-------------------------------------------------------------------------"
+          }
+        },
+        {
+          "comment": {
+            "value": "прячем всех юнитов"
+          }
+        },
+        {
+          "comment": {
+            "value": "по любому пробуждаем 5ppl сквад, чтобы не пустовал счетчик врагов"
+          }
+        },
+        {
+          "comment": {
+            "value": "включаем проверку количества активных игроков через 30 секунд"
+          }
+        },
+        {
+          "comment": {
+            "value": "заполняем имя сквада для subquest_units"
           }
         },
         {
@@ -291,7 +291,7 @@
       },
       "actions": {
         "comment": {
-          "value": "ne simulyator - obychnaya logika"
+          "value": "не симулятор - обычная логика"
         },
         "triggerEnable": [
           {
@@ -308,22 +308,22 @@
       "else_actions": [
         {
           "comment": {
-            "value": "simulyator - spavnim vseh"
+            "value": "симулятор - спавним всех"
           }
         },
         {
           "comment": {
-            "value": "dizejblim proverku kolichestva igrokov"
+            "value": "дизейблим проверку количества игроков"
           }
         },
         {
           "comment": {
-            "value": "vystavlyaem kolichestvo igrokov chtoby proverka proshla korrektno"
+            "value": "выставляем количество игроков чтобы проверка прошла корректно"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem proverku na to chto vse igroki aktivny"
+            "value": "запускаем проверку на то что все игроки активны"
           }
         },
         {
@@ -372,32 +372,32 @@
       "actions": [
         {
           "comment": {
-            "value": "igrokov: 8 ili men'she"
+            "value": "игроков: 8 или меньше"
           }
         },
         {
           "comment": {
-            "value": "proveryaem obshchee kolichestvo igrokov v obeih komandah"
+            "value": "проверяем общее количество игроков в обеих командах"
           }
         },
         {
           "comment": {
-            "value": "poetomu sravnivaem ne s 5-tyu, a s 10-t'yu"
+            "value": "поэтому сравниваем не с 5-тю, а с 10-тью"
           }
         },
         {
           "comment": {
-            "value": "probuzhdaem skvad, raschitannyj na 5 igrokov v komande"
+            "value": "пробуждаем сквад, расчитанный на 5 игроков в команде"
           }
         },
         {
           "comment": {
-            "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
+            "value": "прячем сквад сабквест юнитов, которые появятся на 20 минуте игры"
           }
         },
         {
           "comment": {
-            "value": "proveryaem tip missii"
+            "value": "проверяем тип миссии"
           }
         },
         {
@@ -492,32 +492,32 @@
       "actions": [
         {
           "comment": {
-            "value": "igrokov bol'she 9 no men'she 20"
+            "value": "игроков больше 9 но меньше 20"
           }
         },
         {
           "comment": {
-            "value": "proveryaem obshchee kolichestvo igrokov v obeih komandah"
+            "value": "проверяем общее количество игроков в обеих командах"
           }
         },
         {
           "comment": {
-            "value": "poetomu sravnivaem ne s 10-tyu, a s 20-t'yu"
+            "value": "поэтому сравниваем не с 10-тю, а с 20-тью"
           }
         },
         {
           "comment": {
-            "value": "probuzhdaem skvad, raschitannyj na 5 igrokov v komande"
+            "value": "пробуждаем сквад, расчитанный на 5 игроков в команде"
           }
         },
         {
           "comment": {
-            "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
+            "value": "прячем сквад сабквест юнитов, которые появятся на 20 минуте игры"
           }
         },
         {
           "comment": {
-            "value": "proveryaem tip missii"
+            "value": "проверяем тип миссии"
           }
         },
         {
@@ -603,27 +603,27 @@
       "actions": [
         {
           "comment": {
-            "value": "igrokov bol'she 20. kolichestvo nazemki: 29"
+            "value": "игроков больше 20. количество наземки: 29"
           }
         },
         {
           "comment": {
-            "value": "proveryaem obshchee kolichestvo igrokov v obeih komandah"
+            "value": "проверяем общее количество игроков в обеих командах"
           }
         },
         {
           "comment": {
-            "value": "probuzhdaem skvad, raschitannyj na polnye komandy"
+            "value": "пробуждаем сквад, расчитанный на полные команды"
           }
         },
         {
           "comment": {
-            "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
+            "value": "прячем сквад сабквест юнитов, которые появятся на 20 минуте игры"
           }
         },
         {
           "comment": {
-            "value": "proveryaem tip missii"
+            "value": "проверяем тип миссии"
           }
         },
         {
@@ -697,12 +697,12 @@
       "actions": [
         {
           "comment": {
-            "value": "kvestovaya nazemka est' tol'bko u odnoj storony. ne delim na 2"
+            "value": "квестовая наземка есть тольбко у одной стороны. не делим на 2"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem podschet ochkov, kotorye budut otnimat'sya pri smerti yunita"
+            "value": "запускаем подсчет очков, которые будут отниматься при смерти юнита"
           }
         },
         {
@@ -720,12 +720,12 @@
       "else_actions": [
         {
           "comment": {
-            "value": "nazemka est' u obeih storon, nado delit' na 2"
+            "value": "наземка есть у обеих сторон, надо делить на 2"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem podschet ochkov, kotorye budut otnimat'sya pri smerti yunita"
+            "value": "запускаем подсчет очков, которые будут отниматься при смерти юнита"
           }
         },
         {
@@ -782,12 +782,12 @@
       "actions": [
         {
           "comment": {
-            "value": "schitaem kolichestvo aktivnyh yunitov v obeih komandah"
+            "value": "считаем количество активных юнитов в обеих командах"
           }
         },
         {
           "comment": {
-            "value": "uvelichivaem peremennuyu podscheta"
+            "value": "увеличиваем переменную подсчета"
           }
         },
         {
@@ -801,37 +801,37 @@
       "else_actions": [
         {
           "comment": {
-            "value": "podschitali kolichestvo yunitov"
+            "value": "подсчитали количество юнитов"
           }
         },
         {
           "comment": {
-            "value": "podelim chislo na ustanovlennyj modifikator"
+            "value": "поделим число на установленный модификатор"
           }
         },
         {
           "comment": {
-            "value": "poluchim kolichestvo tekushchih ochkov komandy A"
+            "value": "получим количество текущих очков команды А"
           }
         },
         {
           "comment": {
-            "value": "razdelim kolichestvo ochkov na kolichestvo yunitov"
+            "value": "разделим количество очков на количество юнитов"
           }
         },
         {
           "comment": {
-            "value": "dobavim 1 chtoby garantirovat' nulevoe kolichestvo ochkov pri smerti vsej nazemki"
+            "value": "добавим 1 чтобы гарантировать нулевое количество очков при смерти всей наземки"
           }
         },
         {
           "comment": {
-            "value": "umnozhaem chislo na -1, chtoby tikety otnimalis'"
+            "value": "умножаем число на -1, чтобы тикеты отнимались"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem trigger okonchaniya podschetov"
+            "value": "запускаем триггер окончания подсчетов"
           }
         },
         {
@@ -912,17 +912,17 @@
       "actions": [
         {
           "comment": {
-            "value": "zakonchili podschet triggerov"
+            "value": "закончили подсчет триггеров"
           }
         },
         {
           "comment": {
-            "value": "vyklyuchaem trigger podscheta"
+            "value": "выключаем триггер подсчета"
           }
         },
         {
           "comment": {
-            "value": "zapuskaem sluzhebnye triggery"
+            "value": "запускаем служебные триггеры"
           }
         },
         {
@@ -1104,7 +1104,7 @@
       },
       "actions": {
         "comment": {
-          "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
+          "value": "прячем сквад сабквест юнитов, которые появятся на 20 минуте игры"
         },
         "unitPutToSleep": {
           "target": "@subquest_units_t1_name"
@@ -1133,7 +1133,7 @@
       },
       "actions": {
         "comment": {
-          "value": "pryachem skvad sabkvest yunitov, kotorye poyavyatsya na 20 minute igry"
+          "value": "прячем сквад сабквест юнитов, которые появятся на 20 минуте игры"
         },
         "unitPutToSleep": {
           "target": "@subquest_units_t2_name"

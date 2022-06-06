@@ -65,7 +65,7 @@
 
   function changeSliderValue(newValue)
   {
-    newValue = clamp(newValue, minValue, maxValue)
+    newValue = ::clamp(newValue, minValue, maxValue)
     if (newValue != curValue)
       scene.findObject("amount_slider").setValue(newValue)
   }

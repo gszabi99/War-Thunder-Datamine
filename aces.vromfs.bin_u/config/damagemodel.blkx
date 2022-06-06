@@ -108,9 +108,6 @@
     "shatterProbeDist": 0.1
   },
   {
-    "minArmorOverlap": 0.3
-  },
-  {
     "defaultCaliberToArmorForGuiPenetrationTable": 1.25
   },
   {
@@ -357,19 +354,13 @@
     "decorMass": 10.0
   },
   {
-    "decorSpeed": [12.0,20.0]
+    "decorSpeed": [5.0,15.0]
   },
   {
-    "decorCutProbability": 0.4
+    "decorRotate": 0.5
   },
   {
-    "decorRotate": 0.6
-  },
-  {
-    "damageToImpulse": 75.0
-  },
-  {
-    "decorDamageToSpeed": [10.0,500.0,4.0,8.0]
+    "damageToImpulse": 50.0
   },
   {
     "gunMalfunctionHpRel": 0.7
@@ -411,14 +402,8 @@
     "enableUnderwaterBombExplosionScale": false
   },
   {
-    "caliberForDamageAfterWaterRicochet": 0.0127
-  },
-  {
-    "fuseOnWaterProbability": 0.5
-  },
-  {
     "groundDamagePart": {
-      "armorThickness": 1.0,
+      "armorThickness": 0.0,
       "cumulativeArmorQuality": 0.25
     }
   },
@@ -661,16 +646,13 @@
   {
     "ricochetPresets": {
       "default": {
-        "t1": {
-          "caliberToArmor": 1.0,
-          "ricochetProbability0deg": [0.0,1.0],
-          "ricochetProbability25deg": [25.0,1.0],
-          "ricochetProbability30deg": [30.0,0.6],
-          "ricochetProbability40deg": [40.0,0.35],
-          "ricochetProbability41deg": [41.0,0.005],
-          "ricochetProbability43deg": [43.0,0.0],
-          "ricochetProbability90deg": [90.0,0.0]
-        }
+        "ricochetProbability0deg": [0.0,1.0],
+        "ricochetProbability25deg": [25.0,1.0],
+        "ricochetProbability30deg": [30.0,0.6],
+        "ricochetProbability40deg": [40.0,0.35],
+        "ricochetProbability41deg": [41.0,0.005],
+        "ricochetProbability43deg": [43.0,0.0],
+        "ricochetProbability90deg": [90.0,0.0]
       },
       "defaultExt": {
         "t1": {
@@ -1004,144 +986,6 @@
           "ricochetProbability11deg": [17.0,0.0]
         }
       }
-    }
-  },
-  {
-    "angleAndSpeedToRicochetProbabilityInWater": {
-      "angle0": [
-        {
-          "degToWater": 0.0
-        },
-        {
-          "speed2probability": [100.0,0.05]
-        },
-        {
-          "speed2probability": [500.0,0.2]
-        },
-        {
-          "speed2probability": [1000.0,0.4]
-        }
-      ],
-      "angle1": [
-        {
-          "degToWater": 2.0
-        },
-        {
-          "speed2probability": [100.0,0.02]
-        },
-        {
-          "speed2probability": [500.0,0.1]
-        },
-        {
-          "speed2probability": [1000.0,0.2]
-        }
-      ],
-      "angle2": [
-        {
-          "degToWater": 5.0
-        },
-        {
-          "speed2probability": [100.0,0.01]
-        },
-        {
-          "speed2probability": [500.0,0.07]
-        },
-        {
-          "speed2probability": [1000.0,0.12]
-        }
-      ],
-      "angle3": [
-        {
-          "degToWater": 10.0
-        },
-        {
-          "speed2probability": [100.0,0.005]
-        },
-        {
-          "speed2probability": [500.0,0.03]
-        },
-        {
-          "speed2probability": [1000.0,0.1]
-        }
-      ],
-      "angle4": [
-        {
-          "degToWater": 12.0
-        },
-        {
-          "speed2probability": [100.0,0.0]
-        },
-        {
-          "speed2probability": [500.0,0.01]
-        },
-        {
-          "speed2probability": [1000.0,0.08]
-        }
-      ],
-      "angle5": [
-        {
-          "degToWater": 15.0
-        },
-        {
-          "speed2probability": [100.0,0.0]
-        },
-        {
-          "speed2probability": [500.0,0.0]
-        },
-        {
-          "speed2probability": [1000.0,0.0]
-        }
-      ],
-      "angle6": [
-        {
-          "degToWater": 20.0
-        },
-        {
-          "speed2probability": [100.0,0.0]
-        },
-        {
-          "speed2probability": [500.0,0.0]
-        },
-        {
-          "speed2probability": [1000.0,0.0]
-        }
-      ],
-      "angle7": [
-        {
-          "degToWater": 30.0
-        },
-        {
-          "speed2probability": [100.0,0.0]
-        },
-        {
-          "speed2probability": [500.0,0.0]
-        },
-        {
-          "speed2probability": [1000.0,0.0]
-        }
-      ],
-      "angle8": [
-        {
-          "degToWater": 60.0
-        },
-        {
-          "speed2probability": [100.0,0.0]
-        },
-        {
-          "speed2probability": [1000.0,0.0]
-        }
-      ],
-      "angle9": [
-        {
-          "degToWater": 90.0
-        },
-        {
-          "speed2probability": [100.0,0.0]
-        },
-        {
-          "speed2probability": [1000.0,0.0]
-        }
-      ]
     }
   },
   {
@@ -2425,8 +2269,8 @@
       "cn_m18_hellcat": 125,
       "cn_m24_chaffee": 125,
       "cn_m36": 140,
-      "cn_m3a3_stuart": 125,
-      "cn_m3a3_stuart_1st_ptg": 125,
+      "cn_m3a3_stuart": 133,
+      "cn_m3a3_stuart_1st_ptg": 133,
       "cn_m42_duster": 125,
       "cn_m48a1_patton_III": 140,
       "cn_m4a1_76w_sherman": 140,
@@ -2458,7 +2302,7 @@
       "cn_type_64": 125,
       "cn_type_65_aa": 140,
       "cn_type_69": 140,
-      "cn_type_69_2a": 140,
+      "cn_type_69_2a": 200,
       "cn_type_69_2g": 140,
       "cn_type_86": 125,
       "cn_type_95_ha_go": 125,
@@ -2476,7 +2320,6 @@
       "cn_ztz_96a_race": 140,
       "cn_ztz_99": 140,
       "cn_ztz_99_w": 140,
-      "cn_ztz_99a": 140,
       "fr_amc_34": 125,
       "fr_amc_35": 125,
       "fr_amd_35": 125,
@@ -2496,7 +2339,7 @@
       "fr_amx_30_b2": 140,
       "fr_amx_30_b2_brenus": 140,
       "fr_amx_30_dca": 140,
-      "fr_amx_30_roland": 140,
+      "fr_amx_30_roland": 166,
       "fr_amx_30_super": 140,
       "fr_amx_32": 140,
       "fr_amx_40": 140,
@@ -2504,7 +2347,7 @@
       "fr_amx_50_foch": 140,
       "fr_amx_50_surbaisse": 140,
       "fr_amx_50_surblinde": 140,
-      "fr_amx_elc_bis": 125,
+      "fr_amx_elc_bis": 140,
       "fr_amx_m4": 140,
       "fr_arl_44": 140,
       "fr_arl_44_acl1": 140,
@@ -2528,7 +2371,7 @@
       "fr_lorraine_40t": 140,
       "fr_lvt_bofors": 125,
       "fr_m10": 140,
-      "fr_m3a3_stuart": 125,
+      "fr_m3a3_stuart": 133,
       "fr_m4a1_sherman": 140,
       "fr_m4a1_sherman_fl_10": 140,
       "fr_m4a3_105_sherman": 140,
@@ -2542,11 +2385,10 @@
       "fr_pzkpfw_V_panther_dauphine": 140,
       "fr_renault_d2": 140,
       "fr_renault_r39": 125,
-      "fr_sk105_a2": 133,
+      "fr_sk105_a2": 140,
       "fr_somua_s35": 140,
       "fr_somua_sau40": 140,
       "fr_somua_sm": 140,
-      "fr_vcac_mephisto": 125,
       "germ_begleitpanzer_57": 140,
       "germ_bmp_1_ddr": 125,
       "germ_erprobungstrager_3_achs_turm": 140,
@@ -2558,8 +2400,8 @@
       "germ_flakpanzer_I_ausf_A": 125,
       "germ_flakpanzer_V_Coelian": 140,
       "germ_flakpz_I_Gepard": 140,
-      "germ_flarakpz_1": 140,
-      "germ_flarakrad": 125,
+      "germ_flarakpz_1": 166,
+      "germ_flarakrad": 166,
       "germ_infanterie_kampfpanzer_churchill": 140,
       "germ_jgdpz_38t": 125,
       "germ_jgdpz_IV_L48": 140,
@@ -2570,9 +2412,8 @@
       "germ_kv_2_754r": 166,
       "germ_le_kpz_m41": 125,
       "germ_leopard_1a5": 140,
-      "germ_leopard_2_pt14": 140,
+      "germ_leopard_2_pt14": 166,
       "germ_leopard_2a4": 140,
-      "germ_leopard_2a4_pzbtl_123": 140,
       "germ_leopard_2a5": 140,
       "germ_leopard_2a5_yt_cup_2019": 140,
       "germ_leopard_2a6": 140,
@@ -2599,7 +2440,6 @@
       "germ_panzerjager_nashorn": 140,
       "germ_panzerjager_panther": 140,
       "germ_panzerjager_tiger": 140,
-      "germ_panzerjager_tiger_P_elefant": 140,
       "germ_panzerjager_tiger_P_ferdinand": 140,
       "germ_panzerwerfer_42": 125,
       "germ_pz_IV_L70": 140,
@@ -2650,9 +2490,9 @@
       "germ_pzsfl_IVa_dickermax": 140,
       "germ_pzsflk40_sturer_emil": 140,
       "germ_radpanzer_90": 133,
-      "germ_raketenjagdpanzer_2": 140,
-      "germ_raketenjagdpanzer_2_hot": 140,
-      "germ_ru251": 140,
+      "germ_raketenjagdpanzer_2": 200,
+      "germ_raketenjagdpanzer_2_hot": 200,
+      "germ_ru251": 125,
       "germ_schutzenpanzer_puma": 140,
       "germ_sdkfz_221_s_pz_b_41": 125,
       "germ_sdkfz_234_1": 125,
@@ -2665,7 +2505,7 @@
       "germ_sdkfz_251_22": 125,
       "germ_sdkfz_6_2_flak36": 125,
       "germ_sdkfz_9_flak37": 125,
-      "germ_sk105_a2": 133,
+      "germ_sk105_a2": 140,
       "germ_stug_III_ausf_A": 140,
       "germ_stug_III_ausf_F": 140,
       "germ_stug_III_ausf_G": 140,
@@ -2681,14 +2521,13 @@
       "germ_vsw_flak_41": 140,
       "germ_vt_1_2": 140,
       "germ_waffentrager_krupp_steyr": 125,
-      "germ_wiesel_1_mk20": 125,
-      "germ_wiesel_1_tow": 125,
-      "germ_wiesel_2_adwc": 125,
+      "germ_wiesel_1_mk20": 140,
+      "germ_wiesel_1_tow": 140,
+      "germ_wiesel_2_adwc": 140,
       "il_aml_90": 125,
       "il_amx_13_75": 125,
       "il_centurion_mk_5_shot": 140,
       "il_centurion_shot_kal_alef": 140,
-      "il_centurion_shot_kal_d": 140,
       "il_centurion_shot_kal_gimel": 140,
       "il_m163_vulcan": 125,
       "il_m48a1_patton_III": 140,
@@ -2696,7 +2535,6 @@
       "il_m_51_w": 140,
       "il_machbet": 125,
       "il_magach_2": 140,
-      "il_magach_3": 140,
       "il_magach_6": 140,
       "il_magach_6a": 140,
       "il_magach_6b": 140,
@@ -2704,11 +2542,9 @@
       "il_merkava_mk_1b": 140,
       "il_merkava_mk_2b_early": 140,
       "il_merkava_mk_2d": 140,
-      "il_merkava_mk_3b": 140,
       "il_merkava_mk_4b": 140,
-      "il_merkava_mk_4m": 140,
+      "il_merkava_mk_4m": 200,
       "il_ss_11_halftrack": 125,
-      "il_tiran_4": 140,
       "il_tiran_4_sh": 140,
       "it_41m_turan_2": 125,
       "it_ab_41": 125,
@@ -2727,8 +2563,6 @@
       "it_fiat_6616_cockerill": 125,
       "it_l3_cc": 125,
       "it_l6": 125,
-      "it_l6_leone": 125,
-      "it_lancia3ro_100": 125,
       "it_leopard_1a5": 140,
       "it_m113a1_tow": 125,
       "it_m11_39": 140,
@@ -2744,7 +2578,7 @@
       "it_m26_ariete": 140,
       "it_m26a1_pershing": 140,
       "it_m36b1": 140,
-      "it_m3a3_stuart": 125,
+      "it_m3a3_stuart": 133,
       "it_m47_105": 140,
       "it_m4a4_sherman": 140,
       "it_m60a1_ariete": 140,
@@ -2776,7 +2610,6 @@
       "it_sherman_vc_firefly": 140,
       "it_stug_III_ausf_G": 140,
       "it_toldi_II_a": 125,
-      "it_vbc_pt2": 125,
       "it_vcc_80_hitfist_30": 125,
       "it_vcc_80_hitfist_60": 125,
       "jp_halftrack_m16": 125,
@@ -2827,7 +2660,7 @@
       "jp_type_89b_i_go_otsu": 125,
       "jp_type_90": 140,
       "jp_type_90b": 140,
-      "jp_type_93": 125,
+      "jp_type_93": 200,
       "jp_type_94": 125,
       "jp_type_95_ha_go": 125,
       "jp_type_95_ha_go_commander": 125,
@@ -2854,11 +2687,10 @@
       "sw_landsverk_ush_405": 125,
       "sw_lvkv_42": 125,
       "sw_lvkv_90c": 125,
-      "sw_lvrbv_701": 125,
+      "sw_lvrbv_701": 200,
       "sw_pbil_m40": 125,
-      "sw_pbv_301": 125,
+      "sw_pbv_301": 166,
       "sw_pvkv_II": 125,
-      "sw_pvkv_III": 125,
       "sw_pvkv_m43_1946": 125,
       "sw_pvkv_m43_1963": 125,
       "sw_pvlvv_fm42": 125,
@@ -2920,7 +2752,6 @@
       "uk_ac1_sentinel": 140,
       "uk_ac4_thunderbolt": 140,
       "uk_adats_m113a3": 125,
-      "uk_alecto_mk_1": 125,
       "uk_armored_car_aec_mk_2": 125,
       "uk_armored_car_mk_2_aa": 125,
       "uk_centurion_action_x": 140,
@@ -2932,7 +2763,6 @@
       "uk_centurion_mk_5_raac": 140,
       "uk_centurion_shot_kal_d": 140,
       "uk_challenger_1": 140,
-      "uk_challenger_1_mk_3_gulf": 140,
       "uk_challenger_2_bn": 140,
       "uk_challenger_2_dorchester": 140,
       "uk_challenger_2_tes": 140,
@@ -2955,14 +2785,13 @@
       "uk_daimler_mk_2": 125,
       "uk_eland_90_mk_7": 125,
       "uk_falcon": 125,
-      "uk_fv102_striker": 125,
+      "uk_fv102_striker": 200,
       "uk_fv221_caernarvon": 140,
       "uk_fv4004_conway": 140,
       "uk_fv4005": 166,
       "uk_fv4202": 140,
-      "uk_fv438_swingfire": 125,
-      "uk_fv510_isv": 125,
-      "uk_g6_spg": 133,
+      "uk_fv438_swingfire": 200,
+      "uk_fv510_isv": 140,
       "uk_m3_stuart": 125,
       "uk_m3a1_stuart": 125,
       "uk_marmon_herrington_mk_6_2pdr": 125,
@@ -2983,7 +2812,7 @@
       "uk_sherman_ic_firefly": 140,
       "uk_sherman_vc_firefly": 140,
       "uk_sp_17_pdr_valentine": 140,
-      "uk_stormer_hvm": 125,
+      "uk_stormer_hvm": 200,
       "uk_t17e2": 125,
       "uk_truck_us6_studebaker_board": 125,
       "uk_truck_us6_studebaker_tent": 125,
@@ -2991,11 +2820,11 @@
       "uk_valentine_mk_1": 140,
       "uk_valentine_mk_11": 140,
       "uk_valentine_mk_9": 140,
-      "uk_vfm_5": 133,
+      "uk_vfm_5": 140,
       "uk_vickers_mbt_mk_1": 140,
       "uk_vickers_mbt_mk_3": 140,
       "uk_vickers_mk7": 140,
-      "uk_vickers_mk_6_aa_mk_1": 125,
+      "uk_vickers_mk_6_aa_mk_1": 200,
       "uk_ystervark_spaa": 125,
       "us_adats_bradley": 125,
       "us_ags_teledyne": 133,
@@ -3023,7 +2852,6 @@
       "us_m1_ip_abrams": 140,
       "us_m1a1_abrams": 140,
       "us_m1a1_abrams_yt_cup_2019": 140,
-      "us_m1a1_aim_abrams": 140,
       "us_m1a1_hc_abrams": 140,
       "us_m1a2_abrams": 140,
       "us_m22_locust": 125,
@@ -3111,9 +2939,9 @@
       "us_truck_us6_studebaker_tent": 125,
       "us_xm1_chrysler": 140,
       "us_xm1_gm": 140,
-      "us_xm_8": 133,
+      "us_xm_8": 140,
       "us_xm_803": 166,
-      "us_xm_975_roland": 125,
+      "us_xm_975_roland": 166,
       "ussr_2s25": 133,
       "ussr_2s25m": 133,
       "ussr_2s3m": 166,
@@ -3136,15 +2964,14 @@
       "ussr_bt_7_m": 125,
       "ussr_bt_7a_f32": 125,
       "ussr_btr_152a": 125,
-      "ussr_btr_zd": 125,
       "ussr_gaz_4m": 125,
       "ussr_gaz_dshk": 125,
       "ussr_gaz_mm_72k": 102,
       "ussr_is_1": 140,
       "ussr_is_2_1943": 140,
       "ussr_is_2_1944": 140,
-      "ussr_is_2_1944_321": 140,
       "ussr_is_2_1944_revenge": 140,
+      "ussr_is_2_1944_321": 140,
       "ussr_is_3": 140,
       "ussr_is_4m": 140,
       "ussr_is_6": 140,
@@ -3196,7 +3023,7 @@
       "ussr_t_10a": 140,
       "ussr_t_10m": 140,
       "ussr_t_126sp": 125,
-      "ussr_t_26E": 125,
+      "ussr_t_26E": 133,
       "ussr_t_26_1940": 125,
       "ussr_t_26_1940_1st_GvTBr": 125,
       "ussr_t_26_4": 125,
@@ -3226,7 +3053,7 @@
       "ussr_t_54_1949": 140,
       "ussr_t_54_1951": 140,
       "ussr_t_55_am": 140,
-      "ussr_t_55_amd_1": 140,
+      "ussr_t_55_amd_1": 200,
       "ussr_t_55a": 140,
       "ussr_t_60_1941": 125,
       "ussr_t_62": 140,
@@ -3236,11 +3063,11 @@
       "ussr_t_70_1942": 125,
       "ussr_t_72a": 140,
       "ussr_t_72av_turms": 140,
+      "ussr_t_72m2_moderna": 140,
       "ussr_t_72b": 140,
       "ussr_t_72b3_2011": 140,
       "ussr_t_72b3_2017_race": 140,
       "ussr_t_72b_1989": 140,
-      "ussr_t_72m2_moderna": 140,
       "ussr_t_80": 125,
       "ussr_t_80b": 140,
       "ussr_t_80bvm": 140,
@@ -3262,343 +3089,333 @@
       "ussr_zsu_37_2": 125,
       "ussr_zsu_57_2": 125,
       "ussr_zut_37": 125,
-      "germ_artilleriefahrprahm_typ_d1": 44,
-      "germ_artilleriefahrprahm_typ_d3": 44,
-      "germ_battlecruiser_von_der_tann": 121,
-      "germ_battleship_bayern": 121,
-      "germ_battleship_helgoland": 125,
-      "germ_battleship_kaiser": 135,
-      "germ_battleship_scharnhorst": 135,
-      "germ_battleship_westfalen": 109,
-      "germ_cruiser_admiral_graf_spee": 95,
+      "germ_artilleriefahrprahm_typ_d1": 33,
+      "germ_artilleriefahrprahm_typ_d3": 33,
+      "germ_battlecruiser_von_der_tann": 133,
+      "germ_battleship_helgoland": 133,
+      "germ_battleship_kaiser": 133,
+      "germ_battleship_scharnhorst": 133,
+      "germ_battleship_westfalen": 132,
+      "germ_cruiser_admiral_graf_spee": 108,
       "germ_cruiser_admiral_hipper": 117,
-      "germ_cruiser_emden_1944": 92,
-      "germ_cruiser_karlsruhe": 92,
-      "germ_cruiser_koln": 103,
-      "germ_cruiser_leipzig": 103,
-      "germ_cruiser_nurnberg": 92,
+      "germ_cruiser_emden_1944": 96,
+      "germ_cruiser_karlsruhe": 95,
+      "germ_cruiser_koln": 102,
+      "germ_cruiser_leipzig": 100,
+      "germ_cruiser_nurnberg": 102,
       "germ_cruiser_prinz_eugen": 117,
-      "germ_destroyer_class1924_iltis": 78,
-      "germ_destroyer_class1924_jaguar1941": 78,
-      "germ_destroyer_class1924_leopard1932": 78,
-      "germ_destroyer_class1934a_1940": 89,
-      "germ_destroyer_class1934a_1944": 89,
-      "germ_destroyer_class1936_z20": 78,
-      "germ_destroyer_class1936_z20_karlgalster": 78,
-      "germ_destroyer_class1936a_mob_z32": 78,
-      "germ_destroyer_class1936a_z25": 78,
-      "germ_destroyer_class1936b": 78,
-      "germ_destroyer_class1939_t22": 71,
-      "germ_destroyer_class1939_t31": 81,
-      "germ_escort_typem1935": 56,
-      "germ_escort_typem1943": 65,
-      "germ_frigate_koln": 65,
-      "germ_frigate_koln_lubeck": 65,
-      "germ_kanonenboot_k2": 89,
-      "germ_ls4_class": 18,
-      "germ_ls_class": 18,
-      "germ_mz_1": 46,
-      "germ_pr_206": 46,
-      "germ_rboot_r130": 35,
-      "germ_rboot_r301": 35,
-      "germ_rboot_r41": 35,
-      "germ_rdm242": 26,
+      "germ_destroyer_class1924_iltis": 88,
+      "germ_destroyer_class1924_jaguar1941": 88,
+      "germ_destroyer_class1924_leopard1932": 88,
+      "germ_destroyer_class1934a_1940": 88,
+      "germ_destroyer_class1934a_1944": 88,
+      "germ_destroyer_class1936_z20": 88,
+      "germ_destroyer_class1936_z20_karlgalster": 88,
+      "germ_destroyer_class1936a_mob_z32": 88,
+      "germ_destroyer_class1936a_z25": 88,
+      "germ_destroyer_class1936b": 88,
+      "germ_destroyer_class1939_t22": 86,
+      "germ_destroyer_class1939_t31": 86,
+      "germ_escort_typem1935": 66,
+      "germ_escort_typem1943": 66,
+      "germ_frigate_koln": 88,
+      "germ_frigate_koln_lubeck": 88,
+      "germ_kanonenboot_k2": 66,
+      "germ_ls4_class": 40,
+      "germ_ls_class": 40,
+      "germ_mz_1": 53,
+      "germ_pr_206": 51,
+      "germ_rboot_r130": 21,
+      "germ_rboot_r301": 27,
+      "germ_rboot_r41": 21,
+      "germ_rdm242": 20,
       "germ_s38": 30,
       "germ_s38b": 30,
       "germ_s_100_class": 30,
       "germ_s_100_s204_lang": 30,
       "germ_s_100_s_174_class": 30,
-      "germ_sf40_leichte_flakkampffaehre": 35,
-      "germ_sf40_schwere_flakkampffaehre": 35,
-      "germ_skr_pr50_karl_marx": 65,
-      "germ_type140_jaguar": 46,
-      "germ_type143_albatros": 46,
-      "germ_type143_bussard": 64,
+      "germ_sf40_leichte_flakkampffaehre": 33,
+      "germ_sf40_schwere_flakkampffaehre": 33,
+      "germ_skr_pr50_karl_marx": 66,
+      "germ_type140_jaguar": 33,
+      "germ_type143_albatros": 48,
+      "germ_type143_bussard": 56,
       "germ_vs10_hydrofoil": 26,
-      "germ_vs8_hydrofoil": 34,
+      "germ_vs8_hydrofoil": 20,
       "ijn_lcvp": 0,
-      "it_a1_vosper": 35,
-      "it_albatros_class_f543": 66,
-      "it_battleship_dante_alighieri": 109,
-      "it_cruiser_bartolomeocolleoni_1940": 103,
-      "it_cruiser_capitani_romani_class_attilio_regolo": 92,
-      "it_cruiser_etna_class": 83,
-      "it_cruiser_eugenio_di_savoia": 100,
-      "it_cruiser_montecuccoli": 99,
-      "it_cruiser_trento": 105,
-      "it_cruiser_zara_class": 105,
-      "it_cruiser_zara_class_pola": 105,
-      "it_destroyer_aquilone": 89,
-      "it_destroyer_comandanti_medaglie_doro": 88,
-      "it_destroyer_dardo": 78,
-      "it_destroyer_fletcher_geniere": 80,
-      "it_destroyer_leone_class": 78,
-      "it_destroyer_leone_class_tigre": 78,
-      "it_destroyer_soldati_serie1": 89,
-      "it_destroyer_soldati_serie1_camicianera": 89,
-      "it_destroyer_soldati_serie1_geniere": 89,
-      "it_destroyer_turbine": 89,
-      "it_gabbiano_class": 65,
-      "it_mas_classe500_3": 26,
-      "it_mas_classe500_3_1944": 26,
-      "it_mas_classe500_4": 26,
-      "it_mas_stefano_turr": 41,
-      "it_mc490_folgore": 41,
+      "it_a1_vosper": 20,
+      "it_albatros_class_f543": 40,
+      "it_battleship_dante_alighieri": 133,
+      "it_cruiser_bartolomeocolleoni_1940": 100,
+      "it_cruiser_capitani_romani_class_attilio_regolo": 102,
+      "it_cruiser_etna_class": 85,
+      "it_cruiser_eugenio_di_savoia": 102,
+      "it_cruiser_montecuccoli": 102,
+      "it_cruiser_trento": 117,
+      "it_cruiser_zara_class": 117,
+      "it_cruiser_zara_class_pola": 117,
+      "it_destroyer_aquilone": 88,
+      "it_destroyer_comandanti_medaglie_doro": 83,
+      "it_destroyer_dardo": 88,
+      "it_destroyer_leone_class": 88,
+      "it_destroyer_leone_class_tigre": 88,
+      "it_destroyer_soldati_serie1": 88,
+      "it_destroyer_soldati_serie1_camicianera": 88,
+      "it_destroyer_soldati_serie1_geniere": 88,
+      "it_destroyer_turbine": 88,
+      "it_gabbiano_class": 35,
+      "it_mas_classe500_3": 21,
+      "it_mas_classe500_3_1944": 21,
+      "it_mas_classe500_4": 21,
+      "it_mas_stefano_turr": 35,
+      "it_mc490_folgore": 33,
       "it_ms15_1a": 26,
-      "it_ms471_1a": 26,
-      "it_ms473_2a": 29,
-      "it_ms473_2a_art": 29,
-      "it_ms53_2a": 26,
-      "it_p420_sparviero": 41,
-      "it_p493_freccia": 46,
-      "it_p494_saetta": 46,
-      "it_vas_baglietto_68t_1serie": 26,
-      "jp_abtei_pr1": 30,
-      "jp_abtei_pr4": 30,
-      "jp_armoredcruiser_ikoma": 121,
-      "jp_battlecruiser_kongo": 121,
-      "jp_battleship_hyuga": 135,
-      "jp_battleship_settsu": 121,
-      "jp_cruiser_agano": 97,
-      "jp_cruiser_aoba": 105,
-      "jp_cruiser_furutaka": 105,
-      "jp_cruiser_isuzu": 92,
+      "it_ms471_1a": 20,
+      "it_ms473_2a": 21,
+      "it_ms473_2a_art": 21,
+      "it_ms53_2a": 22,
+      "it_p420_sparviero": 33,
+      "it_p493_freccia": 33,
+      "it_p494_saetta": 33,
+      "it_vas_baglietto_68t_1serie": 20,
+      "jp_abtei_pr1": 20,
+      "jp_abtei_pr4": 20,
+      "jp_armoredcruiser_ikoma": 132,
+      "jp_battlecruiser_kongo": 133,
+      "jp_battleship_hyuga": 133,
+      "jp_battleship_settsu": 132,
+      "jp_cruiser_agano": 102,
+      "jp_cruiser_aoba": 117,
+      "jp_cruiser_furutaka": 117,
+      "jp_cruiser_isuzu": 101,
       "jp_cruiser_kako": 117,
-      "jp_cruiser_kuma": 92,
-      "jp_cruiser_mogami": 105,
-      "jp_cruiser_mogami_mikuma": 105,
-      "jp_cruiser_mogami_suzuya": 105,
-      "jp_cruiser_sendai": 95,
-      "jp_cruiser_tone": 105,
-      "jp_cruiser_yubari": 86,
-      "jp_daihatsu_landing_craft": 32,
-      "jp_destroyer_akizuki": 89,
-      "jp_destroyer_ayanami": 65,
-      "jp_destroyer_chidori": 71,
-      "jp_destroyer_fubuki": 89,
-      "jp_destroyer_harukaze": 77,
-      "jp_destroyer_hayanami": 79,
-      "jp_destroyer_isuzu": 71,
-      "jp_destroyer_kiyoshimo": 79,
-      "jp_destroyer_mutsuki": 89,
-      "jp_destroyer_satsuki": 89,
-      "jp_destroyer_shimakaze": 89,
-      "jp_destroyer_yugumo": 79,
-      "jp_destroyer_yugure": 80,
-      "jp_destroyer_yuudachi": 89,
-      "jp_escort_akebono_class": 71,
-      "jp_escort_chikugo_class": 71,
-      "jp_escort_hiburi_class_syonan": 71,
-      "jp_escort_ikazuchi_class": 71,
-      "jp_karotei_type2": 41,
-      "jp_karotei_type4": 35,
-      "jp_kusen_tei_13_1942": 41,
-      "jp_kusen_tei_13_1944": 41,
-      "jp_no1_ch2": 46,
-      "jp_no4_ch8": 41,
-      "jp_pg02": 41,
+      "jp_cruiser_kuma": 102,
+      "jp_cruiser_mogami": 117,
+      "jp_cruiser_mogami_mikuma": 117,
+      "jp_cruiser_mogami_suzuya": 117,
+      "jp_cruiser_sendai": 102,
+      "jp_cruiser_tone": 117,
+      "jp_cruiser_yubari": 88,
+      "jp_daihatsu_landing_craft": 20,
+      "jp_destroyer_akizuki": 88,
+      "jp_destroyer_chidori": 66,
+      "jp_destroyer_fubuki": 88,
+      "jp_destroyer_harukaze": 88,
+      "jp_destroyer_hayanami": 88,
+      "jp_destroyer_isuzu": 66,
+      "jp_destroyer_kiyoshimo": 88,
+      "jp_destroyer_mutsuki": 88,
+      "jp_destroyer_satsuki": 88,
+      "jp_destroyer_shimakaze": 88,
+      "jp_destroyer_yugumo": 88,
+      "jp_destroyer_yugure": 88,
+      "jp_destroyer_yuudachi": 88,
+      "jp_escort_akebono_class": 88,
+      "jp_escort_chikugo_class": 88,
+      "jp_escort_hiburi_class_syonan": 69,
+      "jp_escort_ikazuchi_class": 74,
+      "jp_karotei_type2": 35,
+      "jp_karotei_type4": 21,
+      "jp_kusen_tei_13_1942": 33,
+      "jp_kusen_tei_13_1944": 35,
+      "jp_no1_ch2": 45,
+      "jp_no4_ch8": 35,
+      "jp_pg02": 35,
       "jp_sehatei_mod1": 35,
-      "jp_t14_class": 26,
-      "jp_t14_class_mod01": 26,
-      "jp_t51b": 35,
-      "jp_type38_1944": 26,
-      "jp_type5_escortboat": 46,
-      "jp_type_11_pt_15": 41,
-      "jp_type_t1_1941": 26,
-      "uk_70ft_mgb": 26,
-      "uk_71ft_mgb": 26,
-      "uk_aircraftcarrier_ark_royal": 131,
-      "uk_battlecruiser_hood": 135,
-      "uk_battlecruiser_invincible": 121,
-      "uk_battleship_colossus": 135,
-      "uk_battleship_dreadnought": 108,
-      "uk_battleship_marlborough": 135,
-      "uk_brave_borderer": 35,
-      "uk_corvette_orla": 73,
-      "uk_corvette_peacock": 73,
-      "uk_cruiser_arethusa": 103,
-      "uk_cruiser_belfast": 103,
-      "uk_cruiser_dido": 103,
-      "uk_cruiser_enterprise_d52": 92,
+      "jp_t14_class": 22,
+      "jp_t14_class_mod01": 22,
+      "jp_t51b": 22,
+      "jp_type38_1944": 21,
+      "jp_type5_escortboat": 35,
+      "jp_type_11_pt_15": 33,
+      "jp_type_t1_1941": 21,
+      "uk_70ft_mgb": 21,
+      "uk_71ft_mgb": 21,
+      "uk_aircraftcarrier_ark_royal": 147,
+      "uk_battlecruiser_invincible": 132,
+      "uk_battleship_colossus": 133,
+      "uk_battleship_dreadnought": 132,
+      "uk_battleship_marlborough": 133,
+      "uk_brave_borderer": 24,
+      "uk_corvette_orla": 33,
+      "uk_corvette_peacock": 33,
+      "uk_cruiser_arethusa": 102,
+      "uk_cruiser_belfast": 102,
+      "uk_cruiser_dido": 102,
+      "uk_cruiser_enterprise_d52": 102,
       "uk_cruiser_hawkins": 117,
-      "uk_cruiser_kent": 94,
-      "uk_cruiser_leander": 103,
-      "uk_cruiser_liverpool": 103,
+      "uk_cruiser_kent": 117,
+      "uk_cruiser_leander": 102,
+      "uk_cruiser_liverpool": 102,
       "uk_cruiser_london": 117,
       "uk_cruiser_norfolk": 117,
-      "uk_cruiser_southampton": 103,
-      "uk_cruiser_tiger": 103,
+      "uk_cruiser_southampton": 102,
+      "uk_cruiser_tiger": 100,
       "uk_cruiser_york": 117,
-      "uk_dark_class": 35,
-      "uk_dark_class_mtb": 35,
-      "uk_dark_class_mtb_td": 35,
-      "uk_destroyer_battle_2series": 89,
-      "uk_destroyer_battle_cadiz": 89,
-      "uk_destroyer_battle_tobruk": 89,
-      "uk_destroyer_clemson_churchill": 89,
-      "uk_destroyer_clemson_montgomery_g95": 89,
-      "uk_destroyer_g_garland": 89,
-      "uk_destroyer_g_grafton": 89,
-      "uk_destroyer_haida": 78,
-      "uk_destroyer_hunt_2series": 89,
-      "uk_destroyer_hunt_4series": 89,
-      "uk_destroyer_j_class": 78,
-      "uk_destroyer_k_class": 78,
-      "uk_destroyer_n_class": 78,
-      "uk_destroyer_tribal": 78,
-      "uk_destroyer_tribal_mohawk": 78,
-      "uk_destroyer_v_class_valhalla": 89,
-      "uk_destroyer_v_class_vega": 78,
-      "uk_destroyer_v_class_verdun": 78,
-      "uk_fairmile_a_ml100": 35,
-      "uk_fairmile_b_ml345": 35,
-      "uk_fairmile_c": 35,
-      "uk_fairmile_c_332": 35,
-      "uk_fairmile_d_5001_5029": 35,
-      "uk_fairmile_d_601_616": 35,
-      "uk_fairmile_d_617_632": 35,
-      "uk_fairmile_d_697_800": 35,
-      "uk_fairmile_lcs_l_h_mk2": 41,
-      "uk_flower_class": 70,
-      "uk_frigate_leopard": 71,
-      "uk_frigate_river": 71,
-      "uk_frigate_whitby_blackpool": 65,
-      "uk_hdml_ml1383": 35,
-      "uk_higgins_78ft_mtb422": 26,
-      "uk_isles_class_trawler": 71,
-      "uk_mtb_1series": 26,
-      "uk_mtb_2series": 30,
-      "uk_mtb_vosper_1series": 35,
-      "uk_mtb_vosper_2series": 32,
-      "uk_sgb_304": 44,
-      "uk_sgb_309": 44,
-      "us_admirable_class": 58,
-      "us_aircraftcarrier_forrestal": 131,
-      "us_ashville_class": 46,
-      "us_ashville_class_douglas": 46,
-      "us_battleship_arizona_1931": 126,
-      "us_battleship_north_dakota": 114,
-      "us_battleship_wyoming_class": 121,
-      "us_cruiser_atlanta_class_atlanta": 86,
+      "uk_dark_class": 21,
+      "uk_dark_class_mtb": 25,
+      "uk_dark_class_mtb_td": 25,
+      "uk_destroyer_battle_2series": 88,
+      "uk_destroyer_battle_tobruk": 88,
+      "uk_destroyer_clemson_churchill": 81,
+      "uk_destroyer_clemson_montgomery_g95": 81,
+      "uk_destroyer_g_garland": 88,
+      "uk_destroyer_g_grafton": 88,
+      "uk_destroyer_haida": 88,
+      "uk_destroyer_hunt_2series": 88,
+      "uk_destroyer_hunt_4series": 73,
+      "uk_destroyer_j_class": 88,
+      "uk_destroyer_k_class": 88,
+      "uk_destroyer_n_class": 88,
+      "uk_destroyer_tribal": 88,
+      "uk_destroyer_tribal_mohawk": 88,
+      "uk_destroyer_v_class_valhalla": 88,
+      "uk_destroyer_v_class_vega": 88,
+      "uk_destroyer_v_class_verdun": 88,
+      "uk_fairmile_a_ml100": 21,
+      "uk_fairmile_b_ml345": 21,
+      "uk_fairmile_c": 21,
+      "uk_fairmile_c_332": 21,
+      "uk_fairmile_d_5001_5029": 24,
+      "uk_fairmile_d_601_616": 21,
+      "uk_fairmile_d_617_632": 31,
+      "uk_fairmile_d_697_800": 22,
+      "uk_fairmile_lcs_l_h_mk2": 33,
+      "uk_flower_class": 35,
+      "uk_frigate_leopard": 70,
+      "uk_frigate_river": 53,
+      "uk_frigate_whitby_blackpool": 88,
+      "uk_higgins_78ft_mtb422": 24,
+      "uk_isles_class_trawler": 35,
+      "uk_mtb_1series": 21,
+      "uk_mtb_2series": 21,
+      "uk_mtb_vosper_1series": 24,
+      "uk_mtb_vosper_2series": 24,
+      "uk_sgb_304": 34,
+      "uk_sgb_309": 34,
+      "us_admirable_class": 35,
+      "us_aircraftcarrier_forrestal": 147,
+      "us_ashville_class": 53,
+      "us_battleship_arizona_1931": 133,
+      "us_battleship_north_dakota": 133,
+      "us_battleship_wyoming_class": 132,
+      "us_cruiser_atlanta_class_atlanta": 102,
       "us_cruiser_baltimore_class": 117,
       "us_cruiser_baltimore_class_pittsburgh": 117,
-      "us_cruiser_brooklyn_class_brooklyn": 100,
+      "us_cruiser_brooklyn_class_brooklyn": 102,
       "us_cruiser_brooklyn_class_helena": 100,
       "us_cruiser_cleveland_class_cleveland": 100,
-      "us_cruiser_new_orleans_class": 117,
-      "us_cruiser_northampton_class": 105,
-      "us_cruiser_omaha_class_detroit": 103,
-      "us_cruiser_omaha_class_raleigh": 103,
-      "us_cruiser_omaha_class_trenton": 84,
+      "us_cruiser_new_orleans_class": 112,
+      "us_cruiser_northampton_class": 117,
+      "us_cruiser_omaha_class_detroit": 100,
+      "us_cruiser_omaha_class_raleigh": 100,
+      "us_cruiser_omaha_class_trenton": 86,
       "us_cruiser_pensacola_class": 117,
-      "us_cruiser_portland_class": 105,
-      "us_destroyer_clemson_barker": 71,
-      "us_destroyer_clemson_litchfield": 89,
-      "us_destroyer_clemson_welborn_c_wood": 89,
-      "us_destroyer_farragut_1942": 78,
-      "us_destroyer_fletcher": 80,
-      "us_destroyer_fletcher_bennion": 80,
-      "us_destroyer_fletcher_cowell": 80,
-      "us_destroyer_gearing": 89,
-      "us_destroyer_mitscher": 78,
-      "us_destroyer_mitscher_wilkinson": 78,
-      "us_destroyer_porter_1941": 71,
-      "us_destroyer_porter_1942": 89,
-      "us_destroyer_porter_1944": 71,
-      "us_destroyer_somers": 71,
-      "us_destroyer_somers_davis": 89,
-      "us_destroyer_sumner": 89,
-      "us_elco_77ft_pt20": 27,
-      "us_elco_77ft_pt59": 27,
-      "us_elco_80ft_pt109_boat": 35,
-      "us_elco_80ft_pt174": 35,
-      "us_elco_80ft_pt_boat": 35,
-      "us_elco_80ft_pt_boat_mod01": 35,
-      "us_elco_80ft_pt_boat_mod02": 35,
-      "us_elco_80ft_pt_boat_thunderbolt": 35,
-      "us_frigate_tacoma": 68,
-      "us_higgins_78ft_pt625": 26,
-      "us_higgins_78ft_pt658": 26,
-      "us_higgins_78ft_pt71": 26,
-      "us_lcs_l_3": 46,
-      "us_nasty_ptf": 35,
-      "us_pc_451": 46,
-      "us_pc_466_carmi": 46,
-      "us_pgm_59_class": 46,
-      "us_pt3": 31,
-      "us_pt6": 33,
-      "us_pt810": 35,
-      "us_pt811": 26,
-      "us_sc_497": 41,
-      "us_tucumcari_pgh2": 46,
+      "us_cruiser_portland_class": 117,
+      "us_destroyer_clemson_barker": 74,
+      "us_destroyer_clemson_litchfield": 74,
+      "us_destroyer_clemson_welborn_c_wood": 74,
+      "us_destroyer_farragut_1942": 88,
+      "us_destroyer_fletcher": 88,
+      "us_destroyer_fletcher_bennion": 88,
+      "us_destroyer_fletcher_cowell": 88,
+      "us_destroyer_mitscher": 88,
+      "us_destroyer_mitscher_wilkinson": 88,
+      "us_destroyer_porter_1941": 88,
+      "us_destroyer_porter_1942": 88,
+      "us_destroyer_porter_1944": 88,
+      "us_destroyer_somers": 82,
+      "us_destroyer_sumner": 88,
+      "us_elco_77ft_pt20": 20,
+      "us_elco_77ft_pt59": 20,
+      "us_elco_80ft_pt109_boat": 21,
+      "us_elco_80ft_pt174": 20,
+      "us_elco_80ft_pt_boat": 21,
+      "us_elco_80ft_pt_boat_mod01": 20,
+      "us_elco_80ft_pt_boat_mod02": 20,
+      "us_elco_80ft_pt_boat_thunderbolt": 20,
+      "us_frigate_tacoma": 88,
+      "us_higgins_78ft_pt625": 20,
+      "us_higgins_78ft_pt658": 21,
+      "us_higgins_78ft_pt71": 20,
+      "us_lcs_l_3": 33,
+      "us_nasty_ptf": 20,
+      "us_pc_451": 43,
+      "us_pc_466_carmi": 53,
+      "us_pgm_59_class": 66,
+      "us_pt3": 21,
+      "us_pt6": 22,
+      "us_pt810": 22,
+      "us_pt811": 23,
+      "us_sc_497": 66,
+      "us_tucumcari_pgh2": 36,
       "uss_lcvp": 0,
       "uss_pt_109": 0,
-      "ussr_1124_ack": 30,
-      "ussr_1124_art": 30,
-      "ussr_1124_rct": 30,
-      "ussr_aircraftcarrier_baku": 131,
-      "ussr_battlecruiser_kronshtadt": 135,
-      "ussr_battleship_imperatritsa_mariya": 135,
-      "ussr_battleship_parizhskaya_kommuna": 135,
-      "ussr_battleship_poltava": 135,
+      "ussr_1124_ack": 21,
+      "ussr_1124_art": 20,
+      "ussr_1124_rct": 20,
+      "ussr_aircraftcarrier_baku": 147,
+      "ussr_battleship_imperatritsa_mariya": 133,
+      "ussr_battleship_parizhskaya_kommuna": 133,
+      "ussr_battleship_poltava": 133,
       "ussr_bmo": 35,
-      "ussr_cruiser_chapayev": 92,
-      "ussr_cruiser_kerch": 94,
-      "ussr_cruiser_kirov": 100,
-      "ussr_cruiser_krasnyi_kavkaz": 92,
-      "ussr_cruiser_krasnyi_krim": 100,
-      "ussr_cruiser_maxim_gorky": 100,
-      "ussr_cruiser_sverdlov": 103,
-      "ussr_cruiser_voroshilov": 100,
-      "ussr_cruiser_zheleznyakov": 92,
-      "ussr_d3": 35,
-      "ussr_destroyer_7y": 79,
-      "ussr_destroyer_7y_stroyny": 79,
-      "ussr_destroyer_frunze": 78,
-      "ussr_destroyer_kerch": 75,
-      "ussr_destroyer_leningrad": 89,
-      "ussr_destroyer_moskva": 89,
-      "ussr_destroyer_pr20_tashkent": 89,
-      "ussr_destroyer_pr30_ognevoy": 78,
-      "ussr_destroyer_pr30bis_bezuprechnyi": 78,
-      "ussr_destroyer_pr30bis_smelyi": 78,
-      "ussr_destroyer_pr41_neustrashimy": 78,
-      "ussr_destroyer_pr56_spokoinyy": 78,
-      "ussr_g5_mtb": 32,
-      "ussr_g5_mtb_landing_craft": 32,
-      "ussr_g5_mtb_shvak": 32,
-      "ussr_g5_rct": 32,
-      "ussr_mbk_161_1943": 37,
-      "ussr_mbk_161_1944": 37,
-      "ussr_mkl_186": 37,
-      "ussr_mkl_186_mk85": 37,
-      "ussr_mo_4": 35,
-      "ussr_mpk_122a": 46,
-      "ussr_mpk_122bis": 46,
-      "ussr_mpk_163": 46,
-      "ussr_mpk_201k": 41,
-      "ussr_mpk_201m": 41,
-      "ussr_mpk_pr12412": 41,
-      "ussr_mpk_pr12412p": 41,
-      "ussr_od_200": 35,
-      "ussr_pr_1204": 43,
-      "ussr_pr_1204_late": 41,
-      "ussr_pr_123bis": 26,
-      "ussr_pr_123k": 26,
-      "ussr_pr_123k_hydrofoils": 26,
-      "ussr_pr_183": 35,
-      "ussr_pr_191": 34,
-      "ussr_pr_191m": 34,
-      "ussr_pr_206": 46,
-      "ussr_pr_206_race": 46,
-      "ussr_pr_206m": 46,
-      "ussr_skr_groza_1943": 53,
-      "ussr_skr_pr159": 89,
-      "ussr_skr_pr35": 71,
-      "ussr_skr_pr50_jenot": 65,
-      "ussr_skr_pr50plo_rosomacha": 65,
+      "ussr_cruiser_chapayev": 102,
+      "ussr_cruiser_kerch": 102,
+      "ussr_cruiser_kirov": 102,
+      "ussr_cruiser_krasnyi_kavkaz": 102,
+      "ussr_cruiser_krasnyi_krim": 94,
+      "ussr_cruiser_maxim_gorky": 102,
+      "ussr_cruiser_sverdlov": 102,
+      "ussr_cruiser_voroshilov": 102,
+      "ussr_cruiser_zheleznyakov": 102,
+      "ussr_d3": 30,
+      "ussr_destroyer_7y": 88,
+      "ussr_destroyer_7y_stroyny": 88,
+      "ussr_destroyer_frunze": 81,
+      "ussr_destroyer_kerch": 81,
+      "ussr_destroyer_leningrad": 88,
+      "ussr_destroyer_moskva": 88,
+      "ussr_destroyer_pr20_tashkent": 88,
+      "ussr_destroyer_pr30_ognevoy": 88,
+      "ussr_destroyer_pr30bis_bezuprechnyi": 88,
+      "ussr_destroyer_pr30bis_smelyi": 88,
+      "ussr_destroyer_pr41_neustrashimy": 88,
+      "ussr_destroyer_pr56_spokoinyy": 88,
+      "ussr_g5_mtb": 30,
+      "ussr_g5_mtb_landing_craft": 30,
+      "ussr_g5_mtb_shvak": 30,
+      "ussr_g5_rct": 20,
+      "ussr_mbk_161_1943": 20,
+      "ussr_mbk_161_1944": 20,
+      "ussr_mkl_186": 35,
+      "ussr_mkl_186_mk85": 35,
+      "ussr_mo_4": 21,
+      "ussr_mpk_122a": 35,
+      "ussr_mpk_122bis": 47,
+      "ussr_mpk_163": 44,
+      "ussr_mpk_201k": 35,
+      "ussr_mpk_201m": 35,
+      "ussr_mpk_pr12412": 35,
+      "ussr_mpk_pr12412p": 35,
+      "ussr_od_200": 21,
+      "ussr_pr_1204": 33,
+      "ussr_pr_1204_late": 33,
+      "ussr_pr_123bis": 21,
+      "ussr_pr_123k": 21,
+      "ussr_pr_123k_hydrofoils": 21,
+      "ussr_pr_183": 30,
+      "ussr_pr_191": 20,
+      "ussr_pr_191m": 20,
+      "ussr_pr_206": 51,
+      "ussr_pr_206_race": 51,
+      "ussr_pr_206m": 41,
+      "ussr_skr_groza_1943": 35,
+      "ussr_skr_pr159": 66,
+      "ussr_skr_pr35": 66,
+      "ussr_skr_pr50_jenot": 66,
+      "ussr_skr_pr50plo_rosomacha": 66,
       "ussr_tb_g5": 0,
-      "ussr_ya_5m": 27
+      "ussr_ya_5m": 20
     }
   },
   {
@@ -3646,52 +3463,52 @@
         "completely": true
       },
       "funnel_01_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_02_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_03_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_04_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_05_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_06_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_07_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_08_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_09_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "funnel_10_dm": {
-        "speed": 40.0,
+        "speed": 35.0,
         "partRepairHp": 1.0,
         "completely": true
       },
@@ -3706,82 +3523,82 @@
         "completely": true
       },
       "engine_room_01_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_02_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_03_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_04_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_05_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_06_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_07_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_08_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_09_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_10_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_11_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "engine_room_12_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "transmission_01_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "transmission_02_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "transmission_03_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
       "transmission_04_dm": {
-        "speed": 38.0,
+        "speed": 34.0,
         "partRepairHp": 1.0,
         "completely": true
       },
@@ -3906,83 +3723,83 @@
         "completely": true
       },
       "main_caliber_turret_01_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_02_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_03_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_04_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_05_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_06_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_07_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_08_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_09_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_10_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_11_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_12_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_13_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_14_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_15_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_16_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_17_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_18_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_19_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "main_caliber_turret_20_dm": {
-        "speed": 5.8,
+        "speed": 10.0,
         "completely": true
       },
       "auxiliary_caliber_gun_01_dm": {
@@ -4106,123 +3923,123 @@
         "completely": true
       },
       "auxiliary_caliber_turret_01_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_02_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_03_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_04_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_05_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_06_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_07_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_08_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_09_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_10_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_11_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_12_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_13_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_14_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_15_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_16_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_17_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_18_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_19_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_20_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_21_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_22_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_23_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_24_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_25_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_26_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_27_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_28_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_29_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "auxiliary_caliber_turret_30_dm": {
-        "speed": 6.0,
+        "speed": 9.0,
         "completely": true
       },
       "aa_gun_01_dm": {
@@ -4576,531 +4393,531 @@
         "modRequired": true
       },
       "aa_turret_01_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_02_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_03_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_04_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_05_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_06_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_07_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_08_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_09_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_10_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_11_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_12_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_13_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_14_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_15_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_16_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_17_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_18_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_19_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_20_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_21_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_22_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_23_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_24_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_25_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_26_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_27_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_28_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_29_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_30_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_31_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_32_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_33_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_34_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_35_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_36_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_37_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_38_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_39_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_40_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_41_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_42_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_43_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_44_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_45_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_46_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_47_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_48_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_49_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_50_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_51_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_52_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_53_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_54_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_55_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_56_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_57_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_58_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_59_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_60_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_61_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_62_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_63_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_64_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_65_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_66_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_67_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_68_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_69_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "aa_turret_70_dm": {
-        "speed": 5.0,
+        "speed": 2.5,
         "completely": true,
         "modRequired": true
       },
       "elevator_01_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_02_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_03_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_04_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_05_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_06_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_07_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_08_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_09_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_10_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_11_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_12_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_13_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_14_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_15_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_16_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_17_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_18_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_19_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_20_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_21_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_22_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_23_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_24_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_25_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_26_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_27_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_28_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_29_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
       },
       "elevator_30_dm": {
-        "speed": 20.0,
+        "speed": 45.0,
         "completely": false,
         "partRepairHp": 1.0,
         "hpForRepair": 0.85
@@ -5481,116 +5298,116 @@
         "modRequired": true
       },
       "radio_station_dm": {
-        "speed": 7.0,
+        "speed": 8.5,
         "partRepairHp": 0.7,
         "completely": true
       },
       "radio_station_01_dm": {
-        "speed": 7.0,
+        "speed": 8.5,
         "partRepairHp": 0.7,
         "completely": true
       },
       "radio_station_02_dm": {
-        "speed": 7.0,
+        "speed": 8.5,
         "partRepairHp": 0.7,
         "completely": true
       },
       "bridge_dm": {
-        "speed": 5.6,
+        "speed": 7.5,
         "partRepairHp": 1.0,
         "completely": true,
         "modRequired": false
       },
       "bridge_01_dm": {
-        "speed": 5.6,
+        "speed": 7.5,
         "partRepairHp": 1.0,
         "completely": true,
         "modRequired": false
       },
       "bridge_02_dm": {
-        "speed": 5.6,
+        "speed": 7.5,
         "partRepairHp": 1.0,
         "completely": true,
         "modRequired": false
       },
       "ammunition_storage_aux_01_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_02_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_03_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_04_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_05_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_06_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_07_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_08_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_09_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_10_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_11_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_12_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_13_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_14_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_15_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_16_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_17_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_18_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_19_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "ammunition_storage_aux_20_dm": {
-        "speed": 35.0,
+        "speed": 50.0,
         "completely": true
       },
       "antenna_target_location_01_dm": {
@@ -5896,13 +5713,13 @@
         "completely": true
       },
       "fire_control_room_01_dm": {
-        "speed": 14.0,
+        "speed": 7.5,
         "partRepairHp": 1.0,
         "hpForRepair": 0.7,
         "completely": false
       },
       "fire_control_room_02_dm": {
-        "speed": 14.0,
+        "speed": 7.5,
         "partRepairHp": 1.0,
         "hpForRepair": 0.7,
         "completely": false
@@ -6634,7 +6451,7 @@
   {
     "bulletDecals": {
       "ap": {
-        "bullets": "ac_shell_tank, apbc_tank, apbc_usa_tank, apds_tank, apds_early_tank, apds_autocannon, apds_l15_tank, apds_fs_tank, apds_fs_long_tank, apds_fs_full_body_steel_tank, apds_fs_tungsten_small_core_tank, apds_fs_tungsten_l10_l15_tank, apc_tank, aphe_tank, aphebc_tank, apcbc_tank, ap_tank,ap_large_caliber_tank, tp_tank, practice_tank, shrapnel_tank, ahead_tank, he_ball, ap_i_ball, ap_i_t_ball, ap_i_t, apc_t, ap_t_ball, ap_ball, apc_solid_medium_caliber_tank, apcbc_solid_medium_caliber_tank,aphe, aphe_t, sap_hei_tank, sap_tank, sapbc_tank, common_tank, special_common_tank, sapcbc_tank, sapbc_flat_nose_tank",
+        "bullets": "ac_shell_tank, apbc_tank, apbc_usa_tank, apds_tank, apds_early_tank, apds_autocannon, apds_l15_tank, apds_fs_tank, apds_fs_long_tank, apds_fs_full_body_steel_tank, apds_fs_tungsten_small_core_tank, apds_fs_tungsten_l10_l15_tank, apc_tank, aphe_tank, aphebc_tank, apcbc_tank, ap_tank,ap_large_caliber_tank, tp_tank, practice_tank, shrapnel_tank, he_ball, ap_i_ball, ap_i_t_ball, ap_i_t, apc_t, ap_t_ball, ap_ball, apc_solid_medium_caliber_tank, apcbc_solid_medium_caliber_tank,aphe, aphe_t, sap_hei_tank, sap_tank, sapbc_tank, common_tank, special_common_tank, sapcbc_tank, sapbc_flat_nose_tank",
         "pierce": "pr_gen",
         "stop": "st_gen",
         "ricochet": "st_gen",
@@ -7257,15 +7074,182 @@
         "modelName": "tank_bullet_shrapnel",
         "gbufferModelName": "tank_shell_shrapnel"
       },
-      "ahead_tank": {
-        "modelName": "tank_bullet_ahead",
-        "gbufferModelName": "tank_shell_shrapnel"
-      },
       "football_kick": {
         "modelName": "tank_bullet_apdc",
         "gbufferModelName": "tank_shell_apds"
       }
     }
+  },
+  {
+    "angleAndSpeedToRicochetProbabilityInWater": [
+      {
+        "angle0": [
+          {
+            "degToWater": 0.0
+          },
+          {
+            "speed2probability": [100.0,1.0]
+          },
+          {
+            "speed2probability": [500.0,1.0]
+          },
+          {
+            "speed2probability": [1000.0,1.0]
+          }
+        ]
+      },
+      {
+        "angle1": [
+          {
+            "degToWater": 5.0
+          },
+          {
+            "speed2probability": [100.0,1.0]
+          },
+          {
+            "speed2probability": [500.0,1.0]
+          },
+          {
+            "speed2probability": [1000.0,1.0]
+          }
+        ]
+      },
+      {
+        "angle2": [
+          {
+            "degToWater": 10.0
+          },
+          {
+            "speed2probability": [100.0,0.7]
+          },
+          {
+            "speed2probability": [500.0,0.9]
+          },
+          {
+            "speed2probability": [1000.0,1.0]
+          }
+        ]
+      },
+      {
+        "angle2": [
+          {
+            "degToWater": 12.0
+          },
+          {
+            "speed2probability": [100.0,0.7]
+          },
+          {
+            "speed2probability": [500.0,0.8]
+          },
+          {
+            "speed2probability": [1000.0,1.0]
+          }
+        ]
+      },
+      {
+        "angle3": [
+          {
+            "degToWater": 15.0
+          },
+          {
+            "speed2probability": [100.0,0.6]
+          },
+          {
+            "speed2probability": [500.0,0.7]
+          },
+          {
+            "speed2probability": [1000.0,0.8]
+          }
+        ]
+      },
+      {
+        "angle4": [
+          {
+            "degToWater": 20.0
+          },
+          {
+            "speed2probability": [100.0,0.2]
+          },
+          {
+            "speed2probability": [500.0,0.3]
+          },
+          {
+            "speed2probability": [1000.0,0.5]
+          }
+        ]
+      },
+      {
+        "angle5": [
+          {
+            "degToWater": 25.0
+          },
+          {
+            "speed2probability": [100.0,0.1]
+          },
+          {
+            "speed2probability": [500.0,0.15]
+          },
+          {
+            "speed2probability": [1000.0,0.2]
+          }
+        ]
+      },
+      {
+        "angle6": [
+          {
+            "degToWater": 30.0
+          },
+          {
+            "speed2probability": [100.0,0.1]
+          },
+          {
+            "speed2probability": [500.0,0.1]
+          },
+          {
+            "speed2probability": [1000.0,0.1]
+          }
+        ]
+      },
+      {
+        "angle7": [
+          {
+            "degToWater": 45.0
+          },
+          {
+            "speed2probability": [100.0,0.0]
+          },
+          {
+            "speed2probability": [1000.0,0.0]
+          }
+        ]
+      },
+      {
+        "angle8": [
+          {
+            "degToWater": 60.0
+          },
+          {
+            "speed2probability": [100.0,0.0]
+          },
+          {
+            "speed2probability": [1000.0,0.0]
+          }
+        ]
+      },
+      {
+        "angle9": [
+          {
+            "degToWater": 90.0
+          },
+          {
+            "speed2probability": [100.0,0.0]
+          },
+          {
+            "speed2probability": [300.0,0.0]
+          }
+        ]
+      }
+    ]
   },
   {
     "riExplosionSplashDamageMod": [

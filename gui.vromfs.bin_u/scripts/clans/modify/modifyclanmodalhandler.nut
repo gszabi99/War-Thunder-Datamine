@@ -1,4 +1,3 @@
-let { format } = require("string")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -97,7 +96,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     if (errorMsg == "")
       return false
 
-    this.msgBox("clan_creating_error", ::loc(errorMsg), [["ok", function(){}]], "ok")
+    msgBox("clan_creating_error", ::loc(errorMsg), [["ok", function(){}]], "ok")
     return true
   }
 
@@ -156,8 +155,8 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     foreach(index, decorator in decorators)
     {
       view.decoratorItems.append({
-        decoratorId = format("option_%s", index.tostring())
-        decoratorText = format("%s   %s", decorator.start, decorator.end)
+        decoratorId = ::format("option_%s", index.tostring())
+        decoratorText = ::format("%s   %s", decorator.start, decorator.end)
         isDecoratorSelected = selectedTag != null && decorator.checkTagText(selectedTag)
       })
     }
@@ -249,7 +248,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     if(err.len() > 0)
     {
       if (!silent)
-        this.msgBox("clan_create_error", err, [["ok"]], "ok")
+        msgBox("clan_create_error", err, [["ok"]], "ok")
       return false
     }
 
@@ -299,7 +298,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
     let reqTextObj = scene.findObject("req_newclan_tag_text")
     if (::checkObj(reqTextObj))
     {
-      let locId = format("clan/newclan_tag_req/%s", newClanType.getTypeName())
+      let locId = ::format("clan/newclan_tag_req/%s", newClanType.getTypeName())
       let locParams = {
         tagLengthLimit = newClanType.getTagLengthLimit()
       }

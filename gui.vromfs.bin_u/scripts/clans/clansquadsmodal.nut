@@ -112,7 +112,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   function updateSquadsList()
   {
     let newList = clone squadsListData.getList()
-    let total = max(newList.len(), curList.len())
+    let total = ::max(newList.len(), curList.len())
     local isSelected = false
     for(local i = 0; i < total; i++)
     {

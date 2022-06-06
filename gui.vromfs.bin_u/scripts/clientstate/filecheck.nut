@@ -1,5 +1,3 @@
-let regexp2 = require("regexp2")
-
 let removeImgPostfixRegexpList = [
   regexp2("\\?P1$")
   regexp2("\\?x1ac$")

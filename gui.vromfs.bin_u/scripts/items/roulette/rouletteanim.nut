@@ -1,6 +1,5 @@
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
-let cubicBezierSolver = require("%globalScripts/cubicBezierSolver.nut")
 
 let CHANCE_TO_STOP_ON_BORDER = 0.5
 
@@ -98,8 +97,8 @@ enums.addTypes(rouletteAnim,
       let pos1 = targetPos + getRandomEndDisplacement() * 0.5 * targetWidth
       let pos2 = targetPos
 
-      let animFunc = (@(t) (t < time1) ? pos1 * cubicBezierSolver.solve(t / time1, 0.16, 0, 0.0, 1.0)
-        : (t < time2) ? pos1 + (pos2 - pos1) * cubicBezierSolver.solve((t - time1) / FINAL_ANIM_TIME, 0.55,0,0.32,1.42)
+      let animFunc = (@(t) (t < time1) ? pos1 * ::cubic_bezier_solver.solve(t / time1, 0.16, 0, 0.0, 1.0)
+        : (t < time2) ? pos1 + (pos2 - pos1) * ::cubic_bezier_solver.solve((t - time1) / FINAL_ANIM_TIME, 0.55,0,0.32,1.42)
         : targetPos
       ).bindenv(this)
 

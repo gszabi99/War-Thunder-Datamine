@@ -388,7 +388,7 @@
       "xray_parts": {
         "armorClass": "RHA_tank_modern",
         "hidableInXrayViewer": true,
-        "armorThickness": 0.01,
+        "armorThickness": 0.0,
         "createSecondaryShatters": false,
         "genericArmorQuality": 0.0,
         "cumulativeArmorQuality": 0.0,
@@ -669,7 +669,6 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
-        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1547,8 +1546,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.6,
-              "fire": 0.4,
+              "expl": 0.5,
+              "fire": 0.5,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1592,8 +1591,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.075,
-              "fire": 0.075,
+              "expl": 0.05,
+              "fire": 0.1,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1601,8 +1600,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.15,
-              "fire": 0.15,
+              "expl": 0.1,
+              "fire": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1610,8 +1609,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.25,
-              "fire": 0.25,
+              "expl": 0.1,
+              "fire": 0.4,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1650,29 +1649,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.4,
-              "fire": 0.6
+              "expl": 0.2,
+              "fire": 0.8
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.5,
-              "fire": 0.5
+              "expl": 0.2,
+              "fire": 0.8
             }
           }
         ]
@@ -2048,13 +2047,7 @@
       "turret_11_top_dm": true,
       "turret_11_bottom_dm": true,
       "ex_decor_05_dm": true,
-      "ex_armor_01_dm": true,
-      "turret_12_side_dm": true,
-      "turret_11_back_dm": true,
-      "turret_09_bottom_dm": true,
-      "turret_11_side_dm": true,
-      "composite_armor_hull_05_dm": true,
-      "composite_armor_turret_06_dm": true
+      "ex_armor_01_dm": true
     }
   },
   {
@@ -3797,10 +3790,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr"
       },
       "120mm_NATO_HEAT_FS": [],
       "120mm_DM_APDS_FS": [],
@@ -3832,7 +3825,7 @@
         }
       },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight.png",
+        "image": "#ui/gameuiskin#thermal_sight",
         "effects": {
           "nightVision": {
             "gunnerThermal": {

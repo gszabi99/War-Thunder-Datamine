@@ -12,9 +12,9 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_MINE, EII_MORTAR, EII_ROCKET, EII_GRENADE, EII_SMOKE_GRENADE, EII_REPAIR_BREACHES,
   EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER,
   EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2,
-  EII_SUPPORT_PLANE_CHANGE, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK, EII_FORCED_GUN,
-  WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
-  AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK
+  EII_STEALTH, EII_LOCK, EII_FORCED_GUN, WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN,
+  AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS, AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS,
+  AI_GUNNERS_SHELL, EII_TERRAFORM
 } = ::require_native("hudActionBarConst")
 
 ::g_hud_action_bar_type <- {
@@ -90,11 +90,8 @@ let getUnit = @() ::getAircraftByName(getActionBarUnitName())
 
   getVisualShortcut = function(actionItem = null, unit = null)
   {
-    let shortcut = getShortcut(actionItem, unit)
-    let isBound = shortcut != null
-               && ::g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
-    if ((!isForWheelMenu() && !isForSelectWeaponMenu()) || isBound)
-      return shortcut
+    if ((!isForWheelMenu() && !isForSelectWeaponMenu()) || !::is_xinput_device())
+      return getShortcut(actionItem, unit)
 
     if (!unit)
       unit = getUnit()
@@ -127,7 +124,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = WEAPON_PRIMARY
     isForSelectWeaponMenu = @() true
     _name = "weaponPrimary"
-    _icon = "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+    _icon = "!ui/gameuiskin#artillery_weapon_state_indicator"
     _title = ::loc("hotkeys/ID_SHIP_WEAPON_PRIMARY")
     getShortcut = @(actionItem, unit = null) "ID_SHIP_WEAPON_PRIMARY"
   }
@@ -136,7 +133,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = WEAPON_SECONDARY
     isForSelectWeaponMenu = @() true
     _name = "weaponSecondary"
-    _icon = "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"
+    _icon = "!ui/gameuiskin#artillery_secondary_weapon_state_indicator"
     _title = ::loc("hotkeys/ID_SHIP_WEAPON_SECONDARY")
     getShortcut = @(actionItem, unit = null) "ID_SHIP_WEAPON_SECONDARY"
   }
@@ -145,7 +142,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = WEAPON_MACHINEGUN
     isForSelectWeaponMenu = @() true
     _name = "weaponMachineGun"
-    _icon = "!ui/gameuiskin#machine_gun_weapon_state_indicator.svg"
+    _icon = "!ui/gameuiskin#machine_gun_weapon_state_indicator"
     _title = ::loc("hotkeys/ID_SHIP_WEAPON_MACHINEGUN")
     getShortcut = @(actionItem, unit = null) "ID_SHIP_WEAPON_MACHINEGUN"
   }
@@ -153,25 +150,25 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   TORPEDO_SIGHT = {
     code = EII_TORPEDO_SIGHT
     _name = "torpedo_sight"
-    _icon = "#ui/gameuiskin#torpedo_sight.png"
+    _icon = "#ui/gameuiskin#torpedo_sight"
     getShortcut = @(actionItem, unit = null) "ID_SHIP_TORPEDO_SIGHT"
   }
 
   HULL_AIMING = {
     code = EII_HULL_AIMING
     _name = "hull_aiming"
-    _icon = "#ui/gameuiskin#hull_aiming_mode.png"
+    _icon = "#ui/gameuiskin#hull_aiming_mode"
     getShortcut = @(actionItem, unit = null) "ID_ENABLE_GM_HULL_AIMING"
   }
 
   TORPEDO = {
     code = EII_TORPEDO
     _name = "torpedo"
-    _icon = "#ui/gameuiskin#torpedo_multiple.png"
+    _icon = "#ui/gameuiskin#torpedo_multiple"
     getShortcut = @(actionItem, unit = null)
       unit?.isSubmarine() ? "ID_SUBMARINE_WEAPON_TORPEDOES" : "ID_SHIP_WEAPON_TORPEDOES"
     getIcon = function (killStreakTag = null, unit = null) {
-      return singleTorpedoSelected() ?  "#ui/gameuiskin#torpedo.png" : _icon
+      return singleTorpedoSelected() ?  "#ui/gameuiskin#torpedo" : _icon
     }
     getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "torpedoes")
   }
@@ -179,7 +176,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   DEPTH_CHARGE = {
     code = EII_DEPTH_CHARGE
     _name = "depth_charge"
-    _icon = "#ui/gameuiskin#depth_charge.png"
+    _icon = "#ui/gameuiskin#depth_charge"
     getShortcut = @(actionItem, unit = null)
       unit?.isSubmarine() ? "ID_SUBMARINE_WEAPON_DEPTH_CHARGE" : "ID_SHIP_WEAPON_DEPTH_CHARGE"
     getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "bombs")
@@ -188,7 +185,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   MINE = {
     code = EII_MINE
     _name = "mine"
-    _icon = "#ui/gameuiskin#naval_mine.png"
+    _icon = "#ui/gameuiskin#naval_mine"
     getShortcut = @(actionItem, unit = null) "ID_SHIP_WEAPON_MINE"
     getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "mines")
   }
@@ -196,14 +193,14 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   MORTAR = {
     code = EII_MORTAR
     _name = "mortar"
-    _icon = "#ui/gameuiskin#ship_mortar_bomb.png"
+    _icon = "#ui/gameuiskin#ship_mortar_bomb"
     getShortcut = @(actionItem, unit = null) "ID_SHIP_WEAPON_MORTAR"
   }
 
   ROCKET = {
     code = EII_ROCKET
     _name = "rocket"
-    _icon = "#ui/gameuiskin#rocket.png"
+    _icon = "#ui/gameuiskin#rocket"
     getShortcut = function(actionItem, unit = null)
     {
       if (unit?.isSubmarine())
@@ -220,7 +217,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   GRENADE = {
     code = EII_GRENADE
     _name = "grenade"
-    _icon = "#ui/gameuiskin#vog_ship.png"
+    _icon = "#ui/gameuiskin#vog_ship"
     getShortcut = function(actionItem, unit = null)
     {
       if (unit?.isTank())
@@ -234,7 +231,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_SMOKE_GRENADE
     _name = "smoke_screen"
     isForWheelMenu = @() true
-    _icon = "#ui/gameuiskin#smoke_screen.png"
+    _icon = "#ui/gameuiskin#smoke_screen"
     getTitle = @(killStreakTag = null)
       !getUnit()?.isShipOrBoat()
         ? ::loc("hotkeys/ID_SMOKE_SCREEN")
@@ -249,7 +246,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_SMOKE_SCREEN
     _name = "engine_smoke_screen_system"
     isForWheelMenu = @() true
-    _icon = "#ui/gameuiskin#engine_smoke_screen_system.png"
+    _icon = "#ui/gameuiskin#engine_smoke_screen_system"
     _title = ::loc("hotkeys/ID_SMOKE_SCREEN_GENERATOR")
     getShortcut = function(actionItem, unit = null)
     {
@@ -263,7 +260,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     }
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      return unit?.isSubmarine() ? "#ui/gameuiskin#acoustic_countermeasures.png" : _icon
+      return unit?.isSubmarine() ? "#ui/gameuiskin#acoustic_countermeasures" : _icon
     }
     getTitle = @(killStreakTag = null)
       getUnit()?.isSubmarine()
@@ -278,7 +275,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   SCOUT = {
     code = EII_SCOUT
     _name = "scout_active"
-    _icon = "#ui/gameuiskin#scouting.png"
+    _icon = "#ui/gameuiskin#scouting"
     _title = ::loc("hotkeys/ID_SCOUT")
     getShortcut = @(actionItem, unit = null) "ID_SCOUT"
   }
@@ -287,7 +284,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_SUBMARINE_SONAR
     isForWheelMenu = @() true
     _name = "sonar_active"
-    _icon = "#ui/gameuiskin#sonar_indicator.png"
+    _icon = "#ui/gameuiskin#sonar_indicator"
     _title = ::loc("hotkeys/ID_SUBMARINE_SWITCH_ACTIVE_SONAR")
     getShortcut = @(actionItem, unit = null) "ID_SUBMARINE_SWITCH_ACTIVE_SONAR"
   }
@@ -296,7 +293,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_TORPEDO_SENSOR
     isForWheelMenu = @() true
     _name = "torpedo_sensor"
-    _icon = "#ui/gameuiskin#torpedo_active_sonar.png"
+    _icon = "#ui/gameuiskin#torpedo_active_sonar"
     _title = ::loc("hotkeys/ID_SUBMARINE_WEAPON_TOGGLE_ACTIVE_SENSOR")
     getShortcut = @(actionItem, unit = null) "ID_SUBMARINE_WEAPON_TOGGLE_ACTIVE_SENSOR"
   }
@@ -305,7 +302,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_ARTILLERY_TARGET
     _name = "artillery_target"
     isForWheelMenu = @() true
-    _icon = "#ui/gameuiskin#artillery_fire.png"
+    _icon = "#ui/gameuiskin#artillery_fire"
     _title = ::loc("hotkeys/ID_ACTION_BAR_ITEM_5")
     needAnimOnIncrementCount = true
     getIcon = function (killStreakTag = null, unit = null)
@@ -313,7 +310,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       local mis = ::get_current_mission_info_cached()
       if (mis?.customArtilleryImage != "")
         return mis?.customArtilleryImage
-      return mis?.useCustomSuperArtillery ? "#ui/gameuiskin#artillery_fire_on_target.png" : "#ui/gameuiskin#artillery_fire.png"
+      return mis?.useCustomSuperArtillery ? "#ui/gameuiskin#artillery_fire_on_target" : "#ui/gameuiskin#artillery_fire"
     }
   }
 
@@ -322,12 +319,12 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() getUnit()?.isShipOrBoat()
     canSwitchAutomaticMode = @() getUnit()?.isShipOrBoat()
     _name = "extinguisher"
-    _icon = "#ui/gameuiskin#extinguisher.png"
+    _icon = "#ui/gameuiskin#extinguisher"
     _title = ::loc("hotkeys/ID_ACTION_BAR_ITEM_6")
     needAnimOnIncrementCount = true
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      return unit?.isShipOrBoat() ? "#ui/gameuiskin#manual_ship_extinguisher.png" : "#ui/gameuiskin#extinguisher.png"
+      return unit?.isShipOrBoat() ? "#ui/gameuiskin#manual_ship_extinguisher" : "#ui/gameuiskin#extinguisher"
     }
   }
 
@@ -336,11 +333,11 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() getUnit()?.isShipOrBoat()
     canSwitchAutomaticMode = @() getUnit()?.isShipOrBoat()
     _name = "toolkit"
-    _icon = "#ui/gameuiskin#tank_tool_kit.png"
+    _icon = "#ui/gameuiskin#tank_tool_kit"
     _title = ::loc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11")
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      return unit?.isShipOrBoat() ? "#ui/gameuiskin#ship_tool_kit.png" : "#ui/gameuiskin#tank_tool_kit.png"
+      return unit?.isShipOrBoat() ? "#ui/gameuiskin#ship_tool_kit" : "#ui/gameuiskin#tank_tool_kit"
     }
   }
 
@@ -348,7 +345,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     code = EII_MEDICALKIT
     isForWheelMenu = @() true
     _name = "medicalkit"
-    _icon = "#ui/gameuiskin#tank_medkit.png"
+    _icon = "#ui/gameuiskin#tank_medkit"
     _title = ::loc("hints/tank_medkit")
     needAnimOnIncrementCount = true
 
@@ -362,7 +359,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   ANTI_AIR_TARGET = {
     code = EII_ANTI_AIR_TARGET
     _name = "anti_air_target"
-    _icon = "" //"#ui/gameuiskin#anti_air_target.png" //there is no such icon now
+    _icon = "" //"#ui/gameuiskin#anti_air_target" //there is no such icon now
                                                   //commented for avoid crash
     _title = "" //::loc("encyclopedia/anti_air")
   }
@@ -383,7 +380,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     {
       // killStreakTag is expected to be "bomber", "attacker" or "fighter".
       if (::u.isString(killStreakTag))
-        return $"#ui/gameuiskin#{killStreakTag}_streak.png"
+        return ::format("#ui/gameuiskin#%s_streak", killStreakTag)
       return ""
     }
 
@@ -415,28 +412,28 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   WINCH = {
     code = EII_WINCH
-    backgroundImage = "#ui/gameuiskin#winch_request.png"
+    backgroundImage = "#ui/gameuiskin#winch_request"
     isForWheelMenu = @() true
     _name = "winch"
-    _icon = "#ui/gameuiskin#winch_request.png"
+    _icon = "#ui/gameuiskin#winch_request"
     _title = ::loc("hints/winch_request")
   }
 
   WINCH_DETACH = {
     code = EII_WINCH_DETACH
-    backgroundImage = "#ui/gameuiskin#winch_request_off.png"
+    backgroundImage = "#ui/gameuiskin#winch_request_off"
     isForWheelMenu = @() true
     _name = "winch_detach"
-    _icon = "#ui/gameuiskin#winch_request_off.png"
+    _icon = "#ui/gameuiskin#winch_request_off"
     _title = ::loc("hints/winch_detach")
   }
 
   WINCH_ATTACH = {
     code = EII_WINCH_ATTACH
-    backgroundImage = "#ui/gameuiskin#winch_request_deploy.png"
+    backgroundImage = "#ui/gameuiskin#winch_request_deploy"
     isForWheelMenu = @() true
     _name = "winch_attach"
-    _icon = "#ui/gameuiskin#winch_request_deploy.png"
+    _icon = "#ui/gameuiskin#winch_request_deploy"
     _title = ::loc("hints/winch_use")
   }
 
@@ -445,7 +442,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() true
     canSwitchAutomaticMode = @() true
     _name = "repair_breaches"
-    _icon = "#ui/gameuiskin#unwatering.png"
+    _icon = "#ui/gameuiskin#unwatering"
     _title = ::loc("hotkeys/ID_REPAIR_BREACHES")
     getShortcut = @(actionItem, unit = null)
       unit?.isSubmarine() ? "ID_SUBMARINE_REPAIR_BREACHES" : "ID_REPAIR_BREACHES"
@@ -464,21 +461,21 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       switch (currentTrigger)
       {
         case TRIGGER_GROUP_PRIMARY:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#artillery_weapon_state_indicator"
         case TRIGGER_GROUP_SECONDARY:
-          return "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#artillery_secondary_weapon_state_indicator"
         case TRIGGER_GROUP_MACHINE_GUN:
-          return "!ui/gameuiskin#machine_gun_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#machine_gun_weapon_state_indicator"
         case TRIGGER_GROUP_EXTRA_GUN_1:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#artillery_weapon_state_indicator"
         case TRIGGER_GROUP_EXTRA_GUN_2:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#artillery_weapon_state_indicator"
         case TRIGGER_GROUP_EXTRA_GUN_3:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#artillery_weapon_state_indicator"
         case TRIGGER_GROUP_EXTRA_GUN_4:
-          return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+          return "!ui/gameuiskin#artillery_weapon_state_indicator"
       }
-      return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
+      return "!ui/gameuiskin#artillery_weapon_state_indicator"
     }
   }
 
@@ -516,21 +513,21 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   AI_GUNNERS_STATE = {
     code = EII_AI_GUNNERS
     _name = "ai_gunners"
-    _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
+    _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire"
     getShortcut = @(actionItem, unit = null) "ID_SHIP_TOGGLE_GUNNERS"
     getIcon = function (killStreakTag = null, unit = null) {
       switch (getAiGunnersState())
       {
         case AI_GUNNERS_DISABLED:
-          return "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
+          return "#ui/gameuiskin#ship_gunner_state_hold_fire"
         case AI_GUNNERS_ALL_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_fire_at_will.svg"
+          return "#ui/gameuiskin#ship_gunner_state_fire_at_will"
         case AI_GUNNERS_AIR_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_air_targets.svg"
+          return "#ui/gameuiskin#ship_gunner_state_air_targets"
         case AI_GUNNERS_GROUND_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_naval_targets.svg"
+          return "#ui/gameuiskin#ship_gunner_state_naval_targets"
         case AI_GUNNERS_SHELL:
-          return "#ui/gameuiskin#bomb_mark.png"
+          return "#ui/gameuiskin#bomb_mark"
       }
       return _icon
     }
@@ -539,7 +536,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   AUTO_TURRET_STATE = {
     code = EII_AUTO_TURRET
     _name = "auto_turret"
-    _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
+    _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire"
     _title = ::loc("hotkeys/ID_TOGGLE_AUTOTURRET_TARGETS")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null) "ID_TOGGLE_AUTOTURRET_TARGETS"
@@ -547,15 +544,15 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       switch (getAutoturretState())
       {
         case AI_GUNNERS_DISABLED:
-          return "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
+          return "#ui/gameuiskin#ship_gunner_state_hold_fire"
         case AI_GUNNERS_ALL_TARGETS:
-          return "#ui/gameuiskin#autogun_state_fire_at_will.png"
+          return "#ui/gameuiskin#autogun_state_fire_at_will"
         case AI_GUNNERS_AIR_TARGETS:
-          return "#ui/gameuiskin#autogun_state_air_targets.png"
+          return "#ui/gameuiskin#autogun_state_air_targets"
         case AI_GUNNERS_GROUND_TARGETS:
-          return "#ui/gameuiskin#ship_gunner_state_naval_targets.svg"
+          return "#ui/gameuiskin#ship_gunner_state_naval_targets"
         case AI_GUNNERS_SHELL:
-          return "#ui/gameuiskin#autogun_state_rocket_targets.png"
+          return "#ui/gameuiskin#autogun_state_rocket_targets"
       }
       return _icon
     }
@@ -564,7 +561,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   SUPPORT_PLANE = {
     code = EII_SUPPORT_PLANE
     _name = "support_plane"
-    _icon = "#ui/gameuiskin#scout_streak.png"
+    _icon = "#ui/gameuiskin#scout_streak"
     _title = ::loc("hotkeys/ID_START_SUPPORT_PLANE")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null)
@@ -575,9 +572,9 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         : "support_plane_ship"
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      return unit?.isTank() ? "#ui/gameuiskin#scout_streak.png"
-        : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
-        : "#ui/gameuiskin#shipSupportPlane.png"
+      return unit?.isTank() ? "#ui/gameuiskin#scout_streak"
+        : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls"
+        : "#ui/gameuiskin#shipSupportPlane"
     }
     getTitle = function(killStreakTag = null) {
       let unit = getUnit()
@@ -590,7 +587,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   SUPPORT_PLANE_2 = {
     code = EII_SUPPORT_PLANE_2
     _name = "support_plane_2"
-    _icon = "#ui/gameuiskin#scout_streak.png"
+    _icon = "#ui/gameuiskin#scout_streak"
     _title = ::loc("hotkeys/ID_START_SUPPORT_PLANE_2")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null)
@@ -601,9 +598,9 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         : "support_plane_ship"
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || getUnit()
-      return unit?.isTank() ? "#ui/gameuiskin#scout_streak.png"
-        : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
-        : "#ui/gameuiskin#shipSupportPlane.png"
+      return unit?.isTank() ? "#ui/gameuiskin#scout_streak"
+        : unit?.isAir() ? "#ui/gameuiskin#supportPlane_to_ship_controls"
+        : "#ui/gameuiskin#shipSupportPlane"
     }
     getTitle = function(killStreakTag = null) {
       local unit = getUnit()
@@ -613,26 +610,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     }
   }
 
-  SUPPORT_PLANE_CHANGE = {
-    code = EII_SUPPORT_PLANE_CHANGE
-    _name = "support_plane_change"
-    _icon = "#ui/gameuiskin#scout_streak.png"
-    _title = ::loc("hotkeys/ID_SUPPORT_PLANE_CHANGE")
-    getShortcut = @(actionItem, unit = null) "ID_SUPPORT_PLANE_CHANGE"
-  }
-
-  SUPPORT_PLANE_GROUP_ATTACK = {
-    code = EII_SUPPORT_PLANE_GROUP_ATTACK
-    _name = "support_plane_change"
-    _icon = "#ui/gameuiskin#artillery_fire.png"
-    _title = ::loc("hotkeys/ID_SUPPORT_PLANE_GROUP_ATTACK")
-    getShortcut = @(actionItem, unit = null) "ID_SUPPORT_PLANE_GROUP_ATTACK"
-  }
-
   STEALTH = {
     code = EII_STEALTH
     _name = "stealth_activate"
-    _icon = "#ui/gameuiskin#stealth_camo.png"
+    _icon = "#ui/gameuiskin#stealth_camo"
     _title = ::loc("hotkeys/ID_TOGGLE_STEALTH")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null) "ID_TOGGLE_STEALTH"
@@ -641,7 +622,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   WEAPON_LOCK = {
     code = EII_LOCK
     _name = "weapon_lock"
-    _icon = "#ui/gameuiskin#torpedo_active_sonar.png"
+    _icon = "#ui/gameuiskin#torpedo_active_sonar"
     _title = ::loc("hotkeys/ID_WEAPON_LOCK_TANK")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null) "ID_WEAPON_LOCK_TANK"
@@ -650,17 +631,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   TANK_TERRAFORM = {
     code = EII_TERRAFORM
     _name = "tank_terraform"
-    _icon = "#ui/gameuiskin#dozer_blade.png"
+    _icon = "#ui/gameuiskin#dozer_blade"
     _title = ::loc("hotkeys/ID_GM_TERRAFORM_TOGGLE")
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null) "ID_GM_TERRAFORM_TOGGLE"
-  }
-
-  DIVING_LOCK = {
-    code = EII_DIVING_LOCK
-    _name = "diving_lock"
-    _title = ::loc("hotkeys/ID_DIVING_LOCK")
-    getShortcut = @(actionItem, unit = null) "ID_DIVING_LOCK"
   }
 })
 
