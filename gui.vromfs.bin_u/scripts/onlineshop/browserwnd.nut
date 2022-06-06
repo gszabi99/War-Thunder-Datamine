@@ -1,3 +1,4 @@
+let { format } = require("string")
 let statsd = require("statsd")
 let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -35,7 +36,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
   if (handler == null)
   {
-    dagor.debug("Couldn't find embedded browser modal handler");
+    ::dagor.debug("[BRWS] Couldn't find embedded browser modal handler");
     return
   }
 
@@ -133,13 +134,13 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
           let message = "".concat(::loc("browser/error_load_url"), ::loc("ui/dot"),
             "\n", ::loc("browser/error_code"), ::loc("ui/colon"), params.errorCode, ::loc("ui/comma"), params.errorDesc)
           let urlCommentMarkup = getUrlCommentMarkupForMsgbox(params.url)
-          msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
+          this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
         }
         break;
       case ::BROWSER_EVENT_NEED_RESEND_FRAME:
         toggleWaitAnimation(false)
 
-        msgBox("error", ::loc("browser/error_should_resend_data"),
+        this.msgBox("error", ::loc("browser/error_should_resend_data"),
             [["#mainmenu/btnBack", browserGoBack()],
              ["#mainmenu/btnRefresh", (@(params) function() { ::browser_go(params.url) })(params)]],
              "#mainmenu/btnBack")
@@ -164,12 +165,13 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
         }
         break;
       case ::BROWSER_EVENT_BROWSER_CRASHED:
+        ::dagor.debug("[BRWS] embedded browser crashed, forcing external")
         statsd.send_counter("sq.browser.crash", 1, {reason = params.errorDesc})
         browserForceExternal()
         goBack()
         break;
       default:
-        dagor.debug("onEventEmbeddedBrowser: unknown event type "
+        ::dagor.debug("[BRWS] onEventEmbeddedBrowser: unknown event type "
           + params.eventType);
         break;
     }
@@ -205,7 +207,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
   function wordWrapText(str, width)
   {
-    if (::type(str) != "string" || str == "" || width <= 0)
+    if (type(str) != "string" || str == "" || width <= 0)
       return str
     let wrapped = []
     let lines = str.split("\n")
@@ -234,7 +236,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
       let splitByChars = (1.0 * maxWidthPx / textWidthPx * ::utf8(urlStr).charCount()).tointeger()
       urlStr = wordWrapText(urlStr, splitByChars)
     }
-    return ::format("textareaNoTab { %s:t='yes'; overlayTextColor:t='faded'; text:t='%s'; }",
+    return format("textareaNoTab { %s:t='yes'; overlayTextColor:t='faded'; text:t='%s'; }",
       fontSizePropName, ::g_string.stripTags(urlStr))
   }
 }

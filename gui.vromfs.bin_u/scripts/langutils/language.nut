@@ -1,45 +1,54 @@
+let { split_by_chars } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { get_default_lang } = require("platform")
 let { GUI } = require("%scripts/utils/configs.nut")
 
-::g_language <- {
-  currentLanguage = null
-  currentSteamLanguage = ""
-  shortLangName = ""
-  replaceFunctionsTable = {}
+::g_language <- {}
 
-  langsList = []
-  langsById = {}
-  langsByChatId = {}
-  isListInited = false
-  langsListForInventory = {}
+let steamLanguages = freeze({
+  English = "english"
+  French = "french"
+  Italian = "italian"
+  German = "german"
+  Spanish = "spanish"
+  Russian = "russian"
+  Polish = "polish"
+  Czech = "czech"
+  Turkish = "turkish"
+  Chinese = "schinese"
+  Japanese = "japanese"
+  Portuguese = "portuguese"
+  Ukrainian = "ukrainian"
+  Hungarian = "hungarian"
+  Korean = "koreana"
+  TChinese = "tchinese"
+  HChinese = "schinese"
+})
 
-  needCheckLangPack = false
+local needCheckLangPack = false
+local replaceFunctionsTable = {}
+let langsByChatId = {}
+let langsListForInventory = {}
+local currentLanguage = null
+let currentLanguageW = ::Watched(currentLanguage)
+local currentSteamLanguage = ""
+local shortLangName = ""
+local isListInited = false
 
-  steamLanguages = {
-    English = "english"
-    French = "french"
-    Italian = "italian"
-    German = "german"
-    Spanish = "spanish"
-    Russian = "russian"
-    Polish = "polish"
-    Czech = "czech"
-    Turkish = "turkish"
-    Chinese = "schinese"
-    Japanese = "japanese"
-    Portuguese = "portuguese"
-    Ukrainian = "ukrainian"
-    Hungarian = "hungarian"
-    Korean = "koreana"
-    TChinese = "tchinese"
-    HChinese = "schinese"
-  }
+let langsList = []
+let langsById = {}
+
+
+let function getLanguageName() {
+  return currentLanguage
 }
 
-g_language.standartStyleNumberCut <- function standartStyleNumberCut(num)
-{
+let function getShortName() {
+  return shortLangName
+}
+
+let function standardStyleNumberCut(num) {
   let needSymbol = num >= 9999.5
   let roundNum = stdMath.roundToDigits(num, needSymbol ? 3 : 4)
   if (!needSymbol)
@@ -52,8 +61,7 @@ g_language.standartStyleNumberCut <- function standartStyleNumberCut(num)
   return (0.001 * roundNum) + "K"
 }
 
-g_language.chineseStyleNumberCut <- function chineseStyleNumberCut(num)
-{
+let function chineseStyleNumberCut(num) {
   let needSymbol = num >= 99999.5
   let roundNum = stdMath.roundToDigits(num, needSymbol ? 4 : 5)
   if (!needSymbol)
@@ -64,8 +72,7 @@ g_language.chineseStyleNumberCut <- function chineseStyleNumberCut(num)
   return (0.0001 * roundNum) + ::loc("10k_shortSymbol")
 }
 
-g_language.tencentAddLineBreaks <- function tencentAddLineBreaks(text)
-{
+let function tencentAddLineBreaks(text) {
   local res = ""
   let total = ::utf8(text).charCount()
   for(local i = 0; i < total; i++)
@@ -78,14 +85,13 @@ g_language.tencentAddLineBreaks <- function tencentAddLineBreaks(text)
   return res
 }
 
-g_language.initFunctionsTable <- function initFunctionsTable()
-{
+let function initFunctionsTable() {
   let table = {
     getShortTextFromNum = {
-      defaultAction = ::g_language.standartStyleNumberCut
+      defaultAction = standardStyleNumberCut
       replaceFunctions = [{
         language = ["Chinese", "TChinese", "HChinese", "Japanese"],
-        action = ::g_language.chineseStyleNumberCut
+        action = chineseStyleNumberCut
       }]
     }
 
@@ -93,7 +99,7 @@ g_language.initFunctionsTable <- function initFunctionsTable()
       defaultAction = function(text) { return text }
       replaceFunctions = [{
         language = ["HChinese"],
-        action = ::g_language.tencentAddLineBreaks
+        action = tencentAddLineBreaks
       }]
     }
 
@@ -114,12 +120,12 @@ g_language.initFunctionsTable <- function initFunctionsTable()
 
   replaceFunctionsTable = table
 }
-::g_language.initFunctionsTable()
 
-g_language.updateFunctions <- function updateFunctions()
-{
-  foreach (funcName, block in replaceFunctionsTable)
-  {
+
+initFunctionsTable()
+
+let function updateFunctions() {
+  foreach (funcName, block in replaceFunctionsTable) {
     local replaced = false
     foreach(table in block.replaceFunctions)
     {
@@ -127,110 +133,22 @@ g_language.updateFunctions <- function updateFunctions()
       if (!::isInArray(getLanguageName(), langsArray))
         continue
 
-      this[funcName] <- table.action
+      ::g_language[funcName] <- table.action
       replaced = true
       break
     }
 
     if (!replaced)
-      this[funcName] <- block.defaultAction
+      ::g_language[funcName] <- block.defaultAction
   }
 }
 
-g_language.getLanguageName <- function getLanguageName()
-{
-  return currentLanguage
-}
 
-g_language.getShortName <- function getShortName()
-{
-  return shortLangName
-}
-
-g_language.getCurLangInfo <- function getCurLangInfo()
-{
-  return getLangInfoById(currentLanguage)
-}
-
-g_language.onChangeLanguage <- function onChangeLanguage()
-{
-  ::g_language.currentSteamLanguage = ::getTblValue(currentLanguage, steamLanguages, "english");
-  ::g_language.updateFunctions()
-}
-
-g_language.saveLanguage <- function saveLanguage(langName)
-{
-  if (currentLanguage == langName)
-    return
-  currentLanguage = langName
-  shortLangName = ::loc("current_lang")
-  ::g_language.onChangeLanguage()
-}
-
-::g_language.saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
-let currentLanguageW = Watched(::g_language.currentLanguage)
-
-g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false)
-{
-  if (langId == currentLanguage && !isForced)
-    return
-
-  ::handlersManager.shouldResetFontsCache = true
-  ::setSystemConfigOption("language", langId)
-  ::set_language(langId)
-  ::g_language.saveLanguage(langId)
-
-  if (suggestPkgDownload)
-    needCheckLangPack = true
-
-  let handler = ::handlersManager.getActiveBaseHandler()
-  if (reloadScene && handler)
-    handler.fullReloadScene()
-  else
-    ::handlersManager.markfullReloadOnSwitchScene()
-
-  ::broadcastEvent("GameLocalizationChanged")
-  currentLanguageW(currentLanguage)
-}
-
-g_language.reload <- function reload()
-{
-  setGameLocalization(currentLanguage, true, false, true)
-}
-
-g_language.onEventNewSceneLoaded <- function onEventNewSceneLoaded(p)
-{
-  if (!needCheckLangPack)
-    return
-
-  ::check_localization_package_and_ask_download()
-  needCheckLangPack = false
-}
-
-::canSwitchGameLocalization <- function canSwitchGameLocalization()
-{
-  return !isPlatformSony && !isPlatformXboxOne && !::is_vendor_tencent() && !::is_vietnamese_version()
-}
-
-g_language.getEmptyLangInfo <- function getEmptyLangInfo()
-{
-  let langInfo = {
-    id = "empty"
-    title = "empty"
-    icon = ""
-    chatId = ""
-    isMainChatId = true
-    hasUnitSpeech = false
-  }
-  return langInfo
-}
-
-g_language._addLangOnce <- function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false)
-{
+let function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false) {
   if (id in langsById)
     return
 
-  let langInfo = getEmptyLangInfo()
+  let langInfo = ::g_language.getEmptyLangInfo()
   langInfo.id = id
   langInfo.title = "".concat(isDev ? "[DEV] " : "", ::loc($"language/{id}"))
   langInfo.icon = icon || ""
@@ -247,8 +165,7 @@ g_language._addLangOnce <- function _addLangOnce(id, icon = null, chatId = null,
     langInfo.isMainChatId = false
 }
 
-g_language.checkInitList <- function checkInitList()
-{
+let function checkInitList() {
   if (isListInited)
     return
   isListInited = true
@@ -290,7 +207,7 @@ g_language.checkInitList <- function checkInitList()
       _addLangOnce(langId)
   }
 
-  let curLangId = ::g_language.getLanguageName()
+  let curLangId = getLanguageName()
   _addLangOnce(curLangId)
 
   let inventoryBlk = locBlk?.inventory_abbreviated_languages_table ?? ::DataBlock()
@@ -305,19 +222,97 @@ g_language.checkInitList <- function checkInitList()
   }
 }
 
-g_language.getGameLocalizationInfo <- function getGameLocalizationInfo()
+
+let function getLangInfoById(id) {
+  checkInitList()
+  return ::getTblValue(id, langsById)
+}
+
+::g_language.getCurLangInfo <- function getCurLangInfo()
+{
+  return getLangInfoById(currentLanguage)
+}
+
+let function onChangeLanguage() {
+  currentSteamLanguage = ::getTblValue(currentLanguage, steamLanguages, "english");
+  updateFunctions()
+}
+
+let function saveLanguage(langName) {
+  if (currentLanguage == langName)
+    return
+  currentLanguage = langName
+  shortLangName = ::loc("current_lang")
+  onChangeLanguage()
+}
+
+saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?.language ?? get_default_lang())
+
+
+::g_language.setGameLocalization <- function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false)
+{
+  if (langId == currentLanguage && !isForced)
+    return
+
+  ::handlersManager.shouldResetFontsCache = true
+  ::setSystemConfigOption("language", langId)
+  ::set_language(langId)
+  saveLanguage(langId)
+
+  if (suggestPkgDownload)
+    needCheckLangPack = true
+
+  let handler = ::handlersManager.getActiveBaseHandler()
+  if (reloadScene && handler)
+    handler.fullReloadScene()
+  else
+    ::handlersManager.markfullReloadOnSwitchScene()
+
+  ::broadcastEvent("GameLocalizationChanged")
+  currentLanguageW(currentLanguage)
+}
+
+::g_language.reload <- function reload()
+{
+  ::g_language.setGameLocalization(currentLanguage, true, false, true)
+}
+
+::g_language.onEventNewSceneLoaded <- function onEventNewSceneLoaded(p)
+{
+  if (!needCheckLangPack)
+    return
+
+  ::check_localization_package_and_ask_download()
+  needCheckLangPack = false
+}
+
+::canSwitchGameLocalization <- function canSwitchGameLocalization()
+{
+  return !isPlatformSony && !isPlatformXboxOne && !::is_vendor_tencent() && !::is_vietnamese_version()
+}
+
+::g_language.getEmptyLangInfo <- function getEmptyLangInfo()
+{
+  let langInfo = {
+    id = "empty"
+    title = "empty"
+    icon = ""
+    chatId = ""
+    isMainChatId = true
+    hasUnitSpeech = false
+  }
+  return langInfo
+}
+
+
+::g_language.getGameLocalizationInfo <- function getGameLocalizationInfo()
 {
   checkInitList()
   return langsList
 }
 
-g_language.getLangInfoById <- function getLangInfoById(id)
-{
-  checkInitList()
-  return ::getTblValue(id, langsById)
-}
 
-g_language.getLangInfoByChatId <- function getLangInfoByChatId(chatId)
+::g_language.getLangInfoByChatId <- function getLangInfoByChatId(chatId)
 {
   checkInitList()
   return ::getTblValue(chatId, langsByChatId)
@@ -337,7 +332,7 @@ g_language.getLangInfoByChatId <- function getLangInfoByChatId(chatId)
     text_en = "localized text"  //english text. already localized.
   }
 */
-g_language.getLocTextFromConfig <- function getLocTextFromConfig(config, id = "text", defaultValue = null)
+::g_language.getLocTextFromConfig <- function getLocTextFromConfig(config, id = "text", defaultValue = null)
 {
   local res = null
   let key = id + "_" + shortLangName
@@ -354,23 +349,23 @@ g_language.getLocTextFromConfig <- function getLocTextFromConfig(config, id = "t
   return res
 }
 
-g_language.isAvailableForCurLang <- function isAvailableForCurLang(block)
+::g_language.isAvailableForCurLang <- function isAvailableForCurLang(block)
 {
   if (!::getTblValue("showForLangs", block))
     return true
 
-  let availableForLangs = ::split(block.showForLangs, ";")
+  let availableForLangs = split_by_chars(block.showForLangs, ";")
   return ::isInArray(getLanguageName(), availableForLangs)
 }
 
-g_language.onEventInitConfigs <- function onEventInitConfigs(p)
+::g_language.onEventInitConfigs <- function onEventInitConfigs(p)
 {
   isListInited = false
 }
 
 ::get_current_language <- function get_current_language()
 {
-  return ::g_language.getLanguageName()
+  return getLanguageName()
 }
 
 ::getShortTextFromNum <- function getShortTextFromNum(num)
@@ -392,19 +387,24 @@ g_language.onEventInitConfigs <- function onEventInitConfigs(p)
 // called from native playerProfile on language change, so at this point we can use get_language
 ::on_language_changed <- function on_language_changed()
 {
-  ::g_language.saveLanguage(::get_language())
+  saveLanguage(::get_language())
 }
 
-g_language.getCurrentSteamLanguage <- function getCurrentSteamLanguage()
-{
+::g_language.getCurrentSteamLanguage <- function getCurrentSteamLanguage() {
   return currentSteamLanguage
 }
 
 // used in native code
-::get_current_steam_language <- function get_current_steam_language()
-{
-  return g_language.getCurrentSteamLanguage()
+::get_current_steam_language <- function get_current_steam_language() {
+  return ::g_language.getCurrentSteamLanguage()
 }
+
+::g_language.__update(freeze({
+  langsList
+  langsById
+  getLanguageName
+  getShortName
+}))
 
 ::cross_call_api.language <- ::g_language
 

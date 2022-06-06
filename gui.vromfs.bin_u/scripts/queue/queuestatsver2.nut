@@ -146,7 +146,7 @@
   {
     foreach(key, value in fullStats)
       if (key in sourceStats)
-        fullStats[key] = ::max(value, getCountFromStatTbl(sourceStats[key]))
+        fullStats[key] = max(value, getCountFromStatTbl(sourceStats[key]))
   }
 
   function remapCountries(statsByCountries)

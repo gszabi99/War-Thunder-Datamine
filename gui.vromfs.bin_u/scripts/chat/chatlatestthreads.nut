@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 ::g_chat_latest_threads <- {
   autoUpdatePeriodMsec = 60000
   playerUpdateTimeoutMsec = 15000
@@ -84,7 +85,7 @@ g_chat_latest_threads.getUpdateState <- function getUpdateState()
 
 g_chat_latest_threads.getTimeToRefresh <- function getTimeToRefresh()
 {
-  return ::max(0, lastUpdatetTime + playerUpdateTimeoutMsec - ::dagor.getCurTime())
+  return max(0, lastUpdatetTime + playerUpdateTimeoutMsec - ::dagor.getCurTime())
 }
 
 g_chat_latest_threads.canRefresh <- function canRefresh()
@@ -120,7 +121,7 @@ g_chat_latest_threads.checkInitLangs <- function checkInitLangs()
   }
 
   let langsStr = ::loadLocalByAccount("chat/latestThreadsLangs", "")
-  let savedLangs = ::split(langsStr, ",")
+  let savedLangs = split_by_chars(langsStr, ",")
 
   langsList.clear()
   let langsConfig = ::g_language.getGameLocalizationInfo()

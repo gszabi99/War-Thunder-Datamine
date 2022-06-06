@@ -64,17 +64,17 @@ enum LIVE_STATS_MODE {
       [LIVE_STATS_MODE.WATCH] = [ "name", "footballGoals", "footballAssists", "footballScore" ],
     },
   }
-  function init(_parentObj, _nestObjId, _isSelfTogglable)
+  function init(parent_obj, nest_obj_id, is_self_togglable)
   {
     if (!::has_feature("LiveStats"))
       return
-    if (!::checkObj(_parentObj))
+    if (!::checkObj(parent_obj))
       return
-    parentObj = _parentObj
-    nestObjId = _nestObjId
+    parentObj = parent_obj
+    nestObjId = nest_obj_id
     guiScene  = parentObj.getScene()
 
-    isSelfTogglable = _isSelfTogglable
+    isSelfTogglable = is_self_togglable
     gameType = ::get_game_type()
     missionMode =
         (gameType & ::GT_RACE) ? ::GT_RACE

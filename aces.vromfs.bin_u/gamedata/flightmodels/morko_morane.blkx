@@ -21,6 +21,9 @@
   "fightAiBehaviour": "fighter",
   "DamageParts": {
     "armor10": {
+      "cannon1_dm": {
+        "hp": 15.0
+      },
       "mgun1_dm": {
         "hp": 15.0
       },
@@ -300,6 +303,11 @@
           }
         }
       ]
+    },
+    {
+      "part": {
+        "name": "cannon1_dm"
+      }
     },
     {
       "part": {
@@ -1876,6 +1884,11 @@
         "spread": 1.35,
         "counterIndex": 3
       }
+    },
+    {
+      "hideDmParts": {
+        "node": "cannon1_dm"
+      }
     }
   ],
   "weapon_presets": {
@@ -2015,7 +2028,73 @@
     "ub_new_gun": {
       "reqModification": "ub_belt_pack",
       "tier": 4
-    }
+    },
+    "morko_morane_mg151": {
+      "tier": 1,
+      "group": "morko_morane_common_mg_151",
+      "modClass": "weapon",
+      "invertEnableLogic": false,
+      "effects": {
+        "commonWeapons": [
+          {
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonMG15120.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 120,
+              "spread": 1.2,
+              "counterIndex": 5
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMAC34.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 300,
+              "spread": 1.35,
+              "traceOffset": 1,
+              "counterIndex": 1
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMAC34.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun2_dm",
+              "bullets": 300,
+              "spread": 1.35,
+              "counterIndex": 3
+            }
+          },
+          {
+            "hideDmParts": {
+              "node": "mgun3_dm"
+            }
+          }
+        ]
+      }
+    },
+    "mg15120_belt_pack": {
+      "reqModification": "morko_morane_mg151",
+      "tier": 2
+    },
+    "mg15120_new_gun": {
+      "reqModification": "mg15120_belt_pack",
+      "tier": 3
+    },
+    "mg151_universal": [],
+    "mg151_air_targets": [],
+    "mg151_armor_targets": [],
+    "mg151_all_tracers": []
   },
   "user_skin": [
     {

@@ -94,7 +94,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
           mapNestObj
         )
 
-        minSize = ::min(minSize, curWidth)
+        minSize = min(minSize, curWidth)
       }
     }
 

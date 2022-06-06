@@ -20,14 +20,14 @@ let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
   debugLastModified = -1
 }
 
-g_hud_tutorial_elements.init <- function init(_nest)
+g_hud_tutorial_elements.init <- function init(v_nest)
 {
   let blkPath = getCurBlkName()
   active = !!blkPath
 
-  if (!::checkObj(_nest))
+  if (!::checkObj(v_nest))
     return
-  nest  = _nest
+  nest  = v_nest
 
   initNestObjects()
   if (!::checkObj(scene))
@@ -40,12 +40,12 @@ g_hud_tutorial_elements.init <- function init(_nest)
   if (::u.isEmpty(blkOptFromPath(blkPath)))
   {
     let msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
-    dagor.debug(msg)
+    ::dagor.debug(msg)
     ::dagor.assertf(false, msg)
     return
   }
 
-  dagor.debug($"Hud_tutorial_elements: loaded {blkPath}")
+  ::dagor.debug($"Hud_tutorial_elements: loaded {blkPath}")
 
   let guiScene = scene.getScene()
   guiScene.replaceContent(scene, blkPath, this)

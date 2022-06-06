@@ -40,8 +40,8 @@ let mkCluster = @(name) {
 
   function onClustersLoaded(params)
   {
-    dagor.debug("[MM] clusters loaded")
-    debugTableData(params)
+    ::dagor.debug("[MM] clusters loaded")
+    ::debugTableData(params)
 
     let clusters = ::getTblValue("clusters", params)
     if (!::u.isArray(clusters))
@@ -73,7 +73,7 @@ let mkCluster = @(name) {
         if (!found)
         {
           clusters_info.append(mkCluster(cluster))
-          dagor.debug("[MM] cluster added " + cluster)
+          ::dagor.debug("[MM] cluster added " + cluster)
         }
       }
     }
@@ -90,11 +90,11 @@ let mkCluster = @(name) {
             break
           }
         }
-        dagor.debug("[MM] cluster removed " + cluster)
+        ::dagor.debug("[MM] cluster removed " + cluster)
       }
     }
-    dagor.debug("clusters list updated")
-    debugTableData(clusters_info)
+    ::dagor.debug("clusters list updated")
+    ::debugTableData(clusters_info)
     //TODO: need to update clusters in GUI
   }
 
@@ -127,7 +127,7 @@ let mkCluster = @(name) {
         //clusters not loaded or broken data
         if (__fetch_counter < MAX_FETCH_RETRIES)
         {
-          dagor.debug("fetch cluster error, retry - " + __fetch_counter)
+          ::dagor.debug("fetch cluster error, retry - " + __fetch_counter)
           __update_clusters_list()
         } else
         {

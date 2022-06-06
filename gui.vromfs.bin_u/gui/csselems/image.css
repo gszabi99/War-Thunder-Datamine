@@ -20,7 +20,7 @@ img[background-image=""], img2[background-image=""], cardImg[background-image=""
   display:hide;
 }
 
-cardImg, cardAvatar {
+cardImg {
   size:@cIco, @cIco;
   top:50%ph-50%h;
   position:relative;
@@ -45,6 +45,9 @@ cardImg[type=large]
 
 cardAvatar {
   behavior:bhvAvatar;
+  size:@cIco, @cIco;
+  top:50%ph-50%h;
+  position:relative;
 }
 
 .lbTable > tr.commonIconsStyle {
@@ -154,22 +157,22 @@ animated_wait_icon[circle] {
 }
 
 animated_wait_icon[circle=air] {
-  background-image:#ui/gameuiskin#wait_circle;
+  background-image:#ui/gameuiskin#wait_circle.png;
   inc-factor:113;
 }
 
 animated_wait_icon[circle=helicopter] {
-  background-image:#ui/gameuiskin#wait_circle_heli;
+  background-image:#ui/gameuiskin#wait_circle_heli.png;
   inc-factor:101;
 }
 
 animated_wait_icon[circle=tank] {
-  background-image:#ui/gameuiskin#wait_circle_tank;
+  background-image:#ui/gameuiskin#wait_circle_tank.png;
   inc-factor:59;
 }
 
 animated_wait_icon[circle=ship] {
-  background-image:#ui/gameuiskin#wait_circle_ship;
+  background-image:#ui/gameuiskin#wait_circle_ship.png;
   inc-factor:79;
 }
 

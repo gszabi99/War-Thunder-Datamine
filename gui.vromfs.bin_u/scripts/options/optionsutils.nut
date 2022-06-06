@@ -258,7 +258,7 @@ let fillDynMapOption = function(descr)
         if (!found)
         {
           skip = true
-          dagor.debug("SKIP "+layout.name+" because of tag "+tag)
+          ::dagor.debug("SKIP "+layout.name+" because of tag "+tag)
           break
         }
       }
@@ -274,7 +274,7 @@ let fillDynMapOption = function(descr)
 
   if (descr.items.len() == 0 && dynLayouts.len() > 0)
   {
-    dagor.debug("[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '" +
+    ::dagor.debug("[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '" +
       dynLayouts[0].name + "' to avoid empty list.")
 
     // must be at least one dynamic layout in USEROPT_DYN_MAP

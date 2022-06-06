@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::gui_handlers.CrewBuyPointsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL

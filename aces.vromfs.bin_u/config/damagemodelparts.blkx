@@ -17,6 +17,7 @@
       "ignoreDeadWithSplash": false,
       "splashPenetrationToArmorThreshold": 0.33,
       "pressureDamageMult": 0.0,
+      "napalmDamageMult": 0.0,
       "sonicDamageMult": 0.0
     }
   },
@@ -175,6 +176,7 @@
         "template": "transmission_#10#"
       },
       "steering": {
+        "hitTestType": "inner",
         "steering_gear_NN": {
           "template": "steering_gear_#10#"
         }
@@ -263,21 +265,27 @@
       "vital": true,
       "genName": "tank_gun_barrel",
       "main_caliber_gun_NN": {
+        "hitTestType": "inner",
         "template": "main_caliber_gun_#20#"
       },
       "main_caliber_turret_NN": {
+        "hitTestType": "inner",
         "template": "main_caliber_turret_#20#"
       },
       "auxiliary_caliber_gun_NN": {
+        "hitTestType": "inner",
         "template": "auxiliary_caliber_gun_#35#"
       },
       "auxiliary_caliber_turret_NN": {
+        "hitTestType": "inner",
         "template": "auxiliary_caliber_turret_#30#"
       },
       "aa_gun_NN": {
+        "hitTestType": "inner",
         "template": "aa_gun_#70#"
       },
       "aa_turret_NN": {
+        "hitTestType": "inner",
         "template": "aa_turret_#70#"
       },
       "gun_barrel": [],
@@ -429,6 +437,7 @@
         }
       },
       "bridge": {
+        "hitTestType": "inner",
         "bridge": [],
         "bridge_01": [],
         "bridge_02": []
@@ -553,39 +562,50 @@
       "antenna_target_location": [],
       "antenna_target_tagging": [],
       "antenna_target_location_NN": {
+        "hitTestType": "inner",
         "template": "antenna_target_location_#06#"
       },
       "antenna_target_tagging_NN": {
+        "hitTestType": "inner",
         "template": "antenna_target_tagging_#06#"
       },
       "antenna_target_tagging_mount_NN": {
+        "hitTestType": "inner",
         "template": "antenna_target_tagging_mount_#06#"
       },
       "fire_control_room_NN": {
+        "hitTestType": "inner",
         "template": "fire_control_room_#02#"
       },
       "fire_director_NN": {
+        "hitTestType": "inner",
         "template": "fire_director_#15#"
       },
       "fire_director_mount_NN": {
+        "hitTestType": "inner",
         "template": "fire_director_mount_#15#"
       },
       "rangefinder_NN": {
+        "hitTestType": "inner",
         "template": "rangefinder_#15#"
       },
       "rangefinder_mount_NN": {
+        "hitTestType": "inner",
         "template": "rangefinder_mount_#15#"
       },
       "handling_room_NN": {
         "template": "handling_room_#20#"
       },
       "catapult_NN": {
+        "hitTestType": "inner",
         "template": "catapult_#05#"
       },
       "catapult_mount_NN": {
+        "hitTestType": "inner",
         "template": "catapult_mount_#05#"
       },
       "aircraft_NN": {
+        "hitTestType": "inner",
         "template": "aircraft_#05#"
       }
     }
@@ -638,6 +658,7 @@
   },
   {
     "pump": {
+      "hitTestType": "inner",
       "pump": [],
       "pump_NN": {
         "template": "pump_#05#"
@@ -653,6 +674,7 @@
   },
   {
     "elevator_NN": {
+      "hitTestType": "inner",
       "template": "elevator_#30#"
     }
   },
@@ -685,21 +707,25 @@
   },
   {
     "ammunition_storage_NN": {
+      "hitTestType": "inner",
       "template": "ammunition_storage_#20#"
     }
   },
   {
     "ammunition_storage_shells_NN": {
+      "hitTestType": "inner",
       "template": "ammunition_storage_shells_#30#"
     }
   },
   {
     "ammunition_storage_charges_NN": {
+      "hitTestType": "inner",
       "template": "ammunition_storage_charges_#30#"
     }
   },
   {
     "ammunition_storage_aux_NN": {
+      "hitTestType": "inner",
       "template": "ammunition_storage_aux_#20#"
     }
   },
@@ -768,6 +794,7 @@
   },
   {
     "torpedo_tube": {
+      "hitTestType": "inner",
       "tt_NN": {
         "template": "tt_#20#"
       },
@@ -1032,7 +1059,16 @@
     }
   },
   {
-    "holes": []
+    "holes": {
+      "holes": []
+    }
+  },
+  {
+    "blister": {
+      "blisterN": {
+        "template": "blister#1:16#"
+      }
+    }
   },
   {
     "wing_l": {
@@ -1445,7 +1481,12 @@
     "hook": {
       "hook": [],
       "hook1": [],
-      "hook_catch": []
+      "hook_catch": [],
+      "hook2": [],
+      "hook3": [],
+      "hook4": [],
+      "hook5": [],
+      "hook6": []
     }
   },
   {

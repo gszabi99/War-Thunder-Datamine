@@ -19,7 +19,7 @@ tdiv{
     position:t='relative';
     top:t='4*@sf/@pf_outdated';
     size:t='pw, ph';
-    foreground-image:t='#ui/gameuiskin#button_bright_bg';
+    foreground-image:t='#ui/gameuiskin#button_bright_bg.png';
     foreground-position:t='16';
     foreground-repeat:t='expand';
     foreground-color:t='#aa000000';
@@ -39,7 +39,7 @@ tdiv{
     position:t='relative';
     top:t='4*@sf/@pf_outdated';
     size:t='pw, ph';
-    foreground-image:t='#ui/gameuiskin#button_bright_bg';
+    foreground-image:t='#ui/gameuiskin#button_bright_bg.png';
     foreground-position:t='16';
     foreground-repeat:t='expand';
     foreground-color:t='#ffffff';

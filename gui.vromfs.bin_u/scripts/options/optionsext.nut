@@ -1,4 +1,6 @@
 from "soundOptions" import *
+
+let { format, split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
 let colorCorrector = ::require_native("colorCorrector")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
@@ -145,28 +147,28 @@ local isWaitMeasureEvent = false
       if (videoIn.len())
       {
         ::game_movies_in[chapterName+"/"+misId] <- videoIn
-        dagor.debug("[VIDEO] " + videoIn + " [IN] "+chapterName+"/"+misId);
+        ::dagor.debug("[VIDEO] " + videoIn + " [IN] "+chapterName+"/"+misId);
       }
 
       let videoOut = blkMap.getStr("video_out","");
       if (videoOut.len())
       {
         ::game_movies_out[chapterName+"/"+misId] <- videoOut
-        dagor.debug("[VIDEO] " + videoOut + " [OUT] "+chapterName+"/"+misId);
+        ::dagor.debug("[VIDEO] " + videoOut + " [OUT] "+chapterName+"/"+misId);
       }
 
       let videoInAch = blkMap.getStr("achievement_after_video_in","");
       if (videoInAch.len())
       {
         ::game_movies_in_ach[chapterName+"/"+misId] <- videoInAch
-        dagor.debug("[VIDEO TROPHY] " + videoInAch + " [IN] "+chapterName+"/"+misId);
+        ::dagor.debug("[VIDEO TROPHY] " + videoInAch + " [IN] "+chapterName+"/"+misId);
       }
 
       let videoOutAch = blkMap.getStr("achievement_after_video_out","");
       if (videoOutAch.len())
       {
         ::game_movies_out_ach[chapterName+"/"+misId] <- videoOutAch
-        dagor.debug("[VIDEO TROPHY] " + videoOutAch + " [OUT] "+chapterName+"/"+misId);
+        ::dagor.debug("[VIDEO TROPHY] " + videoOutAch + " [OUT] "+chapterName+"/"+misId);
       }
     }
     ::game_mode_maps.append(modeMap)
@@ -204,7 +206,7 @@ local isWaitMeasureEvent = false
   return notFoundValue
 }
 
-::get_block_hsv_color <- function get_block_hsv_color(h, s = 0.7, v = 0.7)
+::get_block_hsv_color <- function get_block_hsv_color(h, s = 1.0, v = 1.0)
 {
   if (h > 360)
   {
@@ -238,10 +240,10 @@ local isWaitMeasureEvent = false
     opt.selected <- idx == value
     if ("hue" in item)
       opt.hueColor <- ::get_block_hsv_color(item.hue,
-        item?.sat ?? 0.7,
-        item?.val ?? 0.7)
+        item?.sat ?? 1.0,
+        item?.val ?? 1.0)
     if ("hues" in item)
-      opt.smallHueColor <- item.hues.map(@(hue) { color = ::get_block_hsv_color(hue, item?.sat ?? 0.7, item?.val ?? 0.7)  })
+      opt.smallHueColor <- item.hues.map(@(hue) { color = ::get_block_hsv_color(hue, item?.sat ?? 1.0, item?.val ?? 1.0)  })
 
     if ("rgb" in item)
       opt.hueColor <- item.rgb
@@ -415,7 +417,7 @@ local isWaitMeasureEvent = false
 ::get_mission_time_text <- function get_mission_time_text(missionTime)
 {
   if (::g_string.isStringInteger(missionTime))
-    return ::format("%d:00", missionTime.tointeger())
+    return format("%d:00", missionTime.tointeger())
   if (::g_string.isStringFloat(missionTime))
     missionTime = missionTime.replace(".", ":")
   return ::loc("options/time" + ::g_string.toUpper(missionTime, 1))
@@ -590,7 +592,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         ::get_option_bomb_activation_type())
       let isBombActivationAssault = bombActivationType == BOMB_ACT_ASSAULT
       let assaultFuseTime = ::get_bomb_activation_auto_time()
-      let bombActivationTime = ::max(::load_local_account_settings(
+      let bombActivationTime = max(::load_local_account_settings(
         $"useropt/bomb_activation_time/{diffCode}",
           ::get_option_bomb_activation_time()), assaultFuseTime)
 
@@ -1048,6 +1050,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = true
       break
 
+    case ::USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS:
+      descr.id = "shipCombinePriSecTriggers"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      break
+
     case ::USEROPT_FOLLOW_BULLET_CAMERA:
       descr.id = "followBulletCamera"
       descr.controlType = optionControlType.CHECKBOX
@@ -1303,7 +1312,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.min <- 5
       descr.max <- 100
       descr.value = (::get_option_multiplier(::OPTION_MOUSE_SENSE) * 50.0).tointeger()
-      descr.value = ::clamp(descr.value, descr.min, descr.max)
+      descr.value = clamp(descr.value, descr.min, descr.max)
       break
 
     case ::USEROPT_MOUSE_AIM_SENSE:
@@ -1312,7 +1321,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.min <- 5
       descr.max <- 100
       descr.value = (::get_option_multiplier(::OPTION_MOUSE_AIM_SENSE) * 50.0).tointeger()
-      descr.value = ::clamp(descr.value, descr.min, descr.max)
+      descr.value = clamp(descr.value, descr.min, descr.max)
       break
 
     case ::USEROPT_GUNNER_VIEW_SENSE:
@@ -1426,22 +1435,22 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let vPresetData = ::g_controls_presets.parsePresetName(name)
         if (p.name == vPresetData.name && p.version == vPresetData.version)
           descr.value = k
-        local imageName = "joystick.svg"
+        local imageName = "preset_joystick.svg"
         if (name.indexof("keyboard") != null)
-          imageName = "mouse_keyboard.svg"
+          imageName = "preset_mouse_keyboard.svg"
         else if (name.indexof("xinput") != null || name.indexof("xboxone") != null)
-          imageName = "gamepad.svg"
+          imageName = "preset_gamepad.svg"
         else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
-          imageName = "ps4.svg"
+          imageName = "preset_ps4.svg"
         else if (name == "custom")
         {
-          imageName = name
+          imageName = "preset_custom.png"
           suffix = ""
         }
 
         descr.items.append({
                             text = "#presets/" + suffix + name
-                            image = "#ui/gameuiskin#preset_" + imageName
+                            image = $"#ui/gameuiskin#{imageName}"
                           })
       }
       descr.cb = "onSelectPreset"
@@ -2659,7 +2668,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       {
         let br = ::calc_battle_rating_from_rank(mrank)
         descr.values.append(mrank)
-        descr.items.append(::format("%.1f", br))
+        descr.items.append(format("%.1f", br))
       }
 
       defaultValue = isMin && descr.items.len() ? 0 : (descr.values.len() - 1)
@@ -2719,8 +2728,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           let minBR = ::calc_battle_rating_from_rank(::getTblValue(0, range, 0))
           let maxBR = ::calc_battle_rating_from_rank(::getTblValue(1, range, ::max_country_rank))
           let tier = ::events.getTierByMaxBr(maxBR)
-          let brText = ::format("%.1f", minBR)
-                       + ((minBR != maxBR) ? " - " + ::format("%.1f", maxBR) : "")
+          let brText = format("%.1f", minBR)
+                       + ((minBR != maxBR) ? " - " + format("%.1f", maxBR) : "")
           let text = brText
 
           if (descr.values.indexof(tier) != null)
@@ -3242,7 +3251,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       if (::g_clusters.clusters_info.len() > 0)
       {
-        let defaultClusters = split(::get_default_network_cluster(), ";")
+        let defaultClusters = split_by_chars(::get_default_network_cluster(), ";")
         let selectedClusters = []
         for(local i = 0; i < ::g_clusters.clusters_info.len(); i++)
         {
@@ -3289,9 +3298,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.controlType = optionControlType.BIT_LIST
         descr.value = 0
         if (::u.isString(prevValue))
-          descr.value = ::get_bit_value_by_array(split(prevValue, ";"), descr.values)
+          descr.value = ::get_bit_value_by_array(split_by_chars(prevValue, ";"), descr.values)
         if (!descr.value)
-          descr.value = ::get_bit_value_by_array(split(defaultValue, ";"), descr.values) || 1
+          descr.value = ::get_bit_value_by_array(split_by_chars(defaultValue, ";"), descr.values) || 1
       }
       break
 
@@ -3314,7 +3323,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let unlockId = icons[nc]
         let item = {
           idx = nc
-          image = "#ui/images/avatars/" + unlockId
+          image = $"#ui/images/avatars/{unlockId}.png"
           show = ::is_unlock_visible(::g_unlocks.getUnlockById(unlockId))
           enabled = ::is_unlocked_scripted(::UNLOCKABLE_PILOT, unlockId)
           tooltipId = ::g_tooltip.getIdUnlock(unlockId, { showProgress = true })
@@ -3705,7 +3714,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_HUE_AIRCRAFT_HUD:
       optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_hud",
-        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_HUD))
+        122, 1.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
@@ -3715,12 +3724,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_HUE_HELICOPTER_HUD:
       optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_hud",
-        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD))
+        122, 1.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
       optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_param_hud",
-        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD))
+        122, 1.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD_ALERT:
@@ -3832,7 +3841,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       for(local rank = 0; rank <= ::max_country_rank; ++rank)
       {
-        descr.values.append(::format("option_%s", rank.tostring()))
+        descr.values.append(format("option_%s", rank.tostring()))
         descr.items.append({
           text = (rank == 0 ? ::loc("clan/membRequirementsRankAny") : ::get_roman_numeral(rank))
         })
@@ -4048,7 +4057,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   if (descr.controlType == optionControlType.SLIDER)
   {
     if (descr.value == null)
-      descr.value = ::clamp(valueToSet || 0, descr?.min ?? 0, descr?.max ?? 1)
+      descr.value = clamp(valueToSet || 0, descr?.min ?? 0, descr?.max ?? 1)
     return descr
   }
 
@@ -4268,7 +4277,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_ZOOM_FOR_TURRET:
-      dagor.debug("USEROPT_ZOOM_FOR_TURRET" + value.tostring())
+      ::dagor.debug("USEROPT_ZOOM_FOR_TURRET" + value.tostring())
       ::set_option_zoom_turret(value)
       ::apply_joy_preset_xchange(null)
       break
@@ -4726,13 +4735,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_HUE_AIRCRAFT_HUD:
-      let { sat = 0.7, val = 0.7 } = descr.items[value]
+      local { sat = 1.0, val = 1.0 } = descr.items[value]
       colorCorrector.setHsb(colorCorrector.TARGET_HUE_AIRCRAFT_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_PARAM_HUD:
-      let { sat = 0.7, val = 0.7 } = descr.items[value]
+      local { sat = 1.0, val = 1.0 } = descr.items[value]
       colorCorrector.setHsb(colorCorrector.TARGET_HUE_AIRCRAFT_PARAM_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
@@ -4749,13 +4758,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD:
-      let { sat = 0.7, val = 0.7 } = descr.items[value]
+      local { sat = 1.0, val = 1.0 } = descr.items[value]
       colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
-      let { sat = 0.7, val = 0.7 } = descr.items[value]
+      local { sat = 1.0, val = 1.0 } = descr.items[value]
       colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
@@ -5226,6 +5235,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       if (unit && val != TANK_ALT_CROSSHAIR_ADD_NEW)
         ::set_option_tank_alt_crosshair(unit.name, val)
       break
+    case ::USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS:
+      ::set_option_combine_pri_sec_triggers(value)
+      ::set_gui_option(optionId, value)
+      break
     case ::USEROPT_GAMEPAD_CURSOR_CONTROLLER:
       ::g_gamepad_cursor_controls.setValue(value)
       break
@@ -5296,9 +5309,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     data = []
   }
 
-  columnsRatio = ::clamp(columnsRatio, 0.1, 0.9)
-  let wLeft  = ::format("%.2fpw", columnsRatio)
-  let wRight = ::format("%.2fpw", 1.0 - columnsRatio)
+  columnsRatio = clamp(columnsRatio, 0.1, 0.9)
+  let wLeft  = format("%.2fpw", columnsRatio)
+  let wRight = format("%.2fpw", 1.0 - columnsRatio)
 
   let rowsView = []
   local headerHaveContent = false
@@ -5348,7 +5361,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         break
 
       case "editbox":
-        elemTxt = ::create_option_editbox(optionData)
+        elemTxt = ::create_option_editbox({
+          id = optionData.id
+          value = optionData?.value
+          password = optionData?.password
+          maxlength = optionData?.maxlength
+          charMask = optionData?.charMask
+        })
         break
 
       case "listbox":
@@ -5392,7 +5411,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           tdText = ::g_string.stripTags(optionData.getTitle())
 
         if (optionData.needShowValueText)
-          elemTxt += ::format("optionValueText { id:t='%s'; text:t='%s' }",
+          elemTxt += format("optionValueText { id:t='%s'; text:t='%s' }",
             "value_" + optionData.id, optionData.getValueLocText(optionData.value))
 
         let optionTitleStyle = isHeader ? "optionBlockHeader" : "optiontext"

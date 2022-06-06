@@ -22,7 +22,7 @@
   "canTakeoffWithoutGear": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "400kph",
+  "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
   "laserDesignator": true,
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -2441,7 +2441,7 @@
     "radiusSpeed": 2.0
   },
   "fireParams": {
-    "engineExtinguishFireSpeed": [55.0,138.0],
+    "engineExtinguishFireSpeed": [28.0,110.0],
     "engineExtinguishFireSpeedChance": [0.01,0.1],
     "fireDamagePowerRel": 0.05,
     "nonExtinguishFireTime": 5.0
@@ -4818,6 +4818,22 @@
     {
       "dp": [
         {
+          "dm": "_ClipHookRoot"
+        },
+        {
+          "separateDm": true
+        },
+        {
+          "dp": "hook"
+        },
+        {
+          "dp": "hook_catch"
+        }
+      ]
+    },
+    {
+      "dp": [
+        {
           "dm": "tail_dm"
         },
         {
@@ -5335,7 +5351,7 @@
       "modClass": "weapon"
     },
     "heli_night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
+      "image": "#ui/gameuiskin#thermal_sight.png",
       "effects": {
         "nightVision": {
           "gunnerIr": {

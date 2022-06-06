@@ -8,8 +8,8 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
   function initScreen()
   {
-    updateText()
-    updateBg()
+    this.updateText()
+    this.updateBg()
   }
 
   function updateText()
@@ -19,32 +19,32 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
       text = ::loc("yn1/connecting_msg")
     else if (!(::g_login.curState & LOGIN_STATE.CONFIGS_INITED))
       text = ::loc("loading")
-    scene.findObject("msgText").setValue(text)
+    this.scene.findObject("msgText").setValue(text)
   }
 
   function updateVisibility()
   {
-    let isVisible = isSceneActiveNoModals()
-    scene.findObject("root-box").show(isVisible)
+    let isVisible = this.isSceneActiveNoModals()
+    this.scene.findObject("root-box").show(isVisible)
   }
 
   function updateBg()
   {
     let shouldBgVisible = !(::g_login.curState & LOGIN_STATE.HANGAR_LOADED)
-    if (isBgVisible == shouldBgVisible && isInitialized)
+    if (this.isBgVisible == shouldBgVisible && this.isInitialized)
       return
 
-    isInitialized = true
-    isBgVisible = shouldBgVisible
-    ::showBtn("bg_picture_container", isBgVisible, scene)
-    if (isBgVisible)
-      animBgLoad("", scene.findObject("animated_bg_picture"))
+    this.isInitialized = true
+    this.isBgVisible = shouldBgVisible
+    ::showBtn("bg_picture_container", this.isBgVisible, this.scene)
+    if (this.isBgVisible)
+      animBgLoad("", this.scene.findObject("animated_bg_picture"))
   }
 
   function onEventLoginStateChanged(p)
   {
-    updateText()
-    updateBg()
+    this.updateText()
+    this.updateBg()
   }
 
   function onEventHangarModelLoaded(params)
@@ -54,6 +54,6 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
   function onEventActiveHandlersChanged(p)
   {
-    updateVisibility()
+    this.updateVisibility()
   }
 }

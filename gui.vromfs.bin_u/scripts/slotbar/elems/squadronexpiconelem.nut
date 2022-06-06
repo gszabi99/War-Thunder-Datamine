@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -19,7 +20,7 @@ elemModelType.addTypes({
       && ::clan_get_researching_unit() != ""
       && !isAllVehiclesResearched()
 
-    getTooltip = @() ::format(::loc("mainmenu/availableFreeExpForNewResearch"),
+    getTooltip = @() format(::loc("mainmenu/availableFreeExpForNewResearch"),
       ::Cost().setSap(::clan_get_exp()).tostring())
 
     onEventFlushSquadronExp = @(p) notify([])
@@ -76,7 +77,7 @@ elemViewType.addTypes({
         return
       }
 
-      let objConfig = ::split(obj.id, ";")
+      let objConfig = split_by_chars(obj.id, ";")
       let unit = ::getAircraftByName(::clan_get_researching_unit())
       isVisible = isVisible && unit?.shopCountry == objConfig?[0]
         && unit?.unitType?.armyId == objConfig?[1]

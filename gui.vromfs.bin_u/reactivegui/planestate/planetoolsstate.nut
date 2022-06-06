@@ -32,6 +32,9 @@ let AimLockPos = [0, 0]
 let AimLockValid = Watched(false)
 let TvvMark = [0, 0]
 let AtgmTargetDist = Watched(0.0)
+let MfdVdiVisible = Watched(false)
+let MfdVdiPosSize = [0, 0, 0, 0]
+let IsOnGround = Watched(false)
 
 let planeState = {
   BlkFileName,
@@ -65,7 +68,10 @@ let planeState = {
   AimLockValid,
   AimLockPos,
   TvvMark,
-  AtgmTargetDist
+  AtgmTargetDist,
+  MfdVdiVisible,
+  MfdVdiPosSize,
+  IsOnGround
 }
 
 ::interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
@@ -87,6 +93,13 @@ let planeState = {
   MfdRadarNavPosSize[1] = y
   MfdRadarNavPosSize[2] = w
   MfdRadarNavPosSize[3] = h
+}
+
+::interop.updatePlaneVdiPosSize <- function(x, y, w, h) {
+  MfdVdiPosSize[0] = x
+  MfdVdiPosSize[1] = y
+  MfdVdiPosSize[2] = w
+  MfdVdiPosSize[3] = h
 }
 
 ::interop.updateAimLockPos <- function(x, y) {

@@ -457,16 +457,20 @@
           "armorThickness": 6.35
         },
         "ex_decor_r_01_dm": {
-          "armorThickness": 6.35
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 4.0
         },
         "ex_decor_l_01_dm": {
-          "armorThickness": 6.35
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 4.0
         },
         "ex_decor_l_08_dm": {
-          "armorThickness": 6.35
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 4.0
         },
         "ex_decor_r_08_dm": {
-          "armorThickness": 6.35
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 4.0
         },
         "ex_decor_03_dm": {
           "armorThickness": 12.7
@@ -476,6 +480,10 @@
         },
         "ex_decor_08_dm": {
           "armorThickness": 6.35
+        },
+        "ex_decor_01_dm": {
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 4.0
         },
         "turret_01_side_dm": {
           "armorThickness": 6.35
@@ -579,6 +587,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 1.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1470,8 +1479,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1515,8 +1524,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1524,8 +1533,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1533,8 +1542,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1573,29 +1582,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -3320,7 +3329,7 @@
     "cockpit": {
       "openedCockpit": true,
       "headPos": [0.0,3.6,-6.0],
-      "headPosOnShooting": [-2.4,2.9,0.0],
+      "headPosOnShooting": [0.4,3.0,0.15],
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
       "sightFov": 5.0,
@@ -3393,10 +3402,10 @@
       "tank_tool_kit": [],
       "new_tank_vertical_aiming": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il"
+        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il"
+        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
       },
       "164mm_ss11_atgm": [],
       "airstrike": [],

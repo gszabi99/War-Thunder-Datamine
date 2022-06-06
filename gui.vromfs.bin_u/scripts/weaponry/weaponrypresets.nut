@@ -24,6 +24,8 @@ let function addSlotWeaponsFromPreset(res, slotBlk, preset) {
     slotWeapon.iconType = preset?.iconType
     foreach (dependentWeapon in (preset % "DependentWeaponPreset"))
       slotWeapon.dependentWeaponPreset <- dependentWeapon
+    foreach (bannedWeapon in (preset % "BannedWeaponPreset"))
+      slotWeapon.bannedWeaponPreset  <- bannedWeapon
     slotWeapon.reqModification = preset?.reqModification
     let idx = res.findindex(@(w) isEqualWeapon(w, slotWeapon))
     if (idx == null)
@@ -40,20 +42,26 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   let res = []
   local slots = getUnitWeaponSlots(unitBlk)             // All unit weapons
   if (!isCommon)
-    slots = slots.filter(@(_) _?.tier != null)// Pesets weapon only
-  if (slots.len() > 0)// CUSTOM data type
+    slots = slots.filter(@(s) s?.tier != null)// Pesets weapon only
+  if (slots.len() > 0) {// CUSTOM data type
+    let unitName = unitBlk?.model // warning disable: -declared-never-used
     foreach (wp in (weaponsBlk % "Weapon")) {
-      let slot = slots.findvalue(@(s) s.index == wp.slot)
+      let slotIdx = wp.slot
+      let slot = slots.findvalue(@(s) s.index == slotIdx)
       if (!slot) {
+        ::script_net_assert_once("WeaponSlots", $"WeaponSlot index does not exist")
         continue
       }
-      let curPreset = (slot % "WeaponPreset").findvalue(@(s) s.name == wp.preset)
+      let presetName = wp.preset
+      let curPreset = (slot % "WeaponPreset").findvalue(@(s) s.name == presetName)
       if (curPreset == null) {
+        ::script_net_assert_once("WeaponSlots", $"WeaponPreset does not exist")
         continue
       }
 
       addSlotWeaponsFromPreset(res, slot, curPreset)
     }
+  }
   // !!!FIX ME: Processing old format of weapons data should be removed over time when all units presets get ability to be customized.
   else// PLAIN data type
     foreach (weapon in (weaponsBlk % "Weapon"))
@@ -69,7 +77,7 @@ let getUnitPresets = @(unitBlk)  (unitBlk?.weapon_presets != null)
   ? (unitBlk.weapon_presets % "preset") : []
 
 let getPresetWeaponsByName = @(unitBlk, name)
-  getPresetWeaponsByPath(unitBlk, getUnitPresets(unitBlk).findvalue(@(_) _.name == name)?.blk)
+  getPresetWeaponsByPath(unitBlk, getUnitPresets(unitBlk).findvalue(@(p) p.name == name)?.blk)
 
 let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
   : "weaponsBlk" in weapon ? getWeaponsByTypes(unitBlk, weapon.weaponsBlk)
@@ -87,7 +95,7 @@ let function getSlotWeapons(slotBlk) {
 
 let function getUnitWeapons(unitBlk) {// Pesets weapon only
   let res = []
-  let slots = getUnitWeaponSlots(unitBlk).filter(@(_) _?.tier != null)
+  let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
   if(slots.len() > 0)
     foreach (slot in slots)
       res.extend(getSlotWeapons(slot))

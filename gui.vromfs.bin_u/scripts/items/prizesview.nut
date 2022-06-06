@@ -4,12 +4,13 @@ let workshop = require("%scripts/items/workshop/workshop.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementName,
+   getEntitlementLocParams, getEntitlementDescription } = require("%scripts/onlineShop/entitlements.nut")
 let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
-
+let { UNLOCK, ITEM, UNIT, DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
 //
@@ -61,19 +62,21 @@ const UNITS_STACK_BY_TYPE_COUNT  = 6
 
 let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
+let template = "%gui/items/trophyDesc"
+
 let unlockAddProgressView = {
   battlpass_progress = {
     image = "#ui/gameuiskin#item_type_bp.svg"
-    function getText(prize, _typeName) {
+    function getText(prize, v_typeName) {
       let progressArray = prize.unlockAddProgress.split("_")
       let value = progressArray.top()
       let typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
-      return _typeName ? ::loc(typeName)
+      return v_typeName ? ::loc(typeName)
         : ::loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
     }
   }
   battlepass_add_warbonds = {
-    function getText(prize, _typeName) {
+    function getText(prize, v_typeName) {
       let unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
       if (unlock == null)
         return ""
@@ -89,8 +92,64 @@ let getUnlockAddProgressViewConfig = @(unlockId) unlockAddProgressView.findvalue
 let isUnlockAddProgressPrize = @(prize) prize?.unlockAddProgress != null
   && unlockAddProgressView.findvalue(@(_, key) prize.unlockAddProgress.indexof(key) != null)
 
+let prizeViewConfig = {
+  [PRIZE_TYPE.GOLD] = {
+    getDescription = @(_) ::loc("charServer/chapter/eagles/desc")
+    getTooltipConfig = @(prize) {tooltip = ::loc("mainmenu/gold")}
+  },
+  [PRIZE_TYPE.WARPOINTS] = {
+    getDescription = @(_) ::loc("charServer/chapter/warpoints/desc")
+    getTooltipConfig = @(prize) {tooltip = ::loc("mainmenu/warpoints")}
+  },
+  [PRIZE_TYPE.PREMIUM_ACCOUNT] = {
+    function getDescription(_){
+      let paramEntitlement =  getEntitlementLocParams()
+      return ::loc("charServer/entitlement/PremiumAccount/desc", paramEntitlement)
+    }
+    getTooltipConfig = @(prize) {tooltip = ::loc($"charServer/chapter/premium")}
+  },
+  [PRIZE_TYPE.ENTITLEMENT] = {
+    getDescription = @(config) getEntitlementDescription(
+      getEntitlementConfig(config.entitlement),
+      config.entitlement)
+    getTooltipConfig = @(prize) {tooltip = getEntitlementName(getEntitlementConfig(prize.entitlement))}
+  },
+  [PRIZE_TYPE.MULTI_AWARD] = {
+    getDescription = @(config) TrophyMultiAward(::DataBlockAdapter(config)).getDescription(true)
+    getTooltipConfig = @(prize) {tooltip = TrophyMultiAward(::DataBlockAdapter(prize)).getName()}
+  },
+  [PRIZE_TYPE.UNLOCK] = {
+    getDescription = @(config) ::get_unlock_description(config.unlock)
+    getTooltipConfig = @(prize) {tooltipId = UNLOCK.getTooltipId(prize.unlock)}
+  },
+  [PRIZE_TYPE.UNLOCK_TYPE] = {
+    getDescription = @(config) ::loc($"trophy/unlockables_names/{config.unlockType}")
+    getTooltipConfig = @(prize) {tooltipId = UNLOCK.getTooltipId(prize.unlockType)}
+  },
+  [PRIZE_TYPE.UNIT] = {
+    getDescriptionMarkup = function(config){
+      let data = ::PrizesView.getPrizesViewData(config, true)
+      return ::handyman.renderCached(template, {list = [data]})
+    }
+    getTooltipConfig = @(prize) {tooltipId = UNIT.getTooltipId(prize.unit)}
+  },
+  [PRIZE_TYPE.RENTED_UNIT] = {
+    getTooltipConfig = @(prize) {tooltipId = UNIT.getTooltipId(prize.unit)}
+  },
+  [PRIZE_TYPE.RESOURCE] = {
+    function getDescription(config){
+      let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
+      return ::g_decorator.getDecorator(config.resource, decoratorType).getTypeDesc()
+    }
+    function getTooltipConfig(prize){
+      let decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+      let decorator = ::g_decorator.getDecorator(prize.resource, decoratorType)
+      return {tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)}
+    }
+  }
+}
+
 ::PrizesView <- {
-  template = "%gui/items/trophyDesc"
 
   function getTrophyOpenCountTillPrize(content, trophyInfo) {
     let res = []
@@ -107,7 +166,7 @@ let isUnlockAddProgressPrize = @(prize) prize?.unlockAddProgress != null
         trophiesCount = prize.till
       }))
       if (!isReceived)
-        trophiesCountTillPrize = ::max(trophiesCountTillPrize, prize.till)
+        trophiesCountTillPrize = max(trophiesCountTillPrize, prize.till)
     }
     if (trophiesCountTillPrize > 0)
       res.append(::loc("trophy/openCount", {
@@ -286,7 +345,7 @@ let isUnlockAddProgressPrize = @(prize) prize?.unlockAddProgress != null
         stacksList, { weight = "low" }, ::loc("attachables/category/other"), params))
     }
 
-    let maxButtonsCount = prizeListView.reduce(@(res, p) ::max(p?.buttonsCount ?? 0, res), 0)
+    let maxButtonsCount = prizeListView.reduce(@(res, p) max(p?.buttonsCount ?? 0, res), 0)
     prizeListView = prizeListView.map(@(p) p.__update({
       buttonsCount = maxButtonsCount
       buttons = (p?.buttons ?? []).resize(maxButtonsCount, { emptyButton = true })
@@ -343,7 +402,7 @@ let isUnlockAddProgressPrize = @(prize) prize?.unlockAddProgress != null
         }
       }
       if (data != null) {
-        maxButtonsCount = ::max(data?.buttonsCount ?? 0, maxButtonsCount)
+        maxButtonsCount = max(data?.buttonsCount ?? 0, maxButtonsCount)
         if (needShowDropChance) {
           let chanceConfig = getPrizeChanceConfig(st.prize)
           hasChanceIcon = hasChanceIcon || chanceConfig.chanceIcon != null
@@ -370,6 +429,26 @@ let isUnlockAddProgressPrize = @(prize) prize?.unlockAddProgress != null
   getViewDataUnlockProgress = @(prize, showCount, params = null) {
     title = getPrizeText(prize)
     icon = getPrizeTypeIcon(prize)
+  }
+
+  function getPrizeDescription(prize) {
+    let prizeType = getPrizeType(prize)
+    return prizeViewConfig?[prizeType].getDescription(prize) ?? ""
+  }
+
+  function getDescriptonView(prizeConfig = {}) {
+    let prizeType = getPrizeType(prizeConfig)
+    let view = {
+      textDesc = prizeViewConfig?[prizeType].getDescription(prizeConfig)
+      markupDesc = prizeViewConfig?[prizeType].getDescriptionMarkup(prizeConfig)
+    }
+
+    return view
+  }
+
+  function getPrizeTooltipConfig(prize) {
+    let prizeType = getPrizeType(prize)
+    return prizeViewConfig?[prizeType].getTooltipConfig(prize) ?? {}
   }
 
   hasKnowPrize = @(prize) getPrizeType(prize) != PRIZE_TYPE.UNKNOWN
@@ -431,7 +510,7 @@ PrizesView.getPrizeTypeName <- function getPrizeTypeName(prize, colored = true)
   return getPrizeText(prize, colored, true)
 }
 
-PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeName = false, showCount = true, full = false, forcedColor = "")
+PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, v_typeName = false, showCount = true, full = false, forcedColor = "")
 {
   if (!prize)
     return ""
@@ -449,7 +528,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   }
   else if (prize?.unit)
   {
-    if (_typeName)
+    if (v_typeName)
       name = ::loc("trophy/unlockables_names/aircraft")
     else
     {
@@ -459,7 +538,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   }
   else if (prize?.rentedUnit)
   {
-    if (_typeName)
+    if (v_typeName)
       name = ::loc("shop/unitRent")
     else
     {
@@ -475,7 +554,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   {
     let id = prize?.item || prize?.trophy
     local item = ::ItemsManager.findItemById(id)
-    if (_typeName)
+    if (v_typeName)
     {
       name = _getItemTypeName(item)
       color = item ? "activeTextColor" : "red"
@@ -522,7 +601,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
     unlockTypeName = colored ? ::colorize(typeValid ? "activeTextColor" : "red", unlockTypeName) : unlockTypeName
 
     name = unlockTypeName
-    if (!_typeName)
+    if (!v_typeName)
     {
       local nameText = ::get_unlock_name_text(unlockType, unlockId)
       if (colored)
@@ -573,7 +652,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   else if (prize?.unlockAddProgress)
   {
     let viewProgreesConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
-    name = viewProgreesConfig?.getText(prize, _typeName) ?? ""
+    name = viewProgreesConfig?.getText(prize, v_typeName) ?? ""
     showCount = false
   }
   else
@@ -586,7 +665,7 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   if (showCount)
   {
     let count = prize?.count ?? 1
-    countText = (!_typeName && count > 1) ? " x" + count : ""
+    countText = (!v_typeName && count > 1) ? " x" + count : ""
     if (colored)
       countText = ::colorize("commonTextColor", countText)
   }
@@ -613,7 +692,7 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
   if (prize?.unit)
     return unitImage ? ::image_for_air(prize.unit) : ::getUnitClassIco(prize.unit)
   if (prize?.rentedUnit)
-    return "#ui/gameuiskin#item_type_rent"
+    return "#ui/gameuiskin#item_type_rent.svg"
   if (prize?.item)
   {
     let item = ::ItemsManager.findItemById(prize.item)
@@ -625,12 +704,12 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
     if (!item)
       return ::BaseItem.typeIcon
     let topPrize = item.getTopPrize()
-    return topPrize ? getPrizeTypeIcon(topPrize) : "#ui/gameuiskin#item_type_trophies"
+    return topPrize ? getPrizeTypeIcon(topPrize) : "#ui/gameuiskin#item_type_trophies.svg"
   }
   if (prize?.premium_in_hours)
-    return "#ui/gameuiskin#item_type_premium"
+    return "#ui/gameuiskin#item_type_premium.svg"
   if (prize?.entitlement)
-    return "#ui/gameuiskin#item_type_premium"
+    return "#ui/gameuiskin#item_type_premium.svg"
   if (prize?.unlock || prize?.unlockType)
   {
     local unlockType = prize?.unlockType || ::get_unlock_type_by_id(prize?.unlock)
@@ -643,18 +722,18 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
     return ::g_decorator_type.getTypeByResourceType(prize.resourceType).prizeTypeIcon
 
   if (prize?.gold)
-    return "#ui/gameuiskin#item_type_eagles"
+    return "#ui/gameuiskin#item_type_eagles.svg"
   if (prize?.warpoints)
-    return "#ui/gameuiskin#item_type_warpoints"
+    return "#ui/gameuiskin#item_type_warpoints.svg"
   if (prize?.exp)
-    return "#ui/gameuiskin#item_type_Free_RP"
+    return "#ui/gameuiskin#item_type_Free_RP.svg"
   if (prize?.warbonds)
-    return "#ui/gameuiskin#item_type_warbonds"
+    return "#ui/gameuiskin#item_type_warbonds.svg"
   if (prize?.unlockAddProgress) {
     let viewProgreesConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
     return viewProgreesConfig?.image ?? ""
   }
-  return "#ui/gameuiskin#item_type_placeholder"
+  return "#ui/gameuiskin#item_type_placeholder.svg"
 }
 
 PrizesView.isPrizeMultiAward <- function isPrizeMultiAward(prize)
@@ -675,7 +754,7 @@ PrizesView._getContentFixedAmount <- function _getContentFixedAmount(content)
       return 1
     res = itemCount
   }
-  return ::max(res, 1)
+  return max(res, 1)
 }
 
 //stack = {
@@ -714,9 +793,9 @@ PrizesView._findOneStack <- function _findOneStack(stackList, prizeType, checkFu
 PrizesView._addPrizeItemToStack <- function _addPrizeItemToStack(stack, item, prize, stackLevel)
 {
   let count = prize?.count ?? 1
-  stack.countMin = ::min(stack.countMin, count)
-  stack.countMax = ::max(stack.countMax, count)
-  stack.level    = ::max(stack.level, stackLevel)
+  stack.countMin = min(stack.countMin, count)
+  stack.countMax = max(stack.countMax, count)
+  stack.level    = max(stack.level, stackLevel)
   stack.size++
   if (stack?.params)
     item.updateStackParams(stack.params)
@@ -784,8 +863,8 @@ PrizesView._findAndStackPrizeCurrency <- function _findAndStackPrizeCurrency(pri
 
   if (stack)
   {
-    stack.countMin = ::min(stack.countMin, cfg.val)
-    stack.countMax = ::max(stack.countMax, cfg.val)
+    stack.countMin = min(stack.countMin, cfg.val)
+    stack.countMax = max(stack.countMax, cfg.val)
     stack.level = prizesStack.DETAILED
     return true
   }
@@ -822,9 +901,9 @@ PrizesView._findAndStackPrizeUnit <- function _findAndStackPrizeUnit(prize, stac
     stack.size++
 
     if (stack.size >= UNITS_STACK_BY_TYPE_COUNT)
-      stack.level = ::max(prizesStack.BY_TYPE, stackLevel)
+      stack.level = max(prizesStack.BY_TYPE, stackLevel)
     else if (stack.size >= UNITS_STACK_DETAILED_COUNT)
-      stack.level = ::max(prizesStack.DETAILED, stackLevel)
+      stack.level = max(prizesStack.DETAILED, stackLevel)
 
     return true
   }
@@ -999,9 +1078,9 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
   let { showTooltip = true } = params
   local icon = ""
   if (modName == "premExpMul") //talisman
-    icon = "#ui/gameuiskin#item_type_talisman"
+    icon = "#ui/gameuiskin#item_type_talisman.svg"
   else
-    icon = unit?.isTank() ? "#ui/gameuiskin#item_type_modification_tank" : "#ui/gameuiskin#item_type_modification_aircraft"
+    icon = unit?.isTank() ? "#ui/gameuiskin#item_type_modification_tank.svg" : "#ui/gameuiskin#item_type_modification_aircraft.svg"
 
   return {
     icon = icon
@@ -1026,7 +1105,7 @@ PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params
   if (count && count > 1)
     title += ::colorize("activeTextColor", " x" + count)
   return {
-    icon = "#ui/gameuiskin#item_type_spare"
+    icon = "#ui/gameuiskin#item_type_spare.svg"
     icon2 = ::get_unit_country_icon(unit)
     shopItemType = getUnitRole(unit)
     title = title
@@ -1048,7 +1127,7 @@ PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize
               + ::colorize("activeTextColor", ::getUnitName(unit))
               + ", " + ::colorize("userlogColoredText", ::loc("crew/qualification/" + specLevel))
   return {
-    icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces" : "#ui/gameuiskin#item_type_crew_experts"
+    icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces.svg" : "#ui/gameuiskin#item_type_crew_experts.svg"
     icon2 = ::get_unit_country_icon(unit)
     title = title
     tooltipId = showTooltip ? ::g_tooltip.getIdUnit(unitName) : null

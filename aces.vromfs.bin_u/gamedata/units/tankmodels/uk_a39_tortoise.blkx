@@ -416,6 +416,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1648,7 +1649,7 @@
         "defaultGearRadius": 0.25,
         "frontBackGearRadius": 0.35,
         "topGearRadius": 0.15,
-        "defaultDampeningForce": [320000.0,320000.0],
+        "defaultDampeningForce": [240000.0,240000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }
@@ -3124,10 +3125,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk"
+        "image": "#ui/gameuiskin#tank_reinforcement_uk.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk"
+        "image": "#ui/gameuiskin#tank_reinforcement_uk.png"
       },
       "94mm_britain_32pdr_HE": [],
       "tank_smoke_screen_system_mod": {
@@ -3273,60 +3274,15 @@
                 "weaponType": "rockets",
                 "startFx": "",
                 "useEmitter": true,
-                "emitter": "emtr_mortar_flame_01",
-                "emitterGenRange": [1.0,12.0],
-                "emitterGenFmt": "emtr_mortar_flame_%02d",
+                "emitter": "emtr_mortart_flame_01",
+                "emitterGenRange": [1.0,6.0],
+                "emitterGenFmt": "emtr_mortart_flame_%02d",
                 "ignoreLoaderPenalty": true,
                 "createGunEffects": true,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "allowableDelta": 360.0,
-                "salvo": 6,
-                "speedYaw": 24.0,
-                "speedPitch": 15.0,
-                "fireConeAngle": 1.0,
-                "bullets": 12,
-                "salvoAmount": 100.0,
-                "ChainfireTime": 0.0,
-                "DelayAfterShoot": 5.0,
-                "AttackMaxDistance": 1000.0,
-                "AttackMaxRadius": 1000.0,
-                "AttackMaxHeight": 1000.0,
-                "accuracyAir": 0.0,
-                "accuracyGnd": 1.5,
-                "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_grenade",
-                  "gun": "bone_grenade"
-                },
-                "limits": {
-                  "yaw": [-0.0,0.0],
-                  "pitch": [0.0,0.0]
-                }
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner4",
-                "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
-                "weaponType": "rockets",
-                "startFx": "",
-                "useEmitter": true,
-                "emitter": "emtr_mortart_flame_01",
-                "emitterGenRange": [1.0,6.0],
-                "emitterGenFmt": "emtr_mortart_flame_%02d",
-                "createGunEffects": true,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "allowableDelta": 360.0,
-                "salvo": 6,
+                "salvo": 2,
                 "speedYaw": 24.0,
                 "speedPitch": 15.0,
                 "fireConeAngle": 1.0,
@@ -3350,6 +3306,52 @@
                   "head": "bone_grenade_02",
                   "gun": "bone_grenade_02",
                   "gunnerDm": "commander_dm"
+                },
+                "limits": {
+                  "yaw": [-0.0,0.0],
+                  "pitch": [0.0,0.0]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner4",
+                "triggerGroup": "smoke",
+                "blk": "gameData/Weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
+                "weaponType": "rockets",
+                "startFx": "",
+                "useEmitter": true,
+                "emitter": "emtr_mortar_flame_01",
+                "emitterGenRange": [1.0,12.0],
+                "emitterGenFmt": "emtr_mortar_flame_%02d",
+                "ignoreLoaderPenalty": true,
+                "createGunEffects": true,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "allowableDelta": 360.0,
+                "salvo": 4,
+                "speedYaw": 24.0,
+                "speedPitch": 15.0,
+                "fireConeAngle": 1.0,
+                "bullets": 12,
+                "salvoAmount": 100.0,
+                "ChainfireTime": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_grenade",
+                  "gun": "bone_grenade"
                 },
                 "limits": {
                   "yaw": [-0.0,0.0],

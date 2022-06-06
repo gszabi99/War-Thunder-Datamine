@@ -1,3 +1,6 @@
+#explicit-this
+#no-root-fallback
+
 let LoginProcess = require("loginProcess.nut")
 
 global enum LOGIN_STATE //bit mask
@@ -30,7 +33,7 @@ global enum LOGIN_STATE //bit mask
 
   function onProfileReceived()
   {
-    addState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED)
+    this.addState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED)
 
     ::broadcastEvent("ProfileReceived")
   }
@@ -44,104 +47,104 @@ global enum LOGIN_STATE //bit mask
   }
 }
 
-g_login.init <- function init()
+::g_login.init <- function init()
 {
   ::g_script_reloader.registerPersistentDataFromRoot("g_login")
   ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
 }
 
-g_login.isAuthorized <- function isAuthorized()
+::g_login.isAuthorized <- function isAuthorized()
 {
-  return (curState & LOGIN_STATE.AUTHORIZED) != 0
+  return (this.curState & LOGIN_STATE.AUTHORIZED) != 0
 }
 
-g_login.isReadyToFullLoad <- function isReadyToFullLoad()
+::g_login.isReadyToFullLoad <- function isReadyToFullLoad()
 {
-  return hasState(LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED)
+  return this.hasState(LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED)
 }
 
-g_login.isLoggedIn <- function isLoggedIn()
+::g_login.isLoggedIn <- function isLoggedIn()
 {
-  return (curState & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN
+  return (this.curState & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN
 }
 
-g_login.isProfileReceived <- function isProfileReceived()
+::g_login.isProfileReceived <- function isProfileReceived()
 {
-  return (curState & LOGIN_STATE.PROFILE_RECEIVED) != 0
+  return (this.curState & LOGIN_STATE.PROFILE_RECEIVED) != 0
 }
 
-g_login.hasState <- function hasState(state)
+::g_login.hasState <- function hasState(state)
 {
-  return (curState & state) == state
+  return (this.curState & state) == state
 }
 
-g_login.startLoginProcess <- function startLoginProcess(shouldCheckScriptsReload = false)
+::g_login.startLoginProcess <- function startLoginProcess(shouldCheckScriptsReload = false)
 {
-  if (curLoginProcess && curLoginProcess.isValid())
+  if (this.curLoginProcess && this.curLoginProcess.isValid())
     return
-  curLoginProcess = loginProcessClass(shouldCheckScriptsReload)
+  this.curLoginProcess = this.loginProcessClass(shouldCheckScriptsReload)
 }
 
-g_login.setState <- function setState(newState)
+::g_login.setState <- function setState(newState)
 {
-  if (curState == newState)
+  if (this.curState == newState)
     return
 
-  let wasAuthorized = isAuthorized()
-  let wasLoggedIn = isLoggedIn()
+  let wasAuthorized = this.isAuthorized()
+  let wasLoggedIn = this.isLoggedIn()
 
-  curState = newState
+  this.curState = newState
 
-  if (wasAuthorized != isAuthorized())
-    onAuthorizeChanged()
-  if (wasLoggedIn != isLoggedIn())
-    onLoggedInChanged()
+  if (wasAuthorized != this.isAuthorized())
+    this.onAuthorizeChanged()
+  if (wasLoggedIn != this.isLoggedIn())
+    this.onLoggedInChanged()
 
   ::broadcastEvent("LoginStateChanged")
 }
 
-g_login.addState <- function addState(statePart)
+::g_login.addState <- function addState(statePart)
 {
-  setState(curState | statePart)
+  this.setState(this.curState | statePart)
 }
 
-g_login.removeState <- function removeState(statePart)
+::g_login.removeState <- function removeState(statePart)
 {
-  setState(curState & ~statePart)
+  this.setState(this.curState & ~statePart)
 }
 
-g_login.destroyLoginProgress <- function destroyLoginProgress()
+::g_login.destroyLoginProgress <- function destroyLoginProgress()
 {
-  if (curLoginProcess)
-    curLoginProcess.destroy()
-  curLoginProcess = null
+  if (this.curLoginProcess)
+    this.curLoginProcess.destroy()
+  this.curLoginProcess = null
 }
 
-g_login.reset <- function reset()
+::g_login.reset <- function reset()
 {
-  destroyLoginProgress()
-  setState(LOGIN_STATE.NOT_LOGGED_IN)
+  this.destroyLoginProgress()
+  this.setState(LOGIN_STATE.NOT_LOGGED_IN)
 }
 
-g_login.onEventScriptsReloaded <- function onEventScriptsReloaded(p)
+::g_login.onEventScriptsReloaded <- function onEventScriptsReloaded(p)
 {
-  if (!isLoggedIn() && isAuthorized())
-    startLoginProcess(true)
-  afterScriptsReload()
+  if (!this.isLoggedIn() && this.isAuthorized())
+    this.startLoginProcess(true)
+  this.afterScriptsReload()
 }
 
-g_login.getStateDebugStr <- function getStateDebugStr(state = null)
+::g_login.getStateDebugStr <- function getStateDebugStr(state = null)
 {
-  state = state ?? curState
+  state = state ?? this.curState
   return state == 0 ? "0" : ::bit_mask_to_string("LOGIN_STATE", state)
 }
 
-g_login.debugState <- function debugState(shouldShowNotSetBits = false)
+::g_login.debugState <- function debugState(shouldShowNotSetBits = false)
 {
   let debugLog = ::dlog // warning disable: -forbidden-function
   if (shouldShowNotSetBits)
-    return debugLog($"not set loginState = {getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~curState)}")
-  return debugLog($"loginState = {getStateDebugStr()}")
+    return debugLog($"not set loginState = {this.getStateDebugStr(LOGIN_STATE.LOGGED_IN & ~this.curState)}")
+  return debugLog($"loginState = {this.getStateDebugStr()}")
 }
 
 ::is_logged_in <- function is_logged_in() //used from code

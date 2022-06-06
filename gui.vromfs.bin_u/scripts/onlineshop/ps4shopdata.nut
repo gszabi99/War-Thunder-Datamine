@@ -28,12 +28,12 @@ let canUseIngameShop = @() isPlatformSony && ::has_feature("PS4IngameShop")
 local haveItemDiscount = null
 
 // Calls on finish updating skus extended info
-let onFinishCollectData = function(_categoriesData = null)
+let onFinishCollectData = function(v_categoriesData = null)
 {
   if (!canUseIngameShop())
     return
 
-  persistent.categoriesData.setFrom(_categoriesData)
+  persistent.categoriesData.setFrom(v_categoriesData)
   isFinishedUpdateItems = true
   haveItemDiscount = null
 

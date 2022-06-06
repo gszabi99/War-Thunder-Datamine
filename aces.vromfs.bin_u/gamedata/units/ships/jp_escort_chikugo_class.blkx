@@ -87,19 +87,19 @@
     "explosionFx": "explosion_ship_small"
   },
   {
-    "smokeScreenActivateTime": 10.0
+    "smokeScreenActivateTime": 5.0
   },
   {
     "smokeScreenEffectTime": 30.0
   },
   {
-    "smokeScreenRad": 50.0
+    "smokeScreenRad": 55.0
   },
   {
     "smokeScreenFx": "tank_smokescreen"
   },
   {
-    "smokeScreenOffset": [-48.0,2.0,0.0]
+    "smokeScreenOffset": [-45.0,2.0,0.0]
   },
   {
     "rearmSmokeTimeOnField": 180.0
@@ -1012,16 +1012,16 @@
         "genericDamageMult": 0.15,
         "armorThrough": 35.0,
         "compartment_01_dm": {
-          "hp": 2500.0
+          "hp": 2100.0
         },
         "compartment_02_dm": {
-          "hp": 2500.0
+          "hp": 1700.0
         },
         "compartment_03_dm": {
-          "hp": 1800.0
+          "hp": 1700.0
         },
         "compartment_04_dm": {
-          "hp": 2500.0
+          "hp": 2100.0
         }
       },
       "control_compartments": {
@@ -1031,10 +1031,13 @@
         "genericDamageMult": 0.5,
         "armorThrough": 15.0,
         "bridge_dm": {
-          "hp": 500.0
+          "hp": 399.0
         },
         "radio_station_dm": {
-          "hp": 500.0
+          "hp": 400.0
+        },
+        "fire_control_room_01_dm": {
+          "hp": 400.0
         }
       },
       "cover": {
@@ -1044,22 +1047,22 @@
         "genericDamageMult": 0.1,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 1500.0
+          "hp": 10600.0
         },
         "cover_02_dm": {
-          "hp": 1000.0
+          "hp": 10194.0
         },
         "cover_03_dm": {
-          "hp": 1147.0
+          "hp": 10600.0
         },
         "cover_04_dm": {
-          "hp": 1000.0
+          "hp": 9380.0
         },
         "cover_05_dm": {
-          "hp": 1000.0
+          "hp": 8500.0
         },
         "cover_06_dm": {
-          "hp": 1000.0
+          "hp": 8500.0
         }
       },
       "superstructures": {
@@ -1133,10 +1136,10 @@
         "genericDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
-          "hp": 3000.0
+          "hp": 2500.0
         },
         "engine_room_02_dm": {
-          "hp": 2000.0
+          "hp": 2500.0
         }
       },
       "engine_rooms": {
@@ -1266,9 +1269,9 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "fireDamageMult": 1.5,
-        "pressureDamageMult": 5.0,
+        "pressureDamageMult": 7.0,
         "main_caliber_turret_01_dm": {
-          "hp": 350.0
+          "hp": 300.0
         }
       },
       "turrets_aux_caliber": {
@@ -1282,9 +1285,9 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "fireDamageMult": 2.0,
-        "pressureDamageMult": 1.0,
+        "pressureDamageMult": 2.0,
         "aa_turret_01_dm": {
-          "hp": 100.0
+          "hp": 90.0
         }
       },
       "gun_main_caliber": {
@@ -1326,10 +1329,10 @@
         "fireProtectionHp": 5.0,
         "armorThrough": 150.0,
         "ammunition_storage_01_dm": {
-          "hp": 2000.0
+          "hp": 1500.0
         },
         "ammunition_storage_02_dm": {
-          "hp": 1927.0
+          "hp": 1304.0
         }
       },
       "ammo_storages_shells": {
@@ -1405,7 +1408,7 @@
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
         "elevator_01_dm": {
-          "hp": 500.0
+          "hp": 700.0
         }
       },
       "pumps": {
@@ -1472,22 +1475,22 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 22
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 18
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 9
+        "crew": 18
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 12
+        "crew": 21
       },
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -1507,27 +1510,32 @@
       "sailor9": {
         "dmPart": "engine_room_01_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 15
       },
       "sailor10": {
         "dmPart": "engine_room_02_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 15
       },
       "sailor11": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
-        "crew": 20
+        "crew": 15
       },
       "sailor12": {
         "dmPart": "transmission_02_dm",
         "role": "sailor",
-        "crew": 20
+        "crew": 15
       },
       "sailor13": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 3
+        "crew": 4
+      },
+      "sailor14": {
+        "dmPart": "fire_control_room_01_dm",
+        "role": "sailor",
+        "crew": 5
       }
     }
   },
@@ -2153,9 +2161,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2164,7 +2172,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2175,9 +2183,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2186,9 +2194,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2197,9 +2205,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2208,7 +2216,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -2219,9 +2227,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2230,9 +2238,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -2933,10 +2941,10 @@
             "measureAccuracy": 1.0
           },
           {
-            "targetLockTime": 8.0
+            "targetLockTime": 6.0
           },
           {
-            "calcTime": 4.0
+            "calcTime": 3.0
           },
           {
             "rotationSpeed": 20.0
@@ -4120,19 +4128,19 @@
   },
   {
     "breaches": {
-      "repairSpeed": 32.0,
-      "waterMassVel": -50000.0,
-      "waterMassMult": 100.0,
-      "sizeToRepair": [0.01,4.0,10.0,450.0],
+      "repairSpeed": 21.0,
+      "waterMassVel": -65000.0,
+      "waterMassMult": 80.0,
+      "sizeToRepair": [0.01,3.0,10.0,370.0],
       "additionalWaterDeathThreshold": 4700000.0,
-      "additionalWaterShouldDiePercent": 0.3,
+      "additionalWaterShouldDiePercent": 0.35,
       "fatalBreachDrownTime": 35.0,
       "maxHeelingAngle": 34.0,
-      "maxHeelingTime": 10.0,
-      "criticalHeelingAnglePercent": 0.5,
-      "maxCriticalHeelingTime": 3.0,
+      "maxHeelingTime": 9.0,
+      "criticalHeelingAnglePercent": 0.65,
+      "maxCriticalHeelingTime": 2.0,
       "heelingDeathHeightOffsetMult": 1.0,
-      "sideCenterOfMassOffsetPercent": 0.4
+      "sideCenterOfMassOffsetPercent": 0.18
     }
   },
   {

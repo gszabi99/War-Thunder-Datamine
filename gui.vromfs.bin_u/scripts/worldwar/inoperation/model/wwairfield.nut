@@ -228,7 +228,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
           break
 
         if (unitClass == WW_UNIT_CLASS.FIGHTER && amount > unitRange.x)
-          additionalAirs = ::min(amount - unitRange.x, customClassAmount)
+          additionalAirs = min(amount - unitRange.x, customClassAmount)
       }
 
       if (hasEnough)

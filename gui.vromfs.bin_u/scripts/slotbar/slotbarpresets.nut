@@ -1,3 +1,4 @@
+let regexp2 = require("regexp2")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -299,7 +300,7 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   function move(idx, offset)
   {
     let countryId = ::get_profile_country_sq()
-    let newIdx = ::clamp(idx + offset, 0, presets[countryId].len() - 1)
+    let newIdx = clamp(idx + offset, 0, presets[countryId].len() - 1)
     if (newIdx == idx)
       return false
     presets[countryId].insert(newIdx, presets[countryId].remove(idx))

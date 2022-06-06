@@ -413,6 +413,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1318,8 +1319,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1363,8 +1364,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1372,8 +1373,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1381,8 +1382,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1421,29 +1422,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2390,7 +2391,7 @@
           "parkInDeadzone": false,
           "autoLoader": true,
           "speedYaw": 12.0,
-          "speedPitch": 5.0,
+          "speedPitch": 15.0,
           "fireConeAngle": 1.0,
           "bullets": 28,
           "salvoAmount": 100.0,
@@ -2504,27 +2505,42 @@
       "mechanics": {
         "maxBrakeForce": 130000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 1.0,
-        "sideGearRatio": 4.2,
+        "mainGearRatio": 5.65,
+        "sideGearRatio": 1.0,
         "neutralGearRatio": 10.0,
         "gearRatios": [
           {
-            "ratio": -4.61
+            "ratio": -2.58
+          },
+          {
+            "ratio": -5.16
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 8.0
+            "ratio": 7.76
           },
           {
-            "ratio": 6.0
+            "ratio": 3.88
           },
           {
-            "ratio": 2.6
+            "ratio": 3.115
           },
           {
-            "ratio": 1.39
+            "ratio": 2.35
+          },
+          {
+            "ratio": 1.94
+          },
+          {
+            "ratio": 1.53
+          },
+          {
+            "ratio": 1.28
+          },
+          {
+            "ratio": 1.03
           }
         ]
       },
@@ -3136,10 +3152,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_jp"
+        "image": "#ui/gameuiskin#tank_reinforcement_jp.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_jp"
+        "image": "#ui/gameuiskin#tank_reinforcement_jp.png"
       },
       "155mm_M110_Smoke_ammo_pack": [],
       "155mm_M107_HE_PF_ammo_pack": [],

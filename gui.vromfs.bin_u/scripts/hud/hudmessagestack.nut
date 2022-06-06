@@ -5,11 +5,11 @@ let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
   guiScene = null
   timers = DaguiSceneTimers(0.25, "hudMessagesTimers")
 
-  function init(_scene)
+  function init(v_scene)
   {
-    if (!::checkObj(_scene))
+    if (!::checkObj(v_scene))
       return
-    scene = _scene
+    scene = v_scene
     guiScene = scene.getScene()
     ::g_hud_event_manager.subscribe("ReinitHud", function(eventData)
       {

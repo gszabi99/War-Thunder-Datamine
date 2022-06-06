@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 
 let delayedRankUpWnd = []

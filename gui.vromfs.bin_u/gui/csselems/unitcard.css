@@ -306,7 +306,7 @@ shopAirImg {
 }
 
 [isPkgDev=yes] > shopAirImg {
-  background-image:#ui/gameuiskin#unit_under_construction;
+  background-image:#ui/gameuiskin#unit_under_construction.png;
   background-color:@white;
 }
 [isPkgDev=yes][shopStat=disabled] > shopAirImg{
@@ -330,7 +330,7 @@ itemWinkBlock {
   position:absolute;
   input-transparent:yes;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#item_glow;
+  background-image:#ui/gameuiskin#item_glow.png;
   background-color:@shopItemWinkColor;
   background-position:4, 4, 4, 9;
   transp-base:255;
@@ -579,7 +579,7 @@ hoverHighlight {
   pos: 0, 0;
   size: pw, ph;
   re-type:9rect;
-  foreground-image: #ui/gameuiskin#item_glow;
+  foreground-image: #ui/gameuiskin#item_glow.png;
   foreground-repeat:expand;
   foreground-color:@shopItemHover;
   foreground-position:4, 4, 4, 9;
@@ -658,7 +658,7 @@ bottomline > shopItemPrice {
 }
 
 eliteIcon {
-  background-image:#ui/gameuiskin#item_icon_elite_slot;
+  background-image:#ui/gameuiskin#item_icon_elite_slot.png;
   background-svg-size: h, ph - 1@slotTopLineHeight - 1@slotBottomShadeHeight - 1@slotBorderSize;
   height:ph - 1@slotTopLineHeight - 1@slotBottomShadeHeight - 1@slotBorderSize;
   width:h;
@@ -925,6 +925,7 @@ specIconBlock {
 
 specIconBlock > shopTrainedImg, specIconBlock > warningIcon {
   size:ph,ph;
+  background-svg-size:ph,ph;
   background-color:@white;
 }
 
@@ -952,6 +953,7 @@ crewInfoBlock > icon {
   pos:ph/2-h/2, ph/2-h/2;
   position:relative;
   background-color:@white;
+  background-svg-size:1@sIco,1@sIco;
   css-hier-invalidate:yes;
 }
 
@@ -1052,7 +1054,8 @@ rentIcon > icon {
 }
 
 talismanIcon {
-  background-image:#ui/gameuiskin#item_type_talisman;
+  background-image:#ui/gameuiskin#item_type_talisman.svg;
+  background-svg-size:@sIco, @sIco;
   size:@sIco, @sIco;
   pos:pw/2-w/2, -6@sf/@pf_outdated;
   position:absolute;
@@ -1124,7 +1127,7 @@ shopItem > bonusesDiv {
 }
 
 shopItem > discount {
-  background-image:#ui/gameuiskin#discount;
+  background-image:#ui/gameuiskin#discount.png;
   rotation:-170;
   pos:-35%w, ph-55%h;
   position:absolute;
@@ -1194,12 +1197,20 @@ shopArrow[type=vertical] {
   background-position:0@dp, 2@dp, 0@dp, 11@dp;
 }
 
+shopArrow[type=vertical][isOutlineIcon=yes] {
+  background-image:#ui/gameuiskin#arrow_simple_stroke.svg;
+}
+
 shopArrow[type=horizontal] {
   re-type:9rect;
   background-image:#ui/gameuiskin#arrow_simple_hor.svg;
   background-repeat:expand-svg;
   background-svg-size:@modArrowWidth, @modArrowWidth;
   background-position:2@dp, 0@dp, 11@dp, 0@dp;
+}
+
+shopArrow[type=horizontal][isOutlineIcon=yes] {
+  background-image:#ui/gameuiskin#arrow_simple_hor_stroke.svg;
 }
 
 shopLine {
@@ -1210,11 +1221,19 @@ shopLine {
   rotation-centre:0;
 }
 
+shopLine[isOutlineIcon=yes] {
+  background-image:#ui/gameuiskin#line_lshaped_stroke.svg;
+}
+
 shopAngle {
   re-type:9rect;
   background-image:#ui/gameuiskin#angle_lshaped.svg;
   background-repeat:expand-svg;
   background-position:2@dp;
+}
+
+shopAngle[isOutlineIcon=yes] {
+  background-image:#ui/gameuiskin#angle_lshaped_stroke.svg;
 }
 
 shopArrow[isDisabled = yes],
@@ -1232,6 +1251,16 @@ shopRow[type=locked] {
   foreground-color:@shopFrameLockedColor;
 }
 
+shopAlarmIcon {
+  height:'1.2@modArrowWidth';
+  width:'1.2@modArrowWidth';
+  position:'absolute';
+  background-color:'@white';
+  background-image:'#ui/gameuiskin#alarmclock_icon.svg';
+  background-svg-size:'1@newWidgetIconHeight, 1@newWidgetIconHeight';
+  background-repeat:'aspect-ratio';
+}
+
 shopBlockTierNum{
   re-type:text;
   color:@commonTextColor;
@@ -1240,7 +1269,7 @@ shopBlockTierNum{
   height:1@shop_height;
   width:h;
   position:absolute;
-  background-image:#ui/gameuiskin#block_bg_rounded_flat@@vs;
+  background-image:#ui/gameuiskin#block_bg_rounded_flat@@vs.png;
   background-position:4;
   background-repeat:expand;
   background-color:@weaponryItem;

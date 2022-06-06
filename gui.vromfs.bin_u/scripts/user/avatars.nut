@@ -52,7 +52,7 @@ subscriptions.addListenersWithoutEnv({
 
 bhvAvatar.init({
   intIconToString = getIconById
-  getIconPath = @(icon) "#ui/images/avatars/" + icon
+  getIconPath = @(icon) $"#ui/images/avatars/{icon}.png"
   getConfig = AVATARS.get.bindenv(AVATARS)
 })
 

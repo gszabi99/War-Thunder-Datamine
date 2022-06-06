@@ -34,11 +34,35 @@ let style = {
   }
 }
 
+let offStyle = {
+  textStyle = {
+    normal = {
+      color = Color(64,64,64)
+    }
+    hover = {
+      color = Color(64,64,64)
+    }
+    active = {
+      color = Color(64,64,64)
+    }
+  }
+  boxStyle = {
+    hover = {
+      fillColor = Color(10,10,10)
+    }
+    active = {
+      fillColor = Color(10,10,10)
+      pos = [0, 0]
+    }
+  }
+}
+
 let function textButton(text, handler, params = {}){
   let stateFlags = Watched(0)
   let disabled = params?.disabled
-  let textStyle = deep_merge(style.text, params?.textStyle ?? {})
-  let boxStyle = deep_merge(style.box, params?.boxStyle ?? {})
+  let offRestyle = params?.off ? offStyle : {}
+  let textStyle = deep_merge(deep_merge(style.text, offRestyle?.textStyle ?? {}), params?.textStyle ?? {})
+  let boxStyle = deep_merge(deep_merge(style.box, offRestyle?.boxStyle ?? {}), params?.boxStyle ?? {})
   let textNormal = textStyle.normal
   let boxNormal = boxStyle.normal
   return function(){
@@ -61,7 +85,8 @@ let function textButton(text, handler, params = {}){
       behavior = Behaviors.Button
       hotkeys = params?.hotkeys
       onClick = handler
-      children = {rendObj = ROBJ_DTEXT text}.__update(textNormal, textS)
+      onHover = params?.onHover
+      children = {rendObj = ROBJ_TEXT text}.__update(textNormal, textS)
     })
   }
 

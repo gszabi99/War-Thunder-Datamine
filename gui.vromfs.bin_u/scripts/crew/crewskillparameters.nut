@@ -1,3 +1,4 @@
+let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
@@ -59,7 +60,7 @@ let function onEventSignOut(params) {
 }
 
 let function getBaseDescriptionText(memberName, skillName, crew) {
-  local locId = ::format("crew/%s/%s/tooltip", memberName, skillName)
+  local locId = format("crew/%s/%s/tooltip", memberName, skillName)
   local locParams = null
 
   if (skillName == "eyesight"

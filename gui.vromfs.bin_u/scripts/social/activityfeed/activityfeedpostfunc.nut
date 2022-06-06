@@ -11,12 +11,12 @@ let facebookPostFunc = function(config, feed) {
     require("%scripts/social/activityFeed/facebookPostFunc.nut")(config, feed)
 }
 
-return function(_config, _customFeedParams = {}, reciever = bit_activity.NONE) {
-  if (u.isEmpty(_config) || u.isEmpty(_customFeedParams))
+return function(v_config, v_customFeedParams = {}, reciever = bit_activity.NONE) {
+  if (u.isEmpty(v_config) || u.isEmpty(v_customFeedParams))
     return
 
-  let config = u.copy(_config)
-  let customFeedParams = u.copy(_customFeedParams)
+  let config = u.copy(v_config)
+  let customFeedParams = u.copy(v_customFeedParams)
 
   if (reciever & bit_activity.PS4_ACTIVITY_FEED)
     psnPostFunc(config, customFeedParams)

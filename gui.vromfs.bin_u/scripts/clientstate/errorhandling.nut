@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -7,16 +8,16 @@ let netAssertsList = []
 ::script_net_assert_once <- function script_net_assert_once(id, msg)
 {
   if (::isInArray(id, netAssertsList))
-    return dagor.debug(msg)
+    return ::dagor.debug(msg)
 
   netAssertsList.append(id)
-  return script_net_assert(msg)
+  return ::script_net_assert(msg)
 }
 
 ::assertf_once <- function assertf_once(id, msg)
 {
   if (::isInArray(id, netAssertsList))
-    return dagor.debug(msg)
+    return ::dagor.debug(msg)
   netAssertsList.append(id)
   return ::dagor.assertf(false, msg)
 }
@@ -26,7 +27,7 @@ let netAssertsList = []
   let info = ::getstackinfos(2) // get calling function
   let id = (info?.src ?? "?") + ":" + (info?.line ?? "?") + " (" + (info?.func ?? "?") + ")"
   let msg = "Entered unreachable code: " + id
-  script_net_assert_once(id, msg)
+  ::script_net_assert_once(id, msg)
 }
 
 callback.setContextDbgNameFunction(function(context)
@@ -45,10 +46,10 @@ callback.setAssertFunction(function(cb, assertText)
   local eventText = ""
   let curEventName = subscriptions.getCurrentEventName()
   if (curEventName)
-    eventText += ::format("event = %s, ", curEventName)
+    eventText += format("event = %s, ", curEventName)
   let hudEventName = ("g_hud_event_manager" in getroottable()) ? ::g_hud_event_manager.getCurHudEventName() : null
   if (hudEventName)
-    eventText += ::format("hudEvent = %s, ", hudEventName)
+    eventText += format("hudEvent = %s, ", hudEventName)
 
   ::script_net_assert_once("cb error " + eventText,
     format("Callback error ( %scontext = %s):\n%s",

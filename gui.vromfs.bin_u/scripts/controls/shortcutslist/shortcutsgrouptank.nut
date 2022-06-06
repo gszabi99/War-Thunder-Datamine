@@ -251,14 +251,12 @@ return [
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "gm_sensor_cue_y"
     type = CONTROL_TYPE.AXIS
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ID_TANK_NIGHT_VISION"
@@ -535,7 +533,7 @@ return [
     id = "ID_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
-    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
+    showFunc = ::have_xinput_device
   }
   {
     id = "ID_SCOUT"
@@ -590,7 +588,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
+    showFunc = ::have_xinput_device
     checkAssign = @() ::is_xinput_device()
   }
   {
@@ -599,7 +597,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
+    showFunc = ::have_xinput_device
     checkAssign = @() ::is_xinput_device()
   }
 ]

@@ -3,13 +3,11 @@ tdiv {
   pos:t='0,0'
   position:t='relative'
   size:t='fw, ph'
-  padding-right:t='1@blockInterval'
   flow:t='vertical'
   css-hier-invalidate:t='yes'
 
   tdiv {
     width:t='pw'
-    background-color:t='@separatorBlockColor'
 
     tdiv {
       position:t='relative'
@@ -43,8 +41,7 @@ tdiv {
 
     tdiv { //info texts
       width:t='pw'
-      padding:t='1@blockInterval, 0'
-      background-color:t='@separatorBlockColor'
+      padding:t='0, 0, 0, 1@blockInterval'
 
       tdiv { //left info
         width:t='fw'
@@ -136,7 +133,7 @@ tdiv {
             size:t='@unlockIconSize, @unlockIconSize'
             position:t='absolute'
             pos:t='0, -0.2h'
-            background-image:t='#ui/gameuiskin#favorite'
+            background-image:t='#ui/gameuiskin#favorite.png'
             display:t='hide'
           }
         }
@@ -149,7 +146,7 @@ tdiv {
           btnName:t='start'
           display:t='hide'
           enable:t='no'
-          visualStyle:t="purchase"
+          visualStyle:t="secondary"
           buttonWink{}
           ButtonImg{}
         }
@@ -166,10 +163,13 @@ tdiv {
         }
       }
     }
+    
+    rowSeparator {}
+
     tdiv {
       width:t='pw'
       min-height:t='1@eventTacticalMapSize + 3@leaderboardTrHeight + 0.02@sf + 1@buttonHeight'
-      padding-top:t='0.01@scrn_tgt'
+      padding-top:t='2@blockInterval'
 
       tdiv {
         id:t='tactical-map'

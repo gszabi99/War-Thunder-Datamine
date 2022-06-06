@@ -12,6 +12,7 @@ modIcon{
     pos:t='50%pw-50%w, 50%ph-50%h'
     position:t='absolute'
     background-image:t='<<itemImg>>'
+    background-svg-size:t='pw-2@weaponIconPadding,ph-2@weaponIconPadding'
 
     <<@modUpgradeIcon>>
     upgradeImg {

@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let visibleConditionsList = {
   isInClan = @() ::is_in_clan()
   isNotInClan = @() !::is_in_clan()
@@ -9,7 +10,7 @@ let function isVisibleByConditions(blk)
   if (visibleConditions == null)
     return true
 
-  foreach (name in ::split(visibleConditions, "; "))
+  foreach (name in split_by_chars(visibleConditions, "; "))
     if (!(visibleConditionsList?[name]?() ?? true))
       return false
 

@@ -14,6 +14,7 @@ let function fieldBoolCheckbox(params = {}) {
 
   let group = ElemGroup()
   let stateFlags = Watched(0)
+  let hoverFlag = Computed(@() stateFlags.value & S_HOVER)
 
   let function updateTextFromEcs() {
     let val = getVal(eid, rawComponentName, path)
@@ -42,7 +43,7 @@ let function fieldBoolCheckbox(params = {}) {
     if (curVal.value) {
       mark = {
         rendObj = ROBJ_SOLID
-        color = curRO ? ReadOnly : (stateFlags.value & S_HOVER) ? Hover : Interactive
+        color = curRO ? ReadOnly : (hoverFlag.value != 0) ? Hover : Interactive
         group
         size = [pw(50), ph(50)]
         hplace = ALIGN_CENTER
@@ -56,7 +57,7 @@ let function fieldBoolCheckbox(params = {}) {
       halign = ALIGN_LEFT
       valign = ALIGN_CENTER
 
-      watch = [curVal, stateFlags]
+      watch = [curVal, hoverFlag]
 
       children = {
         size = [fontH(80), fontH(80)]
@@ -65,8 +66,6 @@ let function fieldBoolCheckbox(params = {}) {
 
         behavior = Behaviors.Button
         group
-
-        watch = [curVal, stateFlags]
 
         children = mark
 

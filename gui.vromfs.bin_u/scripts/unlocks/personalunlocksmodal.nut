@@ -22,7 +22,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   collapsibleChaptersIdx = null
 
   function initScreen() {
-    showSceneBtn("show_all_unlocks", ::has_feature("ShowAllBattleTasks"))
+    this.showSceneBtn("show_all_unlocks", ::has_feature("ShowAllBattleTasks"))
     chaptersObj = scene.findObject("chapters_list")
     unlocksObj = scene.findObject("unlocks_list")
     updateWindow()
@@ -128,7 +128,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let needShowUnlocksList = unlocks.len() > 0
     let needShowChapterDescr = !needShowUnlocksList && currentChapterConfig?.name != null
     unlocksObj.show(needShowUnlocksList)
-    let capterDescrObj = showSceneBtn("chapter_descr", needShowChapterDescr)
+    let capterDescrObj = this.showSceneBtn("chapter_descr", needShowChapterDescr)
     if (needShowChapterDescr) {
       capterDescrObj.findObject("descr_name").setValue(currentChapterConfig?.name ?? "")
       capterDescrObj.findObject("descr_img")["background-image"] = currentChapterConfig?.image ?? ""
@@ -176,7 +176,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   function updateButtons() {
     let canShow = !::show_console_buttons || chaptersObj.isHovered()
     let isHeader = canShow && unlocksConfigByChapter?[curChapterId] != null
-    let collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
+    let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", canShow && isHeader)
     if (isHeader)
       collapsedButtonObj.setValue(
         ::loc(getCollapsedChapters()?[curChapterId] != null ? "mainmenu/btnExpand" : "mainmenu/btnCollapse"))

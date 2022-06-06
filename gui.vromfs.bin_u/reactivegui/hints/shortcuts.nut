@@ -50,13 +50,13 @@ let function keyboardButton(shortcutConfig, override) {
     size = sizeParam.keyboardButtonSize
     minWidth = sizeParam.keyboardButtonMinWidth
     rendObj = ROBJ_IMAGE
-    image = Picture("!ui/gameuiskin#keyboardBtn")
+    image = Picture("!ui/gameuiskin#keyboardBtn.png")
     color = colors.white
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     padding = sizeParam.keyboardButtonPad
     children = [{
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font = sizeParam.keyboardButtonTextFont
       text = shortcutConfig.text
       color = Color(0, 0, 0)
@@ -64,7 +64,7 @@ let function keyboardButton(shortcutConfig, override) {
   }
 }
 
-let function arrowImg(direction, override) {
+let function arrowImg(direction, _override) {
 
   let img = direction == 0 ? "ui/gameuiskin#cursor_size_hor.svg" : "ui/gameuiskin#cursor_size_vert.svg"
   return {
@@ -75,7 +75,7 @@ let function arrowImg(direction, override) {
   }
 }
 
-local getShortcut = @(shortcutConfig, override) null
+local getShortcut = @(_shortcutConfig, _override) null
 
 let shortcutByInputName = {
   axis = @(shortcutConfig, override) hasImage(shortcutConfig)
@@ -94,7 +94,7 @@ let shortcutByInputName = {
       sortcutsCombination.append(getShortcut(element, override))
       if(idx < elmementsCount-1)
         sortcutsCombination.append({
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           font = sizeParam.keyboardButtonTextFont
           text = "+"
           color = colors.menu.commonTextColor
@@ -114,7 +114,7 @@ let shortcutByInputName = {
 
   inputImage = @(shortcutConfig, override) gamepadButton(shortcutConfig, override, false)
 
-  inputBase = @(shortcutConfig, override) null
+  inputBase = @(_shortcutConfig, _override) null
 
   keyboardAxis = function(shortcutConfig, override) {
     let needArrows = shortcutConfig?.needArrows ?? false
@@ -157,7 +157,7 @@ let shortcutByInputName = {
 
   nullInput = @(shortcutConfig, override) shortcutConfig.showPlaceholder
       ? {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         font = Fonts.medium_text_hud
         text = shortcutConfig.text
       }.__update(override)

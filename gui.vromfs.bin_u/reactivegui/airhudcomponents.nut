@@ -6,7 +6,7 @@ let {IsRadarVisible, IsRadar2Visible, IsRadarHudVisible} = require("radarState.n
 let tws = require("tws.nut")
 
 
-let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
+let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon.png")
 
 let twsElement = @(colorWatch, posWatched, size) function() {
   let res = { watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon, colorWatch, rw, bw, rh, bh] }
@@ -33,7 +33,7 @@ let twsElement = @(colorWatch, posWatched, size) function() {
   return res
 }
 
-let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
+let radarPic = Picture("!ui/gameuiskin#radar_stby_icon.png")
 
 //radar posX is watched because it use safeAreaSize on aircraftHud
 let radarElement = @(colorWatch, posWatched, size) function() {

@@ -10,7 +10,7 @@ tdiv {
   background-color:t='#000000'
   background-position:t='0, 3, 0, 4'
   background-repeat:t='expand'
-  background-image:t='#ui/gameuiskin#expandable_item_sym_selected'
+  background-image:t='#ui/gameuiskin#expandable_item_sym_selected.png'
 
   <<#title>>
   textareaNoTab {
@@ -66,7 +66,7 @@ tdiv {
           background-color:t='@white'
           background-position:t='4px'
           background-repeat:t='expand'
-          background-image:t='#ui/gameuiskin#ribbonbar_bg'
+          background-image:t='#ui/gameuiskin#ribbonbar_bg.png'
 
           <<#fontIcon>>
           tdiv {
@@ -78,7 +78,7 @@ tdiv {
               pos:t='pw/2-w/2, ph/2-h/2'
               position:t='absolute'
               style:t='font:@fontBigBold; color:@white'
-              font-tex:t='ui/gradient_v'
+              font-tex:t='ui/gradient_v.ddsx'
               shadeStyle:t='LiveStats'
               text:t='<<fontIcon>>'
             }
@@ -89,7 +89,7 @@ tdiv {
             size:t='pw, ph'
             position:t='absolute'
             background-repeat:t='repeat'
-            background-image:t='#ui/gameuiskin#pattern_bright_texture'
+            background-image:t='#ui/gameuiskin#pattern_bright_texture.png'
             background-position:t="4px"
           }
 

@@ -12,6 +12,12 @@
     "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk"
   },
   {
+    "gearSinkRangeLR": 0.257
+  },
+  {
+    "gearSinkRangeC": 0.119
+  },
+  {
     "type": "typeBomber"
   },
   {
@@ -108,7 +114,7 @@
           "hp": 105.5
         },
         "fuse_dm": {
-          "hp": 105.5
+          "hp": 100.6
         },
         "tail_dm": {
           "genericDamageMult": 0.5,
@@ -116,29 +122,29 @@
         },
         "wing1_l_dm": {
           "genericDamageMult": 0.3,
-          "hp": 111.4
+          "hp": 110.8
         },
         "wing1_r_dm": {
           "genericDamageMult": 0.3,
-          "hp": 111.4
+          "hp": 110.8
         },
         "wing2_l_dm": {
           "genericDamageMult": 0.3,
-          "hp": 89.2
+          "hp": 89.8
         },
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
-          "hp": 89.2
+          "hp": 89.8
         }
       },
       "c_dural5": {
         "aileron_l_dm": {
           "genericDamageMult": 0.3,
-          "hp": 40.2
+          "hp": 33.3
         },
         "aileron_r_dm": {
           "genericDamageMult": 0.3,
-          "hp": 39.4
+          "hp": 33.3
         },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
@@ -149,7 +155,7 @@
           "hp": 45.5
         },
         "fin_dm": {
-          "hp": 42.8
+          "hp": 45.5
         },
         "flap1_l_dm": {
           "hp": 24.5
@@ -158,10 +164,10 @@
           "hp": 24.5
         },
         "flap_l_dm": {
-          "hp": 44.6
+          "hp": 43.0
         },
         "flap_r_dm": {
-          "hp": 44.6
+          "hp": 43.0
         },
         "rudder_dm": {
           "genericDamageMult": 0.3,
@@ -189,27 +195,24 @@
           "hp": 19.5
         },
         "cover2_dm": {
-          "hp": 24.4
+          "hp": 40.5
         },
         "cover3_dm": {
-          "hp": 19.5
-        },
-        "cover4_dm": {
           "hp": 19.5
         }
       },
       "dural60": {
         "spar1_l_dm": {
-          "hp": 80.5
+          "hp": 77.7
         },
         "spar1_r_dm": {
-          "hp": 80.5
+          "hp": 77.7
         },
         "spar2_l_dm": {
-          "hp": 59.4
+          "hp": 65.6
         },
         "spar2_r_dm": {
-          "hp": 59.0
+          "hp": 65.6
         },
         "spar_l_dm": {
           "hp": 80.5
@@ -276,7 +279,7 @@
           "hp": 39.5
         },
         "tank2_dm": {
-          "hp": 77.2
+          "hp": 80.5
         },
         "tank3_dm": {
           "hp": 39.5
@@ -458,11 +461,6 @@
       {
         "part": {
           "name": "cover3_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "cover4_dm"
         }
       },
       {
@@ -2685,37 +2683,6 @@
     ]
   },
   {
-    "default_skin": [
-      {
-        "name": "palembang"
-      },
-      {
-        "replace_tex": {
-          "from": "tbf-1c_c*",
-          "to": "tbf_1c_rn_faa_c*"
-        }
-      },
-      {
-        "replace_tex": {
-          "from": "tbf-1c_c_dmg*",
-          "to": "tbf_1c_rn_faa_c_dmg*"
-        }
-      },
-      {
-        "replace_tex": {
-          "from": "tbf-1c_n*",
-          "to": "tbf_1c_rn_faa_n*"
-        }
-      },
-      {
-        "replace_tex": {
-          "from": "tbf-1c_n_dmg*",
-          "to": "tbf_1c_rn_faa_n_dmg*"
-        }
-      }
-    ]
-  },
-  {
     "turbulence": {
       "segmentlength": 100.0,
       "startSpeed": 28.0,
@@ -2868,6 +2835,25 @@
         "reqModification": "improved_torpedo_mod"
       }
     }
+  },
+  {
+    "default_skin": [
+      {
+        "name": "default"
+      },
+      {
+        "replace_tex": {
+          "from": "tbf_1c_c*",
+          "to": "tbf_1c_rn_faa_c*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "tbf_1c_c_dmg*",
+          "to": "tbf_1c_rn_faa_c_dmg*"
+        }
+      }
+    ]
   },
   {
     "cutting": {

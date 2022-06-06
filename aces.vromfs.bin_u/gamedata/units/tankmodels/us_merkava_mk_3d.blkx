@@ -192,7 +192,7 @@
           "armorThickness": 30.0
         },
         "ex_armor_body_03_dm": {
-          "armorThickness": 20.0,
+          "armorThickness": 40.0,
           "hidableInViewer": true
         },
         "turret_04_back_dm": {
@@ -219,12 +219,15 @@
         "turret_05_top_dm": {
           "armorThickness": 20.0
         },
+        "turret_05_side_dm": {
+          "armorThickness": 20.0
+        },
         "turret_03_front_dm": {
           "armorThickness": 10.0,
           "hidableInViewer": true
         },
         "turret_07_front_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 10.0
         },
         "turret_07_top_dm": {
           "armorThickness": 20.0
@@ -286,15 +289,24 @@
           "armorClass": "RHA_tank",
           "hidableInViewer": true
         },
-        "turret_09_back_dm": {
-          "armorThickness": 60.0
-        },
-        "turret_09_top_dm": {
-          "armorThickness": 10.0,
-          "armorClass": "RHA_tank"
-        },
         "ex_armor_01_dm": {
-          "armorThickness": 10.0
+          "armorThickness": 10.0,
+          "armorClass": "RHA_tank_modern"
+        },
+        "ex_armor_turret_05_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank_modern"
+        },
+        "ex_armor_turret_07_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank_modern"
+        },
+        "ex_armor_turret_08_dm": {
+          "armorThickness": 25.0,
+          "armorClass": "RHA_tank_modern"
+        },
+        "gun_barrel_armor_dm": {
+          "armorThickness": 20.0
         }
       },
       "composite_armor": {
@@ -339,7 +351,7 @@
           "hidableInXrayViewer": true
         },
         "composite_armor_turret_05_dm": {
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "hidableInXrayViewer": true,
           "armorClass": "leopard_2a5_turret_nera"
         },
@@ -355,7 +367,7 @@
         },
         "composite_armor_turret_02_dm": {
           "ignoreSolidDimension": true,
-          "armorThickness": 0.0,
+          "armorThickness": 0.01,
           "hidableInXrayViewer": true,
           "armorClass": "leopard_2a5_turret_nera"
         },
@@ -367,8 +379,8 @@
           "allowRicochet": true
         },
         "turret_04_bottom_dm": {
-          "armorThickness": 30.0,
-          "armorClass": "hull_side_special_armor",
+          "armorThickness": 20.0,
+          "armorClass": "RHA_tank_modern",
           "hidableInViewer": false
         },
         "turret_01_top_dm": {
@@ -416,8 +428,10 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
-        "ex_armor_l_15_dm": [],
-        "ex_armor_r_15_dm": []
+        "ex_armor_body_r_01_dm": [],
+        "ex_armor_body_l_01_dm": [],
+        "ex_armor_body_r_10_dm": [],
+        "ex_armor_body_l_10_dm": []
       },
       "body_add_armor": {
         "armorClass": "RHA_tank_modern",
@@ -428,9 +442,11 @@
         "ex_armor_l_01_dm": [],
         "ex_armor_l_02_dm": [],
         "ex_armor_l_03_dm": [],
+        "ex_armor_l_05_dm": [],
         "ex_armor_r_01_dm": [],
         "ex_armor_r_02_dm": [],
         "ex_armor_r_03_dm": [],
+        "ex_armor_r_05_dm": [],
         "turret_07_side_dm": {
           "armorThickness": 15.0
         },
@@ -449,7 +465,6 @@
         "solidArmorTestDepth": 40.0,
         "genericArmorQuality": 0.5,
         "variableThickness": true,
-        "ex_armor_body_r_01_dm": [],
         "ex_armor_body_r_02_dm": [],
         "ex_armor_body_r_03_dm": [],
         "ex_armor_body_r_04_dm": [],
@@ -458,8 +473,6 @@
         "ex_armor_body_r_07_dm": [],
         "ex_armor_body_r_08_dm": [],
         "ex_armor_body_r_09_dm": [],
-        "ex_armor_body_r_10_dm": [],
-        "ex_armor_body_l_01_dm": [],
         "ex_armor_body_l_02_dm": [],
         "ex_armor_body_l_03_dm": [],
         "ex_armor_body_l_04_dm": [],
@@ -467,32 +480,28 @@
         "ex_armor_body_l_06_dm": [],
         "ex_armor_body_l_07_dm": [],
         "ex_armor_body_l_08_dm": [],
-        "ex_armor_body_l_09_dm": [],
-        "ex_armor_body_l_10_dm": []
+        "ex_armor_body_l_09_dm": []
       },
       "additional_armor": {
         "armorClass": "hull_side_special_armor",
         "hidableInXrayViewer": true,
-        "turret_09_front_dm": {
-          "armorThickness": 25.0,
-          "hidableInViewer": true
-        },
         "turret_09_side_dm": {
-          "armorThickness": 25.0,
+          "armorThickness": 50.0,
           "hidableInViewer": true
         },
         "turret_top_dm": {
           "armorThickness": 25.0,
           "hidableInViewer": true
         },
-        "turret_05_side_dm": {
-          "armorThickness": 25.0
-        },
         "turret_06_top_dm": {
-          "armorThickness": 25.0
+          "armorThickness": 10.0
         },
         "turret_06_front_dm": {
           "armorThickness": 50.0
+        },
+        "turret_08_bottom_dm": {
+          "armorThickness": 10.0,
+          "armorClass": "RHA_tank_modern"
         }
       },
       "fireproof_ammo_containers": {
@@ -603,6 +612,16 @@
           "hp": 20.0
         }
       },
+      "body_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 300.0,
+        "armorThickness": 8.0,
+        "hidableInViewer": true,
+        "turret_09_back_dm": [],
+        "turret_09_bottom_dm": [],
+        "turret_09_front_dm": [],
+        "turret_09_top_dm": []
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 300.0,
@@ -640,6 +659,7 @@
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
           "hp": 400.0,
+          "ex_armor_03_dm": [],
           "ex_armor_06_dm": [],
           "ex_armor_09_dm": [],
           "ex_armor_08_dm": [],
@@ -714,6 +734,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1002,8 +1023,10 @@
         "fireProtectionHp": 15.0,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
+        "fuel_tank_exterior_r_03_dm": [],
         "fuel_tank_exterior_l_01_dm": [],
-        "fuel_tank_exterior_l_02_dm": []
+        "fuel_tank_exterior_l_02_dm": [],
+        "fuel_tank_exterior_l_03_dm": []
       },
       "fuel_tanks": {
         "armorClass": "tank_structural_steel",
@@ -1632,8 +1655,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1677,8 +1700,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1686,8 +1709,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1695,8 +1718,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1735,29 +1758,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2978,14 +3001,21 @@
             "hasNightVision": false
           },
           "limits": {
-            "yaw": [-60.0,120.0],
-            "pitch": [-5.0,50.0]
+            "yaw": [-120.0,60.0],
+            "pitch": [-10.0,50.0]
+          },
+          "limitsTable": {
+            "lim1": [-120.0,-98.0,1.0,50.0],
+            "lim2": [-98.0,-67.0,4.0,50.0],
+            "lim3": [-67.0,-30.0,-9.0,50.0],
+            "lim4": [-30.0,-18.0,-1.0,50.0],
+            "lim5": [-18.0,60.0,-10.0,50.0]
           }
         }
       },
       {
         "Weapon": {
-          "trigger": "gunner4",
+          "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
           "emitter": "emtr_mg_aa_flame_01",
@@ -3020,7 +3050,15 @@
           },
           "limits": {
             "yaw": [-120.0,120.0],
-            "pitch": [-5.0,50.0]
+            "pitch": [-10.0,50.0]
+          },
+          "limitsTable": {
+            "lim1": [-120.0,21.0,-10.0,50.0],
+            "lim2": [21.0,45.0,-3.0,50.0],
+            "lim3": [45.0,73.0,-10.0,50.0],
+            "lim4": [73.0,89.0,-8.0,50.0],
+            "lim5": [89.0,102.0,1.0,50.0],
+            "lim6": [102.0,120.0,-1.0,50.0]
           }
         }
       },
@@ -3128,9 +3166,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 63500.0,
+        "Empty": 66500.0,
         "Fuel": 1500.0,
-        "TakeOff": 65000.0,
+        "TakeOff": 68000.0,
         "momentOfInertia": [2.5,2.5,5.0],
         "CenterOfGravity": [-0.1,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
@@ -4172,10 +4210,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us"
+        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_us"
+        "image": "#ui/gameuiskin#tank_reinforcement_us.png"
       },
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
@@ -4524,14 +4562,21 @@
                   "hasNightVision": false
                 },
                 "limits": {
-                  "yaw": [-60.0,120.0],
-                  "pitch": [-5.0,50.0]
+                  "yaw": [-120.0,60.0],
+                  "pitch": [-10.0,50.0]
+                },
+                "limitsTable": {
+                  "lim1": [-120.0,-98.0,1.0,50.0],
+                  "lim2": [-98.0,-67.0,4.0,50.0],
+                  "lim3": [-67.0,-30.0,-9.0,50.0],
+                  "lim4": [-30.0,-18.0,-1.0,50.0],
+                  "lim5": [-18.0,60.0,-10.0,50.0]
                 }
               }
             },
             {
               "Weapon": {
-                "trigger": "gunner4",
+                "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
                 "emitter": "emtr_mg_aa_flame_01",
@@ -4566,7 +4611,15 @@
                 },
                 "limits": {
                   "yaw": [-120.0,120.0],
-                  "pitch": [-5.0,50.0]
+                  "pitch": [-10.0,50.0]
+                },
+                "limitsTable": {
+                  "lim1": [-120.0,21.0,-10.0,50.0],
+                  "lim2": [21.0,45.0,-3.0,50.0],
+                  "lim3": [45.0,73.0,-10.0,50.0],
+                  "lim4": [73.0,89.0,-8.0,50.0],
+                  "lim5": [89.0,102.0,1.0,50.0],
+                  "lim6": [102.0,120.0,-1.0,50.0]
                 }
               }
             },
@@ -4710,8 +4763,21 @@
           ]
         }
       },
+      "mine_protection_improvement": {
+        "invertEnableLogic": false,
+        "turn_it_off": false,
+        "effects": {
+          "rcostAddParam": 0.92,
+          "changeMass": 3000.0
+        },
+        "disableModEffects": {
+          "hideNodes": {
+            "node": "ex_armor_body_03"
+          }
+        }
+      },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight",
+        "image": "#ui/gameuiskin#thermal_sight.png",
         "tier": 4,
         "effects": {
           "nightVision": {

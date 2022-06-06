@@ -54,7 +54,7 @@ gameModeBlock {
   behavior:t='button'
   background-color:t='@white';
   background-repeat:t='expand';
-  background-image:t='#ui/gameuiskin#item';
+  background-image:t='#ui/gameuiskin#item.png';
   background-position:t='3, 4, 3, 5';
   re-type:t='9rect';
 
@@ -64,7 +64,7 @@ gameModeBlock {
   }
 
   <<#videoPreview>>
-  movie {
+  GameModeMovie {
     movie-load='<<videoPreview>>'
     movie-autoStart:t='yes'
     movie-loop:t='yes'

@@ -164,7 +164,7 @@ Button_text {
   }
   img {
     id:t='iconGlow'
-    background-image:t='#ui/gameuiskin#mail_new_glow'
+    background-image:t='#ui/gameuiskin#mail_new_glow.png'
     style:t='background-color:@textureGlowColor; size:110%ph, 110%ph'
     _transp-timer:t='0'
     display:t='hide'

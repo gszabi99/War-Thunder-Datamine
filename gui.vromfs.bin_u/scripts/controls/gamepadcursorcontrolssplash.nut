@@ -12,7 +12,7 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
   // the mouse pointer on the image canvas. Those coords can be used here as contactPointX/contactPointY.
 
   controllerDualshock4View = {
-    image = "#ui/images/controller/controller_dualshock4"
+    image = "#ui/images/controller/controller_dualshock4.ddsx"
     isSwapDirpadAndLStickBubblesPos = false
     dirpad = {
       contactPointX = "168"
@@ -33,7 +33,7 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
   }
 
   controllerDualsenseView = {
-    image = "#ui/images/controller/controller_dualsense"
+    image = "#ui/images/controller/controller_dualsense.ddsx"
     isSwapDirpadAndLStickBubblesPos = false
     dirpad = {
       contactPointX = "163"
@@ -54,7 +54,7 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
   }
 
   controllerXboxOneView = {
-    image = "#ui/images/controller/controller_xbox_one"
+    image = "#ui/images/controller/controller_xbox_one.ddsx"
     isSwapDirpadAndLStickBubblesPos = true
     dirpad = {
       contactPointX = "325"

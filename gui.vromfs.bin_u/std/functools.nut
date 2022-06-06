@@ -1,4 +1,5 @@
 let abs = @(v) v> 0 ? v.tointeger() : -v.tointeger()
+let { logerr } = require("dagor.debug")
 
 let callableTypes = ["function","table","instance"]
 let function isCallable(v) {
@@ -39,13 +40,14 @@ let function partial(func, ...){
   kwarg(foo)==@(p) (foo(p?.x, p?.y, p?.z ?? 2))
 */
 let allowedKwargTypes = { table = true, ["class"] = true, instance = true }
+let KWARG_NON_STRICT = persist("KWARG_NON_STRICT", @() freeze({}))
 let function kwarg(func){
   assert(isCallable(func), "kwarg can be applied only to functions as first arguments")
   let infos = func.getfuncinfos()
+  let funcName = infos.name
   let funcargs = infos.parameters.slice(1)
   let defargs = infos.defparams
   let argsnum = funcargs.len()
-  let isvargved = infos.varargs==1
   let kfuncargs = {}
   let mandatoryparams = []
   let defparamsStartFrom = argsnum-defargs.len()
@@ -58,28 +60,25 @@ let function kwarg(func){
       mandatoryparams.append(arg)
     }
   }
-  return isvargved ? function(params, ...) {
-        if (type(params) not in allowedKwargTypes)
-          assert(false, @() $"param of function can be only hashable (table, class, instance), found:'{type(params)}'")
-        let nonManP = mandatoryparams.filter(@(p) p not in params)
-        if (nonManP.len() > 0)
-          assert(false, @() "not all mandatory parameters provided: {0}".subst(nonManP.len()==1 ? $"'{nonManP[0]}'" : nonManP.reduce(@(a,b) $"{a},'{b}'")))
-        let posarguments = funcargs.map(@(kv) params[kv])
-        posarguments.insert(0, this)
-        return func.acall(posarguments.extend(vargv))
+  return function(params=kfuncargs, strict_mode=null) {
+    if (type(params) not in allowedKwargTypes)
+      assert(false, @() $"param of function can be only hashable (table, class, instance), found:'{type(params)}'")
+    let nonManP = mandatoryparams.filter(@(p) p not in params)
+    if (nonManP.len() > 0)
+      assert(false, "not all mandatory parameters provided: {0}".subst(nonManP.len()==1 ? $"'{nonManP[0]}'" : nonManP.reduce(@(a,b) $"{a},'{b}'")))
+    if (strict_mode != KWARG_NON_STRICT) {
+      foreach (k, _ in params){
+        if (k not in kfuncargs)
+          logerr($"unknown argument in function {funcName} call: '{k}'")
+        // FIXME: Need to use assert after fix all strict args condition
+        //assert(k in kfuncargs, @() $"unknown argument in function {funcName} call: '{k}'")
       }
-    : function(params=kfuncargs) {
-        if (type(params) not in allowedKwargTypes)
-          assert(false, @() $"param of function can be only hashable (table, class, instance), found:'{type(params)}'")
-        let nonManP = mandatoryparams.filter(@(p) p not in params)
-        if (nonManP.len() > 0)
-          assert(false, "not all mandatory parameters provided: {0}".subst(nonManP.len()==1 ? $"'{nonManP[0]}'" : nonManP.reduce(@(a,b) $"{a},'{b}'")))
-        let posarguments = funcargs.map(@(kv) kv in params ? params[kv] : kfuncargs[kv])
-        posarguments.insert(0, this)
-        return func.acall(posarguments)
-      }
+    }
+    let posarguments = funcargs.map(@(kv) kv in params ? params[kv] : kfuncargs[kv])
+    posarguments.insert(0, this)
+    return func.acall(posarguments)
+  }
 }
-
 /*
  kwpartial
   local function foo(a,b,c){(a+b)*c}
@@ -339,6 +338,7 @@ return {
   pipe
   compose
   kwarg
+  KWARG_NON_STRICT
   kwpartial
   curry
   memoize

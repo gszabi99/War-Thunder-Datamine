@@ -247,7 +247,32 @@
   ],
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "at_startup": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "comment": {
+          "value": "setting pve mode on"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "at_assaults_pve_mode"
+        }
+      },
+      "else_actions": []
+    }
   },
   "mission_objectives": {
     "isCategory": true,

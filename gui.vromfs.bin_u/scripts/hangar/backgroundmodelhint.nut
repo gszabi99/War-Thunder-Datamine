@@ -35,8 +35,8 @@ let function placeBackgroundModelHint(obj) {
 
   let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
   let size = obj.getSize()
-  obj.left = ::clamp(cursorPos[0] + offset[0], unsafe[0], ::max(unsafe[0], screen[0] - unsafe[0] - size[0])).tointeger()
-  obj.top = ::clamp(cursorPos[1] + offset[1], unsafe[1], ::max(unsafe[1], screen[1] - unsafe[1] - size[1])).tointeger()
+  obj.left = clamp(cursorPos[0] + offset[0], unsafe[0], max(unsafe[0], screen[0] - unsafe[0] - size[0])).tointeger()
+  obj.top = clamp(cursorPos[1] + offset[1], unsafe[1], max(unsafe[1], screen[1] - unsafe[1] - size[1])).tointeger()
 }
 
 let function showHint() {

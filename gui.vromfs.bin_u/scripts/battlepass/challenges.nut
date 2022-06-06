@@ -79,7 +79,7 @@ let function getChallengeStatus(userstatUnlock, unlockConfig) {
 let function getConditionInTitleConfig(unlockBlk) {
   let res = {
     addTitle = ""
-    titleIcon = "#ui/gameuiskin#challenge_medal"
+    titleIcon = "#ui/gameuiskin#challenge_medal.svg"
   }
   let mode = unlockBlk?.mode
   if (mode == null)

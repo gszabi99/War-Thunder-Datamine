@@ -1,10 +1,12 @@
+let { split_by_chars } = require("string")
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
+let { get_replay_info } = require("replays")
 
 let buildReplayMpTable = function(replayPath)
 {
   let res = []
 
-  let replayInfo = ::get_replay_info(replayPath)
+  let replayInfo = get_replay_info(replayPath)
   let commentsBlk = replayInfo?.comments
   if (!commentsBlk)
     return res
@@ -41,7 +43,7 @@ let buildReplayMpTable = function(replayPath)
 
     if (mplayer.name == "")
     {
-      let parts = ::split(b?.nick ?? "", " ")
+      let parts = split_by_chars(b?.nick ?? "", " ")
       let hasClanTag = parts.len() == 2
       mplayer.clanTag = hasClanTag ? parts[0] : ""
       mplayer.name    = hasClanTag ? parts[1] : parts[0]
@@ -70,7 +72,7 @@ let saveReplayScriptCommentsBlk = function(blk)
 let restoreReplayScriptCommentsBlk = function(replayPath)
 {
   // Works for Local replays
-  let commentsBlk = ::get_replay_info(replayPath)?.comments
+  let commentsBlk = get_replay_info(replayPath)?.comments
   let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData?.playersInfo) || {}
 
   // Works for Server replays

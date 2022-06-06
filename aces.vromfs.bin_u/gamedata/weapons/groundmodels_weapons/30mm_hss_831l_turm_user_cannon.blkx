@@ -297,50 +297,17 @@
         "kinetic": {
           "damageType": "generic"
         },
-        "shatter": [
-          {
-            "useRealShatters": true
-          },
-          {
-            "countPortion": 0.125
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [0.0,90.0],
-              "countPortion": 0.4
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [91.0,180.0],
-              "countPortion": 0.1
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [181.0,269.0],
-              "countPortion": 0.1
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [270.0,359.0],
-              "countPortion": 0.4
-            }
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.125,
+          "segment": {
+            "radiusScale": 3.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [0.0,180.0],
+            "countPortion": 1.0
           }
-        ]
+        }
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],

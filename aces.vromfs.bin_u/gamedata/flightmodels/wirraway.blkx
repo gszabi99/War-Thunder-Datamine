@@ -2143,7 +2143,7 @@
         "emitter": "flare1",
         "flash": "flare1",
         "dm": "mgun1_dm",
-        "bullets": 650,
+        "bullets": 600,
         "spread": 1.0
       }
     },
@@ -2154,7 +2154,7 @@
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "mgun2_dm",
-        "bullets": 650,
+        "bullets": 600,
         "spread": 1.0,
         "traceOffset": 1
       }
@@ -2168,7 +2168,7 @@
         "flash": "flare3",
         "dm": "gunner1_dm",
         "maskDP": "gun1_dm",
-        "bullets": 600,
+        "bullets": 480,
         "turret": {
           "head": "turret1",
           "gun": "gun1"
@@ -2199,7 +2199,13 @@
       "preset": {
         "name": "wirraway_4x250lbs",
         "blk": "gameData/FlightModels/weaponPresets/wirraway_4x250lbs.blk",
-        "reqModification": "wirraway_sbc"
+        "reqModification": "wirraway_sbc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
+            "iconType": "bombs_small"
+          }
+        }
       }
     },
     {
@@ -2213,7 +2219,13 @@
       "preset": {
         "name": "wirraway_2x250lbs_2x500lbs",
         "blk": "gameData/FlightModels/weaponPresets/wirraway_2x250lbs_2x500lbs.blk",
-        "reqModification": "wirraway_sbc"
+        "reqModification": "wirraway_sbc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/uk_250lbs.blk",
+            "iconType": "bombs_small"
+          }
+        }
       }
     }
   ],

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 
@@ -71,7 +72,7 @@ let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 
   function getFullName()
   {
-    return ::format("%d %s", count, getName())
+    return format("%d %s", count, getName())
   }
 
   function getWwUnitType()

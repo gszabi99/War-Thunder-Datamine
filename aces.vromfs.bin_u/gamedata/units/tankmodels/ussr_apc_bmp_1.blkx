@@ -706,6 +706,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -739,7 +740,7 @@
   },
   {
     "sound": {
-      "EngineName": "engine_pt76",
+      "EngineName": "engine_bmp",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
       "TrackSoundName": "tracks_pt76",
@@ -1296,8 +1297,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1341,8 +1342,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1350,8 +1351,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1359,8 +1360,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1399,29 +1400,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -3724,10 +3725,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "73mm_ussr_2A28_HEAT": [],
       "73mm_ussr_2A28_HE": [],

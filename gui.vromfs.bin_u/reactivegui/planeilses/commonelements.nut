@@ -26,7 +26,7 @@ let function angleTxt(num, isLeft, textFont, invVPlace = 1, font_size = 60, x = 
   return @() {
     watch = IlsColor
     pos = [x, y]
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     vplace = (num * invVPlace) < 0 ? ALIGN_BOTTOM : ALIGN_TOP
     hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
     color = IlsColor.value

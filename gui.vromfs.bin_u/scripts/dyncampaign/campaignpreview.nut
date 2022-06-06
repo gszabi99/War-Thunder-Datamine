@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
@@ -35,12 +36,12 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
   logTimer = 0
   logLastMission = 0
   loseImages = {
-    fighters   = "#ui/gameuiskin#objective_fighter"
-    bombers    = "#ui/gameuiskin#objective_bomber"
-    tanks      = "#ui/gameuiskin#objective_tank"
-    infantry   = "#ui/gameuiskin#objective_troops"
-    ships      = "#ui/gameuiskin#objective_destroyer"
-    artillery  = "#ui/gameuiskin#objective_aa"
+    fighters   = "#ui/gameuiskin#objective_fighter.svg"
+    bombers    = "#ui/gameuiskin#objective_bomber.svg"
+    tanks      = "#ui/gameuiskin#objective_tank.svg"
+    infantry   = "#ui/gameuiskin#objective_troops.png"
+    ships      = "#ui/gameuiskin#objective_destroyer.svg"
+    artillery  = "#ui/gameuiskin#objective_aa.png"
   }
 
   function initScreen()
@@ -104,7 +105,7 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
     let country = (playerSide == 2) ? info.getStr("country_axis","germany") : info.getStr("country_allies", "usa")
     //wtf??
-    dagor.debug("2 country = " + country)
+    ::dagor.debug("2 country = " + country)
     if (country != "")
       guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_country_" + country)
 
@@ -262,7 +263,7 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
       if (::SessionLobby.isInRoom())
         if (!::SessionLobby.isRoomOwner && !isFinal && !::first_generation)
         {
-          msgBox("not_available", ::loc("msgbox/wait_for_squad_leader"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+          this.msgBox("not_available", ::loc("msgbox/wait_for_squad_leader"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
           return;
         }
     }
@@ -278,7 +279,7 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
       goForward(::gui_start_mainmenu)
     else
     {
-      msgBox("question_quit_mission", ::loc("flightmenu/questionQuitCampaign"),
+      this.msgBox("question_quit_mission", ::loc("flightmenu/questionQuitCampaign"),
       [
         ["yes", function()
         {
@@ -368,7 +369,7 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
     foreach(name, text in logTextsToSet)
       guiScene[name].setValue(text)
 /*
-    msgBox("info", data,
+    this.msgBox("info", data,
       [
         ["ok", function() {} ]
       ], "ok") */

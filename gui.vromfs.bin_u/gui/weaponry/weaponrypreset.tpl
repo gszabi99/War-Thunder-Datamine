@@ -94,10 +94,11 @@ weaponryPreset {
         size:t='@tierIconSize, @tierIconSize'
         <<^isActive>>enable:t='no'<</isActive>>
         img {
-          size:t='pw, ph'
+          size:t='@tierIconSize, @tierIconSize'
           position:t='relative'
           background-image:t='<<#img>><<img>><</img>>'
           background-repeat:t='expand'
+          background-svg-size:t='@tierIconSize, @tierIconSize'
         }
         <<#tierTooltipId>>
         title:t='$tooltipObj'

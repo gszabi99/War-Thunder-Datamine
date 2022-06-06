@@ -6,7 +6,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
   id = ""
   listId = ""
   fontIcon = "currency/warbond"
-  medalIcon = "hard_task_medal1"
+  medalIcon = "hard_task_medal1.svg"
   levelIcon = "level_icon"
 
   blkListPath = ""
@@ -192,7 +192,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     local shopLevel = 0
     foreach (level, reqTasks in levelsArray)
       if (tasksNum >= reqTasks)
-        shopLevel = ::max(shopLevel, level)
+        shopLevel = max(shopLevel, level)
 
     return shopLevel
   }

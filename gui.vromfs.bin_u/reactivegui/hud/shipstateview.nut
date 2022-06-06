@@ -47,8 +47,8 @@ let machineSpeedDirection = [
 ]
 
 local fitTextToBox = ::kwarg(function(box, text, font, fontSize=null, minSize = 8){
-  local sz = ::calc_comp_size({rendObj = ROBJ_DTEXT, text, font, fontSize})
-  fontSize = fontSize ?? ::calc_comp_size({rendObj = ROBJ_DTEXT, text = "A", font, fontSize})
+  local sz = ::calc_comp_size({rendObj = ROBJ_TEXT, text, font, fontSize})
+  fontSize = fontSize ?? ::calc_comp_size({rendObj = ROBJ_TEXT, text = "A", font, fontSize})
   sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]
   let scale = min(box[0]/sz[0], box[1]/sz[1])
   if (scale >= 1.0)
@@ -65,7 +65,7 @@ let function speedValue(params = {}) {
   let { font = defFont, margin = [0,0,0,sh(1)], fontSize = null } = params
   return @() {
     watch = speed
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     text = speed.value.tostring()
     font
     fontSize
@@ -79,7 +79,7 @@ let function speedUnits(params = {}) {
     let text = isInitializedMeasureUnits.value ? ::cross_call.measureTypes.SPEED.getMeasureUnitsName() : ""
     return {
       watch = isInitializedMeasureUnits
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font
       fontSize = box ? fitTextToBox({text, box, fontSize, font}) : fontSize
       text
@@ -97,7 +97,7 @@ let machineSpeed = @(params = {}) function() {
   let text = "  ".join([speedLoc, directionLoc], true)
   return {
     watch = [averageSpeed, stopping]
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     font
     fontSize = box ? fitTextToBox({fontSize, text, box, font}) : null
     color = stopping.value ? Color(255, 100, 100) : fontColor

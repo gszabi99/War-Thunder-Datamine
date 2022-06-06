@@ -116,7 +116,7 @@
 
     if (isRelative)
       itemIdx += navListObj.getValue()
-    itemIdx = ::clamp(itemIdx, 0, itemsCount - 1)
+    itemIdx = clamp(itemIdx, 0, itemsCount - 1)
 
     if (itemIdx == navListObj.getValue())
       return
@@ -134,8 +134,8 @@
   function updateVisibility()
   {
     let isNavRequired = itemList.len() > 1
-    showSceneBtn(panelObjId, isNavRequired && isPanelVisible)
-    showSceneBtn(expandButtonObjId, isNavRequired && !isPanelVisible)
+    this.showSceneBtn(panelObjId, isNavRequired && isPanelVisible)
+    this.showSceneBtn(expandButtonObjId, isNavRequired && !isPanelVisible)
     guiScene.performDelayed(this, function() {
       if (isValid())
         updateMoveToPanelButton()
@@ -241,7 +241,7 @@
   onFocusNavigationList = @() ::move_mouse_on_child_by_value(scene.findObject(navListObjId))
   function updateMoveToPanelButton() {
     if (isValid())
-      showSceneBtn("moveToLeftPanel", ::show_console_buttons && !scene.findObject(navListObjId).isHovered())
+      this.showSceneBtn("moveToLeftPanel", ::show_console_buttons && !scene.findObject(navListObjId).isHovered())
   }
 
   function getCurrentItem() {

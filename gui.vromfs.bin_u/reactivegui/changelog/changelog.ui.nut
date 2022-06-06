@@ -150,7 +150,7 @@ let scrollPatchnoteBtn = @(hotkey, watchValue) {
   onDetach = @() scrollPatchnoteWatch(0)
 }
 
-chosenPatchnoteContent.subscribe(@(value) scrollHandler.scrollToY(0))
+chosenPatchnoteContent.subscribe(@(_value) scrollHandler.scrollToY(0))
 
 let patchnoteLoading = freeze({
   children = [formatText([{v = ::loc("loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
@@ -165,7 +165,7 @@ let function selPatchnote() {
   local text = (chosenPatchnoteContent.value.text ?? "") != ""
     ? chosenPatchnoteContent.value.text : missedPatchnoteText
   if (::cross_call.hasFeature("AllowExternalLink")) {
-    if (::type(text)!="array")
+    if (type(text)!="array")
       text = [text, seeMoreUrl]
     else
       text = (clone text).append(seeMoreUrl)
@@ -252,7 +252,7 @@ let changelogRoot = {
         closeBtn = { onClick = onCloseAction }
         content = @() {
           watch = chosenPatchnoteContent
-          rendObj = ROBJ_DTEXT
+          rendObj = ROBJ_TEXT
           font = fontsState.get("medium")
           color = colors.menu.activeTextColor
           text = chosenPatchnoteContent.value.title

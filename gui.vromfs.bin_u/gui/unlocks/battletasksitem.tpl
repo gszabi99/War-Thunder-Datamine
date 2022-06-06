@@ -196,7 +196,7 @@ expandable {
       height:t='0.01@scrn_tgt'
       width:t='2h'
       pos:t='50%pw-50%w, ph-h'; position:t='absolute'
-      background-image:t='#ui/gameuiskin#expand_info'
+      background-image:t='#ui/gameuiskin#expand_info.png'
       background-color:t='@premiumColor'
       <<#isOnlyInfo>> hideExpandImg:t='yes' <</isOnlyInfo>>
     }

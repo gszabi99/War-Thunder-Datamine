@@ -1,7 +1,9 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
+let { is_replay_playing } = require("replays")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -174,7 +176,7 @@ g_orders.getActivateButtonLabel <- function getActivateButtonLabel()
   if (cooldownTimeleft > 0)
   {
     let timeText = time.secondsToString(::g_orders.cooldownTimeleft)
-    label += ::format(" (%s)", timeText)
+    label += format(" (%s)", timeText)
   }
   return label
 }
@@ -469,7 +471,7 @@ g_orders.getActivateInfoText <- function getActivateInfoText()
 
 g_orders.isInSpectatorMode <- function isInSpectatorMode()
 {
-  return ::isPlayerDedicatedSpectator() || ::is_replay_playing()
+  return ::isPlayerDedicatedSpectator() || is_replay_playing()
 }
 
 g_orders.showActivateOrderButton <- function showActivateOrderButton()
@@ -571,7 +573,7 @@ g_orders.updateOrderStatusObject <- function updateOrderStatusObject(statusObj, 
   let tableTexts = getScoreTableTexts()
   let showTable = tableTexts != null && tableTexts.len()
   let statusTableObj = statusObj.findObject("status_table")
-  let numScores = ::min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
+  let numScores = min(tableTexts ? tableTexts.len() : 0, maxRowsInScoreTable)
   if (::checkObj(statusTableObj))
     statusTableObj.show(showTable)
   if (showTable)
@@ -845,7 +847,7 @@ g_orders.getOrderItem <- function getOrderItem(orderObjective)
 /** Called only when no active order. */
 g_orders.updateCooldownTimeleft <- function updateCooldownTimeleft()
 {
-  cooldownTimeleft = ::max(getCooldownTimeleft(), 0)
+  cooldownTimeleft = max(getCooldownTimeleft(), 0)
 }
 
 g_orders.getCooldownTimeleft <- function getCooldownTimeleft()
@@ -920,7 +922,7 @@ g_orders.getPlayerDataById <- function getPlayerDataById(playerId)
     ::callstack()
   }
   let playerData = playerDataById?[playerId] ?? ::get_mplayer_by_id(playerId) ?? emptyPlayerData
-  if (::is_replay_playing())
+  if (is_replay_playing())
   {
     playerData.isLocal = spectatorWatchedHero.id == playerData.id
     playerData.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, playerData?.squadId)
@@ -1082,7 +1084,7 @@ g_orders.prepareStatusScores <- function prepareStatusScores(statusScores, order
  */
 g_orders.addLocalPlayerScoreData <- function addLocalPlayerScoreData(scores)
 {
-  let checkFunc = ::is_replay_playing() ?
+  let checkFunc = is_replay_playing() ?
     function(p) { return p.id == spectatorWatchedHero.id } :
     function(p) { return p.userId == ::my_user_id_str }
 
@@ -1130,7 +1132,7 @@ g_orders.saveOrderStatusPositionAndSize <- function saveOrderStatusPositionAndSi
 
 g_orders.getLocalPlayerData <- function getLocalPlayerData()
 {
-  if (::is_replay_playing())
+  if (is_replay_playing())
     localPlayerData = getPlayerDataById(spectatorWatchedHero.id)
 
   if (localPlayerData == null)

@@ -10,12 +10,14 @@ root {
 
     tdiv {
       width:t='0.75@rh' //by size of frame 
-      pos:t='50%pw-50%w, ph - h - 0.04@scrn_tgt'
+      pos:t='50%pw-50%w, ph - h - 0.035@scrn_tgt'
       position:t='relative'
       img {
         position:t='relative'
-        size:t='1@steamButtonWidth, 0.3@steamButtonWidth'
-        background-image:t='@!ui/images/steam_logo.png'
+        size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
+        background-image:t='@!ui/images/steam_logo.svg'
+        background-svg-size:t='1@steamButtonWidth, 0.33@steamButtonWidth'
+        background-repeat:t='aspect-ratio'
       }
       tdiv {
         width:t='fw'

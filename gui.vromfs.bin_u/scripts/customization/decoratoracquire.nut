@@ -18,7 +18,7 @@ let function askPurchaseDecorator(decorator, onSuccessCb)
       cost = cost.getTextAccordingToBalance()
     }), cost)
 
-  msgBox("need_money", msgText,
+  this.msgBox("need_money", msgText,
         [["ok", function() {
           if (::check_balance_msgBox(cost))
             decoratorType.buyFunc(unitName, decoratorId, cost, onSuccessCb)
@@ -53,7 +53,7 @@ let function askFindDecoratorCouponOnMarketplace(decorator)
 
   let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
   let itemName = ::colorize("activeTextColor", item.getName())
-  msgBox("find_on_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = itemName }), [
+  this.msgBox("find_on_marketplace", ::loc("msgbox/find_on_marketplace", { itemName = itemName }), [
       [ "find_on_marketplace", @() findDecoratorCouponOnMarketplace(decorator) ],
       [ "cancel" ]
     ], "find_on_marketplace", { cancel_fn = @() null })

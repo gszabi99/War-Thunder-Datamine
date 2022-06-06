@@ -1,3 +1,4 @@
+let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isProgressVisible } = require("hudState")
@@ -11,6 +12,7 @@ let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarItems } = ::require_native("hudActionBar")
+let { is_replay_playing } = require("replays")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -35,25 +37,25 @@ let function maybeOfferControlsHelp() {
 ::air_hud_actions <- {
   flaps = {
     id     = "flaps"
-    image  = "#ui/gameuiskin#aerodinamic_wing"
+    image  = "#ui/gameuiskin#aerodinamic_wing.png"
     action = "ID_FLAPS"
   }
 
   gear = {
     id     = "gear"
-    image  = "#ui/gameuiskin#hidraulic"
+    image  = "#ui/gameuiskin#hidraulic.png"
     action = "ID_GEAR"
   }
 
   rocket = {
     id     = "rocket"
-    image  = "#ui/gameuiskin#rocket"
+    image  = "#ui/gameuiskin#rocket.png"
     action = "ID_ROCKETS"
   }
 
   bomb = {
     id     = "bomb"
-    image  = "#ui/gameuiskin#torpedo_bomb"
+    image  = "#ui/gameuiskin#torpedo_bomb.png"
     action = "ID_BOMBS"
   }
 }
@@ -139,7 +141,7 @@ globalCallbacks.addTypes({
     ::set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
     isXinput = ::is_xinput_device()
-    spectatorMode = ::isPlayerDedicatedSpectator() || ::is_replay_playing()
+    spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
     unmappedControlsCheck()
     warnLowQualityModelCheck()
     switchHud(getHudType())
@@ -147,8 +149,8 @@ globalCallbacks.addTypes({
 
     scene.findObject("hud_update").setUserData(this)
     let gm = ::get_game_mode()
-    showSceneBtn("stats", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
-    showSceneBtn("voice", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
+    this.showSceneBtn("stats", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
+    this.showSceneBtn("voice", (gm == ::GM_DOMINATION || gm == ::GM_SKIRMISH))
 
     ::HudBattleLog.init()
     ::g_hud_message_stack.init(scene)
@@ -289,7 +291,7 @@ globalCallbacks.addTypes({
     else //newHudType == HUD_TYPE.NONE
       currentHud = null
 
-    showSceneBtn("ship_obstacle_rf", newHudType == HUD_TYPE.SHIP)
+    this.showSceneBtn("ship_obstacle_rf", newHudType == HUD_TYPE.SHIP)
 
     hudType = newHudType
 
@@ -481,7 +483,7 @@ globalCallbacks.addTypes({
       return
 
     isLowQualityWarningVisible = isShow
-    showSceneBtn("low-quality-model-warning", isShow)
+    this.showSceneBtn("low-quality-model-warning", isShow)
   }
 
   function onEventHudIndicatorChangedSize(params)
@@ -507,7 +509,7 @@ globalCallbacks.addTypes({
       if (!::checkObj(obj))
         continue
 
-      let objWidth = ::format("%.3f*%s", size, cssConst)
+      let objWidth = format("%.3f*%s", size, cssConst)
       let objWidthValue = ::to_pixels(objWidth)
       let canApplyOptionValue = !table?.objectsToCheckOversize?[id] ||
                                   !sideBlockMaxWidth ||
@@ -516,8 +518,8 @@ globalCallbacks.addTypes({
       if (fontSize != null)
         obj.fontSize = canApplyOptionValue ? fontSize : defaultFontSize
       obj.size = canApplyOptionValue
-        ? ::format("%.3f*%s, %.3f*%s", size, cssConst, size, cssConst)
-        : ::format("%d, %d", sideBlockMaxWidth, sideBlockMaxWidth)
+        ? format("%.3f*%s, %.3f*%s", size, cssConst, size, cssConst)
+        : format("%d, %d", sideBlockMaxWidth, sideBlockMaxWidth)
       guiScene.applyPendingChanges(false)
 
       if (optionNum == ::USEROPT_TACTICAL_MAP_SIZE)
@@ -686,7 +688,7 @@ globalCallbacks.addTypes({
   {
     let isVisible = ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
                          && !is_replay_playing() && (::get_game_type() & ::GT_RACE)
-    showSceneBtn("hud_air_tactical_map", isVisible)
+    this.showSceneBtn("hud_air_tactical_map", isVisible)
   }
 
   function updateDmgIndicatorVisibility()
@@ -696,7 +698,7 @@ globalCallbacks.addTypes({
 
   function updateShowHintsNest()
   {
-    showSceneBtn("actionbar_hints_nest", false)
+    this.showSceneBtn("actionbar_hints_nest", false)
   }
 
   function getChatOffset()
@@ -824,7 +826,7 @@ globalCallbacks.addTypes({
 
   function updateShowHintsNest()
   {
-    showSceneBtn("actionbar_hints_nest", true)
+    this.showSceneBtn("actionbar_hints_nest", true)
   }
 
   function updateDmgIndicatorSize() {
@@ -904,8 +906,8 @@ globalCallbacks.addTypes({
     let active = ::getTblValue("active", p, false)
     for(local i = 1; i <= 2; i++)
     {
-      showSceneBtn("touch_fire_" + i, !active)
-      showSceneBtn("touch_art_fire_" + i, active)
+      this.showSceneBtn("touch_fire_" + i, !active)
+      this.showSceneBtn("touch_art_fire_" + i, active)
     }
   }
 

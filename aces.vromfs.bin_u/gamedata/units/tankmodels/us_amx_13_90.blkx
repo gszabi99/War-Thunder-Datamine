@@ -828,8 +828,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -873,8 +873,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -882,8 +882,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -891,8 +891,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -931,29 +931,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -1588,8 +1588,6 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "height": 0.06,
-        "width": 0.38,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "fr_amx_13_2_late_phys_track_line",
         "trackLen": 0.122,
@@ -1598,6 +1596,8 @@
         "trackCntPeriod": 2,
         "trackMaxSinking": 0.08,
         "trackMaxHeight": 1.13,
+        "height": 0.06,
+        "width": 0.38,
         "trackStartOffset": 0.12,
         "trackEmitSparks": false
       }
@@ -2270,13 +2270,11 @@
           "armorThickness": 20.0
         },
         "composite_armor_hull_01_dm": {
-          "armorThickness": 8.0,
-          "armorClass": "tank_structural_steel",
+          "armorThickness": 5.0,
           "hidableInXrayViewer": true
         },
         "composite_armor_hull_02_dm": {
-          "armorThickness": 8.0,
-          "armorClass": "tank_structural_steel",
+          "armorThickness": 5.0,
           "hidableInXrayViewer": true
         }
       },
@@ -2469,6 +2467,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -2838,7 +2837,7 @@
           "speedYaw": 30.0,
           "speedPitch": 4.5,
           "fireConeAngle": 1.0,
-          "bullets": 36,
+          "bullets": 34,
           "salvoAmount": 100.0,
           "ChainfireTime": 0.0,
           "DelayAfterShoot": 5.0,
@@ -3124,10 +3123,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "airstrike": [],
       "improved_optics": [],
@@ -3162,7 +3161,7 @@
                 "speedYaw": 30.0,
                 "speedPitch": 4.5,
                 "fireConeAngle": 1.0,
-                "bullets": 36,
+                "bullets": 34,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
                 "DelayAfterShoot": 5.0,

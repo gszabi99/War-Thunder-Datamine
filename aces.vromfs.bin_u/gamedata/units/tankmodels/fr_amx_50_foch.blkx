@@ -531,6 +531,8 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
+        "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": {
           "genericDamageMult": 3.0
         },
@@ -1449,8 +1451,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1494,8 +1496,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1503,8 +1505,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1512,8 +1514,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1552,29 +1554,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -1996,9 +1998,6 @@
         },
         {
           "part": "drive_turret_h_02_dm"
-        },
-        {
-          "part": "transmission_dm"
         },
         {
           "part": "ammo_turret_dm"
@@ -2526,15 +2525,37 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": {
-            "head": "bone_turret",
-            "gun": "bone_gun",
-            "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm"
-          },
+          "turret": [
+            {
+              "head": "bone_turret"
+            },
+            {
+              "gun": "bone_gun"
+            },
+            {
+              "barrel": "bone_gun_barrel"
+            },
+            {
+              "gunnerDm": "gunner_dm"
+            },
+            {
+              "linkedAnimPart": {
+                "horNode": "bone_optic_gun",
+                "horLimits": [-8.0,6.0],
+                "horOriginLimits": [-2.0,2.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_optic_gun",
+                "verLimits": [0.0,0.0],
+                "verOriginLimits": [0.0,0.0]
+              }
+            }
+          ],
           "limits": {
             "yaw": [-9.0,9.0],
-            "pitch": [-6.0,16.0]
+            "pitch": [-6.0,17.0]
           }
         }
       },
@@ -2681,6 +2702,11 @@
             }
           }
         ]
+      },
+      {
+        "animatedBones": {
+          "node": "bone_optic_gun"
+        }
       }
     ]
   },
@@ -2695,9 +2721,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 57300.0,
+        "Empty": 58800.0,
         "Fuel": 700.0,
-        "TakeOff": 58000.0,
+        "TakeOff": 59500.0,
         "momentOfInertia": [4.0,5.0,6.0],
         "CenterOfGravity": [-0.45,0.5,0.0],
         "AdvancedMass": false,
@@ -2759,33 +2785,33 @@
       "mechanics": {
         "maxBrakeForce": 230000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 1.36,
-        "sideGearRatio": 4.2,
+        "mainGearRatio": 6.76,
+        "sideGearRatio": 1.0,
         "neutralGearRatio": 10.0,
         "gearRatios": [
           {
-            "ratio": -11.0
+            "ratio": -2.7
+          },
+          {
+            "ratio": -9.71
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 8.0
+            "ratio": 9.71
           },
           {
-            "ratio": 6.0
+            "ratio": 4.35
           },
           {
-            "ratio": 4.64
+            "ratio": 2.7
           },
           {
-            "ratio": 2.6
+            "ratio": 1.67
           },
           {
-            "ratio": 1.667
-          },
-          {
-            "ratio": 1.22
+            "ratio": 1.0
           }
         ]
       },
@@ -3396,10 +3422,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_fr"
+        "image": "#ui/gameuiskin#tank_reinforcement_fr.png"
       },
       "modern_tank_stereo_rangefinder": [],
       "120mm_usa_M356_HE": []

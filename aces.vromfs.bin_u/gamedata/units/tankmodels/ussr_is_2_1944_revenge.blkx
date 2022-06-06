@@ -2518,6 +2518,36 @@
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
+        },
+        "gun_barrel_02_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_03_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_05_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_06_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_07_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        },
+        "gun_barrel_08_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
         }
       },
       "crew": {
@@ -2525,6 +2555,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -3007,16 +3038,45 @@
         ]
       },
       {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "machinegun",
+          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+          "emitter": "bone_mg_aa_v_01",
+          "flash": "emtr_mg_aa_flame_01",
+          "barrelDP": "gun_barrel_02_dm",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 90.0,
+          "speedPitch": 90.0,
+          "bullets": 250,
+          "fireConeAngle": 5.0,
+          "ChainfireTime": 0.5,
+          "DelayAfterShoot": 2.0,
+          "accuracyAir": 1.5,
+          "accuracyGnd": 0.0,
+          "errMeasureVel": 0.0,
+          "errMeasureVelFast": 0.0,
+          "errMeasureVelFwdShift": 0.0,
+          "errMeasureVelDir": 0.0,
+          "errTargettingOn100kmph": 0.0,
+          "errTargetting": 3.0,
+          "errExplTime": 0.0,
+          "forestallTime": 0.1,
+          "turret": {
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
+            "gunnerDm": "commander_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-10.0,60.0]
+          }
+        }
+      },
+      {
         "hideNodes": [
-          {
-            "node": "mg_dshkm_mount_v"
-          },
-          {
-            "node": "mg_dshkm_mount_h"
-          },
-          {
-            "node": "gun_barrel_02"
-          },
           {
             "node": "ex_armor_turret_r_01"
           },
@@ -3040,15 +3100,6 @@
           },
           {
             "node": "ex_armor_08"
-          },
-          {
-            "node": "mg_aa_01"
-          },
-          {
-            "node": "bone_mg_aa_h_01"
-          },
-          {
-            "node": "bone_mg_aa_v_01"
           }
         ]
       }
@@ -3078,10 +3129,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+        "image": "#ui/gameuiskin#tank_reinforcement_ussr.png"
       },
       "122mm_ussr_APHE": [],
       "122mm_APHE_ammo_pack": [],

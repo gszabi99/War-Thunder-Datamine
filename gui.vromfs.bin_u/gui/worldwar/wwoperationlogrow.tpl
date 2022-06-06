@@ -30,7 +30,7 @@ tdiv {
       position:t='relative'
       type:t='veryTiny'
       logCategoryName:t=''
-      background-image:t='#ui/gameuiskin#icon_type_log_army'
+      background-image:t='#ui/gameuiskin#icon_type_log_army.png'
     }
 
     textareaNoTab {

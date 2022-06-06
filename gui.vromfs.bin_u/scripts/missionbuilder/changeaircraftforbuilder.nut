@@ -42,7 +42,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (showedUnit.value?.isAir() ?? false)
       return ::gui_start_builder()
 
-    msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
+    this.msgBox("not_available", ::loc(showedUnit.value != null ? "msg/builderOnlyForAircrafts" : "events/empty_crew"),
       [["ok"]], "ok")
   }
 

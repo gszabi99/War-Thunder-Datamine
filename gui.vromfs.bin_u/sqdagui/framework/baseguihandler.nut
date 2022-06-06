@@ -20,21 +20,21 @@
 
   constructor(gui_scene, params = {})
   {
-    guiScene = gui_scene
-    delayedActions = []
-    subHandlers = []
+    this.guiScene = gui_scene
+    this.delayedActions = []
+    this.subHandlers = []
 
     //must be before setParams
-    if (wndType == handlerType.BASE)
-      backSceneFunc = ::handlersManager.getLastBaseHandlerStartFunc()
+    if (this.wndType == handlerType.BASE)
+      this.backSceneFunc = ::handlersManager.getLastBaseHandlerStartFunc()
 
-    setParams(params)
+    this.setParams(params)
   }
 
   function init() //init handler after scene full loaded
   {
-    loadNavBar()
-    initScreen()
+    this.loadNavBar()
+    this.initScreen()
   }
 
   function setParams(params)
@@ -46,80 +46,80 @@
 
   function initCustomHandlerScene()
   {
-    if (!::check_obj(scene))
+    if (!::check_obj(this.scene))
       return false
 
-    guiScene = scene.getScene()
+    this.guiScene = this.scene.getScene()
 
-    if (sceneBlkName)
+    if (this.sceneBlkName)
     {
-      guiScene.replaceContent(scene, sceneBlkName, this)
+      this.guiScene.replaceContent(this.scene, this.sceneBlkName, this)
       return true
     }
 
-    return initHandlerSceneTpl()
+    return this.initHandlerSceneTpl()
   }
 
   function initHandlerSceneTpl()
   {
-    if (!sceneTplName)
+    if (!this.sceneTplName)
       return false
 
-    let obj = getSceneTplContainerObj()
+    let obj = this.getSceneTplContainerObj()
     if (!obj?.isValid())
       return false
 
-    let view = getSceneTplView()
+    let view = this.getSceneTplView()
     if (!view)
       return false
 
-    let data = ::handyman.renderCached(sceneTplName, view)
+    let data = ::handyman.renderCached(this.sceneTplName, view)
 
-    guiScene.replaceContentFromText(obj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     return true
   }
 
   function getSceneTplView() { return null }
-  function getSceneTplContainerObj() { return scene }
+  function getSceneTplContainerObj() { return this.scene }
 
   function initScreen() {}
   function onDestroy()  {}
 
   function isValid()
   {
-    return ::check_obj(scene)
+    return ::check_obj(this.scene)
   }
 
   function isInCurrentScene()
   {
-    return guiScene.isEqual(::get_cur_gui_scene())
+    return this.guiScene.isEqual(::get_cur_gui_scene())
   }
 
   function loadNavBar()
   {
-    let markup = getNavbarMarkup()
-    if(!markup && !sceneNavBlkName)
+    let markup = this.getNavbarMarkup()
+    if(!markup && !this.sceneNavBlkName)
       return
-    let obj = scene.findObject("nav-help")
+    let obj = this.scene.findObject("nav-help")
     if (!::check_obj(obj))
       return
 
     if (markup)
-      guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+      this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
     else
-      guiScene.replaceContent(obj, sceneNavBlkName, this)
+      this.guiScene.replaceContent(obj, this.sceneNavBlkName, this)
   }
 
   function getNavbarMarkup() { return null }
 
   function isSceneActive()
   {
-    return ::check_obj(scene) && scene.isEnabled()
+    return ::check_obj(this.scene) && this.scene.isEnabled()
   }
 
   function isSceneActiveNoModals()
   {
-    return isSceneActive() && scene.getModalCounter() == 0
+    return this.isSceneActive() && this.scene.getModalCounter() == 0
   }
 
   //************** only for wndType == handlerType.ROOT *****************//
@@ -131,31 +131,31 @@
 
   function onEventNewSceneLoaded(p)
   {
-    if (wndType != handlerType.ROOT)
+    if (this.wndType != handlerType.ROOT)
       return
 
-    let handler = getCurActiveContentHandler()
+    let handler = this.getCurActiveContentHandler()
     if (handler)
-      onNewContentLoaded(handler)
+      this.onNewContentLoaded(handler)
   }
 
   function getCurActiveContentHandler()
   {
     let handler = ::handlersManager.getActiveBaseHandler()
-    return (handler && handler.rootHandlerClass == getclass()) ? handler : null
+    return (handler && handler.rootHandlerClass == this.getclass()) ? handler : null
   }
   //************** end of only for wndType == handlerType.ROOT *****************//
 
   function getObj(name)
   {
-    if (!::check_obj(scene))
+    if (!::check_obj(this.scene))
       return null
-    return scene.findObject(name)
+    return this.scene.findObject(name)
   }
 
   function showSceneBtn(id, status)
   {
-    return ::showBtn(id, status, scene)
+    return ::showBtn(id, status, this.scene)
   }
 
   function msgBox(id, text, buttons, def_btn, options = {})
@@ -168,7 +168,7 @@
     if (!options)
       options = {}
     options.baseHandler <- this
-    return scene_msg_box(id, guiScene, text, buttons, def_btn, options)
+    return ::scene_msg_box(id, this.guiScene, text, buttons, def_btn, options)
   }
 
   function onMsgLink(obj)
@@ -189,50 +189,50 @@
 
   function fullReloadScene()
   {
-    guiScene.performDelayed(this, @() ::handlersManager.startSceneFullReload())
+    this.guiScene.performDelayed(this, @() ::handlersManager.startSceneFullReload())
   }
 
   function afterModalDestroy() {}
 
   function onModalWndDestroy()
   {
-    afterModalDestroy()
+    this.afterModalDestroy()
     ::broadcastEvent("ModalWndDestroy", { handler = this })
   }
 
   function goBack()
   {
-    if (wndType == handlerType.MODAL)
+    if (this.wndType == handlerType.MODAL)
     {
-      guiScene.performDelayed(this, function()
+      this.guiScene.performDelayed(this, function()
       {
         ::handlersManager.destroyHandler(this)
         ::handlersManager.clearInvalidHandlers()
 
-        onModalWndDestroy()
+        this.onModalWndDestroy()
       })
       return
     }
 
-    if (wndType == handlerType.BASE && backSceneFunc != null)
+    if (this.wndType == handlerType.BASE && this.backSceneFunc != null)
     {
-      if (needAnimatedSwitchScene)
-        ::handlersManager.animatedSwitchScene(backSceneFunc)
+      if (this.needAnimatedSwitchScene)
+        ::handlersManager.animatedSwitchScene(this.backSceneFunc)
       else
-        backSceneFunc()
+        this.backSceneFunc()
     }
   }
 
   function setBackSceneFunc(scene_func)
   {
-    backSceneFunc = scene_func
+    this.backSceneFunc = scene_func
   }
 
   function onSceneActivate(show)
   {
     if (show)
-      popDelayedActions()
-    foreach(handler in subHandlers)
+      this.popDelayedActions()
+    foreach(handler in this.subHandlers)
       if (::handlersManager.isHandlerValid(handler))
         handler.onSceneActivate(show)
   }
@@ -240,31 +240,31 @@
   _isPopActionsInProgress = false
   function popDelayedActions()
   {
-    if (_isPopActionsInProgress)
+    if (this._isPopActionsInProgress)
       return
-    _isPopActionsInProgress = true
-    while(delayedActions.len() > 0)
+    this._isPopActionsInProgress = true
+    while (this.delayedActions.len() > 0)
     {
-      if (!checkActiveForDelayedAction())
+      if (!this.checkActiveForDelayedAction())
         break
 
-      let action = delayedActions.remove(0)
+      let action = this.delayedActions.remove(0)
       if (typeof(action) == "string" && action in this)
         this[action]()
       else if (typeof(action) == "function")
         action()
     }
-    _isPopActionsInProgress = false
+    this._isPopActionsInProgress = false
   }
 
   function checkActiveForDelayedAction()
   {
-    return isSceneActiveNoModals()
+    return this.isSceneActiveNoModals()
   }
 
   function doWhenActive(func)
   {
-    if (isSceneActiveNoModals())
+    if (this.isSceneActiveNoModals())
     {
       if (typeof(func) == "function")
         func()
@@ -272,24 +272,24 @@
         ::dagor.assertf(false, "doWhenActive recieved " + func + ", instead of function")
     }
     else
-      delayedActions.append(func)
+      this.delayedActions.append(func)
   }
 
   function doWhenActiveOnce(funcName)
   {
     ::dagor.assertf(typeof(funcName) == "string", "Error: doWhenActiveOnce work only with function names")
 
-    let prevIdx = delayedActions.indexof(funcName)
+    let prevIdx = this.delayedActions.indexof(funcName)
     if (prevIdx != null)
-      delayedActions.remove(prevIdx)
-    delayedActions.append(funcName)
-    popDelayedActions()
+      this.delayedActions.remove(prevIdx)
+    this.delayedActions.append(funcName)
+    this.popDelayedActions()
   }
 
   function onEventModalWndDestroy(params)
   {
-    if (isSceneActive())
-      popDelayedActions()
+    if (this.isSceneActive())
+      this.popDelayedActions()
   }
 
   /**
@@ -317,10 +317,10 @@
       return
 
     //clear outdated subHandlers
-    for(local i = subHandlers.len() - 1; i >= 0; i--)
-      if (!::handlersManager.isHandlerValid(subHandlers[i]))
-        subHandlers.remove(i)
+    for(local i = this.subHandlers.len() - 1; i >= 0; i--)
+      if (!::handlersManager.isHandlerValid(this.subHandlers[i]))
+        this.subHandlers.remove(i)
 
-    subHandlers.append(handler.weakref())
+    this.subHandlers.append(handler.weakref())
   }
 }

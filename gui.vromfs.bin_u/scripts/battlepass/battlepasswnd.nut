@@ -128,10 +128,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
     let view = { battlePassStage = [], skipButtonNavigation = ::show_console_buttons }
     let curPageOffset = stageIndexOffset > 0 ? -1 : 0
-    local pageStartIndex = ::max((curPage + curPageOffset) * stagesPerPage  + stageIndexOffset, 0)
+    local pageStartIndex = max((curPage + curPageOffset) * stagesPerPage  + stageIndexOffset, 0)
     let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
-    pageStartIndex = ::max(pageStartIndex - doubleStagesCount, 0)
-    local pageEndIndex = ::min(pageStartIndex + stagesPerPage, stagesList.len())
+    pageStartIndex = max(pageStartIndex - doubleStagesCount, 0)
+    local pageEndIndex = min(pageStartIndex + stagesPerPage, stagesList.len())
     foreach (stage in doubleWidthStagesIcon.value) {
       if (stage == pageEndIndex) {
         pageStartIndex --
@@ -212,10 +212,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     foreach (objId, config in watchObjInfoBattleTasksConfig)
       scene.findObject(objId).setValue(stashBhvValueConfig(config))
 
-    showSceneBtn("btn_warbondsShop",
+    this.showSceneBtn("btn_warbondsShop",
       ::g_warbonds.isShopAvailable() && !::isHandlerInScene(::gui_handlers.WarbondsShop))
-    showSceneBtn("btn_battleTask", true)
-    showSceneBtn("battle_tasks_info_nest", true)
+    this.showSceneBtn("btn_battleTask", true)
+    this.showSceneBtn("battle_tasks_info_nest", true)
 
     ::g_battle_tasks.setUpdateTimer(
       ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
@@ -264,8 +264,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (promoImage != null)
       scene.findObject("promo_img")["background-image"] = promoImage
 
-    showSceneBtn("congrat_content", false)
-    showSceneBtn("promo_preview", ::getAircraftByName(mainPrizeData?.mainPrizeId) != null)
+    this.showSceneBtn("congrat_content", false)
+    this.showSceneBtn("promo_preview", ::getAircraftByName(mainPrizeData?.mainPrizeId) != null)
   }
 
   function onMainPrizePreview(obj) {
@@ -325,7 +325,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let curId = obj.getValue()
     foreach (idx, sheetData in sheetsList) {
       let isVisible = curId == idx
-      showSceneBtn(sheetData.objId, isVisible)
+      this.showSceneBtn(sheetData.objId, isVisible)
       if (isVisible)
         this[sheetData.fillFunc]()
     }
@@ -479,9 +479,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function congratulationBattlePassPurchased() {
     scene.findObject("sheet_list").setValue(0)
-    showSceneBtn("congrat_content", true)
+    this.showSceneBtn("congrat_content", true)
     scene.findObject("promo_img")["background-image"] = "#ui/images/bp_bg.jpg?P1"
-    showSceneBtn("promo_preview", false)
+    this.showSceneBtn("promo_preview", false)
   }
 
   function onEventBattlePassPurchased(p) {
@@ -490,7 +490,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    showSceneBtn("btn_wiki_link", ::has_feature("AllowExternalLink") && !::is_vendor_tencent())
+    this.showSceneBtn("btn_wiki_link", ::has_feature("AllowExternalLink") && !::is_vendor_tencent())
   }
 }
 

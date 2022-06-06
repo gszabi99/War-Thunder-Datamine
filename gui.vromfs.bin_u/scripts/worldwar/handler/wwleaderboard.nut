@@ -1,3 +1,4 @@
+let { format } = require("string")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
 let time = require("%scripts/time.nut")
@@ -146,7 +147,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     let curMod = beginningMode
     let modeIdx = lbModesList.findindex(@(m) m.mode == curMod ) ?? 0
 
-    let modesObj = showSceneBtn("modes_list", true)
+    let modesObj = this.showSceneBtn("modes_list", true)
     guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(modeIdx)
   }
@@ -170,7 +171,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let daysObj = showSceneBtn("days_list", lbModeData.hasDaysData)
+    let daysObj = this.showSceneBtn("days_list", lbModeData.hasDaysData)
     guiScene.replaceContentFromText(daysObj, data, data.len(), this)
 
     daysObj.setValue(needDayOpen && lbDaysList.len() > 1 ? 1 : 0)
@@ -188,7 +189,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let mapsObj = showSceneBtn("maps_list", lbMapsList.len() > 1)
+    let mapsObj = this.showSceneBtn("maps_list", lbMapsList.len() > 1)
     guiScene.replaceContentFromText(mapsObj, data, data.len(), this)
 
     local mapObjValue = 0
@@ -213,7 +214,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
       data += format("option {text:t='%s'}", optionText)
     }
 
-    let countriesObj = showSceneBtn("countries_list", lbCountriesList.len() > 1)
+    let countriesObj = this.showSceneBtn("countries_list", lbCountriesList.len() > 1)
     guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
 
     local countryObjValue = 0
@@ -464,7 +465,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
   function updateWwRewardsButton()
   {
     let curRewardsBlk = getCurModeAwards()
-    let rewardsBtn = showSceneBtn("btn_ww_rewards", true)
+    let rewardsBtn = this.showSceneBtn("btn_ww_rewards", true)
     rewardsBtn.inactiveColor = curRewardsBlk ? "no" : "yes"
   }
 

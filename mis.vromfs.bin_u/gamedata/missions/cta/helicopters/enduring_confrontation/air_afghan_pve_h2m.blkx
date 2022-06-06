@@ -397,6 +397,22 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/tl_takeoff_landing_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -438,32 +454,22 @@
         },
         {
           "comment": {
-            "value": "доступность шаблонов"
+            "value": "dostupnost' shablonov"
           }
         },
         {
           "comment": {
-            "value": "выключение разведки"
+            "value": "vyklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "включение разведки"
+            "value": "vklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "разрешаем бои после уничтожения конвоев"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": "увеличиваем количество одновременно запущенных шаблонов"
+            "value": "razreshaem boi posle unichtozheniya konvoev"
           }
         },
         {
@@ -473,12 +479,27 @@
         },
         {
           "comment": {
-            "value": "размер сетки"
+            "value": "uvelichivaem kolichestvo odnovremenno zapushchennyh shablonov"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "razmer setki"
           }
         },
         {
           "comment": {
             "value": "set pve mode on for template orginizer"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -521,6 +542,12 @@
           "varSetBool": {
             "value": true,
             "var": "to_pve_enable"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "tl_t1_is_enabled"
           }
         },
         {

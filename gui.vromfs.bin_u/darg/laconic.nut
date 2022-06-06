@@ -1,6 +1,8 @@
 from "daRg" import *
 from "%sqstd/underscore.nut" import partition, flatten
 
+#explicit-this
+
 /*
 laconic framework
 make layout less nested and allow short way to setup properties (like flow, flex, and so on)
@@ -45,7 +47,7 @@ let Style = class { //to be able distinguish style elements from components
         val.__update(v)
       }
     }
-    value = freeze(val)
+    this.value = freeze(val)
   }
 }
 
@@ -99,8 +101,9 @@ let FlowH = Style({flow = FLOW_HORIZONTAL})
 let Flex = @(p=null) Style({size = p!=null ? flex(p) : flex()})
 let vflow = @(...) comp(FlowV, vargv)
 let hflow = @(...) comp(FlowH, vargv)
-let Text = Style({rendObj = ROBJ_DTEXT})
+let Text = Style({rendObj = ROBJ_TEXT})
 let Image = Style({rendObj = ROBJ_IMAGE})
+let TextArea = Style({rendObj = ROBJ_TEXTAREA behavior=Behaviors.TextArea})
 let Gap = @(gap) Style({gap})
 let FillColr = @(...) Style({fillColor = Color.acall([null].extend(vargv))})
 let BorderColr = @(...) Style({borderColor = Color.acall([null].extend(vargv))})
@@ -147,8 +150,8 @@ let function updateWithStyle(obj, style){
 
 let function txt(text, style = null) {
   let obj = (typeof text == "table")
-    ? text.__merge({rendObj = ROBJ_DTEXT})
-    : {rendObj = ROBJ_DTEXT text}
+    ? text.__merge({rendObj = ROBJ_TEXT})
+    : {rendObj = ROBJ_TEXT text}
   return updateWithStyle(obj, style)
 }
 
@@ -182,7 +185,7 @@ return {
   txt
   img
 
-  FlowV, FlowH, Flex, Text, Image,
+  FlowV, FlowH, Flex, Text, Image, TextArea,
   Size, Padding, Margin, Gap, Colr, RendObj, Pos, XOfs, YOfs,
   VCenter, Top, Bottom, VABottom, VATop, VACenter,
   HCenter, Left, Right, HACenter, HALeft, HARight,

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let callbacks = {
@@ -11,7 +12,7 @@ callbacks.template <- {
   cbName = "" // filled automatically
   onCb = @(obj, params) null
   paramsKey = "actionData"
-  getParamsMarkup = @(params) ::format("%s:t='%s';", paramsKey, ::save_to_json(params))
+  getParamsMarkup = @(params) format("%s:t='%s';", paramsKey, ::save_to_json(params))
   cbFromObj = @(obj) onCb(obj, obj?.isValid() && (obj?[paramsKey] ?? "") != "" ? ::parse_json(obj[paramsKey]) : {})
 }
 

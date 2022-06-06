@@ -45,7 +45,7 @@ expandable {
         width:t='2h'
         position:t='absolute'
         pos:t='pw/2 - w/2, ph - h'
-        background-image:t='#ui/gameuiskin#expand_info'
+        background-image:t='#ui/gameuiskin#expand_info.png'
         background-color:t='@premiumColor'
       }
       <</details>>

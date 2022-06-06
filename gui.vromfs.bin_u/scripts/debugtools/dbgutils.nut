@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 // warning disable: -file:forbidden-function
 
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -37,18 +38,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
   dlog(::getstackinfos(2).func + " " + ::getEnumValName(enumString, currentState))
 }
 
-::charAddAllItems <- function charAddAllItems(count = 1)
-{
-  let params = {
-    items = ::ItemsManager.getItemsList()
-    currentIndex = 0
-    count = count
-  }
-  ::_charAddAllItemsHelper(params)
-}
-
-::_charAddAllItemsHelper <- function _charAddAllItemsHelper(params)
-{
+let function _charAddAllItemsHelper(params) {
   if (params.currentIndex >= params.items.len())
     return
   let item = params.items[params.currentIndex]
@@ -64,9 +54,20 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
     if ((params.currentIndex == params.items.len() ||
          params.currentIndex % 10 == 0) &&
          params.currentIndex != 0)
-      ::dlog(::format("Adding items: %d/%d", params.currentIndex, params.items.len()))
+      ::dlog(format("Adding items: %d/%d", params.currentIndex, params.items.len()))
     _charAddAllItemsHelper(params)
   })(params))
+}
+
+
+::charAddAllItems <- function charAddAllItems(count = 1)
+{
+  let params = {
+    items = ::ItemsManager.getItemsList()
+    currentIndex = 0
+    count
+  }
+  _charAddAllItemsHelper(params)
 }
 
 //must to be switched on before we get to debrifing.
@@ -171,15 +172,15 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
         if (!isWeaponAux(weapon))
         {
           blk[weapon.name + "_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
-          local rowsList = ::split(getWeaponInfoText(unit,
+          local rowsList = split_by_chars(getWeaponInfoText(unit,
             { isPrimary = false, weaponPreset = weapon.name }), "\n")
           foreach(row in rowsList)
             blk[weapon.name] <- row
-          rowsList = ::split(getWeaponInfoText(unit,
+          rowsList = split_by_chars(getWeaponInfoText(unit,
             { isPrimary = false, weaponPreset = weapon.name, detail = INFO_DETAIL.EXTENDED }), "\n")
           foreach(row in rowsList)
             blk[weapon.name + "_extended"] <- row
-          rowsList = ::split(getWeaponInfoText(unit,
+          rowsList = split_by_chars(getWeaponInfoText(unit,
             { weaponPreset = weapon.name, detail = INFO_DETAIL.FULL }), "\n")
           foreach(row in rowsList)
             blk[weapon.name + "_full"] <- row
@@ -324,10 +325,10 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
                         {
                           eta_sec -= 100
                           if(handler.stage == -1)
-                            callback.call(handler, ::UPDATER_CB_STAGE, ::UPDATER_DOWNLOADING, 0, 0)
+                            callback.call(handler, ::UPDATER_EVENT_STAGE, ::UPDATER_DOWNLOADING, 0, 0)
                           if(percent < 100)
                             percent += 0.1
-                          callback.call(handler, ::UPDATER_CB_PROGRESS, percent, ::math.frnd() * 112048 + 1360000, eta_sec)
+                          callback.call(handler, ::UPDATER_EVENT_PROGRESS, percent, ::math.frnd() * 112048 + 1360000, eta_sec)
                         }
                       }
 
@@ -349,7 +350,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
   ::dbg_ps4updater_close <- (@(updaterData) function() {
     if( ! updaterData || ! updaterData.handler || ! updaterData.callback)
       return
-    updaterData.callback.call(updaterData.handler, ::UPDATER_CB_FINISH, 0, 0, 0)
+    updaterData.callback.call(updaterData.handler, ::UPDATER_EVENT_FINISH, 0, 0, 0)
   })(updaterData)
 }
 
@@ -418,7 +419,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
   let curResolution = ::getSystemConfigOption("video/resolution")
   let list = getVideoModes(curResolution, false)
   let curIdx = list.indexof(curResolution) || 0
-  let newIdx = ::clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
+  let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
   let done = @() dlog("Set resolution: " + newResolution +
     " (" + screen_width() + "x" + screen_height() + ")")
@@ -561,7 +562,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 let function consoleAndDebugTableData(text, data) {
   console_print(text)
-  debugTableData(data)
+  ::debugTableData(data)
   return "Look in debug"
 }
 ::userstat_debug_desc_list <- @() consoleAndDebugTableData("userstatDescList: ", userstatDescList.value)

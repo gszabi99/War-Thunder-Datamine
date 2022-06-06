@@ -90,7 +90,7 @@ root {
             <<#isPkgDev>>
             img {
               size:t='0.75pw, 0.75pw'
-              background-image:t='#ui/gameuiskin#unit_under_construction'
+              background-image:t='#ui/gameuiskin#unit_under_construction.png'
               background-repeat:t='repeat-x'
               tooltip:t='icon in pkg_dev'
             }

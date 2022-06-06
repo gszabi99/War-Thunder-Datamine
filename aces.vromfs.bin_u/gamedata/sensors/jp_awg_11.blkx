@@ -10,7 +10,6 @@
       "rcs": 5.0,
       "range": 70000.0,
       "rangeMax": 150000.0,
-      "timeGainControl": true,
       "antenna": {
         "angleHalfSens": 4.7,
         "sideLobesSensitivity": -30.0
@@ -23,7 +22,6 @@
       "rcs": 5.0,
       "range": 90000.0,
       "rangeMax": 150000.0,
-      "timeGainControl": false,
       "antenna": {
         "angleHalfSens": 4.7,
         "sideLobesSensitivity": -30.0
@@ -149,6 +147,12 @@
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 92500.0,
+        "width": 150.0
+      },
       "dopplerSpeed": {
         "presents": true,
         "minValue": -150.0,
@@ -207,6 +211,7 @@
             "distanceRange": [0.0,92500.0],
             "distanceWidth": 1000.0,
             "distanceRelWidthMin": 0.05,
+            "dopplerSpeedRange": [-150.0,1500.0],
             "dopplerSpeedWidth": 65.0,
             "dopplerSpeedRelWidthMin": 0.05
           }
@@ -450,7 +455,7 @@
         "setPulseDopplerBoresightLockMode": {
           "setBoresightLockModeCommon": [],
           "setModeName": {
-            "name": "PD VS ACM"
+            "name": "PD ACM"
           },
           "setTransiver": {
             "transiver": "pulseDoppler"
@@ -471,9 +476,8 @@
             "scanPattern": "track"
           },
           "clearTargetsOfInterest": [],
-          "addTargetOfInterest": [],
+          "updateTargetOfInterest": [],
           "setLastTargetOfInterestActive": [],
-          "updateActiveTargetOfInterest": [],
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -724,7 +728,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "pulseDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "pulseSearch",
             "actions": {
@@ -815,7 +819,7 @@
         {
           "finishedPulseDopplerDesignationTrack": {
             "stateFrom": "pulseDopplerDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "pulseDopplerSearch",
             "actions": {
@@ -916,7 +920,7 @@
         {
           "brokenPulseBoresightTrack": {
             "stateFrom": "pulseBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "pulseBoresightLock",
             "actions": {
               "setFsmActive": {
@@ -1033,7 +1037,7 @@
         {
           "brokenPulseDopplerBoresightTrack": {
             "stateFrom": "pulseDopplerBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "pulseDopplerBoresightLock",
             "actions": {
               "setFsmActive": {
@@ -1192,7 +1196,7 @@
         "track": {
           "event": "targetDetected",
           "actions": {
-            "updateActiveTargetOfInterest": [],
+            "updateTargetOfInterest": [],
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1212,7 +1216,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -1226,9 +1233,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

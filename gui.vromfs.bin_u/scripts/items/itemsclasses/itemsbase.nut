@@ -1,3 +1,4 @@
+let { format } = require("string")
 /* Item API:
   getCost                    - return item cost
   buy(cb, handler)            - buy item, call cb when buy success
@@ -59,9 +60,9 @@ local expireTypes = {
   id = ""
   static iType = itemType.UNKNOWN
   static defaultLocId = "unknown"
-  static defaultIcon = "#ui/gameuiskin#items_silver_bg"
+  static defaultIcon = "#ui/gameuiskin#items_silver_bg.png"
   static defaultIconStyle = null
-  static typeIcon = "#ui/gameuiskin#item_type_placeholder"
+  static typeIcon = "#ui/gameuiskin#item_type_placeholder.svg"
   static linkActionLocId = "mainmenu/btnBrowser"
   static linkActionIcon = ""
   static isPreferMarkupDescInTooltip = false
@@ -146,7 +147,7 @@ local expireTypes = {
       ? getTimestampFromStringUtc(blk.expiredAt) - ::get_charserver_time_sec() : null
     let invExpiredTime = invBlk?.expiredTime
     let expiredTime = (expiredAt != null && invExpiredTime != null)
-      ? ::min(invExpiredTime, expiredAt) : expiredAt != null
+      ? min(invExpiredTime, expiredAt) : expiredAt != null
         ? expiredAt : invExpiredTime
 
     expiredTimeSec = expiredTime != null ? expiredTime + 0.001 * ::dagor.getCurTime() : 0
@@ -209,7 +210,7 @@ local expireTypes = {
 
   function _tostring()
   {
-    return ::format("Item %s (id = %s)", getDebugName(), id.tostring())
+    return format("Item %s (id = %s)", getDebugName(), id.tostring())
   }
 
   function isCanBuy()
@@ -604,7 +605,7 @@ local expireTypes = {
   hasExpireTimer     = @() expiredTimeSec != 0
   hasTimer           = @() expiredTimeSec != 0
                            || (getCraftingItem()?.expiredTimeSec ?? 0) > 0
-  getNoTradeableTimeLeft = @() ::max(0, tradeableTimestamp - ::get_charserver_time_sec())
+  getNoTradeableTimeLeft = @() max(0, tradeableTimestamp - ::get_charserver_time_sec())
   function getExpireType()
   {
     if (!hasTimer())
@@ -760,14 +761,14 @@ local expireTypes = {
     let limitData = getLimitData()
     foreach (name in ["Global", "PersonalTotal", "PersonalAtTime"])
     {
-      let limitName = ::format("limit%s", name)
+      let limitName = format("limit%s", name)
       let limitValue = ::getTblValue(limitName, this, 0)
-      let countName = ::format("count%s", name)
+      let countName = format("count%s", name)
       let countValue = ::getTblValue(countName, limitData, 0)
       if (0 < limitValue && limitValue <= countValue)
       {
         data.result = false
-        data.reason = ::loc(::format("items/limitDescription/maxedOut/limit%s", name))
+        data.reason = ::loc(format("items/limitDescription/maxedOut/limit%s", name))
         break
       }
     }
@@ -784,7 +785,7 @@ local expireTypes = {
       return ""
 
     let leftCount = limitGlobal - limitData.countGlobal
-    let limitText = ::format("%s/%s", leftCount.tostring(), limitGlobal.tostring())
+    let limitText = format("%s/%s", leftCount.tostring(), limitGlobal.tostring())
     let locParams = {
       ticketsLeft = ::colorize("activeTextColor", limitText)
     }
@@ -806,6 +807,7 @@ local expireTypes = {
   makeDescTimerData           = @(params) { id = "", getText = @() "", needTimer = @() true }.__update(params)
 
   getCreationCaption          = @() ::loc("mainmenu/itemCreated/title")
+  getDissasembledCaption      = @() ::loc("mainmenu/itemDisassembled/title")
   getOpeningAnimId            = @() "DEFAULT"
 
   isRare                      = @() false

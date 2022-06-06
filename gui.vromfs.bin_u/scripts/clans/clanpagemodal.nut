@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getPlayerName,
         isPlayerFromPS4,
@@ -160,9 +161,9 @@ foreach(idx, item in clan_member_list)
     else
     {
       goBack()
-      msgBox("unknown_identification", ::loc("charServer/updateError/13"),
+      this.msgBox("unknown_identification", ::loc("charServer/updateError/13"),
         [["ok", function() {} ]], "ok")
-      dagor.debug(::format("Failed to find clan by id: %s", clanIdStrReq))
+      ::dagor.debug(format("Failed to find clan by id: %s", clanIdStrReq))
       return
     }
   }
@@ -223,7 +224,7 @@ foreach(idx, item in clan_member_list)
     isMyClan = ::clan_get_my_clan_id() == clanData.id;
     scene.findObject("clan_loading").show(false)
 
-    showSceneBtn("clan-icon", true)
+    this.showSceneBtn("clan-icon", true)
 
     fillClanInfoRow("clan-region",
       clanData.region != "" ? ::loc("clan/clan_region") + ::loc("ui/colon") + clanData.region : "",
@@ -276,7 +277,7 @@ foreach(idx, item in clan_member_list)
       ::get_show_in_squadron_statistics, getAdditionalTabsArray())
     fillClanManagment()
 
-    showSceneBtn("clan_main_stats", true)
+    this.showSceneBtn("clan_main_stats", true)
     fillClanStats(clanData.astat)
   }
 
@@ -362,7 +363,7 @@ foreach(idx, item in clan_member_list)
     }
     ::showBtnTable(scene, buttonsList)
 
-    showSceneBtn("clan_actions", buttonsList.btn_showRequests
+    this.showSceneBtn("clan_actions", buttonsList.btn_showRequests
       || buttonsList.btn_clanSquads
       || buttonsList.btn_log)
 
@@ -385,7 +386,7 @@ foreach(idx, item in clan_member_list)
           let count = ::g_dagui_utils.countSizeInItems(containerObj.getParent(), "@clanMedalSizeMin", 1, 0, 0).itemsCountX
           let medals = ::g_clans.getClanPlaceRewardLogData(clanData, count)
           local markup = ""
-          local rest = ::min(medals.len(), ::get_warpoints_blk()?.maxClanBestRewards ?? 6)
+          local rest = min(medals.len(), ::get_warpoints_blk()?.maxClanBestRewards ?? 6)
           foreach (m in medals)
             if(clanRewardsModal.isRewardVisible(m, clanData))
               if(rest-- > 0)
@@ -472,9 +473,9 @@ foreach(idx, item in clan_member_list)
     let tabObj = obj.getChild(obj.getValue())
 
     isWorldWarMode = tabObj?.isWorldWarMode == "yes"
-    showSceneBtn("clan_members_list", !isWorldWarMode)
-    showSceneBtn("lb_table_nest", isWorldWarMode)
-    showSceneBtn("season_over_notice", isWorldWarMode && !::g_world_war.isWWSeasonActiveShort())
+    this.showSceneBtn("clan_members_list", !isWorldWarMode)
+    this.showSceneBtn("lb_table_nest", isWorldWarMode)
+    this.showSceneBtn("season_over_notice", isWorldWarMode && !::g_world_war.isWWSeasonActiveShort())
 
     curPlayer = null
 
@@ -569,7 +570,7 @@ foreach(idx, item in clan_member_list)
     if (!isMyClan)
       return;
 
-    msgBox("leave_clan", ::loc("clan/leaveConfirmation"),
+    this.msgBox("leave_clan", ::loc("clan/leaveConfirmation"),
       [
         ["yes", function()
         {
@@ -594,7 +595,7 @@ foreach(idx, item in clan_member_list)
       afterSlotOp = guiScene.performDelayed(this,function()
         {
           ::update_gamercards()
-          msgBox("left_clan", ::loc("clan/leftClan"),
+          this.msgBox("left_clan", ::loc("clan/leftClan"),
             [["ok", function() { if (isValid()) afterClanLeave() } ]], "ok")
         })
     }

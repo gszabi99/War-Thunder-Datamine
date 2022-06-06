@@ -171,7 +171,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
   function getOperationBackground()
   {
-    return "#ui/images/worldwar_window_bg_image_all_battles"
+    return "#ui/images/worldwar_window_bg_image_all_battles.jpg?P1"
   }
 
   function getSelectedBattlePrefixText(battleData)

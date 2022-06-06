@@ -126,7 +126,7 @@ tdiv {
           position:t='absolute'
           margin:t='1@blockInterval'
           display:t='hide'
-          background-image:t='#ui/gameuiskin#option_select_odd'
+          background-image:t='#ui/gameuiskin#option_select_odd.png'
           background-position:t='1, 5'
           background-repeat:t='expand'
           bgcolor:t='@white'

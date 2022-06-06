@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -18,6 +19,7 @@ let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
 } = require("%scripts/shop/shopDifficulty.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let { buildDateStr } = require("%scripts/time.nut")
 
 local lastUnitType = null
 
@@ -224,7 +226,7 @@ shopData = [
     if (needCount > count)
       guiScene.createMultiElementsByObject(tableObj, "%gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
 
-    count = ::max(count, needCount)
+    count = max(count, needCount)
     if (count != tableObj.childrenCount())
       return //prevent crash on error, but anyway we will get assert in such case on update
 
@@ -288,7 +290,7 @@ shopData = [
     foreach(row, rowArr in treeData.tree)
       for(local col = 0; col < rowArr.len(); col++)
         if (rowArr[col]) {
-          maxCols = ::max(maxCols, col)
+          maxCols = max(maxCols, col)
           let unitOrGroup = rowArr[col]
           cellsList.append({ unitOrGroup, id = unitOrGroup.name, posX = col, posY = row, position = "absolute" })
         }
@@ -420,15 +422,37 @@ shopData = [
   }
 */
 
-  function createLine(r0, c0, r1, c1, status, params = {})
+  function createLine(r0, c0, r1, c1, status, lineConfig = {})
   {
-    let isFakeUnitReq = params?.isFakeUnitReq ?? false
-    let isMultipleArrow = params?.isMultipleArrow ?? false
+    let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false } = lineConfig
+    let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
+    let isFakeUnitReq = reqAir?.isFakeUnit
+    let isMultipleArrow = arrowCount > 1
+    let isLineParallelFutureReqLine = isMultipleArrow
+      && !isFutureReqAir && air?.futureReqAir != null
+    let isLineShiftedToRight = hasNextFutureReqLine
 
     local lines = ""
-    let arrowFormat = "shopArrow { type:t='%s'; size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s' shopStat:t='" + status + "' } "
-    let lineFormat = "shopLine { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s'; shopStat:t='" + status + "' } "
-    let angleFormat = "shopAngle { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s'; shopStat:t='" + status + "' } "
+    let arrowProps = $"shopStat:t='{status}'; isOutlineIcon:t={isFutureReqAir ? "yes" : "no"};"
+    let arrowFormat = "".concat("shopArrow { type:t='%s'; size:t='%s, %s';",
+      "pos:t='%s, %s'; rotation:t='%s';", arrowProps, " } ")
+    let lineFormat = "".concat("shopLine { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s';",
+      arrowProps, " } ")
+    let angleFormat = "".concat("shopAngle { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s';",
+      arrowProps, " } ")
+    local alarmTooltip = ""
+    if (isFutureReqAir) {
+      let endReleaseDate = reqAir.getEndRecentlyReleasedTime()
+      if (endReleaseDate > 0)
+        alarmTooltip = ::g_string.stripTags(::loc("shop/futureReqAir/desc", {
+          futureReqAir = getUnitName(air.futureReqAir)
+          curAir = getUnitName(air)
+          reqAir = getUnitName(air.reqAir)
+          date = buildDateStr(endReleaseDate)
+        }))
+    }
+    let alarmIconFormat = "".concat("shopAlarmIcon { pos:t='%s, %s'; tooltip:t='",
+      alarmTooltip, "'; } ")
     let pad1 = "1@lines_pad"
     let pad2 = "1@lines_pad"
     let interval1 = "1@lines_shop_interval"
@@ -436,23 +460,35 @@ shopData = [
 
     if (c0 == c1)
     {//vertical
-      lines += format(arrowFormat,
-                 "vertical", //type
-                 "1@modArrowWidth", //width
-                 pad1 + " + " + pad2 + " + " + (r1 - r0 - 1) + "@shop_height", //height
-                 (c0 + 0.5) + "@shop_width - 0.5@modArrowWidth", //posX
-                 (r0 + 1) + "@shop_height - " + pad1, //posY
-                 "0")
+      let offset = isLineParallelFutureReqLine ? -0.1
+        : isFutureReqAir || isLineShiftedToRight ? 0.1
+        : 0
+      let posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
+      let height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
+      let posY = $"{(r0 + 1)}@shop_height - {pad1}"
+      lines += format(arrowFormat, "vertical", "1@modArrowWidth", height,
+        posX, posY, "0")
+
+      if (isFutureReqAir)
+        lines = "".concat(lines,
+          format(alarmIconFormat, $"{posX} + 0.5@modArrowWidth - 0.5w",
+           $"{posY} + 0.5*({height}) - 0.5h"))
     }
     else if (r0==r1)
     {//horizontal
-      lines += format(arrowFormat,
-                 "horizontal",  //type
-                 (c1 - c0 - 1) + "@shop_width + " + interval1 + " + " + interval2, //width
-                 "1@modArrowWidth", //height
-                 (c0 + 1) + "@shop_width - " + interval1, //posX
-                 (r0 + 0.5) + "@shop_height - 0.5@modArrowWidth", // posY
-                 "0")
+      let offset = isLineParallelFutureReqLine ? -0.1
+        : isFutureReqAir || isLineShiftedToRight ? 0.1
+        : 0
+      let posX = $"{(c0 + 1)}@shop_width - {interval1}"
+      let width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
+      let posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
+      lines += format(arrowFormat, "horizontal", width, "1@modArrowWidth",
+        posX, posY, "0")
+
+      if (isFutureReqAir)
+        lines = "".concat(lines,
+          format(alarmIconFormat, $"{posX} + 0.5*({width}) - 0.5w",
+           $"{posY} + 0.5@modArrowWidth - 0.5h"))
     }
     else if (isFakeUnitReq)
     {//special line for fake unit. Line is go to unit plate on side
@@ -492,7 +528,7 @@ shopData = [
       lines += format(lineFormat,
                       (::abs(c1-c0) - offset) + "@shop_width",
                       "1@modLineWidth", //height
-                      (::min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset)) + "@shop_width",
+                      (min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset)) + "@shop_width",
                       (lh + r0 + 1) + "@shop_height - 0.5@modLineWidth",
                       "0")
       lines += format(angleFormat,
@@ -541,12 +577,7 @@ shopData = [
     foreach(lc in treeData.lines)
     {
       fillAirReq(lc.air, lc.reqAir)
-      data += createLine(lc.line[0], lc.line[1], lc.line[2], lc.line[3], getLineStatus(lc),
-        {
-          isFakeUnitReq = lc.reqAir?.isFakeUnit
-          isMultipleArrow = lc.arrowCount > 1
-        }
-      )
+      data += createLine(lc.line[0], lc.line[1], lc.line[2], lc.line[3], getLineStatus(lc), lc)
     }
 
     foreach(row, rowArr in treeData.tree) //check groups even they dont have requirements
@@ -574,7 +605,7 @@ shopData = [
     let totalWidth = guiScene.calcString(widthStr, null)
     let itemWidth = guiScene.calcString("@shop_width", null)
 
-    let extraWidth = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
+    let extraWidth = "+" + max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
     let extraLeft = extraWidth + "+1@modBlockTierNumHeight"
     let extraRight = extraWidth + "+1@scrollBarSize - 2@frameHeaderPad"
 
@@ -623,7 +654,7 @@ shopData = [
     let totalWidth = guiScene.calcString(widthStr, null)
     let itemWidth = guiScene.calcString("@shop_width", null)
 
-    let extraRight = "+" + ::max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
+    let extraRight = "+" + max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
     let extraLeft = extraRight + "+1@modBlockTierNumHeight"
     let extraTop = "+1@shop_h_extra_first"
     let extraBottom = "+1@shop_h_extra_last"
@@ -698,7 +729,7 @@ shopData = [
       let unitsCount = boughtVehiclesCount[rank]
       let unitsTotal = totalVehiclesCount[rank]
       tooltipRank = ::loc("shop/age/tooltip") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::get_roman_numeral(rank))
-        + "\n" + ::loc("shop/tier/unitsBought") + ::loc("ui/colon") + ::colorize("userlogColoredText", ::format("%d/%d", unitsCount, unitsTotal))
+        + "\n" + ::loc("shop/tier/unitsBought") + ::loc("ui/colon") + ::colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal))
     }
     else
     {
@@ -715,7 +746,7 @@ shopData = [
           let txtPrevRank = ::colorize("userlogColoredText", ::get_roman_numeral(prevRank))
           let txtUnitsNeed = ::colorize("badTextColor", unitsNeed)
           let txtUnitsLeft = ::colorize("badTextColor", unitsLeft)
-          let txtCounter = ::format("%d/%d", unitsCount, unitsNeed)
+          let txtCounter = format("%d/%d", unitsCount, unitsNeed)
           let txtCounterColored = ::colorize("badTextColor", txtCounter)
 
           let txtRankIsLocked = ::loc("shop/unlockTier/locked", { rank = txtThisRank })
@@ -767,7 +798,7 @@ shopData = [
       local arrowData = ""
       if (drawArrow)
       {
-        arrowData = ::format("shopArrow { type:t='vertical'; size:t='1@modArrowWidth, %s@shop_height - 1@modBlockTierNumHeight';" +
+        arrowData = format("shopArrow { type:t='vertical'; size:t='1@modArrowWidth, %s@shop_height - 1@modBlockTierNumHeight';" +
                       "pos:t='0.5pw - 0.5w, %s@shop_height + 0.5@modBlockTierNumHeight';" +
                       "shopStat:t='%s'; modArrowPlate{ text:t='%s'; tooltip:t='%s'}}",
                     (treeData.ranksHeight[i-1] - treeData.ranksHeight[i-2] - prevFakeRowRankCount).tostring(),
@@ -780,13 +811,13 @@ shopData = [
       let modBlockFormat = "modBlockTierNum { class:t='vehicleRanks' status:t='%s'; pos:t='0, %s@shop_height - 0.5h'; text:t='%s'; tooltip:t='%s'}"
 
       if (curFakeRowRankCount > 0)
-        data += ::format(modBlockFormat,
+        data += format(modBlockFormat,
                   "owner",
                   prevEraPos.tostring(),
                   "",
                   "")
 
-      data += ::format(modBlockFormat,
+      data += format(modBlockFormat,
                   status,
                   (prevEraPos + curFakeRowRankCount).tostring(),
                   ::loc("shop/age/num", { num = ::get_roman_numeral(i) }),
@@ -849,10 +880,10 @@ shopData = [
   function isUnlockedFakeUnit(unit)
   {
     return get_units_count_at_rank(unit?.rank,
-      unitTypes.getByName(unit?.isReqForFakeUnit ? ::split(unit.name, "_")?[0] : unit.name,
+      unitTypes.getByName(unit?.isReqForFakeUnit ? split_by_chars(unit.name, "_")?[0] : unit.name,
         false).esUnitType,
       unit.country, true)
-      >= (((::split(unit.name, "_"))?[1] ?? "0").tointeger() + 1)
+      >= (((split_by_chars(unit.name, "_"))?[1] ?? "0").tointeger() + 1)
   }
 
   function getCurPageEsUnitType()
@@ -1400,7 +1431,7 @@ shopData = [
     let heightOutOfSafearea = (topPos + containerHeight) - (safeareaBorderHeight + safeareaHeight)
     if (heightOutOfSafearea > 0)
       topPos -= ::ceil(heightOutOfSafearea / cellHeight) * cellHeight
-    topPos = ::max(topPos, safeareaBorderHeight)
+    topPos = max(topPos, safeareaBorderHeight)
 
     groupChooseObj = guiScene.loadModal("", "%gui/shop/shopGroup.blk", "massTransp", this)
     let placeObj = groupChooseObj.findObject("tablePlace")
@@ -1867,7 +1898,7 @@ shopData = [
 
   function onModifications(obj)
   {
-    msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+    this.msgBox("not_available", ::loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
   }
 
   function checkTag(aircraft, tag)

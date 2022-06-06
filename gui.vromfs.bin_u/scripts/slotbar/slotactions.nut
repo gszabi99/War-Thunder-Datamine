@@ -73,7 +73,7 @@ local function slotMainAction(unit, params = MAIN_FUNC_PARAMS)
   let isSquadronVehicle = unit.isSquadronVehicle()
   let isInResearch = ::isUnitInResearch(unit)
   let canFlushSquadronExp = ::has_feature("ClanVehicles") && isSquadronVehicle
-    && ::min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit)) > 0
+    && min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit)) > 0
   if (( params.availableFlushExp > 0
       || !params.setResearchManually
       || (params.isSquadronResearchMode && (canFlushSquadronExp || params.needChosenResearchOfSquadron)))

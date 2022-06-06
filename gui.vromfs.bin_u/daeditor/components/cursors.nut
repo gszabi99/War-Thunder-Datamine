@@ -55,11 +55,52 @@ let cursorPc = {
       rotate = 29
     }
 }
-let function mkPcCursor(children){
+
+let cursorCir = {
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = [fsh(2), fsh(2)]
+  commands = [
+    [VECTOR_WIDTH, hdpx(1)],
+    [VECTOR_FILL_COLOR, Color(0,0,0,0)],
+    [VECTOR_COLOR, cursorC],
+    [VECTOR_ELLIPSE, 0, 0, 50, 50],
+    [VECTOR_ELLIPSE, 0, 0, 5, 5],
+  ]
+    transform = {
+      pivot = [0, 0]
+      rotate = 29
+    }
+}
+
+let cursorPick = {
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = [fsh(2), fsh(2)]
+  commands = [
+    [VECTOR_WIDTH, hdpx(1)],
+    [VECTOR_FILL_COLOR, Color(0,0,0,255)],
+    [VECTOR_COLOR, cursorC],
+    [VECTOR_LINE, -15,  0,  15,  0],
+    [VECTOR_LINE,   0,-15,   0, 15],
+    [VECTOR_LINE, -50,-50, -20,-50],
+    [VECTOR_LINE, -50,-50, -50,-20],
+    [VECTOR_LINE,  50,-50,  20,-50],
+    [VECTOR_LINE,  50,-50,  50,-20],
+    [VECTOR_LINE, -50, 50, -20, 50],
+    [VECTOR_LINE, -50, 50, -50, 20],
+    [VECTOR_LINE,  50, 50,  20, 50],
+    [VECTOR_LINE,  50, 50,  50, 20],
+  ]
+    transform = {
+      pivot = [0, 0]
+      rotate = 0
+    }
+}
+
+let function mkPcCursor(children, cursorBase=cursorPc){
   return {
     size = [fsh(2), fsh(2)]
     hotspot = [0, 0]
-    children = [cursorPc].extend(children)
+    children = [cursorBase].extend(children)
     transform = {
       pivot = [0, 0]
     }
@@ -69,7 +110,7 @@ let function mkPcCursor(children){
 cursors.normal <- Cursor(@() mkPcCursor([tooltipCmp]))
 
 let helpSign = {
-  rendObj = ROBJ_STEXT
+  rendObj = ROBJ_INSCRIPTION
   text = "?"
   fontSize = hdpx(20)
   vplace = ALIGN_CENTER
@@ -84,6 +125,18 @@ cursors.help <- Cursor(function(){
     helpSign,
     tooltipCmp
   ])
+})
+
+cursors.actionCircle <- Cursor(function(){
+  return mkPcCursor([
+    tooltipCmp
+  ], cursorCir)
+})
+
+cursors.actionPick <- Cursor(function(){
+  return mkPcCursor([
+    tooltipCmp
+  ], cursorPick)
 })
 
 let getEvenIntegerHdpx = @(px) hdpx(0.5 * px).tointeger() * 2

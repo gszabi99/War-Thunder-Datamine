@@ -2,6 +2,7 @@
   "model": "fiat_g91_r4",
   "fmFile": "fm/fiat_g91_r4.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.202,
   "gearSinkRangeC": 0.101,
   "type": "typeFighter",
@@ -2720,6 +2721,20 @@
             ]
           }
         ]
+      }
+    }
+  ],
+  "default_skin_tomoe": [
+    {
+      "replace_tex": {
+        "from": "fiat_g91_r4_c*",
+        "to": "fiat_g91_r4_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "fiat_g91_r4_c_dmg*",
+        "to": "fiat_g91_r4_c_tomoe_dmg*"
       }
     }
   ],
@@ -6379,6 +6394,22 @@
         "separateDm": true,
         "dp": "gear_3c%d"
       }
+    },
+    {
+      "dp": [
+        {
+          "dm": "_ClipHookRoot"
+        },
+        {
+          "separateDm": true
+        },
+        {
+          "dp": "hook"
+        },
+        {
+          "dp": "hook_catch"
+        }
+      ]
     },
     {
       "dp": [

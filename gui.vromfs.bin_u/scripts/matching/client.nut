@@ -2,13 +2,13 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 
 ::on_online_unavailable <- function on_online_unavailable()
 {
-  dagor.debug("on_online_unavailable")
+  ::dagor.debug("on_online_unavailable")
   ::g_matching_connect.onDisconnect()
 }
 
 ::on_online_available <- function on_online_available()
 {
-  dagor.debug("on_online_available")
+  ::dagor.debug("on_online_available")
   ::g_matching_connect.onConnect()
 }
 
@@ -26,14 +26,14 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 
 ::punish_show_tips <- function punish_show_tips(params)
 {
-  dagor.debug("punish_show_tips")
+  ::dagor.debug("punish_show_tips")
   if ("reason" in params)
     showInfoMsgBox(params.reason)
 }
 
 ::punish_close_client <- function punish_close_client(params)
 {
-  dagor.debug("punish_close_client")
+  ::dagor.debug("punish_close_client")
   let message = ("reason" in params) ? ::g_language.addLineBreaks(params.reason) : ::loc("matching/hacker_kicked_notice")
 
   let needFlightMenu = ::is_in_flight() && !::get_is_in_flight_menu() && !::is_flight_menu_disabled()

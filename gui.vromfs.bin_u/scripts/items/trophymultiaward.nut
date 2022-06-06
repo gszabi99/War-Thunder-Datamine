@@ -28,17 +28,17 @@ let class TrophyMultiAward
   static maxRouletteIcons = 5
   static maxRouletteIconsSingleType = 3
   static rouletteIcons = {
-    decal          = ["#ui/gameuiskin#itemtype_decal"]
-    skin           = ["#ui/gameuiskin#itemtype_skin"]
-    spare          = ["#ui/gameuiskin#double"]
-    modification   = ["#ui/gameuiskin#itemtype_modification_aircraft", "#ui/gameuiskin#itemType_modification_tank"]
-    premExpMul     = ["#ui/gameuiskin#talisman"]
-    specialization = ["#ui/gameuiskin#itemtype_experts", "#ui/gameuiskin#itemType_crew_aces"]
+    decal          = ["#ui/gameuiskin#item_type_decal.svg"]
+    skin           = ["#ui/gameuiskin#itemtype_skin.svg"]
+    spare          = ["#ui/gameuiskin#double.png"]
+    modification   = ["#ui/gameuiskin#item_type_modification_aircraft.svg", "#ui/gameuiskin#item_type_modification_tank.svg"]
+    premExpMul     = ["#ui/gameuiskin#talisman.png"]
+    specialization = ["#ui/gameuiskin#item_type_crew_experts.svg", "#ui/gameuiskin#item_type_crew_aces.svg"]
   }
 
-  constructor(_blk, trophy = null, idx_in_trophy = 0)
+  constructor(v_blk, trophy = null, idx_in_trophy = 0)
   {
-    blk = _blk
+    blk = v_blk
     if (trophy)
     {
       trophyWeak = trophy.weak()
@@ -553,18 +553,18 @@ let class TrophyMultiAward
   {
     let awardType = getAwardsType()
     if (awardType == "decal")
-      return "#ui/gameuiskin#item_type_decal"
+      return "#ui/gameuiskin#item_type_decal.svg"
     if (awardType == "skin")
-      return "#ui/gameuiskin#item_type_skin"
+      return "#ui/gameuiskin#item_type_skin.svg"
     if (awardType == "spare")
-      return "#ui/gameuiskin#item_type_spare"
+      return "#ui/gameuiskin#item_type_spare.svg"
     if (awardType == "modification")
-      return "#ui/gameuiskin#item_type_modifications"
+      return "#ui/gameuiskin#item_type_modifications.svg"
     if (awardType == "premExpMul")
-      return "#ui/gameuiskin#item_type_talisman"
+      return "#ui/gameuiskin#item_type_talisman.svg"
     if (awardType == "specialization")
-      return "#ui/gameuiskin#item_type_crew_aces"
-    return "#ui/gameuiskin#log_online_shop"
+      return "#ui/gameuiskin#item_type_crew_aces.svg"
+    return "#ui/gameuiskin#log_online_shop.png"
   }
 
   function getAvailRouletteIcons()
@@ -582,6 +582,11 @@ let class TrophyMultiAward
     local res = _getIconsLayer()
     res += _getTextLayer()
     return res
+  }
+
+  function getOnlyRewardImage()
+  {
+    return _getIconsLayer()
   }
 
   function _chooseIconsForLayer(iconsList, total)

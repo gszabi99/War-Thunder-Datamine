@@ -198,12 +198,9 @@
     },
     "dural": {
       "cover1_dm": {
-        "hp": 19.5
+        "hp": 19.9
       },
       "cover2_dm": {
-        "hp": 19.5
-      },
-      "cover3_dm": {
         "hp": 19.5
       },
       "cover4_dm": {
@@ -403,11 +400,6 @@
     {
       "part": {
         "name": "cover2_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "cover3_dm"
       }
     },
     {
@@ -2175,7 +2167,7 @@
     {
       "preset": {
         "name": "I-15bis_default",
-        "blk": "gameData/FlightModels/weaponPresets/empty.blk",
+        "blk": "gameData/FlightModels/weaponPresets/i-15bis_default.blk",
         "tags": {
           "free": true
         }
@@ -2232,29 +2224,6 @@
       "reqModLevel": 6.0,
       "reqModification": "LaGG_dz-40"
     }
-  },
-  "cutting": {
-    "emtr_break_wing0_l_from": [-0.768403,-0.416039,1.12664],
-    "emtr_break_wing0_l_to": [-0.768403,-0.416039,1.60424],
-    "emtr_break_wing1_l_from": [-0.768403,-0.416039,1.12664],
-    "emtr_break_wing1_l_to": [-0.768403,-0.416039,1.39315],
-    "emtr_break_wing2_l_from": [-0.768403,-0.416039,2.19228],
-    "emtr_break_wing2_l_to": [-0.768403,-0.416039,3.34561],
-    "emtr_break_wing0_r_from": [-0.768403,-0.416039,-1.12664],
-    "emtr_break_wing0_r_to": [-0.768403,-0.416039,-1.60424],
-    "emtr_break_wing1_r_from": [-0.768403,-0.416039,-1.12664],
-    "emtr_break_wing1_r_to": [-0.768403,-0.416039,-1.39315],
-    "emtr_break_wing2_r_from": [-0.768403,-0.416039,-2.19228],
-    "emtr_break_wing2_r_to": [-0.768403,-0.416039,-3.34561],
-    "emtr_break_wing_tail": [-3.21062,0.0,0.0],
-    "emtr_break_wing_biplane": [-0.768403,-0.115733,0.0],
-    "finCut": false,
-    "emtr_break_stab_l_from": [-3.53444,0.575474,0.362058],
-    "emtr_break_stab_l_to": [-3.53444,0.575474,1.44823],
-    "emtr_break_stab_r_from": [-3.53444,0.575474,-0.362058],
-    "emtr_break_stab_r_to": [-3.53444,0.575474,-1.44823],
-    "emtr_break_fin_from": [-3.44662,0.708614,-1.15838e-07],
-    "emtr_break_fin_to": [-3.44662,1.42614,-1.15838e-07]
   },
   "ikPilot": [
     {
@@ -2339,6 +2308,18 @@
         "from": "i_15bis_a_dmg*",
         "to": "i_15bis_china_a_dmg*"
       }
+    },
+    {
+      "replace_tex": {
+        "from": "i_15bis_n*",
+        "to": "i_15bis_china_n*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "i_15bis_n_dmg*",
+        "to": "i_15bis_china_n_dmg*"
+      }
     }
   ],
   "default_skin_tomoe": [
@@ -2357,5 +2338,28 @@
         "to": "i_15bis_china_a_tomoe_dmg*"
       }
     }
-  ]
+  ],
+  "cutting": {
+    "emtr_break_wing0_l_from": [-0.768403,-0.416039,1.12664],
+    "emtr_break_wing0_l_to": [-0.768403,-0.416039,1.60424],
+    "emtr_break_wing1_l_from": [-0.768403,-0.416039,1.12664],
+    "emtr_break_wing1_l_to": [-0.768403,-0.416039,1.39315],
+    "emtr_break_wing2_l_from": [-0.768403,-0.416039,2.19228],
+    "emtr_break_wing2_l_to": [-0.768403,-0.416039,3.34561],
+    "emtr_break_wing0_r_from": [-0.768403,-0.416039,-1.12664],
+    "emtr_break_wing0_r_to": [-0.768403,-0.416039,-1.60424],
+    "emtr_break_wing1_r_from": [-0.768403,-0.416039,-1.12664],
+    "emtr_break_wing1_r_to": [-0.768403,-0.416039,-1.39315],
+    "emtr_break_wing2_r_from": [-0.768403,-0.416039,-2.19228],
+    "emtr_break_wing2_r_to": [-0.768403,-0.416039,-3.34561],
+    "emtr_break_wing_tail": [-2.4151,0.0,0.0],
+    "emtr_break_wing_biplane": [-0.768403,0.115733,0.0],
+    "finCut": false,
+    "emtr_break_stab_l_from": [-3.53444,0.575474,0.417964],
+    "emtr_break_stab_l_to": [-3.53444,0.575474,1.46221],
+    "emtr_break_stab_r_from": [-3.53444,0.575474,-0.417964],
+    "emtr_break_stab_r_to": [-3.53444,0.575474,-1.46221],
+    "emtr_break_fin_from": [-3.44662,0.708614,-1.15838e-07],
+    "emtr_break_fin_to": [-3.44662,1.42614,-1.15838e-07]
+  }
 }

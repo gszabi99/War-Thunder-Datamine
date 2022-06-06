@@ -7,7 +7,7 @@ tdiv {
   margin:t='<<#margin>><<margin>><</margin>><<^margin>>0, 0.014@scrn_tgt, 0.021@scrn_tgt, 0<</margin>>';
   flow:t='vertical';
   re-type:t='9rect';
-  background-image:t='#ui/gameuiskin#block_bg_rounded_flat_black';
+  background-image:t='#ui/gameuiskin#block_bg_rounded_flat_black.png';
   background-position:t='4';
   background-repeat:t='expand';
   background-color:t='@white';
@@ -15,7 +15,7 @@ tdiv {
   tdiv {
     id:t='header'
     re-type:t='9rect';
-    background-image:t='#ui/gameuiskin#block_bg_rounded_dark';
+    background-image:t='#ui/gameuiskin#block_bg_rounded_dark.png';
     background-position:t='4';
     background-repeat:t='expand';
     background-color:t='@white';
@@ -41,6 +41,7 @@ tdiv {
       img {
         size:t='0.055@scrn_tgt, 0.055@scrn_tgt';
         background-image:t='<<icon>>';
+        background-svg-size:t='0.055@scrn_tgt, 0.055@scrn_tgt';
       }
     }
 
@@ -61,12 +62,12 @@ tdiv {
           <<#positive>>
           rotation:t='180';
           style:t='background-color: @green;';
-          background-image:t='#ui/gameuiskin#expand_info';
+          background-image:t='#ui/gameuiskin#expand_info.png';
           <</positive>>
 
           <<^positive>>
           style:t='background-color: @red;';
-          background-image:t='#ui/gameuiskin#expand_info';
+          background-image:t='#ui/gameuiskin#expand_info.png';
           <</positive>>
         }
 

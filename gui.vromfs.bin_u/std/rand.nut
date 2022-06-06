@@ -1,7 +1,7 @@
 #strict
 
 let random = require("dagor.random")
-let cdate = (require_optional("datetime")?.date ?? @(date=null,format=null) {sec=0, min=0, hour=0, day=0, month=0, year=0, wday=0, yday=0})()
+let cdate = (require_optional("datetime")?.date ?? @(_date=null,_format=null) {sec=0, min=0, hour=0, day=0, month=0, year=0, wday=0, yday=0})()
 let _default_seed = random.get_rnd_seed() + cdate.sec + cdate.min*60 + cdate.yday*86400
 
 local position = 0
@@ -36,7 +36,7 @@ let class Rand{
   }
 
   function setseed(seed=null) {
-    this._seed = this.seed ?? new_rnd_seed()
+    this._seed = seed ?? new_rnd_seed()
     this._count = 0
   }
 
@@ -158,7 +158,7 @@ let function testRandomEnoughByPirsonCriteria(){
 
 let function testShuffle(){
   pp("\nArray of ints shuffled:")
-  ppa(Rand.shuffle(array(20).map(@(v,i) i)))
+  ppa(Rand.shuffle(array(20).map(@(_v,i) i)))
 }
 
 if (__name__ == "__main__") {

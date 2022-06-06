@@ -130,8 +130,8 @@ local clanBlackList = [
         curCandidate = blacklistData[index]
     }
 
-    showSceneBtn("btn_removeBlacklist", curCandidate != null && ::isInArray("MEMBER_BLACKLIST", myRights))
-    showSceneBtn("btn_user_options", curCandidate != null && ::show_console_buttons)
+    this.showSceneBtn("btn_removeBlacklist", curCandidate != null && ::isInArray("MEMBER_BLACKLIST", myRights))
+    this.showSceneBtn("btn_user_options", curCandidate != null && ::show_console_buttons)
   }
 
   function onUserCard()

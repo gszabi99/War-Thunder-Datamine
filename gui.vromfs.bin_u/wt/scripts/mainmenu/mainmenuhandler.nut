@@ -1,3 +1,4 @@
+let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
@@ -40,7 +41,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 
     if (::SessionLobby.isInRoom())
     {
-      dagor.debug("after main menu, uid " + ::my_user_id_str + ", " + ::my_user_name + " is in room")
+      ::dagor.debug("after main menu, uid " + ::my_user_id_str + ", " + ::my_user_name + " is in room")
       ::callstack()
       ::SessionLobby.leaveRoom()
     }
@@ -74,7 +75,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
   {
     let haveRights = ::g_clans.isHaveRightsToReviewCandidates()
     let isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
-    let obj = showSceneBtn("btn_main_menu_showRequests", isReqButtonDisplay)
+    let obj = this.showSceneBtn("btn_main_menu_showRequests", isReqButtonDisplay)
     if (::checkObj(obj) && isReqButtonDisplay)
       obj.setValue(::loc("clan/btnShowRequests") + ::loc("ui/parentheses/space",
         {text = ::g_clans.getMyClanCandidates().len()}))
@@ -85,7 +86,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
     if (!::is_platform_pc && !::is_platform_android)
       return
 
-    msgBox("mainmenu_question_quit_game", ::loc("mainmenu/questionQuitGame"),
+    this.msgBox("mainmenu_question_quit_game", ::loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no", function() { }]
@@ -129,7 +130,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
   function updateLowQualityModelWarning()
   {
     let lowQuality = !::is_loaded_model_high_quality()
-    let warningObj = showSceneBtn("low-quality-model-warning", lowQuality)
+    let warningObj = this.showSceneBtn("low-quality-model-warning", lowQuality)
     let canDownloadPackage = ::can_download_package()
     ::showBtn("low_quality_model_download_button", canDownloadPackage, warningObj)
 
@@ -157,13 +158,13 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
       && !unit.isRented()
       && getCrewUnlockTimeByUnit(unit) <= 0
     if (!isVisible) {
-      showSceneBtn("suggested_skin", isVisible)
+      this.showSceneBtn("suggested_skin", isVisible)
       return
     }
 
     let skin = getSuggestedSkin(unit.name)
     isVisible = skin?.canPreview() ?? false
-    let containerObj = showSceneBtn("suggested_skin", isVisible)
+    let containerObj = this.showSceneBtn("suggested_skin", isVisible)
     if (!isVisible)
       return
 
@@ -190,7 +191,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
         let timeStr = hours < 1.0 ?
           time.secondsToString(sec) :
           time.hoursToString(hours, false, true, true)
-        obj.setValue(::format(messageTemplate, timeStr))
+        obj.setValue(format(messageTemplate, timeStr))
       }
       return !isVisible
     })
@@ -198,7 +199,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 
   function updateUnitCrewLocked(unit) {
     let lockObj = scene.findObject("crew-notready-topmenu")
-    lockObj.tooltip = ::format(::loc("msgbox/no_available_aircrafts"),
+    lockObj.tooltip = format(::loc("msgbox/no_available_aircrafts"),
       time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
 
     local wasShown = false

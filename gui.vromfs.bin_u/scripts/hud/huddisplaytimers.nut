@@ -16,7 +16,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       color = "#787878"
       icon = function () {
         if (::g_hud_display_timers.unitType == ::ES_UNIT_TYPE_SHIP)
-          return "#ui/gameuiskin#ship_crew_driver"
+          return "#ui/gameuiskin#ship_crew_driver.svg"
         return "#ui/gameuiskin#track_state_indicator.svg"
       }
       needTimeText = true
@@ -56,7 +56,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       color = "@crewTransferColor"
       icon = function () {
         if (::g_hud_display_timers.unitType == ::ES_UNIT_TYPE_SHIP)
-          return "#ui/gameuiskin#ship_crew_driver"
+          return "#ui/gameuiskin#ship_crew_driver.svg"
         return "#ui/gameuiskin#crew_driver_indicator.svg"
       }
     },
@@ -65,14 +65,14 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       color = "@crewTransferColor"
       icon = function () {
         if (::g_hud_display_timers.unitType == ::ES_UNIT_TYPE_SHIP)
-          return "#ui/gameuiskin#ship_crew_gunner"
+          return "#ui/gameuiskin#ship_crew_gunner.svg"
         return "#ui/gameuiskin#crew_gunner_indicator.svg"
       }
     },
     {
       id = "healing_status"
       color = "@white"
-      icon = "#ui/gameuiskin#medic_status_indicator"
+      icon = "#ui/gameuiskin#medic_status_indicator.svg"
     },
     {
       id = "repair_breaches_status"
@@ -83,7 +83,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     {
       id = "unwatering_status"
       color = "#787878"
-      icon = "#ui/gameuiskin#unwatering_in_progress"
+      icon = "#ui/gameuiskin#unwatering_in_progress.svg"
       needTimeText = true
     },
     {
@@ -144,13 +144,13 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   lastZoneCaptureUpdate = 0
   zoneCaptureOutdateTimeMsec = 3000
 
-  function init(_nest, _unitType)
+  function init(nest, v_unitType)
   {
-    scene = _nest.findObject("display_timers")
+    scene = nest.findObject("display_timers")
     if (!scene && !::checkObj(scene))
       return
 
-    unitType = _unitType
+    unitType = v_unitType
     guiScene = scene.getScene()
     let blk = ::handyman.renderCached("%gui/hud/HudDisplayTimers", getViewData())
     guiScene.replaceContentFromText(scene, blk, blk.len(), this)

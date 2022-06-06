@@ -5,6 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
+  "haveCCIPForGun": true,
   "haveCCRPForRocket": false,
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -4091,6 +4092,22 @@
     {
       "dp": [
         {
+          "dm": "_ClipHookRoot"
+        },
+        {
+          "separateDm": true
+        },
+        {
+          "dp": "hook"
+        },
+        {
+          "dp": "hook_catch"
+        }
+      ]
+    },
+    {
+      "dp": [
+        {
           "dm": "tail_dm"
         },
         {
@@ -4305,7 +4322,7 @@
       "tier": 4
     },
     "heli_night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
+      "image": "#ui/gameuiskin#thermal_sight.png",
       "effects": {
         "nightVision": {
           "gunnerIr": {

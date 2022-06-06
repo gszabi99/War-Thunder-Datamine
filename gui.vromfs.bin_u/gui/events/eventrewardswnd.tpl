@@ -48,7 +48,7 @@ frame {
           <<#received>>
           img {
             size:t='0.03@scrn_tgt, 0.03@scrn_tgt';
-            background-image:t='#ui/gameuiskin#favorite';
+            background-image:t='#ui/gameuiskin#favorite.png';
             position:t='relative';
             pos:t='0, -0.004@scrn_tgt';
           }
@@ -83,6 +83,7 @@ frame {
               position:t='relative';
               pos:t='-w, 0';
               background-image:t='<<icon>>';
+              background-svg-size:t='0.03@scrn_tgt, 0.03@scrn_tgt';
             }
             <<#rewardTooltipId>>
             tooltipObj {
