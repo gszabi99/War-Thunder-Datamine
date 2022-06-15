@@ -145,6 +145,7 @@ g_warbonds_view.getLevelItemData <- function getLevelItemData(wbClass, level, fo
   return {
     id = levelItemIdPrefix + level
     levelIcon = wbClass.getLevelIcon()
+    levelIconOverlay = wbClass.getLevelIconOverlay()
     text = lvlText
     tooltip = ::loc(getLevelItemTooltipKey(status), {level = lvlText, tasksNum = reqTasks})
     status = status

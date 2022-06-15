@@ -4,7 +4,8 @@ tdiv {
   tdiv {
     img {
       size:t='1@profileUnlockIconSize, 1@profileUnlockIconSize'
-      background-image:t='#ui/images/avatars/<<icon>>'
+      background-svg-size:t='1@profileUnlockIconSize, 1@profileUnlockIconSize'
+      background-image:t='#ui/images/avatars/<<icon>>.png'
     }
     tdiv {
       flow:t='vertical'

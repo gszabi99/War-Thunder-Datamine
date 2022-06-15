@@ -42,9 +42,9 @@ let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
       textObj.setValue(eulaText)
     }
 
-    showSceneBtn("accept", !isForView)
-    showSceneBtn("decline", !isForView)
-    showSceneBtn("close", isForView)
+    this.showSceneBtn("accept", !isForView)
+    this.showSceneBtn("decline", !isForView)
+    this.showSceneBtn("close", isForView)
   }
 
   function onAcceptEula()
@@ -57,7 +57,7 @@ let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
   function afterModalDestroy()
   {
     if (eulaType == ::TEXT_NDA)
-      if (should_agree_eula(::eula_version, ::TEXT_EULA))
+      if (::should_agree_eula(::eula_version, ::TEXT_EULA))
         ::gui_start_eula(::TEXT_EULA)
   }
 

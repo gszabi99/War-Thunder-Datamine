@@ -215,12 +215,6 @@
         "type": "domination"
       },
       {
-        "restoreType": "attempts"
-      },
-      {
-        "optionalTakeOff": false
-      },
-      {
         "environment": "Day"
       },
       {
@@ -263,20 +257,26 @@
         "battleAreaColorPreset": "battleArea"
       },
       {
+        "showTacticalMapCellSize": true
+      },
+      {
         "country_axis": "germany"
       },
       {
         "country_allies": "ussr"
       },
       {
-        "showTacticalMapCellSize": true
+        "restoreType": "attempts"
+      },
+      {
+        "optionalTakeOff": false
       },
       {
         "allowedUnitTypes": {
           "isAirplanesAllowed": true,
           "isTanksAllowed": true,
-          "isHelicoptersAllowed": true,
-          "isShipsAllowed": false
+          "isShipsAllowed": false,
+          "isHelicoptersAllowed": true
         }
       },
       {
@@ -381,7 +381,7 @@
             },
             {
               "battleArea": {
-                "target": "briefing_battlearea"
+                "target": "briefing_battlearea_hardcore"
               }
             }
           ]
@@ -447,7 +447,7 @@
             },
             {
               "battleArea": {
-                "target": "briefing_battlearea"
+                "target": "briefing_battlearea_hardcore"
               }
             }
           ]
@@ -479,8 +479,22 @@
             {
               "icon": {
                 "icontype": "tank",
+                "side": "ally",
+                "target": "briefing_arcade_t1_resp02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
                 "side": "enemy",
                 "target": "briefing_arcade_t2_resp01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "tank",
+                "side": "enemy",
+                "target": "briefing_arcade_t2_resp02"
               }
             },
             {
@@ -643,6 +657,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -707,7 +723,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [1529.8,630.85,3220.2]
+        [1561.87,630.85,3221.76]
       ],
       "objLayer": 0,
       "props": []
@@ -718,7 +734,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [1535.55,630.85,1431.45]
+        [1581.83,630.85,1430.37]
       ],
       "objLayer": 0,
       "props": []
@@ -729,7 +745,29 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [1194.9,631.15,1540.3]
+        [1185.0,631.15,1562.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_arcade_t2_resp02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2198.8,631.15,1746.35]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_arcade_t1_resp02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2180.8,631.15,3022.6]
       ],
       "objLayer": 0,
       "props": []
@@ -740,7 +778,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [1119.05,631.15,3090.4]
+        [1122.2,631.15,3090.65]
       ],
       "objLayer": 0,
       "props": []
@@ -770,10 +808,21 @@
     "briefing_battlearea": {
       "type": "Box",
       "tm": [
+        [1900.0,0.0,0.0],
+        [0.0,103.704,0.0],
+        [0.0,0.0,1900.0],
+        [1385.7,637.661,2387.85]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "briefing_battlearea_hardcore": {
+      "type": "Box",
+      "tm": [
         [2450.0,0.0,0.0],
         [0.0,297.576,0.0],
         [0.0,0.0,2450.0],
-        [1612.6,655.833,2352.6]
+        [1612.6,673.392,2352.6]
       ],
       "objLayer": 4,
       "props": []

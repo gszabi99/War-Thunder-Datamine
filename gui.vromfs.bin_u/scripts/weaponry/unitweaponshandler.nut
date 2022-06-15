@@ -265,7 +265,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
     let groups = getBulletsGroups()
     let offset = res.columns.len() < modsInRow ? res.columns.len() : 0
-    let totalColumns = ::min(offset + groups.len(), modsInRow)
+    let totalColumns = min(offset + groups.len(), modsInRow)
     for(local i = res.columns.len(); i < totalColumns; i++)
       res.columns.append([])
 
@@ -590,7 +590,7 @@ let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
     if (!group)
       return
 
-    let step = ::max(group.getGunMaxBullets() / 20, 1).tointeger()
+    let step = max(group.getGunMaxBullets() / 20, 1).tointeger()
     bulletsManager.changeBulletsCount(group, group.bulletsCount + diff * step)
   }
 

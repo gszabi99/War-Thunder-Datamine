@@ -45,7 +45,79 @@
     "condition": {
       "and": {
         "isTPSViewsAllowed": [],
-        "isFlightModel": []
+        "isFlightModel": [],
+        "not": {
+          "and": {
+            "isAlternativeTpsCamera": [],
+            "isHelicopter": []
+          }
+        }
+      }
+    },
+    "up": {
+      "angle": [0.0,-90.0],
+      "dist": 20.0
+    },
+    "down": {
+      "angle": [180.0,0.0],
+      "dist": 40.0
+    },
+    "left": {
+      "angle": [-110.0,0.0],
+      "dist": 20.0
+    },
+    "right": {
+      "angle": [110.0,0.0],
+      "dist": 20.0
+    }
+  },
+  "tps_alt": {
+    "peekTargetOffset": [500.0,0.0,-15.0],
+    "peekCameraOffsetNeutral": [-17.0,4.0,2.0],
+    "type": "TpsFlightCamera",
+    "fov": 80.0,
+    "zoomFov": 30.0,
+    "targetOffset": [500.0,0.0,-17.0],
+    "cameraOffsetNeutral": [-17.0,4.0,2.5],
+    "cameraUpNeutral": [0.0,1.0,0.0],
+    "cameraOffsetSmoothing": 0.005,
+    "cameraUpSmoothing": 0.0,
+    "cameraFovSmoothing": 0.002,
+    "cameraControlSmooth": 0.0,
+    "cameraControlSmoothY": 0.0,
+    "cameraControlSmoothX": 0.0,
+    "cameraOffsetElevatorUp": [-14.0,5.0,0.0],
+    "cameraOffsetElevatorDown": [-14.0,-4.0,0.0],
+    "sensitivityElevatorDown": 0.4,
+    "sensitivityElevatorUp": 0.7,
+    "cameraOffsetRudderLeft": [-14.0,3.0,-5.0],
+    "cameraOffsetRudderRight": [-14.0,3.0,5.0],
+    "sensitivityRudder": 10.0,
+    "cameraUpAileronsLeft": [0.0,1.0,0.7],
+    "cameraUpAileronsRight": [0.0,1.0,-0.7],
+    "sensitivityAilerons": 0.3,
+    "cameraFovAccelerationPositive": 0.9,
+    "cameraFovAccelerationNegative": 2.0,
+    "sensitivityAcceleration": 10.0,
+    "cameraTpsSmoothing": 0.1,
+    "maxCameraSlowAngle": 9.0,
+    "cameraTpsAngleAccelaration": 2.0,
+    "cameraShakeMultiplier": 0.35,
+    "cameraShakeMultiplierZoom": 0.1,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.07,
+    "viscosityCameraHoldFactor": 0.5,
+    "minimumDistanceMultiplier": 1.7,
+    "rollAngleFactor": 0.01,
+    "overturnAngle": 80.0,
+    "schraegeMusikCameraEllipsoidUpOffset": 1.0,
+    "schraegeMusikCameraScreenPart": 0.25,
+    "condition": {
+      "and": {
+        "isTPSViewsAllowed": [],
+        "isAlternativeTpsCamera": [],
+        "isHelicopter": []
       }
     },
     "up": {
@@ -4088,6 +4160,9 @@
     "plane": [
       {
         "camName": "tps"
+      },
+      {
+        "camName": "tps_alt"
       },
       {
         "camName": "gunner_fps"

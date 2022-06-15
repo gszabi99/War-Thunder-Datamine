@@ -1,3 +1,5 @@
+let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
+} = require("app")
 let { canUseIngameShop,
         getShopItemsTable,
         getEntStoreLocId,
@@ -242,12 +244,12 @@ let list = {
     onClickFunc = @(obj, handler) !isPlatformPC
       ? openQrWindow({
           headerText = ::loc("topmenu/reportAnIssue")
-          baseUrl = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = ::get_game_version_str()})
+          baseUrl = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
     isDelayed = false
-    link = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = ::get_game_version_str()})
+    link = ::loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
     isLink = @() isPlatformPC
     isFeatured = @() true
     isHidden = @(...) !::has_feature("ReportAnIssue") || (!::has_feature("AllowExternalLink") && isPlatformPC) || ::is_vendor_tencent() || !::isInMenu()

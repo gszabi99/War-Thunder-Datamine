@@ -5,7 +5,7 @@ let fontsState = require("%rGui/style/fontsState.nut")
 let { isOrderStatusVisible } = require("hud/hudPartVisibleState.nut")
 
 
-let pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
+let pilotIcon = Picture("!ui/gameuiskin#player_in_queue.png")
 
 let scoresTableComp = @() {
   size = [flex(), SIZE_TO_CONTENT]
@@ -54,10 +54,10 @@ return @() {
   flow = FLOW_VERTICAL
   size = [::scrn_tgt(0.4), SIZE_TO_CONTENT]
   watch = isOrderVisible
-  onAttach = function (elem) {
+  onAttach = function (_elem) {
     ::cross_call.active_order_enable()
     ::gui_scene.setInterval(1, updateFunction) }
-  onDetach = function (elem) { ::gui_scene.clearTimer(updateFunction) }
+  onDetach = function (_elem) { ::gui_scene.clearTimer(updateFunction) }
   children = isOrderVisible.value
     ? [
         @() {

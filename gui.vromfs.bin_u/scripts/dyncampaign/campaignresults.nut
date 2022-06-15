@@ -50,17 +50,17 @@ let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
   }
   function onSelect()
   {
-    dagor.debug("::gui_handlers.CampaignResults onSelect")
+    ::dagor.debug("::gui_handlers.CampaignResults onSelect")
     save()
   }
   function afterSave()
   {
-    dagor.debug("::gui_handlers.CampaignResults afterSave")
+    ::dagor.debug("::gui_handlers.CampaignResults afterSave")
     goForward(::gui_start_mainmenu)
   }
   function onBack()
   {
-    dagor.debug("::gui_handlers.CampaignResults goBack")
+    ::dagor.debug("::gui_handlers.CampaignResults goBack")
     goBack()
   }
 }

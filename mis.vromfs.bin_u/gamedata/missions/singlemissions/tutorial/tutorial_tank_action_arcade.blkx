@@ -25,7 +25,7 @@
       "gt_training": false,
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
-      "reqFeature": "MissionsChapterHidden",
+      "reqFeature": "TestTankActionTutorial",
       "gt_mp_tickets": true,
       "gt_mp_capture": true,
       "isLimitedFuel": false,
@@ -491,6 +491,12 @@
             "target": "karantan_tutorial_01_take_village",
             "object_var_comp_op": "equal",
             "object_var_name": ""
+          }
+        },
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 1/12: movement controls enabled"
           }
         }
       ],
@@ -984,6 +990,12 @@
       },
       "actions": [
         {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 2/12: ambush hit ally"
+          }
+        },
+        {
           "wait": {
             "time": 0.66
           }
@@ -1402,7 +1414,7 @@
         },
         {
           "triggerEnable": {
-            "target": "cutscene_03_1"
+            "target": "player_first_kill"
           }
         }
       ],
@@ -1547,6 +1559,41 @@
       },
       "else_actions": []
     },
+    "player_first_kill": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "player_first_kill",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_tank_action_arcade",
+          "params": "task 3/12: first kill by player"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "player_first_kill"
+        },
+        "triggerEnable": {
+          "target": "cutscene_03_1"
+        }
+      },
+      "else_actions": []
+    },
     "kill_ambush_by_time": {
       "is_enabled": false,
       "comments": "",
@@ -1609,6 +1656,10 @@
         }
       },
       "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_tank_action_arcade",
+          "params": "task 4/12: ambush destroyed"
+        },
         "moSetObjectiveStatus": {
           "target": "karantan_tutorial_02_destroy_ambush",
           "status": 2,
@@ -2258,6 +2309,12 @@
       },
       "actions": [
         {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 5/12: flanking done"
+          }
+        },
+        {
           "triggerDisable": {
             "target": "restore_heavy"
           }
@@ -2446,6 +2503,12 @@
         }
       },
       "actions": [
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 6/12: heavy tank destroyed"
+          }
+        },
         {
           "triggerActivate": {
             "target": "firing_position_on",
@@ -2729,6 +2792,12 @@
         }
       },
       "actions": [
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 7/12: player captured zone"
+          }
+        },
         {
           "moSetObjectiveStatus": {
             "target": "karantan_tutorial_04_capture_zone",
@@ -3501,7 +3570,7 @@
         },
         {
           "triggerEnable": {
-            "target": "cutscene_10_1"
+            "target": "first_plane_killed"
           }
         }
       ],
@@ -3512,6 +3581,41 @@
           "object_var_value": 0
         }
       }
+    },
+    "first_plane_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "first_plane_killed",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_tank_action_arcade",
+          "params": "task 8/12: first plane killed"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "first_plane_killed"
+        },
+        "triggerEnable": {
+          "target": "cutscene_10_1"
+        }
+      },
+      "else_actions": []
     },
     "aa_start_missing": {
       "is_enabled": false,
@@ -3807,6 +3911,12 @@
         }
       ],
       "actions": [
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 9/12: air attack repelled"
+          }
+        },
         {
           "triggerDisable": [
             {
@@ -4408,6 +4518,12 @@
         }
       },
       "actions": [
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 10/12: player reached streets"
+          }
+        },
         {
           "moSetObjectiveStatus": {
             "target": "karantan_tutorial_06_proceed",
@@ -5230,6 +5346,12 @@
       },
       "actions": [
         {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 11/12: player repaired"
+          }
+        },
+        {
           "triggerActivate": {
             "target": "@player",
             "activate_type": "checkConidtions",
@@ -5314,6 +5436,12 @@
         }
       },
       "actions": [
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_action_arcade",
+            "params": "task 12/12: street tanks destroyed"
+          }
+        },
         {
           "moSetObjectiveStatus": {
             "target": "karantan_tutorial_07_eliminate_rest",
@@ -12048,7 +12176,9 @@
     "def_1st_killed_by_pl": 0,
     "swap_from": "",
     "swap_to": "",
-    "look_at": ""
+    "look_at": "",
+    "player_first_kill": false,
+    "first_plane_killed": false
   },
   "dialogs": {
     "tutorial_01": {

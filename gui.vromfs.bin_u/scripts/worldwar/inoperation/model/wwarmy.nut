@@ -213,7 +213,7 @@ local transportTypeByTextCode = {
 
     let coolDownMillisec = artilleryAmmo.getCooldownAfterMoveMillisec()
     let leftToFireEnableTime = stoppedAtMillisec + coolDownMillisec - ::ww_get_operation_time_millisec()
-    return ::max(time.millisecondsToSeconds(leftToFireEnableTime).tointeger(), 0)
+    return max(time.millisecondsToSeconds(leftToFireEnableTime).tointeger(), 0)
   }
 
   function needUpdateDescription()

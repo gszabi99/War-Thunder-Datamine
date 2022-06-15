@@ -13,7 +13,9 @@ let styleLineBackground = {
   lineWidth = hdpx(LINE_WIDTH + 1.5)
 }
 
-let centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size = flex()) {
+let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * min(RwrSignalHoldTimeInv.value, MlwsLwsSignalHoldTimeInv.value), 1.0)))
+
+let function centeredAircraftIcon(colorWatched) {
   let tailW = 25
   let tailH = 10
   let tailOffset1 = 10
@@ -74,7 +76,8 @@ let centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size = f
         size = flex()
         fillColor = Color(0,0,0,0)
         color = colorWatched.value
-        watch = colorWatched
+        opacity = targetsCommonOpacity.value
+        watch = [targetsCommonOpacity, colorWatched]
         lineWidth = hdpx(LINE_WIDTH)
         commands = [
           [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.25, indicatorRadius * 0.25]
@@ -83,7 +86,7 @@ let centeredAircraftIcon = ::kwarg(function(colorWatched, pos = [0, 0], size = f
       aircraftIcon
     ]
   }
-})
+}
 
 let targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0))))
 let targetsOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
@@ -387,17 +390,13 @@ let rwrTargetsComponent = function(colorWatched) {
   }
 }
 
-let function displayAircraftIcon(colorWatched) {
-    return centeredAircraftIcon({colorWatched = colorWatched, pos = [0, 0], size = [pw(35), ph(35)] })
-}
-
 let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale){
   return {
     size = flex()
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon),
       rwrBackground(colorWatched, scale),
-      needDrawCentralIcon ? displayAircraftIcon(colorWatched) : null,
+      needDrawCentralIcon ? centeredAircraftIcon(colorWatched) : null,
       {
         size = [pw(relativCircleRadius * scale), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER

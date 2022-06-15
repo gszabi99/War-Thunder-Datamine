@@ -2720,14 +2720,28 @@
       "preset": {
         "name": "b-57b_4x1000lbs",
         "blk": "gameData/FlightModels/weaponPresets/b-57b_4x1000lbs.blk",
-        "reqModification": "EELBC_mark_3"
+        "reqModification": "EELBC_mark_3",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65_cone.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_large"
+          }
+        }
       }
     },
     {
       "preset": {
         "name": "b-57b_8x1000lbs",
         "blk": "gameData/FlightModels/weaponPresets/b-57b_8x1000lbs.blk",
-        "reqModification": "EELBC_mark_3"
+        "reqModification": "EELBC_mark_3",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65_cone.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_large"
+          }
+        }
       }
     },
     {
@@ -2997,6 +3011,13 @@
                 "amountPerTier": 4.0,
                 "iconType": "rockets_he_small_group"
               }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65_cone.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_large"
+              }
             }
           ]
         }
@@ -3087,6 +3108,93 @@
                 {
                   "tier": {
                     "idx": 10
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": {
+        "name": "b-57b_4xblu_27",
+        "blk": "gameData/FlightModels/weaponPresets/b-57b_4xblu_27.blk",
+        "reqModification": "us_blu27_b",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "b-57b_4x_blu_27_hvar"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/b-57b_4x_blu_27_hvar.blk"
+        },
+        {
+          "reqModification": "EELBC_mark_3"
+        },
+        {
+          "reqModification": "EERC_mark_1"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group",
+                "tier": {
+                  "idx": 3
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group",
+                "tier": {
+                  "idx": 9
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_blu27b.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "napalm_large"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
                   }
                 }
               ]
@@ -3193,6 +3301,10 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "EERC_mark_1"
+    },
+    "us_blu27_b": {
+      "tier": 2,
+      "modClass": "weapon"
     }
   },
   "user_skin": [

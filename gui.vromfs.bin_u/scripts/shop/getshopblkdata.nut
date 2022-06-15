@@ -2,7 +2,7 @@ const COUNT_REQ_FOR_FAKE_UNIT = 2
 
 let fakeUnitConfig = {
   name = ""
-  image = "!#ui/unitskin#random_unit"
+  image = "!#ui/unitskin#random_unit.ddsx"
   rank = 1
   isFakeUnit = true
 }
@@ -18,7 +18,7 @@ let function genFakeUnitRanges(airBlk, country) {
     let range = []
     let fakeUnitParams = fakeUnitConfig.__merge({
       name = unitType
-      image = fakeReqUnitsImage?[idx] ?? "!#ui/unitskin#random_unit"
+      image = fakeReqUnitsImage?[idx] ?? "!#ui/unitskin#random_unit.ddsx"
       rank = fakeReqUnitsRank?[idx] ?? 2
       country = country
     })
@@ -34,7 +34,7 @@ let function genFakeUnitRanges(airBlk, country) {
         isReqForFakeUnit = true })
       let rankPosXY = fakeUnitParams?.rankPosXY
       if (rankPosXY)
-        reqForFakeUnitParams.rankPosXY <- Point2(rankPosXY.x + (rankPosXY.x < 3 ? -i : i), 1)
+        reqForFakeUnitParams.rankPosXY <- ::Point2(rankPosXY.x + (rankPosXY.x < 3 ? -i : i), 1)
 
       range.append(reqForFakeUnitParams)
     }
@@ -92,7 +92,7 @@ let function getShopBlkTable(selAirName = "") {
         {
           let airBlk = rblk.getBlock(a)
           let airData = { name = airBlk.getBlockName() }
-          local air = getAircraftByName(airBlk.getBlockName())
+          local air = ::getAircraftByName(airBlk.getBlockName())
           if (air)
           {
             selected = selected || air.name == selAirName
@@ -111,7 +111,7 @@ let function getShopBlkTable(selAirName = "") {
             for(local ga = 0; ga < groupTotal; ga++)
             {
               let gAirBlk = airBlk.getBlock(ga)
-              air = getAircraftByName(gAirBlk.getBlockName())
+              air = ::getAircraftByName(gAirBlk.getBlockName())
               if (!air || !air.isVisibleInShop())
                 continue
 
@@ -134,6 +134,8 @@ let function getShopBlkTable(selAirName = "") {
           }
           if (airBlk?.reqAir != null)
             airData.reqAir <- airBlk.reqAir
+          if (airBlk?.futureReqAir != null)
+            airData.futureReqAir <- airBlk.futureReqAir
           if (airBlk?.rankPosXY)
           {
             airData.rankPosXY <- airBlk.rankPosXY

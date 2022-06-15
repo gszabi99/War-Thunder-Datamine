@@ -7,7 +7,7 @@
 // }
 let { logerr } = require("dagor.debug")
 let { kwarg } = require("%sqstd/functools.nut")
-
+let { DBGLEVEL } = require("dagor.system")
 let ecs = require("ecs")
 
 
@@ -18,7 +18,7 @@ let unicastSqEvents = {}
 let sqEvents = {}
 let event = {}
 const VERBOSE_PRINT = false //getroottable()?.__is_stub__
-let verbose_print = VERBOSE_PRINT ? @(val) print(val) : @(val) null
+let verbose_print = VERBOSE_PRINT ? @(val) print(val) : @(_) null
 
 let function register_event(name, eventType, structure=null){
 
@@ -45,12 +45,14 @@ let function mkEsFuncNamed(esname, func) {
   let infos = func?.getfuncinfos?()
   assert(infos!=null, "esHandler can be only function or callable, ES:{0}".subst(esname))
   let len = infos.parameters.len()
-  assert (len < 5 && len > 2,
-    $"ES function should have at least 2 params - eid, comp, or 3 - evt, eid, comp. function name:{infos?.name}, argnum:{" ".join(infos?.parameters ?? [])}, arguments:{len}, es name:{esname}")
+  assert (len==1 || (len < 5 && len > 2),
+    $"ES function should have no arguemnts, or at least 2 argument - eid, comp, or 3 - evt, eid, comp. function name:{infos?.name}, argnum:{" ".join(infos?.parameters ?? [])}, arguments:{len}, es name:{esname}")
+  if (len==1)
+    return function(_evt, _eid, _comp) {func()}
   if (len==4)
     return func
   else
-    return function(evt, eid, comp) {func(eid, comp)}
+    return function(_evt, eid, comp) {func(eid, comp)}
 }
 
 let function gatherComponentNames(component_list){
@@ -67,7 +69,7 @@ let function gatherComponentNames(component_list){
 const INTERNAL_REGISTER_ECS = "___register_entity_system_internal___"
 if (INTERNAL_REGISTER_ECS not in ecs) {
   ecs[INTERNAL_REGISTER_ECS] <- ecs.register_entity_system
-  ecs.register_entity_system = @(name, events, comps, params) assert(false, "register_entity_system considered unsafe. use ecs.register_es instead")
+  ecs.register_entity_system = @(_name, _events, _comps, _params) assert(false, "register_entity_system considered unsafe. use ecs.register_es instead")
 }
 
 let ecs_register_entity_system = ecs[INTERNAL_REGISTER_ECS]
@@ -75,7 +77,7 @@ let ecs_register_entity_system = ecs[INTERNAL_REGISTER_ECS]
 local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
   const DOTS_ERROR = "dots in ES components"
   try{
-    foreach (k, v in compsDesc)
+    foreach (k, _v in compsDesc)
       assert(["comps_ro","comps_rw","comps_rq","comps_no","comps_track"].indexof(k) != null, $"incorrect comps description, incorrect key: {k}, es name:{name}")
     local comps = compsDesc
 
@@ -106,7 +108,7 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     }
     assert(remappedEvents.len()>0, $"can't register ES '{name}' without any events")
     assert(!("OnUpdate" in remappedEvents), $"ES: {name}, OnUpdate is incorrect eventListener, should be onUpdate")
-    foreach (k, v in remappedEvents) {
+    foreach (k, _v in remappedEvents) {
       assert(k in ecs.sqEvents || ["Timer","onUpdate"].indexof(k) != null || (type(k) == "class") || (type(k) == "integer"), $"unknown event {k}. Script events should be registered via ecs.register_event()")
     }
     let isChangedTracked = ecs.EventComponentChanged in remappedEvents
@@ -133,7 +135,7 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     comps_len += comps?.comps_rw?.len != null ? comps.comps_rw.len() : 0
     comps_len += comps?.comps_rq?.len != null ? comps.comps_rq.len() : 0
     if (comps_len == 0) {
-      let unicastEvents = remappedEvents.filter(@(v, k) k in unicastSqEvents ) //do not enumerate native events
+      let unicastEvents = remappedEvents.filter(@(_v, k) k in unicastSqEvents ) //do not enumerate native events
       assert(unicastEvents.len() == 0, $"es {name} registered for unicast events without any components!")
       verbose_print($"ecs: '{name}' is registered for performing queries, as it has zero required components; ")
     }
@@ -183,17 +185,66 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
 
 let function makeTemplate(params={}){
   let addTemplates = params?.addTemplates ?? []
-  let removeTemplates = [].extend(params?.removeTemplates ?? []).extend(addTemplates)
+  let removeTemplates = [].extend(params?.removeTemplates ?? [], addTemplates)
   let baseTemplates = params?.baseTemplate.split("+") ?? []
   return "+".join(
             baseTemplates
-            .filter(@(v) removeTemplates.indexof(v) == null)
+            .filter(@(v) !removeTemplates.contains(v))
             .extend(addTemplates)
           )
 }
 
-let recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTemplates=[], addTemplates=[], comps={}, callback=null){
-  removeTemplates = [].extend(removeTemplates).extend(addTemplates)
+let recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTemplates=null, addTemplates=null, comps={}, callback=null, checkComps = DBGLEVEL > 0){
+  let resRemoveTemplates = []
+  if (removeTemplates != null && removeTemplates.len() > 0){
+    foreach (templN in removeTemplates){
+      let templName = type(templN)=="string" ? templN : templN?.template
+      if (checkComps) {
+        let templComps = type(templN)=="string" ? [templN] : templN?.comps
+        if (templComps == null || templName == null) {
+          logerr($"addTemplates should have specified components that should be added. {templName}") //todo: check that components exists in removed templates
+        }
+        else {
+          let templ = templName != null ? ecs.g_entity_mgr.getTemplateDB().getTemplateByName(templName) : null
+          if (templ == null && (templComps?.len() ?? 0 )==0)
+            continue
+          foreach(compName in templComps) {
+            if (!templ.hasComponent(compName)) {
+              logerr($"template '{templName}' has no '{compName}'!")
+              break
+            }
+          }
+        }
+      }
+      resRemoveTemplates.append(templName)
+    }
+  }
+
+  let resAddTemplates = []
+  if (addTemplates != null && addTemplates.len() > 0) {
+    foreach (templN in addTemplates){
+      let templName = type(templN)=="string" ? templN : templN?.template
+      if (checkComps) {
+        let templComps = type(templN)=="string" ? [templN] : templN?.comps
+        if (templComps == null || templName == null) {
+          logerr($"addTemplates should have specified components that should be added. {templName}") //todo: check that components exists in removed templates
+        }
+        else {
+          let templ = templName != null ? ecs.g_entity_mgr.getTemplateDB().getTemplateByName(templName) : null
+          if (templ == null) {
+            logerr($"no template '{templName}' found on recreateTemplates!")
+            continue
+          }
+          foreach(compName in templComps){
+            if (!templ.hasComponent(compName))
+              logerr($"template '{templName}' has no '{compName}'!")
+          }
+        }
+      }
+      resAddTemplates.append(templName)
+    }
+  }
+  resRemoveTemplates.extend(resAddTemplates)
   if (eid == INVALID_ENTITY_ID || !ecs.g_entity_mgr.doesEntityExist(eid))
     return
   let curTemplate = ecs.g_entity_mgr.getEntityFutureTemplateName(eid)
@@ -201,7 +252,7 @@ let recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTe
   // In such case doesEntityExist() still true
   if (curTemplate == null)
     return
-  let newTemplatesName = makeTemplate({baseTemplate=curTemplate, addTemplates=addTemplates, removeTemplates = removeTemplates})
+  let newTemplatesName = makeTemplate({baseTemplate=curTemplate, addTemplates=resAddTemplates, removeTemplates=resRemoveTemplates})
   if (newTemplatesName != curTemplate)
     ecs.g_entity_mgr.reCreateEntityFrom(eid, newTemplatesName, comps, callback)
 })
@@ -225,9 +276,9 @@ let function list2array(list){
   return res
 }
 
-let function set_array2list(_array, list){
+let function set_array2list(array_, list){
   list.clear()
-  foreach (v in _array)
+  foreach (v in array_)
     list.append(v)
   return list
 }

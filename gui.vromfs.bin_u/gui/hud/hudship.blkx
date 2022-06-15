@@ -38,10 +38,13 @@
         "position": "absolute",
         "pos": "pw - w, 0",
         "result": "",
-        "hitCameraLine": [],
+        "_transp-timer": "0",
         "hitCameraRender": {
           "hitCameraTitle": {
             "id": "title"
+          },
+          "enemyDamageStatusPanel": {
+            "id": "damageStatus"
           },
           "hitCameraInfo": {
             "id": "info"
@@ -51,8 +54,8 @@
       "hudEnemyDamage": {
         "id": "hud_enemy_damage",
         "position": "absolute",
-        "pos": "pw - w, 1@hitCameraHeight + 0.02*@shHud",
-        "posHitcamOn": "pw - w, 1@hitCameraHeight + 0.02*@shHud",
+        "pos": "pw - w, 1@hitCameraHeight + 1@cIco + 1@blockInterval",
+        "posHitcamOn": "pw - w, 1@hitCameraHeight + 1@cIco + 1@blockInterval",
         "posHitcamOff": "pw - w, 0",
         "flow": "vertical"
       }

@@ -93,6 +93,9 @@
     "smokeScreenOffset": [-3.0,0.0,2.0]
   },
   {
+    "smokeScreenFx": "smokescreen_no_therm_big"
+  },
+  {
     "canReloadNonGuns": true
   },
   {
@@ -1279,11 +1282,12 @@
       "createSecondaryShatters": false,
       "compartments": {
         "fireParamsPreset": "ship_cover_boats",
-        "stopChanceOnDeadPart": 0.3,
+        "stopChanceOnDeadPart": 0.5,
         "armorClass": "ship_structural_steel",
         "armorThickness": 6.0,
         "hidableInViewer": true,
         "fireProtectionHp": 3.0,
+        "napalmDamageMult": 1.0,
         "compartment_01_dm": {
           "hp": 1970.0
         },
@@ -1304,14 +1308,21 @@
         },
         "compartment_07_dm": {
           "hp": 750.0
-        },
+        }
+      },
+      "control_compartments": {
+        "fireParamsPreset": "ship_cover_boats",
+        "stopChanceOnDeadPart": 0.5,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0,
+        "hidableInViewer": true,
+        "fireProtectionHp": 3.0,
+        "napalmDamageMult": 1.0,
         "bridge_dm": {
-          "armorThickness": 1.0,
-          "hp": 250.0
+          "hp": 230.0
         },
         "radio_station_dm": {
-          "armorThickness": 1.0,
-          "hp": 150.0
+          "hp": 260.0
         }
       },
       "superstructures": {
@@ -1398,6 +1409,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "dmgState": 0.0,
+        "napalmDamageMult": 1.0,
         "rangefinder_01_dm": {
           "hp": 50.0
         }
@@ -1411,20 +1423,20 @@
         "armorThickness": 4.0,
         "fireProtectionHp": 10.0,
         "engine_room_01_dm": {
-          "hp": 1000.0
+          "hp": 760.0
         },
         "engine_room_02_dm": {
-          "hp": 1000.0
+          "hp": 760.0
         },
         "funnel_01_dm": {
           "shatterDamageMult": 1.0,
-          "hp": 343.0
+          "hp": 373.0
         },
         "transmission_01_dm": {
-          "hp": 500.0
+          "hp": 760.0
         },
         "transmission_02_dm": {
-          "hp": 500.0
+          "hp": 760.0
         }
       },
       "steering_gear": {
@@ -1503,29 +1515,32 @@
       "turrets_main_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
+        "napalmDamageMult": 1.0,
         "main_caliber_turret_01_dm": {
-          "hp": 150.0
+          "hp": 170.0
         }
       },
       "turrets_aux_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
+        "napalmDamageMult": 1.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 78.0
+          "hp": 120.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 110.0
+          "hp": 138.0
         },
         "auxiliary_caliber_turret_03_dm": {
-          "hp": 118.0
+          "hp": 147.0
         },
         "auxiliary_caliber_turret_04_dm": {
-          "hp": 123.0
+          "hp": 150.0
         }
       },
       "turrets_aa_caliber": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 1.0
+        "armorThickness": 1.0,
+        "napalmDamageMult": 1.0
       },
       "gun_main_caliber": {
         "armorClass": "tank_barrel",
@@ -1537,6 +1552,7 @@
       "gun_aux_caliber": {
         "armorClass": "tank_barrel",
         "armorThickness": 6.0,
+        "napalmDamageMult": 1.0,
         "auxiliary_caliber_gun_01_dm": {
           "hp": 100.0
         },
@@ -1745,7 +1761,7 @@
   },
   {
     "tank_crew": {
-      "minCrewMemberRepairCount": 28,
+      "minCrewMemberRepairCount": 0,
       "minCrewMemberAliveCount": 24,
       "sailor1": {
         "dmPart": "bridge_dm",
@@ -1765,7 +1781,7 @@
       "sailor4": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 13
+        "crew": 12
       },
       "sailor5": {
         "dmPart": "compartment_05_dm",
@@ -1785,7 +1801,7 @@
       "sailor8": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 2
+        "crew": 3
       }
     }
   },
@@ -3283,6 +3299,10 @@
       "ship_smoke_screen_system_mod": [],
       "new_ship_pumps": [],
       "76mm_jp_type88_navy_he": [],
+      "76mm_jp_type88_navy_he_tf": [],
+      "76mm_jp_type88_navy_he_tf_ammo_pack": {
+        "prevModification": "ship_rangefinder"
+      },
       "25mm_type96_naval_universal": [],
       "25mm_type96_naval_ap": [],
       "25mm_type96_naval_ap_ammo_pack": [],

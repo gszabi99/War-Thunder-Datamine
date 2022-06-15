@@ -214,7 +214,7 @@
     },
     "MTI": {
       "dynamicRange": [40.0,12.0],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": false,
       "absDopplerSpeed": true,
@@ -229,13 +229,13 @@
         "presents": true,
         "minValue": 30.0,
         "maxValue": 1500.0,
-        "signalWidthMin": 10.0,
+        "signalWidthMin": 2.0,
         "width": 0.0
       }
     },
     "MTITrack": {
       "dynamicRange": [40.0,12.0],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
@@ -252,7 +252,7 @@
         "presents": true,
         "minValue": 30.0,
         "maxValue": 1500.0,
-        "signalWidthMin": 10.0,
+        "signalWidthMin": 2.0,
         "width": 0.0
       }
     },
@@ -1660,7 +1660,7 @@
         {
           "finishedBSVDesignationTrack": {
             "stateFrom": "BSVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "BSVSearch",
             "actions": {
@@ -1727,7 +1727,7 @@
         {
           "finishedBoresightTrack": {
             "stateFrom": "BSVBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "BSVBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -1831,7 +1831,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "BSVdHDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "BSVdHSearch",
             "actions": {
@@ -1843,7 +1843,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "SMVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "SMVSearch",
             "actions": {
@@ -1855,7 +1855,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "MVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "MVSearch",
             "actions": {
@@ -1867,7 +1867,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "OLSFromLookUpDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "OLSFromLookUpSearch",
             "actions": {
@@ -1879,7 +1879,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "OLSFromLookDownDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "OLSFromLookDownSearch",
             "actions": {
@@ -1946,7 +1946,7 @@
         {
           "finishedBSVdHBoresightTrack": {
             "stateFrom": "BSVdHBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "BSVdHBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2105,7 +2105,7 @@
         {
           "finishedSMVBoresightTrack": {
             "stateFrom": "SMVBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "SMVBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2264,7 +2264,7 @@
         {
           "finishedMVBoresightTrack": {
             "stateFrom": "MVBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "MVBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2423,7 +2423,7 @@
         {
           "finishedOLSFromLookUpBoresightTrack": {
             "stateFrom": "OLSFromLookUpBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "OLSFromLookUpBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2582,7 +2582,7 @@
         {
           "finishedOLSFromLookDownBoresightTrack": {
             "stateFrom": "OLSFromLookDownBoresightTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "stateTo": "OLSFromLookDownBoresightLock",
             "actions": {
               "resetTrackMode": [],
@@ -2781,7 +2781,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -2795,9 +2798,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

@@ -6,7 +6,7 @@ let deathmatch = require("deathmatch.ui.nut")
 
 let timerComponent = @() {
   watch = timeLeft
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   font = Fonts.medium_text_hud
   color = Color(255, 255, 255)
   pos = [0, hdpx(40)]

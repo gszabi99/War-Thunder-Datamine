@@ -1,3 +1,9 @@
+let ecs = require("%sqstd/ecs.nut")
+let {EventOnConnectedToServer} = require("net")
+let {MatchingRoomExtraParams} = require("dasevents")
+let { format } = require("string")
+let { get_mp_session_id_str = @() ::get_mp_session_id() //compatibility with 2.16.0.X
+} = require_optional("multiplayer")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
@@ -124,12 +130,12 @@ let allowed_mission_settings = { //only this settings are allowed in room
 // rooms notifications
 ::notify_room_invite <- function notify_room_invite(params)
 {
-  dagor.debug("notify_room_invite")
+  ::dagor.debug("notify_room_invite")
   //debugTableData(params)
 
   if (!::isInMenu() && ::g_login.isLoggedIn())
   {
-    dagor.debug("Invite rejected: player is already in flight or in loading level or in unloading level");
+    ::dagor.debug("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false;
   }
 
@@ -144,7 +150,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::notify_room_destroyed <- function notify_room_destroyed(params)
 {
-  dagor.debug("notify_room_destroyed")
+  ::dagor.debug("notify_room_destroyed")
   //debugTableData(params)
 
   ::SessionLobby.afterLeaveRoom(params)
@@ -152,32 +158,32 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::notify_room_member_joined <- function notify_room_member_joined(params)
 {
-  dagor.debug("notify_room_member_joined")
+  ::dagor.debug("notify_room_member_joined")
   //debugTableData(params)
   ::SessionLobby.onMemberJoin(params)
 }
 
 ::notify_room_member_leaved <- function notify_room_member_leaved(params)
 {
-  dagor.debug("notify_room_member_leaved")
+  ::dagor.debug("notify_room_member_leaved")
   ::SessionLobby.onMemberLeave(params)
 }
 
 ::notify_room_member_kicked <- function notify_room_member_kicked(params)
 {
-  dagor.debug("notify_room_member_kicked")
+  ::dagor.debug("notify_room_member_kicked")
   ::SessionLobby.onMemberLeave(params, true)
 }
 
 ::notify_room_member_attribs_changed <- function notify_room_member_attribs_changed(params)
 {
-  dagor.debug("notify_room_member_attribs_changed")
+  ::dagor.debug("notify_room_member_attribs_changed")
   ::SessionLobby.onMemberInfoUpdate(params)
 }
 
 ::notify_room_attribs_changed <- function notify_room_attribs_changed(params)
 {
-  dagor.debug("notify_room_attribs_changed")
+  ::dagor.debug("notify_room_attribs_changed")
   //debugTableData(params)
 
   ::SessionLobby.onSettingsChanged(params)
@@ -185,11 +191,11 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
 ::notify_session_start <- function notify_session_start()
 {
-  let sessionId = ::get_mp_session_id()
+  let sessionId = get_mp_session_id_str()
   if (sessionId != "")
     ::LAST_SESSION_DEBUG_INFO = "sid:" + sessionId
 
-  dagor.debug("notify_session_start")
+  ::dagor.debug("notify_session_start")
   ::add_big_query_record("joining_session",
     ::save_to_json({
       gm = ::get_game_mode()
@@ -514,20 +520,20 @@ SessionLobby.setPsnMatchId <- function setPsnMatchId(mId)
 }
 
 
-SessionLobby.setSettings <- function setSettings(_settings, notify = false, checkEqual = true)
+SessionLobby.setSettings <- function setSettings(v_settings, notify = false, checkEqual = true)
 {
-  if (typeof _settings == "array")
+  if (typeof v_settings == "array")
   {
-    ::dagor.debug("_settings param, public info, is array, instead of table")
+    ::dagor.debug("v_settings param, public info, is array, instead of table")
     ::callstack()
     return
   }
 
-  if (checkEqual && ::u.isEqual(settings, _settings))
+  if (checkEqual && ::u.isEqual(settings, v_settings))
     return
 
-  //_settings can be publick date of room, and it does not need to be updated settings somewhere else
-  settings = clone _settings
+  //v_settings can be publick date of room, and it does not need to be updated settings somewhere else
+  settings = clone v_settings
   //not mission room settings
   settings.connect_on_join <- !haveLobby()
 
@@ -617,18 +623,18 @@ SessionLobby.UpdateCrsSettings <- function UpdateCrsSettings()
   }
 }
 
-SessionLobby.fillTeamsInfo <- function fillTeamsInfo(_settings, misBlk)
+SessionLobby.fillTeamsInfo <- function fillTeamsInfo(v_settings, misBlk)
 {
   //!!fill simmetric teams data
   let teamData = {}
   teamData.allowedCrafts <- []
 
   foreach (unitType in unitTypes.types)
-    if (unitType.isAvailableByMissionSettings(_settings.mission) && unitType.isPresentOnMatching)
+    if (unitType.isAvailableByMissionSettings(v_settings.mission) && unitType.isPresentOnMatching)
     {
       let rule = { ["class"] = unitType.getMissionAllowedCraftsClassName() }
-      if (_settings?.mranks)
-        rule.mranks <- _settings.mranks
+      if (v_settings?.mranks)
+        rule.mranks <- v_settings.mranks
       teamData.allowedCrafts.append(rule)
     }
 
@@ -637,40 +643,40 @@ SessionLobby.fillTeamsInfo <- function fillTeamsInfo(_settings, misBlk)
   local teamDataB = clone teamData
 
   //in future better to comletely remove old countries selection, and use only countries in teamData
-  teamDataA.countries <- _settings.country_allies
-  teamDataB.countries <- _settings.country_axis
+  teamDataA.countries <- v_settings.country_allies
+  teamDataB.countries <- v_settings.country_axis
 
-  addTeamsInfoToSettings(_settings, teamDataA, teamDataB)
+  addTeamsInfoToSettings(v_settings, teamDataA, teamDataB)
 }
 
-SessionLobby.addTeamsInfoToSettings <- function addTeamsInfoToSettings(_settings, teamDataA, teamDataB)
+SessionLobby.addTeamsInfoToSettings <- function addTeamsInfoToSettings(v_settings, teamDataA, teamDataB)
 {
-  _settings[::events.getTeamName(Team.A)] <- teamDataA
-  _settings[::events.getTeamName(Team.B)] <- teamDataB
+  v_settings[::events.getTeamName(Team.A)] <- teamDataA
+  v_settings[::events.getTeamName(Team.B)] <- teamDataB
 }
 
-SessionLobby.checkDynamicSettings <- function checkDynamicSettings(silent = false, _settings = null)
+SessionLobby.checkDynamicSettings <- function checkDynamicSettings(silent = false, v_settings = null)
 {
   if (!isRoomOwner && isInRoom())
     return
 
-  if (!_settings)
+  if (!v_settings)
   {
     if (!settings || !settings.len())
       return //owner have joined back to the room, and not receive settings yet
-    _settings = settings
+    v_settings = settings
   } else
     silent = true //no need to update when custom settings checked
 
   local changed = false
-  let wasHidden = ::getTblValue("hidden", _settings, false)
-  _settings.hidden <- ::getTblValue("coop", _settings, false)
-                      || (isRoomInSession && !::getTblValue("allowJIP", _settings, true))
-  changed = changed || (wasHidden != _settings.hidden) // warning disable: -const-in-bool-expr
+  let wasHidden = ::getTblValue("hidden", v_settings, false)
+  v_settings.hidden <- ::getTblValue("coop", v_settings, false)
+                      || (isRoomInSession && !::getTblValue("allowJIP", v_settings, true))
+  changed = changed || (wasHidden != v_settings.hidden) // warning disable: -const-in-bool-expr
 
-  let wasPassword = ::getTblValue("hasPassword", _settings, false)
-  _settings.hasPassword <- password != ""
-  changed = changed || (wasPassword != _settings.hasPassword)
+  let wasPassword = ::getTblValue("hasPassword", v_settings, false)
+  v_settings.hasPassword <- password != ""
+  changed = changed || (wasPassword != v_settings.hasPassword)
 
   if (changed && !silent)
     setSettings(settings, false, false)
@@ -687,7 +693,7 @@ SessionLobby.onSettingsChanged <- function onSettingsChanged(p)
   if ("last_round" in set)
   {
     ::last_round = set.last_round
-    dagor.debug("last round " + ::last_round)
+    ::dagor.debug("last round " + ::last_round)
   }
 
   let newSet = clone settings
@@ -865,7 +871,7 @@ SessionLobby.getNotAvailableUnitByBRText <- function getNotAvailableUnitByBRText
           gameModeName = ::events.getEventNameText(mGameMode),
           lockedUnitType = ::colorize("userlogColoredText",
             ::loc("mainmenu/type_" + unit.unitType.lowerName)),
-          battleRatingDiff = ::colorize("userlogColoredText", ::format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
+          battleRatingDiff = ::colorize("userlogColoredText", format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
           reqUnitType = ::colorize("userlogColoredText", ::loc("mainmenu/type_ship_and_boat"))
         })
       : null
@@ -942,15 +948,15 @@ SessionLobby.getTeamsCountries <- function getTeamsCountries(room = null)
   return res
 }
 
-SessionLobby.switchStatus <- function switchStatus(_status)
+SessionLobby.switchStatus <- function switchStatus(v_status)
 {
-  if (status == _status)
+  if (status == v_status)
     return
 
   let wasInRoom = isInRoom()
   let wasStatus = status
   let wasSessionInLobby = isEventRoom
-  status = _status  //for easy notify other handlers about change status
+  status = v_status  //for easy notify other handlers about change status
   //dlog("GP: status changed to " + ::getEnumValName("lobbyStates", status))
   if (isInJoiningGame())
     joiningGameWaitBox.open()
@@ -1020,15 +1026,15 @@ SessionLobby.switchStatusChecked <- function switchStatusChecked(oldStatusList, 
     switchStatus(newStatus)
 }
 
-SessionLobby.changePassword <- function changePassword(_password)
+SessionLobby.changePassword <- function changePassword(v_password)
 {
-  if (typeof(_password)!="string" || password==_password)
+  if (typeof(v_password)!="string" || password==v_password)
     return
 
   if (isRoomOwner && status != lobbyStates.NOT_IN_ROOM && status != lobbyStates.CREATING_ROOM)
   {
     let prevPass = password
-    ::room_set_password({ roomId = roomId, password = _password },
+    ::room_set_password({ roomId = roomId, password = v_password },
       (@(prevPass) function(p) {
         if (!::checkMatchingError(p))
         {
@@ -1037,21 +1043,21 @@ SessionLobby.changePassword <- function changePassword(_password)
         }
       })(prevPass))
   }
-  password = _password
+  password = v_password
 }
 
-SessionLobby.getMisListType <- function getMisListType(_settings = null)
+SessionLobby.getMisListType <- function getMisListType(v_settings = null)
 {
-  if (isUserMission(_settings))
+  if (isUserMission(v_settings))
     return ::g_mislist_type.UGM
-  if (isUrlMission(_settings))
+  if (isUrlMission(v_settings))
     return ::g_mislist_type.URL
   return ::g_mislist_type.BASE
 }
 
-SessionLobby.isUserMission <- function isUserMission(_settings = null)
+SessionLobby.isUserMission <- function isUserMission(v_settings = null)
 {
-  return ::getTblValue("userMissionName", _settings || settings) != null
+  return ::getTblValue("userMissionName", v_settings || settings) != null
 }
 
 SessionLobby.isUrlMission <- function isUrlMission(room = null)
@@ -1766,15 +1772,15 @@ SessionLobby.joinBattle <- function joinBattle(battleId)
   sendJoinRoomRequest({battleId = battleId})
 }
 
-SessionLobby.joinRoom <- function joinRoom(_roomId, senderId = "", _password = null,
+SessionLobby.joinRoom <- function joinRoom(v_roomId, senderId = "", v_password = null,
                                 cb = function(...) {}) //by default not a queue, but no id too
 {
-  if (roomId == _roomId && isInRoom())
+  if (roomId == v_roomId && isInRoom())
     return
 
   if (!::g_login.isLoggedIn() || isInRoom())
   {
-    delayedJoinRoomFunc = (@(_roomId, senderId, _password, cb) function() { joinRoom(_roomId, senderId, _password, cb) })(_roomId, senderId, _password, cb)
+    delayedJoinRoomFunc = (@(v_roomId, senderId, v_password, cb) function() { joinRoom(v_roomId, senderId, v_password, cb) })(v_roomId, senderId, v_password, cb)
 
     if (isInRoom())
       leaveRoom()
@@ -1789,10 +1795,10 @@ SessionLobby.joinRoom <- function joinRoom(_roomId, senderId = "", _password = n
   else
     ::queues.leaveAllQueuesSilent()
 
-  if (_password && _password.len())
-    changePassword(_password)
+  if (v_password && v_password.len())
+    changePassword(v_password)
 
-  let joinParams = { roomId = _roomId }
+  let joinParams = { roomId = v_roomId }
   if (password!="")
     joinParams.password <- password
 
@@ -1857,7 +1863,7 @@ SessionLobby.afterRoomJoining <- function afterRoomJoining(params)
       setIngamePresence(public, roomId)
       isEventRoom = ::events.isEventWithLobby(mGameMode)
     }
-    dagor.debug("Joined room: isEventRoom " + isEventRoom)
+    ::dagor.debug("Joined room: isEventRoom " + isEventRoom)
 
     if (isRoomByQueue && !isSessionStartedInRoom())
       isRoomByQueue = false
@@ -2077,7 +2083,7 @@ SessionLobby.startSession <- function startSession()
     uploadUserMission(function() { ::SessionLobby.startSession() })
     return
   }
-  dagor.debug("start session")
+  ::dagor.debug("start session")
 
   ::room_start_session({ roomId = roomId, cluster = getPublicParam("cluster", "EU") },
       function(p)
@@ -2588,7 +2594,7 @@ SessionLobby.rpcJoinBattle <- function rpcJoinBattle(params)
   if (!showMsgboxIfSoundModsNotAllowed({allowSoundMods = false}))
     return "sound mods not allowed"
 
-  dagor.debug("join to battle with id " + battleId)
+  ::dagor.debug("join to battle with id " + battleId)
   SessionLobby.joinBattle(battleId)
   return "ok"
 }
@@ -2800,7 +2806,7 @@ foreach (notificationName, callback in
   {
     ["mrooms.reconnect_invite2"] = function (invite_data, send_resp)
     {
-      dagor.debug("got reconnect invite from matching")
+      ::dagor.debug("got reconnect invite from matching")
       if (::is_in_flight())
         return
 
@@ -2815,3 +2821,10 @@ foreach (notificationName, callback in
   }
 )
   ::matching_rpc_subscribe(notificationName, callback)
+
+ecs.register_es("on_connected_to_server_es", {
+  [EventOnConnectedToServer] = function() {
+    let chance = ::SessionLobby.getRoomEvent()?.routeEvaluationChance ?? 0.0
+    ecs.g_entity_mgr.broadcastEvent(MatchingRoomExtraParams({routeEvaluationChance=chance}));
+  },
+})

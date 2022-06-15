@@ -11,6 +11,7 @@ let {tostring_r} = require("%sqstd/string.nut")
 */
 let function watchElemState(builder) {
   let stateFlags = Watched(0)
+  let onElemState = @(sf) stateFlags.update(sf)
   return function() {
     let desc = builder(stateFlags.value)
     local watch = desc?.watch ?? []
@@ -18,7 +19,7 @@ let function watchElemState(builder) {
       watch = [watch]
     watch.append(stateFlags)
     desc.watch <- watch
-    desc.onElemState <- @(sf) stateFlags.update(sf)
+    desc.onElemState <- onElemState
     return desc
   }
 }
@@ -55,8 +56,8 @@ let function isDargComponent(comp) {
   if (c_type != "table" && c_type != "class")
     return false
   let knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
-  foreach(k,val in c) {
-    if (knownProps.indexof(k) != null)
+  foreach(k, _val in c) {
+    if (knownProps.contains(k))
       return true
   }
   return false
@@ -67,6 +68,8 @@ let function isDargComponent(comp) {
 let hdpx = sh(100) <= sw(75)
   ? @(pixels) sh(100.0 * pixels / 1080)
   : @(pixels) sw(75.0 * pixels / 1080)
+
+let hdpxi = @(pixels) hdpx(pixels).tointeger()
 
 let fsh = sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v)
 
@@ -179,6 +182,7 @@ return {
   wrap
   dump_observables
   hdpx
+  hdpxi
   watchElemState
   isDargComponent
   fsh

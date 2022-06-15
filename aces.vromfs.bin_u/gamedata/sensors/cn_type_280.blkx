@@ -207,6 +207,8 @@
             "value": true
           },
           "clearTargetsOfInterest": [],
+          "setScanPatternSet": [],
+          "resetScanPhase": [],
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -215,8 +217,6 @@
             "source": "targetDesignation",
             "width": 1000.0
           },
-          "setScanPatternSet": [],
-          "resetScanPhase": [],
           "clearTargets": [],
           "setFsmActive": {
             "fsm": "lock",
@@ -384,7 +384,7 @@
         },
         "finishedDesignationTrack": {
           "stateFrom": "designationTrack",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "command": "selectTarget",
           "stateTo": "search",
           "actions": {
@@ -520,7 +520,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -530,9 +533,6 @@
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

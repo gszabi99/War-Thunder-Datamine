@@ -3,6 +3,7 @@
   "fmFile": "fm/ro_43.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "harmonizationSuffix": "_tomoe",
   "type": "typeFighter",
   "paratrooper": "german",
   "arcadeHP": 100.0,
@@ -24,8 +25,9 @@
   "smokeScreenPlaneMinAlt": 1.0,
   "smokeScreenPlaneMaxAlt": 50.0,
   "smokeScreenFxType": "tank_smokescreen",
-  "smokeScreenDmPart": "gear_c",
-  "smokeScreenOffset": [2.6,-50.0,0.0],
+  "smokeScreenFx": "smokescreen_hydroplane",
+  "smokeScreenDmPart": "tail_dm",
+  "smokeScreenOffset": [-8.0,-12.0,0.0],
   "DamageParts": {
     "armor10": {
       "gun1_dm": {
@@ -2033,7 +2035,7 @@
     "nonExtinguishFireTime": 5.0
   },
   "smokeScreenExhaustEmitters": {
-    "emitter": "gear_c"
+    "emitter": "tail_dm"
   },
   "wiki": {
     "general": {
@@ -2145,6 +2147,20 @@
     {
       "replace_tex": {
         "from": "ro_43_n_dmg*"
+      }
+    }
+  ],
+  "default_skin_tomoe": [
+    {
+      "replace_tex": {
+        "from": "ro_43_c*",
+        "to": "ro_43_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "ro_43_c_dmg*",
+        "to": "ro_43_c_tomoe_dmg*"
       }
     }
   ],

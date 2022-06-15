@@ -1,3 +1,4 @@
+let { format, split_by_chars } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
@@ -269,9 +270,9 @@ local InventoryClient = class {
 
     if (itemsBroken.len() || keysMissing.len() || keysWrongType.len())
     {
-      itemsBroken = ::g_string.implode(itemsBroken, ";")
-      keysMissing = ::g_string.implode(keysMissing.keys(), ";")
-      keysWrongType = ";".join(keysWrongType.topairs().map(@(i) i[0] + "=" + i[1]))
+      itemsBroken = ::g_string.implode(itemsBroken, ";") // warning disable: -assigned-never-used
+      keysMissing = ::g_string.implode(keysMissing.keys(), ";") // warning disable: -assigned-never-used
+      keysWrongType = ";".join(keysWrongType.topairs().map(@(i) i[0] + "=" + i[1])) // warning disable: -assigned-never-used
       ::script_net_assert_once("inventory client bad response", $"InventoryClient: Response has errors: {name}")
     }
 
@@ -288,7 +289,7 @@ local InventoryClient = class {
 
     return "auto_login auto_local sso_service=any " + url + "?a=" + ::WT_APPID +
       (::steam_is_running()
-        ? ::format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
+        ? format("&app_id=%d&steam_id=%s", steam_get_app_id(), steam_get_my_id())
         : "")
   }
 
@@ -332,7 +333,7 @@ local InventoryClient = class {
       return
 
     needRefreshItems = true
-    dagor.debug("schedule requestItems")
+    ::dagor.debug("schedule requestItems")
     g_delayed_actions.add(requestItemsInternal.bindenv(this), 100)
   }
 
@@ -410,8 +411,8 @@ local InventoryClient = class {
         cbList = [],
         shouldRefreshAll = false,
         fireCb = function() {
-          foreach(_cb in cbList)
-            _cb()
+          foreach(c in cbList)
+            c()
         }
       }
     pendingItemDefRequest.shouldRefreshAll = shouldRefreshAll || pendingItemDefRequest.shouldRefreshAll
@@ -455,7 +456,7 @@ local InventoryClient = class {
       return requestData.fireCb()
 
     let itemdefidsString = ::g_string.implode(itemdefidsRequest, ",")
-    dagor.debug("Request itemdefs " + itemdefidsString)
+    ::dagor.debug("Request itemdefs " + itemdefidsString)
 
     lastItemdefsRequestTime = ::dagor.getCurTime()
     let steamLanguage = ::g_language.getCurrentSteamLanguage()
@@ -537,8 +538,8 @@ local InventoryClient = class {
       return null
 
     let parsedTags = ::DataBlock()
-    foreach (pair in ::split(tags, ";")) {
-      let parsed = ::split(pair, ":")
+    foreach (pair in split_by_chars(tags, ";")) {
+      let parsed = split_by_chars(pair, ":")
       if (parsed.len() == 2) {
         let v = parsed[1]
         parsedTags[parsed[0]] <- tagsValueRemap?[v] ?? v
@@ -550,7 +551,7 @@ local InventoryClient = class {
   function parseRecipesString(recipesStr)
   {
     let recipes = []
-    foreach (recipe in ::split(recipesStr || "", ";"))
+    foreach (recipe in split_by_chars(recipesStr || "", ";"))
     {
       let parsedRecipe = {
         components = []
@@ -558,7 +559,7 @@ local InventoryClient = class {
         requirement = null
         recipeStr = recipe
       }
-      foreach (component in ::split(recipe, ","))
+      foreach (component in split_by_chars(recipe, ","))
       {
         let requirement = ::g_string.cutPrefix(component, "require=")
         if (requirement != null) {
@@ -567,8 +568,8 @@ local InventoryClient = class {
         }
         let reqItems = ::g_string.cutPrefix(component, "req_items=")
         if (reqItems != null) {
-          foreach (reqItem in ::split(reqItems, "+")) {
-            let pair = ::split(reqItem, "x")
+          foreach (reqItem in split_by_chars(reqItems, "+")) {
+            let pair = split_by_chars(reqItem, "x")
             if (!pair.len())
               continue
             parsedRecipe.reqItems.append({
@@ -579,7 +580,7 @@ local InventoryClient = class {
           continue
         }
 
-        let pair = ::split(component, "x")
+        let pair = split_by_chars(component, "x")
         if (!pair.len())
           continue
         parsedRecipe.components.append({

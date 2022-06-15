@@ -18,19 +18,19 @@ let matchingStageToLoginState = {
     ::g_login.addState(matchingStageToLoginState[stage])
 }
 
-::LoginProcess <- class
+let class LoginProcess
 {
   curProgress = LOGIN_PROGRESS.NOT_STARTED
 
   constructor(shouldCheckScriptsReload)
   {
     if (shouldCheckScriptsReload)
-      restoreStateAfterScriptsReload()
+      this.restoreStateAfterScriptsReload()
     if (::g_login.isAuthorized())
-      curProgress = LOGIN_PROGRESS.IN_LOGIN_WND
+      this.curProgress = LOGIN_PROGRESS.IN_LOGIN_WND
 
     ::subscribe_handler(this, ::g_listener_priority.LOGIN_PROCESS)
-    nextStep()
+    this.nextStep()
   }
 
   function restoreStateAfterScriptsReload()
@@ -43,17 +43,17 @@ let matchingStageToLoginState = {
 
   function isValid()
   {
-    return curProgress != LOGIN_PROGRESS.NOT_STARTED
-        && curProgress < LOGIN_PROGRESS.FINISHED
+    return this.curProgress != LOGIN_PROGRESS.NOT_STARTED
+        && this.curProgress < LOGIN_PROGRESS.FINISHED
   }
 
   function nextStep()
   {
-    curProgress++
+    this.curProgress++
 
-    if (curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
+    if (this.curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
       ::g_login.loadLoginHandler()
-    else if (curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES)
+    else if (this.curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES)
     {
       //connect to matching
       let successCb = ::Callback(function()
@@ -62,12 +62,12 @@ let matchingStageToLoginState = {
                         }, this)
       let errorCb   = ::Callback(function()
                         {
-                          destroy()
+                          this.destroy()
                         }, this)
 
       ::g_matching_connect.connect(successCb, errorCb, false)
     }
-    else if (curProgress == LOGIN_PROGRESS.INIT_CONFIGS)
+    else if (this.curProgress == LOGIN_PROGRESS.INIT_CONFIGS)
     {
       ::g_login.initConfigs(
         ::Callback(function()
@@ -77,37 +77,37 @@ let matchingStageToLoginState = {
         this))
     }
 
-    checkNextStep()
+    this.checkNextStep()
   }
 
   function checkNextStep()
   {
-    if (curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
+    if (this.curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
     {
       if (::g_login.isAuthorized())
-        nextStep()
+        this.nextStep()
     }
-    else if (curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES)
+    else if (this.curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES)
     {
       if (::g_login.isReadyToFullLoad())
-        nextStep()
+        this.nextStep()
     }
-    else if (curProgress == LOGIN_PROGRESS.INIT_CONFIGS)
+    else if (this.curProgress == LOGIN_PROGRESS.INIT_CONFIGS)
     {
       if (::g_login.isLoggedIn())
-        nextStep()
+        this.nextStep()
     }
   }
 
   function onEventLoginStateChanged(p)
   {
-    checkNextStep()
+    this.checkNextStep()
   }
 
   function destroy()
   {
-    if (isValid())
-      curProgress = LOGIN_PROGRESS.NOT_STARTED
+    if (this.isValid())
+      this.curProgress = LOGIN_PROGRESS.NOT_STARTED
   }
 }
 

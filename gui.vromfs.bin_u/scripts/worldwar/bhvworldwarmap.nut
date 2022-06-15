@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 
 ::ww_gui_bhv.worldWarMapControls <- class
@@ -296,7 +297,7 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
   function getSelectedArmiesOnMap(obj)
   {
     let selectedArmies = ::getTblValue(selectedArmiesID, obj.getUserData(), "")
-    return ::split(selectedArmies, ",")
+    return split_by_chars(selectedArmies, ",")
   }
 
   function selectArmy(obj, armyName, forceReplace = false, armyType = mapObjectSelect.ARMY)

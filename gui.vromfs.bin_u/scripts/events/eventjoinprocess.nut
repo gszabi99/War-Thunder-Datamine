@@ -16,9 +16,9 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
   static activeEventJoinProcess = []   //cant modify staic self
   processStartTime = -1
 
-  constructor (_event, _room = null, _onComplete = null, _cancelFunc = null)
+  constructor (v_event, v_room = null, v_onComplete = null, v_cancelFunc = null)
   {
-    if (!_event)
+    if (!v_event)
       return
 
     if (activeEventJoinProcess.len())
@@ -30,10 +30,10 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     activeEventJoinProcess.append(this)
     processStartTime = ::dagor.getCurTime()
 
-    event = _event
-    room = _room
-    onComplete = _onComplete
-    cancelFunc = _cancelFunc
+    event = v_event
+    room = v_room
+    onComplete = v_onComplete
+    cancelFunc = v_cancelFunc
     joinStep1_squadMember()
   }
 
@@ -192,7 +192,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
         squadSize = squadSize.tostring()
         maxTeamSize = maxTeamSize.tostring()
       }
-      msgBox("squad_is_too_big", ::loc("events/squad_is_too_big", locParams),
+      this.msgBox("squad_is_too_big", ::loc("events/squad_is_too_big", locParams),
         [["ok", function() {}]], "ok")
       return false
     }

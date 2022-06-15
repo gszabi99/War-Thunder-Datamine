@@ -3,6 +3,7 @@
   "enableRiExplosionDamage": true,
   "simpleSinking": false,
   "volsmokeDafxInjector": true,
+  "volsmokeForSmokeScreen": true,
   "infantry_render_distance": 750.0,
   "gather_sparse_freq": 0,
   "treeAOdefault": 0.8,
@@ -236,9 +237,6 @@
   "shipAiTargetMaxDist": 25000.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
-  "allAircraftNodesAnimationHierarchy": true,
-  "aircraftAnimchar": false,
-  "missedNodesMax": 6,
   "tankEngineHeatingSpd": [5.0,-1.0],
   "batteryDischargeInactivityTime": 60.0,
   "batteryDischargeActivityTime": 30.0,
@@ -249,8 +247,6 @@
   "jetLightAttenuation": 0.8,
   "jetLightBrightness": 5.0,
   "jetLightAngle": 0.8,
-  "reactivGuiForAircraft": true,
-  "reactivGuiForArbiter": true,
   "collapsedIconForRadarTws": true,
   "indicationForCollapsedRadar": false,
   "bulletCaliberForPlayHitEffectFromServerOnly": 0.0,
@@ -273,7 +269,9 @@
   "rendinstRadiusMultForBlast": 4.0,
   "isBlastEffectActivated": true,
   "supportShowHintBattleCnt": 5,
+  "playerDustFxSpawnRate": 1.0,
   "showWaveHitcam": true,
+  "waveOffset": [20.0,20.0],
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [400.0,900.0,0.1,1.0],
@@ -310,7 +308,8 @@
       "distScaleEnd": 2000.0,
       "distScale": 6.0,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "fake_rpg": {
       "halfSize": 5.0,
@@ -318,7 +317,8 @@
       "distScaleEnd": 2000.0,
       "distScale": 5.0,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05
     },
     "fake_ak_47": {
       "halfSize": 1.5,
@@ -326,7 +326,10 @@
       "distScaleEnd": 2000.0,
       "distScale": 5.0,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmRed": {
       "halfSize": 3.0,
@@ -335,7 +338,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmRed": {
       "halfSize": 3.0,
@@ -344,7 +356,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmRed": {
       "halfSize": 3.5,
@@ -353,7 +374,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmRed": {
       "halfSize": 3.5,
@@ -362,7 +392,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmRed": {
       "halfSize": 4.0,
@@ -371,7 +410,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmRed": {
       "halfSize": 4.0,
@@ -380,7 +428,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmRed": {
       "halfSize": 4.0,
@@ -389,7 +446,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmRedShip": {
       "halfSize": 12.0,
@@ -400,7 +466,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmRed": {
       "halfSize": 4.0,
@@ -409,7 +484,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmRedShip": {
       "halfSize": 14.0,
@@ -420,7 +504,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmRed": {
       "halfSize": 5.0,
@@ -429,7 +522,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmRedShip": {
       "halfSize": 18.0,
@@ -440,7 +542,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmRedShip": {
       "halfSize": 20.0,
@@ -451,7 +562,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ff0f0fff",
-      "color2": "#e60000ff"
+      "color2": "#e60000ff",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "rocketRed": {
       "halfSize": 20.0,
@@ -459,7 +579,10 @@
       "distScaleEnd": 2000.0,
       "distScale": 1.0,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "7mmDarkRed": {
       "halfSize": 3.0,
@@ -468,7 +591,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmDarkRed": {
       "halfSize": 3.0,
@@ -477,7 +609,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmDarkRed": {
       "halfSize": 3.5,
@@ -486,7 +627,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmDarkRed": {
       "halfSize": 3.5,
@@ -495,7 +645,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmDarkRed": {
       "halfSize": 4.0,
@@ -504,7 +663,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmDarkRed": {
       "halfSize": 4.0,
@@ -513,7 +681,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmDarkRed": {
       "halfSize": 4.0,
@@ -522,7 +699,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmDarkRedShip": {
       "halfSize": 12.0,
@@ -533,7 +719,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmDarkRed": {
       "halfSize": 4.0,
@@ -542,7 +737,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmDarkRedShip": {
       "halfSize": 14.0,
@@ -553,7 +757,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmDarkRed": {
       "halfSize": 5.0,
@@ -562,7 +775,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmDarkRedShip": {
       "halfSize": 18.0,
@@ -573,7 +795,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmDarkRedShip": {
       "halfSize": 20.0,
@@ -584,7 +815,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ea1919ff",
-      "color2": "#f50000f5"
+      "color2": "#f50000f5",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmBrightRed": {
       "halfSize": 3.0,
@@ -593,7 +833,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmBrightRed": {
       "halfSize": 3.0,
@@ -602,7 +851,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmBrightRed": {
       "halfSize": 3.5,
@@ -611,7 +869,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmBrightRed": {
       "halfSize": 3.5,
@@ -620,7 +887,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmBrightRed": {
       "halfSize": 4.0,
@@ -629,7 +905,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmBrightRed": {
       "halfSize": 4.0,
@@ -638,7 +923,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmBrightRed": {
       "halfSize": 4.0,
@@ -647,7 +941,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmBrightRedShip": {
       "halfSize": 12.0,
@@ -658,7 +961,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmBrightRed": {
       "halfSize": 4.0,
@@ -667,7 +979,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmBrightRedShip": {
       "halfSize": 14.0,
@@ -678,7 +999,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmBrightRed": {
       "halfSize": 5.0,
@@ -687,7 +1017,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmBrightRedShip": {
       "halfSize": 18.0,
@@ -698,7 +1037,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmBrightRedShip": {
       "halfSize": 20.0,
@@ -709,7 +1057,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ff4736b4",
-      "color2": "#ff2400b4"
+      "color2": "#ff2400b4",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmWhite": {
       "halfSize": 3.0,
@@ -718,7 +1075,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmWhite": {
       "halfSize": 3.0,
@@ -727,7 +1093,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmWhite": {
       "halfSize": 3.5,
@@ -736,7 +1111,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmWhite": {
       "halfSize": 3.5,
@@ -745,7 +1129,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmWhite": {
       "halfSize": 4.0,
@@ -754,7 +1147,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmWhite": {
       "halfSize": 4.0,
@@ -763,7 +1165,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmWhite": {
       "halfSize": 4.0,
@@ -772,7 +1183,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmWhiteShip": {
       "halfSize": 12.0,
@@ -783,7 +1203,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmWhite": {
       "halfSize": 4.0,
@@ -792,7 +1221,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmWhiteShip": {
       "halfSize": 14.0,
@@ -803,7 +1241,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmWhite": {
       "halfSize": 5.0,
@@ -812,7 +1259,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmWhiteShip": {
       "halfSize": 18.0,
@@ -823,7 +1279,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmWhiteShip": {
       "halfSize": 20.0,
@@ -834,7 +1299,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffffff78",
-      "color2": "#d5edff32"
+      "color2": "#d5edff32",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmPaleWhite": {
       "halfSize": 3.0,
@@ -843,7 +1317,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmPaleWhite": {
       "halfSize": 3.0,
@@ -852,7 +1335,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmPaleWhite": {
       "halfSize": 3.5,
@@ -861,16 +1353,34 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmPaleWhite": {
       "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "distScaleStart": 50.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 3.0,
+      "radius": 0.04,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmPaleWhite": {
       "halfSize": 4.0,
@@ -879,7 +1389,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmPaleWhite": {
       "halfSize": 4.0,
@@ -888,7 +1407,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmPaleWhite": {
       "halfSize": 4.0,
@@ -897,7 +1425,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmPaleWhiteShip": {
       "halfSize": 12.0,
@@ -908,7 +1445,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmPaleWhite": {
       "halfSize": 4.0,
@@ -917,7 +1463,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmPaleWhiteShip": {
       "halfSize": 14.0,
@@ -928,7 +1483,34 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
+    },
+    "152mmPaleWhite": {
+      "halfSize": 5.0,
+      "distScaleStart": 1000.0,
+      "distScaleEnd": 7000.0,
+      "distScale": 4.0,
+      "radius": 0.17,
+      "color1": "#ffffff28",
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmPaleWhiteShip": {
       "halfSize": 18.0,
@@ -939,7 +1521,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmPaleWhiteShip": {
       "halfSize": 20.0,
@@ -950,7 +1541,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffffff28",
-      "color2": "#d5edff50"
+      "color2": "#d5edff50",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_white",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_white",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmLightRed": {
       "halfSize": 3.0,
@@ -959,7 +1559,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmLightRed": {
       "halfSize": 3.0,
@@ -968,7 +1577,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmLightRed": {
       "halfSize": 3.5,
@@ -977,7 +1595,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmLightRed": {
       "halfSize": 3.5,
@@ -986,7 +1613,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmLightRed": {
       "halfSize": 4.0,
@@ -995,7 +1631,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmLightRed": {
       "halfSize": 4.0,
@@ -1004,7 +1649,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmLightRed": {
       "halfSize": 4.0,
@@ -1013,7 +1667,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmLightRedShip": {
       "halfSize": 12.0,
@@ -1024,7 +1687,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmLightRed": {
       "halfSize": 4.0,
@@ -1033,7 +1705,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmLightRedShip": {
       "halfSize": 14.0,
@@ -1044,7 +1725,34 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
+    },
+    "152mmLightRed": {
+      "halfSize": 5.0,
+      "distScaleStart": 1000.0,
+      "distScaleEnd": 7000.0,
+      "distScale": 4.0,
+      "radius": 0.17,
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmLightRedShip": {
       "halfSize": 18.0,
@@ -1055,7 +1763,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmLightRedShip": {
       "halfSize": 20.0,
@@ -1066,7 +1783,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#fff7d4c8",
-      "color2": "#ff9084c8"
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "noColor": {
       "color1": "#00000000",
@@ -1079,8 +1805,17 @@
       "distScaleEnd": 1500.0,
       "distScale": 4.0,
       "radius": 0.02,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmGreenBlue": {
       "halfSize": 3.0,
@@ -1088,8 +1823,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 3.5,
       "radius": 0.035,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmGreenBlue": {
       "halfSize": 3.5,
@@ -1097,8 +1841,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 3.0,
       "radius": 0.04,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmGreenBlue": {
       "halfSize": 3.5,
@@ -1106,8 +1859,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.05,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmGreenBlue": {
       "halfSize": 4.0,
@@ -1115,8 +1877,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmGreenBlue": {
       "halfSize": 4.0,
@@ -1124,8 +1895,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 2.0,
       "radius": 0.08,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmGreenBlue": {
       "halfSize": 4.0,
@@ -1133,8 +1913,17 @@
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmGreenBlueShip": {
       "halfSize": 12.0,
@@ -1144,8 +1933,17 @@
       "radius": 0.14,
       "hdrK": 1.8,
       "minPixelSize": 2.2,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmGreenBlue": {
       "halfSize": 4.0,
@@ -1153,8 +1951,17 @@
       "distScaleEnd": 4000.0,
       "distScale": 2.0,
       "radius": 0.12,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmGreenBlueShip": {
       "halfSize": 14.0,
@@ -1164,8 +1971,17 @@
       "radius": 0.15,
       "hdrK": 2.0,
       "minPixelSize": 2.8,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmGreenBlue": {
       "halfSize": 5.0,
@@ -1173,8 +1989,17 @@
       "distScaleEnd": 7000.0,
       "distScale": 4.0,
       "radius": 0.17,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmGreenBlueShip": {
       "halfSize": 18.0,
@@ -1184,8 +2009,17 @@
       "radius": 0.17,
       "hdrK": 2.2,
       "minPixelSize": 3.1,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmGreenBlueShip": {
       "halfSize": 20.0,
@@ -1195,8 +2029,17 @@
       "radius": 0.19,
       "hdrK": 2.4,
       "minPixelSize": 3.3,
-      "color1": "#c3fffdc8",
-      "color2": "#34ffabc8"
+      "color1": "#fff7d4c8",
+      "color2": "#ff9084c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmYellow": {
       "halfSize": 3.0,
@@ -1205,7 +2048,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmYellow": {
       "halfSize": 3.0,
@@ -1214,7 +2066,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmYellow": {
       "halfSize": 3.5,
@@ -1223,7 +2084,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmYellow": {
       "halfSize": 3.5,
@@ -1232,7 +2102,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmYellow": {
       "halfSize": 4.0,
@@ -1241,7 +2120,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmYellow": {
       "halfSize": 4.0,
@@ -1250,7 +2138,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmYellow": {
       "halfSize": 4.0,
@@ -1259,7 +2156,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmYellowShip": {
       "halfSize": 12.0,
@@ -1270,7 +2176,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmYellow": {
       "halfSize": 4.0,
@@ -1279,7 +2194,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmYellowShip": {
       "halfSize": 14.0,
@@ -1290,7 +2214,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmYellow": {
       "halfSize": 5.0,
@@ -1299,7 +2232,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmYellowShip": {
       "halfSize": 18.0,
@@ -1310,7 +2252,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmYellowShip": {
       "halfSize": 20.0,
@@ -1321,7 +2272,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmBlue": {
       "halfSize": 3.0,
@@ -1330,7 +2290,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmBlue": {
       "halfSize": 3.0,
@@ -1339,7 +2308,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmBlue": {
       "halfSize": 3.5,
@@ -1348,7 +2326,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmBlue": {
       "halfSize": 3.5,
@@ -1357,7 +2344,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmBlue": {
       "halfSize": 4.0,
@@ -1366,7 +2362,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmBlue": {
       "halfSize": 4.0,
@@ -1375,7 +2380,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmBlue": {
       "halfSize": 4.0,
@@ -1384,7 +2398,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmBlueShip": {
       "halfSize": 12.0,
@@ -1395,7 +2418,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmBlue": {
       "halfSize": 4.0,
@@ -1404,7 +2436,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmBlueShip": {
       "halfSize": 14.0,
@@ -1415,7 +2456,34 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
+    },
+    "152mmBlue": {
+      "halfSize": 5.0,
+      "distScaleStart": 1000.0,
+      "distScaleEnd": 7000.0,
+      "distScale": 4.0,
+      "radius": 0.17,
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmBlueShip": {
       "halfSize": 18.0,
@@ -1426,7 +2494,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmBlueShip": {
       "halfSize": 20.0,
@@ -1437,7 +2514,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#dbe7ffc8",
-      "color2": "#1562ffc8"
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmDark_Blue": {
       "halfSize": 3.0,
@@ -1445,8 +2531,17 @@
       "distScaleEnd": 1500.0,
       "distScale": 4.0,
       "radius": 0.02,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmDark_Blue": {
       "halfSize": 3.0,
@@ -1454,8 +2549,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 3.5,
       "radius": 0.035,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmDark_Blue": {
       "halfSize": 3.5,
@@ -1463,8 +2567,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 3.0,
       "radius": 0.04,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmDark_Blue": {
       "halfSize": 3.5,
@@ -1472,8 +2585,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.05,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmDark_Blue": {
       "halfSize": 4.0,
@@ -1481,8 +2603,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 2.5,
       "radius": 0.06,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmDark_Blue": {
       "halfSize": 4.0,
@@ -1490,8 +2621,17 @@
       "distScaleEnd": 2000.0,
       "distScale": 2.0,
       "radius": 0.08,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmDark_Blue": {
       "halfSize": 4.0,
@@ -1499,8 +2639,17 @@
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmDark_BlueShip": {
       "halfSize": 12.0,
@@ -1510,8 +2659,17 @@
       "radius": 0.14,
       "hdrK": 1.8,
       "minPixelSize": 2.2,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmDark_Blue": {
       "halfSize": 4.0,
@@ -1519,8 +2677,17 @@
       "distScaleEnd": 4000.0,
       "distScale": 2.0,
       "radius": 0.12,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmDark_BlueShip": {
       "halfSize": 14.0,
@@ -1530,8 +2697,35 @@
       "radius": 0.15,
       "hdrK": 2.0,
       "minPixelSize": 2.8,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
+    },
+    "152mmDark_Blue": {
+      "halfSize": 5.0,
+      "distScaleStart": 1000.0,
+      "distScaleEnd": 7000.0,
+      "distScale": 4.0,
+      "radius": 0.17,
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmDark_BlueShip": {
       "halfSize": 18.0,
@@ -1541,8 +2735,17 @@
       "radius": 0.17,
       "hdrK": 2.2,
       "minPixelSize": 3.1,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmDark_BlueShip": {
       "halfSize": 20.0,
@@ -1552,8 +2755,17 @@
       "radius": 0.19,
       "hdrK": 2.4,
       "minPixelSize": 3.3,
-      "color1": "#9696ffdc",
-      "color2": "#0000ffdc"
+      "color1": "#dbe7ffc8",
+      "color2": "#1562ffc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_blue",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_blue",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmPink": {
       "halfSize": 3.0,
@@ -1562,7 +2774,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmPink": {
       "halfSize": 3.0,
@@ -1571,7 +2792,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmPink": {
       "halfSize": 3.5,
@@ -1580,7 +2810,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmPink": {
       "halfSize": 3.5,
@@ -1589,7 +2828,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmPink": {
       "halfSize": 4.0,
@@ -1598,7 +2846,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmPink": {
       "halfSize": 4.0,
@@ -1607,7 +2864,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmPink": {
       "halfSize": 4.0,
@@ -1616,7 +2882,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmPinkShip": {
       "halfSize": 12.0,
@@ -1627,7 +2902,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmPink": {
       "halfSize": 4.0,
@@ -1636,7 +2920,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmPinkShip": {
       "halfSize": 14.0,
@@ -1647,7 +2940,34 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
+    },
+    "152mmPink": {
+      "halfSize": 5.0,
+      "distScaleStart": 1000.0,
+      "distScaleEnd": 7000.0,
+      "distScale": 4.0,
+      "radius": 0.17,
+      "color1": "#ffecf8c8",
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmPinkShip": {
       "halfSize": 18.0,
@@ -1658,7 +2978,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmPinkShip": {
       "halfSize": 20.0,
@@ -1669,7 +2998,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffecf8c8",
-      "color2": "#ff419ac8"
+      "color2": "#ff419ac8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_red",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_red",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmOrange": {
       "halfSize": 3.0,
@@ -1678,7 +3016,14 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmOrange": {
       "halfSize": 3.0,
@@ -1687,7 +3032,14 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmOrange": {
       "halfSize": 3.5,
@@ -1696,7 +3048,14 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmOrange": {
       "halfSize": 3.5,
@@ -1705,7 +3064,14 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmOrange": {
       "halfSize": 4.0,
@@ -1714,7 +3080,14 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmOrange": {
       "halfSize": 4.0,
@@ -1723,7 +3096,14 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmOrange": {
       "halfSize": 4.0,
@@ -1732,7 +3112,14 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmOrangeShip": {
       "halfSize": 12.0,
@@ -1743,7 +3130,14 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmOrange": {
       "halfSize": 4.0,
@@ -1752,7 +3146,14 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmOrangeShip": {
       "halfSize": 14.0,
@@ -1763,7 +3164,14 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmOrange": {
       "halfSize": 5.0,
@@ -1772,7 +3180,14 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmOrangeShip": {
       "halfSize": 18.0,
@@ -1783,7 +3198,14 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmOrangeShip": {
       "halfSize": 20.0,
@@ -1794,7 +3216,14 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ff2400fa",
-      "color2": "#cc1b00f0"
+      "color2": "#cc1b00f0",
+      "startTime": 0.05,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmGreen": {
       "halfSize": 3.0,
@@ -1803,7 +3232,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmGreen": {
       "halfSize": 3.0,
@@ -1812,7 +3250,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmGreen": {
       "halfSize": 3.5,
@@ -1821,7 +3268,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmGreen": {
       "halfSize": 3.5,
@@ -1830,7 +3286,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmGreen": {
       "halfSize": 4.0,
@@ -1839,7 +3304,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmGreen": {
       "halfSize": 4.0,
@@ -1848,7 +3322,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmGreen": {
       "halfSize": 4.0,
@@ -1857,7 +3340,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmGreenShip": {
       "halfSize": 12.0,
@@ -1868,7 +3360,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmGreen": {
       "halfSize": 4.0,
@@ -1877,7 +3378,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmGreenShip": {
       "halfSize": 14.0,
@@ -1888,7 +3398,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmGreen": {
       "halfSize": 5.0,
@@ -1897,7 +3416,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmGreenShip": {
       "halfSize": 18.0,
@@ -1908,7 +3436,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmGreenShip": {
       "halfSize": 20.0,
@@ -1919,7 +3456,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#66ff66dc",
-      "color2": "#00ff00dc"
+      "color2": "#00ff00dc",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmWhiteGreen": {
       "halfSize": 3.0,
@@ -1928,7 +3474,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmWhiteGreen": {
       "halfSize": 3.0,
@@ -1937,7 +3492,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmWhiteGreen": {
       "halfSize": 3.5,
@@ -1946,7 +3510,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmWhiteGreen": {
       "halfSize": 3.5,
@@ -1955,7 +3528,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmWhiteGreen": {
       "halfSize": 4.0,
@@ -1964,7 +3546,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmWhiteGreen": {
       "halfSize": 4.0,
@@ -1973,7 +3564,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmWhiteGreen": {
       "halfSize": 4.0,
@@ -1982,7 +3582,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmWhiteGreenShip": {
       "halfSize": 12.0,
@@ -1993,7 +3602,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmWhiteGreen": {
       "halfSize": 4.0,
@@ -2002,7 +3620,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmWhiteGreenShip": {
       "halfSize": 14.0,
@@ -2013,7 +3640,16 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "152mmWhiteGreen": {
       "halfSize": 5.0,
@@ -2022,7 +3658,16 @@
       "distScale": 4.0,
       "radius": 0.17,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmWhiteGreenShip": {
       "halfSize": 18.0,
@@ -2033,7 +3678,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmWhiteGreenShip": {
       "halfSize": 20.0,
@@ -2044,7 +3698,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#d0ffbfc8",
-      "color2": "#14ff14c8"
+      "color2": "#14ff14c8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_green",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_green",
+        "ricochetedFxChance": 0.2
+      }
     },
     "7mmGold": {
       "halfSize": 3.0,
@@ -2053,7 +3716,16 @@
       "distScale": 4.0,
       "radius": 0.02,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmGold": {
       "halfSize": 3.0,
@@ -2062,7 +3734,16 @@
       "distScale": 3.5,
       "radius": 0.035,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "20mmGold": {
       "halfSize": 3.5,
@@ -2071,7 +3752,16 @@
       "distScale": 3.0,
       "radius": 0.04,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_small_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_small_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "30mmGold": {
       "halfSize": 3.5,
@@ -2080,7 +3770,16 @@
       "distScale": 2.5,
       "radius": 0.05,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "37mmGold": {
       "halfSize": 4.0,
@@ -2089,7 +3788,16 @@
       "distScale": 2.5,
       "radius": 0.06,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "50mmGold": {
       "halfSize": 4.0,
@@ -2098,7 +3806,16 @@
       "distScale": 2.0,
       "radius": 0.08,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_med_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_med_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmGold": {
       "halfSize": 4.0,
@@ -2107,7 +3824,16 @@
       "distScale": 2.0,
       "radius": 0.09,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "76mmGoldShip": {
       "halfSize": 12.0,
@@ -2118,7 +3844,16 @@
       "hdrK": 1.8,
       "minPixelSize": 2.2,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmGold": {
       "halfSize": 4.0,
@@ -2127,7 +3862,16 @@
       "distScale": 2.0,
       "radius": 0.12,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "100mmGoldShip": {
       "halfSize": 14.0,
@@ -2138,7 +3882,34 @@
       "hdrK": 2.0,
       "minPixelSize": 2.8,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
+    },
+    "152mmGold": {
+      "halfSize": 5.0,
+      "distScaleStart": 1000.0,
+      "distScaleEnd": 7000.0,
+      "distScale": 4.0,
+      "radius": 0.17,
+      "color1": "#ffe084c8",
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "200mmGoldShip": {
       "halfSize": 18.0,
@@ -2149,7 +3920,16 @@
       "hdrK": 2.2,
       "minPixelSize": 3.1,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "300mmGoldShip": {
       "halfSize": 20.0,
@@ -2160,7 +3940,16 @@
       "hdrK": 2.4,
       "minPixelSize": 3.3,
       "color1": "#ffe084c8",
-      "color2": "#ff9c2bc8"
+      "color2": "#ff9c2bc8",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025,
+      "fx": {
+        "destroyedFxType": "tracers_destroyed_big_yellow",
+        "destroyedFxChance": 0.2,
+        "ricochetedFxType": "tracers_ricocheted_big_yellow",
+        "ricochetedFxChance": 0.2
+      }
     },
     "12mmYellowAAgun": {
       "halfSize": 3.0,
@@ -2168,7 +3957,10 @@
       "distScaleEnd": 4000.0,
       "distScale": 5.0,
       "color1": "#fff83c78",
-      "color2": "#fff83246"
+      "color2": "#fff83246",
+      "startColor1": "#fff83c78",
+      "startColor2": "#fff83246",
+      "startTime": 0.025
     },
     "beamGreen": {
       "halfSize": 4.0,
@@ -2746,6 +4538,7 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.2,
+        "payloadCoGMultiplier": 0.0,
         "tankTrackRepairTime": 15.0,
         "tankRepairSpeed": 5.0,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -2815,6 +4608,7 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.0,
+        "payloadCoGMultiplier": 0.2,
         "tankTrackRepairTime": 150.0,
         "tankRepairSpeed": 3.5,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -2886,6 +4680,7 @@
         "damageFinsAreaInfluence": 0.5,
         "damageWingArmInfluence": [0.6,0.2],
         "cyMultiplier": 1.0,
+        "payloadCoGMultiplier": 0.2,
         "tankTrackRepairTime": 180.0,
         "tankRepairSpeed": 3.5,
         "lightTankArcadeBoostInfluence": 1.0,
@@ -3653,12 +5448,14 @@
       "off": {
         "serverSideCollectiveDetection": false,
         "instantDetection": true,
-        "timeToLoseInstantDetection": 5.0
+        "timeToLoseInstantDetection": 5.0,
+        "timeToLoseInstantDetectionShip": 1.0
       },
       "on": {
         "serverSideCollectiveDetection": true,
         "instantDetection": true,
-        "timeToLoseInstantDetection": 5.0
+        "timeToLoseInstantDetection": 5.0,
+        "timeToLoseInstantDetectionShip": 1.0
       }
     },
     "distDetection": {
@@ -4251,6 +6048,9 @@
       },
       "amplitude3": {
         "amplitude": 0.6
+      },
+      "amplitude4": {
+        "amplitude": 0.6
       }
     },
     "preset2": {
@@ -4278,6 +6078,9 @@
         "amplitude": 0.7
       },
       "amplitude3": {
+        "amplitude": 0.7
+      },
+      "amplitude4": {
         "amplitude": 0.7
       }
     },
@@ -4307,6 +6110,9 @@
       },
       "amplitude3": {
         "amplitude": 0.7
+      },
+      "amplitude4": {
+        "amplitude": 0.7
       }
     },
     "preset4": {
@@ -4334,6 +6140,9 @@
         "amplitude": 1.0
       },
       "amplitude3": {
+        "amplitude": 0.7
+      },
+      "amplitude4": {
         "amplitude": 0.7
       }
     },
@@ -4363,6 +6172,9 @@
       },
       "amplitude3": {
         "amplitude": 0.5
+      },
+      "amplitude4": {
+        "amplitude": 0.5
       }
     },
     "preset6": {
@@ -4390,6 +6202,9 @@
         "amplitude": 0.75
       },
       "amplitude3": {
+        "amplitude": 0.5
+      },
+      "amplitude4": {
         "amplitude": 0.5
       }
     }
@@ -13713,6 +15528,30 @@
       {
         "p": {
           "name": "wheel_r_01_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "vcac_mephisto"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
           "modelNames": "alecto_mk_1"
         }
       },
@@ -13732,6 +15571,78 @@
         "p": {
           "name": "wheel_l_04_",
           "modelNames": "alecto_mk_1"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_03_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_03_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_04_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_04_",
+          "modelNames": "vbc_pt2"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_01_",
+          "modelNames": "lancia3ro_100"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_01_",
+          "modelNames": "lancia3ro_100"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_r_02_",
+          "modelNames": "lancia3ro_100"
+        }
+      },
+      {
+        "p": {
+          "name": "wheel_l_02_",
+          "modelNames": "lancia3ro_100"
         }
       }
     ],
@@ -15712,6 +17623,90 @@
       },
       {
         "excRE": "noise_barrier_e"
+      },
+      {
+        "excRE": "roof_elements_vent"
+      },
+      {
+        "excRE": "roof_elements_ventbox"
+      },
+      {
+        "excRE": "roof_elements_ventpipe"
+      },
+      {
+        "excRE": "roof_elements_air_conditioning"
+      },
+      {
+        "excRE": "roof_elements_base_big"
+      },
+      {
+        "excRE": "roof_elements_base_small"
+      },
+      {
+        "excRE": "roof_elements_bridge_a"
+      },
+      {
+        "excRE": "roof_elements_bridge_b"
+      },
+      {
+        "excRE": "roof_elements_bridge_c"
+      },
+      {
+        "excRE": "roof_elements_door"
+      },
+      {
+        "excRE": "roof_elements_fence"
+      },
+      {
+        "excRE": "roof_elements_light_double"
+      },
+      {
+        "excRE": "roof_elements_light_single"
+      },
+      {
+        "excRE": "roof_elements_mast_a"
+      },
+      {
+        "excRE": "roof_elements_mast_b"
+      },
+      {
+        "excRE": "roof_elements_mast_c"
+      },
+      {
+        "excRE": "roof_elements_mast_d"
+      },
+      {
+        "excRE": "roof_elements_pipe_a"
+      },
+      {
+        "excRE": "roof_elements_pipe_b"
+      },
+      {
+        "excRE": "roof_elements_pipe_c"
+      },
+      {
+        "excRE": "roof_elements_pipe_d"
+      },
+      {
+        "excRE": "roof_elements_powerbox"
+      },
+      {
+        "excRE": "roof_elements_pump"
+      },
+      {
+        "excRE": "roof_elements_satelite_big"
+      },
+      {
+        "excRE": "roof_elements_satelite_small"
+      },
+      {
+        "excRE": "roof_elements_vertical_ladder_a"
+      },
+      {
+        "excRE": "roof_elements_vertical_ladder_b"
+      },
+      {
+        "excRE": "abandoned_ropeway_cabine"
       }
     ],
     "hideForMode0re": [
@@ -15950,148 +17945,88 @@
         "excRE": "noise_barrier_e"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_01"
+        "excRE": "roof_elements_vent"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_02"
+        "excRE": "roof_elements_ventbox"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_03"
+        "excRE": "roof_elements_ventpipe"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_04"
+        "excRE": "roof_elements_air_conditioning"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_05"
+        "excRE": "roof_elements_base_big"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_06"
+        "excRE": "roof_elements_base_small"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_07"
+        "excRE": "roof_elements_bridge_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_a_dp_08"
+        "excRE": "roof_elements_bridge_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_01"
+        "excRE": "roof_elements_bridge_c"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_02"
+        "excRE": "roof_elements_door"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_03"
+        "excRE": "roof_elements_fence"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_04"
+        "excRE": "roof_elements_light_double"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_05"
+        "excRE": "roof_elements_light_single"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_06"
+        "excRE": "roof_elements_mast_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_07"
+        "excRE": "roof_elements_mast_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_b_dp_08"
+        "excRE": "roof_elements_mast_c"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_01"
+        "excRE": "roof_elements_mast_d"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_02"
+        "excRE": "roof_elements_pipe_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_03"
+        "excRE": "roof_elements_pipe_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_04"
+        "excRE": "roof_elements_pipe_c"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_05"
+        "excRE": "roof_elements_pipe_d"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_06"
+        "excRE": "roof_elements_powerbox"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_07"
+        "excRE": "roof_elements_pump"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_08"
+        "excRE": "roof_elements_satelite_big"
       },
       {
-        "excRE": "soviet_town_building_5_floors_c_dp_09"
+        "excRE": "roof_elements_satelite_small"
       },
       {
-        "excRE": "soviet_town_building_5_floors_d_dp_01"
+        "excRE": "roof_elements_vertical_ladder_a"
       },
       {
-        "excRE": "soviet_town_building_5_floors_d_dp_02"
+        "excRE": "roof_elements_vertical_ladder_b"
       },
       {
-        "excRE": "soviet_town_building_5_floors_d_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_07"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_08"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_03"
+        "excRE": "abandoned_ropeway_cabine"
       }
     ],
     "hideForMode1": [
@@ -17103,7 +19038,7 @@
     "default": {
       "effect": "track_dirt_back",
       "effectFront": "track_dirt_front",
-      "effectTop": "track_dirt_top",
+      "effectTop": "",
       "effectDust": "track_move_dirt",
       "effectBack": "track_dirt_dust"
     },
@@ -17126,7 +19061,14 @@
       "effectFront": "track_dirt_front",
       "effectTop": "track_dirt_top",
       "effectDust": "track_move_dirt",
-      "effectBack": "track_dirt_dust"
+      "effectBack": ""
+    },
+    "ground": {
+      "effect": "track_ground_back",
+      "effectFront": "track_ground_front",
+      "effectTop": "track_ground_top",
+      "effectDust": "track_move_ground",
+      "effectBack": "track_ground_dust"
     }
   },
   "treeDestractible": {
@@ -17292,7 +19234,8 @@
     "dusk": [0.99,1.0]
   },
   "replay": {
-    "segmentLengthSec": 90
+    "segmentLengthSec": 90,
+    "clientSegmentLengthSec": 60
   },
   "wakeFromBullet": {
     "minCal": 0.076,
@@ -17612,7 +19555,8 @@
     "clampingGamma": 1.2,
     "frameWeightMinDynamicStill": 0.11,
     "frameWeightMinDynamicMotion": 0.2,
-    "newframeFalloffDynamicStill": 0.15
+    "newframeFalloffDynamicStill": 0.15,
+    "scaleAabbWithMotionMaxForTAAU": 2.5
   },
   "MicrodetailMultipliers": {
     "airplane": 0.37,
@@ -17801,6 +19745,38 @@
       "series": 16
     }
   ],
+  "reactivGuiBlk": {
+    "reactivGuiForAircraft": true,
+    "reactivGuiForArbiter": true,
+    "reactivGuiBombSightActivated": true,
+    "reactivGuiAAMSightActivated": true,
+    "reactivGuiRocketSightActivated": true,
+    "reactivGuiCanonSightActivated": false,
+    "reactivGuiTurretSightActivated": false,
+    "reactivGuiParamTableActivated": true,
+    "canonSightOpacity": 1.0,
+    "canonSightShadowOpacity": 1.0,
+    "canonSightLineWidthFactor": 1.0,
+    "canonSightShadowLineWidthFactor": 2.5,
+    "aamSightOpacity": 0.8,
+    "aamSightShadowOpacity": 0.75,
+    "aamSightLineWidthFactor": 1.25,
+    "aamSightShadowLineWidthFactor": 1.75,
+    "rocketSightOpacity": 0.8,
+    "rocketSightShadowOpacity": 0.75,
+    "rocketSightLineWidthFactor": 1.25,
+    "rocketSightShadowLineWidthFactor": 1.75,
+    "bombSightOpacity": 0.75,
+    "bombSightShadowOpacity": 0.75,
+    "bombSightLineWidthFactor": 1.25,
+    "bombSightShadowLineWidthFactor": 1.75,
+    "bombSightRadius": 10.0,
+    "turretSightOpacity": 1.0,
+    "turretSightLineWidthFactor": 1.0,
+    "paramTableOpacity": 0.8,
+    "paramTableShadowOpacity": 0.75,
+    "paramTableShadowFactor": 1.0
+  },
   "trackSparksMaterials": {
     "mat": "concrete"
   },
@@ -17969,5 +19945,113 @@
       "minShotPowerForCluster": 0.6,
       "maxShotPowerForCluster": 1.25
     }
+  },
+  "holidays": {
+    "none": [],
+    "uk": {
+      "language": "English",
+      "region": "GB",
+      "VE": {
+        "dateDM": [8.0,5.0]
+      },
+      "GuyFawkes": {
+        "dateDM": [5.0,11.0]
+      },
+      "Christmas": {
+        "dateDM": [24.0,12.0]
+      },
+      "NewYear": {
+        "dateDM": [31.0,12.0]
+      }
+    },
+    "us": {
+      "language": "English",
+      "region": "US",
+      "July4": {
+        "dateDM": [4.0,7.0]
+      },
+      "Christmas": {
+        "dateDM": [24.0,12.0]
+      },
+      "NewYear": {
+        "dateDM": [31.0,12.0]
+      }
+    },
+    "ru": {
+      "language": "Russian",
+      "region": "RU",
+      "Christmas": {
+        "dateDM": [7.0,1.0]
+      },
+      "Feb23": {
+        "dateDM": [23.0,2.0]
+      },
+      "Mar8": {
+        "dateDM": [8.0,3.0]
+      },
+      "May9": {
+        "dateDM": [9.0,5.0]
+      },
+      "Jun12": {
+        "dateDM": [12.0,6.0]
+      },
+      "Nov4": {
+        "dateDM": [4.0,11.0]
+      },
+      "NewYear": {
+        "dateDM": [31.0,12.0]
+      }
+    },
+    "cn": [
+      {
+        "language": "Chinese"
+      },
+      {
+        "language": "TChinese"
+      },
+      {
+        "language": "HChinese"
+      },
+      {
+        "2022": {
+          "dateDMY": [1.0,2.0,2022.0]
+        }
+      },
+      {
+        "2023": {
+          "dateDMY": [22.0,1.0,2023.0]
+        }
+      },
+      {
+        "2024": {
+          "dateDMY": [10.0,2.0,2024.0]
+        }
+      },
+      {
+        "2025": {
+          "dateDMY": [29.0,1.0,2025.0]
+        }
+      },
+      {
+        "2026": {
+          "dateDMY": [17.0,2.0,2026.0]
+        }
+      },
+      {
+        "2027": {
+          "dateDMY": [6.0,2.0,2027.0]
+        }
+      },
+      {
+        "2028": {
+          "dateDMY": [26.0,1.0,2028.0]
+        }
+      },
+      {
+        "2029": {
+          "dateDMY": [13.0,2.0,2029.0]
+        }
+      }
+    ]
   }
 }

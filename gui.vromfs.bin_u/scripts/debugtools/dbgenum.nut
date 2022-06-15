@@ -1,3 +1,4 @@
+let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 
 ::getEnumValName <- function getEnumValName(strEnumName, value, skipSynonyms=false)

@@ -2,11 +2,10 @@
   "model": "kfir_c7",
   "fmFile": "fm/kfir_c7.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.186,
   "gearSinkRangeC": 0.217,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -4982,6 +4981,20 @@
       "modClass": "weapon"
     }
   },
+  "default_skin_tomoe": [
+    {
+      "replace_tex": {
+        "from": "kfir_c7_c*",
+        "to": "kfir_c7_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "kfir_c7_c_dmg*",
+        "to": "kfir_c7_c_tomoe_dmg*"
+      }
+    }
+  ],
   "user_skin": [
     {
       "name": "kfir_c7"

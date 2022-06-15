@@ -1,3 +1,4 @@
+let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
@@ -25,7 +26,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!curPage || !crew)
     {
       scene = null //make handler invalid to unsubscribe from events.
-      ::script_net_assert_once("failed load crewSkillsPage", ::format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
+      ::script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
                                    ::toString(curPage), ::toString(crew)))
       return
     }
@@ -131,7 +132,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function getRowName(rowIndex)
   {
-    return ::format("skill_row%d", rowIndex)
+    return format("skill_row%d", rowIndex)
   }
 
   function getCurPoints()
@@ -179,7 +180,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
         newValue += inc ? getSkillMaxAvailable(item) : item.value
       else
         newValue = ::g_crew.getNextSkillStepValue(item, newValue, inc)
-      newValue = ::clamp(newValue, value, ::g_crew.getMaxSkillValue(item))
+      newValue = clamp(newValue, value, ::g_crew.getMaxSkillValue(item))
       if (newValue == item.newValue)
         return
       let changeCost = ::g_crew.getSkillCost(item, newValue, item.newValue)
@@ -300,7 +301,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
       buttonsArray.insert(0,["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(crew)])
       defaultButton = "yes"
     }
-    msgBox("buySkillPoints", text, buttonsArray, defaultButton)
+    this.msgBox("buySkillPoints", text, buttonsArray, defaultButton)
   }
 
   function onSpecIncrease(nextSpecType)

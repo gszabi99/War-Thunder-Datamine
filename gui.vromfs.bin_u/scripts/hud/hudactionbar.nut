@@ -9,6 +9,7 @@ let { getActionBarItems, getWheelBarItems, activateActionBarAction,
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
 } = ::require_native("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
+let { is_replay_playing } = require("replays")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -32,15 +33,15 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   isFootballMission = false
 
-  constructor(_nestObj) {
-    if (!::checkObj(_nestObj))
+  constructor(nestObj) {
+    if (!::checkObj(nestObj))
       return
-    scene     = _nestObj
-    guiScene  = _nestObj.getScene()
+    scene     = nestObj
+    guiScene  = nestObj.getScene()
     killStreaksActions = []
     weaponActions = []
 
-    canControl = !::isPlayerDedicatedSpectator() && !::is_replay_playing()
+    canControl = !::isPlayerDedicatedSpectator() && !is_replay_playing()
 
     isFootballMission = (::get_game_type() & ::GT_FOOTBALL) != 0
 
@@ -76,7 +77,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function updateParams()
   {
-    useWheelmenu = ::is_xinput_device()
+    useWheelmenu = ::have_xinput_device()
   }
 
   function isValid()
@@ -195,7 +196,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
   function getWaitGaugeDegree(val)
   {
-    return (360 - (::clamp(val, 0.0, 1.0) * 360)).tointeger()
+    return (360 - (clamp(val, 0.0, 1.0) * 360)).tointeger()
   }
 
   function updateWaitGaugeDegree(obj, val) {
@@ -314,13 +315,12 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     if (prewItem == null)
       return
 
-    let hasAmmoLost = "ammoLost" in prewItem && "ammoLost" in currentItem // compatibility 1.71
     if ((prewItem.countEx == currentItem.countEx && prewItem.count < currentItem.count)
       || (prewItem.countEx < currentItem.countEx)
-      || (hasAmmoLost && prewItem.ammoLost < currentItem.ammoLost))
+      || (prewItem.ammoLost < currentItem.ammoLost))
     {
       let delta = currentItem.countEx - prewItem.countEx || currentItem.count - prewItem.count
-      if (hasAmmoLost && prewItem.ammoLost < currentItem.ammoLost)
+      if (prewItem.ammoLost < currentItem.ammoLost)
         ::g_hud_event_manager.onHudEvent("hint:ammoDestroyed:show")
       let blk = ::handyman.renderCached("%gui/hud/actionBarIncrement", {is_increment = delta > 0, delta_amount = delta})
       guiScene.appendWithBlk(itemObj, blk, this)
@@ -392,7 +392,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
     if (streakId >= 0) //something goes wrong; -1 is valid situation = player does not choose smthng
     {
-      debugTableData(killStreaksActionsOrdered)
+      ::debugTableData(killStreaksActionsOrdered)
       callstack()
       ::dagor.assertf(false, "Error: killStreak id out of range.")
     }

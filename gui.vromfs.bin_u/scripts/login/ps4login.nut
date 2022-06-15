@@ -16,12 +16,12 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
   function initScreen()
   {
     animBgLoad()
-    setVersionText(scene)
+    setVersionText(this.scene)
     ::setProjectAwards(this)
-    showTitleLogo(scene, 128)
+    showTitleLogo(this.scene, 128)
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 
-    isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
+    this.isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
 
     let data = ::handyman.renderCached("%gui/commonParts/button", {
       id = "authorization_button"
@@ -31,43 +31,43 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
       delayed = true
       isToBattle = true
       titleButtonFont = true
-      isHidden = isAutologin
+      isHidden = this.isAutologin
     })
-    guiScene.prependWithBlk(scene.findObject("authorization_button_place"), data, this)
-    updateButtons(false)
+    this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
+    this.updateButtons(false)
 
-    guiScene.performDelayed(this, function() {
+    this.guiScene.performDelayed(this, function() {
       ::ps4_initial_check_settings()
     })
 
-    if (isAutologin)
+    if (this.isAutologin)
       ::on_ps4_autologin()
   }
 
   function updateButtons(isUpdateAvailable = false) {
-    showSceneBtn("authorization_button", !isAutologin)
+    this.showSceneBtn("authorization_button", !this.isAutologin)
     let text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
       ::loc("ps4/reqInstantConnection")
     ], true)
-    scene.findObject("user_notify_text").setValue(text)
+    this.scene.findObject("user_notify_text").setValue(text)
   }
 
   function abortLogin(isUpdateAvailable)
   {
-    isLoggingIn = false
-    isAutologin = false
-    updateButtons(isUpdateAvailable)
+    this.isLoggingIn = false
+    this.isAutologin = false
+    this.updateButtons(isUpdateAvailable)
   }
 
   function onPackageUpdateCheckResult(isUpdateAvailable) {
-    isPendingPackageCheck = false
+    this.isPendingPackageCheck = false
 
     local loginStatus = 0
     if (!isUpdateAvailable && (::ps4_initial_check_network() >= 0) && (::ps4_init_trophies() >= 0))
     {
       statsd.send_counter("sq.game_start.request_login", 1, {login_type = "ps4"})
       ::dagor.debug("PS4 Login: ps4_login")
-      isLoggingIn = true
+      this.isLoggingIn = true
       loginStatus = ::ps4_login();
       if (loginStatus >= 0)
       {
@@ -82,27 +82,27 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
       }
     }
 
-    if (isValid())
-      abortLogin(isUpdateAvailable)
+    if (this.isValid())
+      this.abortLogin(isUpdateAvailable)
     if (isUpdateAvailable)
-      msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
+      this.msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
     else if (loginStatus == -1)
-      msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
+      this.msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
   }
 
 
   function onOk()
   {
-    if (isLoggingIn || isPendingPackageCheck)
+    if (this.isLoggingIn || this.isPendingPackageCheck)
       return
 
-    isPendingPackageCheck = true
-    requestPackageUpdateStatus(onPackageUpdateCheckResult)
+    this.isPendingPackageCheck = true
+    requestPackageUpdateStatus(this.onPackageUpdateCheckResult)
   }
 
   function onEventPs4AutoLoginRequested(p)
   {
-    onOk()
+    this.onOk()
   }
 
   function goBack(obj) {}
@@ -110,5 +110,5 @@ local { setGuiOptionsMode } = ::require_native("guiOptions")
 
 ::on_ps4_autologin <- function on_ps4_autologin()
 {
-  broadcastEvent("Ps4AutoLoginRequested")
+  ::broadcastEvent("Ps4AutoLoginRequested")
 }

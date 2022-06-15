@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
@@ -55,7 +56,7 @@ let { money_type } = require("%scripts/money.nut")
           break
         case "prestige":
           if (val != null)
-            obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
+            obj["background-image"] = $"#ui/gameuiskin#prestige{val}.png"
           let titleObj = getObj($"{prefix}prestige_title")
           if (titleObj)
           {

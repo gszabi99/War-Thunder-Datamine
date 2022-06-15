@@ -26,12 +26,12 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 {
   let esUnitType = ::get_es_unit_type(unit)
   let t = unitTypes.getByEsUnitType(esUnitType)
-  return t.uiSkin + iconName
+  return $"{t.uiSkin}{iconName}.ddsx"
 }
 
-::get_tomoe_unit_icon <- function get_tomoe_unit_icon(iconName)
+::get_tomoe_unit_icon <- function get_tomoe_unit_icon(iconName, isForGroup = false)
 {
-  return "!#ui/unitskin#tomoe_" + iconName
+  return $"!#ui/unitskin#tomoe_{iconName}{isForGroup ? "_group" : ""}.ddsx"
 }
 
 ::get_unit_type_font_icon <- function get_unit_type_font_icon(esUnitType)

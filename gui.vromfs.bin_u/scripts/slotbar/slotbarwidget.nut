@@ -1,3 +1,4 @@
+let { format } = require("string")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let Callback = callback.Callback
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -9,7 +10,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getAvailableRespawnBases } = require_native("guiRespawn")
+let { getAvailableRespawnBases } = require("guiRespawn")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -450,16 +451,12 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       countries = []
     }
     local selCountryIdx = 0
-    local selCountryId = null
     let ediff = getShopDiffCode()
     foreach(idx, countryData in crewsConfig)
     {
       let country = countryData.country
       if (countryData.id == selectedCrewData?.idCountry)
-      {
         selCountryIdx = idx
-        selCountryId = countryData.id
-      }
 
       local bonusData = null
       if (!::is_first_win_reward_earned(country, INVALID_USER_ID))
@@ -763,7 +760,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         cost.getTextAccordingToBalance()),
       cost)
     ignoreCheckSlotbar = true
-    msgBox("need_money", msgText,
+    this.msgBox("need_money", msgText,
       [["ok",
         function() {
           ignoreCheckSlotbar = false
@@ -860,7 +857,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (curSlotCountryId >= 0 && curSlotCountryId != countryIdx && countryIdx in ::g_crews_list.get()
         && !::isCountryAvailable(::g_crews_list.get()[countryIdx].country) && ::unlocked_countries.len())
     {
-      msgBox("notAvailableCountry", ::loc("mainmenu/countryLocked/tooltip"),
+      this.msgBox("notAvailableCountry", ::loc("mainmenu/countryLocked/tooltip"),
              [["ok", (@(obj) function() {
                if (::checkObj(obj))
                  obj.setValue(curSlotCountryId)
@@ -1076,8 +1073,8 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function updateConsoleButtonsVisible(isVisible)
   {
-    showSceneBtn("prev_country_btn", isVisible)
-    showSceneBtn("next_country_btn", isVisible)
+    this.showSceneBtn("prev_country_btn", isVisible)
+    this.showSceneBtn("next_country_btn", isVisible)
   }
 
   function forceUpdate()
@@ -1311,7 +1308,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
           null,
           {
             emptyText = "#shop/recruitCrew",
-            crewImage = "#ui/gameuiskin#slotbar_crew_recruit_" + ::g_string.slice(countryData.country, 8)
+            crewImage = $"#ui/gameuiskin#slotbar_crew_recruit_{countryData.country.slice(8)}.png"
             isCrewRecruit = true
             emptyCost = crewData.cost
             isSlotbarItem = true
@@ -1326,7 +1323,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       let isLocalState = !::g_crews_list.isCrewListOverrided && (crewData?.isLocalState ?? true)
       let airParams = {
         emptyText      = isVisualDisabled ? "" : emptyText,
-        crewImage      = "#ui/gameuiskin#slotbar_crew_free_" + ::g_string.slice(countryData.country, 8)
+        crewImage      = $"#ui/gameuiskin#slotbar_crew_free_{countryData.country.slice(8)}.png"
         status         = getUnitItemStatusText(crewData.status),
         hasActions     = hasActions && !::g_crews_list.isCrewListOverrided
         toBattle       = toBattle
@@ -1437,7 +1434,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   function updateSlotbarHint() {
-    let obj = showSceneBtn("slotbarHint", slotbarHintText != "")
+    let obj = this.showSceneBtn("slotbarHint", slotbarHintText != "")
     if (obj != null && slotbarHintText != "")
      obj.findObject("slotbarHintText").setValue(slotbarHintText)
   }

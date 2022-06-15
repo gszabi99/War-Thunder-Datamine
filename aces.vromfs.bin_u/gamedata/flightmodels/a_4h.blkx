@@ -2,6 +2,7 @@
   "model": "a_4h",
   "fmFile": "fm/a_4h.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
   "havePointOfInterestDesignator": true,
@@ -3034,6 +3035,19 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_mk4_mod0.blk",
         "reqModification": "mk4_mod0_gunpod"
       }
+    },
+    {
+      "preset": {
+        "name": "a_4e_early_iaf_bomb_mk77",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_early_iaf_bomb_mk77.blk",
+        "reqModification": "us_mk_77",
+        "weaponConfig": {
+          "Weapon": {
+            "iconType": "napalm_middle",
+            "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk"
+          }
+        }
+      }
     }
   ],
   "turbulence": {
@@ -3172,7 +3186,12 @@
       "tier": 4,
       "reqModification": "is_500_50_gp"
     },
+    "us_mk_77": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_3a": {
+      "prevModification": "us_mk_77",
       "tier": 2,
       "modClass": "weapon"
     },
@@ -3182,6 +3201,20 @@
       "modClass": "weapon"
     }
   },
+  "default_skin_tomoe": [
+    {
+      "replace_tex": {
+        "from": "a_4h_c*",
+        "to": "a_4h_c_tomoe*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "a_4h_c_dmg*",
+        "to": "a_4h_c_tomoe_dmg*"
+      }
+    }
+  ],
   "user_skin": [
     {
       "name": "a_4h"

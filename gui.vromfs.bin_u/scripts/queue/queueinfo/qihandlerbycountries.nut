@@ -71,14 +71,14 @@
     let markup = ::handyman.renderCached("%gui/events/countriesByTeamsList", view)
     let nestObj = scene.findObject("countries_sets")
     guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
-    showSceneBtn("countries_sets_header", true)
+    this.showSceneBtn("countries_sets_header", true)
   }
 
   function updateCustomModeCheckbox()
   {
     let isVisible = queue && queue.hasCustomMode()
-    showSceneBtn("custom_mode_header", isVisible)
-    let obj = showSceneBtn("custom_mode_checkbox", isVisible)
+    this.showSceneBtn("custom_mode_header", isVisible)
+    let obj = this.showSceneBtn("custom_mode_checkbox", isVisible)
     if (!isVisible)
       return
 

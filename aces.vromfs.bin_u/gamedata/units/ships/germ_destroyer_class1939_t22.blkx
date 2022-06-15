@@ -84,19 +84,22 @@
     "explosionFx": "explosion_ship_small"
   },
   {
-    "smokeScreenActivateTime": 10.0
+    "smokeScreenActivateTime": 5.0
   },
   {
     "smokeScreenEffectTime": 30.0
   },
   {
-    "smokeScreenRad": 50.0
+    "smokeScreenRad": 55.0
   },
   {
-    "smokeScreenFx": "tank_smokescreen"
+    "smokeScreenFxType": "tank_smokescreen"
   },
   {
-    "smokeScreenOffset": [-48.0,2.0,0.0]
+    "smokeScreenFx": "smokescreen_hydroplane"
+  },
+  {
+    "smokeScreenOffset": [-45.0,2.0,0.0]
   },
   {
     "rearmSmokeTimeOnField": 180.0
@@ -2124,16 +2127,16 @@
         "genericDamageMult": 0.15,
         "armorThrough": 35.0,
         "compartment_01_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         },
         "compartment_02_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         },
         "compartment_03_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         },
         "compartment_04_dm": {
-          "hp": 1800.0
+          "hp": 2000.0
         }
       },
       "control_compartments": {
@@ -2142,14 +2145,16 @@
         "oneSided": true,
         "genericDamageMult": 0.5,
         "armorThrough": 15.0,
+        "napalmDamageMult": 1.0,
         "bridge_dm": {
-          "hp": 500.0
+          "hp": 400.0
         },
         "radio_station_dm": {
           "hp": 500.0
         },
         "fire_control_room_01_dm": {
-          "hp": 400.0
+          "napalmDamageMult": 0.0,
+          "hp": 449.0
         }
       },
       "cover": {
@@ -2159,25 +2164,25 @@
         "genericDamageMult": 0.1,
         "shatterDamageMult": 0.1,
         "cover_01_dm": {
-          "hp": 1389.0
+          "hp": 12500.0
         },
         "cover_02_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_03_dm": {
-          "hp": 1145.0
+          "hp": 11459.0
         },
         "cover_04_dm": {
-          "hp": 1122.0
+          "hp": 11222.0
         },
         "cover_05_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_06_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         },
         "cover_07_dm": {
-          "hp": 1000.0
+          "hp": 10000.0
         }
       },
       "superstructures": {
@@ -2251,10 +2256,10 @@
         "genericDamageMult": 1.5,
         "armorThrough": 150.0,
         "engine_room_01_dm": {
-          "hp": 2093.0
+          "hp": 2400.0
         },
         "engine_room_02_dm": {
-          "hp": 2240.0
+          "hp": 2400.0
         }
       },
       "engine_rooms": {
@@ -2264,10 +2269,10 @@
         "explosionDamageMult": 1.2,
         "armorThrough": 150.0,
         "transmission_01_dm": {
-          "hp": 2940.0
+          "hp": 2587.0
         },
         "transmission_02_dm": {
-          "hp": 2180.0
+          "hp": 2400.0
         }
       },
       "funnels": {
@@ -2399,18 +2404,19 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "fireDamageMult": 1.5,
-        "pressureDamageMult": 5.0,
+        "pressureDamageMult": 7.0,
+        "napalmDamageMult": 1.0,
         "main_caliber_turret_01_dm": {
-          "hp": 215.0
+          "hp": 322.0
         },
         "main_caliber_turret_02_dm": {
-          "hp": 215.0
+          "hp": 322.0
         },
         "main_caliber_turret_03_dm": {
-          "hp": 215.0
+          "hp": 322.0
         },
         "main_caliber_turret_04_dm": {
-          "hp": 215.0
+          "hp": 322.0
         }
       },
       "turrets_aux_caliber": {
@@ -2418,11 +2424,12 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "pressureDamageMult": 3.0,
+        "napalmDamageMult": 1.0,
         "auxiliary_caliber_turret_01_dm": {
-          "hp": 100.0
+          "hp": 175.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "hp": 100.0
+          "hp": 175.0
         }
       },
       "turrets_aa_caliber": {
@@ -2430,21 +2437,22 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "fireDamageMult": 2.0,
-        "pressureDamageMult": 1.0,
+        "pressureDamageMult": 2.0,
+        "napalmDamageMult": 1.0,
         "aa_turret_01_dm": {
-          "hp": 40.0
+          "hp": 80.0
         },
         "aa_turret_02_dm": {
-          "hp": 40.0
+          "hp": 80.0
         },
         "aa_turret_03_dm": {
-          "hp": 40.0
+          "hp": 80.0
         },
         "aa_turret_04_dm": {
-          "hp": 40.0
+          "hp": 80.0
         },
         "aa_turret_05_dm": {
-          "hp": 40.0
+          "hp": 80.0
         },
         "aa_turret_06_dm": {
           "hp": 100.0
@@ -2525,7 +2533,7 @@
         "fireProtectionHp": 5.0,
         "armorThrough": 150.0,
         "ammunition_storage_shells_01_dm": {
-          "hp": 1500.0
+          "hp": 1486.0
         },
         "ammunition_storage_shells_02_dm": {
           "hp": 1200.0
@@ -2547,13 +2555,13 @@
           "hp": 2000.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 1500.0
+          "hp": 1600.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 2000.0
+          "hp": 1918.0
         },
         "ammunition_storage_charges_04_dm": {
-          "hp": 2000.0
+          "hp": 1918.0
         }
       },
       "ammo_storages_auxiliary": {
@@ -2564,10 +2572,10 @@
         "fireProtectionHp": 3.0,
         "armorThrough": 100.0,
         "ammunition_storage_aux_01_dm": {
-          "hp": 1000.0
+          "hp": 800.0
         },
         "ammunition_storage_aux_02_dm": {
-          "hp": 1000.0
+          "hp": 892.0
         }
       },
       "ammo_first_stage": {
@@ -2643,10 +2651,10 @@
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
         "elevator_01_dm": {
-          "hp": 500.0
+          "hp": 550.0
         },
         "elevator_02_dm": {
-          "hp": 500.0
+          "hp": 550.0
         }
       },
       "pumps": {
@@ -2675,6 +2683,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 4.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 1.0,
         "tt_01_dm": {
           "hp": 387.0
         },
@@ -2685,13 +2694,15 @@
       "radiolocation": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 5.0,
-        "dmgState": 0.0
+        "dmgState": 0.0,
+        "napalmDamageMult": 1.0
       },
       "fire_control": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 3.0,
         "dmgState": 0.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 1.0,
         "rangefinder_01_dm": {
           "hp": 40.0
         }
@@ -2720,12 +2731,12 @@
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 10
+        "crew": 11
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 8
+        "crew": 10
       },
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -2770,7 +2781,7 @@
       "sailor14": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 4
+        "crew": 3
       },
       "sailor15": {
         "dmPart": "ammunition_storage_shells_01_dm",
@@ -2805,7 +2816,7 @@
       "sailor21": {
         "dmPart": "transmission_01_dm",
         "role": "sailor",
-        "crew": 22
+        "crew": 20
       },
       "sailor22": {
         "dmPart": "transmission_02_dm",
@@ -3446,9 +3457,9 @@
           "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3457,7 +3468,7 @@
           "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -3468,9 +3479,9 @@
           "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3479,9 +3490,9 @@
           "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3490,9 +3501,9 @@
           "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 8000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "drown"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3501,7 +3512,7 @@
           "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
             "killEffect": "destruction"
           }
@@ -3512,9 +3523,9 @@
           "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3523,9 +3534,9 @@
           "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
-            "conditionDamage": 16000.0,
+            "conditionDamage": 20000.0,
             "kill": true,
-            "killEffect": "hullBreak"
+            "killEffect": "destruction"
           }
         }
       },
@@ -3828,8 +3839,8 @@
         "dmPartMain": "fire_control_room_01_dm",
         "dmPart": "rangefinder_01_dm",
         "measureAccuracy": 0.85,
-        "targetLockTime": 30.0,
-        "calcTime": 18.0,
+        "targetLockTime": 24.0,
+        "calcTime": 14.0,
         "rotationSpeed": 20.0,
         "triggerGroupUse": {
           "primary": true,
@@ -5823,6 +5834,232 @@
           {
             "fx": {
               "name": "ship_fire_small",
+              "emitter": "emtr_fire_small_dmg_16"
+            }
+          }
+        ]
+      },
+      {
+        "event": [
+          {
+            "name": "attached_fire"
+          },
+          {
+            "lifetime": 15.0
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_05"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_06"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_07"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_08"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_09"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_10"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_11"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_12"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_13"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_14"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_15"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_smoke_small_dmg_16"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_05"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_06"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_07"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_08"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_09"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_10"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_11"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_12"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_13"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_14"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
+              "emitter": "emtr_fire_small_dmg_15"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_base_napalm_medium",
               "emitter": "emtr_fire_small_dmg_16"
             }
           }

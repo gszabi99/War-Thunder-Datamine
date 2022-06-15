@@ -8,9 +8,7 @@
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.165,
   "gearSinkRangeC": 0.25,
-  "JetNozzlesAnim1": [0.0,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -2367,6 +2365,79 @@
         "blk": "gameData/flightModels/weaponPresets/f_100d_2xAim9e.blk",
         "reqModification": "us_aim_9e"
       }
+    },
+    {
+      "preset": {
+        "name": "f_100d_6x750lbs_blu27",
+        "blk": "gameData/flightModels/weaponPresets/f_100d_6x750lbs_blu27.blk",
+        "reqModification": "us_blu27_b",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f_100d_2xAgm12b_4x750lbs_blu27b"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f_100d_2xAgm12b_4x750lbs_blu27b.blk"
+        },
+        {
+          "reqModification": "us_blu27_b"
+        },
+        {
+          "reqModification": "fj_4b_agm_12b"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "amountPerTier": 1.0,
+              "iconType": "napalm_large"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_100d_2xLau3_4x750lbs_blu27b"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f_100d_2xLau3_4x750lbs_blu27b.blk"
+        },
+        {
+          "reqModification": "us_blu27_b"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_lau_3a"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "amountPerTier": 7.0,
+                "iconType": "nar_ap_small"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+                "amountPerTier": 1.0,
+                "iconType": "napalm_large"
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -2587,11 +2658,16 @@
     "new_compressor_jet": {
       "tier": 1
     },
+    "us_blu27_b": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "t_160_universal": [],
     "t_160_air_targets": [],
     "t_160_armor_targets": [],
     "t_160_stealth": [],
     "t_160_belt_pack": {
+      "prevModification": "us_blu27_b",
       "tier": 2
     },
     "t_160_new_gun": {

@@ -1,4 +1,4 @@
-let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { isString, isArray, isTable, isFunction } = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
@@ -6,12 +6,12 @@ let contentPreview = require("%scripts/customization/contentPreview.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let stdMath = require("%sqstd/math.nut")
 let { targetPlatform, canSpendRealMoney } = require("%scripts/clientState/platform.nut")
-let { getLastWeapon, getWeaponBlkParams, isWeaponEnabled,
+let { getLastWeapon, isWeaponEnabled,
   isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getPresetWeapons, getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
 let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers
 } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
@@ -23,16 +23,6 @@ let unitIntParams = [ "costGold", "rank", "reqExp",
   "train2Cost", "train3Cost_gold", "train3Cost_exp",
   "gunnersCount", "bulletsIconParam"
 ]
-
-let defaultAvailableWeapons = {
-  hasRocketDistanceFuse = false
-  hasBombs = false
-  bombsNbr = -1
-  hasDepthCharges = false
-  hasMines = false
-  hasTorpedoes = false
-  hasCountermeasures = false
-}
 
 local Unit = class
 {
@@ -68,6 +58,7 @@ local Unit = class
 
    isInShop = false
    reqAir = null //name of unit required by shop tree
+   futureReqAir = null
    group = null //name of units group in shop
    fakeReqUnits = null //[] or null when no required fake units
    showOnlyWhenBought = false
@@ -92,12 +83,10 @@ local Unit = class
    spare = null //{} or null
    needBuyToOpenNextInTier = null //[]
 
-   commonWeaponImage = "#ui/gameuiskin#weapon"
+   commonWeaponImage = "#ui/gameuiskin#weapon.png"
    primaryBullets = null //{}
    secondaryBullets = null //{}
    bulletsIconParam = 0
-
-   availableWeaponsByWeaponName = null
 
    shop = null //{} - unit params table for shop unit info
    info = null //{} - tank params info
@@ -224,7 +213,6 @@ local Unit = class
       customImage = ::get_tomoe_unit_icon(name)
     if (customImage && !::isInArray(customImage.slice(0, 1), ["#", "!"]))
       customImage = ::get_unit_icon_by_unit(this, customImage)
-    availableWeaponsByWeaponName = {}
     shopSearchCore.cacheUnitSearchTokens(this)
 
     return errorsTextArray
@@ -235,13 +223,14 @@ local Unit = class
     let listStr = blk?[fieldName]
     if (!isString(listStr))
       return defValue
-    return ::split(listStr, separator).contains(targetPlatform)
+    return split_by_chars(listStr, separator).contains(targetPlatform)
   }
 
   function applyShopBlk(shopUnitBlk, prevShopUnitName, unitGroupName = null)
   {
     isInShop = true
     reqAir = prevShopUnitName
+    futureReqAir = shopUnitBlk?.futureReqAir
     group = unitGroupName
     if ("fakeReqUnitType" in shopUnitBlk)
       fakeReqUnits = shopUnitBlk % "fakeReqUnitType"
@@ -254,7 +243,7 @@ local Unit = class
     showOnlyWhenResearch = shopUnitBlk?.showOnlyWhenResearch ?? false
 
     if (isVisibleUnbought && isString(shopUnitBlk?.hideForLangs))
-      hideForLangs = ::split(shopUnitBlk?.hideForLangs, "; ")
+      hideForLangs = split_by_chars(shopUnitBlk?.hideForLangs, "; ")
 
     foreach(key in ["reqFeature", "hideFeature", "showOnlyIfPlayerHasUnlock", "reqUnlock"])
       if ((shopUnitBlk?[key] ?? "") != "")
@@ -290,25 +279,32 @@ local Unit = class
   getCrewUnitType       = @() unitType.crewUnitType
   getExp                = @() ::getUnitExp(this)
 
+  _endRecentlyReleasedTime = null
+  function getEndRecentlyReleasedTime() {
+    if (_endRecentlyReleasedTime != null)
+      return _endRecentlyReleasedTime
+
+    _endRecentlyReleasedTime = -1
+    let releaseDate = ::get_unittags_blk()?[name].releaseDate
+    if (releaseDate == null)
+      return _endRecentlyReleasedTime
+
+    let recentlyReleasedUnitsDays = GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
+    if (recentlyReleasedUnitsDays == 0)
+      return _endRecentlyReleasedTime
+
+    _endRecentlyReleasedTime = time.getTimestampFromStringUtc(releaseDate)
+      + time.daysToSeconds(recentlyReleasedUnitsDays)
+    return _endRecentlyReleasedTime
+  }
+
   _isRecentlyReleased = null
   function isRecentlyReleased()
   {
     if (_isRecentlyReleased != null)
       return _isRecentlyReleased
 
-    local res = false
-    let releaseDate = ::get_unittags_blk()?[name]?.releaseDate
-    if (releaseDate)
-    {
-      let recentlyReleasedUnitsDays = GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
-      if (recentlyReleasedUnitsDays)
-      {
-        local releaseTime = time.getTimestampFromStringUtc(releaseDate)
-        res = releaseTime + time.daysToSeconds(recentlyReleasedUnitsDays) > ::get_charserver_time_sec()
-      }
-    }
-
-    _isRecentlyReleased = res
+    _isRecentlyReleased = getEndRecentlyReleasedTime() > ::get_charserver_time_sec()
     return _isRecentlyReleased
   }
 
@@ -440,7 +436,7 @@ local Unit = class
         if (res < 0 || res > spawnScore)
           res = spawnScore
       }
-    return ::max(res, 0)
+    return max(res, 0)
   }
 
   function invalidateModificators()
@@ -497,63 +493,6 @@ local Unit = class
     return defaultWeaponPreset
   }
 
-  function getAvailableSecondaryWeapons()
-  {
-    let secondaryWep = getLastWeapon(name)
-    if (secondaryWep == "")
-      return defaultAvailableWeapons
-
-    local availableWeapons = availableWeaponsByWeaponName?[secondaryWep]
-    if (availableWeapons)
-      return availableWeapons
-
-    let unitBlk = ::get_full_unit_blk(name)
-    if (!unitBlk)
-      return defaultAvailableWeapons
-
-    let weaponsBlkArray = []
-    availableWeapons = clone defaultAvailableWeapons
-
-    let weapon = getWeapons().findvalue(@(w) w.name == secondaryWep)
-    let curPresetWeapons = getPresetWeapons(unitBlk, weapon)
-    if (curPresetWeapons.len() > 0) {
-      local nbrBomb = 0
-      dagor.debug("check unit weapon :")
-      foreach (weap in curPresetWeapons) {
-        if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, weaponsBlkArray))
-          continue
-
-        if (weap?.trigger == "mines")
-          availableWeapons.hasMines = true
-        else if (weap?.trigger == "countermeasures")
-          availableWeapons.hasCountermeasures = true
-
-        let wBlk = blkFromPath(weap.blk)
-        let isContainer = wBlk?.container ?? false
-        let wParams = isContainer ? getWeaponBlkParams(wBlk.blk, {}, wBlk?.bullets) : {}
-        let weapBlk = isContainer ? wParams.weaponBlk : wBlk
-
-        if (weapBlk?.bomb) {
-          availableWeapons.hasBombs = true
-          nbrBomb += isContainer ? wParams.bulletsCount : 1
-        }
-        if (weapBlk?.rocket && (weapBlk.rocket?.distanceFuse ?? true))
-          availableWeapons.hasRocketDistanceFuse = true
-        if (weapBlk?.bomb.isDepthCharge)
-          availableWeapons.hasDepthCharges = true
-        if (weapBlk?.torpedo != null)
-          availableWeapons.hasTorpedoes = true
-
-        if (!weapBlk?.bomb)
-          weaponsBlkArray.append(weap.blk)
-      }
-      availableWeapons.bombsNbr = nbrBomb
-    }
-
-    availableWeaponsByWeaponName[secondaryWep] <- availableWeapons
-    return availableWeapons
-  }
-
   function getEntitlements()
   {
     if (gift == null)
@@ -565,13 +504,13 @@ local Unit = class
   function getUnlockImage()
   {
     if (isAir())
-      return "#ui/gameuiskin#blueprint_items_aircraft"
+      return "#ui/gameuiskin#blueprint_items_aircraft.png"
     if (isTank())
-      return "#ui/gameuiskin#blueprint_items_tank"
+      return "#ui/gameuiskin#blueprint_items_tank.png"
     if (isShipOrBoat())
-      return "#ui/gameuiskin#blueprint_items_ship"
+      return "#ui/gameuiskin#blueprint_items_ship.png"
 
-    return "#ui/gameuiskin#blueprint_items_aircraft"
+    return "#ui/gameuiskin#blueprint_items_aircraft.png"
   }
 
   isSquadronVehicle       = @() researchType == "clanVehicle"

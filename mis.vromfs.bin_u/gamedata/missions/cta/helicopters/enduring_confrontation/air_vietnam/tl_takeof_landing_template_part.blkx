@@ -1,0 +1,584 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/enduring_confrontation/tl_takeoff_landing_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "squad": {
+        "name": "tl_all_fields_squad",
+        "tm": [
+          [-1.0,0.0,-5.96046e-08],
+          [0.0,1.0,0.0],
+          [5.96046e-08,0.0,-1.0],
+          [17615.5,3.84961,-15333.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "tl_base_01"
+          },
+          {
+            "squad_members": "tl_base_02"
+          },
+          {
+            "squad_members": "tl_base_03"
+          },
+          {
+            "squad_members": "tl_base_04"
+          },
+          {
+            "squad_members": "tl_base_05"
+          },
+          {
+            "squad_members": "tl_base_06"
+          },
+          {
+            "squad_members": "tl_base_07"
+          },
+          {
+            "squad_members": "tl_base_08"
+          },
+          {
+            "squad_members": "tl_base_09"
+          },
+          {
+            "squad_members": "tl_base_10"
+          },
+          {
+            "squad_members": "tl_base_11"
+          },
+          {
+            "squad_members": "tl_base_12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "tl_t1_squad",
+        "tm": [
+          [-1.0,0.0,-5.96046e-08],
+          [0.0,1.0,0.0],
+          [5.96046e-08,0.0,-1.0],
+          [10358.0,2063.48,-20595.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "tl_base_01"
+          },
+          {
+            "squad_members": "tl_base_02"
+          },
+          {
+            "squad_members": "tl_base_03"
+          },
+          {
+            "squad_members": "tl_base_04"
+          },
+          {
+            "squad_members": "tl_base_05"
+          },
+          {
+            "squad_members": "tl_base_06"
+          },
+          {
+            "squad_members": "tl_base_07"
+          },
+          {
+            "squad_members": "tl_base_08"
+          },
+          {
+            "squad_members": "tl_base_09"
+          },
+          {
+            "squad_members": "tl_base_10"
+          },
+          {
+            "squad_members": "tl_base_11"
+          },
+          {
+            "squad_members": "tl_base_12"
+          },
+          {
+            "object_type": "isTeamA"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "tl_t2_squad",
+        "tm": [
+          [-1.0,0.0,-5.96046e-08],
+          [0.0,1.0,0.0],
+          [5.96046e-08,0.0,-1.0],
+          [18007.6,2063.48,-9234.78]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "tl_base_01"
+          },
+          {
+            "squad_members": "tl_base_02"
+          },
+          {
+            "squad_members": "tl_base_03"
+          },
+          {
+            "squad_members": "tl_base_04"
+          },
+          {
+            "squad_members": "tl_base_05"
+          },
+          {
+            "squad_members": "tl_base_06"
+          },
+          {
+            "squad_members": "tl_base_07"
+          },
+          {
+            "squad_members": "tl_base_08"
+          },
+          {
+            "squad_members": "tl_base_09"
+          },
+          {
+            "squad_members": "tl_base_10"
+          },
+          {
+            "squad_members": "tl_base_11"
+          },
+          {
+            "squad_members": "tl_base_12"
+          },
+          {
+            "object_type": "isTeamB"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_08",
+        "tm": [
+          [0.0249621,0.0,0.999688],
+          [0.0,1.0,0.0],
+          [-0.999688,0.0,0.0249621],
+          [266.701,530.546,-7755.99]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_09",
+        "tm": [
+          [-0.385554,0.0,0.922685],
+          [0.0,1.0,0.0],
+          [-0.922685,0.0,-0.385554],
+          [-9053.22,554.487,-8467.63]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_07",
+        "tm": [
+          [-0.143813,0.0,0.989605],
+          [0.0,1.0,0.0],
+          [-0.989605,0.0,-0.143813],
+          [8550.22,506.05,-8412.75]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_06",
+        "tm": [
+          [-0.128124,0.0,0.991758],
+          [0.0,1.0,0.0],
+          [-0.991758,0.0,-0.128124],
+          [12762.9,593.833,-12523.5]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_04",
+        "tm": [
+          [-0.345727,0.0,0.938334],
+          [0.0,1.0,0.0],
+          [-0.938334,0.0,-0.345727],
+          [-4499.28,561.547,-12140.2]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_05",
+        "tm": [
+          [-0.0976437,0.0,0.995221],
+          [0.0,1.0,0.0],
+          [-0.995221,0.0,-0.0976437],
+          [-106.706,639.685,-12225.9]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_10",
+        "tm": [
+          [0.0647318,0.0,0.997902],
+          [0.0,1.0,0.0],
+          [-0.997902,0.0,0.0647318],
+          [302.445,579.86,-26552.6]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_11",
+        "tm": [
+          [0.250652,0.0,0.968077],
+          [0.0,1.0,0.0],
+          [-0.968077,0.0,0.250652],
+          [-7325.81,525.958,-26721.1]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_12",
+        "tm": [
+          [0.326356,0.0,0.945247],
+          [0.0,1.0,0.0],
+          [-0.945247,0.0,0.326356],
+          [11711.6,556.924,-26429.1]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_01",
+        "tm": [
+          [0.384775,0.0,0.923009],
+          [0.0,1.0,0.0],
+          [-0.923009,0.0,0.384775],
+          [12010.3,547.323,-19205.4]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_02",
+        "tm": [
+          [0.201976,0.0,0.97939],
+          [0.0,1.0,0.0],
+          [-0.97939,0.0,0.201976],
+          [5908.17,565.529,-19406.8]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "tl_base_03",
+        "tm": [
+          [-0.203538,0.0,0.979066],
+          [0.0,1.0,0.0],
+          [-0.979066,0.0,-0.203538],
+          [-6942.75,540.552,-18430.6]
+        ],
+        "unit_class": "dynHelipad_dirt_a_ussr",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    }
+  ],
+  "areas": {
+    "tl_battle_area": {
+      "type": "Box",
+      "tm": [
+        [0.00260417,0.0,28672.0],
+        [0.0,1200.0,0.0],
+        [-28672.0,0.0,0.00260417],
+        [1808.0,2555.05,-20480.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "tl_zone_01": {
+      "type": "Box",
+      "tm": [
+        [311.467,0.0,-512.824],
+        [0.0,250.0,0.0],
+        [512.824,0.0,311.466],
+        [12005.0,518.073,-19143.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_02": {
+      "type": "Box",
+      "tm": [
+        [121.672,0.0,587.534],
+        [0.0,250.0,0.0],
+        [-587.533,0.0,121.673],
+        [5908.32,512.729,-19417.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_03": {
+      "type": "Box",
+      "tm": [
+        [-367.023,0.0,474.652],
+        [0.0,250.0,0.0],
+        [-474.652,0.0,-367.022],
+        [-6931.46,504.502,-18423.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_04": {
+      "type": "Box",
+      "tm": [
+        [-427.211,0.0,421.297],
+        [0.0,250.0,0.0],
+        [-421.297,0.0,-427.21],
+        [-4497.98,525.547,-12132.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_05": {
+      "type": "Box",
+      "tm": [
+        [-55.6435,0.0,597.414],
+        [0.0,250.0,0.0],
+        [-597.414,0.0,-55.6426],
+        [-110.206,609.935,-12223.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_06": {
+      "type": "Box",
+      "tm": [
+        [-55.6435,0.0,597.414],
+        [0.0,250.0,0.0],
+        [-597.414,0.0,-55.6426],
+        [12770.6,555.633,-12509.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_07": {
+      "type": "Box",
+      "tm": [
+        [386.128,0.0,459.244],
+        [0.0,250.0,0.0],
+        [-459.243,0.0,386.128],
+        [8553.2,483.113,-8409.36]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_08": {
+      "type": "Box",
+      "tm": [
+        [579.652,0.0,154.932],
+        [0.0,250.0,0.0],
+        [-154.931,0.0,579.652],
+        [268.851,515.546,-7747.79]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_09": {
+      "type": "Box",
+      "tm": [
+        [553.047,0.0,232.678],
+        [0.0,250.0,0.0],
+        [-232.677,0.0,553.047],
+        [-9052.77,542.437,-8461.43]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_10": {
+      "type": "Box",
+      "tm": [
+        [121.672,0.0,587.534],
+        [0.0,250.0,0.0],
+        [-587.533,0.0,121.673],
+        [346.872,512.729,-26560.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_11": {
+      "type": "Box",
+      "tm": [
+        [121.672,0.0,587.534],
+        [0.0,250.0,0.0],
+        [-587.533,0.0,121.673],
+        [-7363.65,512.729,-26725.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "tl_zone_12": {
+      "type": "Box",
+      "tm": [
+        [121.672,0.0,587.534],
+        [0.0,250.0,0.0],
+        [-587.533,0.0,121.673],
+        [11708.0,512.73,-26400.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

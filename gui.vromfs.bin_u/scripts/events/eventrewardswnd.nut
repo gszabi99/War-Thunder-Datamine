@@ -7,16 +7,16 @@
   event = null
   rewardsList = null
 
-  static function open(_event)
+  static function open(v_event)
   {
-    if (!_event)
+    if (!v_event)
       return
-    let rewards = ::EventRewards.getSortedRewardsByConditions(_event)
-    if (!rewards.len() && !::EventRewards.getBaseVictoryReward(_event))
+    let rewards = ::EventRewards.getSortedRewardsByConditions(v_event)
+    if (!rewards.len() && !::EventRewards.getBaseVictoryReward(v_event))
       return
 
     let params = {
-      event = _event
+      event = v_event
       rewardsList = rewards
     }
     ::handlersManager.loadHandler(::gui_handlers.EventRewardsWnd, params)

@@ -36,9 +36,11 @@ let function getMissionEditSlotbarBlk(missionName) {
   return editSlotbar
 }
 
-let function calcSlotbarOverrideByMissionName(missionName) {
+let function calcSlotbarOverrideByMissionName(missionName, event = null) {
   local res = null
-  let editSlotbar = getMissionEditSlotbarBlk(missionName)
+  let gmEditSlotbar = event?.mission_decl.editSlotbar
+  let editSlotbar = gmEditSlotbar ? ::build_blk_from_container(gmEditSlotbar)//!!!FIX ME Will be better to turn editSlotbar data block from missions config into table
+    : getMissionEditSlotbarBlk(missionName)
   if (!editSlotbar)
     return res
 
@@ -80,21 +82,21 @@ let function getSlotbarOverrideCountriesByMissionName(missionName) {
   return res
 }
 
-let function getSlotbarOverrideData(missionName = "") {
+let function getSlotbarOverrideData(missionName = "", event = null) {
   if (missionName == "" || missionName == overrrideSlotbarMissionName.value)
     return overrideSlotbar.value
 
-  return calcSlotbarOverrideByMissionName(missionName)
+  return calcSlotbarOverrideByMissionName(missionName, event)
 }
 
-let isSlotbarOverrided = @(missionName = "") getSlotbarOverrideData(missionName) != null
+let isSlotbarOverrided = @(missionName = "", event = null) getSlotbarOverrideData(missionName, event) != null
 
-let function updateOverrideSlotbar(missionName) {
+let function updateOverrideSlotbar(missionName, event = null) {
   if (missionName == overrrideSlotbarMissionName.value)
     return
   overrrideSlotbarMissionName(missionName)
 
-  let newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName)
+  let newOverrideSlotbar = calcSlotbarOverrideByMissionName(missionName, event)
   if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
     return
 

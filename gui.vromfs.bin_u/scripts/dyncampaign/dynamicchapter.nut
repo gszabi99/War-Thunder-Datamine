@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::dynamic_req_country_rank <- 1
 
 ::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts()
@@ -146,15 +147,15 @@
       {
         case 0:
           elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
+          medalIcon = "#ui/gameuiskin#mission_complete_arcade.png"
           break
         case 1:
           elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
+          medalIcon = "#ui/gameuiskin#mission_complete_realistic.png"
           break
         case 2:
           elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
+          medalIcon = "#ui/gameuiskin#mission_complete_simulator.png"
           break
         case 3:
           elemCssId = "mission_item_unlocked"
@@ -196,7 +197,7 @@
       foreach(idx, country in missionBlock.countries)
       {
         let countryUnlocked = checkCountry(country) && missionBlock.unlocks.country[missionBlock.id + "_" + country]
-        config.countries += ::format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
+        config.countries += format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
                              ::get_country_icon("country_" + country, true), countryUnlocked? "yes" : "no")
 
         isAnyCountryUnlocked = isAnyCountryUnlocked || countryUnlocked
@@ -218,7 +219,7 @@
     if(!(countryId in missionBlock.unlocks.country))
     {
       ::dagor.assertf(false, "Not found unlock " + countryId)
-      debugTableData(missionBlock.countries)
+      ::debugTableData(missionBlock.countries)
       return false
     }
     return true
@@ -231,7 +232,7 @@
     let hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
     let isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == selectedMission)
 
-    showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
+    this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
 
     let canStart = isCurItemInFocus && (selectedMission?.descConfig.canStart ?? false)
     ::showBtn("btn_start", isCurItemInFocus && selectedMission != null, scene)
@@ -310,7 +311,7 @@
           owner.finalApply.call(owner)
 
           if (::mission_settings.dynlist.len() == 0)
-            msgBox("no_missions_error", ::loc("msgbox/appearError"),
+            this.msgBox("no_missions_error", ::loc("msgbox/appearError"),
                    [["ok", goBack ]], "ok", { cancel_fn = goBack});
         }
       })

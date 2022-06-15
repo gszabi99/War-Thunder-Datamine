@@ -1,4 +1,4 @@
-let { getAvailableRespawnBases } = require_native("guiRespawn")
+let { getAvailableRespawnBases } = require("guiRespawn")
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
 
 local respawnBases = {

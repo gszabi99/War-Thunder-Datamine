@@ -146,7 +146,7 @@ let function drawShipIcon(iconSize, iconPos, iconColor, absBearing) {
 
 let targetSpeed = @() {
   watch = fcsState.TargetSpeed
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   text = ::cross_call.measureTypes.SPEED.getMeasureUnitsText(fcsState.TargetSpeed.value)
   font = Fonts.tiny_text_hud
   pos = [0, sh(1)]
@@ -204,7 +204,7 @@ let progressBar = @() {
           padding = [0, 5]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
-          rendObj = ROBJ_STEXT
+          rendObj = ROBJ_INSCRIPTION
           font = Fonts.tiny_text_hud
           text = ::loc("updating_range")
         }
@@ -215,7 +215,7 @@ let progressBar = @() {
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT
-          rendObj = ROBJ_STEXT
+          rendObj = ROBJ_INSCRIPTION
           font = Fonts.tiny_text_hud
           text = ::loc("measuring_range")
         }

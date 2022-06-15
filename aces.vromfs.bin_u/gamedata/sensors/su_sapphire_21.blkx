@@ -63,8 +63,10 @@
       }
     }
   },
-  "scopeRanges": {
-    "range1": 30000.0
+  "scopeRangeSets": {
+    "common": {
+      "range1": 30000.0
+    }
   },
   "scanPatterns": {
     "search3Bars": {
@@ -158,6 +160,11 @@
             "setScopeRangeSet": []
           },
           {
+            "setScopeRangeSet": {
+              "scopeRangeSet": "common"
+            }
+          },
+          {
             "setScanPattern": {
               "scanPattern": "lock"
             }
@@ -212,11 +219,6 @@
             }
           },
           {
-            "setUseScopeRange": {
-              "value": false
-            }
-          },
-          {
             "setIllumination": {
               "illumination": false
             }
@@ -238,6 +240,11 @@
           },
           {
             "setScopeRangeSet": []
+          },
+          {
+            "setScopeRangeSet": {
+              "scopeRangeSet": "common"
+            }
           },
           {
             "setScanPattern": {
@@ -306,11 +313,6 @@
             }
           },
           {
-            "setUseScopeRange": {
-              "value": false
-            }
-          },
-          {
             "setIllumination": {
               "illumination": true
             }
@@ -375,7 +377,7 @@
         },
         "brokenTrack": {
           "stateFrom": "track",
-          "event": "activeTargetOfInterestInertialTimeOut",
+          "event": "targetsOfInterestCleanup",
           "stateTo": "lock",
           "actions": {
             "setFsmActive": {
@@ -483,8 +485,8 @@
             "source": "constant",
             "value": 7.0
           },
-          "setUseScopeRange": {
-            "value": true
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
           },
           "setFsmActive": {
             "fsm": "searchPattern",
@@ -546,8 +548,8 @@
             }
           },
           {
-            "setUseScopeRange": {
-              "value": true
+            "setScopeRangeSet": {
+              "scopeRangeSet": "common"
             }
           },
           {
@@ -671,7 +673,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -685,9 +690,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

@@ -4,6 +4,13 @@ let { floor } = require("%sqstd/math.nut")
 let IndicatorsVisible = Watched(false)
 let CurrentTime = Watched(false)
 
+let CoaxialBullets = Watched(false)
+let CoaxialCartridges = Watched(false)
+let CoaxialCartridgeSize = Watched(false)
+let MachineGunBullets = Watched(false)
+let MachineGunCartridges = Watched(false)
+let MachineGunCartridgeSize = Watched(false)
+
 let IsCommanderViewAimModeActive = Watched(false)
 
 let activeProtectionSystemModules = []
@@ -38,6 +45,12 @@ let tankState = {
 
   ActiveProtectionSystemModulesCount
   activeProtectionSystemModules
+  CoaxialBullets
+  CoaxialCartridges
+  CoaxialCartridgeSize
+  MachineGunBullets
+  MachineGunCartridges
+  MachineGunCartridgeSize
 }
 
 interopGen({

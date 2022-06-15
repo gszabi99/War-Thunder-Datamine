@@ -10,7 +10,7 @@ P - Property panel
 
 Q - Select mode
 W - Move mode (Shift+move to clone)
-E - Rotate mode
+E - Rotate mode (hold Alt for snapping)
 R - Scale mode
 T - Create entity mode
 
@@ -59,7 +59,7 @@ let help = @(showHelp) function help(){
 
     children = [
       {
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         text = "Keyboard help"
         margin = fsh(0.5)
       }

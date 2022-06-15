@@ -16,7 +16,7 @@ let function checkGaijinPassReminder()
     return
 
   let gmBlk = ::get_game_settings_blk()
-  let daysCounter = ::max(gmBlk?.reminderGaijinPassGetting ?? 1,
+  let daysCounter = max(gmBlk?.reminderGaijinPassGetting ?? 1,
     ::load_local_account_settings("gaijinpass/daysCounter", 0))
   if (deltaDaysReminder >= daysCounter)
   {

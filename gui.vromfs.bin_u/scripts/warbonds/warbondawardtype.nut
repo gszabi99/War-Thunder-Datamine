@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { DECORATION, SPECIAL_TASK } = require("%scripts/utils/genericTooltipTypes.nut")
 
@@ -68,7 +69,7 @@ local getBoughtCountByAmount = @(warbond, blk)
   }
   getUserlogBuyTextBase = function(blk)
   {
-    return ::format(::loc("userlog/buy_resource/" + userlogResourceTypeText), getNameText(blk))
+    return format(::loc("userlog/buy_resource/" + userlogResourceTypeText), getNameText(blk))
   }
 }
 
@@ -149,7 +150,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         return ""
 
       let blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
-      return ::format(blockFormat, ::build_aircraft_item(unit.name, unit, {
+      return format(blockFormat, ::build_aircraft_item(unit.name, unit, {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true
@@ -168,7 +169,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
     getUserlogBuyTextBase = function(blk)
     {
-      return ::format(::loc("userlog/buy_aircraft"), getNameText(blk))
+      return format(::loc("userlog/buy_aircraft"), getNameText(blk))
     }
   },
 
@@ -306,7 +307,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
   },
 
   [::EWBAT_BATTLE_TASK] = {
-    getLayeredImage = @(blk, warbond) ::LayersIcon.getIconData("reward_battle_task_" + warbond.medalIcon)
+    getLayeredImage = @(blk, warbond) warbond.getLayeredIconStyle()
     getNameText = @(blk) ::loc("item/" + blk.name)
     getDescText = @(blk) ::loc("item/" + blk.name + "/desc")
     hasIncreasingLimit = @() ::has_feature("BattlePass")

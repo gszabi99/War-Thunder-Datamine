@@ -5,9 +5,7 @@
   "viewDistKInSight": 4.0,
   "gearSinkRangeLR": 0.376,
   "gearSinkRangeC": 0.3,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -2595,7 +2593,35 @@
       "preset": {
         "name": "su_22m3_rocket_kh23",
         "blk": "gameData/FlightModels/weaponPresets/su_22m3_rocket_kh23.blk",
-        "reqModification": "yak_38_x23m"
+        "reqModification": "yak_38_x23m",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/su_kh_23m.blk"
+            },
+            {
+              "tier": {
+                "idx": 4,
+                "iconType": "missile_air_to_uni",
+                "amountPerTier": 1.0
+              }
+            },
+            {
+              "tier": {
+                "idx": 5,
+                "iconType": "rls",
+                "amountPerTier": 1.0
+              }
+            },
+            {
+              "tier": {
+                "idx": 8,
+                "iconType": "missile_air_to_uni",
+                "amountPerTier": 1.0
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -2883,6 +2909,58 @@
         },
         {
           "reqModification": "mi_24_r_60"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/su_kh_23m.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "missile_air_to_uni",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "rls",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "missile_air_to_uni",
+                    "amountPerTier": 1.0
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/su_r_60.blk"
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -3787,6 +3865,45 @@
           "reqModification": "su_17_x25"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "su_22m3_bomb_zb500_62",
+        "blk": "gameData/FlightModels/weaponPresets/su_22m3_bomb_zb500_62.blk",
+        "reqModification": "zb_500"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "su_22m3_bomb_zb500_62_r60"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/su_22m3_bomb_zb500_62_r60.blk"
+        },
+        {
+          "reqModification": "zb_500"
+        },
+        {
+          "reqModification": "mi_24_r_60"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "su_22m3_bomb_zb500_62_sppu_22"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/su_22m3_bomb_zb500_62_sppu_22.blk"
+        },
+        {
+          "reqModification": "zb_500"
+        },
+        {
+          "reqModification": "su_17_sppu_22_gunpod"
+        }
+      ]
     }
   ],
   "gunnerOpticFps": {
@@ -3934,7 +4051,7 @@
     },
     "mi_24_r_60": {
       "modClass": "weapon",
-      "prevModification": "mi_24_fab_500",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 4
     },
     "yak_38_b8m1": {
@@ -3957,6 +4074,10 @@
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 4
+    },
+    "zb_500": {
+      "modClass": "weapon",
+      "tier": 1
     },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],
@@ -4046,6 +4167,7 @@
       }
     },
     "yak_38_x23m": {
+      "prevModification": "zb_500",
       "modClass": "weapon",
       "tier": 2
     },

@@ -73,13 +73,6 @@ missionGenFunctions.append( function (isFreeFlight)
   local enemyWp3Count = 0;
   local noEnemy = 0;
 
-  local allySetWp1 = 0;
-  local allySetWp2 = 0;
-  local allySetWp3 = 0;
-  local enemySetWp1 = 0;
-  local enemySetWp2 = 0;
-  local enemySetWp3 = 0;
-
   ::mgSetupAirfield(startPos, wpDist1+3000);
   let startLookAt = ::mgCreateStartLookAt();
   ::mgSetupArea("waypoint00", startPos, startLookAt, 180, 0, rndHeight);
@@ -128,13 +121,7 @@ missionGenFunctions.append( function (isFreeFlight)
   if (battle_point_wp01Dist < 3000)
     battle_point_wp01Dist = 3000;
 
-  local event1 = 0;
-  local event2 = 0;
-  local event3 = 0;
   local enemySet = 0;
-  local enemyAllyRatio1 = 0;
-  local enemyAllyRatio2 = 0;
-  local enemyAllyRatio3 = 0;
 
   local allyFromStartCount = (enemyPerWp-4)*::rndRange(0,1)*planeCost;
   if (allyFromStartCount < 2)
@@ -359,32 +346,20 @@ missionGenFunctions.append( function (isFreeFlight)
     {
       case 1:
       {
-        event1 = event;
         enemyWp1Count = enemyWpCount;
         allyWp1Count = allyWpCount;
-        enemySetWp1 = enemySet;
-        allySetWp1 = allySet;
-        enemyAllyRatio1 = enemyAllyRatio;
       }
       break;
       case 2:
       {
-        event2 = event;
         enemyWp2Count = enemyWpCount;
         allyWp2Count = allyWpCount;
-        enemySetWp2 = enemySet;
-        allySetWp2 = allySet;
-        enemyAllyRatio2 = enemyAllyRatio;
       }
       break;
       case 3:
       {
-        event3 = event;
         enemyWp3Count = enemyWpCount;
         allyWp3Count = allyWpCount;
-        enemySetWp3 = enemySet;
-        allySetWp3 = allySet;
-        enemyAllyRatio3 = enemyAllyRatio;
       }
       break;
     }

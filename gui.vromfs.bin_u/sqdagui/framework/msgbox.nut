@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::scene_msg_boxes_list <- [] //FIX ME need to make it part of handler manager
 
 //  {id, text, buttons, defBtn}
@@ -16,11 +17,6 @@ let g_string =  require("%sqstd/string.nut")
   }
 }
 
-::remove_all_scene_boxes <- function remove_all_scene_boxes()
-{
-  ::gui_scene_boxes = []
-}
-
 ::destroyMsgBox <- function destroyMsgBox(boxObj)
 {
   if(!::check_obj(boxObj))
@@ -28,6 +24,46 @@ let g_string =  require("%sqstd/string.nut")
   local guiScene = boxObj.getScene()
   guiScene.destroyElement(boxObj)
   ::broadcastEvent("ModalWndDestroy")
+}
+
+let function clear_msg_boxes_list()
+{
+  for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
+    if (!::check_obj(::scene_msg_boxes_list[i]))
+      ::scene_msg_boxes_list.remove(i)
+}
+
+let function get_text_urls_data(text)
+{
+  if (!text.len() || !::has_feature("AllowExternalLink"))
+    return null
+
+  let urls = []
+  local start = 0
+  let startText = "<url="
+  let urlEndText = ">"
+  let endText = "</url>"
+  do {
+    start = text.indexof(startText, start)
+    if (start == null)
+      break
+    let urlEnd = text.indexof(urlEndText, start + startText.len())
+    if (!urlEnd)
+      break
+    let end = text.indexof(endText, urlEnd)
+    if (!end)
+      break
+
+    urls.append({
+      url = text.slice(start + startText.len(), urlEnd)
+      text = text.slice(urlEnd + urlEndText.len(), end)
+    })
+    text = text.slice(0, start) + text.slice(end + endText.len())
+  } while (start != null && start < text.len())
+
+  if (!urls.len())
+    return null
+  return { text, urls }
 }
 
 ::saved_scene_msg_box <- null  //msgBox which must be shown even when scene changed
@@ -53,7 +89,7 @@ let g_string =  require("%sqstd/string.nut")
 
   if (options?.saved)
     ::saved_scene_msg_box = (@(id, gui_scene, text, buttons, def_btn, options) function() {
-        scene_msg_box(id, gui_scene, text, buttons, def_btn, options)
+        ::scene_msg_box(id, gui_scene, text, buttons, def_btn, options)
       })(id, gui_scene, text, buttons, def_btn, options)
 
   let bottomLinks = get_text_urls_data(text)
@@ -62,7 +98,7 @@ let g_string =  require("%sqstd/string.nut")
     text = bottomLinks.text
     data_below_text = data_below_text || ""
     foreach(idx, urlData in bottomLinks.urls)
-      data_below_text += ::format("button { id:t='msgLink%d'; text:t='%s'; link:t='%s'; on_click:t = '::open_url_by_obj'; underline{} }",
+      data_below_text += format("button { id:t='msgLink%d'; text:t='%s'; link:t='%s'; on_click:t = '::open_url_by_obj'; underline{} }",
                            idx, g_string.stripTags(urlData.text), g_string.stripTags(urlData.url))
   }
 
@@ -90,18 +126,18 @@ let g_string =  require("%sqstd/string.nut")
     let handlerClass = class {
       function onButtonId(id)
       {
-        if (startingDialogNow)
+        if (this.startingDialogNow)
           return
 
-        if (showButtonsTimer>0)
+        if (this.showButtonsTimer>0)
           return
 
-        let srcHandlerObj = sourceHandlerObj
-        let bId = boxId
-        let bObj = boxObj
+        let srcHandlerObj = this.sourceHandlerObj
+        let bId = this.boxId
+        let bObj = this.boxObj
 
         let delayedAction = function() {
-          if (::check_obj(boxObj))
+          if (::check_obj(this.boxObj))
             foreach (b in buttons)
             {
               local isDestroy = true
@@ -109,39 +145,40 @@ let g_string =  require("%sqstd/string.nut")
                 isDestroy = b[2]
               if (b[0] == id || (b[0]=="" && id == "cancel"))
               {
+                if (b.len()>1 && b[1])
+                  b[1].call(srcHandlerObj)
+
                 if (isDestroy)
                 {
                   ::remove_scene_box(bId) //!!FIX ME: need refactoring about this list
                   ::saved_scene_msg_box = null
                   ::destroyMsgBox(bObj)
-                  ::clear_msg_boxes_list()
+                  clear_msg_boxes_list()
                 }
-                if (b.len()>1 && b[1])
-                  b[1].call(srcHandlerObj)
                 break
               }
             }
-          startingDialogNow = false;
+          this.startingDialogNow = false;
         }
-        startingDialogNow = true;
-        guiScene.performDelayed(this, delayedAction)
+        this.startingDialogNow = true;
+        this.guiScene.performDelayed(this, delayedAction)
       }
 
       function onButton(obj)
       {
-        onButtonId(obj.id)
+        this.onButtonId(obj.id)
       }
 
       function onAccessKey(obj)
       {
-        onButtonId(obj.id.slice(3))
+        this.onButtonId(obj.id.slice(3))
       }
 
       function onAcceptSelectionAccessKey(obj)
       {
-        if (showButtonsTimer > 0)
+        if (this.showButtonsTimer > 0)
           return
-        let btnObj = ::check_obj(boxObj) ? boxObj.findObject("buttons_holder") : null
+        let btnObj = ::check_obj(this.boxObj) ? this.boxObj.findObject("buttons_holder") : null
         if (!::check_obj(btnObj) || !btnObj.isVisible())
           return
         let total = btnObj.childrenCount()
@@ -156,21 +193,21 @@ let g_string =  require("%sqstd/string.nut")
             button = bObj
         }
         if (button?.isValid() && button.isEnabled())
-          return onButtonId(button.id)
+          return this.onButtonId(button.id)
       }
 
       function onUpdate(obj, dt)
       {
         ::reset_msg_box_check_anim_time()
         // If buttons need
-        if (showButtonsTimer>0)
+        if (this.showButtonsTimer>0)
         {
-          showButtonsTimer -= dt
-          if (showButtonsTimer<=0)
+          this.showButtonsTimer -= dt
+          if (this.showButtonsTimer<=0)
           {
-            if (::check_obj(boxObj))
+            if (::check_obj(this.boxObj))
             {
-              let btnObj = boxObj.findObject("buttons_holder")
+              let btnObj = this.boxObj.findObject("buttons_holder")
               if (::check_obj(btnObj))
               {
                 btnObj.show(true)
@@ -181,10 +218,10 @@ let g_string =  require("%sqstd/string.nut")
           }
         }
 
-        if (need_cancel_fn && need_cancel_fn())
+        if (this.need_cancel_fn && this.need_cancel_fn())
         {
-          need_cancel_fn = null;
-          onButtonId("");
+          this.need_cancel_fn = null;
+          this.onButtonId("");
         }
       }
 
@@ -334,22 +371,18 @@ let g_string =  require("%sqstd/string.nut")
   return msgbox
 }
 
-::last_scene_msg_box_time <- -1
+local last_scene_msg_box_time = -1
+
 ::reset_msg_box_check_anim_time <- function reset_msg_box_check_anim_time()
 {
-  ::last_scene_msg_box_time = ::dagor.getCurTime()
-}
-::need_new_msg_box_anim <- function need_new_msg_box_anim()
-{
-  return ::dagor.getCurTime() - ::last_scene_msg_box_time > 200
+  last_scene_msg_box_time = ::dagor.getCurTime()
 }
 
-::clear_msg_boxes_list <- function clear_msg_boxes_list()
+::need_new_msg_box_anim <- function need_new_msg_box_anim()
 {
-  for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
-    if (!::check_obj(::scene_msg_boxes_list[i]))
-      ::scene_msg_boxes_list.remove(i)
+  return ::dagor.getCurTime() - last_scene_msg_box_time > 200
 }
+
 
 ::destroy_all_msg_boxes <- function destroy_all_msg_boxes(guiScene = null)
 {
@@ -405,41 +438,8 @@ let g_string =  require("%sqstd/string.nut")
     let msg = ::gui_scene_boxes[msgsToShow[i]]
     let options = msg?.options
     if (guiScene[msg.id] == null)
-      scene_msg_box(msg.id, guiScene, msg.text, msg.buttons, msg.defBtn, options)
+      ::scene_msg_box(msg.id, guiScene, msg.text, msg.buttons, msg.defBtn, options)
   }
-}
-
-::get_text_urls_data <- function get_text_urls_data(text)
-{
-  if (!text.len() || !::has_feature("AllowExternalLink"))
-    return null
-
-  let urls = []
-  local start = 0
-  let startText = "<url="
-  let urlEndText = ">"
-  let endText = "</url>"
-  do {
-    start = text.indexof(startText, start)
-    if (start == null)
-      break
-    let urlEnd = text.indexof(urlEndText, start + startText.len())
-    if (!urlEnd)
-      break
-    let end = text.indexof(endText, urlEnd)
-    if (!end)
-      break
-
-    urls.append({
-      url = text.slice(start + startText.len(), urlEnd)
-      text = text.slice(urlEnd + urlEndText.len(), end)
-    })
-    text = text.slice(0, start) + text.slice(end + endText.len())
-  } while (start != null && start < text.len())
-
-  if (!urls.len())
-    return null
-  return { text = text, urls = urls }
 }
 
 ::add_msg_box <- function add_msg_box(id, text, buttons, def_btn, options = null)

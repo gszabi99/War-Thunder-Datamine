@@ -6,7 +6,7 @@ let function pickword(dictionary, seed=null, allow_cache=false){
   assert(["table","array"].indexof(type(dictionary))!=null, "dictionary should be array or table")
   if (type(dictionary) == "table"){
     if (!("___totalWeight___" in dictionary)) {
-      foreach (word, weight in dictionary)
+      foreach (weight in dictionary)
         totalWeight += weight
       if (allow_cache)
         dictionary["___totalWeight___"] <- totalWeight //cache it dictionary

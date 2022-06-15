@@ -16,7 +16,7 @@ let ASPSpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
 let ASPSpeed = @() {
   watch = ASPSpeedValue
   size = SIZE_TO_CONTENT
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(21), ph(30)]
   color = IlsColor.value
   fontSize = 45
@@ -28,7 +28,7 @@ let ASPAltValue = Computed(@() (Altitude.value).tointeger())
 let ASPAltitude = @() {
   watch = ASPAltValue
   size = SIZE_TO_CONTENT
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(70), ph(30)]
   color = IlsColor.value
   fontSize = 45
@@ -187,7 +187,7 @@ let function ASPRadarDist(is_ru, w_pos) {
   return @() {
     watch = DistanceMax
     size = SIZE_TO_CONTENT
-    rendObj = ROBJ_DTEXT
+    rendObj = ROBJ_TEXT
     pos = [pw(w_pos), ph(0)]
     color = IlsColor.value
     fontSize = 40
@@ -199,7 +199,7 @@ let function ASPRadarDist(is_ru, w_pos) {
 let ASPRadarMode = @() {
   watch = [RadarModeNameId, IsRadarVisible, Irst]
   size = SIZE_TO_CONTENT
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   pos = [pw(-7) , Irst.value ? ph(50) : ph(15)]
   color = IlsColor.value
   fontSize = 35
@@ -309,7 +309,7 @@ let function ASPLaunchPermitted(is_ru, l_pos) {
     children = (GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ?
       @() {
         size = flex()
-        rendObj = ROBJ_DTEXT
+        rendObj = ROBJ_TEXT
         pos = [pw(l_pos), ph(80)]
         color = IlsColor.value
         fontSize = 40
@@ -377,7 +377,7 @@ let function ASPCCIPDistanceGrid() {
     children =
     {
       size = flex()
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       pos = [pw(22), ph(36)]
       color = IlsColor.value
       fontSize = 40
@@ -408,7 +408,7 @@ let ASPCCIPDistanceMark = @() {
   }
 }
 
-let function IPPCCRPLine(width, height) {
+let function IPPCCRPLine(_width, height) {
   return @() {
     watch = [TargetPosValid, BombCCIPMode, BombingMode]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -489,7 +489,7 @@ let IPPClimb = @(){
   children = [
     {
       size = flex()
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       pos = [pw(60), ph(-5)]
       color = IlsColor.value
       fontSize = 40
@@ -498,7 +498,7 @@ let IPPClimb = @(){
     },
     {
       size = flex()
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       pos = [pw(60), ph(95)]
       color = IlsColor.value
       fontSize = 40
@@ -507,7 +507,7 @@ let IPPClimb = @(){
     },
     {
       size = flex()
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       pos = [pw(60), ph(45)]
       color = IlsColor.value
       fontSize = 40

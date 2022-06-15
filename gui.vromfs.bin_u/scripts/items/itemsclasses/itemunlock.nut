@@ -2,7 +2,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Unlock <- class extends ItemCouponBase {
   static iType = itemType.UNLOCK
-  static typeIcon = "#ui/gameuiskin#item_type_unlock"
+  static typeIcon = "#ui/gameuiskin#item_type_unlock.svg"
 
   getUnlockId          = @() metaBlk?.unlock ?? metaBlk?.unlockAddProgress
   canConsume           = @() isInventoryItem && canReceivePrize()
@@ -19,13 +19,13 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
     let config = ::build_conditions_config(unlock)
     if ((config?.reward.gold ?? 0) > 0)
-      return "#ui/gameuiskin#item_type_eagles"
+      return "#ui/gameuiskin#item_type_eagles.svg"
     if ((config?.reward.wp ?? 0) > 0)
-      return "#ui/gameuiskin#item_type_warpoints"
+      return "#ui/gameuiskin#item_type_warpoints.svg"
     if ((config?.reward.frp ?? 0) > 0)
-      return "#ui/gameuiskin#item_type_RP"
+      return "#ui/gameuiskin#item_type_RP.svg"
     if ((config?.rewardWarbonds?.wbAmount ?? 0) > 0)
-      return "#ui/gameuiskin#item_type_warbonds"
+      return "#ui/gameuiskin#item_type_warbonds.svg"
 
     return typeIcon
   }

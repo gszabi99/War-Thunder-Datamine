@@ -29,6 +29,7 @@ shopItem {
   img {
     position:t='absolute'
     size:t='2.074ph, 1.037ph'
+    background-svg-size:t='2.074ph, 1.037ph'
     background-repeat:t='aspect-ratio'
     background-image:t='<<crewImage>>'
     <<#isCrewRecruit>>

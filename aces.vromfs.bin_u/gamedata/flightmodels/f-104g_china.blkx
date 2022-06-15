@@ -9,9 +9,7 @@
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "ilsLCOSS": true,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -2243,6 +2241,84 @@
           "reqModification": "us_aim_9j"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "f-104g_bomb_blu_27",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_blu_27.blk",
+        "reqModification": "us_blu_1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_bomb_blu_27_aim_9b"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_blu_27_aim_9b.blk"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "amountPerTier": 1.0,
+              "iconType": "napalm_large"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": {
+        "name": "f-104g_bomb_blu_27_aim_9e",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_blu_27_aim_9e.blk",
+        "reqModification": "us_blu_1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104g_bomb_blu_27_aim_9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_blu_27_aim_9j.blk"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+              "amountPerTier": 1.0,
+              "iconType": "napalm_large"
+            }
+          }
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -2347,7 +2423,12 @@
       "reqModification": "M60_belt_pack",
       "tier": 3
     },
+    "us_blu_1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_32": {
+      "prevModification": "us_blu_1",
       "tier": 2,
       "modClass": "weapon"
     },

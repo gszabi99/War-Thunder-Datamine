@@ -2,11 +2,12 @@ let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
 let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 
 let bundlesShopInfo = Watched(null)
 
 let function updateBundlesShopInfo() {
-  if (!::g_login.isLoggedIn() || bundlesShopInfo.value)
+  if (!::g_login.isLoggedIn() || bundlesShopInfo.value || !isPlatformPC)
     return
 
   let guidsList = []
@@ -30,7 +31,7 @@ let function updateBundlesShopInfo() {
       },
       function() {
         ::dagor.debug("[ENTITLEMENTS INFO] Received failure result")
-        debugTableData(guidsList)
+        ::debugTableData(guidsList)
       }
     )
   else

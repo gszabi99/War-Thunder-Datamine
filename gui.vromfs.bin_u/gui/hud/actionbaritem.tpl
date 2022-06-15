@@ -24,7 +24,7 @@ actionBarItemDiv {
         size:t='pw, ph';
         position:t='absolute';
         pos:t='0, 0';
-        background-image:t='#ui/gameuiskin#circle_gradient_white';
+        background-image:t='#ui/gameuiskin#circle_gradient_white.png';
         background-color:t='#FFFFFF';
         display:t='hide';
       }
@@ -54,7 +54,7 @@ actionBarItemDiv {
         position:t='absolute';
         pos:t='0, 0';
         input-transparent:t='yes';
-        background-image:t='#ui/gameuiskin#action_blink';
+        background-image:t='#ui/gameuiskin#action_blink.png';
         background-color:t='#FFFFFF';
         color-factor:t='0';
 

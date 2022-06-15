@@ -7,9 +7,7 @@
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.165,
   "gearSinkRangeC": 0.25,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -2334,6 +2332,20 @@
         "blk": "gameData/flightModels/weaponPresets/f_100d_2xlau10.blk",
         "reqModification": "f4c_zuni"
       }
+    },
+    {
+      "preset": {
+        "name": "f_100d_6x750lbs_blu27",
+        "blk": "gameData/flightModels/weaponPresets/f_100d_6x750lbs_blu27.blk",
+        "reqModification": "us_blu27_b",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu27b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      }
     }
   ],
   "turbulence": {
@@ -2565,7 +2577,12 @@
       "reqModification": "t_160_belt_pack",
       "tier": 3
     },
+    "us_blu27_b": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_3a": {
+      "prevModification": "us_blu27_b",
       "tier": 2,
       "modClass": "weapon"
     },

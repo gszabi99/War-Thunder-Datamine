@@ -1,3 +1,5 @@
+let { split_by_chars } = require("string")
+let regexp2 = require("regexp2")
 let mapPreferences = require("mapPreferences")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -71,7 +73,7 @@ let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locN
   local missionLocName = ::loc("missions/" + missionId)
   let locNameValue = config?[locNameKey]
   if (locNameValue && locNameValue.len())
-    missionLocName = isLevelBanMode ? ::loc(::split(locNameValue, "; ")?[1] ?? "") :
+    missionLocName = isLevelBanMode ? ::loc(split_by_chars(locNameValue, "; ")?[1] ?? "") :
       getMissionLocName(config, locNameKey)
 
   return isLevelBanMode
@@ -162,7 +164,7 @@ let function getMapsListImpl(curEvent)
     }
 
     let image = "{0}_thumb*".subst(
-      ::get_level_texture(missionInfo.level, hasTankOrShip && ::regexp2(@"^av(n|g)").match(level))
+      ::get_level_texture(missionInfo.level, hasTankOrShip && regexp2(@"^av(n|g)").match(level))
         .slice(0,-1))
 
     let mapStateData = {
@@ -188,7 +190,9 @@ let function getMapsListImpl(curEvent)
   if(assertMisNames.len() > 0)
   {
     let invalidMissions = assertMisNames.reduce(@(a, b) a + ", " + b) // warning disable: -declared-never-used
-    ::script_net_assert_once("MapPreferencesParams:", "Missions have no level")
+    ::script_net_assert_once("MapPreferencesParams:",
+      "".concat("Some missions have no level to show map preferences.",
+      "Ask designers to check missions from invalidMissions callstack variable in matching configs"))
   }
 
   if(!isLevelBanMode)

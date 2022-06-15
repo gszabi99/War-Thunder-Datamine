@@ -19,11 +19,11 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   function getSceneTplView()
   {
     let view = {
-      headerText = headerText
+      headerText = this.headerText
       rows = []
     }
 
-    foreach (idx, s in settings)
+    foreach (idx, s in this.settings)
     {
       s.min *= s.scale
       s.max *= s.scale
@@ -49,8 +49,8 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
     ::enableHangarControls(true)
     ::enable_menu_gradient(false)
 
-    foreach (s in settings)
-      onSettingChanged(scene.findObject(s.id))
+    foreach (s in this.settings)
+      this.onSettingChanged(this.scene.findObject(s.id))
   }
 
   function onSettingChanged(obj)
@@ -58,7 +58,7 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
     if (!::check_obj(obj))
       return
 
-    let curSetting = settings.findvalue(@(s) s.id == obj.id)
+    let curSetting = this.settings.findvalue(@(s) s.id == obj.id)
     if (!curSetting)
       return
 
@@ -66,35 +66,35 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
     if (curSetting?.recScale)
       val /= curSetting.scale
 
-    updateSliderTextValue(obj.id, val)
+    this.updateSliderTextValue(obj.id, val)
     ::getroottable()?[$"set_{curSetting.id}"](val, true)
   }
 
   function onResetToDefaults()
   {
-    foreach (s in settings)
+    foreach (s in this.settings)
     {
       local defVal = ::getroottable()?[$"get_default_{s.id}"]() ?? 0
       ::getroottable()?[$"set_{s.id}"](defVal, true)
-      updateSliderTextValue(s.id, defVal)
+      this.updateSliderTextValue(s.id, defVal)
       if (s?.recScale)
         defVal *= s.scale
 
       defVal = defVal.tointeger()
-      updateSliderValue(s.id, defVal)
+      this.updateSliderValue(s.id, defVal)
     }
   }
 
   function updateSliderValue(name, value)
   {
-    let valueObj = scene.findObject(name)
+    let valueObj = this.scene.findObject(name)
     if (::check_obj(valueObj))
       valueObj.setValue(value)
   }
 
   function updateSliderTextValue(name, value)
   {
-    let valueObj = scene.findObject($"value_{name}")
+    let valueObj = this.scene.findObject($"value_{name}")
     if (::check_obj(valueObj))
       valueObj.setValue(value.tostring())
   }
@@ -103,8 +103,8 @@ const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
   {
     ::save_profile(false)
     ::enable_menu_gradient(true)
-    if (LOCAL_PATH_SHOWED_ON_START != null)
-      ::saveLocalByAccount(LOCAL_PATH_SHOWED_ON_START, true)
+    if (this.LOCAL_PATH_SHOWED_ON_START != null)
+      ::saveLocalByAccount(this.LOCAL_PATH_SHOWED_ON_START, true)
     base.goBack()
   }
 }

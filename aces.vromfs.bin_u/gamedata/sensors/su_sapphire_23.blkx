@@ -189,7 +189,7 @@
     },
     "MTI": {
       "dynamicRange": [40.0,12.0],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": false,
       "absDopplerSpeed": true,
@@ -204,13 +204,13 @@
         "presents": true,
         "minValue": 40.0,
         "maxValue": 1500.0,
-        "signalWidthMin": 10.0,
+        "signalWidthMin": 2.0,
         "width": 0.0
       }
     },
     "MTITrack": {
       "dynamicRange": [40.0,12.0],
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
@@ -227,7 +227,7 @@
         "presents": true,
         "minValue": 40.0,
         "maxValue": 1500.0,
-        "signalWidthMin": 10.0,
+        "signalWidthMin": 2.0,
         "width": 0.0
       }
     },
@@ -814,6 +814,12 @@
             "clearTargetsOfInterest": []
           },
           {
+            "setScanPatternSet": []
+          },
+          {
+            "resetScanPhase": []
+          },
+          {
             "setCenterAzimuth": {
               "source": "targetDesignation"
             }
@@ -830,12 +836,6 @@
               "pos": 765.0,
               "width": 1470.0
             }
-          },
-          {
-            "setScanPatternSet": []
-          },
-          {
-            "resetScanPhase": []
           },
           {
             "clearTargets": []
@@ -1563,7 +1563,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "BSVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "BSVSearch",
             "actions": {
@@ -1575,7 +1575,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "BSVdHDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "BSVdHSearch",
             "actions": {
@@ -1587,7 +1587,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "SMVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "SMVSearch",
             "actions": {
@@ -1599,7 +1599,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "MVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "MVSearch",
             "actions": {
@@ -1611,7 +1611,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "OLSFromLookUpDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "OLSFromLookUpSearch",
             "actions": {
@@ -1623,7 +1623,7 @@
         {
           "finishedDesignationTrack": {
             "stateFrom": "OLSFromLookDownDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
+            "event": "targetsOfInterestCleanup",
             "command": "selectTarget",
             "stateTo": "OLSFromLookDownSearch",
             "actions": {
@@ -2173,7 +2173,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 1.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -2187,9 +2190,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 1.0
             }
           }
         }

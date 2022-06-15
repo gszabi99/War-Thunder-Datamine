@@ -10,9 +10,7 @@ let { WEAPON_TYPE,
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { startswith } = require("string")
-
-const USE_SMALLER_TEXTURES_UNDER_ICON_SIZE_PX = 60
+let { format } = require("string")
 
 local bulletIcons = {}
 local bulletAspectRatio = {}
@@ -46,34 +44,13 @@ let function initBulletIcons(blk = null)
   if (!blk)
     blk = GUI.get()
 
-  let smallIconsMap = {}
-  let useSmallIcons = ::to_pixels("1@modItemHeight") <= USE_SMALLER_TEXTURES_UNDER_ICON_SIZE_PX
-  if (useSmallIcons)
-    copyParamsToTable(blk?.bullet_and_mod_icons_small, smallIconsMap)
-
   copyParamsToTable(blk?.bullet_icons, bulletIcons)
-  if (useSmallIcons)
-    bulletIcons = bulletIcons.map(@(ico) smallIconsMap?[ico] ?? ico)
-
   copyParamsToTable(blk?.bullet_icon_aspect_ratio, bulletAspectRatio)
-  if (useSmallIcons) {
-    let bulletArPairs = bulletAspectRatio.topairs()
-    bulletArPairs.each(@(v) v[0] = smallIconsMap?[v[0]] ?? v[0])
-    bulletAspectRatio = bulletArPairs.totable()
-  }
 
-  let pathPrefix = "#ui/gameuiskin#"
   let bf = blk?.bullets_features_icons
   if (bf)
-    foreach(item in bulletsFeaturesImg) {
+    foreach(item in bulletsFeaturesImg)
       item.values = bf % item.id
-      if (useSmallIcons)
-        item.values = item.values.map(function(icoPath) {
-          let prefix = startswith(icoPath, pathPrefix) ? pathPrefix : ""
-          let ico = icoPath.slice(prefix.len())
-          return "".concat(prefix, smallIconsMap?[ico] ?? ico)
-        })
-    }
 }
 
 let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)
@@ -86,7 +63,7 @@ let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true)
   let defaultImgId = isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
     ? "default_shell" : "default_ball"
   let textureId = bulletIcons?[imgId] ?? bulletIcons?[defaultImgId]
-  return needFullPath ? $"#ui/gameuiskin#{textureId}" : textureId
+  return needFullPath ? $"#ui/gameuiskin#{textureId}.png" : textureId
 }
 
 let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false)
@@ -110,10 +87,10 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
           ?? bulletAspectRatio?["default"]
           ?? DEFAULT_BULLET_IMG_ASPECT_RATIO
         local maxAmountInView = (bulletsSet?.weaponType == WEAPON_TYPE.COUNTERMEASURES)
-          ? 1 : ::min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
+          ? 1 : min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
         if (bulletsSet.catridge)
-          maxAmountInView = ::min(bulletsSet.catridge, maxAmountInView)
-        count = length * ::max(1, ::floor(maxAmountInView / length))
+          maxAmountInView = min(bulletsSet.catridge, maxAmountInView)
+        count = length * max(1, ::floor(maxAmountInView / length))
       }
 
       let totalWidth = 100.0
@@ -215,7 +192,7 @@ let function addArmorPiercingToDesc(bulletsData, descTbl)
   let header = "\n".concat(
     "".concat(::loc("bullet_properties/armorPiercing"),
       bulletName != "" ? $"{::loc("ui/colon")}{bulletName}" : "")
-    ::format("(%s / %s)", ::loc("distance"), ::loc("bullet_properties/hitAngle"))
+    format("(%s / %s)", ::loc("distance"), ::loc("bullet_properties/hitAngle"))
   )
 
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({props, header})
@@ -241,10 +218,10 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
     let degText = ::loc("measureUnits/deg")
     if (horAngles != null)
       addProp(props, ::loc("sonicDamage/horAngles"),
-        ::format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
+        format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     if (verAngles != null)
       addProp(props, ::loc("sonicDamage/verAngles"),
-        ::format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
+        format("%+d%s/%+d%s", horAngles.x, degText, horAngles.y, degText))
     descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props })
   }
 
@@ -259,12 +236,12 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       ::g_measure_type.getTypeByName("kg", true).getMeasureUnitsText(bulletsData.mass))
   if (bulletsData.speed > 0)
     addProp(p, ::loc("bullet_properties/speed"),
-      ::format("%.0f %s", bulletsData.speed, ::loc("measureUnits/metersPerSecond_climbSpeed")))
+      format("%.0f %s", bulletsData.speed, ::loc("measureUnits/metersPerSecond_climbSpeed")))
 
   let maxSpeed = (bulletsData?.maxSpeed ?? 0) || (bulletsData?.endSpeed ?? 0)
   if (bulletsData?.machMax)
     addProp(p, ::loc("rocket/maxSpeed"),
-      ::format("%.1f %s", bulletsData.machMax, ::loc("measureUnits/machNumber")))
+      format("%.1f %s", bulletsData.machMax, ::loc("measureUnits/machNumber")))
   else if (maxSpeed)
     addProp(p, ::loc("rocket/maxSpeed"),
       ::g_measure_type.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
@@ -311,7 +288,7 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       {
         if(bulletsData.rangeBand0 > 0 && bulletsData.rangeBand1 > 0)
           addProp(p, ::loc("missile/seekerRange"),
-            ::g_measure_type.DISTANCE.getMeasureUnitsText(::min(bulletsData.rangeBand0, bulletsData.rangeBand1)))
+            ::g_measure_type.DISTANCE.getMeasureUnitsText(min(bulletsData.rangeBand0, bulletsData.rangeBand1)))
       }
     }
     else if (bulletsData.guidanceType == "radar")
@@ -346,10 +323,10 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   {
     if ("guidanceType" in bulletsData || "autoAiming" in bulletsData)
       addProp(p, ::loc("missile/timeGuidance"),
-        ::format("%.1f %s", bulletsData.timeLife, ::loc("measureUnits/seconds")))
+        format("%.1f %s", bulletsData.timeLife, ::loc("measureUnits/seconds")))
     else
       addProp(p, ::loc("missile/timeSelfdestruction"),
-        ::format("%.1f %s", bulletsData.timeLife, ::loc("measureUnits/seconds")))
+        format("%.1f %s", bulletsData.timeLife, ::loc("measureUnits/seconds")))
   }
 
   let explosiveType = bulletsData?.explosiveType
@@ -368,9 +345,13 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   }
 
   let fuseDelayDist = stdMath.roundToDigits(bulletsData.fuseDelayDist, 2)
-  if (fuseDelayDist)
+  if (fuseDelayDist > 0)
     addProp(p, ::loc("bullet_properties/fuseDelayDist"),
-               fuseDelayDist + " " + ::loc("measureUnits/meters_alt"))
+      $"{fuseDelayDist} {::loc("measureUnits/meters_alt")}")
+  let fuseDelay = stdMath.roundToDigits(bulletsData.fuseDelay, 2)
+  if (fuseDelay > 0)
+    addProp(p, ::loc("bullet_properties/fuseDelayDist"),
+     $"{fuseDelay} {::loc("measureUnits/seconds")}")
   let explodeTreshold = stdMath.roundToDigits(bulletsData.explodeTreshold, 2)
   if (explodeTreshold)
     addProp(p, ::loc("bullet_properties/explodeTreshold"),
@@ -446,14 +427,14 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
     if (isSmokeShell)
       whitelistParams.append("mass", "speed", "weaponBlkPath")
     let filteredBulletParameters = []
-    foreach (_params in bullet_parameters)
+    foreach (p in bullet_parameters)
     {
-      let params = _params ? {} : null
-      if (_params)
+      let params = p ? {} : null
+      if (p)
       {
         foreach (key in whitelistParams)
-          if (key in _params)
-            params[key] <- _params[key]
+          if (key in p)
+            params[key] <- p[key]
 
         params.armorPiercing     <- []
         params.armorPiercingDist <- []
@@ -499,7 +480,7 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
             continue
 
           bulletsData.armorPiercing[ind] = (!bulletsData.armorPiercing[ind])
-            ? armor : ::u.tablesCombine(bulletsData.armorPiercing[ind], armor, ::max)
+            ? armor : ::u.tablesCombine(bulletsData.armorPiercing[ind], armor, max)
         }
       }
     }
@@ -507,8 +488,8 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
     if (!needAddParams)
       continue
 
-    foreach(p in ["mass", "speed", "fuseDelayDist", "explodeTreshold", "operatedDist", "machMax",
-      "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "bandMaskToReject"])
+    foreach(p in ["mass", "speed", "fuseDelay", "fuseDelayDist", "explodeTreshold", "operatedDist",
+      "machMax", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "bandMaskToReject"])
       bulletsData[p] <- bullet_params?[p] ?? 0
 
     foreach(p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange",

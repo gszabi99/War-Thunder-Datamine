@@ -429,13 +429,11 @@ return [
     id = "sensor_cue_x"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "sensor_cue_y"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() ::has_feature("RadarTargetCue")
   }
   {
     id = "ID_SCHRAEGE_MUSIK"
@@ -692,7 +690,7 @@ return [
     id = "ID_PLANE_KILLSTREAK_WHEEL_MENU"
     checkGroup = ctrlGroups.AIR
     checkAssign = false
-    showFunc = @() isPlatformSony || isPlatformXboxOne || ::is_xinput_device()
+    showFunc = ::have_xinput_device
   }
   {
     id = "wheelmenu_x"
@@ -700,7 +698,7 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.AIR
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
+    showFunc = ::have_xinput_device
     checkAssign = @() ::is_xinput_device()
   }
   {
@@ -709,7 +707,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.AIR
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
+    showFunc = ::have_xinput_device
     checkAssign = @() ::is_xinput_device()
   }
 //-------------------------------------------------------

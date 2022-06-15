@@ -11,31 +11,31 @@ let iconColorPushed   = Color(239, 231, 164)
 
 let touchButtonsConfigs = {
   ["ID_FLIGHTMENU_SETUP"] = {
-    image = ::Picture("!ui/gameuiskin#menu_1")
+    image = ::Picture("!ui/gameuiskin#menu_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_SHOW_VOICE_MESSAGE_LIST"] = {
-    image = ::Picture("!ui/gameuiskin#radio_1")
+    image = ::Picture("!ui/gameuiskin#radio_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_MPSTATSCREEN"] = {
-    image = ::Picture("!ui/gameuiskin#statistics_1")
+    image = ::Picture("!ui/gameuiskin#statistics_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_TACTICAL_MAP"] = {
-    image = ::Picture("!ui/gameuiskin#map_1")
+    image = ::Picture("!ui/gameuiskin#map_1.png")
     size = [menuTouchButtonWidth, menuTouchButtonHeight]
   },
   ["ID_ZOOM_TOGGLE"] = {
-    image = ::Picture("!ui/gameuiskin#sniper_mode")
+    image = ::Picture("!ui/gameuiskin#sniper_mode.png")
   },
   ["ID_SHIP_WEAPON_ALL"] = {
-    image = ::Picture("!ui/gameuiskin#fire")
+    image = ::Picture("!ui/gameuiskin#fire.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
   },
   ["ship_steering_rangeMax"] = {
     id = "ship_steering_rangeMax"
-    image = ::Picture("!ui/gameuiskin#accelerator_left")
+    image = ::Picture("!ui/gameuiskin#accelerator_left.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
     behavior = Behaviors.TouchScreenButton
     onClick = @() setShortcutOn(id)
@@ -43,7 +43,7 @@ let touchButtonsConfigs = {
   },
   ["ship_steering_rangeMin"] = {
     id = "ship_steering_rangeMin"
-    image = ::Picture("!ui/gameuiskin#accelerator_right")
+    image = ::Picture("!ui/gameuiskin#accelerator_right.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
     behavior = Behaviors.TouchScreenButton
     onClick = @() setShortcutOn(id)
@@ -51,12 +51,12 @@ let touchButtonsConfigs = {
   },
   ["ship_main_engine_rangeMax"] = {
     id = "ship_main_engine_rangeMax"
-    image = ::Picture("!ui/gameuiskin#accelerator_up_v1")
+    image = ::Picture("!ui/gameuiskin#accelerator_up_v1.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
   },
   ["ship_main_engine_rangeMin"] = {
     id = "ship_main_engine_rangeMin"
-    image = ::Picture("!ui/gameuiskin#accelerator_down_v1")
+    image = ::Picture("!ui/gameuiskin#accelerator_down_v1.png")
     size = [bigTouchButtonSize, bigTouchButtonSize]
   },
 }

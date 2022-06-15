@@ -68,7 +68,7 @@ let levelExp = ::Computed(function() {
 
 let seasonLevel = ::Computed(@() levelExp.value.level)
 
-let maxSeasonLvl = ::Computed(@() ::max(basicUnlock.value?.meta.mainPrizeStage ?? 1,
+let maxSeasonLvl = ::Computed(@() max(basicUnlock.value?.meta.mainPrizeStage ?? 1,
   premiumUnlock.value?.meta.mainPrizeStage ?? 1))
 
 let loginUnlockId = ::Computed(@() $"battlepass_login_streak_1")

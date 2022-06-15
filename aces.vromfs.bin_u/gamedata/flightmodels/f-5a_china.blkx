@@ -5,9 +5,7 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.296,
   "gearSinkRangeC": 0.29,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -3388,6 +3386,229 @@
           ]
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "f_5a_china_bomb_blu_1",
+        "blk": "gameData/FlightModels/weaponPresets/f_5a_china_bomb_blu_1.blk",
+        "reqModification": "us_blu_1",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+            },
+            {
+              "iconType": "napalm_large"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5a_china_bomb_blu_1_aim_9"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5a_china_bomb_blu_1_aim_9.blk"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+                },
+                {
+                  "iconType": "napalm_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5a_china_bomb_blu_1_aim_9_agm_12b"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5a_china_bomb_blu_1_aim_9_agm_12b.blk"
+        },
+        {
+          "reqModification": "fj_4b_agm_12b"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                },
+                {
+                  "iconType": "missile_air_to_uni"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+                },
+                {
+                  "iconType": "napalm_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -3471,15 +3692,16 @@
     "new_compressor_jet": {
       "tier": 1
     },
-    "q5_countermeasures_launcher_chaff_only": [],
-    "q5_countermeasures_launcher_flare_only": [],
-    "q5_countermeasures_launcher_chaff_priority": [],
-    "q5_countermeasures_launcher_flare_priority": [],
-    "q_5b_ltc": {
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
+      "tier": 2,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "tier": 1,
-      "group": "q_5b_group",
+      "group": "mi-24_EVU",
       "effects": {
         "commonWeapons": [
           {
@@ -3553,7 +3775,7 @@
     "t_160_armor_targets": [],
     "t_160_stealth": [],
     "t_160_belt_pack": {
-      "prevModification": "q_5b_ltc",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 2
     },
     "t_160_new_gun": {
@@ -3579,7 +3801,12 @@
       "tier": 4,
       "reqModification": "us_1000lb_mk83"
     },
+    "us_blu_1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_3a": {
+      "prevModification": "us_blu_1",
       "tier": 2,
       "modClass": "weapon"
     },

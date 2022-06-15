@@ -54,7 +54,7 @@ gameModeBlock {
   behavior:t='button'
   background-color:t='@white';
   background-repeat:t='expand';
-  background-image:t='#ui/gameuiskin#item';
+  background-image:t='#ui/gameuiskin#item.png';
   background-position:t='3, 4, 3, 5';
   re-type:t='9rect';
 
@@ -64,7 +64,7 @@ gameModeBlock {
   }
 
   <<#videoPreview>>
-  movie {
+  GameModeMovie {
     movie-load='<<videoPreview>>'
     movie-autoStart:t='yes'
     movie-loop:t='yes'
@@ -79,6 +79,7 @@ gameModeBlock {
 
   title {
     css-hier-invalidate:t='yes';
+    enable:t='no'
     tdiv {
       css-hier-invalidate:t='yes';
       flow:t='vertical';
@@ -109,6 +110,7 @@ gameModeBlock {
   tdiv {
     height:t='1@mIco'
     padding-left:t='0.0125@scrn_tgt'
+    enable:t='no'
 
     textareaNoTab {
       pos:t='0, 50%(ph-h)'; position:t='relative'
@@ -163,7 +165,7 @@ gameModeBlock {
   <</mapPreferences>>
 
   <<#checkBox>>
-  CheckBoxImg {}
+  CheckBoxImg { enable:t='no' }
   <</checkBox>>
 
   <<#showEventDescription>>
@@ -191,6 +193,7 @@ gameModeBlock {
   <<#hasCountries>>
   tdiv {
     css-hier-invalidate:t='yes';
+    enable:t='no'
     <<#countries>>
     img {
       size:t='@cIco, @cIco';
@@ -204,6 +207,7 @@ gameModeBlock {
 
   <<#linkIcon>>
   dark_corner {
+    enable:t='no'
     link_icon {}
   }
   <</linkIcon>>

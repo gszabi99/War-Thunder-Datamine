@@ -1,3 +1,4 @@
+let { format } = require("string")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 
 ::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
@@ -80,8 +81,8 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
         local minTier = tier.len()
         foreach(t in tier)
         {
-          maxTier = ::max(maxTier, t)
-          minTier = ::min(minTier, t)
+          maxTier = max(maxTier, t)
+          minTier = min(minTier, t)
         }
         tierText = ::get_roman_numeral(minTier) + ::loc("ui/mdash") + ::get_roman_numeral(maxTier)
       }
@@ -105,7 +106,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
       descObj.setValue(msgText)
     }
 
-    showSceneBtn("btn_upload_facebook_wallPost", ::has_feature("FacebookWallPost") && isLastResearchedModule)
+    this.showSceneBtn("btn_upload_facebook_wallPost", ::has_feature("FacebookWallPost") && isLastResearchedModule)
     if (isLastResearchedModule)
     {
       postConfig = {
@@ -119,7 +120,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
         unitName = unit.name + "_shop"
         rank = ::get_roman_numeral(unit?.rank ?? -1)
         country = ::getUnitCountry(unit)
-        link = ::format(::loc("url/wiki_objects"), unit.name)
+        link = format(::loc("url/wiki_objects"), unit.name)
       }
     }
   }

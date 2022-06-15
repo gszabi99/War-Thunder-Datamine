@@ -1,3 +1,4 @@
+let { format } = require("string")
 let globalEnv = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -550,8 +551,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       prevItems.append(curIdx)
 
     updateButtons()
-    showSceneBtn("btn_prevItem", prevItems.len() > 0)
-    showSceneBtn("btn_controlsWizard", prevItems.len()==0)
+    this.showSceneBtn("btn_prevItem", prevItems.len() > 0)
+    this.showSceneBtn("btn_controlsWizard", prevItems.len()==0)
   }
 
   function onPrevItem()
@@ -634,7 +635,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
   function enableListenerObj(isEnable)
   {
-    let obj = showSceneBtn("input-listener", isEnable)
+    let obj = this.showSceneBtn("input-listener", isEnable)
     if (isEnable)
       obj.select()
   }
@@ -653,7 +654,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       textObj.show(true)
     }
     scene.findObject("shortcut_image")["background-image"] = ""
-    showSceneBtn("btn-reset-axis-input", false)
+    this.showSceneBtn("btn-reset-axis-input", false)
     clearShortcutInfo()
 
     isButtonsListenInCurBox = true
@@ -744,7 +745,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
     local image = ""
     if (("images" in curItem) && (imgId in curItem.images))
-      image = "#ui/images/wizard/" + curItem.images[imgId]
+      image = $"#ui/images/wizard/{curItem.images[imgId]}.png"
     scene.findObject("shortcut_image")["background-image"] = image
   }
 
@@ -759,7 +760,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       switchListenButton(false)
     }
 
-    showSceneBtn("btn-reset-axis-input", selectedAxisNum>=0 || axisMaxChoosen)
+    this.showSceneBtn("btn-reset-axis-input", selectedAxisNum>=0 || axisMaxChoosen)
   }
 
   function switchListenButton(value)
@@ -791,21 +792,21 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       if (reinitPresetup)
         initAxisPresetup()
     }
-    showSceneBtn("btn-reset-axis-input", axisMaxChoosen)
+    this.showSceneBtn("btn-reset-axis-input", axisMaxChoosen)
   }
 
   function updateSwitchModesButton()
   {
     let isShow = curDivName == "shortcut-wnd" && selectedAxisNum < 0 && !axisMaxChoosen
-    showSceneBtn("btn_switchAllModes", isShow)
+    this.showSceneBtn("btn_switchAllModes", isShow)
 
     if (!isShow)
       return
 
     let isEnabled = isListenAxis || isListenButton
     let sampleText = ::loc("mainmenu/shortcuts") + " (%s" + ::loc("options/" + (isEnabled? "enabled" : "disabled")) + "%s)"
-    let coloredText = ::format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
-    let NotColoredText = ::format(sampleText, "", "")
+    let coloredText = format(sampleText, "<color=@" + (isEnabled? "goodTextColor" : "warningTextColor") + ">", "</color>")
+    let NotColoredText = format(sampleText, "", "")
 
     setDoubleTextToButton(scene, "btn_switchAllModes", NotColoredText, coloredText)
   }
@@ -856,9 +857,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     }
 
     updateSwitchModesButton()
-    showSceneBtn("keep_assign_btn", isInListenWnd)
-    showSceneBtn("btn-reset-axis-input", isInListenWnd && (axisMaxChoosen || selectedAxisNum >= 0))
-    showSceneBtn("btn_back", !isListening)
+    this.showSceneBtn("keep_assign_btn", isInListenWnd)
+    this.showSceneBtn("btn-reset-axis-input", isInListenWnd && (axisMaxChoosen || selectedAxisNum >= 0))
+    this.showSceneBtn("btn_back", !isListening)
   }
 
   function onButtonDone()
@@ -953,7 +954,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     foreach(binding in curBinding)
       actionText += ((actionText=="")? "":", ") + ::loc("hotkeys/"+shortcutNames[binding[0]])
     let msg = ::loc("hotkeys/msg/unbind_question", { action=actionText })
-    msgBox("controls_wizard_bind_existing_shortcut", msg, [
+    this.msgBox("controls_wizard_bind_existing_shortcut", msg, [
       ["add", (@(curBinding, devs, btns, shortcutId) function() {
         doBind(devs, btns, shortcutId)
         onButtonDone()
@@ -1088,7 +1089,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   {
     switchListenAxis(false)
     foreach(name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset", "btn-reset-axis-input"])
-      showSceneBtn(name, false)
+      this.showSceneBtn(name, false)
 
     let config = presetupAxisRawValues[selectedAxisNum]
 
@@ -1173,7 +1174,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     let msg = ::loc("hotkeys/msg/unbind_axis_question", {
       button=curBtnText, action=actionText
     })
-    msgBox("controls_wizard_bind_existing_axis", msg, [
+    this.msgBox("controls_wizard_bind_existing_axis", msg, [
       ["add", function() { bindAxis() }],
       ["replace", (@(curBinding) function() {
         repeatItemsList.extend(curBinding)
@@ -1354,7 +1355,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       return
     selectedAxisNum=-1
     axisMaxChoosen = false
-    showSceneBtn("btn-reset-axis-input", false)
+    this.showSceneBtn("btn-reset-axis-input", false)
     initAxisPresetup()
     askAxis()
   }
@@ -1367,9 +1368,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
       value = -value
 
     if (isAxisVertical)
-      obj.pos = "0.5pw-0.5w, " + ::format("%.3f(ph - h)", ((32000 - value).tofloat() / 64000))
+      obj.pos = "0.5pw-0.5w, " + format("%.3f(ph - h)", ((32000 - value).tofloat() / 64000))
     else
-      obj.pos = ::format("%.3f(pw - w)", ((value + 32000).tofloat() / 64000)) + ", 0.5ph- 0.5h"
+      obj.pos = format("%.3f(pw - w)", ((value + 32000).tofloat() / 64000)) + ", 0.5ph- 0.5h"
   }
 
   function initAxisPresetup(fullInit=true)
@@ -1535,7 +1536,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     if (!::checkObj(optObj))
       return
 
-    showSceneBtn("btn_prevItem", false)
+    this.showSceneBtn("btn_prevItem", false)
 
     let optionItems = [
       [::USEROPT_CONTROLS_PRESET, "spinner"],
@@ -1562,8 +1563,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
     if (presetValue in opdata.values)
     {
       presetSelected = opdata.values[presetValue]
-      showSceneBtn("btn_controlsWizard", presetSelected == "custom")
-      showSceneBtn("btn_selectPreset", presetSelected != "custom")
+      this.showSceneBtn("btn_controlsWizard", presetSelected == "custom")
+      this.showSceneBtn("btn_selectPreset", presetSelected != "custom")
     }
   }
 
@@ -1630,7 +1631,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
   function goBack()
   {
     if (curIdx>0 && !isPresetAlreadyApplied)
-      msgBox("ask_save", ::loc("hotkeys/msg/wizardSaveUnfinished"),
+      this.msgBox("ask_save", ::loc("hotkeys/msg/wizardSaveUnfinished"),
         [
           ["yes", function() { doApply() } ],
           ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],

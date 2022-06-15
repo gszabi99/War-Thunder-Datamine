@@ -164,15 +164,10 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     return ::u.search(getAwardsList(), @(award) award.haveSpecialRequirement()) != null
   }
 
-  function getMedalIcon()
-  {
-    return "#ui/gameuiskin#" + medalIcon
-  }
-
-  function getLevelIcon()
-  {
-    return "#ui/gameuiskin#" + levelIcon
-  }
+  getLayeredIconStyle = @() ::LayersIcon.getIconData($"reward_battle_task_{medalIcon}")
+  getMedalIcon = @() $"#ui/gameuiskin#{medalIcon}.svg"
+  getLevelIcon = @() $"#ui/gameuiskin#{levelIcon}.svg"
+  getLevelIconOverlay = @() $"#ui/gameuiskin#{levelIcon}_overlay.png"
 
   function getCurrentShopLevelTasks()
   {
@@ -192,7 +187,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     local shopLevel = 0
     foreach (level, reqTasks in levelsArray)
       if (tasksNum >= reqTasks)
-        shopLevel = ::max(shopLevel, level)
+        shopLevel = max(shopLevel, level)
 
     return shopLevel
   }

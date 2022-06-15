@@ -1,3 +1,5 @@
+let { format, strip, split_by_chars } = require("string")
+let regexp2 = require("regexp2")
 let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasFeatureBasic } = require("%scripts/user/features.nut")
@@ -148,7 +150,7 @@ local unlockConditionUnitclasses = {
   else if (unlockType == ::UNLOCKABLE_CHALLENGE && unlockBlk?.showAsBattleTask)
     config.image <- unlockBlk?.image
   else if (unlockBlk?.battlePassSeason != null)
-    config.image = "#ui/gameuiskin#item_challenge"
+    config.image = "#ui/gameuiskin#item_challenge.png"
 
   let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
   if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen())
@@ -174,7 +176,7 @@ local unlockConditionUnitclasses = {
 
 ::get_image_for_unlockable_medal <- function get_image_for_unlockable_medal(id, big = false)
 {
-  return ::format(big ? "!@ui/medals/%s_big" : "!@ui/medals/%s", id)
+  return big ? $"!@ui/medals/{id}_big.ddsx" : $"!@ui/medals/{id}.ddsx"
 }
 
 
@@ -770,7 +772,7 @@ local unlockConditionUnitclasses = {
     let maxStreak = ::getTblValue("maxStreak", config.similarAwardNamesList, 1)
     local repeatText = ::loc("streaks/rewarded_count", { count = ::colorize("activeTextColor", amount) })
     if (!::g_unlocks.hasSpecialMultiStageLocId(config.id, maxStreak))
-      repeatText = ::format(::loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
+      repeatText = format(::loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
     obj.findObject("mult_awards_text").setValue(repeatText)
   }
 
@@ -780,11 +782,11 @@ local unlockConditionUnitclasses = {
   {
     local cond = ""
     if (config?.minVal && config.maxVal)
-      cond += ::format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
+      cond += format(::loc("streaks/min_max_limit"), config.minVal, config.maxVal)
     else if (config?.minVal)
-      cond += ::format(::loc("streaks/min_limit"), config.minVal)
+      cond += format(::loc("streaks/min_limit"), config.minVal)
     else if (config.maxVal)
-      cond += ::format(::loc("streaks/max_limit"), config.maxVal)
+      cond += format(::loc("streaks/max_limit"), config.maxVal)
 
     desc = ::g_string.implode([desc, cond, ::UnlockConditions.getMultipliersText(config)], "\n")
   }
@@ -805,7 +807,7 @@ local unlockConditionUnitclasses = {
       text += "\n" + ::colorize("badTextColor", ::loc("mainmenu/receiveOnlyOnce"))
     obj.findObject("state").show(true)
     obj.findObject("state_text").setValue(text)
-    obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#locked.svg"
+    obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite.png" : "#ui/gameuiskin#locked.svg"
   }
 
   let rObj = obj.findObject("award_text")
@@ -821,7 +823,7 @@ local unlockConditionUnitclasses = {
   }
 }
 
-::set_unlock_icon_by_config <- function set_unlock_icon_by_config(obj, config, isForTooltip = false)
+::set_unlock_icon_by_config <- function set_unlock_icon_by_config(obj, config, isForTooltip = false, containerSizePx = 0)
 {
   let iconStyle = ("iconStyle" in config)? config.iconStyle : ""
   let iconParams = ::getTblValue("iconParams", config, null)
@@ -829,7 +831,7 @@ local unlockConditionUnitclasses = {
   local image = ("descrImage" in config)? config.descrImage : ""
   if (isForTooltip)
     image = config?.tooltipImage ?? image
-  ::LayersIcon.replaceIcon(obj, iconStyle, image, ratio, null, iconParams, config?.iconConfig)
+  ::LayersIcon.replaceIcon(obj, iconStyle, image, ratio, null, iconParams, config?.iconConfig, containerSizePx)
 }
 
 ::build_unlock_tooltip_by_config <- function build_unlock_tooltip_by_config(obj, config, handler)
@@ -999,7 +1001,7 @@ local unlockConditionUnitclasses = {
       return ::loc("options/crew")
 
     case ::UNLOCKABLE_DYNCAMPAIGN:
-      let parts = ::split(id, "_")
+      let parts = split_by_chars(id, "_")
       local countryId = (parts.len() > 1) ? "country_" + parts[parts.len() - 1] : null
       if (::isInArray(countryId, shopCountriesList))
         parts.pop()
@@ -1096,7 +1098,7 @@ local unlockConditionUnitclasses = {
     res.name = ::g_battle_tasks.getLocalizedTaskNameById(battleTask)
     res.image = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
     if (::g_battle_tasks.isTaskDone(battleTask))
-      res.image2 <- "#ui/gameuiskin#icon_primary_ok"
+      res.image2 <- "#ui/gameuiskin#icon_primary_ok.svg"
     else if (::g_battle_tasks.isTaskTimeExpired(task))
       res.image2 <- "#ui/gameuiskin#icon_primary_fail.svg"
   } else
@@ -1144,11 +1146,11 @@ local unlockConditionUnitclasses = {
       let challengeDescription = ::loc(id+"/desc", "")
       if (challengeDescription && challengeDescription != "")
         res.desc = challengeDescription
-      res.image = "#ui/gameuiskin#unlock_challenge"
+      res.image = "#ui/gameuiskin#unlock_challenge.png"
       break
 
     case ::UNLOCKABLE_SINGLEMISSION:
-      res.image = "#ui/gameuiskin#unlock_mission"
+      res.image = "#ui/gameuiskin#unlock_mission.png"
       break
 
     case ::UNLOCKABLE_TITLE:
@@ -1158,21 +1160,21 @@ local unlockConditionUnitclasses = {
         res.desc = challengeDescription
       if (unlockBlk?.battlePassSeason != null)
       {
-       res.descrImage <- "#ui/gameuiskin#item_challenge"
+       res.descrImage <- "#ui/gameuiskin#item_challenge.png"
        res.descrImageSize <- "@profileMedalSize, @profileMedalSize"
        res.isLocked <- !::is_unlocked_scripted(-1, id)
       }
-      res.image = "#ui/gameuiskin#unlock_achievement"
+      res.image = "#ui/gameuiskin#unlock_achievement.png"
       break
 
     case ::UNLOCKABLE_TROPHY_STEAM:
-      res.image = "#ui/gameuiskin#unlock_achievement"
+      res.image = "#ui/gameuiskin#unlock_achievement.png"
       break
 
     case ::UNLOCKABLE_PILOT:
       if (id!="")
       {
-        res.descrImage <- "#ui/images/avatars/" + id
+        res.descrImage <- $"#ui/images/avatars/{id}.png"
         res.descrImageSize <- "100, 100"
         res.needFrame <- true
       }
@@ -1194,15 +1196,15 @@ local unlockConditionUnitclasses = {
           name = ::loc("streaks/" + id + "/multiple", name)
           desc = ::loc("streaks/" + id + "/multiple/desc", desc)
         }
-        else (::g_unlocks.isUnlockMultiStageLocId(id))
+        else if (::g_unlocks.isUnlockMultiStageLocId(id))
         {
           let stageId = ::g_unlocks.getMultiStageId(id, maxStreak)
           name = ::loc("streaks/" + stageId)
           iconStyle = "streak_" + stageId
         }
 
-        name = ::format(name, maxStreak)
-        desc = ::format(desc, maxStreak)
+        name = format(name, maxStreak)
+        desc = format(desc, maxStreak)
       }
       else
       {
@@ -1212,7 +1214,7 @@ local unlockConditionUnitclasses = {
         {
           let descValue = unlockBlk?.stage ? (unlockBlk?.stage.param ?? 0) : (unlockBlk?.mode.num ?? 0)
           if (descValue > 0)
-            desc = ::format(desc, descValue)
+            desc = format(desc, descValue)
           else
             desc = ::loc("streaks/" + id + "/multiple/desc", desc)
         }
@@ -1220,7 +1222,7 @@ local unlockConditionUnitclasses = {
 
       res.name = name
       res.desc = desc
-      res.image = "#ui/gameuiskin#unlock_streak"
+      res.image = "#ui/gameuiskin#unlock_streak.png"
       res.iconStyle <- iconStyle
       res.minVal <- cond?.minVal ?? 0
       res.maxVal <- cond?.maxVal ?? 0
@@ -1243,7 +1245,7 @@ local unlockConditionUnitclasses = {
       {
         res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id = config.unlockId)
             ?.getDescriptionTitle() ?? ""
-        res.image = "#ui/gameuiskin#item_type_aerobatic_smoke"
+        res.image = "#ui/gameuiskin#item_type_aerobatic_smoke.svg"
       }
       break
 
@@ -1257,7 +1259,7 @@ local unlockConditionUnitclasses = {
         ? ::loc("options/crewName") + slotNum.tostring()
         : ::loc("options/crew")
       res.desc = ::loc("slot/"+id+"/desc", "")
-      res.image = "#ui/gameuiskin#log_crew"
+      res.image = "#ui/gameuiskin#log_crew.png"
       break;
 
     case ::UNLOCKABLE_DYNCAMPAIGN:
@@ -1278,7 +1280,7 @@ local unlockConditionUnitclasses = {
         res.image2 = ::get_country_icon(country)
 
       res.desc = crewName + ::loc("unlocks/skillpoints/desc") + skillPointsStr
-      res.image = "#ui/gameuiskin#log_crew"
+      res.image = "#ui/gameuiskin#log_crew.png"
       break
 
     case ::UNLOCKABLE_TROPHY:
@@ -1506,15 +1508,15 @@ local unlockConditionUnitclasses = {
   {
     let simUnlock = ::g_unlocks.getUnlockById(simAward.unlockId)
     let simStreak = simUnlock.stage.param.tointeger() + simAward.stage
-    maxStreak = ::max(simStreak, maxStreak)
-    let simAwName = ::format(name, simStreak)
+    maxStreak = max(simStreak, maxStreak)
+    let simAwName = format(name, simStreak)
     if (simAwName in res.similarAwardNamesList)
       res.similarAwardNamesList[simAwName]++
     else
       res.similarAwardNamesList[simAwName] <- 1
   }
 
-  let mainAwName = ::format(name, streak)
+  let mainAwName = format(name, streak)
   if (mainAwName in res.similarAwardNamesList)
     res.similarAwardNamesList[mainAwName]++
   else
@@ -1595,8 +1597,8 @@ local unlockConditionUnitclasses = {
 
   favoriteUnlocksLimit = 20
 
-  unitNameReg = ::regexp2(@"[.*/].+")
-  skinNameReg = ::regexp2(@"^[^/]*/")
+  unitNameReg = regexp2(@"[.*/].+")
+  skinNameReg = regexp2(@"^[^/]*/")
   cache = {}
   cacheArray = []
   cacheByType = {} //<unlockTypeName> = { byName = { <unlockId> = <unlockBlk> }, inOrder = [<unlockBlk>] }
@@ -1677,7 +1679,7 @@ local unlockConditionUnitclasses = {
 
     let prize = item.getTopPrize()
     if (prize?.unlock && ::get_unlock_type_by_id(prize.unlock) ==  ::UNLOCKABLE_PILOT) {
-      cfg.image <- "#ui/images/avatars/" + prize.unlock
+      cfg.image <- $"#ui/images/avatars/{prize.unlock}.png"
       cfg.isTrophyLocked <- !unlocked
       return
     }
@@ -1800,7 +1802,7 @@ g_unlocks.checkDependingUnlocks <- function checkDependingUnlocks(unlockBlk)
   if (!unlockBlk || !unlockBlk?.hideUntilPrevUnlocked)
     return true
 
-  let prevUnlocksArray = ::split(unlockBlk.hideUntilPrevUnlocked, "; ")
+  let prevUnlocksArray = split_by_chars(unlockBlk.hideUntilPrevUnlocked, "; ")
   foreach (prevUnlockId in prevUnlocksArray)
     if (!::is_unlocked_scripted(-1, prevUnlockId))
       return false
@@ -1860,7 +1862,7 @@ g_unlocks.getMultiStageId <- function getMultiStageId(unlockId, repeatInARow)
 
 g_unlocks.checkUnlockString <- function checkUnlockString(string)
 {
-  let unlocks = ::split(string, ";")
+  let unlocks = split_by_chars(string, ";")
   foreach (unlockIdSrc in unlocks)
   {
     local unlockId = strip(unlockIdSrc)
@@ -2059,8 +2061,8 @@ g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id)
       let currentTime = get_charserver_time_sec()
       let isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
 
-      dagor.debug("unlock " + id + " is visible by time ? " + isVisibleUnlock)
-      dagor.debug("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
+      ::dagor.debug("unlock " + id + " is visible by time ? " + isVisibleUnlock)
+      ::dagor.debug("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
         + ", beginDate = " + cond.beginDate + ", endDate = " + cond.endDate
         + ", visibleDaysBefore = " + (unlock?.visibleDaysBefore ?? "?")
         + ", visibleDays = " + (unlock?.visibleDays ?? "?")

@@ -1,3 +1,4 @@
+let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 

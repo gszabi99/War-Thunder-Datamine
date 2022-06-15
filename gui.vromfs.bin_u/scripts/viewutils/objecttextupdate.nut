@@ -1,3 +1,7 @@
+let { format } = require("string")
+let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
+} = require("app")
+
 local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
   if (!::check_obj(nestObj) || firstBtnId == "")
     return null
@@ -69,7 +73,7 @@ let function setHelpTextOnLoading(nestObj = null) {
 let function setVersionText(scene=null) {
   let verObj = scene ? scene.findObject("version_text") : ::get_cur_gui_scene()["version_text"]
   if(::checkObj(verObj))
-    verObj.setValue(::format(::loc("mainmenu/version"), ::get_game_version_str()))
+    verObj.setValue(format(::loc("mainmenu/version"), get_game_version_str()))
 }
 
 return {

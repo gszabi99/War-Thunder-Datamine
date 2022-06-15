@@ -8,9 +8,7 @@
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "ilsLCOSS": true,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -1936,6 +1934,11 @@
       ]
     }
   ],
+  "flexWing": {
+    "wingStrainCoeff": 0.2,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
   "sensors": [
     {
       "sensor": {
@@ -2051,6 +2054,12 @@
       "preset": {
         "name": "f-104s_asa_zuni_aero_7",
         "blk": "gameData/FlightModels/weaponPresets/f-104s_asa_zuni_aero_7.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "f-104s_asa_bomb_blu_27",
+        "blk": "gameData/FlightModels/weaponPresets/f-104s_asa_bomb_blu_27.blk"
       }
     }
   ],
@@ -2344,6 +2353,30 @@
         },
         {
           "WeaponPreset": {
+            "iconType": "napalm_large",
+            "name": "blu1",
+            "reqModification": "us_blu_1",
+            "ShowNodes": [
+              {
+                "node": "pylon_wing_001"
+              },
+              {
+                "node": "pylon_wing_001_dop"
+              }
+            ],
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "emitter": "750lb_m117_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.2
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
             "iconType": "nar_ap_middle",
             "name": "aero_7a_2_75_in_ffar_mighty_mouse",
             "reqModification": "us_2_75_in_ffar_lau_3a",
@@ -2447,6 +2480,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "napalm_large",
+            "name": "blu1",
+            "reqModification": "us_blu_1",
+            "ShowNodes": [
+              {
+                "node": "pylon_wing_002"
+              },
+              {
+                "node": "pylon_wing_002_dop"
+              }
+            ],
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "emitter": "750lb_m117_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.2
             }
           }
         },
@@ -2557,6 +2614,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "napalm_large",
+            "name": "blu1",
+            "reqModification": "us_blu_1",
+            "ShowNodes": [
+              {
+                "node": "pylon_fus_001"
+              },
+              {
+                "node": "pylon_fus_001_dop"
+              }
+            ],
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "emitter": "750lb_m117_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.2
             }
           }
         }
@@ -2711,6 +2792,30 @@
               "machLimit": 1.01
             }
           }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "napalm_large",
+            "name": "blu1",
+            "reqModification": "us_blu_1",
+            "ShowNodes": [
+              {
+                "node": "pylon_fus_003"
+              },
+              {
+                "node": "pylon_fus_003_dop"
+              }
+            ],
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "emitter": "750lb_m117_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.2
+            }
+          }
         }
       ]
     },
@@ -2770,6 +2875,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "napalm_large",
+            "name": "blu1",
+            "reqModification": "us_blu_1",
+            "ShowNodes": [
+              {
+                "node": "pylon_wing_003"
+              },
+              {
+                "node": "pylon_wing_003_dop"
+              }
+            ],
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "emitter": "750lb_m117_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.2
             }
           }
         },
@@ -2930,6 +3059,30 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          }
+        },
+        {
+          "WeaponPreset": {
+            "iconType": "napalm_large",
+            "name": "blu1",
+            "reqModification": "us_blu_1",
+            "ShowNodes": [
+              {
+                "node": "pylon_wing_004"
+              },
+              {
+                "node": "pylon_wing_004_dop"
+              }
+            ],
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "emitter": "750lb_m117_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.2
             }
           }
         },
@@ -3107,7 +3260,12 @@
       "reqModification": "M60_belt_pack",
       "tier": 3
     },
+    "us_blu_1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_3a": {
+      "prevModification": "us_blu_1",
       "tier": 2,
       "modClass": "weapon"
     },
@@ -3198,14 +3356,14 @@
     "chuteFallSpeed": 1.6
   },
   "cutting": {
-    "emtr_break_wing1_l_from": [-0.23067,-0.416444,1.76529],
-    "emtr_break_wing1_l_to": [-0.23067,-0.416444,2.10302],
-    "emtr_break_wing2_l_from": [-0.23067,-0.416444,2.60961],
-    "emtr_break_wing2_l_to": [-0.23067,-0.416444,2.91645],
-    "emtr_break_wing1_r_from": [-0.23067,-0.416493,-1.76586],
-    "emtr_break_wing1_r_to": [-0.23067,-0.416493,-2.10358],
-    "emtr_break_wing2_r_from": [-0.23067,-0.416493,-2.61017],
-    "emtr_break_wing2_r_to": [-0.23067,-0.416493,-2.91679],
+    "emtr_break_wing1_l_from": [-0.23067,-0.416444,1.70529],
+    "emtr_break_wing1_l_to": [-0.23067,-0.416444,1.70961],
+    "emtr_break_wing2_l_from": [-0.23067,-0.416444,2.48961],
+    "emtr_break_wing2_l_to": [-0.23067,-0.416444,2.493045],
+    "emtr_break_wing1_r_from": [-0.23067,-0.416493,-1.70529],
+    "emtr_break_wing1_r_to": [-0.23067,-0.416493,-70961.0],
+    "emtr_break_wing2_r_from": [-0.23067,-0.416493,-2.48961],
+    "emtr_break_wing2_r_to": [-0.23067,-0.416493,-2.49045],
     "emtr_break_wing_tail": [-3.45768,0.0,0.0],
     "finCut": true,
     "emtr_break_tail_from": [-3.57765,-0.168231,1.52898e-08],

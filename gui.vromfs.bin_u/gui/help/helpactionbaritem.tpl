@@ -18,7 +18,7 @@ action_bar_item {
       size:t='pw, ph';
       position:t='absolute';
       pos:t='0, 0';
-      background-image:t='#ui/gameuiskin#circle_gradient_white';
+      background-image:t='#ui/gameuiskin#circle_gradient_white.png';
       background-color:t='#FFFFFF';
       display:t='hide';
     }

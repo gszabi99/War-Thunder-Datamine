@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { getModsTreeSize, generateModsTree, generateModsBgElems,
   isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -131,7 +132,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     setResearchManually = !researchMode
     mainModsObj = scene.findObject("main_modifications")
 
-    showSceneBtn("weaponry_close_btn", !researchMode)
+    this.showSceneBtn("weaponry_close_btn", !researchMode)
 
     unitSlotCellHeight = ::to_pixels("1@slot_height+2@slot_vert_pad")
     premiumModsHeight = unitSlotCellHeight
@@ -241,8 +242,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       + bulletsByGroupIndex.len()
       + expendablesArray.len()
     let premiumModsLen = premiumModsList.len() + (air.spare && !researchMode ? 1 : 0)
-    wndWidth = ::clamp(
-      ::max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(air).guiPosX), 6, 7)
+    wndWidth = clamp(
+      max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(air).guiPosX), 6, 7)
   }
 
   function onSlotbarSelect()
@@ -331,7 +332,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
         if (frameHeight - frameHeaderHeight < maxFrameHeight)
         {
           frameObj.isHeaderHidden = "yes"
-          showSceneBtn("close_alt_btn", !researchMode)
+          this.showSceneBtn("close_alt_btn", !researchMode)
           let researchModeImgObj = scene.findObject("researchMode_image_block")
           researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
         }
@@ -631,7 +632,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     let btnId = "btn_buyAll"
     let cost = getAllModsCost(air, true)
     let show = !cost.isZero() && ::isUnitUsable(air) && ::has_feature("BuyAllModifications")
-    showSceneBtn(btnId, show)
+    this.showSceneBtn(btnId, show)
     if (show)
       placePriceTextToButton(scene, btnId, ::loc("mainmenu/btnBuyAll"), cost)
   }
@@ -653,8 +654,8 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   function updateButtons()
   {
     let isAnyModInResearch = isAnyModuleInResearch()
-    showSceneBtn("btn_exit", researchMode && (!isAnyModInResearch || availableFlushExp <= 0 || setResearchManually))
-    showSceneBtn("btn_spendExcessExp", researchMode && isAnyModInResearch && availableFlushExp > 0)
+    this.showSceneBtn("btn_exit", researchMode && (!isAnyModInResearch || availableFlushExp <= 0 || setResearchManually))
+    this.showSceneBtn("btn_spendExcessExp", researchMode && isAnyModInResearch && availableFlushExp > 0)
 
     let checkboxObj = scene.findObject("auto_purchase_mods")
     if (::checkObj(checkboxObj))
@@ -831,7 +832,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     {
       if (tiersArray[i-1] == null)
       {
-        ::dagor.assertf(false, ::format("No modification data for unit '%s' in tier %s.", air.name, i.tostring()))
+        ::dagor.assertf(false, format("No modification data for unit '%s' in tier %s.", air.name, i.tostring()))
         break
       }
       let unlocked = isWeaponTierAvailable(air, i)
@@ -969,7 +970,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     {
       let secondaryWeapons = getSecondaryWeaponsList(air)
       lastWeapon = validateLastWeapon(airName) //real weapon or ..._default
-      dagor.debug("initial set lastWeapon " + lastWeapon )
+      ::dagor.debug("initial set lastWeapon " + lastWeapon )
       if (needSecondaryWeaponsWnd(air)) {
         let selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
           ?? secondaryWeapons?[0]
@@ -1141,7 +1142,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
   {
     local reason = null
     if(!isOwn)
-      reason = ::format(::loc("weaponry/action_not_allowed"), ::loc("weaponry/unit_not_bought"))
+      reason = format(::loc("weaponry/action_not_allowed"), ::loc("weaponry/unit_not_bought"))
     else if (!amount && !canBuyMod(air, item))
     {
       local reqTierMods = 0
@@ -1152,16 +1153,16 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
         reqMods = getReqModsText(air, item)
 
       if(reqTierMods > 0)
-        reason = ::format(::loc("weaponry/action_not_allowed"),
+        reason = format(::loc("weaponry/action_not_allowed"),
                           ::loc("weaponry/unlockModTierReq",
                                 { tier = ::roman_numerals[item.tier], amount = (reqTierMods).tostring() }))
       else if(reqMods.len() > 0)
-        reason = ::format(::loc("weaponry/action_not_allowed"), ::loc("weaponry/unlockModsReq") + "\n" + reqMods)
+        reason = format(::loc("weaponry/action_not_allowed"), ::loc("weaponry/unlockModsReq") + "\n" + reqMods)
     }
 
     if(reason != null)
     {
-      msgBox("not_available", reason, [["ok", function() {} ]], "ok")
+      this.msgBox("not_available", reason, [["ok", function() {} ]], "ok")
       return false
     }
     return true
@@ -1351,7 +1352,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
       showTaskProgressBox()
       afterSlotOp = afterDoneFunc
       afterSlotOpError = (@(executeAfterDoneFunc) function(res) {
-          msgBox("unit_modul_research_fail", ::loc("weaponry/module_set_research_failed"),
+          this.msgBox("unit_modul_research_fail", ::loc("weaponry/module_set_research_failed"),
             [["ok", (@(executeAfterDoneFunc) function() { executeAfterDoneFunc() })(executeAfterDoneFunc)]], "ok")
         })(executeAfterDoneFunc)
     }
@@ -1540,7 +1541,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
         if (lastBullets && groupIndex in lastBullets &&
             lastBullets[groupIndex] != ::get_last_bullets(airName, groupIndex))
         {
-          dagor.debug("force cln_update due lastBullets '" + lastBullets[groupIndex] + "' != '" +
+          ::dagor.debug("force cln_update due lastBullets '" + lastBullets[groupIndex] + "' != '" +
                       ::get_last_bullets(airName, groupIndex) + "'")
           needSave = true;
           lastBullets[groupIndex] = ::get_last_bullets(airName, groupIndex)
@@ -1548,7 +1549,7 @@ local heightInModCell = @(height) height * 1.0 / ::to_pixels("1@modCellHeight")
     }
     if (isUnitHaveSecondaryWeapons(air) && lastWeapon!="" && lastWeapon != getLastWeapon(airName))
     {
-      dagor.debug("force cln_update due lastWeapon '" + lastWeapon + "' != " + getLastWeapon(airName))
+      ::dagor.debug("force cln_update due lastWeapon '" + lastWeapon + "' != " + getLastWeapon(airName))
       needSave = true;
       lastWeapon = getLastWeapon(airName)
     }

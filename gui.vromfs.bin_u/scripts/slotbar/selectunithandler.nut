@@ -146,7 +146,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     curVisibleSlots = firstPageSlots
 
-    showSceneBtn("btn_emptyCrew", needEmptyCrewButton)
+    this.showSceneBtn("btn_emptyCrew", needEmptyCrewButton)
 
     updateUnitsGroupText()
     initChooseUnitsOptions()
@@ -157,7 +157,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateUnitsList()
     ::move_mouse_on_obj(curUnitCloneObj)
     updateOptionShowUnsupportedForCustomList()
-    showSceneBtn("choose_popup_menu", !isEmptyOptionsList || (needEmptyCrewButton && ::show_console_buttons) || hasGroupText())
+    this.showSceneBtn("choose_popup_menu", !isEmptyOptionsList || (needEmptyCrewButton && ::show_console_buttons) || hasGroupText())
   }
 
   function reinitScreen(params = {})
@@ -181,7 +181,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   function fillLegend()
   {
     let haveLegend = !isEmptyOptionsList && legendData.len() > 0
-    let legendNest = showSceneBtn("legend_nest", haveLegend)
+    let legendNest = this.showSceneBtn("legend_nest", haveLegend)
     if (!haveLegend)
       return
 
@@ -449,8 +449,8 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(objOptionsNest, markup, markup.len(), this)
 
     objOptionsNest.show(!isEmptyOptionsList)
-    showSceneBtn("choose_options_header", !isEmptyOptionsList)
-    showSceneBtn("filtered_units_text", !isEmptyOptionsList)
+    this.showSceneBtn("choose_options_header", !isEmptyOptionsList)
+    this.showSceneBtn("filtered_units_text", !isEmptyOptionsList)
     let objChoosePopupMenu = scene.findObject("choose_popup_menu")
     if ( !::checkObj(objChoosePopupMenu) )
       return
@@ -689,7 +689,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateUnitsGroupText(unit = null)
   {
     let isVisibleGroupText = hasGroupText()
-    let unitsGroupTextObj = showSceneBtn("units_group_text", isVisibleGroupText)
+    let unitsGroupTextObj = this.showSceneBtn("units_group_text", isVisibleGroupText)
     if (!isVisibleGroupText)
       return
 

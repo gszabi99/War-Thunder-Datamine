@@ -13,7 +13,7 @@
   "mesh": "rocket_nettuno_mk1",
   "isBulletBelt": false,
   "helicopterGroup": 2,
-  "reloadTime": 8.0,
+  "reloadTime": 12.0,
   "allowHumanReload": true,
   "tags": {
     "antiTankRocket": true,
@@ -107,6 +107,24 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": {
+          "expl": 1.0
+        },
+        "onKill": {
+          "destruction": 1.0
+        }
+      }
     },
     "proximityFuse": {
       "radius": 5.0,

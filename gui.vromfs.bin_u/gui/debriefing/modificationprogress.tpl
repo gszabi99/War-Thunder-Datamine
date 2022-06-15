@@ -110,7 +110,7 @@ tdiv {
             size:t='0.75@unlockIconSize, 0.75@unlockIconSize'
             pos:t='-h/6, ph/2-h/2'; position:t='relative'
             margin-right:t='h/6'
-            background-image:t='#ui/gameuiskin#favorite'
+            background-image:t='#ui/gameuiskin#favorite.png'
           }
           textareaNoTab {
             pos:t='0, ph/2-h/2'; position:t='relative'

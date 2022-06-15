@@ -13,12 +13,8 @@
       showOnSelect:t='hover'
     }
 
-    img {
+    cardAvatar {
       id:t='pilotIconImg'
-      position:t='relative'
-      pos:t='0, ph/2 - h/2'
-      size:t='@cIco, @cIco'
-      behavior:t='bhvAvatar'
 
       animated_wait_icon {
         id:t='not_member_data'

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getShopItem, openIngameStore, canUseIngameShop } = require("%scripts/onlineShop/entitlementsStore.nut")
 
@@ -7,6 +8,7 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
+let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 /*
  * Search in price.blk:
  * Search param is a name of a unit
@@ -54,7 +56,7 @@ OnlineShopModel.showUnitGoods <- function showUnitGoods(unitName, requestOrigin)
           {
             if (getShopItem(bundleId) != null)
             {
-              openIngameStore({ curItemId = bundleId, openedFrom = requestOrigin })
+              openIngameStore({ curItemId = bundleId, statsdMetric = requestOrigin })
               return
             }
           }
@@ -67,7 +69,7 @@ OnlineShopModel.showUnitGoods <- function showUnitGoods(unitName, requestOrigin)
       }
 
       if (isPlatformSony || isPlatformXboxOne)
-        return openIngameStore({ openedFrom = requestOrigin })
+        return openIngameStore({ statsdMetric = requestOrigin })
 
       return ::gui_modal_onlineShop()
     }.bindenv(OnlineShopModel))
@@ -348,7 +350,7 @@ OnlineShopModel.doBrowserPurchaseByGuid <- function doBrowserPurchaseByGuid(guid
   //                fixed on production without version bump.
   let useScriptBasedAutoLogin = "get_url_for_purchase" in getroottable()
   let url = isSteam
-            ? ::format(::loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), ::steam_get_my_id())
+            ? format(::loc("url/webstore/steam/item"), guid, ::steam_get_app_id(), ::steam_get_my_id())
             : (useScriptBasedAutoLogin
               ? $"auto_local auto_login {::get_url_for_purchase(guid)}"
               : ::get_authenticated_url_for_purchase(guid))
@@ -356,7 +358,7 @@ OnlineShopModel.doBrowserPurchaseByGuid <- function doBrowserPurchaseByGuid(guid
   if (url == "")
   {
     ::showInfoMsgBox(::loc("browser/purchase_url_not_found"), "errorMessageBox")
-    dagor.debug("get_url_for_purchase have returned empty url for guid/" + dbgGoodsName)
+    ::dagor.debug("get_url_for_purchase have returned empty url for guid/" + dbgGoodsName)
     return
   }
 
@@ -475,7 +477,7 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
   if (!::isInMenu())
     return afterCloseFunc && afterCloseFunc()
 
-  if (openIngameStore({chapter = chapter, afterCloseFunc = afterCloseFunc, openedFrom = launchedFrom}))
+  if (openIngameStore({chapter = chapter, afterCloseFunc = afterCloseFunc, statsdMetric = launchedFrom}))
     return
 
   ::gui_modal_onlineShop(owner, chapter, afterCloseFunc)
@@ -521,7 +523,7 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
   {
     local webStoreUrl = ::loc("url/webstore", "")
     if (::steam_is_running() && (havePlayerTag("steam") || ::has_feature("AllowSteamAccountLinking")))
-      webStoreUrl = ::format(::loc("url/webstore/steam"), ::steam_get_my_id())
+      webStoreUrl = format(::loc("url/webstore/steam"), ::steam_get_my_id())
 
     if (webStoreUrl != "")
       return ::OnlineShopModel.openShopUrl(webStoreUrl)
@@ -557,9 +559,9 @@ let function openOnlineShopFromPromo(handler, params) {
       if (isPlatformSony || isPlatformXboxOne)
         openIngameStore({
           curItemId = bundleId,
-          openedFrom = "promo",
+          statsdMetric = "promo",
           forceExternalShop = params?[2] == "forceExternalBrowser"
-        })
+        }, KWARG_NON_STRICT)
       else
         ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])
       return

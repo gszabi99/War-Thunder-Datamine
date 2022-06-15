@@ -1,3 +1,4 @@
+let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 
 const PRESET_MIN_USAGE = 2

@@ -5,8 +5,10 @@ const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 const NUM_TURRETS_MAX = 10
 
-let IndicatorsVisible = Watched(false)
-let CurrentTime = Watched(false)
+const NUM_BOMB_RELEASE_POINT = 80
+
+local IndicatorsVisible = Watched(false)
+local CurrentTime = Watched(false)
 
 let DistanceToGround = Watched(0.0)
 let VerticalSpeed = Watched(0.0)
@@ -15,6 +17,7 @@ let RocketAimX = Watched(0.0)
 let RocketAimY = Watched(0.0)
 let RocketAimVisible = Watched(false)
 let RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
+let RocketSightSizeFactor = Watched(0.0)
 
 let TATargetVisible = Watched(false)
 
@@ -97,7 +100,36 @@ let InstructorForced = Watched(false)
 let StaminaValue  = Watched(0.0)
 let StaminaState = Watched(0)
 
-let MachineGuns = {
+local BombReleaseVisible = Watched(false)
+local BombReleaseDirX = Watched(0)
+local BombReleaseDirY = Watched(0)
+local BombReleaseOpacity = Watched(0.0)
+local BombReleaseRelativToTarget = Watched(0.0)
+
+local BombReleasePoints = Watched(array(NUM_BOMB_RELEASE_POINT, 0.0))
+
+let CanonSightOpacity = Watched(1.0)
+let RocketSightOpacity = Watched(1.0)
+let ParamTableOpacity = Watched(1.0)
+
+let CanonSightShadowOpacity = Watched(1.0)
+let RocketSightShadowOpacity = Watched(1.0)
+let ParamTableShadowOpacity = Watched(1.0)
+let BombSightShadowOpacity = Watched(1.0)
+
+let CanonSightLineWidthFactor = Watched(1.0)
+let RocketSightLineWidthFactor = Watched(1.0)
+let BombSightLineWidthFactor = Watched(1.0)
+let ParamTableShadowFactor = Watched(1.0)
+
+let CanonSightShadowLineWidthFactor = Watched(1.0)
+let RocketSightShadowLineWidthFactor = Watched(1.0)
+let BombSightShadowLineWidthFactor = Watched(1.0)
+
+let TurretSightOpacity = Watched(1.0)
+let TurretSightLineWidthFactor = Watched(1.0)
+
+local MachineGuns = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
@@ -241,6 +273,14 @@ let GunOverheatState = Watched(0)
 
 let IsCompassVisible = Watched(false)
 
+//reactivHud Activation
+let isBombSightActivated = Watched(false)
+let isAAMSightActivated = Watched(false)
+let isRocketSightActivated = Watched(false)
+let isCanonSightActivated = Watched(false)
+let isTurretSightActivated = Watched(false)
+let isParamTableActivated = Watched(false)
+
 let helicopterState = {
 
   IndicatorsVisible,
@@ -253,6 +293,7 @@ let helicopterState = {
   RocketAimY,
   RocketAimVisible,
   RocketSightMode,
+  RocketSightSizeFactor,
 
   TATargetVisible,
 
@@ -408,6 +449,38 @@ let helicopterState = {
   GunOverheatState,
 
   IsCompassVisible,
+
+  BombReleaseVisible,
+  BombReleaseDirX,
+  BombReleaseDirY,
+  BombReleaseOpacity,
+  BombReleaseRelativToTarget,
+
+  BombReleasePoints,
+
+  isBombSightActivated,
+  isAAMSightActivated,
+  isRocketSightActivated,
+  isCanonSightActivated,
+  isTurretSightActivated,
+  isParamTableActivated,
+
+  CanonSightOpacity,
+  RocketSightOpacity,
+  ParamTableOpacity,
+  CanonSightShadowOpacity,
+  RocketSightShadowOpacity,
+  ParamTableShadowOpacity,
+  BombSightShadowOpacity,
+  CanonSightLineWidthFactor,
+  RocketSightLineWidthFactor,
+  BombSightLineWidthFactor,
+  CanonSightShadowLineWidthFactor,
+  RocketSightShadowLineWidthFactor,
+  BombSightShadowLineWidthFactor,
+  ParamTableShadowFactor,
+  TurretSightOpacity,
+  TurretSightLineWidthFactor,
 }
 
 ::interop.updateCannons <- function(index, count, sec = -1) {
@@ -509,17 +582,16 @@ let helicopterState = {
   Chaffs.seconds.update(sec)
 }
 
+for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
+  CannonCount.append(Watched(0))
+  CannonReloadTime.append(Watched(-1))
+}
+
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
   TrtMode.append(Watched(0))
   Trt.append(Watched(0))
   isEngineControled.append(Watched(false))
   ThrottleState.append(Watched(1))
-}
-
-
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  CannonCount.append(Watched(0))
-  CannonReloadTime.append(Watched(-1))
 }
 
 for (local i = 0; i < NUM_TURRETS_MAX; ++i) {

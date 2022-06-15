@@ -21,7 +21,7 @@ let function make(log_state) {
         shouldScroll = shouldScroll || lastLog != scrolledTo
         scrolledTo = lastLog
 
-        result.onRecalcLayout <- function(initial) {
+        result.onRecalcLayout <- function(_initial) {
           if (!shouldScroll)
             return
           scrollHandler.scrollToY(1e10) //it will clamp by elem size

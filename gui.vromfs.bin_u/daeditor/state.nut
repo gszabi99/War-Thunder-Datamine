@@ -3,10 +3,12 @@ import "%sqstd/ecs.nut" as ecs
 
 let console = require("console")
 
-let {getEditMode=null, isFreeCamMode=null, setWorkMode=null} = require_optional("daEditor4")
+let {getEditMode=null, isFreeCamMode=null, setWorkMode=null,
+     setEditMode=null, setPointActionPreview=null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditor4")
 let {is_editor_activated=null, get_scene_filepath=null, set_start_work_mode=null, get_instance=null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let selectedEntities = Watched({}) // table used as set
+let showEntitySelect = mkWatched(persist, "showEntitySelect", false)
 
 const SETTING_EDITOR_WORKMODE = "daEditor4/workMode"
 const SETTING_EDITOR_TPLGROUP = "daEditor4/templatesGroup"
@@ -63,6 +65,33 @@ editorTimeStop.subscribe(function(v) {
     console?.command($"app.timeSpeed 1")
 })
 
+let showPointAction = mkWatched(persist, "showPointAction", false)
+let typePointAction = mkWatched(persist, "typePointAction", "")
+let namePointAction = mkWatched(persist, "namePointAction", "")
+local funcPointAction = null
+let function setPointActionMode(actionType, actionName, cb) {
+  showEntitySelect(false)
+  setEditMode(DE4_MODE_POINT_ACTION)
+  setPointActionPreview("", 0.0) // default
+  typePointAction(actionType)
+  namePointAction(actionName)
+  funcPointAction = cb
+}
+let function updatePointActionPreview(shape, param) {
+  setPointActionPreview(shape, param)
+}
+let function callPointActionCallback(action) {
+  funcPointAction?(action)
+}
+let function resetPointActionMode() {
+  if (getEditMode() == DE4_MODE_POINT_ACTION)
+    setEditMode(DE4_MODE_SELECT)
+  setPointActionPreview("", 0.0)
+  typePointAction("")
+  namePointAction("")
+  funcPointAction = null
+}
+
 return {
   showUIinEditor = mkWatched(persist, "showUIinEditor", false)
   editorIsActive = Watched(is_editor_activated?())
@@ -75,7 +104,7 @@ return {
   propPanelClosed
   filterString = mkWatched(persist, "filterString", "")
   selectedCompName = Watched()
-  showEntitySelect = mkWatched(persist, "showEntitySelect", false)
+  showEntitySelect
   showTemplateSelect = mkWatched(persist, "showTemplateSelect", false)
   showHelp = mkWatched(persist, "showHelp", false)
   entitiesListUpdateTrigger = mkWatched(persist, "entitiesListUpdateTrigger", 0)
@@ -87,5 +116,13 @@ return {
   proceedWithSavingUnsavedChanges
   showDebugButtons = Watched(true)
   editorTimeStop
+
+  showPointAction
+  typePointAction
+  namePointAction
+  setPointActionMode
+  updatePointActionPreview
+  callPointActionCallback
+  resetPointActionMode
 }
 

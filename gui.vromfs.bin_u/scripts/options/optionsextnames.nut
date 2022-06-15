@@ -64,6 +64,7 @@ local user_option_names = [
     "USEROPT_BULLET_FALL_INDICATOR_SHIP",
     "USEROPT_BULLET_FALL_SOUND_SHIP",
     "USEROPT_SINGLE_SHOT_BY_TURRET",
+    "USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS",
     "USEROPT_AUTO_TARGET_CHANGE_SHIP",
     "USEROPT_REALISTIC_AIMING_SHIP",
     "USEROPT_FOLLOW_BULLET_CAMERA",
@@ -435,7 +436,6 @@ local user_option_names = [
 
 
 
-    "USEROPT_REPLACE_MY_NICK_LOCAL",
     "USEROPT_DISPLAY_MY_REAL_NICK",
     "USEROPT_SHOW_SOCIAL_NOTIFICATIONS",
     "USEROPT_ALLOW_ADDED_TO_CONTACTS",
@@ -449,12 +449,16 @@ local user_option_names = [
 
     "USEROPT_TORPEDO_DIVE_DEPTH",
     "USEROPT_DELAYED_DOWNLOAD_CONTENT",
+    "USEROPT_REPLAY_SNAPSHOT_ENABLED",
+    "USEROPT_RECORD_SNAPSHOT_PERIOD",
 
     "USEROPT_BULLET_FALL_SPOT_SHIP",
+    "USEROPT_HOLIDAYS",
     //
 
 
 
+    "USEROPT_ALTERNATIVE_TPS_CAMERA",
 ]
 
 ::user_option_name_by_idx <- {}
@@ -463,7 +467,7 @@ foreach(idx, modeName in options_mode_names)
 {
   let res = addOptionMode(modeName)
   let realIdx = (res != null) ? res : idx
-  getroottable()[modeName] <- realIdx
+  ::getroottable()[modeName] <- realIdx
 }
 options_mode_names = null // warning disable: -assigned-never-used
 
@@ -471,8 +475,8 @@ foreach(idx, useropt in user_option_names)
 {
   let res = addUserOption(useropt)
   let realIdx = (res != null) ? res : idx
-  getroottable()[useropt] <- realIdx
-  user_option_name_by_idx[realIdx] <- useropt
+  ::getroottable()[useropt] <- realIdx
+  ::user_option_name_by_idx[realIdx] <- useropt
 }
 user_option_names = null // warning disable: -assigned-never-used
 
@@ -481,7 +485,7 @@ user_option_names = null // warning disable: -assigned-never-used
 {
   let mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(mode)
-  let res = get_option(optionId)
+  let res = ::get_option(optionId)
   setGuiOptionsMode(mainOptionsMode)
   return res
 }

@@ -164,11 +164,11 @@ let function getUnitTooltipImage(unit)
 
   switch (::get_es_unit_type(unit))
   {
-    case ::ES_UNIT_TYPE_AIRCRAFT:       return "ui/aircrafts/" + unit.name
-    case ::ES_UNIT_TYPE_HELICOPTER:     return "ui/aircrafts/" + unit.name
-    case ::ES_UNIT_TYPE_TANK:           return "ui/tanks/" + unit.name
-    case ::ES_UNIT_TYPE_BOAT:           return "ui/ships/" + unit.name
-    case ::ES_UNIT_TYPE_SHIP:           return "ui/ships/" + unit.name
+    case ::ES_UNIT_TYPE_AIRCRAFT:       return $"ui/aircrafts/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_HELICOPTER:     return $"ui/aircrafts/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_TANK:           return $"ui/tanks/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_BOAT:           return $"ui/ships/{unit.name}.ddsx"
+    case ::ES_UNIT_TYPE_SHIP:           return $"ui/ships/{unit.name}.ddsx"
   }
   return ""
 }

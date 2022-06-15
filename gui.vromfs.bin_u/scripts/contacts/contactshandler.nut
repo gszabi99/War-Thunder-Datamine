@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -282,9 +283,9 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
     if (gName == ::EPL_FRIENDLIST && ::isInMenu())
     {
       if (::has_feature("Invites"))
-        playerListView.playerButton.append(createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
+        playerListView.playerButton.append(createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend.png", "onInviteFriend"))
       if (isAvailableFacebook())
-        playerListView.playerButton.append(createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add", "onFacebookFriendsAdd"))
+        playerListView.playerButton.append(createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add.png", "onFacebookFriendsAdd"))
     }
 
     listNotPlayerChildsByGroup[gName] = listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()
@@ -359,7 +360,7 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
   {
     foreach (idx, contact in ::contacts[gName])
     {
-      let contactObject = scene.findObject(::format("player_%s_%s", gName.tostring(), idx.tostring()))
+      let contactObject = scene.findObject(format("player_%s_%s", gName.tostring(), idx.tostring()))
       contactObject.contact_buttons_contact_uid = contact.uid
 
       let contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
@@ -800,7 +801,7 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
       listObj.setValue(0)
 
     onPlayerSelect(listObj)
-    showSceneBtn("button_invite_friend", curGroup == ::EPL_FRIENDLIST)
+    this.showSceneBtn("button_invite_friend", curGroup == ::EPL_FRIENDLIST)
 
     if (switchFocus)
       ::move_mouse_on_child(listObj, listObj.getValue())
@@ -933,12 +934,12 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
     if (!checkScene())
       return
 
-    showSceneBtn("contacts_buttons_console", ::show_console_buttons)
+    this.showSceneBtn("contacts_buttons_console", ::show_console_buttons)
     if (!::show_console_buttons)
       return
 
     let showSelectButton = curHoverObjId != null
-    let btn = showSceneBtn("btn_contactsSelect", showSelectButton)
+    let btn = this.showSceneBtn("btn_contactsSelect", showSelectButton)
     if (showSelectButton)
       btn.setValue(::loc(curHoverObjId == "contacts_groups" ? "contacts/chooseGroup"
         : curHoverObjId == "search_edit_box" ? "contacts/search"

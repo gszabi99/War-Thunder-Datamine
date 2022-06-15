@@ -1,3 +1,4 @@
+let { split_by_chars } = require("string")
 enum HINT_PIECE_TYPE
 {
   TEXT,
@@ -24,7 +25,7 @@ g_hints.buildHintMarkup <- function buildHintMarkup(text, params = {}) {
 
 g_hints.getHintSlices <- function getHintSlices(text, params = {})
 {
-  let rows = ::split(text, "\n")
+  let rows = split_by_chars(text, "\n")
   let isWrapInRowAllowed = params?.isWrapInRowAllowed ?? false
   let view = {
     id = ::getTblValue("id", params)
@@ -68,7 +69,7 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {})
           else if (closingColorTagStartIndex == null)
             carriage = openingColorTagStartIndex + colorTags[0].len()
           else
-            carriage = ::min(
+            carriage = min(
               openingColorTagStartIndex + colorTags[0].len(),
               closingColorTagStartIndex + colorTags[1].len()
             )

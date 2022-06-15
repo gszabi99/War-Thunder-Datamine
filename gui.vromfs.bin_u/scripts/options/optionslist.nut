@@ -39,7 +39,8 @@ let otherOptionsList = @() [
   [::USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
   [::USEROPT_SUBTITLES, "spinner"],
   [::USEROPT_HUD_SCREENSHOT_LOGO, "spinner", ::is_platform_pc],
-  [::USEROPT_SAVE_ZOOM_CAMERA, "spinner", !::u.isNull(::get_option_save_zoom_camera())] //compatibility with wop_1_77_2_X
+  [::USEROPT_SAVE_ZOOM_CAMERA, "spinner"],
+  [::USEROPT_HOLIDAYS, "list"]
 ]
 
 let getMainOptions = function() {
@@ -106,7 +107,7 @@ let getMainOptions = function() {
       [::USEROPT_AUTO_AIMLOCK_ON_SHOOT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
-      [::USEROPT_RADAR_TARGET_CYCLING, "spinner", ::has_feature("RadarTargetCue")],
+      [::USEROPT_RADAR_TARGET_CYCLING, "spinner"],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
@@ -127,6 +128,7 @@ let getMainOptions = function() {
       [::USEROPT_HORIZONTAL_SPEED, "spinner"],
       [::USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
+      [::USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
 
       ["options/header/tank"],
       [::USEROPT_GRASS_IN_TANK_VISION, "spinner"],
@@ -140,8 +142,6 @@ let getMainOptions = function() {
       [::USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner", ::has_feature("Tanks")],
       [::USEROPT_TACTICAL_MAP_SIZE, "slider"],
       [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !::is_platform_android],
-      // show option by code != -1 need for compatibility with 1_93_0_X
-      // TODO: remove after 1_93_0_X
       [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
@@ -230,6 +230,8 @@ let getMainOptions = function() {
       [::USEROPT_REPLAY_ALL_INDICATORS, "spinner", ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
       [::USEROPT_REPLAY_LOAD_COCKPIT, "spinner", ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
       [::USEROPT_HIDE_MOUSE_SPECTATOR, "spinner", ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
+      [::USEROPT_REPLAY_SNAPSHOT_ENABLED, "spinner", ::has_feature("replayRewind")],
+      [::USEROPT_RECORD_SNAPSHOT_PERIOD, "spinner", ::has_feature("replayRewind")],
 
       ["options/header/userGeneratedContent"],
       [::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE,    "combobox", contentPreset.getContentPresets().len()],

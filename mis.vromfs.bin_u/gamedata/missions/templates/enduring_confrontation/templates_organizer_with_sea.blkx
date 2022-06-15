@@ -102,17 +102,17 @@
       "actions": [
         {
           "comment": {
-            "value": "выбираем случайное событие"
+            "value": "vybiraem sluchajnoe sobytie"
           }
         },
         {
           "comment": {
-            "value": "принудительный выбор шаблона - для тестов"
+            "value": "prinuditel'nyj vybor shablona - dlya testov"
           }
         },
         {
           "comment": {
-            "value": "проверяем нет ли форсирования шаблона"
+            "value": "proveryaem net li forsirovaniya shablona"
           }
         },
         {
@@ -160,12 +160,12 @@
       "actions": [
         {
           "comment": {
-            "value": "принудительный вызов шаблона "
+            "value": "prinuditel'nyj vyzov shablona "
           }
         },
         {
           "comment": {
-            "value": "скипаем проверку предыдущего шаблона"
+            "value": "skipaem proverku predydushchego shablona"
           }
         },
         {
@@ -177,7 +177,7 @@
         },
         {
           "__comment": {
-            "value": "обнуляем форсирование"
+            "value": "obnulyaem forsirovanie"
           }
         },
         {
@@ -195,12 +195,12 @@
       "else_actions": [
         {
           "comment": {
-            "value": "нет принудительного вызова шаблона"
+            "value": "net prinuditel'nogo vyzova shablona"
           }
         },
         {
           "comment": {
-            "value": "идем дальше по логике - заполняем армию (нужна некоторым шаблонам)"
+            "value": "idem dal'she po logike - zapolnyaem armiyu (nuzhna nekotorym shablonam)"
           }
         },
         {
@@ -242,7 +242,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "текущий шабон выпал такой-же как предыдущий и это не зона захвата"
+          "value": "tekushchij shabon vypal takoj-zhe kak predydushchij i eto ne zona zahvata"
         },
         "triggerEnable": {
           "target": "to_template_choosing"
@@ -250,7 +250,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "текущий и предыдущий шаблоны не совпадают или это зона захвата"
+          "value": "tekushchij i predydushchij shablony ne sovpadayut ili eto zona zahvata"
         },
         "varSetInt": {
           "value": 0,
@@ -278,7 +278,7 @@
       "conditions": [],
       "actions": {
         "comment": {
-          "value": "задаем армию для события 1 и 2 - соответсвующие армии"
+          "value": "zadaem armiyu dlya sobytiya 1 i 2 - sootvetsvuyushchie armii"
         },
         "varSetRandomInt": {
           "var": "to_army",
@@ -315,17 +315,17 @@
       "actions": [
         {
           "comment": {
-            "value": "армия не совпала единожды запускаем проверки всех событий"
+            "value": "armiya ne sovpala edinozhdy zapuskaem proverki vseh sobytij"
           }
         },
         {
           "comment": {
-            "value": "запоминаем последнюю армию"
+            "value": "zapominaem poslednyuyu armiyu"
           }
         },
         {
           "comment": {
-            "value": "включаем триггер активации следующего задания"
+            "value": "vklyuchaem trigger aktivacii sleduyushchego zadaniya"
           }
         },
         {
@@ -383,7 +383,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "армия совпала"
+          "value": "armiya sovpala"
         },
         "triggerEnable": {
           "target": "to_template_fill_army"
@@ -445,12 +445,12 @@
         "actions": [
           {
             "comment": {
-              "value": "назначаем армию"
+              "value": "naznachaem armiyu"
             }
           },
           {
             "comment": {
-              "value": "запускаем стартер шаблона"
+              "value": "zapuskaem starter shablona"
             }
           },
           {
@@ -492,17 +492,17 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "stavim flag, chto shablon zapustilsya"
             }
           },
           {
             "comment": {
-              "value": "задаем случайное время старта"
+              "value": "zadaem sluchajnoe vremya starta"
             }
           },
           {
             "comment": {
-              "value": "запускаем событие"
+              "value": "zapuskaem sobytie"
             }
           },
           {
@@ -552,7 +552,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "включаем проверку выключения шаблона"
+            "value": "vklyuchaem proverku vyklyucheniya shablona"
           },
           "triggerEnable": {
             "target": "to_template_01_lpt_end"
@@ -582,7 +582,7 @@
         },
         "actions": {
           "comment": {
-            "value": "шаблон разведчиков завершил работу"
+            "value": "shablon razvedchikov zavershil rabotu"
           },
           "varModify": {
             "operator": "add",
@@ -647,7 +647,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "proveryaem vypalo li sobytie esli da - zapuskaem dal'nejshuyu proverku"
           },
           "varSetInt": {
             "value": 0,
@@ -684,17 +684,17 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "stavim flag, chto shablon zapustilsya"
             }
           },
           {
             "comment": {
-              "value": "задаем случайное время старта"
+              "value": "zadaem sluchajnoe vremya starta"
             }
           },
           {
             "comment": {
-              "value": "запускаем событие"
+              "value": "zapuskaem sobytie"
             }
           },
           {
@@ -728,7 +728,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "sobytie uzhe zapushcheno - avtomatom sgeneritsya novoe"
           }
         }
       },
@@ -748,7 +748,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+            "value": "zapuskaem starter shablona, govorim, chto shablon zapushchen"
           },
           "triggerEnable": {
             "target": "to_template_02_bt_end"
@@ -840,7 +840,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "proveryaem vypalo li sobytie esli da - zapuskaem dal'nejshuyu proverku"
           },
           "varSetInt": {
             "value": 0,
@@ -877,17 +877,17 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "stavim flag, chto shablon zapustilsya"
             }
           },
           {
             "comment": {
-              "value": "задаем случайное время старта"
+              "value": "zadaem sluchajnoe vremya starta"
             }
           },
           {
             "comment": {
-              "value": "запускаем событие"
+              "value": "zapuskaem sobytie"
             }
           },
           {
@@ -911,7 +911,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "sobytie uzhe zapushcheno - avtomatom sgeneritsya novoe"
           }
         }
       },
@@ -932,12 +932,12 @@
         "actions": [
           {
             "comment": {
-              "value": "говорим что режим работы шаблона: jip"
+              "value": "govorim chto rezhim raboty shablona: jip"
             }
           },
           {
             "comment": {
-              "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+              "value": "zapuskaem starter shablona, govorim, chto shablon zapushchen"
             }
           },
           {
@@ -1050,7 +1050,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "proveryaem vypalo li sobytie esli da - zapuskaem dal'nejshuyu proverku"
           },
           "triggerEnable": {
             "target": "to_template_04_ad_choose"
@@ -1082,17 +1082,17 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "stavim flag, chto shablon zapustilsya"
             }
           },
           {
             "comment": {
-              "value": "задаем случайное время старта"
+              "value": "zadaem sluchajnoe vremya starta"
             }
           },
           {
             "comment": {
-              "value": "запускаем событие"
+              "value": "zapuskaem sobytie"
             }
           },
           {
@@ -1116,7 +1116,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "sobytie uzhe zapushcheno - avtomatom sgeneritsya novoe"
           }
         }
       },
@@ -1136,7 +1136,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+            "value": "zapuskaem starter shablona, govorim, chto shablon zapushchen"
           },
           "triggerEnable": [
             {
@@ -1233,7 +1233,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "proveryaem vypalo li sobytie esli da - zapuskaem dal'nejshuyu proverku"
           },
           "varSetInt": {
             "value": 0,
@@ -1270,17 +1270,17 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "stavim flag, chto shablon zapustilsya"
             }
           },
           {
             "comment": {
-              "value": "задаем случайное время старта"
+              "value": "zadaem sluchajnoe vremya starta"
             }
           },
           {
             "comment": {
-              "value": "запускаем событие"
+              "value": "zapuskaem sobytie"
             }
           },
           {
@@ -1314,7 +1314,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "sobytie uzhe zapushcheno - avtomatom sgeneritsya novoe"
           }
         }
       },
@@ -1334,7 +1334,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+            "value": "zapuskaem starter shablona, govorim, chto shablon zapushchen"
           },
           "triggerEnable": {
             "target": "to_template_07_sbt_end"

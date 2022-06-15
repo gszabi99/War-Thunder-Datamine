@@ -1,3 +1,5 @@
+let { format, strip } = require("string")
+let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = ::require_native("vr")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -325,6 +327,13 @@ let function pickQualityPreset() {
   return preset
 }
 
+let function localizaQualityPreset(presetName) {
+  let txt = (presetName == "ultralow" || presetName == "min") ? "ultra_low"
+    : presetName == "ultrahigh" ? "ultra_high"
+    : presetName
+  return ::loc($"options/quality_{txt}")
+}
+
 let function localize(optionId, valueId) {
   switch (optionId) {
     case "resolution":
@@ -349,8 +358,7 @@ let function localize(optionId, valueId) {
     case "dirtSubDiv":
       if (valueId == "none")
         return ::loc("options/none")
-      let txt = (valueId=="ultralow" || valueId=="min")? "ultra_low" : (valueId=="ultrahigh")? "ultra_high" : valueId
-      return ::loc("options/quality_" + txt)
+      return localizaQualityPreset(valueId)
   }
   return ::loc(format("options/%s_%s", optionId, valueId), valueId)
 }
@@ -358,7 +366,7 @@ let function localize(optionId, valueId) {
 let function parseResolution(resolution) {
   let sides = resolution == "auto"
     ? [ 0, 0 ] // To be sorted first.
-    : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
+    : resolution.split("x").apply(@(v) ::to_integer_safe(strip(v), 0, false))
   return {
     resolution = resolution
     w = sides?[0] ?? 0
@@ -467,20 +475,23 @@ mShared = {
   graphicsQualityClick = function(silent=false) {
     let quality = getGuiValue("graphicsQuality", "high")
     if (!silent && quality=="ultralow") {
-      let ok_func = function() {
+      let function ok_func() {
         mShared.graphicsQualityClick(true)
         updateGuiNavbar(true)
       }
-      let cancel_func = function() {
+      let function cancel_func() {
         let lowQuality = "low"
         setGuiValue("graphicsQuality", lowQuality)
         mShared.graphicsQualityClick()
         updateGuiNavbar(true)
       }
-      mHandler.msgBox("sysopt_compatibility", ::loc("msgbox/compatibilityMode"), [
+      ::scene_msg_box("msg_sysopt_compatibility", null,
+        ::loc("msgbox/compatibilityMode"),
+        [
           ["yes", ok_func],
           ["no", cancel_func],
-        ], "no", { cancel_fn = cancel_func })
+        ], "no",
+        { cancel_fn = cancel_func, checkDuplicateId = true })
     }
     mShared.setCustomSettings()
   }
@@ -548,60 +559,68 @@ mShared = {
 
   ssaaClick = function() {
     if (getGuiValue("ssaa") == "4X") {
-      let okFunc = function() {
+      let function okFunc() {
         setGuiValue("backgroundScale", 2)
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let cancelFunc = function() {
+      let function cancelFunc() {
         setGuiValue("ssaa", "none")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      mHandler.msgBox("sysopt_ssaa", ::loc("msgbox/ssaa_warning"), [
-        ["ok", okFunc],
-        ["cancel", cancelFunc],
-      ], "cancel", { cancel_fn = cancelFunc })
+      ::scene_msg_box("msg_sysopt_ssaa", null, ::loc("msgbox/ssaa_warning"),
+        [
+          ["ok", okFunc],
+          ["cancel", cancelFunc],
+        ], "cancel",
+        { cancel_fn = cancelFunc, checkDuplicateId = true })
     }
   }
 
   fxResolutionClick = function() {
     if (getGuiValue("fxResolutionQuality") == "ultrahigh") {
-      let okFunc = function() {
+      let function okFunc() {
         setGuiValue("fxResolutionQuality", "ultrahigh")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let cancelFunc = function() {
+      let function cancelFunc() {
         setGuiValue("fxResolutionQuality", "high")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      mHandler.msgBox("sysopt_fxres", ::loc("msgbox/fxres_warning"), [
-        ["ok", okFunc],
-        ["cancel", cancelFunc],
-      ], "cancel", { cancel_fn = cancelFunc })
+      ::scene_msg_box("msg_sysopt_fxres", null,
+        ::loc("msgbox/fxres_warning"),
+        [
+          ["ok", okFunc],
+          ["cancel", cancelFunc],
+        ], "cancel",
+        { cancel_fn = cancelFunc, checkDuplicateId = true })
     }
   }
 
   compatibilityModeClick = function() {
     let isEnable = getGuiValue("compatibilityMode")
     if (isEnable) {
-      let ok_func = function() {
+      let function ok_func() {
         mShared.setCompatibilityMode()
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      let cancel_func = function() {
+      let function cancel_func() {
         setGuiValue("compatibilityMode", false)
         mShared.setCompatibilityMode()
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
-      mHandler.msgBox("sysopt_compatibility", ::loc("msgbox/compatibilityMode"), [
-        ["yes", ok_func],
-        ["no", cancel_func],
-      ], "no", { cancel_fn = cancel_func })
+      ::scene_msg_box("msg_sysopt_compatibility", null,
+        ::loc("msgbox/compatibilityMode"),
+        [
+          ["yes", ok_func],
+          ["no", cancel_func],
+        ], "no",
+        { cancel_fn = cancel_func, checkDuplicateId = true })
     } else
       mShared.setCompatibilityMode()
   }
@@ -778,12 +797,12 @@ mSettings = {
     }
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
-    values = [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
+    values = [ "none", "fxaa", "high_fxaa", "low_taa"]
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }
   taau_ratio = { widgetType="slider" def=100 min=50 max=100 blk="video/temporalResolutionScale" restart=false
     enabled = @() !getGuiValue("compatibilityMode")
-                  && (getGuiValue("antialiasing") == "low_taa" || getGuiValue("antialiasing") == "high_taa")
+                  && (getGuiValue("antialiasing") == "low_taa")
     getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0)*100.0).tointeger() }
     setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val.tofloat()/100.0) }
   }
@@ -1269,15 +1288,7 @@ let function onRestartClient() {
   applyRestartClient()
 }
 
-let function onConfigApply() {
-  if (!mScriptValid)
-    return
-  if (!::check_obj(mContainerObj))
-    return
-
-  mShared.presetCheck()
-  onGuiUnloaded()
-
+let function hotReloadOrRestart() {
   if (isSavePending())
     configWrite()
 
@@ -1285,31 +1296,47 @@ let function onConfigApply() {
   if (!restartPending && isHotReloadPending())
     applyRestartEngine(isReloadSceneRerquired())
 
-  let handler = mHandler
   configFree()
 
-  if (restartPending && isClientRestartable())
-  {
+  if (restartPending && isClientRestartable()) {
     let func_restart = function() {
       applyRestartClient()
     }
 
-    if (canRestartClient())
-    {
+    if (canRestartClient()) {
       let message = ::loc("msgbox/client_restart_required") + "\n" + ::loc("msgbox/restart_now")
-      handler.msgBox("sysopt_apply", message, [
+      ::scene_msg_box("sysopt_apply", null, message, [
           ["restart", func_restart],
           ["no"],
-        ], "restart", { cancel_fn = function(){} })
+        ], "restart", { cancel_fn = @() null })
     }
-    else
-    {
+    else {
       let message = ::loc("msgbox/client_restart_required")
-      handler.msgBox("sysopt_apply", message, [
+      ::scene_msg_box("sysopt_apply", null, message, [
           ["ok"],
-        ], "ok", { cancel_fn = function(){} })
+        ], "ok", { cancel_fn = @() null })
     }
   }
+}
+
+let function onConfigApply() {
+  if (!mScriptValid)
+    return
+
+  if (!::check_obj(mContainerObj))
+    return
+
+  mShared.presetCheck()
+  onGuiUnloaded()
+  hotReloadOrRestart()
+}
+
+let function onConfigApplyWithoutUiUpdate() {
+  if (!mScriptValid)
+    return
+
+  mShared.presetCheck()
+  hotReloadOrRestart()
 }
 
 let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
@@ -1325,14 +1352,14 @@ let function onGuiOptionChanged(obj) {
   if (!desc)
     return
 
-  let curValue = ::getTblValue(id, mCfgCurrent)
-  if (curValue == null)  //not inited or already cleared?
-    return
-
   if (desc.ignoreNextUiCallback) {
     desc.ignoreNextUiCallback = false
     return
   }
+
+  let curValue = ::getTblValue(id, mCfgCurrent)
+  if (curValue == null)  //not inited or already cleared?
+    return
 
   local value = null
   let raw = obj.getValue()
@@ -1390,7 +1417,7 @@ let function fillGuiOptions(containerObj, handler) {
 
   if (!mScriptValid) {
     let msg = ::loc("msgbox/internal_error_header") + "\n" + mValidationError
-    let data = ::format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
+    let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", ::g_string.stripTags(msg))
     guiScene.replaceContentFromText(containerObj.id, data, data.len(), handler)
     return
   }
@@ -1437,7 +1464,7 @@ let function fillGuiOptions(containerObj, handler) {
           option = ::create_option_switchbox(config)
           break
         case "slider":
-          desc.step <- desc?.step ?? ::max(1, ::round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
+          desc.step <- desc?.step ?? max(1, ::round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
           option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
           break
         case "list":
@@ -1495,6 +1522,16 @@ let function fillGuiOptions(containerObj, handler) {
   guiScene.setUpdatesEnabled(true, true)
   onGuiLoaded()
 }
+
+let function setQualityPreset(presetName) {
+  if (mCfgInitial.len() == 0)
+    configRead()
+
+  setGuiValue("graphicsQuality", presetName, mHandler == null)
+  getOptionDesc("graphicsQuality")?.onChanged()
+  updateGuiNavbar(true)
+}
+
 //------------------------------------------------------------------------------
 init()
 ::cross_call_api.sysopt <- { getGuiValue = getGuiValue }
@@ -1510,4 +1547,7 @@ return {
   canUseGraphicsOptions = canUseGraphicsOptions
   systemOptionsMaintain = configMaintain
   overrideUiStruct = @(struct) mUiStruct = struct
+  setQualityPreset
+  localizaQualityPreset
+  onConfigApplyWithoutUiUpdate
 }

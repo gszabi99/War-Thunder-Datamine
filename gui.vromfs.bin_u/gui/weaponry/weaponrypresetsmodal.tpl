@@ -91,6 +91,14 @@ root {
           }
           ButtonImg {}
         }
+        textareaNoTab {
+          id:t='custom_weapons_available_txt'
+          pos:t='1@buttonMargin, 0.5ph-0.5h'
+          position:t='relative'
+          text:t='#customSecondaryWeapons/available'
+          overlayTextColor:t='active'
+          display:t='hide'
+        }
       }
       navRight {
         Button_text{

@@ -3,8 +3,8 @@ let colors = require("style/colors.nut")
 const MAX_DOST = 5
 
 let images = {
-  dotHole = Picture("!ui/gameuiskin#dot_hole")
-  dotFilled = Picture("!ui/gameuiskin#dot_filled")
+  dotHole = Picture("!ui/gameuiskin#dot_hole.png")
+  dotFilled = Picture("!ui/gameuiskin#dot_filled.png")
 }
 
 
@@ -85,7 +85,7 @@ let dots = function (total_count, broken_count) {
 
 
 let text = @(total_count, broken_count) {
-  rendObj = ROBJ_DTEXT
+  rendObj = ROBJ_TEXT
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
   halign = ALIGN_CENTER
   text = ::str((total_count - broken_count),"/",total_count)
@@ -144,7 +144,7 @@ let dmModule = function (params) {
 }
 
 let export = class {
-  _call = @(self, params) dmModule(params)
+  _call = @(_self, params) dmModule(params)
 }()
 
 return export

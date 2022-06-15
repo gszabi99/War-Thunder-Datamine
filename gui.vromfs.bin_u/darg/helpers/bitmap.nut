@@ -35,14 +35,14 @@ let function mkBitmapPicture(w, h, fillcb, prefix="") {
     b.writen(c, 'i')
   }
 
-  let function _set(self, idx, byte) {
+  let function _set(_self, idx, byte) {
     if (idx<0 || idx>BITMAP_SIZE)
       throw $"Invalid index {idx} for bitmap of size {w}x{h}"
     b.seek(HEADER_SIZE+idx)
     b.writen(byte, 'b')
   }
 
-  let function _get(self, idx, byte) {
+  let function _get(_self, idx, _byte) {
     if (idx<0 || idx>BITMAP_SIZE)
       throw $"Invalid index {idx} for bitmap of size {w}x{h}"
     b.seek(HEADER_SIZE+idx)

@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 
 
@@ -6,7 +7,7 @@ let time = require("%scripts/time.nut")
   static iType = itemType.ORDER
   static defaultLocId = "order"
   static defaultIconStyle = "default_order_debug"
-  static typeIcon = "#ui/gameuiskin#item_type_orders"
+  static typeIcon = "#ui/gameuiskin#item_type_orders.svg"
   helperCost = Cost()
   static colorScheme = {
     typeDescriptionColor = "commonTextColor"
@@ -54,7 +55,7 @@ let time = require("%scripts/time.nut")
     if (name.len() == 0)
       name = ::loc("item/" + defaultLocId)
     else
-      name = ::format("%s \"%s\"", ::loc("item/order"), name)
+      name = format("%s \"%s\"", ::loc("item/order"), name)
     if (locId != null)
       name = ::loc(locId, name)
     return name
@@ -159,7 +160,7 @@ let time = require("%scripts/time.nut")
       return checkMissionRestriction(missionRestriction, missionName)
     if (!::u.isArray(missionRestriction))
     {
-      ::dagor.assertf(::format("Invalid mission restriction config in item: %s", id))
+      ::dagor.assertf(format("Invalid mission restriction config in item: %s", id))
       return true
     }
     foreach (restrictionElement in missionRestriction)

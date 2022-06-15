@@ -9,7 +9,7 @@ let function getEventSlotbarHint(event, country) {
   if (!needShowOverrideSlotbar(event))
     return ""
 
-  let overrideSlotbar = getSlotbarOverrideData(::events.getEventMission(event.name))
+  let overrideSlotbar = getSlotbarOverrideData(::events.getEventMission(event.name), event)
   if ((overrideSlotbar?.len() ?? 0) == 0)
     return ""
 

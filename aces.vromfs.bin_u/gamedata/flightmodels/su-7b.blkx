@@ -9,9 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2221,6 +2219,20 @@
         "blk": "gameData/FlightModels/weaponPresets/su_7b_fab500.blk",
         "reqModification": "mi_24_fab_500"
       }
+    },
+    {
+      "preset": {
+        "name": "su_7b_zb360",
+        "blk": "gameData/FlightModels/weaponPresets/su_7b_zb360.blk",
+        "reqModification": "zb_360",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/su_zb_360.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_middle"
+          }
+        }
+      }
     }
   ],
   "sensors": [
@@ -2493,7 +2505,12 @@
       "reqModification": "NR_30_belt_pack",
       "tier": 3
     },
+    "zb_360": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "mi_24_fab_250": {
+      "prevModification": "zb_360",
       "modClass": "weapon",
       "tier": 2
     },

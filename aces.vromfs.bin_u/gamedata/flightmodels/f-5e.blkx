@@ -6,9 +6,7 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.234,
   "gearSinkRangeC": 0.221,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "isBwOpticSight": true,
   "ilsLCOSS": true,
   "gyroscopicSightOverSensors": true,
@@ -2616,6 +2614,126 @@
           "reqModification": "a_7d_gpu_5a"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "f_5e_bomb_blu_1",
+        "blk": "gameData/FlightModels/weaponPresets/f_5e_bomb_blu_1.blk",
+        "reqModification": "us_blu_1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+            "iconType": "napalm_large",
+            "amountPerTier": 1.0
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5e_bomb_blu_aim9e"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5e_bomb_blu_aim9e.blk"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "iconType": "napalm_large",
+              "amountPerTier": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5e_bomb_blu_1_aim9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5e_bomb_blu_1_aim9j.blk"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "iconType": "napalm_large",
+              "amountPerTier": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5e_rockets_zuni_blu_1_aim9e"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5e_rockets_zuni_blu_1_aim9e.blk"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "f4c_zuni"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "iconType": "napalm_large",
+              "amountPerTier": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5e_rockets_zuni_blu_1_aim9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5e_rockets_zuni_blu_1_aim9j.blk"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "f4c_zuni"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "iconType": "napalm_large",
+              "amountPerTier": 1.0
+            }
+          }
+        }
+      ]
     }
   ],
   "sensors": [
@@ -2790,13 +2908,18 @@
       "tier": 4,
       "reqModification": "us_1000lb_mk83"
     },
+    "us_blu_1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "countermeasures_launcher_chaff_only": [],
     "countermeasures_launcher_flare_only": [],
     "countermeasures_launcher_chaff_priority": [],
     "countermeasures_launcher_flare_priority": [],
     "countermeasures_belt_pack": {
+      "prevModification": "us_blu_1",
       "modClass": "weapon",
-      "tier": 1,
+      "tier": 2,
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "mi-24_EVU",

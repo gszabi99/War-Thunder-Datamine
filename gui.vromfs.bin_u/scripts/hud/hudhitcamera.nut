@@ -1,4 +1,9 @@
-::on_hit_camera_event <- function on_hit_camera_event(mode, result = ::DM_HIT_RESULT_NONE, info = {}) // called from client
+from "hitCamera" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
+
+let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
+
+::on_hit_camera_event <- function on_hit_camera_event(mode, result = DM_HIT_RESULT_NONE, info = {}) // called from client
 {
   ::g_hud_hitcamera.onHitCameraEvent(mode, result, info)
 
@@ -15,11 +20,13 @@
   scene     = null
   titleObj  = null
   infoObj   = null
+  damageStatusObj = null
 
   isEnabled = true
 
   isVisible = false
-  hitResult = ::DM_HIT_RESULT_NONE
+  stopFadeTimeS = -1
+  hitResult = DM_HIT_RESULT_NONE
   unitId = -1
   unitVersion = -1
   unitType = ::ES_UNIT_TYPE_INVALID
@@ -32,37 +39,82 @@
     [::ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDebuffsShip.blk",
     [::ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDebuffsShip.blk",
   }
+
+  damageStatusTemplates = {
+    [::ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShip.blk",
+    [::ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
+  }
+
   debuffsListsByUnitType = {}
   trackedPartNamesByUnitType = {}
 
   styles = {
-    [::DM_HIT_RESULT_NONE]      = "none",
-    [::DM_HIT_RESULT_RICOSHET]  = "ricochet",
-    [::DM_HIT_RESULT_BOUNCE]    = "bounce",
-    [::DM_HIT_RESULT_HIT]       = "hit",
-    [::DM_HIT_RESULT_BURN]      = "burn",
-    [::DM_HIT_RESULT_CRITICAL]  = "critical",
-    [::DM_HIT_RESULT_KILL]      = "kill",
-    [::DM_HIT_RESULT_METAPART]  = "hull",
-    [::DM_HIT_RESULT_AMMO]      = "ammo",
-    [::DM_HIT_RESULT_FUEL]      = "fuel",
-    [::DM_HIT_RESULT_CREW]      = "crew",
-    [::DM_HIT_RESULT_TORPEDO]   = "torpedo",
-    [::DM_HIT_RESULT_BREAKING]  = "breaking",
+    [DM_HIT_RESULT_NONE]      = "none",
+    [DM_HIT_RESULT_RICOSHET]  = "ricochet",
+    [DM_HIT_RESULT_BOUNCE]    = "bounce",
+    [DM_HIT_RESULT_HIT]       = "hit",
+    [DM_HIT_RESULT_BURN]      = "burn",
+    [DM_HIT_RESULT_CRITICAL]  = "critical",
+    [DM_HIT_RESULT_KILL]      = "kill",
+    [DM_HIT_RESULT_METAPART]  = "hull",
+    [DM_HIT_RESULT_AMMO]      = "ammo",
+    [DM_HIT_RESULT_FUEL]      = "fuel",
+    [DM_HIT_RESULT_CREW]      = "crew",
+    [DM_HIT_RESULT_TORPEDO]   = "torpedo",
+    [DM_HIT_RESULT_BREAKING]  = "breaking",
+  }
+
+  function onEnemyDamageState(event) {
+    setDamageStatus("artillery_health", event.artilleryHealth)
+    setDamageStatus("fire_status", event.hasFire ? 1 : -1)
+    setDamageStatus("engine_health", event.engineHealth)
+    setDamageStatus("torpedo_tubes_health", event.torpedoTubesHealth)
+    setDamageStatus("rudders_health", event.ruddersHealth)
+    setDamageStatus("breach_status", event.hasBreach ? 1 : -1)
+  }
+
+  function setDamageStatus(statusObjId, health) {
+    if (!damageStatusObj?.isValid())
+      return
+
+    let obj = damageStatusObj.findObject(statusObjId)
+    if (!obj?.isValid())
+      return
+
+    obj.damage = getDamageStatusByHealth(health)
+  }
+
+  function getDamageStatusByHealth(health) {
+    return health == 100 ? "none"
+         : health >= 70  ? "minor"
+         : health >= 40  ? "moderate"
+         : health >= 10  ? "major"
+         : health > 0    ? "critical"
+         : health == 0   ? "fatal"
+         : "none"
+  }
+
+  function updateFadeAnimation() {
+    let needFade = stopFadeTimeS > 0
+    scene["transp-time"] = needFade ? (stopFadeTimeS*1000).tointeger() : 1
+    scene["transp-base"] = needFade ? 255 : 0
+    scene["transp-end"]  = needFade ? 0 : 255
+    scene.setFloatProp(animTimerPid, 0.0)
   }
 }
 
-g_hud_hitcamera.init <- function init(_nest)
+g_hud_hitcamera.init <- function init(nest)
 {
-  if (!::checkObj(_nest))
+  if (!::checkObj(nest))
     return
 
-  if (::checkObj(scene) && scene.isEqual(_nest))
+  if (::checkObj(scene) && scene.isEqual(nest))
     return
 
-  scene = _nest
+  scene = nest
   titleObj = scene.findObject("title")
   infoObj  = scene.findObject("info")
+  damageStatusObj = scene.findObject("damageStatus")
 
   if (!::has_feature("HitCameraTargetStateIconsTank") && (::ES_UNIT_TYPE_TANK in debuffTemplates))
     delete debuffTemplates[::ES_UNIT_TYPE_TANK]
@@ -76,6 +128,7 @@ g_hud_hitcamera.init <- function init(_nest)
   ::g_hud_event_manager.subscribe("EnemyPartDamage", function (params) {
       onEnemyPartDamage(params)
     }, this)
+  ::g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, this)
 
   reset()
   reinit()
@@ -90,7 +143,8 @@ g_hud_hitcamera.reinit <- function reinit()
 g_hud_hitcamera.reset <- function reset()
 {
   isVisible = false
-  hitResult = ::DM_HIT_RESULT_NONE
+  stopFadeTimeS = -1
+  hitResult = DM_HIT_RESULT_NONE
   unitId = -1
   unitVersion = -1
   unitType = ::ES_UNIT_TYPE_INVALID
@@ -108,13 +162,16 @@ g_hud_hitcamera.update <- function update()
   if (!isVisible)
     return
 
-  if (::check_obj(titleObj))
-  {
-    let style = ::getTblValue(hitResult, styles, "none")
-    titleObj.show(hitResult != ::DM_HIT_RESULT_NONE)
-    titleObj.setValue(::loc("hitcamera/result/" + style))
-    scene.result = style
-  }
+  updateFadeAnimation()
+  if (!(titleObj?.isValid() ?? false))
+    return
+
+  let style = styles?[hitResult] ?? "none"
+  scene.result = style
+  let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
+  titleObj.show(isVisibleTitle)
+  if (isVisibleTitle)
+    titleObj.setValue(utf8ToUpper(::loc($"hitcamera/result/{style}")))
 }
 
 g_hud_hitcamera.getAABB <- function getAABB()
@@ -124,7 +181,7 @@ g_hud_hitcamera.getAABB <- function getAABB()
 
 g_hud_hitcamera.isKillingHitResult <- function isKillingHitResult(result)
 {
-  return result >= ::DM_HIT_RESULT_KILL
+  return result >= DM_HIT_RESULT_KILL
 }
 
 g_hud_hitcamera.onHitCameraEvent <- function onHitCameraEvent(mode, result, info)
@@ -132,7 +189,9 @@ g_hud_hitcamera.onHitCameraEvent <- function onHitCameraEvent(mode, result, info
   let newUnitType = ::getTblValue("unitType", info, unitType)
   let needResetUnitType = newUnitType != unitType
 
-  isVisible   = isEnabled && mode == ::HIT_CAMERA_START
+  let needFade = mode == HIT_CAMERA_FADE_OUT
+  isVisible   = isEnabled && (mode == HIT_CAMERA_START || needFade)
+  stopFadeTimeS = needFade ? (info?.stopFadeTime ?? -1) : -1
   hitResult   = result
   unitId      = ::getTblValue("unitId", info, unitId)
   unitVersion = ::getTblValue("unitVersion", info, unitVersion)
@@ -147,6 +206,15 @@ g_hud_hitcamera.onHitCameraEvent <- function onHitCameraEvent(mode, result, info
       guiScene.replaceContent(infoObj, markupFilename, this)
     else
       guiScene.replaceContentFromText(infoObj, "", 0, this)
+  }
+
+  if (needResetUnitType && damageStatusObj?.isValid()) {
+    let guiScene = damageStatusObj.getScene()
+    let markupFilename = damageStatusTemplates?[unitType]
+    if (markupFilename)
+      guiScene.replaceContent(damageStatusObj, markupFilename, this)
+    else
+      guiScene.replaceContentFromText(damageStatusObj, "", 0, this)
   }
 
   if (isVisible)

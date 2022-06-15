@@ -18,13 +18,7 @@
     "gearSinkRangeC": 0.29
   },
   {
-    "JetNozzlesAnim1": [0.3,0.5]
-  },
-  {
-    "JetNozzlesAnim2": [0.5,1.0]
-  },
-  {
-    "JetNozzlesAnim3": [1.0,0.0]
+    "jetEnginePowerFullScale": true
   },
   {
     "type": "typeFighter"
@@ -3758,6 +3752,229 @@
             ]
           }
         ]
+      },
+      {
+        "preset": {
+          "name": "f_5a_bomb_blu_1",
+          "blk": "gameData/FlightModels/weaponPresets/f_5a_bomb_blu_1.blk",
+          "reqModification": "us_blu_1",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+              },
+              {
+                "iconType": "napalm_large"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 6
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "f_5a_bomb_blu_1_aim_9"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/f_5a_bomb_blu_1_aim_9.blk"
+          },
+          {
+            "reqModification": "us_blu_1"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_type_b_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+                  },
+                  {
+                    "iconType": "napalm_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 6
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "f_5a_bomb_blu_1_aim_9_agm_12b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/f_5a_bomb_blu_1_aim_9_agm_12b.blk"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "reqModification": "us_aim_9e"
+          },
+          {
+            "reqModification": "us_blu_1"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_type_b_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_uni"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+                  },
+                  {
+                    "iconType": "napalm_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 6
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -3853,11 +4070,16 @@
       "new_compressor_jet": {
         "tier": 1
       },
+      "us_blu_1": {
+        "tier": 1,
+        "modClass": "weapon"
+      },
       "countermeasures_launcher_chaff_only": [],
       "countermeasures_launcher_flare_only": [],
       "countermeasures_launcher_chaff_priority": [],
       "countermeasures_launcher_flare_priority": [],
       "countermeasures_belt_pack": {
+        "prevModification": "us_blu_1",
         "modClass": "weapon",
         "tier": 2,
         "turn_it_off": false,

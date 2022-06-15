@@ -93,7 +93,7 @@ hudMessages[message_style=center_main_notification] {
   re-type: 9rect;
   padding: 0.01*@shHud;
 
-  background-image: #ui/gameuiskin#subtitles_backgr_middle;
+  background-image: #ui/gameuiskin#subtitles_backgr_middle.png;
   background-color: @white;
   background-position: 0, 0, 0, 0;
   background-repeat: expand;
@@ -459,22 +459,74 @@ multiplayerScore {
 
 
 
+@const enemyDmgStatusPanelWidth: 98%@hitCameraWidth;
+@const enemyDmgStatusPanelHeight: 10%@hitCameraWidth;
+@const enemyDmgStatusPanelMarginBottom: 1.4%@hitCameraWidth;
+@const enemyDmgStatusWidth: @enemyDmgStatusPanelWidth / 6;
+
+enemyDamageStatusPanel {
+  size:@enemyDmgStatusPanelWidth, @enemyDmgStatusPanelHeight;
+  position:absolute;
+  pos:50%(pw-w), ph-h-@enemyDmgStatusPanelMarginBottom;
+}
+
+enemyDamageStatus {
+  size:@enemyDmgStatusWidth, ph;
+  css-hier-invalidate: yes;
+}
+
+enemyDamageStatusBg {
+  size:ph, ph;
+  position:absolute;
+  pos:50%(pw-w), 0;
+  background-image:#ui/gameuiskin#dmg_ship_status_bg.svg;
+  background-svg-size:ph, ph;
+  background-color:#AA000000;
+}
+
+enemyDamageStatusIcon {
+  size:70%ph, 70%ph;
+  position:absolute;
+  pos:50%(pw-w), 50%(ph-h);
+  background-svg-size:70%ph, 70%ph;
+}
+
+enemyDamageStatus[damage=none] enemyDamageStatusBg {
+  background-color:#33000000;
+}
+
+enemyDamageStatus[damage=none] enemyDamageStatusIcon {
+  background-color:#728188;
+}
+
+enemyDamageStatus[damage=minor] enemyDamageStatusIcon {
+  background-color:#E2AE00;
+}
+
+enemyDamageStatus[damage=moderate] enemyDamageStatusIcon {
+  background-color:@orange;
+}
+
+enemyDamageStatus[damage=critical] enemyDamageStatusIcon {
+  background-color:#FF4338;
+}
+
+enemyDamageStatus[damage=fatal] enemyDamageStatusIcon {
+  background-color:@black;
+}
+
 hitCamera {
-  background-color:#D4606060;
-  border:yes;
-  border-color:#CC606060;
-  flow:vertical;
   width:@hitCameraWidth;
+  background-color:@hudTextBgShade;
+  flow:vertical;
   css-hier-invalidate:yes;
+  behaviour:massTransparency;
+  transp-func:square;
 }
 
 hitCameraRender {
   behaviour:hitcamera;
   size:pw, pw/2;
-}
-
-hitCameraLine {
-  size:pw, 2px;
 }
 
 hitCameraTitle {
@@ -487,42 +539,27 @@ hitCameraTitle {
   text-shade-y:0;
   text-shade-color:#19000000;
   width:pw;
-  background-color:#80202020;
 }
 
 hitCameraInfo {
   width:pw;
-  pos:0, ph-h;
+  pos:0, ph;
   position:absolute;
-  background-color:#80202020;
 }
 
-hitCamera[result=none] hitCameraLine, hitCamera[result=ricochet] hitCameraLine, hitCamera[result=bounce] hitCameraLine {
-  background-color:#A0A0A0;
-}
 hitCamera[result=none] hitCameraTitle, hitCamera[result=ricochet] hitCameraTitle, hitCamera[result=bounce] hitCameraTitle {
   color:#A0A0A0;
   text-shade-color:#10000000;
 }
 
-hitCamera[result=hit] hitCameraLine {
-  background-color:#9EE000;
-}
 hitCamera[result=hit] hitCameraTitle {
   color:#9EE000;
 }
 
-hitCamera[result=burn] hitCameraLine, hitCamera[result=critical] hitCameraLine {
-  background-color:#FFC000;
-}
 hitCamera[result=burn] hitCameraTitle, hitCamera[result=critical] hitCameraTitle {
   color:#FFC000;
 }
 
-hitCamera[result=kill] hitCameraLine, hitCamera[result=hull] hitCameraLine, hitCamera[result=ammo] hitCameraLine,
-hitCamera[result=fuel] hitCameraLine, hitCamera[result=crew] hitCameraLine, hitCamera[result=torpedo] hitCameraLine {
-  background-color:#ff4040;
-}
 hitCamera[result=kill] hitCameraTitle, hitCamera[result=hull] hitCameraTitle, hitCamera[result=ammo] hitCameraTitle,
 hitCamera[result=fuel] hitCameraTitle, hitCamera[result=crew] hitCameraTitle, hitCamera[result=torpedo] hitCameraTitle {
   color:#ff4040;
@@ -534,13 +571,17 @@ hitCamDebuff {
 }
 
 hitCamDebuffIcon {
-  background-color:#64646464;
+  background-color:#FFFFFF;
 }
 
 hitCamDebuffLabel {
   behaviour:textArea;
   re-type:textarea;
   font:@fontNormal;
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#19000000;
 }
 
 hitCamDebuff[state=off]       > hitCamDebuffIcon { background-color:#500C0E11; }
@@ -569,7 +610,7 @@ artillery_target:disabled targetArc {
 targetShade {
   size:@artilleryTargetArcSize, @artilleryTargetArcSize;
   position:absolute;
-  background-image:#ui/gameuiskin#artillery_target_arc_bg;
+  background-image:#ui/gameuiskin#artillery_target_arc_bg.png;
   background-color:@white;
 }
 

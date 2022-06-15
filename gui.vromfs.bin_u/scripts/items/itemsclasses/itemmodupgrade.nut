@@ -4,8 +4,8 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 {
   static iType = itemType.MOD_UPGRADE
   static defaultLocId = "modUpgrade"
-  static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg"
-  static typeIcon = "#ui/gameuiskin#item_type_upgrade"
+  static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg.png"
+  static typeIcon = "#ui/gameuiskin#item_type_upgrade.svg"
 
   canBuy = true
   allowBigPicture = false

@@ -3,7 +3,7 @@ let ItemCouponBase = require("scripts/items/itemsClasses/itemCouponBase.nut")
 ::items_classes.ProfileIcon <- class extends ItemCouponBase {
   static iType = itemType.PROFILE_ICON
 
-  getSmallIconName     = @() $"#ui/images/avatars/{getUnlockId()}"
+  getSmallIconName     = @() $"#ui/images/avatars/{getUnlockId()}.png"
   getContentIconData   = @() null
   canConsume           = @() isInventoryItem && canReceivePrize()
 

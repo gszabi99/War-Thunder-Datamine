@@ -72,10 +72,13 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
-    "smokeScreenDmPart": "gear_c_dm"
+    "smokeScreenFx": "smokescreen_hydroplane"
   },
   {
-    "smokeScreenOffset": [2.1,-50.0,0.0]
+    "smokeScreenDmPart": "tail_dm"
+  },
+  {
+    "smokeScreenOffset": [-8.0,-12.0,0.0]
   },
   {
     "hangar_undercarriage_model_name": "low_os2u_undercarriage"
@@ -5896,6 +5899,22 @@
       {
         "dp": [
           {
+            "dm": "_ClipHookRoot"
+          },
+          {
+            "separateDm": true
+          },
+          {
+            "dp": "hook"
+          },
+          {
+            "dp": "hook_catch"
+          }
+        ]
+      },
+      {
+        "dp": [
+          {
             "dm": "engine1_dm"
           },
           {
@@ -6090,7 +6109,7 @@
   },
   {
     "smokeScreenExhaustEmitters": {
-      "emitter": "gear_c"
+      "emitter": "tail_dm"
     }
   },
   {

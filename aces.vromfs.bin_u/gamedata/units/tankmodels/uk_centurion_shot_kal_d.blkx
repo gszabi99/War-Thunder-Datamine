@@ -132,6 +132,9 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
+    "smokeScreenFx": "smokescreen_no_therm_small"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -527,6 +530,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1430,8 +1434,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1475,8 +1479,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1484,8 +1488,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1493,8 +1497,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1533,29 +1537,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2556,8 +2560,9 @@
           "trigger": "gunner1",
           "triggerGroup": "coaxial",
           "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-          "emitter": "bone_mg_aa_v_01",
+          "emitter": "emtr_mg_flame_02",
           "flash": "emtr_mg_flame_02",
+          "useEmitter": true,
           "maxAdditionalPitch": 0.0,
           "barrelDP": "gun_barrel_02_dm",
           "defaultYaw": 0.0,
@@ -2639,8 +2644,9 @@
           "trigger": "gunner2",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-          "emitter": "bone_mg_aa_v_02",
+          "emitter": "emtr_mg_flame_03",
           "flash": "emtr_mg_flame_03",
+          "useEmitter": true,
           "barrelDP": "gun_barrel_03_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2678,8 +2684,9 @@
           "trigger": "gunner2",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-          "emitter": "bone_mg_aa_v_03",
+          "emitter": "emtr_mg_flame_04",
           "flash": "emtr_mg_flame_04",
+          "useEmitter": true,
           "barrelDP": "gun_barrel_04_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2805,8 +2812,6 @@
       },
       "tracks": {
         "animationMultiplier": 0.68,
-        "width": 0.68,
-        "height": 0.08,
         "tracksTensionK": [6.5,8.0,3.0],
         "trackMesh": "uk_centurion_24_phys_track_line",
         "trackLen": 0.1397,
@@ -2816,6 +2821,8 @@
         "trackMaxSinking": 0.17,
         "trackMaxHeight": 1.4,
         "trackEmitSparks": true,
+        "height": 0.08,
+        "width": 0.68,
         "trackStartOffset": 0.18,
         "fricSideRot": [5.0,0.0,0.7,0.3],
         "fricFrontal": [1.0,0.8]
@@ -2831,35 +2838,38 @@
         "minRPM": 700.0
       },
       "mechanics": {
-        "maxBrakeForce": 250120.0,
+        "maxBrakeForce": 250000.0,
         "driveGearRadius": 0.33,
-        "mainGearRatio": 6.04,
-        "sideGearRatio": 4.25,
-        "neutralGearRatio": 3.5,
+        "mainGearRatio": 5.42,
+        "sideGearRatio": 1.0,
+        "neutralGearRatio": 9.0,
         "gearRatios": [
           {
-            "ratio": -1.45
+            "ratio": -6.89
           },
           {
-            "ratio": -2.0
+            "ratio": -8.4
           },
           {
             "ratio": 0.0
           },
           {
-            "ratio": 2.0
+            "ratio": 6.0
           },
           {
-            "ratio": 1.5
+            "ratio": 4.5
           },
           {
-            "ratio": 1.0
+            "ratio": 3.0
           },
           {
-            "ratio": 0.428
+            "ratio": 2.16
           },
           {
-            "ratio": 0.244
+            "ratio": 1.62
+          },
+          {
+            "ratio": 1.145
           }
         ]
       },
@@ -3417,6 +3427,220 @@
         ]
       },
       {
+        "event": [
+          {
+            "name": "attached_fire"
+          },
+          {
+            "lifetime": 15.0
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_dmg"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_05"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_06"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_07"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_08"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_09"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_10"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_11"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_12"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_13"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_14"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_15"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_16"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_dmg"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_05"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_06"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_07"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_08"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_09"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_10"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_11"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_12"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_13"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_14"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_15"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_16"
+            }
+          }
+        ]
+      },
+      {
         "event": {
           "name": "fuel_exterior",
           "fx": {
@@ -3494,10 +3718,10 @@
       "art_support": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk"
+        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_uk"
+        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
       },
       "modern_tank_laser_rangefinder": [],
       "tank_engine_smoke_screen_system": [],
@@ -3598,8 +3822,9 @@
                 "trigger": "gunner1",
                 "triggerGroup": "coaxial",
                 "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-                "emitter": "bone_mg_aa_v_01",
+                "emitter": "emtr_mg_flame_02",
                 "flash": "emtr_mg_flame_02",
+                "useEmitter": true,
                 "maxAdditionalPitch": 0.0,
                 "barrelDP": "gun_barrel_02_dm",
                 "defaultYaw": 0.0,
@@ -3681,8 +3906,9 @@
                 "trigger": "gunner2",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-                "emitter": "bone_mg_aa_v_02",
+                "emitter": "emtr_mg_flame_03",
                 "flash": "emtr_mg_flame_03",
+                "useEmitter": true,
                 "barrelDP": "gun_barrel_03_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3720,8 +3946,9 @@
                 "trigger": "gunner2",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-                "emitter": "bone_mg_aa_v_03",
+                "emitter": "emtr_mg_flame_04",
                 "flash": "emtr_mg_flame_04",
+                "useEmitter": true,
                 "barrelDP": "gun_barrel_04_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,

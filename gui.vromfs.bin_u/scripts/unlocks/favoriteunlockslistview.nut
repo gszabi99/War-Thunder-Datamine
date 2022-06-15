@@ -25,7 +25,7 @@
       curFavoriteUnlocksBlk.setFrom(::g_unlocks.getFavoriteUnlocks())
 
     let unlocksObjCount = listContainer.childrenCount()
-    let total = ::max(unlocksObjCount, curFavoriteUnlocksBlk.blockCount())
+    let total = max(unlocksObjCount, curFavoriteUnlocksBlk.blockCount())
     if (unlocksObjCount == 0 && total > 0) {
       let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified"),
         { unlocks = array(total, { hasCloseButton = true, hasHiddenContent = true })})
@@ -38,7 +38,7 @@
       ::g_unlock_view.fillSimplifiedUnlockInfo(curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
     }
 
-    showSceneBtn("no_favorites_txt",
+    this.showSceneBtn("no_favorites_txt",
       ! (curFavoriteUnlocksBlk.blockCount() && listContainer.childrenCount()))
     unlocksListIsValid = true
   }

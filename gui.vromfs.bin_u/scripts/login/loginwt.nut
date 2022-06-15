@@ -1,3 +1,4 @@
+let { format } = require("string")
 let statsd = require("statsd")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -60,13 +61,13 @@ let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
   ::abandoned_researched_items_for_session = []
 }
 
-::go_to_account_web_page <- function go_to_account_web_page(bqKey = "")
+let function go_to_account_web_page(bqKey = "")
 {
-  let urlBase = ::format("/user.php?skin_lang=%s", ::g_language.getShortName())
+  let urlBase = format("/user.php?skin_lang=%s", ::g_language.getShortName())
   openUrl(::get_authenticated_url_sso(urlBase).url, false, false, bqKey)
 }
 
-g_login.loadLoginHandler <- function loadLoginHandler()
+::g_login.loadLoginHandler <- function loadLoginHandler()
 {
   local hClass = ::gui_handlers.LoginWndHandler
   if (isPlatformSony)
@@ -84,9 +85,9 @@ g_login.loadLoginHandler <- function loadLoginHandler()
   ::handlersManager.loadHandler(hClass)
 }
 
-g_login.onAuthorizeChanged <- function onAuthorizeChanged()
+::g_login.onAuthorizeChanged <- function onAuthorizeChanged()
 {
-  if (!isAuthorized())
+  if (!this.isAuthorized())
   {
     if (::g_login.initOptionsPseudoThread)
       ::g_login.initOptionsPseudoThread.clear()
@@ -100,7 +101,7 @@ g_login.onAuthorizeChanged <- function onAuthorizeChanged()
     })
 }
 
-g_login.initConfigs <- function initConfigs(cb)
+::g_login.initConfigs <- function initConfigs(cb)
 {
   ::broadcastEvent("AuthorizeComplete")
   ::load_scripts_after_login_once()
@@ -108,11 +109,11 @@ g_login.initConfigs <- function initConfigs(cb)
   ::my_user_id_str = ::get_player_user_id_str()
   ::my_user_id_int64 = ::my_user_id_str.tointeger()
 
-  initOptionsPseudoThread =  [
+  this.initOptionsPseudoThread =  [
     function() { ::initEmptyMenuChat() }
   ]
-  initOptionsPseudoThread.extend(::init_options_steps)
-  initOptionsPseudoThread.append(
+  this.initOptionsPseudoThread.extend(::init_options_steps)
+  this.initOptionsPseudoThread.append(
     function() {
       if (!::g_login.hasState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))
         return PT_STEP_STATUS.SUSPEND
@@ -129,7 +130,7 @@ g_login.initConfigs <- function initConfigs(cb)
 
       ::g_font.validateSavedConfigFonts()
       if (::handlersManager.checkPostLoadCss(true))
-        dagor.debug("Login: forced to reload waitforLogin window.")
+        ::dagor.debug("Login: forced to reload waitforLogin window.")
       return null
     }
     function() {
@@ -186,20 +187,20 @@ g_login.initConfigs <- function initConfigs(cb)
       {
         let l = ::loc(sver, "-1")
         try { getroottable()[sver] = l.tointeger() }
-        catch(e) { dagor.assertf(0, "can't convert '"+l+"' to version "+sver) }
+        catch(e) { ::dagor.assertf(0, "can't convert '"+l+"' to version "+sver) }
       }
 
       ::nda_version = ::has_feature("Tanks") ? ::nda_version_tanks : ::nda_version
 
-      if (should_agree_eula(::nda_version, ::TEXT_NDA))
+      if (::should_agree_eula(::nda_version, ::TEXT_NDA))
         ::gui_start_eula(::TEXT_NDA)
       else
-      if (should_agree_eula(::eula_version, ::TEXT_EULA))
+      if (::should_agree_eula(::eula_version, ::TEXT_EULA))
         ::gui_start_eula(::TEXT_EULA)
     }
     function()
     {
-      if (should_agree_eula(::nda_version, ::TEXT_NDA) || should_agree_eula(::eula_version, ::TEXT_EULA))
+      if (::should_agree_eula(::nda_version, ::TEXT_NDA) || ::should_agree_eula(::eula_version, ::TEXT_EULA))
         return PT_STEP_STATUS.SUSPEND
       return null
     }
@@ -239,16 +240,16 @@ g_login.initConfigs <- function initConfigs(cb)
     }
   )
 
-  startPseudoThread(initOptionsPseudoThread, startLogout)
+  startPseudoThread(this.initOptionsPseudoThread, startLogout)
 }
 
-g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
+::g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
 {
   //work only after scripts reload
-  if (!shouldRestartPseudoThread)
+  if (!this.shouldRestartPseudoThread)
     return
-  shouldRestartPseudoThread = false
-  if (!initOptionsPseudoThread)
+  this.shouldRestartPseudoThread = false
+  if (!this.initOptionsPseudoThread)
     return
 
   ::get_cur_gui_scene().performDelayed(::getroottable(),
@@ -259,19 +260,19 @@ g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(p)
     })
 }
 
-g_login.afterScriptsReload <- function afterScriptsReload()
+::g_login.afterScriptsReload <- function afterScriptsReload()
 {
-  if (initOptionsPseudoThread)
-    shouldRestartPseudoThread = true
+  if (this.initOptionsPseudoThread)
+    this.shouldRestartPseudoThread = true
 }
 
-g_login.onLoggedInChanged <- function onLoggedInChanged()
+::g_login.onLoggedInChanged <- function onLoggedInChanged()
 {
-  if (!isLoggedIn())
+  if (!this.isLoggedIn())
     return
 
-  statsdOnLogin()
-  bigQueryOnLogin()
+  this.statsdOnLogin()
+  this.bigQueryOnLogin()
 
   ::broadcastEvent("LoginComplete")
 
@@ -285,31 +286,47 @@ g_login.onLoggedInChanged <- function onLoggedInChanged()
   })
 }
 
-g_login.firstMainMenuLoad <- function firstMainMenuLoad()
+let function needAutoStartBattle() {
+  if (!::has_feature("BattleAutoStart")
+      || ::disable_network()
+      || ::stat_get_value_respawns(0, 1) > 0
+      || !::g_login.isProfileReceived()
+      || !::load_local_account_settings("needAutoStartBattle", true))
+    return false
+
+  ::save_local_account_settings("needAutoStartBattle", false)
+  return true
+}
+
+::g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 {
-  let handler = ::gui_start_mainmenu(false)
+  let isAutoStart = needAutoStartBattle()
+  let handler = isAutoStart
+    ? ::handlersManager.loadHandler(::gui_handlers.AutoStartBattleHandler)
+    : ::gui_start_mainmenu(false)
+
   if (!handler)
     return //was error on load mainmenu, and was called signout on such error
 
   ::updateContentPacks()
 
-  handler.doWhenActive(checkAwardsOnStartFrom)
+  handler.doWhenActive(::checkAwardsOnStartFrom)
   handler.doWhenActive(@() ::tribunal.checkComplaintCounts())
   handler.doWhenActive(@() ::menu_chat_handler?.checkVoiceChatSuggestion())
 
-  if (!fetch_profile_inited_once())
+  if (!::fetch_profile_inited_once())
   {
-    if (get_num_real_devices() == 0 && !::is_platform_android)
-      setControlTypeByID("ct_mouse")
+    if (::get_num_real_devices() == 0 && !::is_platform_android)
+      ::setControlTypeByID("ct_mouse")
     else if (::is_platform_shield_tv())
-      setControlTypeByID("ct_xinput")
+      ::setControlTypeByID("ct_xinput")
     else if (!isPlatformSteamDeck)
     {
       let onlyDevicesChoice = !::has_feature("Profile")
       handler.doWhenActive(function() { ::gui_start_controls_type_choice(onlyDevicesChoice) })
     }
   }
-  else if (!fetch_devices_inited_once() && !isPlatformSteamDeck)
+  else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
 
   if (::g_login.isProfileReceived() && ::g_controls_presets.isNewerControlsPresetVersionAvailable())
@@ -330,12 +347,12 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
 
   if (::has_feature("CheckEmailVerified") && !havePlayerTag("email_verified"))
     handler.doWhenActive(function () {
-      msgBox(
+      this.msgBox(
       "email_not_verified_msg_box",
       ::loc("mainmenu/email_not_verified"),
       [
         ["later", function() {} ],
-        ["verify", function() {::go_to_account_web_page("email_verification_popup")}]
+        ["verify", function() {go_to_account_web_page("email_verification_popup")}]
       ],
       "later", { cancel_fn = function() {}}
     )})
@@ -349,7 +366,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
         [{
           id = "acitvate"
           text = ::loc("msgbox/btn_activate")
-          func = function() {::go_to_account_web_page("2step_auth_popup")}
+          func = function() {go_to_account_web_page("2step_auth_popup")}
         }]
       )
     })
@@ -362,10 +379,13 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
   ::update_gamercards()
   penalties.showBannedStatusMsgBox()
 
-  onMainMenuReturnActions.value?.onMainMenuReturn(handler, true)
+  if (isAutoStart)
+    handler.doWhenActiveOnce("startBattle")
+  else
+    onMainMenuReturnActions.value?.onMainMenuReturn(handler, true)
 }
 
-g_login.statsdOnLogin <- function statsdOnLogin()
+::g_login.statsdOnLogin <- function statsdOnLogin()
 {
   statsd.send_counter("sq.game_start.login", 1)
 
@@ -428,12 +448,12 @@ g_login.statsdOnLogin <- function statsdOnLogin()
       {
         anyUG = true
         statsd.send_counter("sq.ug.useus", 1)
-        dagor.debug("statsd_on_login ug.useus "+skin)
+        ::dagor.debug("statsd_on_login ug.useus "+skin)
         break;
       }
     }
 
-    let lcfg = DataBlock()
+    let lcfg = ::DataBlock()
     ::get_localization_blk_copy(lcfg)
     if (lcfg.locTable != null)
     {

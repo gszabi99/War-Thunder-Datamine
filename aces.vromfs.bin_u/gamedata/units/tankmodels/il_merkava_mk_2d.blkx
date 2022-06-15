@@ -132,6 +132,9 @@
     "smokeScreenFxType": "tank_smokescreen"
   },
   {
+    "smokeScreenFx": "smokescreen_no_therm_small"
+  },
+  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "CHA_tank",
@@ -267,16 +270,26 @@
           "armorThickness": 35.0,
           "hidableInXrayViewer": true
         },
-        "turret_10_back_dm": {
-          "armorThickness": 30.0
+        "ex_armor_body_17_dm": {
+          "armorThickness": 40.0,
+          "hidableInViewer": true
+        },
+        "turret_10_bottom_dm": {
+          "armorThickness": 5.0
+        },
+        "turret_10_front_dm": {
+          "armorThickness": 10.0
+        },
+        "ex_armor_l_11_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_armor_r_11_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
         "armorClass": "CHA_tank",
         "turret_02_side_dm": {
-          "armorThickness": 30.0
-        },
-        "turret_02_bottom_dm": {
           "armorThickness": 30.0
         },
         "turret_bottom_dm": {
@@ -358,7 +371,8 @@
           "armorThickness": 30.0
         },
         "turret_07_top_dm": {
-          "armorThickness": 30.0
+          "armorThickness": 30.0,
+          "armorClass": "RHA_tank"
         },
         "turret_07_side_dm": {
           "armorThickness": 65.0
@@ -445,7 +459,7 @@
       "body_side_screens": {
         "armorClass": "t_90_rubber_fabric_screens",
         "hp": 100.0,
-        "armorThickness": 10.0,
+        "armorThickness": 8.0,
         "createSecondaryShatters": false,
         "ex_armor_r_04_dm": [],
         "ex_armor_r_05_dm": [],
@@ -460,7 +474,19 @@
         "ex_armor_l_07_dm": [],
         "ex_armor_l_08_dm": [],
         "ex_armor_l_09_dm": [],
-        "ex_armor_l_10_dm": []
+        "ex_armor_l_10_dm": [],
+        "turret_09_front_dm": {
+          "armorThickness": 8.0
+        },
+        "turret_11_top_dm": {
+          "armorThickness": 8.0
+        },
+        "turret_11_back_dm": {
+          "armorThickness": 8.0
+        },
+        "turret_11_bottom_dm": {
+          "armorThickness": 8.0
+        }
       },
       "turret_side_add_armor": {
         "armorClass": "hull_side_special_armor",
@@ -468,19 +494,17 @@
         "armorThickness": 60.0,
         "createSecondaryShatters": false,
         "variableThickness": true,
-        "cumulativeArmorQuality": 0.5,
+        "cumulativeArmorQuality": 1.25,
         "genericArmorQuality": 0.15,
         "ex_armor_turret_r_01_dm": [],
         "ex_armor_turret_r_02_dm": [],
         "ex_armor_turret_r_03_dm": [],
         "ex_armor_turret_r_04_dm": [],
-        "ex_armor_turret_r_05_dm": [],
         "ex_armor_turret_l_01_dm": [],
         "ex_armor_turret_l_02_dm": [],
         "ex_armor_turret_l_03_dm": [],
         "ex_armor_turret_l_04_dm": [],
-        "ex_armor_turret_l_05_dm": [],
-        "ex_armor_turret_l_06_dm": []
+        "ex_armor_turret_l_05_dm": []
       },
       "additional_armor": {
         "armorClass": "hull_side_special_armor",
@@ -513,10 +537,6 @@
           "hidableInViewer": true
         },
         "turret_top_dm": {
-          "armorThickness": 25.0,
-          "hidableInViewer": true
-        },
-        "turret_09_front_dm": {
           "armorThickness": 25.0,
           "hidableInViewer": true
         },
@@ -554,7 +574,9 @@
         },
         "ex_armor_turret_03_dm": {
           "armorThickness": 6.0
-        }
+        },
+        "ex_armor_turret_l_06_dm": [],
+        "ex_armor_turret_r_05_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -735,6 +757,7 @@
         "hp": 40.0,
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
+        "napalmDamageMult": 0.0,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],
@@ -1669,8 +1692,8 @@
           {
             "onHit": {
               "damageType": "cumulative",
-              "expl": 0.5,
-              "fire": 0.5,
+              "expl": 0.6,
+              "fire": 0.4,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1714,8 +1737,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.05,
-              "fire": 0.1,
+              "expl": 0.075,
+              "fire": 0.075,
               "damage": 70.0,
               "fHitCritical": true
             }
@@ -1723,8 +1746,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.2,
+              "expl": 0.15,
+              "fire": 0.15,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1732,8 +1755,8 @@
           {
             "onHit": {
               "damageType": "generic",
-              "expl": 0.1,
-              "fire": 0.4,
+              "expl": 0.25,
+              "fire": 0.25,
               "damage": 300.0,
               "fHitCritical": true
             }
@@ -1772,29 +1795,29 @@
           {
             "onKill": {
               "damageType": "cumulative",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "explosion",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "secondaryShatter",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.4,
+              "fire": 0.6
             }
           },
           {
             "onKill": {
               "damageType": "generic",
-              "expl": 0.2,
-              "fire": 0.8
+              "expl": 0.5,
+              "fire": 0.5
             }
           }
         ]
@@ -2967,7 +2990,7 @@
           },
           {
             "limits": {
-              "yaw": [-8.0,19.0],
+              "yaw": [-0.0,0.0],
               "pitch": [-0.0,0.0]
             }
           }
@@ -3009,14 +3032,21 @@
             "hasNightVision": false
           },
           "limits": {
-            "yaw": [-60.0,120.0],
-            "pitch": [-5.0,50.0]
+            "yaw": [-120.0,120.0],
+            "pitch": [-10.0,50.0]
+          },
+          "limitsTable": {
+            "lim1": [-120.0,-98.0,-3.0,50.0],
+            "lim2": [-98.0,-80.0,1.0,50.0],
+            "lim3": [-80.0,-30.0,-10.0,50.0],
+            "lim4": [-30.0,-18.0,-2.0,50.0],
+            "lim5": [-18.0,120.0,-10.0,50.0]
           }
         }
       },
       {
         "Weapon": {
-          "trigger": "gunner4",
+          "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
           "emitter": "emtr_mg_flame_01",
@@ -3050,8 +3080,16 @@
             "hasNightVision": false
           },
           "limits": {
-            "yaw": [-120.0,60.0],
-            "pitch": [-5.0,50.0]
+            "yaw": [-120.0,120.0],
+            "pitch": [-10.0,50.0]
+          },
+          "limitsTable": {
+            "lim1": [-120.0,21.0,-10.0,50.0],
+            "lim2": [21.0,45.0,-1.0,50.0],
+            "lim3": [45.0,73.0,-10.0,50.0],
+            "lim4": [73.0,89.0,-7.0,50.0],
+            "lim5": [89.0,102.0,10.0,50.0],
+            "lim6": [102.0,120.0,1.0,50.0]
           }
         }
       },
@@ -3746,6 +3784,220 @@
         ]
       },
       {
+        "event": [
+          {
+            "name": "attached_fire"
+          },
+          {
+            "lifetime": 15.0
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_dmg"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_05"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_06"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_07"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_08"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_09"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_10"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_11"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_12"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_13"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_14"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_15"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_smoke_small_dmg_16"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_dmg"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_01"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_02"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_03"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_04"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_05"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_06"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_07"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_08"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_09"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_10"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_11"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_12"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_13"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_14"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_15"
+            }
+          },
+          {
+            "fx": {
+              "name": "fire_tank_napalm_smal",
+              "emitter": "emtr_fire_small_dmg_16"
+            }
+          }
+        ]
+      },
+      {
         "event": {
           "name": "fuel_exterior",
           "fx": {
@@ -4192,10 +4444,10 @@
       "new_tank_vertical_aiming": [],
       "tank_new_gun": [],
       "tank_medical_kit": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il"
+        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
       },
       "tank_medical_kit_expendable": {
-        "image": "#ui/gameuiskin#tank_reinforcement_il"
+        "image": "#ui/gameuiskin#tank_reinforcement_il.png"
       },
       "art_support": [],
       "tank_engine_smoke_screen_system": {
@@ -4473,7 +4725,7 @@
                 },
                 {
                   "limits": {
-                    "yaw": [-8.0,19.0],
+                    "yaw": [-0.0,0.0],
                     "pitch": [-0.0,0.0]
                   }
                 }
@@ -4515,14 +4767,21 @@
                   "hasNightVision": false
                 },
                 "limits": {
-                  "yaw": [-60.0,120.0],
-                  "pitch": [-5.0,50.0]
+                  "yaw": [-120.0,120.0],
+                  "pitch": [-10.0,50.0]
+                },
+                "limitsTable": {
+                  "lim1": [-120.0,-98.0,-3.0,50.0],
+                  "lim2": [-98.0,-80.0,1.0,50.0],
+                  "lim3": [-80.0,-30.0,-10.0,50.0],
+                  "lim4": [-30.0,-18.0,-2.0,50.0],
+                  "lim5": [-18.0,120.0,-10.0,50.0]
                 }
               }
             },
             {
               "Weapon": {
-                "trigger": "gunner4",
+                "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
                 "emitter": "emtr_mg_flame_01",
@@ -4556,8 +4815,16 @@
                   "hasNightVision": false
                 },
                 "limits": {
-                  "yaw": [-120.0,60.0],
-                  "pitch": [-5.0,50.0]
+                  "yaw": [-120.0,120.0],
+                  "pitch": [-10.0,50.0]
+                },
+                "limitsTable": {
+                  "lim1": [-120.0,21.0,-10.0,50.0],
+                  "lim2": [21.0,45.0,-1.0,50.0],
+                  "lim3": [45.0,73.0,-10.0,50.0],
+                  "lim4": [73.0,89.0,-7.0,50.0],
+                  "lim5": [89.0,102.0,10.0,50.0],
+                  "lim6": [102.0,120.0,1.0,50.0]
                 }
               }
             },
@@ -4679,8 +4946,21 @@
           ]
         }
       },
+      "mine_protection_improvement": {
+        "invertEnableLogic": false,
+        "turn_it_off": false,
+        "effects": {
+          "rcostAddParam": 0.92,
+          "changeMass": 3000.0
+        },
+        "disableModEffects": {
+          "hideNodes": {
+            "node": "ex_armor_body_17"
+          }
+        }
+      },
       "night_vision_system": {
-        "image": "#ui/gameuiskin#thermal_sight",
+        "image": "#ui/gameuiskin#thermal_sight.png",
         "tier": 2,
         "effects": {
           "nightVision": {

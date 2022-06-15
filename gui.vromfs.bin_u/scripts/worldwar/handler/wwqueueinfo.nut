@@ -68,7 +68,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
   function hideQueueInfoObj()
   {
     foreach (sideData in sidesList)
-      showSceneBtn(sideData.id, false)
+      this.showSceneBtn(sideData.id, false)
   }
 
   function getSidesInfo(battle)

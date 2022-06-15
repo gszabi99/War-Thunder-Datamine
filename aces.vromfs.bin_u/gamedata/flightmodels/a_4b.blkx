@@ -2550,6 +2550,35 @@
           "reqModification": "us_aim_9b"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "a_4b_bomb_mk77",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk77.blk",
+        "reqModification": "us_mk_77",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod4.blk",
+            "iconType": "napalm_middle"
+          }
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "a_4b_bomb_mk77_aim_9"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk77_aim_9.blk"
+        },
+        {
+          "reqModification": "us_mk_77"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -2692,6 +2721,10 @@
     "us_aim_9b": {
       "reqModification": "f4c_zuni",
       "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_mk_77": {
+      "tier": 1,
       "modClass": "weapon"
     }
   },

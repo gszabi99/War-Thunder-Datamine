@@ -502,7 +502,7 @@
             "stateFrom": "radarTrack"
           },
           {
-            "event": "activeTargetOfInterestInertialTimeOut"
+            "event": "targetsOfInterestCleanup"
           },
           {
             "command": "selectTarget"
@@ -617,7 +617,7 @@
             "stateFrom": "irstTrack"
           },
           {
-            "event": "activeTargetOfInterestInertialTimeOut"
+            "event": "targetsOfInterestCleanup"
           },
           {
             "command": "selectTarget"
@@ -729,7 +729,10 @@
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
-            "extrapolateActiveTargetOfInterest": [],
+            "extrapolateTargetsOfInterest": [],
+            "clearTargetsOfInterest": {
+              "timeOut": 2.0
+            },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },
@@ -743,9 +746,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            },
-            "checkActiveTargetOfInerestInertialTimeout": {
-              "timeOut": 2.0
             }
           }
         }

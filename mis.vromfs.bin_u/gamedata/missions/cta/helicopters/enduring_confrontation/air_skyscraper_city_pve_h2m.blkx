@@ -288,6 +288,22 @@
     },
     {
       "import_record": {
+        "file": "gameData/missions/cta/helicopters/enduring_confrontation/air_skyscraper_city/tl_takeof_landing_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
         "file": "gameData/missions/templates/enduring_confrontation/bel_base_ec_logic_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -353,6 +369,22 @@
     {
       "import_record": {
         "file": "gameData/missions/cta/helicopters/enduring_confrontation/air_skyscraper_city/at_assaults_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/helicopters/enduring_confrontation/air_skyscraper_city/bt_bombers_template_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -457,41 +489,28 @@
               "target": "ft_armada"
             },
             {
-              "target": "at_armada"
-            },
-            {
               "target": "cnv_armada"
             }
           ]
         },
         {
           "comment": {
-            "value": "доступность шаблонов"
+            "value": "dostupnost' shablonov"
           }
         },
         {
           "comment": {
-            "value": "выключение разведки"
+            "value": "vyklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "включение разведки"
+            "value": "vklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "разрешаем бои после уничтожения конвоев"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": "увеличиваем количество одновременно запущенных шаблонов"
+            "value": "razreshaem boi posle unichtozheniya konvoev"
           }
         },
         {
@@ -501,7 +520,17 @@
         },
         {
           "comment": {
-            "value": "размер сетки"
+            "value": "uvelichivaem kolichestvo odnovremenno zapushchennyh shablonov"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "razmer setki"
           }
         },
         {
@@ -517,6 +546,11 @@
         {
           "comment": {
             "value": "test triggers on"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -559,6 +593,12 @@
           "varSetBool": {
             "value": true,
             "var": "to_pve_enable"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "tl_t1_is_enabled"
           }
         },
         {
@@ -714,6 +754,36 @@
             "target": "test_capture_zones_on"
           }
         ]
+      },
+      "else_actions": []
+    },
+    "test_unit_var": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetVar": {
+          "object_var_name": "test_unit_var",
+          "object": "t1_players_squad",
+          "object_var_value": 0
+        },
+        "comment": {
+          "value": ""
+        },
+        "varSetInt": {
+          "value": 10,
+          "var": "tl_t1_delay_timer"
+        }
       },
       "else_actions": []
     }

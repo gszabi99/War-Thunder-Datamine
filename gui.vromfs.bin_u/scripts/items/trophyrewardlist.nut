@@ -62,7 +62,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
     let rewardType = ::trophyReward.getType(reward_config)
     let isItem = ::trophyReward.isRewardItem(rewardType)
     infoHandler?.setHandlerVisible(isItem)
-    let infoTextObj = showSceneBtn("item_info_text", !isItem)
+    let prizeInfo = this.showSceneBtn("prize_info", !isItem)
     if (isItem)
     {
       if (!infoHandler)
@@ -70,15 +70,10 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
       let item = ::ItemsManager.findItemById(reward_config[rewardType])
       infoHandler.updateHandlerData(item, true, true, reward_config)
-    } else
-    {
-      if (!::check_obj(infoTextObj))
-        return
-
-      let text = [::trophyReward.getName(reward_config)]
-      text.append(::trophyReward.getDecription(reward_config, true))
-      infoTextObj.setValue(::g_string.implode(text, "\n"))
+      return
     }
+    let trophyDesc = ::trophyReward.getFullDescriptonView(reward_config)
+    guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
   }
 
   function onEventItemsShopUpdate(p)

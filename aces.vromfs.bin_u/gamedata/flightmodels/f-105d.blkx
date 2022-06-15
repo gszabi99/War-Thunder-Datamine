@@ -11,9 +11,7 @@
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.355,
   "gearSinkRangeC": 0.2,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "type": "typeFighter",
   "paratrooper": "raf_para",
   "advancedInstructor": true,
@@ -1947,7 +1945,8 @@
       "bullets": 1028,
       "light": false,
       "spread": 1.2,
-      "traceOffset": 1
+      "traceOffset": 1,
+      "rotationAnimScale": "gun_rotate_01:CRS"
     }
   },
   "weapon_presets": [
@@ -5592,6 +5591,213 @@
           ]
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "f_105d_bomb_blu27b",
+        "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_blu27b.blk",
+        "reqModification": "us_blu27_b",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/us_blu27b.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "napalm_large"
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f_105d_bomb_blu_27_aim9b"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_blu_27_aim9b.blk"
+        },
+        {
+          "reqModification": "us_blu27_b"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_blu27b.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "napalm_large"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 2.0
+                },
+                {
+                  "iconType": "missile_air_to_air_group"
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_105d_bomb_blu_27_aim9e"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_105d_bomb_blu_27_aim9e.blk"
+        },
+        {
+          "reqModification": "us_blu27_b"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_blu27b.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "napalm_large"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 2.0
+                },
+                {
+                  "iconType": "missile_type_b_air_to_air_group"
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -5733,7 +5939,12 @@
       "tier": 3,
       "modClass": "weapon"
     },
+    "us_blu27_b": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "us_2_75_in_ffar_lau_3a": {
+      "prevModification": "us_blu27_b",
       "tier": 2,
       "modClass": "weapon"
     },

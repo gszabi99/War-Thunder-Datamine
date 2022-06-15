@@ -90,7 +90,7 @@
       else
         misBtnText = ::loc("misList/severalMissionsSelected", { amount = chosenAmount })
     }
-    let misBtn = showSceneBtn("btn_missions", misBtnText.len() > 0)
+    let misBtn = this.showSceneBtn("btn_missions", misBtnText.len() > 0)
     misBtn.setValue(misBtnText)
   }
 
@@ -101,7 +101,7 @@
     let joinButtonObj = scene.findObject("btn_apply")
     joinButtonObj.inactiveColor = reasonData.activeJoinButton ? "no" : "yes"
 
-    let reasonTextObj = showSceneBtn("cant_create_reason", reasonData.reasonText.len() > 0)
+    let reasonTextObj = this.showSceneBtn("cant_create_reason", reasonData.reasonText.len() > 0)
     reasonTextObj.setValue(reasonData.reasonText)
   }
 

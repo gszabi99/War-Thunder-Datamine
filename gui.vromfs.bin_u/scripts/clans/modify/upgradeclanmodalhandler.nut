@@ -1,3 +1,4 @@
+let { format } = require("string")
 ::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
 {
   owner = null
@@ -56,10 +57,10 @@
     else if (::check_balance_msgBox(upgradeCost))
     {
       let msgText = ::warningIfGold(
-        ::format(::loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
+        format(::loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
-      msgBox("need_money", msgText, [["ok", function() { upgradeClan() }],
+      this.msgBox("need_money", msgText, [["ok", function() { upgradeClan() }],
         ["cancel"]], "ok")
     }
   }

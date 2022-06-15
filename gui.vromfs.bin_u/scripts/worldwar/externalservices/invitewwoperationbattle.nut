@@ -68,7 +68,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
   function getIcon()
   {
-    return "#ui/gameuiskin#battles_open"
+    return "#ui/gameuiskin#battles_open.png"
   }
 
   function haveRestrictions()

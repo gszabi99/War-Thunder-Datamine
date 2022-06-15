@@ -85,7 +85,7 @@ expandable {
           <</haveRestrictions>>
 
           ButtonImg {}
-          img { background-image:t='#ui/gameuiskin#favorite' }
+          img { background-image:t='#ui/gameuiskin#favorite.png' }
         }
 
         Button_text {

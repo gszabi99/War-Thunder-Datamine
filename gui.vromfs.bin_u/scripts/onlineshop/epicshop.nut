@@ -65,12 +65,12 @@ foreach (sh in sheetsArray)
 }
 
 let openIngameStore = ::kwarg(
-  function(chapter = null, curItemId = "", afterCloseFunc = null, openedFrom = "unknown") {
+  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
     if (!::isInArray(chapter, [null, "", "eagles"]))
       return false
 
     if (shopData.canUseIngameShop()) {
-      statsd.send_counter("sq.ingame_store.open", 1, {origin = openedFrom})
+      statsd.send_counter("sq.ingame_store.open", 1, {origin = statsdMetric})
       let item = shopData.getShopItem(curItemId)
       shopData.requestData(@() ::handlersManager.loadHandler(::gui_handlers.EpicShop, {
         itemsCatalog = shopData.catalog.value

@@ -2,6 +2,7 @@ let { turretAngles } = require("airHudElems.nut")
 let lineWidth = hdpx(LINE_WIDTH)
 let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("planeState/planeWeaponState.nut")
 let { GuidanceLockState } = require("agmAimState.nut")
+let { IsOnGround } = require("planeState/planeToolsState.nut")
 let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 
 
@@ -28,7 +29,7 @@ let status = @() {
     @() {
       size = SIZE_TO_CONTENT
       watch = LaserAgmName
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontFxColor = fontOutlineColor
       fontFxFactor = fontOutlineFxFactor
@@ -39,7 +40,7 @@ let status = @() {
     @() {
       size = [100, SIZE_TO_CONTENT]
       watch = GuidanceLockState
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontFxColor = fontOutlineColor
       fontFxFactor = fontOutlineFxFactor
@@ -47,12 +48,17 @@ let status = @() {
       fontSize = hudFontHgt
       hplace = ALIGN_LEFT
       padding = [0, 20]
-      text = GuidanceLockState.value == -1 ? "" : (GuidanceLockState.value == 0 ? ::loc("HUD/TXT_STANDBY") : (GuidanceLockState.value == 1 ? ::loc("HUD/TXT_WARM_UP") : (GuidanceLockState.value == 2 ? ::loc("HUD/TXT_LOCK") : (GuidanceLockState.value == 3 ? ::loc("HUD/TXT_TRACK") : ::loc("HUD/TXT_LOCK_AFTER_LAUNCH")))))
+      text = GuidanceLockState.value == -1 ? ""
+        : (GuidanceLockState.value == 0 ? ::loc("HUD/TXT_STANDBY")
+        : (GuidanceLockState.value == 1 ? ::loc("HUD/TXT_WARM_UP")
+        : (GuidanceLockState.value == 2 ? ::loc("HUD/TXT_LOCK")
+        : (GuidanceLockState.value == 3 ? ::loc("HUD/TXT_TRACK")
+        : ::loc("HUD/TXT_LOCK_AFTER_LAUNCH")))))
     },
     @() {
       size = SIZE_TO_CONTENT
       watch = [LaserAgmCnt, LaserAgmSelectedCnt]
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       hplace = ALIGN_LEFT
       font = Fonts.hud
       fontFxColor = fontOutlineColor
@@ -66,7 +72,7 @@ let status = @() {
     @() {
       size = SIZE_TO_CONTENT
       watch = LaserAgmName
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontFxColor = fontOutlineColor
       fontFxFactor = fontOutlineFxFactor
@@ -81,14 +87,16 @@ let hints = @() {
   size = flex()
   children = [
     @() {
-      watch = GuidanceLockState
+      watch = [GuidanceLockState, IsOnGround]
       size = flex()
       pos = [pw(42), ph(70)]
-      rendObj = ROBJ_DTEXT
+      rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontSize = hudFontHgt
       color = LaserAtgmSightColor.value
-      text = GuidanceLockState.value == 2 ? ::loc("hints/need_lock_laser_spot") : (GuidanceLockState.value == 3 ? ::loc("hints/click_for_launch_laser_shell") : "")
+      text = IsOnGround.value ? ::loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
+        : GuidanceLockState.value == 2 ? ::loc("hints/need_lock_laser_spot")
+        : (GuidanceLockState.value == 3 ? ::loc("hints/click_for_launch_laser_shell") : "")
     }
   ]
 }

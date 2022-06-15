@@ -1,3 +1,4 @@
+let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -91,7 +92,7 @@ enum CChoiceState {
 
   function updateButtons()
   {
-    showSceneBtn("back_button", !isFixedUnitType && state > 0)
+    this.showSceneBtn("back_button", !isFixedUnitType && state > 0)
   }
 
   function checkSelection(country, unitType)
@@ -123,7 +124,7 @@ enum CChoiceState {
   {
     local columns = guiScene.calcString("1@rw-1@countryChoiceInterval", null)
       / guiScene.calcString("@unitChoiceImageWidth+@countryChoiceInterval", null)
-    columns = ::min(columns < 4 ? 2 : columns, unitTypesList.len())//Just cause 3 columns look weird here
+    columns = min(columns < 4 ? 2 : columns, unitTypesList.len())//Just cause 3 columns look weird here
     setFrameWidth($"{columns}@unitChoiceImageWidth + {columns+1}@countryChoiceInterval")
 
     let view = {
@@ -279,7 +280,7 @@ enum CChoiceState {
 
     if (!availCountries.len())
     {
-      let message = ::format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
+      let message = format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
                                ::my_user_id_str,
                                selectedUnitType.name,
                                ::toString(countries),

@@ -432,6 +432,7 @@ shopFilter > shopFilterImg[isLeftAligned=yes] {
   position:relative;
   width:pw;
   height:ph - @shopFilterTextCountryHeight;
+  background-svg-size:pw, ph - @shopFilterTextCountryHeight;
   background-color:@imageNotSelCountryColor;
 }
 
@@ -456,8 +457,9 @@ shopFilter > shopFilterImg[isLeftAligned=yes] {
 
 .choice3 > shopFilter > shopFilterImg {
   pos:50%pw-50%w, 1.0*@scrn_tgt/100.0;
-  height:7.32*@scrn_tgt/100.0;
-  width:1.893h;
+  width:164@sf/@pf;
+  height:86@sf/@pf;
+  background-svg-size:164@sf/@pf, 86@sf/@pf;
 }
 
 shopFilter[selected=yes] > shopFilterImg {
@@ -466,10 +468,6 @@ shopFilter[selected=yes] > shopFilterImg {
 
 .countryChoice shopFilter[selected=yes] > shopFilterImg {
   height:128*@sf/@pf_outdated;
-}
-
-.choice3 > shopFilter > shopFilterImg {
-  height:8.0*@scrn_tgt/100.0;
 }
 
 shopFilterImg:disabled {
@@ -483,7 +481,7 @@ cornerImg {
   top:-0.45h;
   position:absolute;
   background-repeat:aspect-ratio;
-  background-svg-size:@cIco, @cIco;
+  background-svg-size:0.035@scrn_tgt, 0.035@scrn_tgt;
   input-transparent:yes;
 }
 
@@ -513,7 +511,7 @@ cornerImg[foreground-image] {
 cornerImgGlow {
   size:1.4pw, 1.4ph;
   pos:pw/2-w/2, ph/2-h/2; position:absolute;
-  background-image:#ui/gameuiskin#mail_new_glow;
+  background-image:#ui/gameuiskin#mail_new_glow.png;
   background-color:@textureGlowColor;
   background-repeat:aspect-ratio;
   input-transparent:yes;
@@ -526,11 +524,13 @@ cornerImgGlow {
 
 .tabs[smallFont=yes] cornerImg {
   height:1@cIco;
+  background-svg-size:@cIco, @cIco;
   pos:pw-w-6@sf/@pf, -0.5h;
 }
 
 .tabs[smallFont=yes] cornerImg[imgTiny=yes] {
   height:1@tIco;
+  background-svg-size:@tIco, @tIco;
   pos:pw-w, 0.5h;
 }
 

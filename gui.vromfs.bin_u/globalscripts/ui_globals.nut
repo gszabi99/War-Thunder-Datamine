@@ -1,9 +1,7 @@
 //this file included to both ui VM
-let realRoot = ::getroottable()
-realRoot.regexp2 <- require("regexp2")
-
 let { dlog, wlog, console_print } = require("%sqstd/log.nut")(/*TODO: toString need to be here*/)
 
+let realRoot = ::getroottable()
 realRoot.loc <- require("dagor.localize").loc
 realRoot.utf8 <- require("utf8")
 

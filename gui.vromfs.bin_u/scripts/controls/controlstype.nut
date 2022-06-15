@@ -34,7 +34,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
     if (!onlyDevicesChoice)
       updateProfileIcon(true)
 
-    showSceneBtn("ct_xinput", ::have_xinput_device())
+    this.showSceneBtn("ct_xinput", ::have_xinput_device())
   }
 
   function onChangePilotIcon()
@@ -91,12 +91,13 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 
     let text = ::loc("msgbox/controlPresetApply")
     let onOk = ::Callback(@() doControlTypeApply(ct_id), this)
-    msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
+    this.msgBox("controlPresetApply", text, [["yes", onOk], ["no"]], "yes")
   }
 
   function doControlTypeApply(ctId)
   {
-    setControlTypeByID(ctId)
+    ::setControlTypeByID(ctId)
+    startControlsWizard = ctId == "ct_own"
     goBack()
   }
 }
@@ -115,8 +116,8 @@ let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
   local ct_preset = ""
   if (ct_id == "ct_own")
   {
+    // This case is only for gui_handlers.ControlType, it starts ControlsWizard scene after that.
     ct_preset = "keyboard"
-    startControlsWizard = true
     set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
     ::save_profile(false)
     return

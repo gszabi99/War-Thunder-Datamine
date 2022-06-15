@@ -1,3 +1,4 @@
+let { format } = require("string")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getFakeBulletsModByName, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -45,7 +46,7 @@ let tooltipTypes = {
         return false
       let { modName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
 
-      let locName =" ".concat(::format(::loc("caliber/mm"), bSet.caliber),
+      let locName =" ".concat(format(::loc("caliber/mm"), bSet.caliber),
         getModificationName(unit, modName), ::loc($"{bulletName}/name/short"))
       let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip"),
         getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))

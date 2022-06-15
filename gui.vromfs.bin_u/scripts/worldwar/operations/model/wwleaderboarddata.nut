@@ -115,7 +115,7 @@ let function getSeasonDay(days)
     {
       let dayNumberText = dayId.slice(3)
       if (::g_string.isStringInteger(dayNumberText))
-        seasonDay = ::max(seasonDay, dayNumberText.tointeger())
+        seasonDay = max(seasonDay, dayNumberText.tointeger())
     }
 
   return seasonDay

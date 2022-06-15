@@ -306,8 +306,8 @@ global enum BattleTasksWndTab {
 
   function changeFrameVisibility()
   {
-    showSceneBtn("tasks_list_frame", currentTabType != BattleTasksWndTab.HISTORY)
-    showSceneBtn("tasks_history_frame", currentTabType == BattleTasksWndTab.HISTORY)
+    this.showSceneBtn("tasks_list_frame", currentTabType != BattleTasksWndTab.HISTORY)
+    this.showSceneBtn("tasks_history_frame", currentTabType == BattleTasksWndTab.HISTORY)
   }
 
   function onEventBattleTasksFinishedUpdate(params)
@@ -416,7 +416,7 @@ global enum BattleTasksWndTab {
     ::showBtn("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
       placePriceTextToButton(taskObj, "btn_reroll", ::loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
-    showSceneBtn("btn_requirements_list", ::show_console_buttons && ::getTblValue("names", config, []).len() != 0)
+    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && ::getTblValue("names", config, []).len() != 0)
 
     let id = config?.id ?? ""
     ::enableBtnTable(taskObj, {[getConfigPlaybackButtonId(id)] = ::g_sound.canPlay(id)})
@@ -424,12 +424,12 @@ global enum BattleTasksWndTab {
 
   function updateTabButtons()
   {
-    showSceneBtn("show_all_tasks", ::has_feature("ShowAllBattleTasks") && currentTabType != BattleTasksWndTab.HISTORY)
-    showSceneBtn("battle_tasks_modes_radiobuttons", currentTabType == BattleTasksWndTab.BATTLE_TASKS)
-    showSceneBtn("warbond_shop_progress_block", isBattleTasksTab())
-    showSceneBtn("progress_box_place", currentTabType == BattleTasksWndTab.BATTLE_TASKS
+    this.showSceneBtn("show_all_tasks", ::has_feature("ShowAllBattleTasks") && currentTabType != BattleTasksWndTab.HISTORY)
+    this.showSceneBtn("battle_tasks_modes_radiobuttons", currentTabType == BattleTasksWndTab.BATTLE_TASKS)
+    this.showSceneBtn("warbond_shop_progress_block", isBattleTasksTab())
+    this.showSceneBtn("progress_box_place", currentTabType == BattleTasksWndTab.BATTLE_TASKS
       && !::has_feature("BattlePass"))
-    showSceneBtn("medal_icon", currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD)
+    this.showSceneBtn("medal_icon", currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD)
     updateProgressText()
   }
 
@@ -559,7 +559,7 @@ global enum BattleTasksWndTab {
       return
 
     if (::check_balance_msgBox(::g_battle_tasks.rerollCost))
-      msgBox("reroll_perform_action",
+      this.msgBox("reroll_perform_action",
              ::loc("msgbox/battleTasks/reroll",
                   {cost = ::g_battle_tasks.rerollCost.tostring(),
                     taskName = ::g_battle_tasks.getLocalizedTaskNameById(task)
@@ -586,7 +586,7 @@ global enum BattleTasksWndTab {
     if (::getTblValue("curVal", config, 0) <= 0)
       return madeTaskAction("cancel")
 
-    msgBox("battletasks_confirm_cancel", ::loc("msgbox/battleTasks/clarifyCancel"),
+    this.msgBox("battletasks_confirm_cancel", ::loc("msgbox/battleTasks/clarifyCancel"),
     [["ok", function(){ madeTaskAction("cancel") }],
      ["cancel", function() {}]], "cancel")
   }

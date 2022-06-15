@@ -14,6 +14,7 @@ tdiv {
     img {
       size:t='1@cIco, 1@cIco'
       background-image:t='<<imagePath>>'
+      background-svg-size:t='1@cIco, 1@cIco'
       pos:t = '0, 50%ph-50%h';
     }
     textarea {

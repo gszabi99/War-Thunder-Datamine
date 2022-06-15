@@ -1,3 +1,5 @@
+let { format, split_by_chars } = require("string")
+let regexp2 = require("regexp2")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
@@ -94,7 +96,7 @@ g_clans.editClan <- function editClan(clanId, params, handler)
       owner.reinitClanWindow()
     else
       ::update_gamercards()
-    msgBox(
+    this.msgBox(
       "clan_edit_sacces",
       ::loc("clan/edit_clan_success"),
       [["ok", (@(handler) function() { handler.goBack() })(handler)]], "ok")
@@ -118,7 +120,7 @@ g_clans.upgradeClan <- function upgradeClan(clanId, params, handler)
       owner.reinitClanWindow()
     else
       ::update_gamercards()
-    msgBox(
+    this.msgBox(
       "clan_upgrade_success",
       ::loc("clan/upgrade_clan_success"),
       [["ok", (@(handler) function() { handler.goBack() })(handler)]], "ok")
@@ -548,9 +550,9 @@ g_clans.getClanInfoChangeDateText <- function getClanInfoChangeDateText(clanData
 g_clans.getClanMembersCountText <- function getClanMembersCountText(clanData)
 {
   if (clanData.mlimit)
-    return ::format("%d/%d", clanData.members.len(), clanData.mlimit)
+    return format("%d/%d", clanData.members.len(), clanData.mlimit)
 
-  return ::format("%d", clanData.members.len())
+  return format("%d", clanData.members.len())
 }
 
 g_clans.haveRankToChangeRoles <- function haveRankToChangeRoles(clanData)
@@ -1081,7 +1083,7 @@ let function getSeasonName(blk)
 {
   local name = ""
   if (blk?.type == "worldWar")
-    name = ::loc("worldwar/season_name/" + (::split(blk.titles, "@")?[2] ?? ""))
+    name = ::loc("worldwar/season_name/" + (split_by_chars(blk.titles, "@")?[2] ?? ""))
   else
   {
     let year = unixtime_to_utc_timetbl(blk?.seasonStartTimestamp ?? 0).year.tostring()
@@ -1138,7 +1140,7 @@ let function getSeasonName(blk)
 
   static function createFromClanReward (titleString, sIdx, season, clanData)
   {
-    let titleParts = ::split(titleString, "@")
+    let titleParts = split_by_chars(titleString, "@")
     let place = ::getTblValue(0, titleParts, "")
     let difficultyName = ::getTblValue(1, titleParts, "")
     let sTag = titleParts?[2]
@@ -1159,7 +1161,7 @@ let function getSeasonName(blk)
 
   static function createFromUnlockBlk (unlockBlk)
   {
-    let idParts = ::split(unlockBlk.id, "_")
+    let idParts = split_by_chars(unlockBlk.id, "_")
     let info = ::ClanSeasonPlaceTitle.getUpdatedClanInfo(unlockBlk)
     return ClanSeasonPlaceTitle(
       unlockBlk?.t,
@@ -1177,28 +1179,28 @@ let function getSeasonName(blk)
 
 
   constructor (
-    _seasonTime,
-    _seasonType,
-    _seasonTag,
-    _difficlutyName,
-    _place,
-    _seasonName,
-    _clanTag,
-    _clanName,
-    _seasonIdx,
-    _seasonTitle
+    v_seasonTime,
+    v_seasonType,
+    v_seasonTag,
+    v_difficlutyName,
+    v_place,
+    v_seasonName,
+    v_clanTag,
+    v_clanName,
+    v_seasonIdx,
+    v_seasonTitle
   )
   {
-    seasonTime = _seasonTime
-    seasonType = _seasonType
-    seasonTag = _seasonTag
-    difficultyName = _difficlutyName
-    place = _place
-    seasonName = _seasonName
-    clanTag = _clanTag
-    clanName = _clanName
-    seasonIdx = _seasonIdx
-    seasonTitle = _seasonTitle
+    seasonTime = v_seasonTime
+    seasonType = v_seasonType
+    seasonTag = v_seasonTag
+    difficultyName = v_difficlutyName
+    place = v_place
+    seasonName = v_seasonName
+    clanTag = v_clanTag
+    clanName = v_clanName
+    seasonIdx = v_seasonIdx
+    seasonTitle = v_seasonTitle
   }
 
   function isWinner()
@@ -1324,7 +1326,7 @@ let function getSeasonName(blk)
     let pattern = "[^ ]"
     let replacement = "*"
 
-    processingString = ::regexp2(pattern).replace(replacement, processingString)
+    processingString = regexp2(pattern).replace(replacement, processingString)
   }
   return processingString
 }

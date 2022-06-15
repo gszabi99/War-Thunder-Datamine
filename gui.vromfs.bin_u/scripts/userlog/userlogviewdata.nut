@@ -1,3 +1,4 @@
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -89,7 +90,7 @@ local function getResourcesConfig(resources) {
     let descrImage = unlock?.descrImage ?? ""
     if (descrImage != "") {
       let imgSize = unlock?.descrImageSize ?? "0.05sh, 0.05sh"
-      res.resourcesImagesMarkupArr.append(::format(imgFormat, imgSize, unlock.descrImage))
+      res.resourcesImagesMarkupArr.append(format(imgFormat, imgSize, unlock.descrImage))
     }
   }
 
@@ -165,12 +166,12 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
 
     local nameLoc = "userlog/"+logName
     if (log.type==::EULT_EARLY_SESSION_LEAVE)
-      res.logImg = "#ui/gameuiskin#log_leave"
+      res.logImg = "#ui/gameuiskin#log_leave.png"
     else
       if (log.type==::EULT_SESSION_RESULT)
       {
         nameLoc += log.win? "/win":"/lose"
-        res.logImg = "#ui/gameuiskin#" + (log.win? "log_win" : "log_lose")
+        res.logImg = $"#ui/gameuiskin#{log.win? "log_win" : "log_lose"}.png"
       }
     res.name = format(::loc(nameLoc), mission)
 
@@ -371,7 +372,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       let lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
       if (!("descriptionBlk" in res))
         res.descriptionBlk <- ""
-      res.descriptionBlk += ::format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
+      res.descriptionBlk += format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
     }
 
     res.tooltip = (log.type==::EULT_SESSION_RESULT) ? ::loc("debriefing/total") : ::loc("userlog/interimResults");
@@ -433,7 +434,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     }
     else
     {
-      res.logImg = "#ui/gameuiskin#" + (win? "log_win" : "log_lose")
+      res.logImg = $"#ui/gameuiskin#{win? "log_win" : "log_lose"}.png"
       nameLoc += win? "/win":"/lose"
     }
 
@@ -457,7 +458,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
   if (log.type==::EULT_BUYING_AIRCRAFT)
   {
     res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
-    res.logImg = "#ui/gameuiskin#log_buy_aircraft"
+    res.logImg = "#ui/gameuiskin#log_buy_aircraft.png"
     let country = ::getShopCountry(log.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
@@ -465,7 +466,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
   if (log.type==::EULT_REPAIR_AIRCRAFT)
   {
     res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
-    res.logImg = "#ui/gameuiskin#log_repair_aircraft"
+    res.logImg = "#ui/gameuiskin#log_repair_aircraft.png"
     let country = ::getShopCountry(log.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
@@ -504,14 +505,14 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       res.description <- desc
       res.tooltip = desc
     }
-    res.logImg = "#ui/gameuiskin#log_repair_aircraft"
+    res.logImg = "#ui/gameuiskin#log_repair_aircraft.png"
     if (oneCountry && ::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   } else
   if (log.type==::EULT_BUYING_WEAPON || log.type==::EULT_BUYING_WEAPON_FAIL)
   {
     res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
-    res.logImg = "#ui/gameuiskin#" + ((log.type==::EULT_BUYING_WEAPON)? "log_buy_weapon" : "log_refill_weapon_no_money")
+    res.logImg = "".concat("#ui/gameuiskin#", log.type == ::EULT_BUYING_WEAPON ? "log_buy_weapon.png" : "log_refill_weapon_no_money.png")
     if (("wname" in log) && ("aname" in log))
     {
       res.description <- getWeaponNameText(log.aname, false, log.wname, ", ")
@@ -595,7 +596,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     }
 
     res.tooltip = res.description
-    res.logImg = "#ui/gameuiskin#log_buy_weapon"
+    res.logImg = "#ui/gameuiskin#log_buy_weapon.png"
   } else
   if (log.type==::EULT_NEW_RANK)
   {
@@ -605,7 +606,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       res.name = format(::loc("userlog/"+logName+"/country"), log.newRank.tostring())
     } else
     {
-      res.logImg = "#ui/gameuiskin#prestige0"
+      res.logImg = "#ui/gameuiskin#prestige0.png"
       res.name = format(::loc("userlog/"+logName), log.newRank.tostring())
     }
   } else
@@ -618,7 +619,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     let airName = ("aname" in log)? ::getUnitName(log.aname) : ("aircraft" in log)? ::getUnitName(log.aircraft) : ""
     if (::checkCountry(country, "userlog EULT_*_CREW"))
       res.logImg2 = ::get_country_icon(country)
-    res.logImg = "#ui/gameuiskin#log_crew"
+    res.logImg = "#ui/gameuiskin#log_crew.png"
 
     res.name = ::loc("userlog/"+logName,
                          { skillPoints = ::getCrewSpText(::getTblValue("skillPoints", log, 0)),
@@ -664,7 +665,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       costText = " (" + costText + ")"
 
     res.name = format(::loc("userlog/"+logName), getEntitlementName(ent)) + costText
-    res.logImg = "#ui/gameuiskin#log_online_shop"
+    res.logImg = "#ui/gameuiskin#log_online_shop.png"
   } else
   if (log.type == ::EULT_NEW_UNLOCK)
   {
@@ -712,7 +713,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
   if (log.type==::EULT_BUYING_MODIFICATION || log.type == ::EULT_BUYING_MODIFICATION_FAIL)
   {
     res.name = format(::loc("userlog/"+logName), ::getUnitName(log.aname)) + priceText
-    res.logImg = "#ui/gameuiskin#" + ((log.type==::EULT_BUYING_MODIFICATION)? "log_buy_mods" : "log_refill_weapon_no_money")
+    res.logImg = "".concat("#ui/gameuiskin#", log.type == ::EULT_BUYING_MODIFICATION ? "log_buy_mods.png" : "log_refill_weapon_no_money.png")
     if (("mname" in log) && ("aname" in log))
     {
       res.description <- getModificationName(getAircraftByName(log.aname), log.mname)
@@ -739,14 +740,14 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
                      numSpares = count
                      unitName = ::colorize("userlogColoredText", ::getUnitName(log.aname))
                    }) + priceText
-    res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
+    res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft.png"
     let country = ::getShopCountry(log.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   } else
   if (log.type==::EULT_CLAN_ACTION)
   {
-    res.logImg = "#ui/gameuiskin#log_clan_action"
+    res.logImg = "#ui/gameuiskin#log_clan_action.png"
     let info = {
       action = ::getTblValue("clanActionType", log, -1)
       clan = ("clanName" in log)? ::ps4CheckAndReplaceContentDisabledText(log.clanName) : ""
@@ -798,7 +799,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
     if (::getTblValue("descrImage", config, "") != "")
     {
       let imgSize = ::getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
-      res.descriptionBlk <- ::format(imgFormat, imgSize, config.descrImage)
+      res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage)
     }
   }
   else if (log.type==::EULT_CHARD_AWARD)
@@ -972,7 +973,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
         desc.append(::loc("items/wager/numWins", { numWins = ::getTblValue("numWins", log), maxWins = item.maxWins }))
         desc.append(::loc("items/wager/numFails", {numFails = ::getTblValue("numFails", log), maxFails = item.maxFails}))
 
-        res.logImg = "#ui/gameuiskin#unlock_achievement"
+        res.logImg = "#ui/gameuiskin#unlock_achievement.png"
         res.description += (res.description == ""? "" : "\n") + ::g_string.implode(desc, "\n")
         res.descriptionBlk <- ::get_userlog_image_item(item)
       }
@@ -1048,7 +1049,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       res.name = format(::loc("userlog/"+logName), ::getUnitName(getTblValue("maname0", log, ""))) + priceText
     else
       res.name = format(::loc("userlog/"+logName), "")
-    res.logImg = "#ui/gameuiskin#" + "log_buy_mods"
+    res.logImg = "#ui/gameuiskin#log_buy_mods.png"
 
     res.description <- ""
     local idx = 0
@@ -1125,11 +1126,11 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
           res.logImg2 = ::get_country_icon($"country_{tags.country}")
 
       let nameMarkup = item.getNameMarkup()
-      let rewardMarkup = ::format(textareaFormat,
+      let rewardMarkup = format(textareaFormat,
         ::g_string.stripTags($"{::loc("reward")}{::loc("ui/colon")}"))
       res.descriptionBlk <- isAutoConsume
         ? ::get_userlog_image_item(item)
-        : "".concat(::format(textareaFormat,
+        : "".concat(format(textareaFormat,
           $"{::g_string.stripTags(usedText)}{::loc("ui/colon")}"), $"{nameMarkup}{rewardMarkup}")
 
       local resTextArr = []
@@ -1190,11 +1191,11 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
       {
         local color = prizeType == "entitlement" ? "userlogColoredText" : "activeTextColor"
         local title = ::colorize(color, rewardText)
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
       }
       else if (prizeType == "item")
       {
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
         res.descriptionBlk += ::get_userlog_image_item(::ItemsManager.findItemById(prize.item))
       }
       else if (prizeType == "unlock" && ::getTblValue("unlockType", log) == "decal")
@@ -1202,18 +1203,18 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
         local title = ::colorize("userlogColoredText", rewardText)
         local config = ::build_log_unlock_data({ id = log.unlock })
         local imgSize = ::getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon") + title))
         res.descriptionBlk += format(imgFormat, imgSize, config.descrImage)
       }
       else
       {
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
         res.descriptionBlk += ::PrizesView.getPrizesListView(prizes)
       }
     }
     else
     {
-        res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
         res.descriptionBlk += ::PrizesView.getPrizesListView(prizes)
     }
     */
@@ -1306,7 +1307,7 @@ let function getLinkMarkup(text, url, acccessKeyName=null)
                      numSpares = numSpares
                      unitName = (unit != null ? ::colorize("userlogColoredText", ::getUnitName(unit)) : "")
                    })
-      res.descriptionBlk <- ::format(textareaFormat,
+      res.descriptionBlk <- format(textareaFormat,
                                 ::g_string.stripTags(::loc(locId + "_desc/universalSpare") + ::loc("ui/colon")))
       res.descriptionBlk += item.getNameMarkup(numSpares,true)
     }

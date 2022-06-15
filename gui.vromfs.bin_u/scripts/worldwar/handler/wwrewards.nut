@@ -30,7 +30,7 @@ let time = require("%scripts/time.nut")
     ], ::loc("ui/comma")) + " " + ::loc("ui/mdash") + " " + ::loc("worldwar/btn_rewards")
     scene.findObject("wnd_title").setValue(wndTitle)
 
-    showSceneBtn("nav-help", true)
+    this.showSceneBtn("nav-help", true)
     updateRerwardsStartTime()
 
     rewards = []

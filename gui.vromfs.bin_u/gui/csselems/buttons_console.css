@@ -42,6 +42,7 @@
 @const goldButtonHoverColor:    #7e592e;
 @const goldButtonPushedColor:   #33292e;
 
+@const eSBattleBtnColor:         #bc1313;   @const eSBattleBtnColorHover:    #ff3b00;   @const eSBattleBtnColorPushed:   #910b0b;   @const eSBattleBtnColorDisabled: #efbc1313; 
 
 
 
@@ -395,7 +396,7 @@ btnImage {
 
 Button_text.battle {
   border:no;
-  background-image:#ui/gameuiskin#button_bright_;
+  background-image:#ui/gameuiskin#button_bright_.png;
   background-position:3, 7, 3, 7;
   background-color: #ffb867;
   background-repeat:expand;
@@ -440,7 +441,7 @@ Button_text.battle > buttonWink {
   size:pw, ph;
   position:absolute;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#button_bright_glow;
+  background-image:#ui/gameuiskin#button_bright_glow.png;
   background-color:#00ff1414;
   background-position:3, 7, 3, 7;
   wink: yes;
@@ -452,7 +453,7 @@ buttonGlance {
   pos:0, 0;
   position:absolute;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#button_glance;
+  background-image:#ui/gameuiskin#button_glance.png;
   background-position:1;
   input-transparent:yes;
 }
@@ -483,7 +484,7 @@ Button_text.buyPremAward > ButtonImg {
 
 Button_text[visualStyle=common] {
   border:no;
-  background-image:#ui/gameuiskin#button_flat_;
+  background-image:#ui/gameuiskin#button_flat_.png;
   background-position:3, 4, 3, 4;
   background-color: @white;
   background-repeat:expand;
@@ -513,12 +514,12 @@ Button_text[visualStyle=common][active=yes],
 Button_text[visualStyle=common][selected=yes],
 Button_text[visualStyle=common][inactiveColor=yes][selected=yes],
 [show_console_buttons=yes] Button_text[visualStyle=common][selected=yes] {
-  background-image:#ui/gameuiskin#button_flat_focus;
+  background-image:#ui/gameuiskin#button_flat_focus.png;
 }
 
 Button_text[visualStyle=common]:disabled,
 Button_text[visualStyle=common][inactiveColor=yes] {
-  background-image:#ui/gameuiskin#button_flat_disabled;
+  background-image:#ui/gameuiskin#button_flat_disabled.png;
 }
 
 Button_text[visualStyle=common]:disabled,
@@ -531,10 +532,10 @@ Button_text[visualStyle=common][inactiveColor=yes] > textarea {
 }
 
 Button_text[visualStyle=common]:hover {
-  background-image:#ui/gameuiskin#button_flat_hover;
+  background-image:#ui/gameuiskin#button_flat_hover.png;
 }
 Button_text[visualStyle=common][inactiveColor=yes]:hover {
-  background-image:#ui/gameuiskin#button_flat_disabled;
+  background-image:#ui/gameuiskin#button_flat_disabled.png;
 }
 
 Button_text[visualStyle=common]:hover,
@@ -549,14 +550,14 @@ Button_text[visualStyle=common][inactiveColor=yes]:hover > textarea {
 }
 
 Button_text[visualStyle=common]:pushed {
-  background-image:#ui/gameuiskin#button_flat_active;
+  background-image:#ui/gameuiskin#button_flat_active.png;
   background-position:2, 3;
 }
 
 Button_text[visualStyle=secondary]
 {
   border:no;
-  background-image:#ui/gameuiskin#button_flat_;
+  background-image:#ui/gameuiskin#button_flat_.png;
   background-position:2, 3, 2, 2;
   background-color:@buttonColorSecondary;
   background-repeat:expand;
@@ -568,7 +569,7 @@ Button_text[visualStyle=secondary] > buttonWink
   position:absolute;
   pos:50%pw-50%w, 50%ph-50%h;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#button_flat_glow;
+  background-image:#ui/gameuiskin#button_flat_glow.png;
   background-color: @buttonWinkColorSecondary;
   background-position: 2, 3, 2, 2;
   wink: yes;
@@ -582,13 +583,13 @@ Button_text[visualStyle=secondary][active=yes],
 Button_text[visualStyle=secondary][selected=yes],
 Button_text[visualStyle=secondary][inactiveColor=yes][selected=yes],
 [show_console_buttons=yes] Button_text[visualStyle=common][selected=yes] {
-  background-image:#ui/gameuiskin#button_flat_focus;
+  background-image:#ui/gameuiskin#button_flat_focus.png;
   background-position:2, 3, 2, 2;
 }
 
 Button_text[visualStyle=secondary]:disabled,
 Button_text[visualStyle=secondary][inactiveColor=yes] {
-  background-image:#ui/gameuiskin#button_flat_disabled;
+  background-image:#ui/gameuiskin#button_flat_disabled.png;
   background-position:1, 3, 1, 1;
 }
 
@@ -606,7 +607,7 @@ Button_text[visualStyle=secondary] > textarea {
 }
 
 Button_text[visualStyle=secondary]:hover {
-  background-image:#ui/gameuiskin#button_flat_hover;
+  background-image:#ui/gameuiskin#button_flat_hover.png;
   background-position:2, 3, 2, 2;
 }
 
@@ -618,14 +619,14 @@ Button_text[visualStyle=secondary]:hover > textarea {
 }
 
 Button_text[visualStyle=secondary]:pushed {
-  background-image:#ui/gameuiskin#button_flat_active;
+  background-image:#ui/gameuiskin#button_flat_active.png;
   background-position:2, 3;
 }
 
 Button_text[visualStyle=purchase]
 {
   border:no;
-  background-image:#ui/gameuiskin#button_flat_;
+  background-image:#ui/gameuiskin#button_flat_.png;
   background-position:2, 3, 2, 2;
   background-color: @buttonColorPurchase;
   background-repeat:expand;
@@ -638,7 +639,7 @@ Button_text[visualStyle=purchase] > buttonWink
   position:absolute;
   pos:50%pw-50%w, 50%ph-50%h;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#button_flat_glow;
+  background-image:#ui/gameuiskin#button_flat_glow.png;
   background-color: @buttonWinkColorPurchase;
   background-position:2, 3, 2, 2;
   wink: yes;
@@ -658,7 +659,7 @@ Button_text[visualStyle=purchase] > textarea {
 }
 
 Button_text[visualStyle=purchase]:hover {
-  background-image:#ui/gameuiskin#button_flat_hover;
+  background-image:#ui/gameuiskin#button_flat_hover.png;
   background-position:2, 3, 2, 2;
 }
 
@@ -673,13 +674,13 @@ Button_text[visualStyle=purchase][active=yes],
 Button_text[visualStyle=purchase][selected=yes],
 Button_text[visualStyle=purchase][inactiveColor=yes][selected=yes],
 [show_console_buttons=yes] Button_text[visualStyle=common][selected=yes] {
-  background-image:#ui/gameuiskin#button_flat_focus;
+  background-image:#ui/gameuiskin#button_flat_focus.png;
   background-position:2, 3, 2, 2;
 }
 
 Button_text[visualStyle=purchase]:disabled,
 Button_text[visualStyle=purchase][inactiveColor=yes] {
-  background-image:#ui/gameuiskin#button_flat_disabled;
+  background-image:#ui/gameuiskin#button_flat_disabled.png;
   background-position:1, 3, 1, 1;
 }
 
@@ -690,7 +691,7 @@ Button_text[visualStyle=purchase][inactiveColor=yes] > buttonWink {
 }
 
 Button_text[visualStyle=purchase]:pushed {
-  background-image:#ui/gameuiskin#button_flat_active;
+  background-image:#ui/gameuiskin#button_flat_active.png;
   background-position:2, 3;
 }
 
@@ -877,7 +878,7 @@ Button_close:hover {
 
 [show_console_buttons=yes] Button_close:hover {
   background-color: @gamepadFocusFrameColor;
-  background-image: #ui/gameuiskin#item_selection;
+  background-image: #ui/gameuiskin#item_selection.png;
   background-position: 8, 10, 8, 8;
   background-repeat: expand;
   behavior:focusFrameTarget;
@@ -1425,7 +1426,7 @@ Button_text:pushed > buttonWink
 
 Button_text.battle:disabled,
 Button_text.battle[inactiveColor=yes] {
-  background-image:#ui/gameuiskin#button_bright_normal;
+  background-image:#ui/gameuiskin#button_bright_normal.png;
   background-color: #ff1414;
 }
 
@@ -1542,7 +1543,7 @@ rightClickMenu > Button_text[inactiveColor=yes]:pushed > textarea {
 menuLine, topMenuLine {
   height:4@dp;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#separator_bottom;
+  background-image:#ui/gameuiskin#separator_bottom.png;
   background-color:@white;
   background-position:3, 0;
   input-transparent:yes;
@@ -1640,7 +1641,7 @@ Button_text[mediumFont=yes] {
 }
 
 Button_text.battle:hover {
-  background-image:#ui/gameuiskin#button_bright_hover;
+  background-image:#ui/gameuiskin#button_bright_hover.png;
 }
 
 Button_text.battle:hover > btnText,
@@ -1653,7 +1654,7 @@ Button_text.battle[inactiveColor=yes]:hover > textarea {
 }
 
 Button_text.battle:pushed {
-  background-image:#ui/gameuiskin#button_bright_active;
+  background-image:#ui/gameuiskin#button_bright_active.png;
 }
 
 Button_text.battle:pushed > btnText,
@@ -1670,7 +1671,7 @@ Button_text.switch {
 Button_text.switch > img {
   width:ph-1@buttonImgPadding;
   height:0.5w;
-  background-image:#ui/gameuiskin#expand_info;
+  background-image:#ui/gameuiskin#expand_info.png;
   background-color:@navButtonImgColor;
 }
 
@@ -1770,11 +1771,11 @@ Button_text[showBonusCommon=no] > BonusCorner[bonusType=common] {
 }
 
 Button_text > BonusCorner[bonusType=personal] {
-  background-image:#ui/gameuiskin#booster_green_corner;
+  background-image:#ui/gameuiskin#booster_green_corner.png;
 }
 
 Button_text > BonusCorner[bonusType=common] {
-  background-image:#ui/gameuiskin#booster_yellow_corner;
+  background-image:#ui/gameuiskin#booster_yellow_corner.png;
 }
 
 Button_text:disabled > BonusCorner {
@@ -1972,7 +1973,7 @@ Button_text.profileImg {
   reduceMinimalWidth:yes;
   height:1@avatarButtonSize;
   width:h;
-  background-image:#ui/gameuiskin#header_button_;
+  background-image:#ui/gameuiskin#header_button_.png;
   border:no;
   margin:0;
   padding:1@blockInterval;
@@ -1982,6 +1983,7 @@ Button_text.profileImg {
 
 Button_text.profileImg > img {
   size: 1@profileUnlockIconSize, 1@profileUnlockIconSize;
+  background-svg-size: 1@profileUnlockIconSize, 1@profileUnlockIconSize;
 }
 
 Button_text.profileImg > ButtonImg {
@@ -1991,12 +1993,12 @@ Button_text.profileImg > ButtonImg {
 }
 
 Button_text.profileImg:hover {
-  background-image:#ui/gameuiskin#header_button_hover;
+  background-image:#ui/gameuiskin#header_button_hover.png;
   border:yes;
 }
 
 Button_text.profileImg:pushed {
-  background-image:#ui/gameuiskin#header_button_active;
+  background-image:#ui/gameuiskin#header_button_active.png;
   border:yes;
 }
 
@@ -2597,6 +2599,26 @@ Button_text.image[visualStyle=tournament]:hover > img {
 Button_text[visualStyle=tournament]:hover {
   color:@white;
   border-color:@white;
+}
+Button_text[visualStyle=tournament_battle] {
+  height:1@eSEventBtnHeight;
+  background-color:@eSBattleBtnColor;
+  border: no;
+  font:@fontBigBold;
+}
+Button_text[visualStyle=tournament_battle]:hover {
+  color: @buttonFontColor;
+  background-color:@eSBattleBtnColorHover;
+}
+Button_text[visualStyle=tournament_battle]:pushed {
+  color: @buttonFontColor;
+  background-color:@eSBattleBtnColorPushed;
+}
+Button_text[visualStyle=tournament_battle][inactiveColor=yes] {
+  background-color:@eSBattleBtnColorDisabled;
+}
+Button_text[visualStyle=tournament_battle][isCancel=yes] {
+  background-color:#636363;
 }
 
 Button_text[parentWidth=yes] {

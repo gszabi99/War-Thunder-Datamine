@@ -79,7 +79,7 @@ expandable {
       height:t='1*@scrn_tgt/100.0';
       width:t='2h';
       pos:t='50%pw-50%w, ph-h-0.7*@sf/100.0'; position:t='absolute';
-      background-image:t='#ui/gameuiskin#expand_info';
+      background-image:t='#ui/gameuiskin#expand_info.png';
       background-color:t='@premiumColor';
       display:t='hide';
     }

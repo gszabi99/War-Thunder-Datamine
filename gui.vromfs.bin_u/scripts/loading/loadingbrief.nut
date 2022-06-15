@@ -1,3 +1,7 @@
+let { format, split_by_chars } = require("string")
+let {
+  is_mplayer_peer = @() ::is_mplayer_peer() //compatibility with 2.16.0.X
+} = require_optional("multiplayer")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")
@@ -39,9 +43,9 @@ const MIN_SLIDE_TIME = 2.0
 
     let missionBlk = ::DataBlock()
     local country = ""
-    if (::current_campaign_mission || ::is_mplayer_peer())
+    if (::current_campaign_mission || is_mplayer_peer())
     {
-      if (::is_mplayer_peer())
+      if (is_mplayer_peer())
       {
         ::get_current_mission_desc(missionBlk)
         ::current_campaign_mission = missionBlk.getStr("name","")
@@ -55,7 +59,7 @@ const MIN_SLIDE_TIME = 2.0
         country = ::getCountryByAircraftName(::test_flight_aircraft.name)
       else
         country = ::getCountryByAircraftName(missionBlk.getStr("player_class", ""))
-      dagor.debug("0 player_class = "+missionBlk.getStr("player_class", "") + "; country = " + country)
+      ::dagor.debug("0 player_class = "+missionBlk.getStr("player_class", "") + "; country = " + country)
       if (country != "" && !(::get_game_type() & ::GT_VERSUS) && gm != ::GM_TRAINING)
         guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_" + country)
 
@@ -104,7 +108,7 @@ const MIN_SLIDE_TIME = 2.0
               idx = part.event.indexof("/")
             }
           part.voiceLen <- ::loading_get_voice_len(part.event) //-1 if there's no sound
-          dagor.debug("voice "+part.event+" len "+part.voiceLen.tostring())
+          ::dagor.debug("voice "+part.event+" len "+part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
           let freeTimeSlides = []
@@ -115,7 +119,7 @@ const MIN_SLIDE_TIME = 2.0
             {
               if (::find_in_array(excludeArray, image, -1) >= 0)
               {
-                dagor.debug("EXCLUDE by: " + ::get_country_flags_preset() + "; slide " + image)
+                ::dagor.debug("EXCLUDE by: " + ::get_country_flags_preset() + "; slide " + image)
                 continue
               }
             }
@@ -142,7 +146,7 @@ const MIN_SLIDE_TIME = 2.0
             if (partTime <= 0)
               partTime = (partBlock?.minTime ?? 0).tofloat()
             part.slides.append({
-              time = ::max(partTime, MIN_SLIDE_TIME)
+              time = max(partTime, MIN_SLIDE_TIME)
               image = prevSlide
               map = false
             })
@@ -178,13 +182,13 @@ const MIN_SLIDE_TIME = 2.0
       let missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
       let haveHelp = ::has_feature("ControlsHelp") && missionHelpPath != null
 
-      let helpBtnObj = showSceneBtn("btn_help", haveHelp)
+      let helpBtnObj = this.showSceneBtn("btn_help", haveHelp)
       if (helpBtnObj && !::show_console_buttons)
         helpBtnObj.setValue(::loc("flightmenu/btnControlsHelp") + ::loc("ui/parentheses/space", { text = "F1" }))
 
       if (haveHelp)
       {
-        let parts = ::split(missionHelpPath, "/.")
+        let parts = split_by_chars(missionHelpPath, "/.")
         let helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
         let cfgPath = "seen/help_mission_type/" + helpId
         let isSeen = ::loadLocalByAccount(cfgPath, 0)
@@ -260,8 +264,8 @@ const MIN_SLIDE_TIME = 2.0
         finishLoading()
       else
       {
-        showSceneBtn("btn_select", applyReady && showStart)
-        showSceneBtn("loadanim", !applyReady)
+        this.showSceneBtn("btn_select", applyReady && showStart)
+        this.showSceneBtn("loadanim", !applyReady)
       }
     }
 
@@ -332,7 +336,7 @@ const MIN_SLIDE_TIME = 2.0
         nextSubtitles = partsList[partIdx].subtitles
         ::loading_stop_voice_but_named_events()
         ::loading_play_voice(partsList[partIdx].event, true)
-        dagor.debug("loading_play_voice "+partsList[partIdx].event.tostring())
+        ::dagor.debug("loading_play_voice "+partsList[partIdx].event.tostring())
       }
     }
 
@@ -361,7 +365,7 @@ const MIN_SLIDE_TIME = 2.0
       setSubtitles(partsList[0].subtitles)
       ::loading_play_music(music)
       ::loading_play_voice(partsList[0].event, true)
-      dagor.debug("loading_play_voice "+partsList[0].event.tostring())
+      ::dagor.debug("loading_play_voice "+partsList[0].event.tostring())
     }
     start_gui_sound("slide_loop")
   }

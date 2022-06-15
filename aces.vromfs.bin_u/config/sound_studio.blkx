@@ -823,6 +823,7 @@
     "eventTireScreech": "tire_screech",
     "eventVibrationOverload": "vibration_overload",
     "eventWreckScrape": "wreck_scrape",
+    "eventSweep": "swing_wing",
     "bulletPassByRadius": 30.0,
     "eventBulletHitShipMgun": "hit_mgun",
     "eventBulletHitShipSmall": "hit_small",
@@ -1896,6 +1897,42 @@
       "eventBack": "engine05_04_J79GE_N1_WEP_ai",
       "eventSurround": "",
       "eventLod1": "engine05_04_J79GE_N1_WEP_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [0.5,1.0,5.0],
+      "rightPos": [0.5,1.0,-5.0],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_tf30_N1_WEP_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_tf30_N1_WEP_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_tf30_N1_WEP_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -5930,6 +5967,51 @@
       "event_start_cockpit_r": "engine05_04_J79GE_N1_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_04_J79GE_N1_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_04_J79GE_N1_stop_cockpit_r",
+      "leftPos": [-0.5,1.0,5.0],
+      "rightPos": [-0.5,1.0,-5.0],
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_tf30_N1_WEP": {
+    "startTimeout": 9.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_tf30_N1_start",
+      "eventStop": "engine05_tf30_N1_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_tf30_N1_WEP",
+      "eventSurround": "",
+      "eventLod1": "engine05_tf30_N1_WEP",
+      "rpmType": "jetTrue",
+      "rpmBias": -2473.0,
+      "rpmScale": 4667.0,
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_tf30_N1_WEP_cockpit_l",
+      "event_cockpit_r": "engine05_tf30_N1_WEP_cockpit_r",
+      "event_start_cockpit_l": "engine05_tf30_N1_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_tf30_N1_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_tf30_N1_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_tf30_N1_stop_cockpit_r",
       "leftPos": [-0.5,1.0,5.0],
       "rightPos": [-0.5,1.0,-5.0],
       "rpmSmooth": 0.01,
@@ -10146,6 +10228,55 @@
       }
     }
   },
+  "engine_challenger": {
+    "effects": {
+      "path": "ground/engines/challenger",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/challenger",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [-1.0,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/challenger",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [-1.0,1.0,0.0]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/challenger",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/challenger",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
   "engine_comet": {
     "effects": {
       "path": "ground/engines/comet",
@@ -10627,6 +10758,55 @@
       },
       "outside": {
         "path": "ground/engines/ai/m16",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
+  "engine_m10": {
+    "effects": {
+      "path": "ground/engines/m10",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/m10",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [1.8,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/m10",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [-1.0,1.0,0.0]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/m10",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/m10",
         "eventBack": "engine",
         "rpmSmooth": 1.0,
         "loadScale": 6.0,
@@ -11126,7 +11306,58 @@
       }
     }
   },
+  "engine_ztz99": {
+    "effects": {
+      "path": "ground/engines/ztz99",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/ztz99",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [-1.0,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/ztz99",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [-1.0,1.0,0.0]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/ztz99",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/ztz99",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
   "engine_t80": {
+    "startTimeout": 11.0,
+    "stopTimeout": 0.1,
     "effects": {
       "path": "ground/engines/t80",
       "wep": "",
@@ -11224,9 +11455,9 @@
       }
     }
   },
-  "engine_2c25": {
+  "engine_fiat8144": {
     "effects": {
-      "path": "ground/engines/2c25",
+      "path": "ground/engines/fiat_8144",
       "wep": "",
       "overheatOutside": "",
       "overheatCockpit": "",
@@ -11237,7 +11468,7 @@
       "eventStop": "engine_stop"
     },
     "outside": {
-      "path": "ground/engines/2c25",
+      "path": "ground/engines/fiat_8144",
       "eventFront": "",
       "eventBack": "engine",
       "eventSurround": "",
@@ -11250,7 +11481,7 @@
       "offsetPos": [-1.0,1.0,0.0]
     },
     "cockpit": {
-      "path": "ground/engines/2c25",
+      "path": "ground/engines/fiat_8144",
       "event_cockpit_l": "engine_interior",
       "event_start_cockpit_l": "engine_start_interior",
       "event_stop_cockpit_l": "engine_stop_interior",
@@ -11258,12 +11489,61 @@
     },
     "ai": {
       "effects": {
-        "path": "ground/engines/ai/2c25",
+        "path": "ground/engines/ai/fiat_8144",
         "eventStart": "engine_start",
         "eventStop": "engine_stop"
       },
       "outside": {
-        "path": "ground/engines/ai/2c25",
+        "path": "ground/engines/ai/fiat_8144",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.05,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
+  "engine_mctav6": {
+    "effects": {
+      "path": "ground/engines/mcta_v6",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/mcta_v6",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [-1.0,1.0,0.0]
+    },
+    "cockpit": {
+      "path": "ground/engines/mcta_v6",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [-1.0,1.0,0.0]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/mcta_v6",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/mcta_v6",
         "eventBack": "engine",
         "rpmSmooth": 1.0,
         "loadScale": 6.0,
@@ -11519,6 +11799,8 @@
     }
   },
   "engine_abrams": {
+    "startTimeout": 11.0,
+    "stopTimeout": 0.1,
     "effects": {
       "path": "ground/engines/abrams",
       "wep": "",
@@ -11537,8 +11819,8 @@
       "eventSurround": "",
       "eventLod1": "engine",
       "rpmSmooth": 1.0,
-      "loadScale": 10.0,
-      "loadSmooth": 0.01,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
       "distSmooth": 0.9,
       "distScaleOnNotHero": 1.0,
       "offsetPos": [-1.0,1.0,0.0]

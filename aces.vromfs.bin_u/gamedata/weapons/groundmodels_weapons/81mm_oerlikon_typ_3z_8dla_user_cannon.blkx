@@ -116,15 +116,14 @@
       "operatedDist": 10.0,
       "autoLeveling": true,
       "autoAiming": true,
-      "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_133_160mm_metal_he",
+      "selfDestructionFx": "hit_133_205mm_heat",
+      "explosionEffect": "hit_133_205mm_heat",
       "groundCollisionEffect": "hit_133_160mm_dirt_he",
       "ricochetEffect": "hit_133_160mm_metal_ap",
       "waterCollisionEffect": "hit_133_160mm_water_he",
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "smokeEffect": "trail_smoke",
       "maxDistance": 6000.0,
       "minDistance": 30.0,
       "spawnExplosionWreckage": false,
@@ -136,6 +135,10 @@
       "hitPower": 260.0,
       "fuseDelayDist": 0.0,
       "explodeTreshold": 0.01,
+      "fireEffect": "rocket_fire_light_multiple",
+      "smokeEffect": "",
+      "hazeEffect": "haze_missile",
+      "endSmokeViscosity": 0.05,
       "distanceFuse": false,
       "rendinstDamageRadius": 5.0,
       "statType": "",
@@ -203,9 +206,6 @@
         "glass": {
           "fx": "hit_133_160mm_metal_he"
         },
-        "wood": {
-          "fx": "hit_133_160mm_wood_he"
-        },
         "steel": {
           "fx": "hit_133_160mm_metal_he"
         },
@@ -232,6 +232,10 @@
         },
         "stone_snow": {
           "fx": "hit_133_160mm_snow_he"
+        },
+        "wood": {
+          "fx": "hit_133_205mm_heat",
+          "copyBulletTm": true
         }
       },
       "shatterCollisions": {
@@ -534,7 +538,6 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "smokeEffect": "trail_smoke",
         "maxDistance": 6000.0,
         "minDistance": 30.0,
         "spawnExplosionWreckage": false,
@@ -551,6 +554,10 @@
         "farArmorPower": [0.2,700.0],
         "relativeVelArmorShift": [200.0,1000.0],
         "distanceFuse": false,
+        "fireEffect": "rocket_fire_light_multiple",
+        "smokeEffect": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
         "explodeTreshold": 0.01,
         "rendinstDamageRadius": 5.0,
         "statType": "",

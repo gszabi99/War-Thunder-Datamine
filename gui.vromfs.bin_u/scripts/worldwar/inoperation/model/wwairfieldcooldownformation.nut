@@ -27,7 +27,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
   function getCooldownTime()
   {
-    return ::max(0, (cooldownFinishedMillis - ::ww_get_operation_time_millisec()))
+    return max(0, (cooldownFinishedMillis - ::ww_get_operation_time_millisec()))
   }
 
   function getCooldownText()

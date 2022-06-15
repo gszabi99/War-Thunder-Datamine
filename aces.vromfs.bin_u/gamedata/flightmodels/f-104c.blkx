@@ -5,9 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -1991,15 +1989,12 @@
         "node": "armor3_dm"
       }
     ],
-    "hideNodes": {
-      "node": "rwr"
-    },
     "Weapon": [
       {
         "trigger": "cannon"
       },
       {
-        "blk": "gameData/Weapons/cannonM61.blk"
+        "blk": "gameData/Weapons/cannonM61A1.blk"
       },
       {
         "emitter": "flare1"
@@ -2085,18 +2080,41 @@
       ]
     },
     {
+      "preset": {
+        "name": "f-104c_bomb_blu_27",
+        "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_blu_27.blk",
+        "reqModification": "us_blu_1",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+            "amountPerTier": 1.0,
+            "iconType": "napalm_large"
+          }
+        }
+      }
+    },
+    {
       "preset": [
         {
-          "name": "f-104c_aero_7_aim_9b"
+          "name": "f-104c_bomb_blu_27_aim_9b"
         },
         {
-          "blk": "gameData/FlightModels/weaponPresets/f-104c_aero_7_aim_9b.blk"
+          "blk": "gameData/FlightModels/weaponPresets/f-104c_bomb_blu_27_aim_9b.blk"
         },
         {
-          "reqModification": "us_2_75_in_ffar_lau_3a"
+          "reqModification": "us_blu_1"
         },
         {
           "reqModification": "us_aim_9b"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/us_blu_1.blk",
+              "amountPerTier": 1.0,
+              "iconType": "napalm_large"
+            }
+          }
         }
       ]
     }
@@ -2179,7 +2197,12 @@
       "reqModification": "M60_belt_pack",
       "tier": 3
     },
+    "us_blu_1": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "us_750lb_m117a1": {
+      "prevModification": "us_blu_1",
       "modClass": "weapon",
       "tier": 2
     },

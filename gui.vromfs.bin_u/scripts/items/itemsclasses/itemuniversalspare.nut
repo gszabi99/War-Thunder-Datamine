@@ -4,8 +4,8 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 {
   static iType = itemType.UNIVERSAL_SPARE
   static defaultLocId = "universalSpare"
-  static defaultIcon = "#ui/gameuiskin#item_uni_spare"
-  static typeIcon = "#ui/gameuiskin#item_type_uni_spare"
+  static defaultIcon = "#ui/gameuiskin#item_uni_spare.png"
+  static typeIcon = "#ui/gameuiskin#item_type_uni_spare.svg"
 
   canBuy = true
   allowBigPicture = false

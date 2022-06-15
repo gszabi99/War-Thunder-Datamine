@@ -2,7 +2,6 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 
 let contentPresets = []
 local contentPresetIdxByName = {}
-local defaultPresetIdx = -1
 
 const AGREED_PRESET_SAVE_ID_PREFIX = "contentPreset/agreed"
 
@@ -13,7 +12,6 @@ let function getContentPresets() {
   eachBlock(::get_ugc_blk()?.presets, @(_, n) contentPresets.append(n))
 
   contentPresetIdxByName = u.invert(contentPresets)
-  defaultPresetIdx = contentPresets.len()-1
   return contentPresets
 }
 

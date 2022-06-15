@@ -217,6 +217,7 @@
       "scoreLimit": 15000,
       "timeLimit": 180,
       "deathPenaltyMul": 0.0,
+      "allowEmptyTeams": false,
       "country_axis": "germany",
       "country_allies": "usa",
       "restoreType": "attempts",
@@ -367,6 +368,22 @@
     },
     {
       "import_record": {
+        "file": "gameData/missions/cta/planes/simulator/bulge/lbt_landbattles_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
         "file": "gameData/missions/cta/planes/simulator/bulge/ht_hunters_template_part.blk",
         "importAreas": true,
         "importUnits": true,
@@ -383,7 +400,7 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/air_templates/jip/air_jip_logic_template.blk",
+        "file": "gameData/missions/templates/enduring_confrontation/bel_base_ec_logic_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -448,27 +465,22 @@
       "actions": [
         {
           "comment": {
-            "value": "доступность шаблонов"
+            "value": "dostupnost' shablonov"
           }
         },
         {
           "comment": {
-            "value": "включение разведки"
+            "value": "vklyuchenie razvedki"
           }
         },
         {
           "comment": {
-            "value": "прячем служебные самолеты из шаблонов"
+            "value": "pryachem sluzhebnye samolety iz shablonov"
           }
         },
         {
           "comment": {
-            "value": "увеличиваем количество одновременно запущенных шаблонов"
-          }
-        },
-        {
-          "comment": {
-            "value": "настройка охотников"
+            "value": "uvelichivaem kolichestvo odnovremenno zapushchennyh shablonov"
           }
         },
         {
@@ -580,13 +592,7 @@
               "target": "cnv_armada"
             },
             {
-              "target": "flt_armada"
-            },
-            {
               "target": "lpt_armada"
-            },
-            {
-              "target": "lbt_battles_armada"
             },
             {
               "target": "at_armada"
@@ -598,32 +604,6 @@
             "value": 3,
             "var": "to_max_templates_to_launch"
           }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 720
-            },
-            {
-              "var": "ht_t1_initial_delay_timer"
-            },
-            {
-              "var": "ht_t2_initial_delay_timer"
-            }
-          ]
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 900
-            },
-            {
-              "var": "ht_t1_delay_timer"
-            },
-            {
-              "var": "ht_t2_delay_timer"
-            }
-          ]
         },
         {
           "varSetInt": {

@@ -5,9 +5,7 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.296,
   "gearSinkRangeC": 0.29,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -3041,6 +3039,136 @@
           ]
         }
       ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5c_bomb_blu_1"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5c_bomb_blu_1.blk"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+              },
+              {
+                "iconType": "bombs_special"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 6
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f_5c_bomb_blu_1_agm_12b"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f_5c_bomb_blu_1_agm_12b.blk"
+        },
+        {
+          "reqModification": "fj_4b_agm_12b"
+        },
+        {
+          "reqModification": "us_blu_1"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                },
+                {
+                  "iconType": "missile_air_to_uni"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_blu_1.blk"
+                },
+                {
+                  "iconType": "bombs_special"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 6
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -3170,7 +3298,12 @@
       "tier": 4,
       "reqModification": "us_1000lb_mk83"
     },
+    "us_blu_1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_lau_3a": {
+      "prevModification": "us_blu_1",
       "tier": 2,
       "modClass": "weapon"
     },

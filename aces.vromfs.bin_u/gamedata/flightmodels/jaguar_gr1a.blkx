@@ -7,13 +7,10 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
-  "haveOpticTurret": true,
   "is410SUM1Ils": true,
   "gearSinkRangeLR": 0.204,
   "gearSinkRangeC": 0.308,
-  "JetNozzlesAnim1": [0.3,0.5],
-  "JetNozzlesAnim2": [0.5,1.0],
-  "JetNozzlesAnim3": [1.0,0.0],
+  "jetEnginePowerFullScale": true,
   "viewDistKInSight": 4.0,
   "radarCScope": true,
   "gyroscopicSightOverSensors": true,
@@ -2034,40 +2031,13 @@
       "mirrorNode": "blister8"
     },
     {
-      "lightPos": [4.976167,0.607395,0.165254]
+      "lightPos": [4.976167,0.607395,0.0]
     },
     {
-      "lightColor": [0.91,0.05,0.13]
+      "lightColor": [0.7,0.01,0.0]
     },
     {
-      "lightRadius": 0.2
-    },
-    {
-      "lightPos1": [4.956398,0.616251,-0.261856]
-    },
-    {
-      "lightColor1": [0.91,0.05,0.13]
-    },
-    {
-      "lightRadius1": 0.2
-    },
-    {
-      "lightPos2": [4.951085,0.56656,-0.004782]
-    },
-    {
-      "lightColor2": [0.41,0.75,0.3]
-    },
-    {
-      "lightRadius2": 0.35
-    },
-    {
-      "lightPos3": [5.024328,0.683216,-0.00347]
-    },
-    {
-      "lightColor3": [1.91,0.65,0.02]
-    },
-    {
-      "lightRadius3": 0.19
+      "lightRadius": 0.45
     },
     {
       "devices": {
@@ -2102,6 +2072,9 @@
         "mach_sec": [0.0,10.0],
         "aviahorizon_pitch": [-80.0,80.0],
         "aviahorizon_roll": [-180.0,180.0],
+        "aoa": [0.0,22.0],
+        "aoa1": [0.0,22.0],
+        "aoa2": [0.0,22.0],
         "compass": [0.0,360.0],
         "compass1": [0.0,360.0],
         "bank": [-8.0,8.0],
@@ -2132,12 +2105,28 @@
     {
       "multifunctionDisplays": [
         {
-          "display": {
-            "textureArea": [0.0,0.0,0.5,0.5],
-            "page": {
-              "type": "map"
+          "display": [
+            {
+              "textureArea": [0.0,0.0,1.0,1.0]
+            },
+            {
+              "page": {
+                "type": "thermal",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "target_tracking",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "map"
+              }
             }
-          }
+          ]
         },
         {
           "display": {
@@ -2188,6 +2177,16 @@
       ]
     }
   ],
+  "gunnerOpticFps": {
+    "Target": {
+      "pos": [-5.2,-1.0,0.0],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [-90.0,90.0,-160.0,15.0],
+      "opticType": "tv",
+      "turretNo": 0
+    }
+  },
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [500.0,300.0],
@@ -4031,16 +4030,6 @@
       }
     }
   ],
-  "gunnerOpticFps": {
-    "Target": {
-      "pos": [-5.2,-1.0,0.0],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [-90.0,90.0,-160.0,15.0],
-      "opticType": "targeting",
-      "turretNo": 0
-    }
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,

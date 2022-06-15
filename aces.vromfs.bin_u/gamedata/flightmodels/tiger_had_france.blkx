@@ -1879,7 +1879,30 @@
       "preset": {
         "name": "tiger_had_france_hot3",
         "blk": "gameData/flightModels/weaponPresets/tiger_had_france_hot3.blk",
-        "reqModification": "tiger_hot3"
+        "reqModification": "tiger_hot3",
+        "weaponConfig": {
+          "presetType": "ARMORED",
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/euro_hot3.blk"
+            },
+            {
+              "amountPerTier": 4.0
+            },
+            {
+              "tier": {
+                "idx": 5,
+                "iconType": "atgm_type1_x4"
+              }
+            },
+            {
+              "tier": {
+                "idx": 7,
+                "iconType": "atgm_type1_x4"
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -2573,7 +2596,7 @@
       "tier": 3
     },
     "heli_night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
+      "image": "#ui/gameuiskin#thermal_sight.png",
       "effects": {
         "nightVision": {
           "gunnerIr": {

@@ -42,7 +42,7 @@ dropMenuArrow {
 dropMenuSeparator {
   size:5@dp, ph;
   background-color: @white;
-  background-image:#ui/gameuiskin#drop_menu_separator;
+  background-image:#ui/gameuiskin#drop_menu_separator.png;
   background-repeat: expand;
 }
 
@@ -94,8 +94,13 @@ glow {
   size: pw, ph;
   input-transparent: yes;
   background-repeat: expand;
-  background-image: #ui/gameuiskin#item_glow;
+  background-image: #ui/gameuiskin#item_glow.png;
   background-position: 4, 4, 4, 9;
+}
+
+GameModeMovie {
+  display: hide;
+  input-transparent: yes;
 }
 
 gameModeBlock[current_mode=yes] > glow {
@@ -107,26 +112,17 @@ gameModeBlock:hover > glow,
   background-color: #daad9c;
 }
 
-gameModeBlock > movie {
+gameModeBlock > GameModeMovie {
   position: absolute;
   pos: 2@dp, 3@dp;
   size: pw - 4@dp, ph - 7@dp;
   display: hide;
 }
-[show_console_buttons=no] gameModeBlock:hover > movie {
+
+gameModeBlock:hover > GameModeMovie {
+  behavior: Movie;
+  state: playing;
   display: show;
-}
-
-[show_console_buttons=yes] gameModeBlock[selected=yes] > movie {
-  display: show;
-}
-
-[show_console_buttons=no] gameModeBlock:hover[inactiveColor=yes] > movie {
-  display: hide;
-}
-
-[show_console_buttons=yes] gameModeBlock[selected=yes][inactiveColor=yes] > movie {
-  display: hide;
 }
 
 gameModeBlock > img {
@@ -223,7 +219,7 @@ dark_corner {
   pos: pw - w, 0;
   size: 0.033@scrn_tgt, 0.033@scrn_tgt;
 
-  background-image: #ui/gameuiskin#block_angle_bg;
+  background-image: #ui/gameuiskin#block_angle_bg.png;
   background-color: #99ffffff;
 }
 

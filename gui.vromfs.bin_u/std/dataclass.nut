@@ -82,10 +82,7 @@ let function mkClassFields(fields){
   return fields.map(@(v) _cfield(v[0], valToStr(v[1]))).reduce(addNewline1)
 }
 
-local function mkPosFieldInit(fieldname, def){
-  def = valToStr(def)
-  return $"this.{fieldname} = {fieldname}"
-}
+local mkPosFieldInit = @(fieldname, def) $"this.{fieldname} = {valToStr(def)}"
 
 local function mkTableFieldInit(fieldname, firstarg, def){
   def = valToStr(def)
@@ -102,7 +99,7 @@ let function mkCtor(fields, args){
   let firstarg = fields[0][0]
   pp(tostring_r(fields))
   let kwargs_inits = fields.map(@(v) mkTableFieldInit(v[0], firstarg, v[1])).reduce(addNewline3)
-  let pargs_inits = fields.map(@(v) mkPosFieldInit(v[0], v[1])).filter(@(idx,v) v!="" && v!=null).reduce(addNewline3) ?? ""
+  let pargs_inits = fields.map(@(v) mkPosFieldInit(v[0], v[1])).filter(@(_idx, v) v!="" && v!=null).reduce(addNewline3) ?? ""
 
   let ret = @"
   constructor({0}){

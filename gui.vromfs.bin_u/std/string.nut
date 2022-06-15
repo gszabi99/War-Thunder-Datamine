@@ -1,9 +1,8 @@
 #no-plus-concat
 
-let string=require("string")
+let { regexp, format, startswith, endswith, strip }=require("string")
 let math=require("math")
 let regexp2 = require_optional("regexp2")
-local regexp = string.regexp
 let utf8 = require_optional("utf8")
 
 //pairs list taken from http://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/nls/rbagslowtoupmaptable.htm
@@ -92,8 +91,8 @@ if (regexp2 != null) {
   ]
   for (local ch = 0; ch < 32; ch++)
     escapeConfig.append({
-      re2 = regexp2(string.format(@"\x%02X", ch))
-      repl = string.format(@"\\u%04X", ch)
+      re2 = regexp2(format(@"\x%02X", ch))
+      repl = format(@"\\u%04X", ch)
     })
 }
 else if (regexp != null) {
@@ -130,8 +129,8 @@ else if (regexp != null) {
   ]
   for (local ch = 0; ch < 32; ch++)
     escapeConfig.append({
-      re2 = regexp(string.format(@"\x%02X", ch))
-      repl = string.format(@"\\u%04X", ch)
+      re2 = regexp(format(@"\x%02X", ch))
+      repl = format(@"\\u%04X", ch)
     })
 }
 
@@ -139,7 +138,7 @@ local defTostringParams = {
   maxdeeplevel = 4
   compact=true
   tostringfunc= {
-    compare=function(val) {return false}
+    compare=@(_val) false
     tostring=@(val) val.tostring()
   }
   separator = " "
@@ -254,19 +253,19 @@ local function tostring_r(input, params=defTostringParams) {
   local compact = params?.compact ?? defTostringParams.compact
   local tostringfuncs = [
     {
-      compare = @(val,typ) simple_types.indexof(typ) != null
+      compare = @(_val,typ) simple_types.indexof(typ) != null
       tostring = @(val) tostring_any(val, null, compact)
     }
     {
       compare = @(val,typ) (typ=="table" && val.len()==0 )
-      tostring = @(val) "{}"
+      tostring = @(_val) "{}"
     }
     {
       compare = @(val,typ) typ=="array" && val.len()==0
-      tostring = @(val) "[]"
+      tostring = @(_val) "[]"
     }
     {
-      compare = @(val,typ) function_types.indexof(typ)!=null
+      compare = @(_val,typ) function_types.indexof(typ)!=null
       tostring = @(val) tostring_any(val, null, compact)
     }
     {
@@ -420,7 +419,7 @@ local function substring(str, start = 0, length = null) {
 local function startsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
-  return string.startswith(str, value)
+  return startswith(str, value)
 }
 
 /**
@@ -433,7 +432,7 @@ local function startsWith(str, value) {
 local function endsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
-  return string.endswith(str, value)
+  return endswith(str, value)
 }
 
 /**
@@ -581,7 +580,7 @@ local function floatToStringRounded(value, presize) {
     local res = (value / presize + (value < 0 ? -0.5 : 0.5)).tointeger()
     return res == 0 ? "0" : "".join([res].extend(array(math.log10(presize).tointeger(), "0")))
   }
-  return string.format("%.{0}f".subst(-math.log10(presize).tointeger()), value)
+  return format("%.{0}f".subst(-math.log10(presize).tointeger()), value)
 }
 
 local function isStringInteger(str) {
@@ -636,7 +635,7 @@ local function isStringFloat(str, separator=".") {
     numList[numListLen - 1] = eList[0]
     numList.append(eList[1])
   }
-  foreach (idx, s in numList) {
+  foreach (s in numList) {
     if (s == "")
       return false
     for (local i = 0; i < s.len(); i++)
@@ -648,7 +647,7 @@ local function isStringFloat(str, separator=".") {
 
 local function toIntegerSafe(str, defValue = 0, needAssert = true) {
   if (type(str) == "string")
-    str = string.strip(str)
+    str = strip(str)
   if (isStringInteger(str))
     return str.tointeger()
   if (needAssert)

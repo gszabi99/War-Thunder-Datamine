@@ -1,23 +1,24 @@
 from "%darg/ui_imports.nut" import *
 from "ecs" import *
-let string = require("string")
+let { regexp, strip, format } = require("string")
 let dagorMath = require("dagor.math")
 let {tostring_r} = require("%sqstd/string.nut")
 let {logerr} = require("dagor.debug")
+let {command} = require("console")
 
-let rexFloat = string.regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
-let rexInt = string.regexp(@"[\+\-]?[0-9]+")
+let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
+let rexInt = regexp(@"[\+\-]?[0-9]+")
 let tofloat = @(v) v.tofloat()
 let tointeger = @(v) v.tointeger()
-let isStrInt = @(v) rexInt.match(string.strip(v))
-let isStrFloat = @(v) rexFloat.match(string.strip(v))
+let isStrInt = @(v) rexInt.match(strip(v))
+let isStrFloat = @(v) rexFloat.match(strip(v))
 let function isStrBool(text){
-  let s = string.strip(text)
+  let s = strip(text)
   return (s == "true" || s == "1" || s == "false" || s == "0")
 }
 let function isValueTextValid(comp_type, text) {
   let simpleTypeFunc = {
-    string = @(v) true
+    string = @(_) true
     integer = isStrInt
     float = isStrFloat
     bool = isStrBool
@@ -79,7 +80,7 @@ let convertTextToValFuncs = {
   integer = @(v) safe_cvt_txt(v, "".tointeger, 0),
   float = @(v) safe_cvt_txt(v, "".tofloat, 0.0)
   bool = function(s){
-    s = string.strip(s)
+    s = strip(s)
     if (s=="true" || s=="1")
       return true
     if (s=="false" || s=="0")
@@ -95,16 +96,16 @@ let function convertTextToVal(comp_type, text) {
   let fields = text.split(",")
   let floatDagorMathTypes = ["Point2", "Point3", "DPoint3", "Point4"]
   if (floatDagorMathTypes.indexof(comp_type) != null)
-    return convertTextToValForDagorClass(comp_type, fields.map(pipe(string.strip, tofloat)))
+    return convertTextToValForDagorClass(comp_type, fields.map(pipe(strip, tofloat)))
 
   let intDagorMathTypes = ["IPoint2", "IPoint3"]
   if (intDagorMathTypes.indexof(comp_type) != null)
-    return convertTextToValForDagorClass(comp_type, fields.map(pipe(string.strip, tointeger)))
+    return convertTextToValForDagorClass(comp_type, fields.map(pipe(strip, tointeger)))
 
   if (comp_type == "E3DCOLOR") {
     if (fields.len()!=4)
       return null
-    let f = fields.map(pipe(string.strip, tointeger, @(v) clamp(v, 0, 255)))
+    let f = fields.map(pipe(strip, tointeger, @(v) clamp(v, 0, 255)))
     let res = dagorMath.E3DCOLOR()
     foreach (idx, field in ["r","g","b","a"]) {
       res[field] = f[idx]
@@ -120,19 +121,19 @@ let map_type_to_str = {
     let tf = v.tostring()
     return (tf.indexof(".") != null || tf.indexof("e") != null) ? tf : $"{tf}.0"
   },
-  ["null"] = @(v) "null",
+  ["null"] = @(_) "null",
 }
 let map_class_to_str = {
-  [dagorMath.Point2] = @(v) string.format("%.4f, %.4f", v.x, v.y),
-  [dagorMath.Point3] = @(v) string.format("%.4f, %.4f, %.4f", v.x, v.y, v.z),
-  [dagorMath.DPoint3] = @(v) string.format("%.4f, %.4f, %.4f", v.x, v.y, v.z),
-  [dagorMath.Point4] = @(v) string.format("%.4f, %.4f, %.4f, %.4f", v.x, v.y, v.z, v.w),
-  [dagorMath.IPoint2] = @(v) string.format("%d, %d", v.x, v.y),
-  [dagorMath.IPoint3] = @(v) string.format("%d, %d, %d", v.x, v.y, v.z),
-  [dagorMath.E3DCOLOR] = @(v) string.format("%d, %d, %d, %d", v.r, v.g, v.b, v.a),
+  [dagorMath.Point2] = @(v) format("%.4f, %.4f", v.x, v.y),
+  [dagorMath.Point3] = @(v) format("%.4f, %.4f, %.4f", v.x, v.y, v.z),
+  [dagorMath.DPoint3] = @(v) format("%.4f, %.4f, %.4f", v.x, v.y, v.z),
+  [dagorMath.Point4] = @(v) format("%.4f, %.4f, %.4f, %.4f", v.x, v.y, v.z, v.w),
+  [dagorMath.IPoint2] = @(v) format("%d, %d", v.x, v.y),
+  [dagorMath.IPoint3] = @(v) format("%d, %d, %d", v.x, v.y, v.z),
+  [dagorMath.E3DCOLOR] = @(v) format("%d, %d, %d, %d", v.r, v.g, v.b, v.a),
   [dagorMath.TMatrix] = function(v){
     let pos = v[3]
-    return string.format("TM: [3]=%.2f, %.2f, %.2f", pos.x, pos.y, pos.z)
+    return format("TM: [3]=%.2f, %.2f, %.2f", pos.x, pos.y, pos.z)
   },
 }
 
@@ -140,7 +141,7 @@ let function compValToString(v, max_cvstr_len = 80){
   let compValToString_ = callee()
   let function instance_to_str(v){
     let function objToStr(v){
-      local s = string.format("[%d]={", v.len())
+      local s = format("[%d]={", v.len())
       foreach (val in v) {
         let nexts = "{0}{{1}},".subst(s, compValToString_(val, max_cvstr_len))
         if (max_cvstr_len > 0 && nexts.len() > max_cvstr_len) {
@@ -228,6 +229,10 @@ let function setValToObj(eid, comp_name, path, val){
   }
 }
 
+let function updateComp(eid, comp_name){
+  command?($"ecs.update_component {eid} {comp_name}")
+}
+
 let exports = {
   isCompReadOnly
   getValFromObj
@@ -235,6 +240,7 @@ let exports = {
   isValueTextValid
   convertTextToVal
   compValToString
+  updateComp
 
   ecsTypeToSquirrelType = {
     //[TYPE_NULL] = null
@@ -253,8 +259,5 @@ let exports = {
     [TYPE_EID] = "integer",
   }
 }
-
-
-
 
 return exports

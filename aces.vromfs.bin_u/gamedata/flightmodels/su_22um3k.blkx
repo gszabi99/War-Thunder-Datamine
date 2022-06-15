@@ -18,13 +18,7 @@
     "gearSinkRangeC": 0.3
   },
   {
-    "JetNozzlesAnim1": [0.3,0.5]
-  },
-  {
-    "JetNozzlesAnim2": [0.5,1.0]
-  },
-  {
-    "JetNozzlesAnim3": [1.0,0.0]
+    "jetEnginePowerFullScale": true
   },
   {
     "haveCCIPForRocket": true
@@ -2703,6 +2697,12 @@
           "name": "su_22um3k_rocket_kh29l_kh25ml_r60",
           "blk": "gameData/FlightModels/weaponPresets/su_22um3k_rocket_kh29l_kh25ml_r60.blk"
         }
+      },
+      {
+        "preset": {
+          "name": "su_22um3k_bomb_zab_500",
+          "blk": "gameData/FlightModels/weaponPresets/su_22um3k_bomb_zab_500.blk"
+        }
       }
     ]
   },
@@ -3194,6 +3194,30 @@
           },
           {
             "WeaponPreset": {
+              "iconType": "napalm_large",
+              "name": "zb500",
+              "reqModification": "zb_500",
+              "ShowNodes": [
+                {
+                  "node": "pylon_4"
+                },
+                {
+                  "node": "pylon_4_holder_500"
+                }
+              ],
+              "Weapon": {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+                "emitter": "fab_500m_62_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.2
+              }
+            }
+          },
+          {
+            "WeaponPreset": {
               "iconType": "rockets_he_large",
               "name": "wing_left_rocket_s24",
               "reqModification": "il_28sh_s24",
@@ -3539,16 +3563,16 @@
               "reqModification": "su_17_sppu_22_gunpod",
               "ShowNodes": [
                 {
-                  "node": "sppu_22_002"
+                  "node": "sppu_22_001"
                 },
                 {
-                  "node": "turret2"
+                  "node": "turret1"
                 },
                 {
-                  "node": "gun2"
+                  "node": "gun1"
                 },
                 {
-                  "node": "flare4"
+                  "node": "flare3"
                 },
                 {
                   "node": "pylon_6"
@@ -3556,17 +3580,17 @@
               ],
               "ShowDmParts": [
                 {
-                  "node": "cover4_dm"
+                  "node": "cover5_dm"
                 },
                 {
-                  "node": "cannon3_dm"
+                  "node": "cannon4_dm"
                 }
               ],
               "Weapon": {
                 "trigger": "additional gun",
                 "blk": "gameData/Weapons/cannonGSh_23L.blk",
-                "emitter": "flare4",
-                "flash": "flare4",
+                "emitter": "flare3",
+                "flash": "flare3",
                 "bullets": 250,
                 "spread": 1.5,
                 "traceOffset": 1,
@@ -3682,12 +3706,36 @@
           },
           {
             "WeaponPreset": {
+              "iconType": "napalm_large",
+              "name": "zb500",
+              "reqModification": "zb_500",
+              "ShowNodes": [
+                {
+                  "node": "pylon_2"
+                },
+                {
+                  "node": "mbd3_u6_68"
+                }
+              ],
+              "Weapon": {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+                "emitter": "fab_500m_62_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.2
+              }
+            }
+          },
+          {
+            "WeaponPreset": {
               "iconType": "rockets_he_large",
               "name": "fuse_left_rocket_s_24",
               "reqModification": "il_28sh_s24",
               "ShowNodes": [
                 {
-                  "node": "pylon_1"
+                  "node": "pylon_2"
                 },
                 {
                   "node": "apu_68_b003"
@@ -3710,7 +3758,7 @@
               "reqModification": "su_17_x25",
               "ShowNodes": [
                 {
-                  "node": "pylon_1r"
+                  "node": "pylon_2r"
                 },
                 {
                   "node": "apu_68_b007"
@@ -3734,7 +3782,7 @@
               "reqModification": "su_17_x29l",
               "ShowNodes": [
                 {
-                  "node": "pylon_1r"
+                  "node": "pylon_2r"
                 },
                 {
                   "node": "aku_58_b001"
@@ -3895,6 +3943,25 @@
                 }
               }
             ]
+          },
+          {
+            "WeaponPreset": {
+              "iconType": "napalm_large",
+              "name": "zb500",
+              "reqModification": "zb_500",
+              "ShowNodes": {
+                "node": "pylon_1"
+              },
+              "Weapon": {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+                "emitter": "fab_500m_62_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.2
+              }
+            }
           },
           {
             "WeaponPreset": {
@@ -4146,16 +4213,16 @@
               "reqModification": "su_17_sppu_22_gunpod",
               "ShowNodes": [
                 {
-                  "node": "sppu_22_001"
+                  "node": "sppu_22_002"
                 },
                 {
-                  "node": "turret1"
+                  "node": "turret2"
                 },
                 {
-                  "node": "gun1"
+                  "node": "gun2"
                 },
                 {
-                  "node": "flare3"
+                  "node": "flare4"
                 },
                 {
                   "node": "pylon_5"
@@ -4163,17 +4230,17 @@
               ],
               "ShowDmParts": [
                 {
-                  "node": "cover5_dm"
+                  "node": "cover4_dm"
                 },
                 {
-                  "node": "cannon4_dm"
+                  "node": "cannon3_dm"
                 }
               ],
               "Weapon": {
                 "trigger": "additional gun",
                 "blk": "gameData/Weapons/cannonGSh_23L.blk",
-                "emitter": "flare3",
-                "flash": "flare3",
+                "emitter": "flare4",
+                "flash": "flare4",
                 "bullets": 250,
                 "spread": 1.5,
                 "traceOffset": 1,
@@ -4304,6 +4371,25 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01
+              }
+            }
+          },
+          {
+            "WeaponPreset": {
+              "iconType": "napalm_large",
+              "name": "zb500",
+              "reqModification": "zb_500",
+              "ShowNodes": {
+                "node": "pylon_3"
+              },
+              "Weapon": {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+                "emitter": "fab_500m_62_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.2
               }
             }
           },
@@ -4638,7 +4724,7 @@
       },
       "mi_24_r_60": {
         "modClass": "weapon",
-        "prevModification": "mi_24_fab_500",
+        "prevModification": "countermeasures_belt_pack",
         "tier": 4
       },
       "su_s5_s8": {
@@ -4681,7 +4767,12 @@
           }
         }
       },
+      "zb_500": {
+        "modClass": "weapon",
+        "tier": 1
+      },
       "yak_38_x23m": {
+        "prevModification": "zb_500",
         "modClass": "weapon",
         "tier": 2
       },
