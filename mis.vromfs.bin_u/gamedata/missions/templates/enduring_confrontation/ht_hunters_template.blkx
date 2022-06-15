@@ -58,7 +58,8 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 30.0
+            "time": 30.0,
+            "var": "ht_restart_delay_timer"
           }
         },
         "conditions": [],
@@ -405,6 +406,9 @@
               "shouldKeepFormation": true,
               "teleportHeightValue": 1000.0,
               "horizontalDirectionForTeleport": true,
+              "target_var_name": "",
+              "target_var_comp_op": "equal",
+              "target_var_value": 0,
               "object": "ht_t1_hunter",
               "useFormationCenter": false,
               "teleportOffset": [0.0,500.0,0.0]
@@ -466,6 +470,9 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "ht_t1_hunter"
           },
           "unitAttackTarget": [
@@ -597,7 +604,8 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 30.0
+            "time": 30.0,
+            "var": "ht_restart_delay_timer"
           }
         },
         "conditions": [],
@@ -944,6 +952,9 @@
               "shouldKeepFormation": true,
               "teleportHeightValue": 1000.0,
               "horizontalDirectionForTeleport": true,
+              "target_var_name": "",
+              "target_var_comp_op": "equal",
+              "target_var_value": 0,
               "object": "ht_t2_hunter",
               "useFormationCenter": false,
               "teleportOffset": [0.0,500.0,0.0]
@@ -1005,6 +1016,9 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "ht_t2_hunter"
           },
           "unitAttackTarget": [
@@ -1146,7 +1160,8 @@
     "ht_t2_assault_target_name": "at_t1_assault",
     "ht_t2_assault_cover_name": "at_t1_fighter",
     "ht_t2_cur_target_name": "",
-    "ht_t2_cur_cover_name": ""
+    "ht_t2_cur_cover_name": "",
+    "ht_restart_delay_timer": 120
   },
   "dialogs": [],
   "airfields": [],

@@ -1,6 +1,6 @@
 {
   "IgnoreErrors": true,
-  "AileronEffectiveSpeed": 600.0,
+  "AileronEffectiveSpeed": 520.0,
   "RudderEffectiveSpeed": 550.0,
   "ElevatorsEffectiveSpeed": [550.0,550.0],
   "AileronPowerLoss": 2.5,
@@ -13,10 +13,10 @@
   "InvertElevator": false,
   "FlapsRadiator": 0.0,
   "GearActuatorSpeed": 0.2,
-  "CockpitDoorSpeedOpen": [150.0,300.0,0.5,2.0],
-  "CockpitDoorSpeedClose": [150.0,300.0,0.5,0.2],
+  "CockpitDoorSpeedOpen": [150.0,300.0,0.5,0.7],
+  "CockpitDoorSpeedClose": [150.0,300.0,0.5,0.4],
   "CockpitDoorBlockSpeed": 120.0,
-  "AirBrakeSpeed": 2.5,
+  "AirBrakeSpeed": 1.0,
   "BayDoorSpeed": 1.0,
   "BombLauncherSpeed": 2.0,
   "SweepWingActuatorSpeed": 0.2,
@@ -157,7 +157,7 @@
         "MachFactor": 3,
         "MachCrit1": 0.88,
         "MachMax1": 1.01,
-        "MultMachMax1": 3.2,
+        "MultMachMax1": 2.8,
         "MultLineCoeff1": -1.75,
         "MultLimit1": 1.1,
         "MachCrit2": 0.85,
@@ -279,7 +279,7 @@
         "MachFactor": 3,
         "MachCrit1": 0.88,
         "MachMax1": 1.0,
-        "MultMachMax1": 3.2,
+        "MultMachMax1": 2.6,
         "MultLineCoeff1": -2.2,
         "MultLimit1": 1.0,
         "MachCrit2": 0.92,
@@ -480,6 +480,8 @@
       "SensitivityMultiplier0": [0.0,0.2],
       "SensitivityMultiplier1": [0.15,1.35],
       "SensitivityMultiplier2": [0.35,1.0],
+      "SensitivityMultiplier3": [0.8,1.0],
+      "SensitivityMultiplier4": [1.0,0.7],
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [0.0,0.0],
       "SensitivityCd": [0.0,0.0],
@@ -884,19 +886,19 @@
         "Altitude": 1000.0,
         "RPM": 3500.0,
         "WaterTemperature": 413.0,
-        "OilTemperature": 69.9865
+        "OilTemperature": 70.0
       },
       "Mode1": {
         "Altitude": 1000.0,
         "RPM": 14100.0,
         "WaterTemperature": 630.0,
-        "OilTemperature": 84.9827
+        "OilTemperature": 85.0
       },
       "Mode2": {
         "Altitude": 1000.0,
         "RPM": 14700.0,
         "WaterTemperature": 680.0,
-        "OilTemperature": 97.9796
+        "OilTemperature": 98.0
       },
       "Load0": {
         "WaterTemperature": 520.0,
@@ -1395,10 +1397,10 @@
     },
     "Stages": {
       "Stage1": {
-        "minTime": 9.0,
-        "maxTime": 10.0,
+        "minTime": 12.0,
+        "maxTime": 13.0,
         "fromRPM": 0.0,
-        "toRPM": 2000.0,
+        "toRPM": 2500.0,
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       },

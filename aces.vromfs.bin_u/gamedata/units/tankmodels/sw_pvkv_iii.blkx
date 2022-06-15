@@ -2289,9 +2289,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 5900.0,
-        "Fuel": 100.0,
-        "TakeOff": 6000.0,
+        "Empty": 10700.0,
+        "Fuel": 300.0,
+        "TakeOff": 11000.0,
         "momentOfInertia": [2.0,2.0,5.0],
         "CenterOfGravity": [0.02,0.1,0.0],
         "AdvancedMass": false,
@@ -2300,29 +2300,32 @@
       },
       "tracks": {
         "animationMultiplier": 0.335,
-        "height": 0.045,
-        "width": 0.28
+        "height": 0.1,
+        "width": 0.25
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
         "cls_body": "convex_hull"
       },
       "engine": {
-        "horsePowers": 85.0,
-        "maxRPM": 2800.0,
+        "horsePowers": 165.0,
+        "maxRPM": 2300.0,
         "minRPM": 600.0
       },
       "mechanics": {
-        "maxBrakeForce": 20000.0,
-        "driveGearRadius": 0.275,
-        "mainGearRatio": 1.2,
-        "sideGearRatio": 5.4,
+        "maxBrakeForce": 65000.0,
+        "driveGearRadius": 0.24,
+        "mainGearRatio": 1.5,
+        "sideGearRatio": 3.4,
         "gearRatios": [
           {
-            "ratio": -7.49
+            "ratio": -7.7
           },
           {
             "ratio": 0.0
+          },
+          {
+            "ratio": 8.5
           },
           {
             "ratio": 6.0
@@ -2337,79 +2340,48 @@
             "ratio": 1.5
           },
           {
-            "ratio": 0.9
+            "ratio": 0.95
           }
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.12,-0.1,0.12],
-        "defaultGearRadius": 0.36,
-        "topGearRadius": 0.07,
-        "frontBackGearRadius": 0.23,
-        "defaultDampeningForce": [15000.0,15000.0],
+        "suspensionOffsets": [-0.05,-0.05,0.06],
+        "defaultGearRadius": 0.3,
+        "frontBackGearRadius": 0.19,
+        "topGearRadius": 0.1,
+        "defaultDampeningForce": [65000.0,65000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
       }
     }
   },
   {
-    "PhysSys": [
-      {
-        "group": {
-          "find": "^bone_suspension_(._\\d\\d)$",
-          "points": {
-            "suspension": {
-              "name": "bone_suspension_$1"
-            },
-            "wheel": {
-              "name": "bone_wheel_$1",
-              "limitMin": [-1000.0,0.0,0.0],
-              "limitMax": [1000.0,0.0,0.0]
-            }
-          },
-          "constraints": {
-            "edge": {
-              "from": "suspension",
-              "to": "wheel"
-            }
-          }
+    "PhysSys": {
+      "find": "^bone_suspension_(._\\d\\d)$",
+      "points": {
+        "suspension": {
+          "name": "bone_suspension_$1"
+        },
+        "wheel": {
+          "name": "bone_wheel_$1",
+          "limitMin": [-1000.0,0.0,0.0],
+          "limitMax": [1000.0,0.0,0.0]
         }
       },
-      {
-        "group": {
-          "find": "^suspension_(\\w)$",
-          "points": {
-            "suspension": {
-              "limitMin": [0.0,0.0,0.0],
-              "limitMax": [0.0,0.0,0.0],
-              "name": "bone_suspension_$1_back"
-            },
-            "wheelBack": {
-              "searchChildren": {
-                "occurence": 1,
-                "limitMin": [-1.0,0.0,0.0],
-                "limitMax": [1.0,0.0,0.0],
-                "parent": "suspension",
-                "find": "wheel_"
-              }
-            }
-          },
-          "constraints": {
-            "edge": {
-              "from": "suspension",
-              "to": "wheelBack"
-            }
-          }
+      "constraints": {
+        "edge": {
+          "from": "suspension",
+          "to": "wheel"
         }
       }
-    ]
+    }
   },
   {
     "ammo": {
-      "combustionTime": 7.0,
-      "detonateProb": 0.5,
-      "detonatePortion": [0.5,0.9],
-      "explodeHitPower": 5000.0,
+      "combustionTime": 10.0,
+      "detonateProb": 0.15,
+      "detonatePortion": [0.3,0.9],
+      "explodeHitPower": 1000.0,
       "hitPowerMult": 1.0,
       "nearHitPower": [1.0,50.0],
       "midHitPower": [0.9,400.0],
