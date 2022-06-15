@@ -122,15 +122,30 @@ let function getEntitlementPrice(ent)
 
 local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
 
-let function getPricePerEntitlement(ent) {
-  let value = getEntitlementAmount(ent)
-  if (value <= 0)
-    return 0
+let function getEntitlementPriceFloat(ent) {
+  local cost = -1.0
+  if (ent?.onlinePurchase) {
+    local costText = ""
+    if (::steam_is_running())
+      costText = ::loc($"price/steam/{ent.name}", "")
+    if (costText == "")
+      costText = ::loc($"price/{ent.name}", "")
 
-  let cost = getEntitlementPrice(ent)
-  if (cost == "")
-    return 0
-  return cost.tofloat() / value
+    if (costText != "")
+      cost = costText.tofloat()
+  }
+  else if (ent?.goldCost)
+    cost = ent.goldCost.tofloat()
+
+  return cost
+}
+
+let function getPricePerEntitlement(ent) {
+  let amount = getEntitlementAmount(ent)
+  if (amount <= 0)
+    return 0.0
+
+  return getEntitlementPriceFloat(ent) / amount
 }
 
 let function  getEntitlementLocParams() {
@@ -231,6 +246,7 @@ return {
   getEntitlementName
   getEntitlementTimeText
   getEntitlementPrice
+  getEntitlementPriceFloat
   getEntitlementDescription
   getFirstPurchaseAdditionalAmount
   getPricePerEntitlement

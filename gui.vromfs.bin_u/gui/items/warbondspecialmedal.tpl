@@ -22,8 +22,8 @@ tdiv {
         background-position:t='0'
         background-repeat:t='aspect-ratio'
         background-color:t='@inactiveWarbondMedalImgColor'
-        width:t='1@battleTasksHardMedalWidth'
-        height:t='w'
+        background-svg-size:t='1@battleTasksHardMedalWidth, 1@battleTasksHardMedalWidth'
+        size:t='1@battleTasksHardMedalWidth, 1@battleTasksHardMedalWidth'
         pos:t='0, 50%ph-50%h'
         position:t='absolute'
       }
@@ -39,9 +39,8 @@ tdiv {
       <<^inactive>>
         background-color:t='@warbondMedalImgColor'
       <</inactive>>
-
-      width:t='1@battleTasksHardMedalWidth'
-      height:t='w'
+      background-svg-size:t='1@battleTasksHardMedalWidth, 1@battleTasksHardMedalWidth'
+      size:t='1@battleTasksHardMedalWidth, 1@battleTasksHardMedalWidth'
       pos:t='0, 50%ph-50%h'
       position:t='relative'
       <<#sector>>

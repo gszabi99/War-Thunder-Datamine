@@ -3,7 +3,7 @@ let time = require("%scripts/time.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { getEntitlementDescription, getPricePerEntitlement,
-  isBoughtEntitlement, getEntitlementName,
+  isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 
@@ -492,9 +492,9 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     else if (productInfo?.discount_mul)
       savingText = format(::loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
     else if (item?.group && item.group in groupCost) {
-      let itemPrice = getEntitlementPrice(item).tofloat()
+      let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = groupCost[item.group]
-      if (itemPrice && defItemPrice && (!isGold || !::steam_is_running())) {
+      if (itemPrice > 0 && defItemPrice && (!isGold || !::steam_is_running())) {
         let calcAmount = amount + additionalAmount
         local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
