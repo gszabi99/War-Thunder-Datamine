@@ -1532,7 +1532,7 @@ let function setQualityPreset(presetName) {
     configRead()
 
   setGuiValue("graphicsQuality", presetName, mHandler == null)
-  getOptionDesc("graphicsQuality")?.onChanged()
+  getOptionDesc("graphicsQuality")?.onChanged(true)
   updateGuiNavbar(true)
 }
 

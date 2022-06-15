@@ -92,11 +92,27 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     guiScene.replaceContentFromText("resultsList", blk, blk.len(), this)
   }
 
-  function onPresetApply(obj) {
-    setQualityPreset(obj.presetName)
+  function presetApplyImpl(presetName) {
+    setQualityPreset(presetName)
     if (!needUiUpdate)
       onConfigApplyWithoutUiUpdate()
     goBack()
+  }
+
+  function onPresetApply(obj) {
+    let presetName = obj.presetName
+    if (presetName != "ultralow") {
+      presetApplyImpl(presetName)
+      return
+    }
+
+    ::scene_msg_box("msg_sysopt_compatibility", null,
+      ::loc("msgbox/compatibilityMode"),
+      [
+        ["yes", ::Callback(@() presetApplyImpl(presetName), this)],
+        ["no", @() null],
+      ], "no",
+      { cancel_fn = @() null, checkDuplicateId = true })
   }
 
   function goBack() {
