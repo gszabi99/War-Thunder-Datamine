@@ -797,6 +797,10 @@ mSettings = {
     }
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
+  getFromBlk = function(blk, desc) {
+    let antiAliasing = get_blk_value_by_path(blk, desc.blk, "none")
+    return (antiAliasing=="high_taa") ? "low_taa" : antiAliasing
+  }
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }

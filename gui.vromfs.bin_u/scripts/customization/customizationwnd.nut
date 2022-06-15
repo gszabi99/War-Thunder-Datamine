@@ -21,6 +21,7 @@ let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { needSuggestSkin, saveSeenSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
+let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -317,10 +318,7 @@ enum decalTwoSidedMode
   function updateDecalActionsTexts()
   {
     local bObj = null
-    local shortcuts = []
-
     let hasKeyboard = isPlatformPC
-    let hasGamepad = ::show_console_buttons
 
     //Flip
     let btn_toggle_mirror_text = ::loc("decals/flip") + (hasKeyboard ? " (F)" : "")
@@ -335,24 +333,14 @@ enum decalTwoSidedMode
       bObj.setValue(text)
 
     //Size
-    shortcuts = []
-    if (hasGamepad)
-      shortcuts.append(::loc("xinp/L1") + ::loc("ui/slash") + ::loc("xinp/R1"))
-    if (hasKeyboard)
-      shortcuts.append(::loc("key/Shift") + ::loc("keysPlus") + ::loc("key/Wheel"))
     bObj = scene.findObject("push_to_change_size")
-    if (::checkObj(bObj))
-      bObj.setValue(::g_string.implode(shortcuts, ::loc("ui/comma")))
+    if (bObj?.isValid() ?? false)
+      bObj.setValue(getAxisTextOrAxisName("decal_scale"))
 
     //Rotate
-    shortcuts = []
-    if (hasGamepad)
-      shortcuts.append(::loc("xinp/D.Left") + ::loc("ui/slash") + ::loc("xinp/D.Right"))
-    if (hasKeyboard)
-      shortcuts.append(::loc("key/Alt") + ::loc("keysPlus") + ::loc("key/Wheel"))
     bObj = scene.findObject("push_to_rotate")
-    if (::checkObj(bObj))
-      bObj.setValue(::g_string.implode(shortcuts, ::loc("ui/comma")))
+    if (bObj?.isValid() ?? false)
+      bObj.setValue(getAxisTextOrAxisName("decal_rotate"))
   }
 
   function getSelectedBuiltinSkinId()

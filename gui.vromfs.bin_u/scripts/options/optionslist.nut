@@ -230,8 +230,8 @@ let getMainOptions = function() {
       [::USEROPT_REPLAY_ALL_INDICATORS, "spinner", ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
       [::USEROPT_REPLAY_LOAD_COCKPIT, "spinner", ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
       [::USEROPT_HIDE_MOUSE_SPECTATOR, "spinner", ::has_feature("ClientReplay") || ::has_feature("ServerReplay") || ::has_feature("Spectator")],
-      [::USEROPT_REPLAY_SNAPSHOT_ENABLED, "spinner", ::has_feature("replayRewind")],
-      [::USEROPT_RECORD_SNAPSHOT_PERIOD, "spinner", ::has_feature("replayRewind")],
+      [::USEROPT_REPLAY_SNAPSHOT_ENABLED, "spinner", ::has_feature("ClientReplay") && ::has_feature("replayRewind")],
+      [::USEROPT_RECORD_SNAPSHOT_PERIOD, "spinner", ::has_feature("ClientReplay") && ::has_feature("replayRewind")],
 
       ["options/header/userGeneratedContent"],
       [::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE,    "combobox", contentPreset.getContentPresets().len()],
