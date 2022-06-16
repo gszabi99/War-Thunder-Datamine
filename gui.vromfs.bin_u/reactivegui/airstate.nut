@@ -1,6 +1,6 @@
 let interopGen = require("interopGen.nut")
 
-const NUM_ENGINES_MAX = 6
+let NUM_ENGINES_MAX = 16   //!!!FIX ME: Need get this const from native code
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 const NUM_TURRETS_MAX = 10
@@ -481,6 +481,8 @@ let helicopterState = {
   ParamTableShadowFactor,
   TurretSightOpacity,
   TurretSightLineWidthFactor,
+
+  NUM_ENGINES_MAX,
 }
 
 ::interop.updateCannons <- function(index, count, sec = -1) {

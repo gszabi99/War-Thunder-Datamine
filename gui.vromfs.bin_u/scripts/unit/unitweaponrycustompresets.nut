@@ -61,6 +61,24 @@ let function convertPresetToBlk(preset) {
   return presetBlk
 }
 
+let function isPresetChanged(oldPreset, newPreset) {
+  if (oldPreset.customNameText != newPreset.customNameText)
+    return true
+
+  if (oldPreset.tiers.len() != newPreset.tiers.len())
+    return true
+
+  foreach (idx, oldTier in oldPreset.tiers) {
+    let newTier = newPreset.tiers?[idx]
+    if (newTier == null
+        || oldTier.presetId != newTier.presetId
+        || oldTier.slot != newTier.slot)
+      return true
+  }
+
+  return false
+}
+
 let function addCustomPreset(unit, preset) {
   let presetBlk = convertPresetToBlk(preset)
   let presetId = preset.name
@@ -140,5 +158,6 @@ return {
   getWeaponryCustomPresets
   getCustomPresetByPresetBlk
   convertPresetToBlk
+  isPresetChanged
 }
 

@@ -5,7 +5,7 @@ let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { openPopupList } = require("%scripts/popups/popupList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { addCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { addCustomPreset, isPresetChanged } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { getUnitWeaponSlots } = require("%scripts/weaponry/weaponryPresets.nut")
 
@@ -29,6 +29,7 @@ let function openEditPresetName(name, okFunc) {
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal"
   unit                 = null
   preset               = null
+  originalPreset       = null
   presetNest           = null
   availableWeapons     = null
   favoriteArr          = null
@@ -198,6 +199,9 @@ let function openEditPresetName(name, okFunc) {
   }
 
   function goBack() {
+    if (!isPresetChanged(originalPreset, preset))
+      return base.goBack()
+
     this.msgBox("question_save_preset", ::loc("msgbox/genericRequestDisard", { item = preset.customNameText }),
       [
         ["yes", base.goBack],

@@ -1,3 +1,4 @@
+let { sqrt } = require("math")
 let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 
@@ -20,7 +21,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     let imgSize = params?.imgSize ?? {}
     let imgRatio = decoratorType.getRatio(decorator)
     let iDivObj = iObj.getParent()
-    iDivObj.height = imgSize?[1] ?? $"{imgRatio < 3 ? 2 : 1}@decalIconHeight"
+    iDivObj.height = imgSize?[1] ?? format("%.2f@decalIconHeight", sqrt(4.0 / imgRatio))
     iDivObj.width  = imgSize?[0] ?? $"{imgRatio}h"
     iDivObj.show(true)
   }

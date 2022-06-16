@@ -5,6 +5,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
 let { hangar_protection_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress } = require("hangarEventCommand")
+let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 
 
 local switch_damage = false
@@ -55,7 +56,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     protectionAnalysisOptions.init(this, scene)
     guiScene.setUpdatesEnabled(true, true)
 
-    ::g_hud_hitcamera.init(scene.findObject("dmviewer_hitcamera"))
+    hitCameraInit(scene.findObject("dmviewer_hitcamera"))
 
     hintHandler = protectionAnalysisHint.open(scene.findObject("hint_scene"))
     registerSubHandler(hintHandler)

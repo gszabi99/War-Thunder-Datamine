@@ -10,7 +10,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 
   let awardsList = []
   foreach(id, unlock in ::g_unlocks.getAllUnlocks())
-    if((!chapter || unlock.chapter == chapter) && (!group || unlock.group == group))
+    if((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
       awardsList.append(::build_log_unlock_data({ id = unlock.id }))
   ::showUnlocksGroupWnd([{
     unlocksList = awardsList

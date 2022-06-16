@@ -281,6 +281,12 @@ Button_text[selected=yes] {
   color: @buttonFontColorFocus;
 }
 
+Button_text:focus > text, Button_text:focus > textarea,
+Button_text[active=yes] > text, Button_text[active=yes] > textarea,
+Button_text[selected=yes] > text, Button_text[selected=yes] > textarea {
+  color: @buttonFontColorFocus;
+}
+
 Button_text:disabled,
 Button_text[inactiveColor=yes] {
   background-color: @buttonColorDisabled;
@@ -2057,6 +2063,10 @@ Button_text > textarea.buttonText[leftAligned=yes] {
 
 [show_console_buttons=yes] Button_text > textarea.buttonText {
   pos:0, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text[showConsoleImage=no] > textarea.buttonText {
+  pos:50%pw-50%w, 50%ph-50%h;
 }
 
 [clan_locked=yes] > img,

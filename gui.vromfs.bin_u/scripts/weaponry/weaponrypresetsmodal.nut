@@ -723,6 +723,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
   editWeaponryPreset = @(preset) openEditWeaponryPreset({
     unit = unit
+    originalPreset = preset
     preset = deep_clone(preset)
     availableWeapons = availableWeapons
     favoriteArr = favoriteArr

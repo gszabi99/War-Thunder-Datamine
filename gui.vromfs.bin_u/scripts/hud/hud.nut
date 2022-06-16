@@ -13,6 +13,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarItems } = ::require_native("hudActionBar")
 let { is_replay_playing } = require("replays")
+let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -215,7 +216,7 @@ globalCallbacks.addTypes({
     {
       if (currentHud && ("reinitScreen" in currentHud))
         currentHud.reinitScreen()
-      ::g_hud_hitcamera.reinit()
+      hitCameraReinit()
     }
     ::g_hud_message_stack.reinit()
     ::g_hud_live_stats.reinit()
@@ -304,7 +305,7 @@ globalCallbacks.addTypes({
   {
     ::handlersManager.updateWidgets()
     updateHudVisMode(::FORCE_UPDATE)
-    ::g_hud_hitcamera.init(scene.findObject("hud_hitcamera"))
+    hitCameraInit(scene.findObject("hud_hitcamera"))
 
     // All required checks are performed internally.
     ::g_orders.enableOrders(scene.findObject("order_status"))

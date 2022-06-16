@@ -355,7 +355,6 @@ foreach (fn in [
   "%scripts/hud/hudMessages.nut"
   "%scripts/hud/hudMessageStack.nut"
   "%scripts/hud/hudBattleLog.nut"
-  "%scripts/hud/hudHitCamera.nut"
   "%scripts/hud/hudLiveStats.nut"
   "%scripts/hud/hudTutorialElements.nut"
   "%scripts/hud/hudTutorialObject.nut"

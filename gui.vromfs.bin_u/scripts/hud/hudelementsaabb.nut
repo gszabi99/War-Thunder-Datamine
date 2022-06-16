@@ -1,4 +1,5 @@
 let hudState = require("hudState")
+let { getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 
 let function getAabbObjFromHud(hudFuncName) {
   let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)
@@ -41,7 +42,7 @@ let function getAircraftInstrumentsAabb() {
 
 let aabbList = {
   map = @() getAabbObjFromHud("getTacticalMapObj")
-  hitCamera = @() ::g_hud_hitcamera.getAABB()
+  hitCamera = @() getHitCameraAABB()
   multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")
   dmPanel = getDamagePannelAabb
   tankDebuffs = @() getAabbObjFromHud("getTankDebufsObj")

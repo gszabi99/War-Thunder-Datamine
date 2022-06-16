@@ -644,7 +644,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:winch_use:show"
     hideEvent = "hint:winch_use:hide"
     priority = DEFAULT_MISSION_HINT_PRIORITY
-    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH_ATTACH.getVisualShortcut()
+    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
     lifeTime = 10.0
     delayTime = 2.0
   }
@@ -656,7 +656,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:winch_detach:show"
     hideEvent = "hint:winch_detach:hide"
     priority = DEFAULT_MISSION_HINT_PRIORITY
-    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH_DETACH.getVisualShortcut()
+    getShortcuts = @(data) ::g_hud_action_bar_type.WINCH.getVisualShortcut()
     lifeTime = 10.0
     delayTime = 4.0
   }

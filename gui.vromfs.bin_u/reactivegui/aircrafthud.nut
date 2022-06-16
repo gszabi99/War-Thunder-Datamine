@@ -11,7 +11,7 @@ let {
   isCanonSightActivated, isTurretSightActivated, isParamTableActivated } = require("airState.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
-let {paramsTable, taTarget, compassElem, lockSight}  = require("airHudElems.nut")
+let {paramsTable, compassElem, lockSight}  = require("airHudElems.nut")
 
 let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
@@ -53,7 +53,6 @@ let function aircraftMainHud(isBackground) {
             isCanonSightActivated.value ? fixedGunsDirection(HudColor, isBackground) : null
             isParamTableActivated.value ? aircraftParamsTable(isBackground) : null
             isBombSightActivated.value ? bombSightComponent(sh(10.0), sh(10.0), isBackground) : null
-            taTarget(sw(25), sh(25), isBackground)
           ]
             : IsBomberViewHudVisible.value
         ? [

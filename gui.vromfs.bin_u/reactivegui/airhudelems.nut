@@ -18,7 +18,7 @@ let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState, IsCannonEmpty,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced,IsEnginesControled, ThrottleState, isEngineControled,
   IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
-  TargetPodHudColor, ParamTableShadowFactor, ParamTableShadowOpacity
+  TargetPodHudColor, ParamTableShadowFactor, ParamTableShadowOpacity, NUM_ENGINES_MAX
 } = require("airState.nut")
 
 let {backgroundColor, isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor} = require("style/airHudStyle.nut")
@@ -33,7 +33,6 @@ let agmGuidanceLockState =  require("agmAimState.nut").GuidanceLockState
 let guidedBombsGuidanceLockState =  require("guidedBombsAimState.nut").GuidanceLockState
 let compass = require("compass.nut")
 
-const NUM_ENGINES_MAX = 6
 const NUM_TRANSMISSIONS_MAX = 6
 const NUM_CANNONS_MAX = 3
 

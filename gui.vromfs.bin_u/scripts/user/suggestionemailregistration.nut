@@ -137,8 +137,13 @@ let forceLauncheSuggestionEmailRegistration =
       if (!(msgBox?.isValid() ?? false))
         return
 
+      local btnObj = msgBox.findObject(bindBtnId)
+      if (!::check_obj(btnObj))
+        return
+
+      btnObj.hideText = "yes"
       local btnTextArea = "textarea { id:t='bind_text';class:t='buttonText';text:t=''}"
-      ::get_cur_gui_scene().appendWithBlk(msgBox.findObject(bindBtnId), btnTextArea, null)
+      ::get_cur_gui_scene().appendWithBlk(btnObj, btnTextArea, null)
       setColoredDoubleTextToButton(msgBox, bindBtnId, ::loc("msgbox/bind_and_recieve"))
       return
     }
