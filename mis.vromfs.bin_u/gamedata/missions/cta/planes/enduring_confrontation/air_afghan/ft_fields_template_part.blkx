@@ -533,7 +533,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "air_afghan_fields_start": {
+    "st_startup": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -542,10 +542,20 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": []
+        "periodicEvent": {
+          "time": 1.0
+        }
       },
       "conditions": [],
-      "actions": [],
+      "actions": {
+        "comment": {
+          "value": "disabling sentinnels"
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "st_is_launch_alowed"
+        }
+      },
       "else_actions": []
     }
   },

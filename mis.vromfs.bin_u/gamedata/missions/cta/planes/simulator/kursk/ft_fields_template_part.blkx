@@ -532,7 +532,32 @@
   ],
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "st_startup": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "comment": {
+          "value": "disabling sentinnels"
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "st_is_launch_alowed"
+        }
+      },
+      "else_actions": []
+    }
   },
   "mission_objectives": {
     "isCategory": true,

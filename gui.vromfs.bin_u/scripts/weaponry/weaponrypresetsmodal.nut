@@ -119,7 +119,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     })
 
     this.showSceneBtn("custom_weapons_available_txt", isCustomPresetsAvailable()
-      && !::is_in_flight() && !unit.isBought())
+      && !::is_in_flight() && !unit.isUsable())
   }
 
   function updateCustomIdx() {
@@ -444,7 +444,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     && ::has_feature("WeaponryCustomPresets")
 
   isCustomPresetsEditAvailable = @() isCustomPresetsAvailable()
-     && !::is_in_flight() && unit.isBought()
+     && !::is_in_flight() && unit.isUsable()
 
   function updateButtons() {
     let isAvailable = isCustomPresetsEditAvailable()

@@ -13,7 +13,8 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { updatePlayerRankByCountries } = require("%scripts/ranks.nut")
 let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
+let { isNeedFirstCountryChoice,
+  isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 
@@ -287,7 +288,8 @@ let function go_to_account_web_page(bqKey = "")
 }
 
 let function needAutoStartBattle() {
-  if (!::has_feature("BattleAutoStart")
+  if (!isFirstChoiceShown()
+      || !::has_feature("BattleAutoStart")
       || ::disable_network()
       || ::stat_get_value_respawns(0, 1) > 0
       || !::g_login.isProfileReceived()

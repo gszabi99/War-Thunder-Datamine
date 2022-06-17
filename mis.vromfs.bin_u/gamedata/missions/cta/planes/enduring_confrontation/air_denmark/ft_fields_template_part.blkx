@@ -533,7 +533,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "ft_sub_init": {
+    "st_startup": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -547,7 +547,15 @@
         }
       },
       "conditions": [],
-      "actions": [],
+      "actions": {
+        "comment": {
+          "value": "disabling sentinnels"
+        },
+        "varSetBool": {
+          "value": false,
+          "var": "st_is_launch_alowed"
+        }
+      },
       "else_actions": []
     }
   },
