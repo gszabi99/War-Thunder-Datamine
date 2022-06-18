@@ -21,7 +21,7 @@ let {radarElement, twsElement} = require("airHudComponents.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
-let paramsTableWidthAircraft = hdpx(330)
+let paramsTableWidthAircraft = hdpx(600)
 let arbiterParamsTableWidthAircraft = hdpx(200)
 let paramsTableHeightAircraft = hdpx(22)
 

@@ -696,11 +696,6 @@
           "trackMaxHeight": 1.01
         }
       ],
-      "collisionProps": {
-        "cls_turret_01": "convex_hull",
-        "cls_turret_02": "convex_hull",
-        "cls_body_01": "convex_hull"
-      },
       "engine": {
         "horsePowers": 500.0,
         "maxRPM": 1800.0,
@@ -755,6 +750,11 @@
         "CenterOfGravityClampY": [0.0,0.6],
         "AdvancedMass": true,
         "trackMass": 1150.0
+      },
+      "collisionProps": {
+        "cls_turret_01": "convex_hull",
+        "cls_turret_02": "convex_hull",
+        "cls_body": "convex_hull"
       }
     }
   },
@@ -2252,6 +2252,7 @@
         "genericDamageMult": 3.0,
         "pressureDamageMult": 1.0,
         "napalmDamageMult": 0.0,
+        "ignoreSolidDimension": true,
         "driver_dm": [],
         "loader_dm": [],
         "loader_01_dm": [],

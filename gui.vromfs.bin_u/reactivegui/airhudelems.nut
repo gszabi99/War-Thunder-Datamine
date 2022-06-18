@@ -432,7 +432,7 @@ let function getFuelAlertState(fuelState){
 
 let function createParam(param, width, height, isBackground, style, needCaption = true, for_ils = false, isBomberView = false, isTargetPodView = false) {
   let {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
-    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
+    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed, titleSizeFactor} = param
 
   let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor, targetPodColor) {
     return (state == HudColorState.PASSIV) ? passivColor
@@ -458,7 +458,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
   }
 
   let captionSizeX = @() ::calc_comp_size({rendObj = ROBJ_TEXT, size = SIZE_TO_CONTENT, text = titleComputed.value, watch = titleComputed})[0]
-  let finalTitleSizeX = max(captionSizeX() + 0.1 * width, 0.4 * width)
+  let finalTitleSizeX = max(captionSizeX() + 0.06 * width, 0.2 * width)
 
   let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value, TargetPodHudColor.value), 255))
@@ -470,7 +470,7 @@ let function createParam(param, width, height, isBackground, style, needCaption 
   let captionComponent = @() style.__merge({
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
     rendObj = ROBJ_TEXT
-    size = [finalTitleSizeX, height]
+    size = [finalTitleSizeX * titleSizeFactor, height]
     text = titleComputed.value
     color = colorAlertCaptionW.value
     fontFxColor = colorFxCaption.value
@@ -616,6 +616,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsRpmCritical.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRpmCritical.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.IAS_HUD] = {
     titleComputed = Computed (@() ::loc("HUD/INDICATED_AIR_SPEED_SHORT"))
@@ -624,6 +625,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() CritIas.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() CritIas.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.SPEED] = {
     titleComputed = Computed (@() ::loc("HUD/REAL_SPEED_SHORT"))
@@ -632,6 +634,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.MACH] = {
     titleComputed = Computed(@() ::loc("HUD/TXT_MACH_SHORT"))
@@ -640,6 +643,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() CritMach.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() CritMach.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.ALTITUDE] = {
     titleComputed = Computed(@() ::loc("HUD/ALTITUDE_SHORT"))
@@ -648,6 +652,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.MACHINE_GUN] = {
     titleComputed = Computed(@() getMachineGunCaption(MachineGunsMode.value))
@@ -656,6 +661,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsMachineGunEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsMachineGunEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.CANNON_ADDITIONAL] = {
     titleComputed = Computed(@() getAdditionalCannonCaption(CannonsAdditionalMode.value))
@@ -664,6 +670,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsCanAdditionalEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCanAdditionalEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.ROCKET] = {
     titleComputed = Computed(@() getRocketCaption(RocketsMode.value))
@@ -673,6 +680,7 @@ let textParamsMapMain = {
     additionalComputed = Computed(@() ::loc(RocketsName.value))
     alertStateCaptionComputed = Computed(@() IsRktEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsRktEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.AGM] = {
     titleComputed = Computed(@() AgmCount.value <= 0 ? ::loc("HUD/TXT_AGM_SHORT") :
@@ -685,6 +693,7 @@ let textParamsMapMain = {
     alertValueStateComputed = Computed(@() IsAgmEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     blinkComputed = agmBlinkComputed
     blinkTrigger = agmBlinkTrigger
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.BOMBS] = {
     titleComputed = Computed(@() getBombCaption(BombsMode.value))
@@ -694,6 +703,7 @@ let textParamsMapMain = {
     additionalComputed = Computed(@() ::loc(BombsName.value))
     alertStateCaptionComputed = Computed(@() IsBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.RATE_OF_FIRE] = {
     titleComputed = Computed(@() ::loc("HUD/RATE_OF_FIRE_SHORT"))
@@ -702,6 +712,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.AAM] = {
     titleComputed = Computed(@() AamCount.value <= 0 ? ::loc("HUD/TXT_AAM_SHORT") : getAACaption(aamGuidanceLockState.value))
@@ -710,6 +721,7 @@ let textParamsMapMain = {
     additionalComputed = Computed(@() ::loc(AamName.value))
     alertStateCaptionComputed = Computed(@() IsAamEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsAamEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.GUIDED_BOMBS] = {
     titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? ::loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
@@ -719,6 +731,7 @@ let textParamsMapMain = {
     additionalComputed = Computed(@() ::loc(GuidedBombsName.value))
     alertStateCaptionComputed = Computed(@() IsGuidedBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsGuidedBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.FLARES] = {
     titleComputed = Computed(@() FlaresCount.value <= 0 ? ::loc("HUD/FLARES_SHORT") : getCountermeasuresCaption(true, FlaresMode.value))
@@ -727,6 +740,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsFlrEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsFlrEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.CHAFFS] = {
     titleComputed = Computed(@() ChaffsCount.value <= 0 ? ::loc("HUD/CHAFFS_SHORT") : getCountermeasuresCaption(false, ChaffsMode.value))
@@ -735,6 +749,7 @@ let textParamsMapMain = {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsChaffsEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsChaffsEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   },
   [AirParamsMain.IRCM] = {
     titleComputed = Computed(@() ::loc("HUD/IRCM_SHORT"))
@@ -744,6 +759,7 @@ let textParamsMapMain = {
     alertStateCaptionComputed = Computed(@() HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
     valuesWatched = IRCMState
+    titleSizeFactor = 1.0
   },
 }
 
@@ -760,6 +776,7 @@ foreach (i, _ in isEngineControled) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed( @() getThrottleState(isEngineControledComputed.value))
     alertValueStateComputed = Computed (@() getThrottleValueState(throttleStateComputed.value, isEngineControledComputed.value))
+    titleSizeFactor = 1.0
   }
 }
 
@@ -777,6 +794,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCannonEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    titleSizeFactor = 1.0
     blinkComputed
     blinkTrigger
   }
@@ -798,6 +816,7 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() oilAlertComputed.value)
     alertValueStateComputed = Computed (@() oilAlertComputed.value)
+    titleSizeFactor = 1.0
   }
 
   let waterStateComputed = WaterState[i]
@@ -810,6 +829,7 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() waterAlertComputed.value)
     alertValueStateComputed = Computed (@() waterAlertComputed.value)
+    titleSizeFactor = 1.0
   }
 
   let engineStateComputed = EngineState[i]
@@ -822,6 +842,7 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed (@() engineAlertComputed.value)
     alertValueStateComputed = Computed (@() engineAlertComputed.value)
+    titleSizeFactor = 1.0
   }
 }
 
@@ -837,6 +858,7 @@ for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() isTransmissionAlertComputed.value ?  HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() isTransmissionAlertComputed.value ?  HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    titleSizeFactor = 1.0
   }
 }
 
@@ -847,6 +869,7 @@ textParamsMapSecondary[AirParamsSecondary.FUEL] <- {
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() getFuelAlertState(FuelState.value))
   alertValueStateComputed = Computed(@() getFuelAlertState(FuelState.value))
+  titleSizeFactor = 1.0
 }
 
 textParamsMapSecondary[AirParamsSecondary.STAMINA] <- {
@@ -856,6 +879,7 @@ textParamsMapSecondary[AirParamsSecondary.STAMINA] <- {
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() StaminaState.value)
   alertValueStateComputed = Computed(@() StaminaState.value)
+  titleSizeFactor = 1.0
 }
 
 textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
@@ -865,6 +889,7 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
   additionalComputed = Computed (@() "")
   alertStateCaptionComputed = Computed(@() InstructorState.value)
   alertValueStateComputed = Computed(@() InstructorState.value)
+  titleSizeFactor = 2.0
 }
 
 let fuelKeyId = AirParamsSecondary.FUEL
