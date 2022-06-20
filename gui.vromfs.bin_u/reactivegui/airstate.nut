@@ -129,12 +129,12 @@ let BombSightShadowLineWidthFactor = Watched(1.0)
 let TurretSightOpacity = Watched(1.0)
 let TurretSightLineWidthFactor = Watched(1.0)
 
-local MachineGuns = {
-  count = Watched(0)
-  seconds = Watched(-1)
-  mode = Watched(0)
-  selected = Watched(false)
-}
+let MachineGunsCount = []
+let MachineGunsReloadTime = []
+let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
+let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.value.contains(false))
+let MachineGunsMode = Watched(0)
+let MachineGunsSelected = Watched(false)
 
 let CannonsAdditional = {
   count = Watched(0)
@@ -204,7 +204,6 @@ let Chaffs = {
   selected = Watched(false)
 }
 
-let IsMachineGunEmpty = Watched(false)
 let IsCanAdditionalEmpty = Watched(false)
 let IsRktEmpty = Watched(false)
 let IsAgmEmpty = Watched(false)
@@ -306,6 +305,7 @@ let helicopterState = {
   HorAngle,
 
   isAllCannonsEmpty,
+  isAllMachineGunsEmpty,
 
   TurretYaw,
   TurretPitch,
@@ -377,11 +377,15 @@ let helicopterState = {
   StaminaValue,
   StaminaState
 
-  MachineGuns,
+  MachineGunsCount,
+  MachineGunsReloadTime,
+  IsMachineGunsEmpty,
+  MachineGunsMode,
+  MachineGunsSelected,
+
   CannonsAdditional,
   Rockets, Agm, Aam, GuidedBombs, Bombs, Flares, Chaffs
 
-  IsMachineGunEmpty,
   IsCanAdditionalEmpty,
   IsRktEmpty,
   IsAgmEmpty,
@@ -509,11 +513,14 @@ let helicopterState = {
   IlsPosSize[3] = h
 }
 
-::interop.updateMachineGuns <- function(count, sec = -1, mode = 0, selected = false) {
-  MachineGuns.count.update(count)
-  MachineGuns.mode.update(mode)
-  MachineGuns.seconds.update(sec)
-  MachineGuns.selected.update(selected)
+::interop.updateMachineGuns <- function(index, count, sec = -1) {
+  MachineGunsCount[index](count)
+  MachineGunsReloadTime[index](sec)
+}
+
+::interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
+  if (is_empty != IsMachineGunsEmpty.value[index])
+    IsMachineGunsEmpty.mutate(@(v) v[index] = is_empty)
 }
 
 ::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0, selected = false) {
@@ -585,6 +592,11 @@ let helicopterState = {
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   CannonCount.append(Watched(0))
   CannonReloadTime.append(Watched(-1))
+}
+
+for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
+  MachineGunsCount.append(Watched(0))
+  MachineGunsReloadTime.append(Watched(-1))
 }
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {

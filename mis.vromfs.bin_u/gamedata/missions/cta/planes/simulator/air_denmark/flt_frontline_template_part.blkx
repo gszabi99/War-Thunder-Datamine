@@ -106,90 +106,6 @@
       "conditions": [],
       "actions": [
         {
-          "comment": {
-            "value": "zapreshchaem generirovanie nachal'nogo stejta"
-          }
-        },
-        {
-          "comment": {
-            "value": "tak kak slozhnaya lokaciya"
-          }
-        },
-        {
-          "comment": {
-            "value": "ukazhem stejty vruchnuyu"
-          }
-        },
-        {
-          "comment": {
-            "value": "umen'shaem boevuyu zonu"
-          }
-        },
-        {
-          "comment": {
-            "value": "nastrojki frontlajna"
-          }
-        },
-        {
-          "comment": {
-            "value": "kolichestvo col i row"
-          }
-        },
-        {
-          "comment": {
-            "value": "vyschityvaem obshchee kolichestvo zon"
-          }
-        },
-        {
-          "comment": {
-            "value": "pomechaem zony komandy A"
-          }
-        },
-        {
-          "comment": {
-            "value": "pomechaem zony komandy B"
-          }
-        },
-        {
-          "comment": {
-            "value": "pomechaem zony morskimi"
-          }
-        },
-        {
-          "comment": {
-            "value": "pomechaem zony komand (v cikle po algoritmu)"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "comment": {
-            "value": "risuem liniyu fronta"
-          }
-        },
-        {
-          "varSetBool": {
-            "value": false,
-            "var": "flt_disable_state_filling"
-          }
-        },
-        {
-          "missionBattleArea": {
-            "air": true,
-            "ground": true,
-            "mapArea": false,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "airMapArea": true,
-            "area": "flt_battle_area",
-            "newGridHorizontalCellCount": 7
-          }
-        },
-        {
           "varSetInt": {
             "value": 10,
             "var": "flt_big_aaa_weight"
@@ -214,28 +130,30 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "flt_start_cell"
-          }
+          "varSetInt": [
+            {
+              "value": 8
+            },
+            {
+              "var": "flt_zones_in_row"
+            },
+            {
+              "var": "flt_zones_in_col_real"
+            }
+          ]
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "flt_offset"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 7,
-            "var": "flt_zones_in_row"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 7,
-            "var": "flt_zones_in_col"
-          }
+          "varSetInt": [
+            {
+              "value": 8
+            },
+            {
+              "var": "flt_zones_in_col"
+            },
+            {
+              "var": "flt_zones_in_row_real"
+            }
+          ]
         },
         {
           "varSetInt": {
@@ -249,28 +167,13 @@
               "value": 1
             },
             {
-              "var": "flt_area_03_state"
+              "var": "flt_area_45_state"
             },
             {
-              "var": "flt_area_10_state"
+              "var": "flt_area_61_state"
             },
             {
-              "var": "flt_area_17_state"
-            },
-            {
-              "var": "flt_area_18_state"
-            },
-            {
-              "var": "flt_area_24_state"
-            },
-            {
-              "var": "flt_area_39_state"
-            },
-            {
-              "var": "flt_area_44_state"
-            },
-            {
-              "var": "flt_area_46_state"
+              "var": "flt_area_62_state"
             }
           ]
         },
@@ -280,28 +183,16 @@
               "value": 2
             },
             {
+              "var": "flt_area_03_state"
+            },
+            {
               "var": "flt_area_04_state"
             },
             {
-              "var": "flt_area_11_state"
+              "var": "flt_area_12_state"
             },
             {
-              "var": "flt_area_18_state"
-            },
-            {
-              "var": "flt_area_25_state"
-            },
-            {
-              "var": "flt_area_32_state"
-            },
-            {
-              "var": "flt_area_40_state"
-            },
-            {
-              "var": "flt_area_47_state"
-            },
-            {
-              "var": "flt_area_48_state"
+              "var": "flt_area_20_state"
             }
           ]
         },
@@ -314,22 +205,19 @@
               "var": "flt_area_07_state"
             },
             {
-              "var": "flt_area_14_state"
+              "var": "flt_area_08_state"
             },
             {
-              "var": "flt_area_19_state"
+              "var": "flt_area_15_state"
             },
             {
-              "var": "flt_area_21_state"
+              "var": "flt_area_16_state"
             },
             {
-              "var": "flt_area_22_state"
+              "var": "flt_area_23_state"
             },
             {
-              "var": "flt_area_27_state"
-            },
-            {
-              "var": "flt_area_28_state"
+              "var": "flt_area_24_state"
             },
             {
               "var": "flt_area_29_state"
@@ -341,6 +229,9 @@
               "var": "flt_area_31_state"
             },
             {
+              "var": "flt_area_32_state"
+            },
+            {
               "var": "flt_area_33_state"
             },
             {
@@ -350,18 +241,70 @@
               "var": "flt_area_35_state"
             },
             {
+              "var": "flt_area_37_state"
+            },
+            {
               "var": "flt_area_38_state"
             },
             {
-              "var": "flt_area_42_state"
+              "var": "flt_area_39_state"
             },
             {
-              "var": "flt_area_45_state"
+              "var": "flt_area_44_state"
             },
             {
-              "var": "flt_area_49_state"
+              "var": "flt_area_52_state"
+            },
+            {
+              "var": "flt_area_53_state"
+            },
+            {
+              "var": "flt_area_54_state"
+            },
+            {
+              "var": "flt_area_60_state"
             }
           ]
+        },
+        {
+          "comment": {
+            "value": "nastrojki frontlajna"
+          }
+        },
+        {
+          "comment": {
+            "value": "obshchee kolichestvo zon"
+          }
+        },
+        {
+          "comment": {
+            "value": "vyschityvaem kolichestvo zon pokazyvayushchih glubinu fronta"
+          }
+        },
+        {
+          "comment": {
+            "value": "team A zones"
+          }
+        },
+        {
+          "comment": {
+            "value": "team b zones"
+          }
+        },
+        {
+          "comment": {
+            "value": "sea zones"
+          }
+        },
+        {
+          "comment": {
+            "value": "pomechaem zony komand (v cikle po algoritmu)"
+          }
+        },
+        {
+          "comment": {
+            "value": "risuem liniyu fronta"
+          }
         },
         {
           "varModify": {
@@ -390,22 +333,19 @@
               "var": "flt_area_07_type"
             },
             {
-              "var": "flt_area_14_type"
+              "var": "flt_area_08_type"
             },
             {
-              "var": "flt_area_19_type"
+              "var": "flt_area_15_type"
             },
             {
-              "var": "flt_area_21_type"
+              "var": "flt_area_16_type"
             },
             {
-              "var": "flt_area_22_type"
+              "var": "flt_area_23_type"
             },
             {
-              "var": "flt_area_27_type"
-            },
-            {
-              "var": "flt_area_28_type"
+              "var": "flt_area_24_type"
             },
             {
               "var": "flt_area_29_type"
@@ -417,6 +357,9 @@
               "var": "flt_area_31_type"
             },
             {
+              "var": "flt_area_32_type"
+            },
+            {
               "var": "flt_area_33_type"
             },
             {
@@ -426,18 +369,36 @@
               "var": "flt_area_35_type"
             },
             {
+              "var": "flt_area_37_type"
+            },
+            {
               "var": "flt_area_38_type"
             },
             {
-              "var": "flt_area_42_type"
+              "var": "flt_area_39_type"
             },
             {
-              "var": "flt_area_45_type"
+              "var": "flt_area_44_type"
             },
             {
-              "var": "flt_area_49_type"
+              "var": "flt_area_52_type"
+            },
+            {
+              "var": "flt_area_53_type"
+            },
+            {
+              "var": "flt_area_54_type"
+            },
+            {
+              "var": "flt_area_60_type"
             }
           ]
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "flt_mirrior_start"
+          }
         },
         {
           "triggerEnable": {
@@ -450,15 +411,17 @@
           }
         },
         {
-          "__varSetInt": {
-            "value": 1,
-            "var": "flt_area_40_state"
-          }
-        },
-        {
-          "__varSetInt": {
-            "value": 2,
-            "var": "flt_area_43_state"
+          "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": true,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "flt_battle_area",
+            "newGridHorizontalCellCount": 7,
+            "gridCellCountVar": "flt_zones_in_row"
           }
         }
       ],
@@ -473,54 +436,7 @@
   "dialogs": [],
   "airfields": [],
   "effects": [],
-  "units": {
-    "armada": {
-      "name": "flt_armada",
-      "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-1886.8,1388.0,-6765.8]
-      ],
-      "unit_class": "yak-1_early",
-      "objLayer": 1,
-      "closed_waypoints": false,
-      "isShipSpline": false,
-      "shipTurnRadius": 100.0,
-      "weapons": "",
-      "bullets0": "",
-      "bullets1": "",
-      "bullets2": "",
-      "bullets3": "",
-      "bulletsCount0": 0,
-      "bulletsCount1": 0,
-      "bulletsCount2": 0,
-      "bulletsCount3": 0,
-      "crewSkillK": 0.0,
-      "applyAllMods": false,
-      "props": {
-        "army": 1,
-        "count": 1,
-        "free_distance": 70.0,
-        "floating_distance": 50.0,
-        "minimum_distance_to_earth": 20.0,
-        "altLimit": 6000.0,
-        "attack_type": "fire_at_will",
-        "skill": 4,
-        "plane": {
-          "wing_formation": "Diamond",
-          "row_distances": 3.0,
-          "col_distances": 3.0,
-          "super_formation": "Diamond",
-          "super_row_distances": 1.5,
-          "super_col_distances": 1.5,
-          "ai_skill": "NORMAL",
-          "task": "FLY_WAYPOINT"
-        }
-      },
-      "way": []
-    }
-  },
+  "units": [],
   "areas": [],
   "objLayers": [
     {

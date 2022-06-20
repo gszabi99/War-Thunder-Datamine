@@ -288,12 +288,18 @@ let function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
     ?? weaponMulBlk?["Common"][paramName]
 }
 
-let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocketMass, atgmVisibilityTypeArr, maxRocketMass) {
+let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocketMass, totalNapalmBombMass, atgmVisibilityTypeArr, maxRocketMass) {
   local weaponMul = 1.0
   if (totalBombRocketMass > 0) {
     let bombRocketWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "BombRocketWeapon")
     if (bombRocketWeaponBlk?.mass != null) {
       weaponMul = interpolateArray((bombRocketWeaponBlk % "mass"), totalBombRocketMass)
+    }
+  }
+  if (totalNapalmBombMass > 0) {
+    let napalmBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "NapalmBombWeapon")
+    if (napalmBombWeaponBlk?.mass != null) {
+      weaponMul = max(weaponMul, interpolateArray((napalmBombWeaponBlk % "mass"), totalNapalmBombMass))
     }
   }
   if (atgmVisibilityTypeArr.len() > 0) {
@@ -315,6 +321,7 @@ let function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocket
 let function getCustomWeaponPresetParams(unitname, weaponTable) {
   local resTable = {
     totalBombRocketMass = 0
+    totalNapalmBombMass = 0
     atgmVisibilityTypeArr = []
     maxRocketMass = 0
   }
@@ -325,10 +332,12 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
 
   foreach (weaponName, count in weaponTable) {
     let totalBombRocketMass = weaponsBlk?[weaponName].totalBombRocketMass ?? 0
+    let totalNapalmBombMass = weaponsBlk?[weaponName].totalNapalmBombMass ?? 0
     let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
     let maxRocketMass = weaponsBlk?[weaponName].maxRocketMass ?? 0
 
     resTable.totalBombRocketMass += (totalBombRocketMass * count)
+    resTable.totalNapalmBombMass += (totalNapalmBombMass * count)
     if (atgmVisibilityType != "" && resTable.atgmVisibilityTypeArr.indexof(atgmVisibilityType) == null)
       resTable.atgmVisibilityTypeArr.append(atgmVisibilityType)
     resTable.maxRocketMass = max(maxRocketMass, resTable.maxRocketMass)
@@ -355,14 +364,13 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
   if (::get_spawn_score_param("useSpawnCostMulForWeapon", false)) {
     let weaponBlk = wpcost?[unitname].weapons[weapon]
     if (weaponBlk != null) {
-      weaponMul = weaponBlk?.spawnCostMul ?? 1.0 // temp for compatibility with prev wpcost format
-
       let weaponMulBlk = ::get_warpoints_blk()?.respawn_points.WeaponMul
       if (weaponMulBlk != null) {
         let totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
+        let totalNapalmBombMass = weaponBlk?.totalNapalmBombMass ?? 0
         let atgmVisibilityTypeArr = (weaponBlk % "atgmVisibilityType") ?? []
         let maxRocketMass = weaponBlk?.maxRocketMass ?? 0
-        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, totalBombRocketMass, atgmVisibilityTypeArr, maxRocketMass)
+        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, totalBombRocketMass, totalNapalmBombMass, atgmVisibilityTypeArr, maxRocketMass)
       }
     }
     else if (presetTbl?.presetWeapons != null && presetTbl.presetWeapons.len() > 0) {
@@ -371,6 +379,7 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
         unitname,
         unitClass,
         customWeaponPresetParams.totalBombRocketMass,
+        customWeaponPresetParams.totalNapalmBombMass,
         customWeaponPresetParams.atgmVisibilityTypeArr,
         customWeaponPresetParams.maxRocketMass
       )

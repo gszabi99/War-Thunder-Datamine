@@ -86,17 +86,19 @@ global enum AirParamsMain
   CANNON_1 =          11,
   CANNON_2 =          12,
   CANNON_3 =          13,
-  MACHINE_GUN =       14,
-  CANNON_ADDITIONAL = 15,
-  ROCKET =            16,
-  AGM =               17,
-  AAM =               18,
-  GUIDED_BOMBS =      19,
-  BOMBS =             20,
-  FLARES =            21,
-  CHAFFS =            22,
-  IRCM =              23,
-  RATE_OF_FIRE =      24
+  MACHINE_GUNS_1 =    14,
+  MACHINE_GUNS_2 =    15,
+  MACHINE_GUNS_3 =    16,
+  CANNON_ADDITIONAL = 17,
+  ROCKET =            18,
+  AGM =               19,
+  AAM =               20,
+  GUIDED_BOMBS =      21,
+  BOMBS =             22,
+  FLARES =            23,
+  CHAFFS =            24,
+  IRCM =              25,
+  RATE_OF_FIRE =      26
 };
 
 global enum AirParamsSecondary
