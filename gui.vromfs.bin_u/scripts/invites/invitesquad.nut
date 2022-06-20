@@ -1,4 +1,6 @@
 let platformModule = require("%scripts/clientState/platform.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::g_invites_classes.Squad <- class extends ::BaseInvite
 {
@@ -138,6 +140,8 @@ let platformModule = require("%scripts/clientState/platform.nut")
 
   function getRestrictionText()
   {
+    if (!isMultiplayerPrivilegeAvailable.value)
+      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
     if (!isAvailableByChatRestriction())
@@ -152,6 +156,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
     return !::g_squad_manager.canManageSquad()
     || !isAvailableByCrossPlay()
     || !isAvailableByChatRestriction()
+    || !isMultiplayerPrivilegeAvailable.value
   }
 
   function getIcon()
@@ -169,9 +174,13 @@ let platformModule = require("%scripts/clientState/platform.nut")
 
   function accept()
   {
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
+
     let acceptCallback = ::Callback(_implAccept, this)
     let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
-
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },
       callback

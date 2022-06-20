@@ -2,6 +2,8 @@ let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
 {
@@ -95,7 +97,7 @@ let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 
   function haveRestrictions()
   {
-    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated()
+    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated() || !isMultiplayerPrivilegeAvailable.value
   }
 
   function getRestrictionText()
@@ -105,6 +107,8 @@ let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 
     if (isOutdated())
       return ::loc("multiplayer/invite_is_overtimed")
+    if (!isMultiplayerPrivilegeAvailable.value)
+      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
 
@@ -121,6 +125,11 @@ let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 
     if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
       return
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
 
     if (!isAvailableByCrossPlay())
       return ::g_popups.add(null, ::loc("xbox/crossPlayRequired"))

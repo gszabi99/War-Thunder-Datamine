@@ -31,6 +31,8 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 let template = {
   id = ""
@@ -67,6 +69,11 @@ let list = {
       if (!::check_gamemode_pkg(::GM_SKIRMISH))
         return
 
+      if (!isMultiplayerPrivilegeAvailable.value) {
+        checkAndShowMultiplayerPrivilegeWarning()
+        return
+      }
+
       ::queues.checkAndStart(
         ::Callback(@() goForwardIfOnline(::gui_start_skirmish, false), handler),
         null,
@@ -76,6 +83,12 @@ let list = {
 
     isHidden = @(...) !::is_custom_battles_enabled()
     isInactiveInQueue = true
+    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
+    tooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return ::loc("xbox/noMultiplayer")
+      return ""
+    }
   }
   WORLDWAR = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("mainmenu/btnWorldwar"))
@@ -139,8 +152,16 @@ let list = {
   }
   TOURNAMENTS = {
     text = @() "#mainmenu/btnTournament"
-    onClickFunc = @(obj, handler) openESportListWnd()
+    onClickFunc = function(...) {
+      if (!isMultiplayerPrivilegeAvailable.value) {
+        checkAndShowMultiplayerPrivilegeWarning()
+        return
+      }
+
+      openESportListWnd()
+    }
     isHidden = @(...) !::has_feature("ESport")
+    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable.value
     isInactiveInQueue = true
   }
   BENCHMARK = {
@@ -228,10 +249,12 @@ let list = {
   TSS = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
     onClickFunc = function(obj, handler) {
-      if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
-        openUrlByObj(obj)
-      else if (!::xbox_try_show_crossnetwork_message())
+      if (!isMultiplayerPrivilegeAvailable.value)
+        checkAndShowMultiplayerPrivilegeWarning()
+      else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
+      else if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
+        openUrlByObj(obj)
     }
     isDelayed = false
     link = "#url/tss"

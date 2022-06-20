@@ -9,7 +9,7 @@ let { getXboxChatEnableStatus,
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
-
+let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
 
 let contactsByName = {}
@@ -288,7 +288,10 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function canChat(needShowSystemMessage = false)
   {
-    if (!needShowSystemMessage && (!isCrossNetworkMessageAllowed(name) || isBlockedMe))
+    if (!needShowSystemMessage
+      && ((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(name))
+          || isBlockedMe)
+      )
       return false
 
     let intSt = getInteractionStatus(needShowSystemMessage)
@@ -297,7 +300,10 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   function canInvite(needShowSystemMessage = false)
   {
-    if (!needShowSystemMessage && !isCrossNetworkMessageAllowed(name))
+    if (!needShowSystemMessage
+      && (!isMultiplayerPrivilegeAvailable.value
+          || !isCrossNetworkMessageAllowed(name))
+      )
       return false
 
     let intSt = getInteractionStatus(needShowSystemMessage)

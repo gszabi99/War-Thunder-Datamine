@@ -384,9 +384,6 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
         customWeaponPresetParams.maxRocketMass
       )
     }
-    else if (weapon != null && weapon != "") {
-      ::dagor.logerr($"getUnitSpawnScore: there is no weapon in wpcost and presetWeapons is empty for {unitname} {weapon}")
-    }
   }
 
   return 1.0 + (bulletsMul - 1.0) + (weaponMul - 1.0)

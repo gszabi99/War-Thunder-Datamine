@@ -4,10 +4,8 @@ let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { getPlayerName,
-        isPlatformSony,
-        isPlatformXboxOne,
-        isPlatformPC } = require("%scripts/clientState/platform.nut")
+let { getPlayerName, isPlatformSony, isPlatformXboxOne, isPlatformPC
+} = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
@@ -18,6 +16,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getMaxEconomicRank } = require("%scripts/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -195,6 +195,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function isEventNeedInfoButton(event)
   {
+    if (!isMultiplayerPrivilegeAvailable.value)
+      return false
+
     if (!event)
       return false
     return isEventForClan(event) || isEventWithLobby(event) || isEventEnableOnDebug(event)
@@ -2167,6 +2170,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
             [["ok", function() {}]], "ok")
       }
     }
+    else if (!isMultiplayerPrivilegeAvailable.value) {
+      data.reasonText = ::loc("xbox/noMultiplayer")
+      data.msgboxReasonText = ::loc("xbox/noMultiplayer")
+      data.checkXboxOverlayMessage = true
+    }
     else if (!isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled())
     {
       data.reasonText = ::loc("xbox/crossPlayRequired")
@@ -2256,7 +2264,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.actionFunc = function(reasonData) {
         if (!reasonData.checkXboxOverlayMessage)
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
-        else if (!::xbox_try_show_crossnetwork_message())
+        else if (!isMultiplayerPrivilegeAvailable.value)
+          checkAndShowMultiplayerPrivilegeWarning()
+        else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
       }
     }

@@ -6,6 +6,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setGuiOptionsMode } = ::require_native("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::match_search_gm <- -1
 
@@ -423,6 +425,11 @@ let { havePremium } = require("%scripts/user/premium.nut")
   {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
 
     let room = getCurRoom()
     if (!room)

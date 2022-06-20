@@ -7,6 +7,8 @@ let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -1011,6 +1013,11 @@ let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
   function onSquadInvite(obj)
   {
     updateCurPlayer(obj)
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
 
     if (curPlayer == null)
       return ::g_popups.add("", ::loc("msgbox/noChosenPlayer"))

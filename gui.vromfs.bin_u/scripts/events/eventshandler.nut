@@ -16,7 +16,8 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = ::require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
-
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -34,6 +35,11 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 {
   if (!suggestAndAllowPsnPremiumFeatures())
     return
+
+  if (!isMultiplayerPrivilegeAvailable.value) {
+    checkAndShowMultiplayerPrivilegeWarning()
+    return
+  }
 
   local eventId = null
   local chapterId = ::getTblValue ("chapter", options, null)
@@ -195,6 +201,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
     if (!suggestAndAllowPsnPremiumFeatures())
       return
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
 
     isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
     let configForStatistic = {
@@ -770,6 +780,7 @@ addPromoButtonConfig({
     {
       show = ::has_feature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
+        && isMultiplayerPrivilegeAvailable.value
         && ::g_promo.getVisibilityById(id)
       buttonObj = ::showBtn(id, show, scene)
     }

@@ -1,3 +1,6 @@
+local { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+
 ::gui_start_invites <- function gui_start_invites()
 {
   ::handlersManager.loadHandler(::gui_handlers.InvitesWnd)
@@ -76,6 +79,11 @@
       if (invite.haveRestrictions())
       {
         if (invite.needCheckSystemRestriction) {
+          if (!isMultiplayerPrivilegeAvailable.value) {
+            checkAndShowMultiplayerPrivilegeWarning()
+            return
+          }
+
           if (!invite.isAvailableByCrossPlay() && !::xbox_try_show_crossnetwork_message()) {
             ::showInfoMsgBox(invite.getRestrictionText())
             return

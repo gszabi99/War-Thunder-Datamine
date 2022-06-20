@@ -223,6 +223,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   onEventCurrentGameModeIdChanged             = @(p) updateHandler()
   onEventWarbondShopMarkSeenLevel             = @(p) updateHandler()
   onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
+  onEventXboxMultiplayerPrivilegeUpdated      = @(p) updateHandler()
 }
 
 let promoButtonId = "current_battle_tasks_mainmenu_button"

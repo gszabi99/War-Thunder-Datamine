@@ -2,6 +2,8 @@ let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::g_invites_classes.SessionRoom <- class extends ::BaseInvite
 {
@@ -108,6 +110,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
     return !::isInMenu()
       || !isMissionAvailable()
       || !isAvailableByCrossPlay()
+      || !isMultiplayerPrivilegeAvailable.value
   }
 
   function isMissionAvailable()
@@ -120,6 +123,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
   {
     if (haveRestrictions())
     {
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return ::loc("xbox/noMultiplayer")
       if (!isAvailableByCrossPlay())
         return ::loc("xbox/crossPlayRequired")
       if (!isMissionAvailable())
@@ -142,6 +147,11 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
   {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
 
     let room = ::g_mroom_info.get(roomId).getFullRoomData()
     if (!::check_gamemode_pkg(::SessionLobby.getGameMode(room)))

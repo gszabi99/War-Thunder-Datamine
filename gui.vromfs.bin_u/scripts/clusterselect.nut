@@ -1,4 +1,5 @@
 let { is_bit_set } = require("%sqstd/math.nut")
+let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 let getViewClusters = function() {
   let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
@@ -45,7 +46,8 @@ let getCurrentClustersInfo = function()
 
 let updateClusters = function(btnObj)
 {
-  if (!btnObj?.isValid())
+  local show = isMultiplayerPrivilegeAvailable.value
+  if (!::show_obj(btnObj, show) || !show)
     return
 
   let currentClustersInfo = getCurrentClustersInfo()

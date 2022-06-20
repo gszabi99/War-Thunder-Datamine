@@ -6,6 +6,7 @@ let { activeUnlocks, getUnlockReward } = require("%scripts/unlocks/userstatUnloc
 let { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
 } = require("%scripts/utils/genericTooltipTypes.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::g_battle_tasks <- null
 
@@ -70,11 +71,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
     specTasksLastGenerationId = 0
   }
 
-  function isAvailableForUser()
-  {
-    return ::has_feature("BattleTasks")
-           && !::u.isEmpty(getTasksArray())
-  }
+  isAvailableForUser = @() ::has_feature("BattleTasks")
+    && !::u.isEmpty(getTasksArray())
+    && isMultiplayerPrivilegeAvailable.value
 
   function updateTasksData()
   {

@@ -1,4 +1,7 @@
 let extContactsService = require("%scripts/contacts/externalContactsService.nut")
+let { isMultiplayerPrivilegeAvailable,
+      checkAndShowMultiplayerPrivilegeWarning } = require("%scripts/user/xboxFeatures.nut")
+
 local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
 
 ::g_xbox_squad_manager <- {
@@ -22,6 +25,17 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
   {
     if (!::is_platform_xbox)
       return
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      ignoreSystemInvite(true) //It is called after update
+      invalidateCache()
+
+      //updateSquadList was called from script,
+      //so no need to wait xbox_on_invite_accepted call
+      if (isScriptCall)
+        checkAndDisplayInviteRestiction()
+      return
+    }
 
     if (!::isInMenu() || !::g_login.isLoggedIn())
     {
@@ -303,8 +317,14 @@ local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
     if (!ignoreSystemInvite.value)
       return false
 
+    ::dagor.debug($"XBOX SQUAD MANAGER: show invite warning restriction, {isMultiplayerPrivilegeAvailable.value}")
     ignoreSystemInvite(false)
-    ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
+
+    if (!isMultiplayerPrivilegeAvailable.value)
+      checkAndShowMultiplayerPrivilegeWarning()
+    else
+      ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
+
     return true
   }
 

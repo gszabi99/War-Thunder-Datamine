@@ -8,6 +8,8 @@ let { updateContactsStatusByContacts } = require("%scripts/contacts/updateContac
 let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 //-----------------------------
 // params keys:
@@ -226,6 +228,10 @@ let getActions = function(contact, params)
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
+          else if (!isMultiplayerPrivilegeAvailable.value) {
+            checkAndShowMultiplayerPrivilegeWarning()
+            return
+          }
           else if (!canInteractCrossPlatform) {
             if (!::xbox_try_show_crossnetwork_message())
               showCrossNetworkPlayRestrictionMsgBox()

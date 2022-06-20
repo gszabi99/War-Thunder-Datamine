@@ -6,6 +6,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
@@ -59,7 +61,6 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function initScreen()
   {
     backSceneFunc = ::gui_start_mainmenu
-    showBtn("cluster_select_button", true)
     updateContent()
   }
 
@@ -279,7 +280,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     let hasNewIconWidget = !::game_mode_manager.isSeen(id)
     let newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
-    let crossPlayRestricted = !isCrossPlayEventAvailable(event)
+    let crossPlayRestricted = isMultiplayerPrivilegeAvailable.value && !isCrossPlayEventAvailable(event)
+    let inactiveColor = !isMultiplayerPrivilegeAvailable.value || crossPlayRestricted
+
     if (gameMode?.updateByTimeFunc)
       gameModesWithTimer[id] <- mode.updateByTimeFunc
 
@@ -309,7 +312,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       onHover = "markGameModeSeen"
       // Used to easily backtrack corresponding game mode.
       gameMode = gameMode
-      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || crossPlayRestricted
+      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
       crossPlayRestricted = crossPlayRestricted
       crossplayTooltip = getRestrictionTooltipText(event)
       isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
@@ -323,6 +326,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getRestrictionTooltipText(event)
   {
+    if (!isMultiplayerPrivilegeAvailable.value)
+      return ::loc("xbox/noMultiplayer")
+
     if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
       return null
 
@@ -434,6 +440,11 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function performGameModeSelect(gameMode)
   {
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
+
     if (gameMode?.diffCode == ::DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
@@ -551,6 +562,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     this.showSceneBtn("event_description_console_button", gameMode != null
       && gameMode?.forClan
       && ::show_console_buttons
+      && isMultiplayerPrivilegeAvailable.value
     )
 
     let prefObj = this.showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
@@ -593,6 +605,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
   function isShowMapPreferences(curEvent)
   {
     return ::has_feature("MapPreferences") && !::is_me_newbie()
+      && isMultiplayerPrivilegeAvailable.value
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)
   }

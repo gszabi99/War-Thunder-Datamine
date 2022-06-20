@@ -3,9 +3,10 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { isCrossPlayEnabled,
-        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+  needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
-
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 ::featured_modes <- [
   {
@@ -25,10 +26,13 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     isVisible = @() ::is_worldwar_enabled()
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() !::g_world_war.canPlayWorldwar()
-    crossPlayRestricted = @() !isCrossPlayEnabled()
+    crossPlayRestricted = @() isMultiplayerPrivilegeAvailable.value && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null
+
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return ::loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
@@ -53,7 +57,9 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(::loc("url/tss_all_tournaments"), false, false)
-      else if (!::xbox_try_show_crossnetwork_message())
+      else if (!isMultiplayerPrivilegeAvailable.value)
+        checkAndShowMultiplayerPrivilegeWarning()
+      else if (isMultiplayerPrivilegeAvailable.value && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isWide = false
@@ -62,12 +68,17 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && ::has_feature("Tournaments") && ::has_feature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
-    inactiveColor = @() needShowCrossPlayInfo() && !isCrossPlayEnabled()
+    inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
+                      || !isMultiplayerPrivilegeAvailable.value
     crossPlayRestricted = @() needShowCrossPlayInfo()
+                           && isMultiplayerPrivilegeAvailable.value
                            && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null
+
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return ::loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
@@ -106,11 +117,26 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       return ::has_feature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
     }
     hasNewIconWidget = false
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
+    crossplayTooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return ::loc("xbox/noMultiplayer")
+
+      return null
+    }
   }
   {
     /*custom battles*/
     modeId = "custom_battles_featured_game_mode"
-    startFunction = @() ::gui_start_skirmish()
+    startFunction = function ()
+    {
+      if (!isMultiplayerPrivilegeAvailable.value) {
+        checkAndShowMultiplayerPrivilegeWarning()
+        return
+      }
+
+      ::gui_start_skirmish()
+    }
     text = function ()
     {
       return ::loc("mainmenu/btnSkirmish")
@@ -128,6 +154,13 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
     }
     hasNewIconWidget = false
     newIconWidgetId = ""
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
+    crossplayTooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return ::loc("xbox/noMultiplayer")
+
+      return null
+    }
   }
   //{
     /*dynamic campaign*/
@@ -171,6 +204,9 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
       onBattleButtonClick()
     }
     inactiveColor = function() {
+      if (!isMultiplayerPrivilegeAvailable.value)
+        return true
+
       let chapter = ::events.chapters.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }

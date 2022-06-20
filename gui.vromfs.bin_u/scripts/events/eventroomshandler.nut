@@ -8,6 +8,8 @@ let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpd
 let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
+let { checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -196,6 +198,11 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     if (!suggestAndAllowPsnPremiumFeatures())
       return
+
+    if (!isMultiplayerPrivilegeAvailable.value) {
+      checkAndShowMultiplayerPrivilegeWarning()
+      return
+    }
 
     let configForStatistic = {
       actionPlace = isFromDebriefing ? "debriefing" : "event_window"
