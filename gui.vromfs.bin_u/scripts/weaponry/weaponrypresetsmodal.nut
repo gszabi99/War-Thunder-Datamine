@@ -230,6 +230,8 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     else
       weaponryByPresetInfo.presets[presetIdx] = presetView
 
+    presets = weaponryByPresetInfo.presets
+    updatePresetsByRanks()
     presets.sort(sortPresetsList)
     updateAllByFilters()
     selectPreset(presets.findindex(@(w) w.name == presetId))
@@ -834,17 +836,20 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     if (unitName != unit.name)
       return
 
-    let presetIdx = presets.findindex(@(w) w.name == presetId)
+    let presetIdx = weaponryByPresetInfo.presets.findindex(@(w) w.name == presetId)
     if (presetIdx == null)
       return
 
-    presets.remove(presetIdx)
+    weaponryByPresetInfo.presets.remove(presetIdx)
+    presets = weaponryByPresetInfo.presets
+    updatePresetsByRanks()
     if (chosenPresetIdx == presetIdx) {
       setLastWeapon(unit.name, presets[0].weaponPreset.name)
       ::check_secondary_weapon_mods_recount(unit)
       checkSaveBulletsAndDo()
     }
     updateAllByFilters()
+    updateCustomIdx()
   }
 }
 

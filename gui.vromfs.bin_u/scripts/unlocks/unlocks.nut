@@ -1616,6 +1616,7 @@ local unlockConditionUnitclasses = {
 
   getTotalFavoriteCount = @() ::g_unlocks.getFavoriteUnlocks().blockCount() + favoriteInvisibleUnlocks.blockCount()
   canAddFavorite = @() getTotalFavoriteCount() < favoriteUnlocksLimit
+  isUnlockFav = @(id) id in getFavoriteUnlocks()
 
   function getTimeCondition(unlockBlk) {
     let conds = getUnlockConditions(unlockBlk?.mode)
@@ -1624,6 +1625,9 @@ local unlockConditionUnitclasses = {
 
   function canDo(unlockBlk) {
     if (::is_unlocked_scripted(-1, unlockBlk?.id))
+      return false
+
+    if (unlockBlk?.mode == null)
       return false
 
     let timeCond = getTimeCondition(unlockBlk)

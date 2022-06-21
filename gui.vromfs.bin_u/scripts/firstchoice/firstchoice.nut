@@ -1,16 +1,7 @@
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
-let persistent = { firstChoiceIsShown = false }
-::g_script_reloader.registerPersistentData("firstChoice", persistent, persistent.keys())
-
-let function isFirstChoiceShown() {
-  return persistent.firstChoiceIsShown
-}
-
-let function markFirstChoiceAsShown() {
-  persistent.firstChoiceIsShown = true
-}
+let isFirstChoiceShown = persist("isFirstChoiceShown", @() ::Watched(false))
 
 let getFirstChosenUnitType = function(defValue = ::ES_UNIT_TYPE_INVALID)
 {
@@ -50,6 +41,5 @@ return {
   fillUserNick
   getFirstChosenUnitType
   isNeedFirstCountryChoice
-  markFirstChoiceAsShown
   isFirstChoiceShown
 }

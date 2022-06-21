@@ -21,6 +21,30 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     return $"{name} {::roman_numerals[stage]}"
   }
 
+  function getChapterAndGroupText(unlockBlk) {
+    let chapterAndGroupText = []
+    if ("chapter" in unlockBlk)
+      chapterAndGroupText.append(::loc($"unlocks/chapter/{unlockBlk.chapter}"))
+    if ((unlockBlk?.group ?? "") != "") {
+      local locId = $"unlocks/group/{unlockBlk.group}"
+      let parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
+      if (parentUnlock?.chapter == unlockBlk?.chapter)
+        locId = $"{parentUnlock.id}/name"
+      chapterAndGroupText.append(::loc(locId))
+    }
+    return chapterAndGroupText.len() > 0
+      ? $"({", ".join(chapterAndGroupText, true)})"
+      : ""
+  }
+
+  function getConditionsText(cfg) {
+    return ::UnlockConditions.getConditionsText(
+      cfg.conditions,
+      cfg.showProgress ? cfg.curVal : null,
+      cfg.maxVal,
+      { isExpired = cfg.isExpired })
+  }
+
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
     let isShowUnlock = unlockBlk != null && ::is_unlock_visible(unlockBlk)
     unlockObj.show(isShowUnlock)
@@ -40,25 +64,20 @@ let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
     if(::check_obj(closeBtn))
       closeBtn.unlockId = unlockBlk.id
 
-    let chapterAndGroupText = []
-    if ("chapter" in unlockBlk)
-      chapterAndGroupText.append(::loc($"unlocks/chapter/{unlockBlk.chapter}"))
-    if ((unlockBlk?.group ?? "") != "") {
-      local locId = $"unlocks/group/{unlockBlk.group}"
-      let parentUnlock = ::g_unlocks.getUnlockById(unlockBlk.group)
-      if (parentUnlock?.chapter == unlockBlk?.chapter)
-        locId = $"{parentUnlock.id}/name"
-      chapterAndGroupText.append(::loc(locId))
-    }
-
     unlockObj.tooltip = "\n".join([::colorize("unlockHeaderColor", title),
-      chapterAndGroupText.len() > 0 ? $"({", ".join(chapterAndGroupText, true)})" : "",
+      getChapterAndGroupText(unlockBlk),
       unlockConfig?.stagesText ?? "",
-      ::UnlockConditions.getConditionsText(
-        unlockConfig.conditions,
-        unlockConfig.showProgress ? unlockConfig.curVal : null,
-        unlockConfig.maxVal,
-        { isExpired = unlockConfig.isExpired })
+      getConditionsText(unlockConfig)
+    ], true)
+  }
+
+  function getUnlockTooltipById(id) {
+    let blk = ::g_unlocks.getUnlockById(id)
+    let cfg = ::build_unlock_desc(::build_conditions_config(blk))
+    return "\n".join([::colorize("unlockHeaderColor", getUnlockTitle(cfg)),
+      getChapterAndGroupText(blk),
+      cfg?.stagesText ?? "",
+      getConditionsText(cfg)
     ], true)
   }
 

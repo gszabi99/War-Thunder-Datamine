@@ -1,6 +1,9 @@
 from "hitCamera" import *
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+
+const TIME_TITLE_SHOW_SEC = 3
 
 let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
 
@@ -30,6 +33,8 @@ let damageStatusTemplates = {
   [::ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShip.blk",
   [::ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
 }
+
+let importantEventKeys = ["partEvent", "ammoEvent"]
 
 let debuffsListsByUnitType = {}
 let trackedPartNamesByUnitType = {}
@@ -68,6 +73,26 @@ let function setDamageStatus(statusObjId, health) {
   obj.damage = getDamageStatusByHealth(health)
 }
 
+let function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
+  let data = item.getInfo(camInfo, unitInfo, partName, dmgParams)
+  let isShow = data != null
+
+  if (!(infoObj?.isValid() ?? false))
+    return
+
+  let obj = infoObj.findObject(item.id)
+  if (!(obj?.isValid() ?? false))
+    return
+  obj.show(isShow)
+  if (!isShow)
+    return
+
+  obj.state = data.state
+  let labelObj = obj.findObject("label")
+  if (labelObj?.isValid() ?? false)
+    labelObj.setValue(data.label)
+}
+
 let function onEnemyDamageState(event) {
   setDamageStatus("artillery_health", event.artilleryHealth)
   setDamageStatus("fire_status", event.hasFire ? 1 : -1)
@@ -75,6 +100,12 @@ let function onEnemyDamageState(event) {
   setDamageStatus("torpedo_tubes_health", event.torpedoTubesHealth)
   setDamageStatus("rudders_health", event.ruddersHealth)
   setDamageStatus("breach_status", event.hasBreach ? 1 : -1)
+
+  local item = (debuffsListsByUnitType?[curUnitType] ?? []).findvalue(@(v) v == ::g_hud_enemy_debuffs.SHIP_BUOYANCY)
+  if (item != null) {
+    camInfo.buoyancy <- event?.buoyancy ?? camInfo?.buoyancy
+    updateDebuffItem(item, null)
+  }
 }
 
 let function updateFadeAnimation() {
@@ -100,31 +131,6 @@ let function reset() {
   unitsInfo.clear()
 }
 
-let function update() {
-  if (!(scene?.isValid() ?? false))
-    return
-
-  scene.show(isVisible)
-  if (!isVisible)
-    return
-
-  updateFadeAnimation()
-  if (!(titleObj?.isValid() ?? false))
-    return
-
-  let style = styles?[hitResult] ?? "none"
-  scene.result = style
-  let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
-  titleObj.show(isVisibleTitle)
-  if (isVisibleTitle)
-    titleObj.setValue(utf8ToUpper(::loc($"hitcamera/result/{style}")))
-}
-
-let function hitCameraReinit() {
-  isEnabled = ::get_option_xray_kill()
-  update()
-}
-
 let function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
   if (!(unitId in unitsInfo) || unitsInfo[unitId].unitVersion != unitVersion)
     unitsInfo[unitId] <- {
@@ -136,6 +142,7 @@ let function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
       isKilled = isUnitKilled
       isKillProcessed = false
       time = 0
+      importantEvents = {}
     }
 
   let info = unitsInfo[unitId]
@@ -148,31 +155,71 @@ let function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
 let function cleanupUnitsInfo() {
   let old = ::get_usefull_total_time() - 5.0
   let oldUnits = []
-  foreach (unitId, info in unitsInfo)
+  foreach (unitId, info in unitsInfo) {
+    info.importantEvents.clear()
     if (info.isKilled && info.time < old)
       oldUnits.append(unitId)
+  }
   foreach (unitId in oldUnits)
     delete unitsInfo[unitId]
 }
 
-let function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
-  let data = item.getInfo(camInfo, unitInfo, partName, dmgParams)
-  let isShow = data != null
+let function getNextImportantTitle() {
+  let curInfo = getTargetInfo(curUnitId, curUnitVersion, curUnitType,
+    isKillingHitResult(hitResult))
 
-  if (!(infoObj?.isValid() ?? false))
+  let ammoEvent = curInfo.importantEvents?.ammoEvent[0]
+  if (ammoEvent != null) {
+    curInfo.importantEvents.ammoEvent.remove(0)
+    return ::loc($"part_destroyed/{ammoEvent.munition}")
+  }
+
+  let partEvent = curInfo.importantEvents?.partEvent[0]
+  if (partEvent != null) {
+    curInfo.importantEvents.partEvent.remove(0)
+    return ::loc($"part_destroyed/{partEvent.partName}")
+  }
+
+  return ""
+}
+
+let function updateTitle() {
+  clearTimer(updateTitle)
+  if (!isVisible || !(titleObj?.isValid() ?? false))
     return
 
-  let obj = infoObj.findObject(item.id)
-  if (!(obj?.isValid() ?? false))
+  let title = getNextImportantTitle()
+  if (title != "") {
+    setTimeout(TIME_TITLE_SHOW_SEC, updateTitle)
+    scene.result = "kill"
+    titleObj.show(true)
+    titleObj.setValue(title)
     return
-  obj.show(isShow)
-  if (!isShow)
+  }
+
+  let style = styles?[hitResult] ?? "none"
+  scene.result = style
+  let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
+  titleObj.show(isVisibleTitle)
+  if (isVisibleTitle)
+    titleObj.setValue(utf8ToUpper(::loc($"hitcamera/result/{style}")))
+}
+
+let function update() {
+  if (!(scene?.isValid() ?? false))
     return
 
-  obj.state = data.state
-  let labelObj = obj.findObject("label")
-  if (labelObj?.isValid() ?? false)
-    labelObj.setValue(data.label)
+  scene.show(isVisible)
+  if (!isVisible)
+    return
+
+  updateFadeAnimation()
+  updateTitle()
+}
+
+let function hitCameraReinit() {
+  isEnabled = ::get_option_xray_kill()
+  update()
 }
 
 let function onHitCameraEvent(mode, result, info) {
@@ -272,6 +319,28 @@ let function onEnemyPartDamage(data) {
   }
 }
 
+let function onHitCameraImportantEvents(data) {
+  if (!isVisible)
+    return
+
+  let { unitId, unitVersion, unitType } = data
+  let unitInfo = getTargetInfo(unitId, unitVersion,
+    unitType, isKillingHitResult(hitResult))
+  foreach (key in importantEventKeys) {
+    let events = data?[key] ?? []
+    if (events.len() == 0)
+      continue
+    let unitInfoEvents = unitInfo.importantEvents?[key] ?? []
+    if (typeof events == "table")
+      unitInfoEvents.append(events)
+    else
+      unitInfoEvents.extend(events)
+    unitInfo.importantEvents[key] <- unitInfoEvents
+  }
+
+  updateTitle()
+}
+
 let function hitCameraInit(nest) {
   if (!(nest?.isValid() ?? false))
     return
@@ -294,6 +363,7 @@ let function hitCameraInit(nest) {
 
   ::g_hud_event_manager.subscribe("EnemyPartDamage", onEnemyPartDamage, this)
   ::g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, this)
+  ::g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, this)
 
   reset()
   hitCameraReinit()

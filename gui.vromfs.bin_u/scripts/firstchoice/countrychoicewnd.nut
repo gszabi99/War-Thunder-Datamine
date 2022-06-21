@@ -3,7 +3,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { fillUserNick, getFirstChosenUnitType,
-  markFirstChoiceAsShown } = require("%scripts/firstChoice/firstChoice.nut")
+  isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -38,7 +38,7 @@ enum CChoiceState {
 
   function initScreen()
   {
-    markFirstChoiceAsShown()
+    isFirstChoiceShown(true)
 
     unitTypesList = []
     let visibleCountries = {}

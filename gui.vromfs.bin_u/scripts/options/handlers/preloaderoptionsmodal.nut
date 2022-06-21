@@ -1,9 +1,8 @@
-let { getCurLoadingBgData,
-        getLoadingBgName,
-        getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
+let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
+  getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { isLoadingScreenBanned,
-        toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
+  toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 
 local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
@@ -29,14 +28,19 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
   function fillLoadingScreenList()
   {
     let view = { items = [] }
-    foreach (screenId, w in getCurLoadingBgData().list)
+    foreach (screenId in getFilterBgList()) {
+      let isUnlocked = isBgUnlocked(screenId)
       view.items.append({
-        imgTag = "banImg"
+        itemTag = isUnlocked ? "mission_item_unlocked" : "mission_item_locked"
+        imgTag = isUnlocked ? "banImg" : null
         id = screenId
         itemText = getLoadingBgName(screenId)
-        tooltip = getLoadingBgTooltip(screenId)
+        tooltip = isUnlocked
+          ? getLoadingBgTooltip(screenId)
+          : ::g_unlock_view.getUnlockTooltipById(getUnlockIdByLoadingBg(screenId))
         isNeedOnHover = ::show_console_buttons
       })
+    }
 
     view.items.sort(@(a, b) a.itemText <=> b.itemText)
     let selectedIdx = view.items.findindex((@(a) a.id == selectedId).bindenv(this)) ?? 0
@@ -71,17 +75,30 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
   function updateButtons()
   {
     let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
-    let isBanBtnVisible = (isMouseMode && scene.findObject(selectedId).isVisible())
-      || hoveredId == selectedId
+    let isUnlocked = isBgUnlocked(selectedId)
+    let isBtnVisible = (isMouseMode && scene.findObject(selectedId).isVisible()) || hoveredId == selectedId
+    let isBanBtnVisible = isUnlocked && isBtnVisible
+    let isFavBtnVisible = !isUnlocked && isBtnVisible
 
     this.showSceneBtn("btn_select", !isMouseMode && hoveredId != selectedId && isHovered)
-    this.showSceneBtn("btn_ban", isBanBtnVisible)
-      .setValue(isBanBtnVisible && havePremium.value && isLoadingScreenBanned(selectedId)
+
+    let banBtnObj = this.showSceneBtn("btn_ban", isBanBtnVisible)
+    if (isBanBtnVisible)
+      banBtnObj.setValue(havePremium.value && isLoadingScreenBanned(selectedId)
         ? ::loc("maps/preferences/removeBan")
         : ::loc("maps/preferences/ban"))
+
+    let favBtnObj = this.showSceneBtn("btn_fav", isFavBtnVisible)
+    if (isFavBtnVisible) {
+      let unlockId = getUnlockIdByLoadingBg(selectedId)
+      favBtnObj.setValue(::g_unlocks.isUnlockFav(unlockId)
+        ? ::loc("preloaderSettings/untrackProgress")
+        : ::loc("preloaderSettings/trackProgress"))
+    }
   }
 
-  canBan = @() getCurLoadingBgData().list.filter(@(v, id) !isLoadingScreenBanned(id)).len() > 1
+  canBan = @() getFilterBgList()
+    .filter(@(id) isBgUnlocked(id) && !isLoadingScreenBanned(id)).len() > 1
 
   function toggleBan()
   {
@@ -101,6 +118,29 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
     updateButtons()
     updateSelectedListItem()
+  }
+
+  function toggleFav() {
+    if (!isValid())
+      return
+
+    let unlockId = getUnlockIdByLoadingBg(selectedId)
+    let isFav = ::g_unlocks.isUnlockFav(unlockId)
+    if (isFav) {
+      ::g_unlocks.removeUnlockFromFavorites(unlockId)
+      updateButtons()
+      return
+    }
+
+    if (!::g_unlocks.canAddFavorite()) {
+      let num = ::g_unlocks.favoriteUnlocksLimit
+      let msg = ::loc("mainmenu/unlockAchievements/limitReached", { num })
+      this.msgBox("max_fav_count", msg, [["ok"]], "ok")
+      return
+    }
+
+    ::g_unlocks.addUnlockToFavorites(unlockId)
+    updateButtons()
   }
 
   function onItemDblClick()

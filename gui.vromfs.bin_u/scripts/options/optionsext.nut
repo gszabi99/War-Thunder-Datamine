@@ -210,10 +210,7 @@ local isWaitMeasureEvent = false
 ::get_block_hsv_color <- function get_block_hsv_color(h, s = 1.0, v = 1.0)
 {
   if (h > 360)
-  {
-    h -= 360;
-    v = 1.0
-  }
+    h -= 360
   return ::get_color_from_hsv(h, s, v)
 }
 
@@ -240,11 +237,9 @@ local isWaitMeasureEvent = false
     let opt = typeof(item) == "string" ? { text = item } : clone item
     opt.selected <- idx == value
     if ("hue" in item)
-      opt.hueColor <- ::get_block_hsv_color(item.hue,
-        item?.sat ?? 1.0,
-        item?.val ?? 1.0)
+      opt.hueColor <- ::get_block_hsv_color(item.hue, item?.sat ?? 0.7, item?.val ?? 0.7)
     if ("hues" in item)
-      opt.smallHueColor <- item.hues.map(@(hue) { color = ::get_block_hsv_color(hue, item?.sat ?? 1.0, item?.val ?? 1.0)  })
+      opt.smallHueColor <- item.hues.map(@(hue) { color = ::get_block_hsv_color(hue) })
 
     if ("rgb" in item)
       opt.hueColor <- item.rgb

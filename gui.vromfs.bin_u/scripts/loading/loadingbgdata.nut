@@ -184,6 +184,8 @@ let function removeLoadingBgFromLists(name) {
 
 let isBgUnlockable = @(id) id in bgUnlocks
 let isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
+let isBgUnlockableByUser = @(id) isBgUnlockable(id)
+  && ::g_unlocks.canDo(::g_unlocks.getUnlockById(bgUnlocks[id]))
 
 local function filterLoadingBgData(bgData) {
   bgData = clone bgData
@@ -191,6 +193,14 @@ local function filterLoadingBgData(bgData) {
     ? @(v, id) isBgUnlocked(id)
     : @(v, id) !isBgUnlockable(id))
   return bgData
+}
+
+let function getFilterBgList() {
+  initOnce()
+  let curBgData = ::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin
+  return ::g_login.isProfileReceived()
+    ? curBgData.list.keys().filter(@(id) isBgUnlocked(id) || isBgUnlockableByUser(id))
+    : curBgData.list.keys().filter(@(id) !isBgUnlockable(id))
 }
 
 let function getCurLoadingBgData() {
@@ -201,6 +211,11 @@ let function getCurLoadingBgData() {
 let function getLoadingBgIdByUnlockId(unlockId) {
   initOnce()
   return bgUnlocks.findindex(@(v) unlockId == v)
+}
+
+let function getUnlockIdByLoadingBg(bgId) {
+  initOnce()
+  return bgUnlocks?[bgId]
 }
 
 let isLoadingBgUnlock = @(unlockId) getLoadingBgIdByUnlockId(unlockId) != null
@@ -223,4 +238,7 @@ return {
   removeLoadingBgFromLists
   isLoadingBgUnlock
   createBgData
+  getFilterBgList
+  isBgUnlocked
+  getUnlockIdByLoadingBg
 }

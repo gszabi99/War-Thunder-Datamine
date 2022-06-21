@@ -99,9 +99,15 @@ let fillHSVOption_ThermovisionColor = function(descr)
   descr.value = ::get_thermovision_index()
 }
 
+let function addHueParamsToOptionDescr(descr, hue, text = null, sat = null, val = null) {
+  let defV = hue > 360 ? 1.0 : 0.7
+  descr.items.append({ hue, sat = sat ?? defV, val = val ?? defV, text })
+  descr.values.append(hue)
+}
+
 //Allow White and Black color
-local function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = null, defBri = null,
-  curHue = null, customItems = null)
+let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = null, defBri = null,
+  curHue = null)
 {
   let hueStep = 22.5
   if (curHue==null)
@@ -113,45 +119,21 @@ local function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSa
   descr.items = []
   descr.values = []
   if (defHue != null)
-  {
-    descr.items.append({ hue = defHue, sat = defSat, val = defBri, text = ::loc("options/hudDefault")})
-    descr.values.append(defHue)
-  }
+    addHueParamsToOptionDescr(descr, defHue, ::loc("options/hudDefault"), defSat, defBri)
 
-  if (customItems == null)
-  {
-    //default palette
-    local even = false
-    for(local hue = 0.0001; hue < 360.0 - 0.5*hueStep; hue += hueStep)
-    {
-      local h = hue + (even ? 360.0 : 0)
-      descr.items.append({ hue = h })
-      descr.values.append(h)
-      h = hue + (even ? 0 : 360.0)
-      descr.items.append({ hue = h })
-      descr.values.append(h)
-      even = !even
-    }
-  }
-  else
-  {
-    //custom items in option list
-    foreach(item in customItems)
-    {
-      descr.items.append({ hue = item })
-      descr.values.append(item)
-    }
+  //default palette
+  local even = false
+  for(local hue = 0.0001; hue < 360.0 - 0.5*hueStep; hue += hueStep) {
+    addHueParamsToOptionDescr(descr, hue + (even ? 360.0 : 0))
+    addHueParamsToOptionDescr(descr, hue + (even ? 0 : 360.0))
+    even = !even
   }
 
   if (defSat >= 0.000001) //create white (in case it's not default)
-  {
-    descr.items.append({ hue = 0.0, sat = 0.0, val = 0.9})
-    descr.values.append(0.0)
-  }
+    addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.9)
 
   //now black
-  descr.items.append({ hue = 0.0, sat = 0.0, val = 0.0})
-  descr.values.append(1.0)
+  addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.0)
 
   local valueIdx = ::find_nearest(curHue, descr.values)
   if (curHue == -1)
@@ -160,7 +142,7 @@ local function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSa
     descr.value = valueIdx
 }
 
-local fillHueOption = function(descr, id, defHue = null, curHue = null, customItems = null)
+let function fillHueOption(descr, id, defHue = null, curHue = null)
 {
   let hueStep = 22.5
   if (curHue==null)
@@ -172,34 +154,14 @@ local fillHueOption = function(descr, id, defHue = null, curHue = null, customIt
   descr.items = []
   descr.values = []
   if (defHue != null)
-  {
-    descr.items.append({ hue = defHue, text = ::loc("options/hudDefault")})
-    descr.values.append(defHue)
-  }
+    addHueParamsToOptionDescr(descr, defHue, ::loc("options/hudDefault"))
 
-  if (customItems == null)
-  {
-    //default palette
-    local even = false
-    for(local hue = 0.0001; hue < 360.0 - 0.5*hueStep; hue += hueStep)
-    {
-      local h = hue + (even ? 360.0 : 0)
-      descr.items.append({ hue = h })
-      descr.values.append(h)
-      h = hue + (even ? 0 : 360.0)
-      descr.items.append({ hue = h })
-      descr.values.append(h)
-      even = !even
-    }
-  }
-  else
-  {
-    //custom items in option list
-    foreach(item in customItems)
-    {
-      descr.items.append({ hue = item })
-      descr.values.append(item)
-    }
+  //default palette
+  local even = false
+  for(local hue = 0.0001; hue < 360.0 - 0.5*hueStep; hue += hueStep) {
+    addHueParamsToOptionDescr(descr, hue + (even ? 360.0 : 0))
+    addHueParamsToOptionDescr(descr, hue + (even ? 0 : 360.0))
+    even = !even
   }
 
   local valueIdx = ::find_nearest(curHue, descr.values)
