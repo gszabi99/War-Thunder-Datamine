@@ -8591,6 +8591,7 @@
           }
         },
         "shells": {
+          "entityMunition": "shells",
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
@@ -8598,13 +8599,25 @@
             "count": 240
           }
         },
-        "charges": {
-          "fatalFire": true,
-          "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_01_dm": {
-            "count": 240
+        "charges": [
+          {
+            "entityMunition": "charges"
+          },
+          {
+            "entityMunition": "shells"
+          },
+          {
+            "fatalFire": true
+          },
+          {
+            "damageEffect": "ammunition_storage_charges"
+          },
+          {
+            "ammunition_storage_charges_01_dm": {
+              "count": 240
+            }
           }
-        }
+        ]
       },
       "ammo2": [
         {
@@ -8670,6 +8683,7 @@
         },
         {
           "shells": {
+            "entityMunition": "first_stage",
             "firstStage": true,
             "fatalFire": false,
             "fatalExplosion": false,
@@ -8683,6 +8697,7 @@
         },
         {
           "shells": {
+            "entityMunition": "shells",
             "reloadTimeMult": 1.14,
             "fatalFire": false,
             "fatalExplosion": false,
@@ -8694,6 +8709,7 @@
         },
         {
           "shells": {
+            "entityMunition": "shells",
             "reloadTimeMult": 1.14,
             "fatalFire": false,
             "fatalExplosion": false,
@@ -8705,6 +8721,7 @@
         },
         {
           "charges": {
+            "entityMunition": "charges",
             "reloadTimeMult": 1.14,
             "fatalFire": true,
             "damageEffect": "ammunition_storage_charges",
@@ -8715,6 +8732,7 @@
         },
         {
           "charges": {
+            "entityMunition": "charges",
             "reloadTimeMult": 1.14,
             "fatalFire": true,
             "damageEffect": "ammunition_storage_charges",
@@ -8788,6 +8806,7 @@
         },
         {
           "shells": {
+            "entityMunition": "first_stage",
             "firstStage": true,
             "fatalFire": false,
             "fatalExplosion": false,
@@ -8801,6 +8820,7 @@
         },
         {
           "shells": {
+            "entityMunition": "shells",
             "reloadTimeMult": 1.14,
             "fatalFire": false,
             "fatalExplosion": false,
@@ -8812,6 +8832,7 @@
         },
         {
           "charges": {
+            "entityMunition": "charges",
             "reloadTimeMult": 1.14,
             "fatalFire": true,
             "damageEffect": "ammunition_storage_charges",
@@ -8851,6 +8872,9 @@
         },
         {
           "weaponTrigger": "gunner13"
+        },
+        {
+          "entityMunition": "aux"
         },
         {
           "fatalFire": false
@@ -8925,6 +8949,9 @@
           "weaponTrigger": "gunner17"
         },
         {
+          "entityMunition": "aux"
+        },
+        {
           "fatalFire": false
         },
         {
@@ -8983,6 +9010,9 @@
       "ammo6": [
         {
           "weaponTrigger": "gunner18"
+        },
+        {
+          "entityMunition": "torpedo"
         },
         {
           "removeLoadedAmmo": false
@@ -9046,6 +9076,9 @@
           "weaponTrigger": "gunner19"
         },
         {
+          "entityMunition": "torpedo"
+        },
+        {
           "removeLoadedAmmo": false
         },
         {
@@ -9104,6 +9137,7 @@
       ],
       "ammo8": {
         "weaponTrigger": "gunner20",
+        "entityMunition": "depth_charge",
         "removeLoadedAmmo": false,
         "fatalFire": false,
         "fatalExplosion": false,
@@ -9120,6 +9154,7 @@
       },
       "ammo9": {
         "weaponTrigger": "gunner21",
+        "entityMunition": "depth_charge",
         "removeLoadedAmmo": false,
         "fatalFire": false,
         "fatalExplosion": false,
@@ -9136,6 +9171,7 @@
       },
       "ammo10": {
         "weaponTrigger": "gunner22",
+        "entityMunition": "depth_charge",
         "removeLoadedAmmo": false,
         "fatalFire": false,
         "fatalExplosion": false,
@@ -9152,6 +9188,7 @@
       },
       "ammo11": {
         "weaponTrigger": "gunner23",
+        "entityMunition": "depth_charge",
         "removeLoadedAmmo": false,
         "fatalFire": false,
         "fatalExplosion": false,
