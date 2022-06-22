@@ -1,6 +1,6 @@
 let {PI, cos, sin} = require("%sqstd/math.nut")
 let {
-  isAllMachineGunsEmpty, GunOverheatState, GunDirectionX, IsCannonEmpty, isAllCannonsEmpty,
+  IsMachineGunEmpty, GunOverheatState, GunDirectionX, IsCannonEmpty, isAllCannonsEmpty,
   GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode,
   TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible,
   FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat,
@@ -70,7 +70,7 @@ isGunBlinking.subscribe(@(v) v ? ::anim_start(triggerGun) : ::anim_request_stop(
 
 let gunDirection = @(colorWatch, isSightHud, isBackground) function() {
 
-  let watchList = [GunSightMode, GunOverheatState, isAllMachineGunsEmpty, GunDirectionX, GunDirectionY, colorWatch,
+  let watchList = [GunSightMode, GunOverheatState, IsMachineGunEmpty, GunDirectionX, GunDirectionY, colorWatch,
                      isAllCannonsEmpty, AlertColorHigh, GunDirectionVisible, IsCannonEmpty]
   let res = { watch = watchList}
 
@@ -88,13 +88,13 @@ let gunDirection = @(colorWatch, isSightHud, isBackground) function() {
     if (i >= GunOverheatState.value) {
 
       mainCommands.append(selectedSightCommands[i])
-      if (!isAllCannonsEmpty.value || !isAllMachineGunsEmpty.value)
+      if (!isAllCannonsEmpty.value || !IsMachineGunEmpty.value)
         mainCommands.append(GunSightMode.value == 0 ? dashTurretSight[i] : ccipDashTurretSight[i])
     }
     else {
 
       overheatCommands.append(selectedSightCommands[i])
-      if (!isAllCannonsEmpty.value || !isAllMachineGunsEmpty.value)
+      if (!isAllCannonsEmpty.value || !IsMachineGunEmpty.value)
         overheatCommands.append(GunSightMode.value == 0 ? dashTurretSight[i] : ccipDashTurretSight[i])
     }
   }

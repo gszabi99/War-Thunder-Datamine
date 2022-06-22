@@ -129,15 +129,7 @@ let BombSightShadowLineWidthFactor = Watched(1.0)
 let TurretSightOpacity = Watched(1.0)
 let TurretSightLineWidthFactor = Watched(1.0)
 
-let MachineGunsCount = []
-let MachineGunsReloadTime = []
-let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
-let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.value.contains(false))
-let MachineGunsMode = Watched(0)
-let MachineGunsSelected = Watched(false)
-
-//retroCompatibility
-let MachineGuns = {
+local MachineGuns = {
   count = Watched(0)
   seconds = Watched(-1)
   mode = Watched(0)
@@ -314,7 +306,6 @@ let helicopterState = {
   HorAngle,
 
   isAllCannonsEmpty,
-  isAllMachineGunsEmpty,
 
   TurretYaw,
   TurretPitch,
@@ -384,21 +375,13 @@ let helicopterState = {
   InstructorForced,
 
   StaminaValue,
-  StaminaState,
+  StaminaState
 
-  //retro compatibility
   MachineGuns,
-  IsMachineGunEmpty,
-
-  MachineGunsCount,
-  MachineGunsReloadTime,
-  IsMachineGunsEmpty,
-  MachineGunsMode,
-  MachineGunsSelected,
-
   CannonsAdditional,
   Rockets, Agm, Aam, GuidedBombs, Bombs, Flares, Chaffs
 
+  IsMachineGunEmpty,
   IsCanAdditionalEmpty,
   IsRktEmpty,
   IsAgmEmpty,
@@ -526,22 +509,11 @@ let helicopterState = {
   IlsPosSize[3] = h
 }
 
-//retro compatibility
 ::interop.updateMachineGuns <- function(count, sec = -1, mode = 0, selected = false) {
   MachineGuns.count.update(count)
   MachineGuns.mode.update(mode)
   MachineGuns.seconds.update(sec)
   MachineGuns.selected.update(selected)
-}
-
-::interop.updateMachineGunsArray <- function(index, count, sec = -1) {
-  MachineGunsCount[index](count)
-  MachineGunsReloadTime[index](sec)
-}
-
-::interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
-  if (is_empty != IsMachineGunsEmpty.value[index])
-    IsMachineGunsEmpty.mutate(@(v) v[index] = is_empty)
 }
 
 ::interop.updateAdditionalCannons <- function(count, sec = -1, mode = 0, selected = false) {
@@ -613,11 +585,6 @@ let helicopterState = {
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   CannonCount.append(Watched(0))
   CannonReloadTime.append(Watched(-1))
-}
-
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  MachineGunsCount.append(Watched(0))
-  MachineGunsReloadTime.append(Watched(-1))
 }
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {

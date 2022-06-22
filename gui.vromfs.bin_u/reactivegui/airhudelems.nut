@@ -3,9 +3,7 @@ let {floor, round_by_value} = require("%sqstd/math.nut")
 let {CannonMode, CannonSelected, CannonReloadTime, CannonCount,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
   EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, FuelState, IsCompassVisible,
-  MachineGuns, IsMachineGunEmpty, // <= retro compatibility
-  MachineGunsMode, MachineGunsSelected, MachineGunsReloadTime, MachineGunsCount, IsMachineGunsEmpty,
-  CannonsAdditional, IsCanAdditionalEmpty, Rockets,
+  MachineGuns, IsMachineGunEmpty, CannonsAdditional, IsCanAdditionalEmpty, Rockets,
   IsRktEmpty, IsSightHudVisible, Agm, IsAgmEmpty,
   DetectAllyProgress, DetectAllyState, Bombs, IsBmbEmpty,
   IsHighRateOfFire, Aam, IsAamEmpty, GuidedBombs, IsGuidedBmbEmpty,
@@ -542,11 +540,11 @@ let function createParam(param, width, height, isBackground, style, needCaption 
 //Rpm
 let TrtModeForRpm = TrtMode[0]
 
-//MachineGuns RetroCompatibility
-let MachineGunCount = MachineGuns.count
-let MachineGunMode = MachineGuns.mode
-let MachineGunSeconds = MachineGuns.seconds
-let MachineGunSelected = MachineGuns.selected
+//MachineGuns
+let MachineGunsCount = MachineGuns.count
+let MachineGunsMode = MachineGuns.mode
+let MachineGunsSeconds = MachineGuns.seconds
+let MachineGunsSelected = MachineGuns.selected
 
 //additionalComputed Cannons
 let CannonsAdditionalCount = CannonsAdditional.count
@@ -656,11 +654,10 @@ let textParamsMapMain = {
     alertValueStateComputed = Computed(@() HudColorState.ACTIV)
     titleSizeFactor = 1.0
   },
-  //retro compatibility
   [AirParamsMain.MACHINE_GUN] = {
-    titleComputed = Computed(@() getMachineGunCaption(MachineGunMode.value))
-    valueComputed = Computed(@() generateBulletsTextFunction(MachineGunCount.value, MachineGunSeconds.value))
-    selectedComputed = Computed(@() MachineGunSelected.value ? ">" : "")
+    titleComputed = Computed(@() getMachineGunCaption(MachineGunsMode.value))
+    valueComputed = Computed(@() generateBulletsTextFunction(MachineGunsCount.value, MachineGunsSeconds.value))
+    selectedComputed = Computed(@() MachineGunsSelected.value ? ">" : "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() IsMachineGunEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsMachineGunEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -779,22 +776,6 @@ foreach (i, _ in isEngineControled) {
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed( @() getThrottleState(isEngineControledComputed.value))
     alertValueStateComputed = Computed (@() getThrottleValueState(throttleStateComputed.value, isEngineControledComputed.value))
-    titleSizeFactor = 1.0
-  }
-}
-
-for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  let idx = i
-  let MachineGunsAmmoCount = MachineGunsCount[idx]
-  let MachineGunsAmmoReloadTime = MachineGunsReloadTime[idx]
-
-  textParamsMapMain[AirParamsMain.MACHINE_GUNS_1 + idx] <- {
-    titleComputed = Computed(@() getMachineGunCaption(MachineGunsMode.value))
-    valueComputed = Computed(@() generateBulletsTextFunction(MachineGunsAmmoCount.value, MachineGunsAmmoReloadTime.value))
-    selectedComputed = Computed(@() MachineGunsSelected.value ? ">" : "")
-    additionalComputed = Computed (@() "")
-    alertStateCaptionComputed = Computed(@() IsMachineGunsEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
-    alertValueStateComputed = Computed(@() IsMachineGunsEmpty.value?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     titleSizeFactor = 1.0
   }
 }
