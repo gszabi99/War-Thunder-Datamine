@@ -96,7 +96,10 @@ global enum AirParamsMain
   FLARES =            21,
   CHAFFS =            22,
   IRCM =              23,
-  RATE_OF_FIRE =      24
+  RATE_OF_FIRE =      24,
+  MACHINE_GUNS_1 =    25,
+  MACHINE_GUNS_2 =    26,
+  MACHINE_GUNS_3 =    27
 };
 
 global enum AirParamsSecondary
