@@ -52,6 +52,7 @@ root {
       pos:t='pw-w, 0.5ph-0.5h'
       position:t='absolute'
       background-image:t='<<authTypeImg>>'
+      background-repeat:t='aspect-ratio'
     }
 
     tdiv{
